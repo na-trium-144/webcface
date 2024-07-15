@@ -46,6 +46,7 @@ option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ${IS_MAIN})
 option(WEBCFACE_CONFIG_ALL "configure both debug and release build on windows" OFF)
 option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" ${WEBCFACE_SHARED})
 option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
+option(WEBCFACE_SERVER "build server" ON)
 
 if(WEBCFACE_VERSION_SUFFIX STREQUAL "git")
     execute_process(
@@ -127,10 +128,15 @@ endif()
 include(cmake/deps/msgpack-cxx.cmake)
 include(cmake/deps/spdlog.cmake)
 include(cmake/deps/curl.cmake)
-include(cmake/deps/crow.cmake)
 include(cmake/deps/cli11.cmake)
 include(cmake/deps/utf8cpp.cmake)
-include(cmake/deps/magickpp.cmake)
+if(WEBCFACE_SERVER)
+    include(cmake/deps/crow.cmake)
+    include(cmake/deps/magickpp.cmake)
+else()
+    add_library(crow-linker INTERFACE)
+    add_library(magickpp-linker INTERFACE)
+endif()
 if(WEBCFACE_EXAMPLE)
     include(cmake/deps/opencv.cmake)
 endif()
@@ -242,10 +248,12 @@ target_sources(webcface PRIVATE
     $<TARGET_OBJECTS:webcface-server-store>
     $<TARGET_OBJECTS:webcface-client>
 )
-if(WEBCFACE_SHARED)
-    target_link_libraries(webcface PRIVATE webcface-server-internal-linker)
-else()
-    target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
+if(WEBCFACE_SERVER)
+    if(WEBCFACE_SHARED)
+        target_link_libraries(webcface PRIVATE webcface-server-internal-linker)
+    else()
+        target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
+    endif()
 endif()
 # private: リンクが必要なもののみ
 target_link_libraries(webcface PRIVATE
@@ -260,8 +268,8 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-if(WEBCFACE_SYSTEM_WIN32API)
-    target_link_libraries(webcface PRIVATE iphlpapi.lib)
+if(WEBCFACE_SYSTEM_WIN32SOCKET)
+    target_link_libraries(webcface PRIVATE iphlpapi)
 endif()
 if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
@@ -334,7 +342,9 @@ add_library(webcface::wcf ALIAS wcf)
 
 ###############################################################################
 
-add_subdirectory(server)
+if(WEBCFACE_SERVER)
+    add_subdirectory(server)
+endif()
 
 if(WEBCFACE_EXAMPLE)
     add_subdirectory(examples)
@@ -350,7 +360,9 @@ if(WEBCFACE_INSTALL)
     include(CMakePackageConfigHelpers)
 
     # binaries
-    install(TARGETS webcface-server RUNTIME DESTINATION bin)
+    if(WEBCFACE_SERVER)
+        install(TARGETS webcface-server RUNTIME DESTINATION bin)
+    endif()
 
     # library
     # dependenciesはそれぞれのcmakeファイルでリストに追加されている
@@ -521,6 +533,7 @@ if(APPLE)
     message(STATUS " WEBCFACE_FRAMEWORK = ${WEBCFACE_FRAMEWORK}")
     message(STATUS " CMAKE_OSX_ARCHITECTURES = ${CMAKE_OSX_ARCHITECTURES}")
 endif()
+message(STATUS " WEBCFACE_SERVER = ${WEBCFACE_SERVER}")
 message(STATUS " WEBCFACE_EXAMPLE = ${WEBCFACE_EXAMPLE}")
 if(WEBCFACE_TEST)
     message(STATUS " WEBCFACE_TEST = ${WEBCFACE_TEST} (TIMEOUT = ${WEBCFACE_TEST_TIMEOUT} ms)")

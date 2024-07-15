@@ -585,7 +585,7 @@ struct WEBCFACE_DLL_TEMPLATE Req
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field))
 };
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Value>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Text>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<View>;
@@ -639,7 +639,7 @@ struct WEBCFACE_DLL_TEMPLATE Entry
     SharedString field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_DLLEXPORT
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Value>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Text>;
 extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<View>;

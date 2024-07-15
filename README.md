@@ -17,7 +17,7 @@ WebSocketとMessagePackを使った、ROSのような分散型の通信ライブ
 
 C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
 
-Linux, Windows, MacOS で動作します。
+Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
 WindowsとWSL1/2の間の相互通信も自動的に接続されます。
 
@@ -43,7 +43,7 @@ pkg-config なら`pkg-config --cflags --libs webcface`
 
 の1つのみであり、手動でこのライブラリにリンクして使うこともできます。  
 WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。
-(WebCFaceをstaticライブラリとしてビルドした場合と、brewでインストールした場合を除く)
+(WebCFaceをソースからビルドした場合と、brewでインストールした場合を除く)
 
 Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
@@ -270,10 +270,11 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 ### Requirements
 * C++17に対応したコンパイラが必要です
 	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
-* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studio 2019以上でビルドできることを確認しています。
+* Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
-* WindowsではMinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
-* Cygwin(64bit)やMSYS2のMSYS環境では現状ビルドできません。([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))
+* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
+* Cygwin(64bit)やMSYS2のMSYS環境ではasioが非対応なため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。CMake時に`-DWEBCFACE_SERVER=OFF`が必要です。
+([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))
 
 ### Dependencies
 * webcfaceは外部ライブラリとして
@@ -289,16 +290,22 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 [Magick++](https://github.com/ImageMagick/ImageMagick),
 [GoogleTest](https://github.com/google/googletest)(testのみ)
 を使用します。
-	* いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。
-		* 見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
-	* また、`git submodule update --init` をしておくとsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。
-		* ダウンロード量は増えますが、インターネット接続のないところでcmakeをしたい場合などに有用です。
-		* ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います
-	* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
-	* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
-	* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
-	* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
-	
+* いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。
+	* 特にsharedまたはstaticライブラリとしてビルドできるspdlog,libcurl,Magick++は事前にインストールしておいたほうがビルドが高速になります。
+		* ただしインストールされたlibcurl,Magick++を使用するには条件があります。(後述)
+	* 見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
+* また、`git submodule update --init` をしておくとsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。
+	* ダウンロード量は増えますが、インターネット接続のないところでcmakeをしたい場合などに有用です。
+	* ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います
+* システムにインストールされているものを使用した場合、ビルドしたWebCFaceはそのライブラリに依存することになります。
+一方FetchContentまたはsubmoduleでソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、外部ライブラリのシンボルがWebCFace内部に隠されます。
+	* そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。
+		* CMake時に`-DWEBCFACE_FIND_LIBS=OFF`とすることですべてソースからビルドさせることができます。
+* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
+* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
+* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
+* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
+
 <details><summary>Ubuntu</summary>
 
 ```sh
@@ -341,26 +348,33 @@ ImageMagickをソースからビルドするために Visual C++ ATL と MFC の
 
 </details>
 
-<details><summary>MSYS2</summary>
+<details><summary>MSYS2 MinGW</summary>
 
 ```sh
 pacman -S pactoys
 pacboy -S git make gcc:p cmake:p ninja:p
 # optional:
-pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p imagemagick:p 
+pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p
 ```
-imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります
+imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
 </details>
 
-<!--
+<details><summary>MSYS2 MSYS</summary>
+
+```sh
+pacman -S git make gcc cmake ninja
+```
+imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
+
+</details>
+
 <details><summary>Cygwin</summary>
 
 gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください
 (ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)
 
 </details>
--->
 
 ### CMake
 
@@ -374,6 +388,7 @@ cmake -Bbuild
 * `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
 * `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
 * `-DWEBCFACE_FRAMEWORK=ON`, `"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"` などとするとユニバーサルなframework (webcface.framework) をビルド、インストールできます
+* `-DWEBCFACE_SERVER=ON`でserverをビルドします(デフォルトでON)
 * `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 * `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
 	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)
@@ -397,9 +412,6 @@ cmake -Bbuild
 		* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
 	* `-DWEBCFACE_FIND_LIBS=OFF` とすると上記設定をすべてOFFにします
 		* WEBCFACE_SHAREDがOFFの場合デフォルトでOFF
-	* spdlogのオプション
-		* Windowsでは`SPDLOG_WCHAR_SUPPORT`がデフォルトでONになります
-		* それ以外のオプション(SPDLOG_WCHAR_FILENAMES, SPDLOG_WCHAR_CONSOLE)はWebCFace内では設定しませんがコマンドラインオプションで指定することは可能です
 
 ### Build
 

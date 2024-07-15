@@ -18,7 +18,7 @@ TEST(EncodingTest, encode) {
     EXPECT_EQ(SharedString::encode(us).u8String(), u);
     EXPECT_EQ(SharedString::encode(w).u8String(), u);
     usingUTF8(false);
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
     EXPECT_NE(SharedString::encode(s).u8String(), u);
 #else
@@ -36,7 +36,7 @@ TEST(EncodingTest, decode) {
     EXPECT_EQ(SharedString::fromU8String(u).decode(), us);
     EXPECT_EQ(SharedString::fromU8String(u).decodeW(), w);
     usingUTF8(false);
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     // webcfaceはutf8エンコーディングでビルドしてるのでsはANSIではない
     EXPECT_NE(SharedString::fromU8String(u).decode(), s);
 #else

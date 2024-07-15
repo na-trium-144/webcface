@@ -16,7 +16,7 @@ namespace server {
 
 static const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();
 
-static spdlog::level::level_enum convertLevel(int level) {
+[[maybe_unused]] static spdlog::level::level_enum convertLevel(int level) {
     switch (level) {
     case 4:
         return spdlog::level::critical;
@@ -62,10 +62,14 @@ void Server::pingThreadMain() {
         });
     }
 }
-void Server::send(wsConnPtr conn, const std::string &msg) {
+void Server::send([[maybe_unused]] wsConnPtr conn,
+                  [[maybe_unused]] const std::string &msg) {
+#ifndef WEBCFACE_SERVER
+#else
     if (!server_stop.load()) {
         server_internal::AppWrapper::send(conn, msg.data(), msg.size());
     }
+#endif
 }
 void Server::join() {
     static std::mutex join_m;
@@ -77,6 +81,8 @@ void Server::join() {
     }
 }
 Server::~Server() {
+#ifndef WEBCFACE_SERVER
+#else
     {
         std::lock_guard lock(server_mtx);
         server_stop.store(true);
@@ -91,9 +97,11 @@ Server::~Server() {
     for (auto &app : apps) {
         delete static_cast<server_internal::AppWrapper *>(app);
     }
+#endif
 }
 
-Server::Server(std::uint16_t port, int level, int keep_log)
+Server::Server([[maybe_unused]] std::uint16_t port, int level,
+               [[maybe_unused]] int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
@@ -103,6 +111,9 @@ Server::Server(std::uint16_t port, int level, int keep_log)
     logger->set_level(static_cast<spdlog::level::level_enum>(level));
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
 
+#ifndef WEBCFACE_SERVER
+    logger->error("webcface::Server is not implemented.");
+#else
     if (std::this_thread::get_id() != MAIN_THREAD_ID) {
         logger->warn("Initialization of webcface::Server::Server should be "
                      "called in the main thread (to initialize ImageMagick).");
@@ -184,6 +195,7 @@ Server::Server(std::uint16_t port, int level, int keep_log)
             }
         });
     }
+#endif
 }
 } // namespace server
 WEBCFACE_NS_END

@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#if WEBCFACE_SYSTEM_WIN32API
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
 #include <windows.h>
 #include <shlobj.h>
 #endif
@@ -11,11 +11,12 @@
 WEBCFACE_NS_BEGIN
 namespace message::Path {
 std_fs::path unixSocketPath(int port) {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
     wchar_t *fpath;
     SHGetKnownFolderPath(FOLDERID_ProgramData, 0, nullptr, &fpath);
     return std_fs::path(fpath) / "webcface" / (std::to_string(port) + ".sock");
 #else
+    // todo: cygwin -> /cygdrive/c/ProgramData...
     return "/tmp/webcface/" + std::to_string(port) + ".sock";
 #endif
 }
@@ -34,7 +35,7 @@ bool detectWSL2() {
            std::getenv("WSL_INTEROP");
 }
 std::string wsl2Host() {
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
     return "";
 #else
     std::ifstream ifs("/proc/net/route");
@@ -68,7 +69,7 @@ void initUnixSocket(const std_fs::path &path,
     } catch (const std_fs::filesystem_error &e) {
         logger->warn("{}", e.what());
     }
-#ifdef _WIN32
+#if WEBCFACE_SYSTEM_PATH_WINDOWS
     // std_fs does not work on socket file somehow on mingw
     DeleteFileW(path.wstring().c_str());
     auto dw = GetLastError();

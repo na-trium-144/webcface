@@ -100,8 +100,8 @@ target_link_directories(magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${MAGICKPP_PREFIX}/lib>
     $<INSTALL_INTERFACE:lib>
 )
-if(WEBCFACE_SYSTEM_WIN32API)
-    target_link_libraries(magickpp-linker INTERFACE urlmon.lib)
+if(WEBCFACE_SYSTEM_WIN32SOCKET)
+    target_link_libraries(magickpp-linker INTERFACE urlmon)
 endif()
 if(Magickpp_VERSION MATCHES "^7\.")
     target_compile_definitions(magickpp-linker INTERFACE WEBCFACE_MAGICK_VER7)
