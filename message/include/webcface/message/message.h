@@ -19,10 +19,10 @@
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "webcface/message/u8string.h"
 #include "webcface/message/val_adaptor.h"
-#include <webcface/encoding/image_mode.h>
+#include "webcface/encoding/image_mode.h"
 
 MSGPACK_ADD_ENUM(webcface::encoding::ValType)
 MSGPACK_ADD_ENUM(webcface::encoding::ImageColorMode)
@@ -469,7 +469,7 @@ struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("l", length))
 };
 struct WEBCFACE_DLL ImageFrame {
-    std::size_t width_, height_;
+    int width_, height_;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
@@ -774,8 +774,8 @@ struct WEBCFACE_DLL Res<Image>
  *
  */
 WEBCFACE_DLL std::vector<std::pair<int, std::any>>
-unpack(const std::string &message,
-       const std::shared_ptr<spdlog::logger> &logger);
+    WEBCFACE_CALL unpack(const std::string &message,
+                         const std::shared_ptr<spdlog::logger> &logger);
 
 /*!
  * \brief メッセージ1つを要素数2の配列としてシリアル化

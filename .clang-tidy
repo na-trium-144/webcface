@@ -10,3 +10,6 @@ Checks: >
   -performance-enum-size,
   -bugprone-unchecked-optional-access
 WarningsAsErrors: '*'
+CheckOptions:
+    - key: bugprone-empty-catch.IgnoreCatchWithKeywords
+      value: "@todo;@fixme;ignore exception"

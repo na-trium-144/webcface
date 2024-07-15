@@ -70,6 +70,17 @@ jobs:
       working-directory: ${{github.workspace}}/build
       run: ctest --output-on-failure --timeout 100
 
+    - name: Check Exported Symbol
+      if: matrix.dep == 'submodule'
+      shell: pwsh -command ". '{0}'"
+      run: |
+        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
+        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
+        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
+
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
       run: |

@@ -6,8 +6,8 @@
 #include <stdexcept>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
-#include <webcface/common/def.h>
-#include <webcface/c_wcf/def_types.h>
+#include "webcface/common/def.h"
+#include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -19,7 +19,10 @@ class Member;
 /*!
  * \brief Funcの実行ができなかった場合発生する例外
  *
- * (ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る)
+ * ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る
+ *
+ * MSVCではexceptionをexportしないほうがよいらしくC4275警告を出すが、
+ * Macではexportしないとcatchできなくなる
  *
  */
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
@@ -69,7 +72,8 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * すでにstartedに値が入っている場合は即座にcallbackが呼ばれる。
      *
      */
-    AsyncFuncResult &onStarted(std::function<void(bool)> callback);
+    AsyncFuncResult &
+    onStarted(std::function<void WEBCFACE_CALL(bool)> callback);
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
@@ -78,13 +82,14 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      *
      */
     AsyncFuncResult &
-    onResult(std::function<void(std::shared_future<ValAdaptor>)> callback);
+    onResult(std::function<void WEBCFACE_CALL(std::shared_future<ValAdaptor>)>
+                 callback);
 
     using Field::member;
     using Field::name;
 };
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os,
-                                      const AsyncFuncResult &r);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const AsyncFuncResult &r);
 
 class WEBCFACE_DLL FuncCallHandle {
     struct WEBCFACE_DLL HandleData {
@@ -105,7 +110,7 @@ class WEBCFACE_DLL FuncCallHandle {
     };
     std::shared_ptr<HandleData> handle_data_;
 
-    static std::runtime_error &invalidHandle();
+    static std::runtime_error &WEBCFACE_CALL invalidHandle();
 
   public:
     FuncCallHandle() = default;

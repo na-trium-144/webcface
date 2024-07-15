@@ -1,5 +1,5 @@
 #pragma once
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include <condition_variable>
 #include <mutex>
 #include <memory>
@@ -14,7 +14,7 @@ struct MemberData;
 
 using wsConnPtr = void *;
 
-WEBCFACE_DLL void initMagick();
+WEBCFACE_DLL void WEBCFACE_CALL initMagick();
 
 class WEBCFACE_DLL Server {
     std::atomic<bool> server_stop;
@@ -35,7 +35,7 @@ class WEBCFACE_DLL Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(int port, int level, int keep_log = 1000);
+    Server(std::uint16_t port, int level, int keep_log = 1000);
     ~Server();
     void join();
 

@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 #include "member.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -232,7 +232,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    Client &onMemberEntry(std::function<void(Member)> callback);
+    Client &onMemberEntry(std::function<void WEBCFACE_CALL(Member)> callback);
 
     /*!
      * \brief webcfaceに出力するstreambuf

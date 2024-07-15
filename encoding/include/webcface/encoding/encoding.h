@@ -5,7 +5,7 @@
 #include <mutex>
 #include <unordered_map>
 #include <unordered_set>
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 inline namespace encoding {
@@ -24,24 +24,24 @@ inline namespace encoding {
  * 出力するコンソールのコードページに合わせた設定にする必要がある
  *
  */
-WEBCFACE_DLL void usingUTF8(bool flag);
+WEBCFACE_DLL void WEBCFACE_CALL usingUTF8(bool flag);
 /*!
  * \brief webcfaceが使用するエンコーディングを取得する
  * \since ver2.0
  *
  */
-WEBCFACE_DLL bool usingUTF8();
+WEBCFACE_DLL bool WEBCFACE_CALL usingUTF8();
 
 /*!
  * \brief stringをwstringに変換する
  * \since ver2.0
  */
-WEBCFACE_DLL std::wstring toWide(std::string_view name_ref);
+WEBCFACE_DLL std::wstring WEBCFACE_CALL toWide(std::string_view name_ref);
 /*!
  * \brief wstringをstringに変換する
  * \since ver2.0
  */
-WEBCFACE_DLL std::string toNarrow(std::wstring_view name_ref);
+WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
@@ -76,9 +76,9 @@ class WEBCFACE_DLL SharedString {
     explicit SharedString(std::shared_ptr<Data> &&data)
         : data(std::move(data)) {}
 
-    static SharedString fromU8String(std::string_view u8s);
-    static SharedString encode(std::string_view s);
-    static SharedString encode(std::wstring_view ws,
+    static SharedString WEBCFACE_CALL fromU8String(std::string_view u8s);
+    static SharedString WEBCFACE_CALL encode(std::string_view s);
+    static SharedString WEBCFACE_CALL encode(std::wstring_view ws,
                                std::string_view s = std::string_view());
 
     const std::string &u8String() const;

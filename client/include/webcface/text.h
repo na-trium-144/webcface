@@ -5,7 +5,7 @@
 #include <chrono>
 #include <memory>
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "webcface/encoding/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
@@ -82,7 +82,7 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Text &onChange(std::function<void(Text)> callback);
+    Text &onChange(std::function<void WEBCFACE_CALL(Text)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -228,7 +228,8 @@ class WEBCFACE_DLL Text : protected Field {
  * \brief Textをostreamに渡すとTextの中身を表示
  *
  */
-WEBCFACE_DLL std::ostream &operator<<(std::ostream &os, const Text &data);
+WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
+                                                    const Text &data);
 
 struct WEBCFACE_DLL InputRefState {
     Text field;

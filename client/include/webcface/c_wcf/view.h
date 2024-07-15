@@ -8,11 +8,11 @@ extern "C" {
  * \since 1.7
  * \param text 表示する文字列
  */
-WEBCFACE_DLL wcfViewComponent wcfText(const char *text);
+WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfText(const char *text);
 /*!
  * \since 1.7
  */
-WEBCFACE_DLL wcfViewComponent wcfNewLine(void);
+WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfNewLine(void);
 /*!
  * \since 1.7
  * \param text 表示する文字列
@@ -20,9 +20,8 @@ WEBCFACE_DLL wcfViewComponent wcfNewLine(void);
  * またはnullptr(自分自身を表す)
  * \param on_click_field クリック時に実行するFuncの名前
  */
-WEBCFACE_DLL wcfViewComponent wcfButton(const char *text,
-                                        const char *on_click_member,
-                                        const char *on_click_field);
+WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfButton(
+    const char *text, const char *on_click_member, const char *on_click_field);
 
 /*!
  * \brief Viewを送信する
@@ -34,16 +33,17 @@ WEBCFACE_DLL wcfViewComponent wcfButton(const char *text,
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfViewSet(wcfClient *wcli, const char *field,
-                                  const wcfViewComponent *components, int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL
+wcfViewSet(wcfClient *wcli, const char *field,
+           const wcfViewComponent *components, int size);
 /*!
  * \brief Viewを送信する (wstring)
  * \since 2.0
  * \sa wcfViewSet
  */
-WEBCFACE_DLL wcfStatus wcfViewSetW(wcfClient *wcli, const wchar_t *field,
-                                   const wcfViewComponentW *components,
-                                   int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL
+wcfViewSetW(wcfClient *wcli, const wchar_t *field,
+            const wcfViewComponentW *components, int size);
 
 /*!
  * \brief Viewを受信する
@@ -57,19 +57,21 @@ WEBCFACE_DLL wcfStatus wcfViewSetW(wcfClient *wcli, const wchar_t *field,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
  *
  */
-WEBCFACE_DLL wcfStatus wcfViewGet(wcfClient *wcli, const char *member,
-                                  const char *field,
-                                  wcfViewComponent **components,
-                                  int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfViewGet(wcfClient *wcli,
+                                                const char *member,
+                                                const char *field,
+                                                wcfViewComponent **components,
+                                                int *recv_size);
 /*!
  * \brief Viewを受信する (wstring)
  * \since 2.0
  * \sa wcfViewGet
  */
-WEBCFACE_DLL wcfStatus wcfViewGetW(wcfClient *wcli, const wchar_t *member,
-                                   const wchar_t *field,
-                                   wcfViewComponentW **components,
-                                   int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfViewGetW(wcfClient *wcli,
+                                                 const wchar_t *member,
+                                                 const wchar_t *field,
+                                                 wcfViewComponentW **components,
+                                                 int *recv_size);
 
 #ifdef __cplusplus
 }

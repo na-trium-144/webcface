@@ -1,20 +1,20 @@
 #include <thread>
-#include <webcface/client.h>
-#include <webcface/value.h>
-#include <webcface/text.h>
-#include <webcface/log.h>
-#include <webcface/view.h>
-#include <webcface/func.h>
-#include <webcface/image.h>
-#include <webcface/robot_model.h>
-#include <webcface/canvas3d.h>
-#include <webcface/canvas2d.h>
-#include <webcface/common/def.h>
+#include "webcface/client.h"
+#include "webcface/value.h"
+#include "webcface/text.h"
+#include "webcface/log.h"
+#include "webcface/view.h"
+#include "webcface/func.h"
+#include "webcface/image.h"
+#include "webcface/robot_model.h"
+#include "webcface/canvas3d.h"
+#include "webcface/canvas2d.h"
+#include "webcface/common/def.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/unlock.h"
-#include <webcface/internal/logger.h>
+#include "webcface/internal/logger.h"
 #include <string>
 #include <chrono>
 #include <spdlog/sinks/stdout_color_sinks.h>
@@ -664,7 +664,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto r =
                 std::any_cast<webcface::message::Res<webcface::message::View>>(
                     obj);
-            std::lock_guard lock(this->view_store.mtx);
+            std::lock_guard lock_s(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
@@ -695,7 +695,7 @@ void internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::canvas3d + MessageKind::res: {
             auto r = std::any_cast<
                 webcface::message::Res<webcface::message::Canvas3D>>(obj);
-            std::lock_guard lock(this->canvas3d_store.mtx);
+            std::lock_guard lock_s(this->canvas3d_store.mtx);
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
@@ -726,7 +726,7 @@ void internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::canvas2d + MessageKind::res: {
             auto r = std::any_cast<
                 webcface::message::Res<webcface::message::Canvas2D>>(obj);
-            std::lock_guard lock(this->canvas2d_store.mtx);
+            std::lock_guard lock_s(this->canvas2d_store.mtx);
             auto [member, field] =
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
@@ -765,7 +765,7 @@ void internal::ClientData::onRecv(const std::string &message) {
         case MessageKind::log: {
             auto r = std::any_cast<webcface::message::Log>(obj);
             auto member = this->getMemberNameFromId(r.member_id);
-            std::lock_guard lock(this->log_store.mtx);
+            std::lock_guard lock_s(this->log_store.mtx);
             auto log_s = this->log_store.getRecv(member);
             if (!log_s) {
                 log_s = std::make_shared<std::vector<LogLineData>>();

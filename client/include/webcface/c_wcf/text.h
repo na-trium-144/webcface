@@ -13,15 +13,17 @@ extern "C" {
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfTextSet(wcfClient *wcli, const char *field,
-                                  const char *text);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSet(wcfClient *wcli,
+                                                const char *field,
+                                                const char *text);
 /*!
  * \brief 文字列を送信する(null終端, wstring)
  * \since ver2.0
  * \sa wcfTextSet
  */
-WEBCFACE_DLL wcfStatus wcfTextSetW(wcfClient *wcli, const wchar_t *field,
-                                  const wchar_t *text);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetW(wcfClient *wcli,
+                                                 const wchar_t *field,
+                                                 const wchar_t *text);
 /*!
  * \brief 文字列を送信する
  * \since ver1.7
@@ -32,15 +34,18 @@ WEBCFACE_DLL wcfStatus wcfTextSetW(wcfClient *wcli, const wchar_t *field,
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
-WEBCFACE_DLL wcfStatus wcfTextSetN(wcfClient *wcli, const char *field,
-                                   const char *text, int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetN(wcfClient *wcli,
+                                                 const char *field,
+                                                 const char *text, int size);
 /*!
  * \brief 文字列を送信する (wstring)
  * \since ver2.0
  * \sa wcfTextSetN
  */
-WEBCFACE_DLL wcfStatus wcfTextSetNW(wcfClient *wcli, const wchar_t *field,
-                                   const wchar_t *text, int size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetNW(wcfClient *wcli,
+                                                  const wchar_t *field,
+                                                  const wchar_t *text,
+                                                  int size);
 
 /*!
  * \brief 文字列を受信する
@@ -62,17 +67,20 @@ WEBCFACE_DLL wcfStatus wcfTextSetNW(wcfClient *wcli, const wchar_t *field,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
  *
  */
-WEBCFACE_DLL wcfStatus wcfTextGet(wcfClient *wcli, const char *member,
-                                  const char *field, char *text, int size,
-                                  int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGet(wcfClient *wcli,
+                                                const char *member,
+                                                const char *field, char *text,
+                                                int size, int *recv_size);
 /*!
  * \brief 文字列を受信する (wstring)
  * \since ver2.0
  * \sa wcfTextGet
  */
-WEBCFACE_DLL wcfStatus wcfTextGetW(wcfClient *wcli, const wchar_t *member,
-                                  const wchar_t *field, wchar_t *text, int size,
-                                  int *recv_size);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGetW(wcfClient *wcli,
+                                                 const wchar_t *member,
+                                                 const wchar_t *field,
+                                                 wchar_t *text, int size,
+                                                 int *recv_size);
 
 #ifdef __cplusplus
 }

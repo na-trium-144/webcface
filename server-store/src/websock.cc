@@ -2,8 +2,8 @@
 #include "webcface/server/member_data.h"
 #include "webcface/server/dir.h"
 #include "webcface/server/ip.h"
-#include <webcface/server/server.h>
-#include <webcface/common/def.h>
+#include "webcface/server/server.h"
+#include "webcface/common/def.h"
 #include "webcface/message/message.h"
 #include "webcface/server/unix_path.h"
 #include <memory>
@@ -44,8 +44,9 @@ void Server::pingThreadMain() {
             std::make_shared<std::unordered_map<unsigned int, int>>();
         store->forEach([&](auto cd) {
             if (cd->last_ping_duration) {
-                new_ping_status->emplace(cd->member_id,
-                                         cd->last_ping_duration->count());
+                new_ping_status->emplace(
+                    cd->member_id,
+                    static_cast<int>(cd->last_ping_duration->count()));
             }
         });
         store->ping_status = new_ping_status;
@@ -99,7 +100,7 @@ Server::~Server() {
 #endif
 }
 
-Server::Server([[maybe_unused]] int port, int level,
+Server::Server([[maybe_unused]] std::uint16_t port, int level,
                [[maybe_unused]] int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
@@ -122,7 +123,7 @@ Server::Server([[maybe_unused]] int port, int level,
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);
     auto crow_logger_callback =
-        [crow_logger](const char *data, unsigned long long size, int level) {
+        [crow_logger](const char *data, std::size_t size, int level) {
             crow_logger->log(convertLevel(level), std::string(data, size));
         };
 
@@ -144,7 +145,7 @@ Server::Server([[maybe_unused]] int port, int level,
         store->removeClient(conn);
     };
     auto message_callback = [this](void *conn, const char *data,
-                                   unsigned long long size) {
+                                   std::size_t size) {
         std::lock_guard lock(server_mtx);
         auto cli = store->getClient(conn);
         if (cli) {

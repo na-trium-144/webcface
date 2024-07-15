@@ -5,7 +5,7 @@
 #include <memory>
 #include <utility>
 #include <stdexcept>
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "robot_model.h"
 #include "components.h"
 
@@ -87,7 +87,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Canvas3D &onChange(std::function<void(Canvas3D)> callback);
+    Canvas3D &onChange(std::function<void WEBCFACE_CALL(Canvas3D)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

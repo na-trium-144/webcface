@@ -3,7 +3,7 @@
 #include "func_info.h"
 #include "webcface/encoding/val_adaptor.h"
 #include "func_result.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -403,7 +403,7 @@ class WEBCFACE_DLL Func : protected Field {
  *
  */
 class WEBCFACE_DLL AnonymousFunc : public Func {
-    static SharedString fieldNameTmp();
+    static SharedString WEBCFACE_CALL fieldNameTmp();
 
     std::function<void(AnonymousFunc &)> func_setter = nullptr;
     bool base_init = false;

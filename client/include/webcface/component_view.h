@@ -2,7 +2,7 @@
 #include <optional>
 #include <vector>
 #include "field.h"
-#include <webcface/common/def.h>
+#include "webcface/common/def.h"
 #include "webcface/encoding/val_adaptor.h"
 #include "component_id.h"
 #include "webcface/func.h"
@@ -121,7 +121,7 @@ class WEBCFACE_DLL ViewComponent : public IdBase<ViewComponentType> {
      * \brief AnonymousFuncとInputRefの名前を確定
      *
      */
-    ViewComponent &lockTmp(const std::weak_ptr<internal::ClientData> &data_w,
+    ViewComponent &lockTmp(const std::shared_ptr<internal::ClientData> &data,
                            const SharedString &view_name,
                            std::unordered_map<int, int> *idx_next = nullptr);
 
