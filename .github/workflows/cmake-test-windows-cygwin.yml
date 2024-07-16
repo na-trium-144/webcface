@@ -39,9 +39,6 @@ jobs:
 
     - name: Configure CMake
       shell: C:\cygwin\bin\bash.exe '{0}'
-      env:
-        CC: gcc
-        CXX: g++
       run: >
         cmake -B build
         -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
