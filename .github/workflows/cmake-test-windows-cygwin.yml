@@ -10,7 +10,6 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Debug
   SHELLOPTS: igncr
-
 jobs:
   test-windows-cygwin:
     strategy:
@@ -23,7 +22,14 @@ jobs:
           shared_flag: off
     runs-on: windows-latest
     steps:
+    # Cygwinのgawkがcrlfを処理できないので、必要 (SHELLOPTSを設定しても意味ない)
+    # それはそれとしてymlのコマンドを処理するのにSHELLOPTSも必要
+    - run: git config --global core.autocrlf input
+
     - uses: actions/checkout@v4
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+
     - uses: cygwin/cygwin-install-action@master
       with:
         platform: x86
@@ -34,9 +40,11 @@ jobs:
           make
           ninja
           pkg-config
-
-    - run: git submodule update --init
-      if: matrix.dep == 'submodule'
+        # git -> error setting certificate verify locations:  CAfile: /etc/pki/tls/certs/ca-bundle.crt CApath: none
+    
+    # cygwinの中でもconfigを設定する?
+    - run: git config --global core.autocrlf input
+      shell: C:\cygwin\bin\bash.exe '{0}'
 
     - name: Configure CMake
       shell: C:\cygwin\bin\bash.exe '{0}'
