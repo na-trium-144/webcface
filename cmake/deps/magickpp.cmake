@@ -40,13 +40,15 @@ endif()
 if(WEBCFACE_FIND_MAGICK AND CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     find_path(MAGICKPP_WIN_INCLUDE_DIR Magick++.h PATH_SUFFIXES include)
     find_program(MAGICK_COMMAND magick)
+    message(STATUS "find_path Magick++.h: ${MAGICKPP_WIN_INCLUDE_DIR}")
+    message(STATUS "find_executable magick: ${MAGICK_COMMAND}")
     if(NOT MAGICKPP_WIN_INCLUDE_DIR STREQUAL "MAGICKPP_WIN_INCLUDE_DIR-NOTFOUND" AND NOT MAGICK_COMMAND STREQUAL "MAGICK_COMMAND-NOTFOUND")
         get_filename_component(MAGICKPP_PREFIX ${MAGICKPP_WIN_INCLUDE_DIR} DIRECTORY)
-        message(STATUS "${MAGICK_COMMAND} -version")
         execute_process(
             COMMAND ${MAGICK_COMMAND} -version
             OUTPUT_VARIABLE MAGICK_OUTPUT
         )
+        message(STATUS "${MAGICK_COMMAND} -version\n${MAGICK_OUTPUT}")
         if(MAGICK_OUTPUT MATCHES "Features" AND NOT MAGICK_OUTPUT MATCHES "OpenMP")
             set(Magickpp_FOUND 1)
         else()
