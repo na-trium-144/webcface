@@ -32,6 +32,7 @@ jobs:
           gcc-g++
           cmake
           make
+          ninja
           pkg-config
 
     - run: git submodule update --init
@@ -47,13 +48,14 @@ jobs:
         -DWEBCFACE_TEST_TIMEOUT=1000
         -DWEBCFACE_SHARED=${{matrix.shared_flag}}
         -DCMAKE_INSTALL_PREFIX=./build/install
+        -GNinja
 
     - name: show cmake log
       if: failure()
       run: |
         Get-Content build\CMakeFiles\CMakeOutput.log
         Get-Content build\CMakeFiles\CMakeError.log
-      
+
     - name: Build
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: cmake --build build -t install
@@ -80,7 +82,7 @@ jobs:
       working-directory: ${{github.workspace}}/.github/test
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: >-
-        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install
+        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install -GNinja
         cmake --build build --config ${{env.BUILD_TYPE}}
 
     - name: Test building with pkg-config
