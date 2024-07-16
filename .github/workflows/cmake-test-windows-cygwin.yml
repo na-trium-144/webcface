@@ -48,6 +48,12 @@ jobs:
         -DWEBCFACE_SHARED=${{matrix.shared_flag}}
         -DCMAKE_INSTALL_PREFIX=./build/install
 
+    - name: show cmake log
+      if: failure()
+      run: |
+        Get-Content build\CMakeFiles\CMakeOutput.log
+        Get-Content build\CMakeFiles\CMakeError.log
+      
     - name: Build
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: cmake --build build -t install
