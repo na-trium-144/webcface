@@ -38,6 +38,7 @@ jobs:
       if: matrix.dep == 'submodule'
 
     - name: Configure CMake
+      shell: C:\cygwin\bin\bash.exe '{0}'
       env:
         CC: gcc
         CXX: g++
@@ -51,12 +52,14 @@ jobs:
         -DCMAKE_INSTALL_PREFIX=./build/install
 
     - name: Build
+      shell: C:\cygwin\bin\bash.exe '{0}'
       run: cmake --build build -t install
 
     - name: Test
       env:
         WEBCFACE_TRACE: 1
       working-directory: ${{github.workspace}}/build
+      shell: C:\cygwin\bin\bash.exe '{0}'
       run: ctest --output-on-failure --timeout 100
 
     - name: Check Exported Symbol
@@ -72,15 +75,17 @@ jobs:
 
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
-      run: |
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      run: >-
         cmake -B build -DCMAKE_PREFIX_PATH=../../build/install
         cmake --build build --config ${{env.BUILD_TYPE}}
 
     - name: Test building with pkg-config
       working-directory: ${{github.workspace}}/.github/test
+      shell: C:\cygwin\bin\bash.exe '{0}'
       env:
         PKG_CONFIG_PATH: ${{github.workspace}}\build\install\lib\pkgconfig
-      run: |
+      run: >-
         g++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
         gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
 
