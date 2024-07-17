@@ -108,14 +108,14 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(Value)
      *
      */
-    Member &onValueEntry(std::function<void WEBCFACE_CALL(Value)> callback);
+    Member &onValueEntry(std::function<void WEBCFACE_CALL_FP(Value)> callback);
     /*!
      * \brief textが追加された時のイベント
      *
      * コールバックの型は void(Text)
      *
      */
-    Member &onTextEntry(std::function<void WEBCFACE_CALL(Text)> callback);
+    Member &onTextEntry(std::function<void WEBCFACE_CALL_FP(Text)> callback);
     /*!
      * \brief robotModelが追加された時のイベント
      *
@@ -123,28 +123,28 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     Member &
-    onRobotModelEntry(std::function<void WEBCFACE_CALL(RobotModel)> callback);
+    onRobotModelEntry(std::function<void WEBCFACE_CALL_FP(RobotModel)> callback);
     /*!
      * \brief funcが追加された時のイベント
      *
      * コールバックの型は void(Func)
      *
      */
-    Member &onFuncEntry(std::function<void WEBCFACE_CALL(Func)> callback);
+    Member &onFuncEntry(std::function<void WEBCFACE_CALL_FP(Func)> callback);
     /*!
      * \brief imageが追加されたときのイベント
      *
      * コールバックの型は void(Image)
      *
      */
-    Member &onImageEntry(std::function<void WEBCFACE_CALL(Image)> callback);
+    Member &onImageEntry(std::function<void WEBCFACE_CALL_FP(Image)> callback);
     /*!
      * \brief viewが追加されたときのイベント
      *
      * コールバックの型は void(View)
      *
      */
-    Member &onViewEntry(std::function<void WEBCFACE_CALL(View)> callback);
+    Member &onViewEntry(std::function<void WEBCFACE_CALL_FP(View)> callback);
     /*!
      * \brief canvas3dが追加されたときのイベント
      *
@@ -152,7 +152,7 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     Member &
-    onCanvas3DEntry(std::function<void WEBCFACE_CALL(Canvas3D)> callback);
+    onCanvas3DEntry(std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback);
     /*!
      * \brief canvas2dが追加されたときのイベント
      *
@@ -160,12 +160,12 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     Member &
-    onCanvas2DEntry(std::function<void WEBCFACE_CALL(Canvas2D)> callback);
+    onCanvas2DEntry(std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback);
     /*!
      * \brief Memberがsync()したときのイベント
      * コールバックの型は void(Member)
      */
-    Member &onSync(std::function<void WEBCFACE_CALL(Member)> callback);
+    Member &onSync(std::function<void WEBCFACE_CALL_FP(Member)> callback);
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -214,7 +214,7 @@ class WEBCFACE_DLL Member : protected Field {
      *
      * \sa pingStatus()
      */
-    Member &onPing(std::function<void WEBCFACE_CALL(Member)> callback);
+    Member &onPing(std::function<void WEBCFACE_CALL_FP(Member)> callback);
 
     /*!
      * \brief Memberを比較

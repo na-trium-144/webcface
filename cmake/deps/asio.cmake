@@ -29,4 +29,8 @@ endif()
 add_library(asio INTERFACE)
 target_include_directories(asio INTERFACE $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>)
 target_compile_definitions(asio INTERFACE ASIO_DISABLE_VISIBILITY)
-# target_compile_definitions(asio INTERFACE __USE_W32_SOCKETS _WIN32_WINNT=0x0601)
+if(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN" OR CMAKE_SYSTEM_NAME STREQUAL "MSYS")
+    # for cygwin
+    # todo: curlではWIN32SOCKETを使わないので、干渉する
+    target_compile_definitions(asio INTERFACE __USE_W32_SOCKETS _WIN32_WINNT=0x0601)
+endif()

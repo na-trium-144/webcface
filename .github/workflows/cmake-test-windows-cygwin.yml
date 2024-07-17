@@ -1,0 +1,105 @@
+name: CMake Test (Windows Cygwin32)
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: []
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+  SHELLOPTS: igncr
+jobs:
+  test-windows-cygwin:
+    strategy:
+      matrix:
+        dep: ["submodule", "static"]
+        include:
+        - dep: submodule
+          shared_flag: on
+        - dep: static
+          shared_flag: off
+    runs-on: windows-latest
+    steps:
+    # Cygwinのgawkがcrlfを処理できないので、必要 (SHELLOPTSを設定しても意味ない)
+    # それはそれとしてymlのコマンドを処理するのにSHELLOPTSも必要
+    - run: git config --global core.autocrlf input
+
+    - uses: actions/checkout@v4
+    - run: git submodule update --init
+      if: matrix.dep == 'submodule'
+
+    - uses: cygwin/cygwin-install-action@master
+      with:
+        platform: x86
+        packages: >-
+          gcc-core
+          gcc-g++
+          cmake
+          make
+          ninja
+          pkg-config
+        # git -> error setting certificate verify locations:  CAfile: /etc/pki/tls/certs/ca-bundle.crt CApath: none
+    
+    # cygwinの中でもconfigを設定する?
+    - run: git config --global core.autocrlf input
+      shell: C:\cygwin\bin\bash.exe '{0}'
+
+    - name: Configure CMake
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      run: >
+        cmake -B build
+        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        -DWEBCFACE_TEST=on
+        -DWEBCFACE_EXAMPLE=on
+        -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_SERVER=0
+        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
+        -DCMAKE_INSTALL_PREFIX=./build/install
+        -GNinja
+
+    - name: show cmake log
+      if: failure()
+      run: |
+        Get-Content build\CMakeFiles\CMakeOutput.log
+        Get-Content build\CMakeFiles\CMakeError.log
+
+    - name: Build
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      run: cmake --build build -t install
+
+    - name: Test
+      env:
+        WEBCFACE_TRACE: 1
+      working-directory: ${{github.workspace}}/build
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      run: ctest --output-on-failure --timeout 100
+
+    - name: Check Exported Symbol
+      if: matrix.dep == 'submodule'
+      shell: pwsh -command ". '{0}'"
+      run: |
+        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
+        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
+        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
+        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
+        C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
+
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install -GNinja
+        cmake --build build --config ${{env.BUILD_TYPE}}
+
+    - name: Test building with pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      shell: C:\cygwin\bin\bash.exe '{0}'
+      env:
+        PKG_CONFIG_PATH: ${{github.workspace}}\build\install\lib\pkgconfig
+      run: |
+        g++ -std=c++20 test.cc $(pkg-config --cflags --libs webcface)
+        gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+

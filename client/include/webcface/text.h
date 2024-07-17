@@ -82,7 +82,7 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Text &onChange(std::function<void WEBCFACE_CALL(Text)> callback);
+    Text &onChange(std::function<void WEBCFACE_CALL_FP(Text)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

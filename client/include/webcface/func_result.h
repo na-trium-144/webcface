@@ -73,7 +73,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      *
      */
     AsyncFuncResult &
-    onStarted(std::function<void WEBCFACE_CALL(bool)> callback);
+    onStarted(std::function<void WEBCFACE_CALL_FP(bool)> callback);
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
@@ -82,7 +82,7 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      *
      */
     AsyncFuncResult &
-    onResult(std::function<void WEBCFACE_CALL(std::shared_future<ValAdaptor>)>
+    onResult(std::function<void WEBCFACE_CALL_FP(std::shared_future<ValAdaptor>)>
                  callback);
 
     using Field::member;

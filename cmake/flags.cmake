@@ -14,6 +14,8 @@ macro(init_flags)
     list(APPEND WEBCFACE_FLAGS -O3)
     list(APPEND WEBCFACE_CMAKE_PROPS "-DCMAKE_BUILD_TYPE=Release")
 
+    list(APPEND WEBCFACE_CMAKE_PROPS "-G${CMAKE_GENERATOR}")
+
     if(WEBCFACE_PIC)
         list(APPEND WEBCFACE_FLAGS -fPIC)
     endif()
