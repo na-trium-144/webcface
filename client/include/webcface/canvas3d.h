@@ -87,7 +87,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Canvas3D &onChange(std::function<void WEBCFACE_CALL(Canvas3D)> callback);
+    Canvas3D &onChange(std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

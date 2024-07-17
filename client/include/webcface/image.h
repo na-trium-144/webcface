@@ -81,7 +81,7 @@ class WEBCFACE_DLL Image : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Image &onChange(std::function<void WEBCFACE_CALL(Image)> callback);
+    Image &onChange(std::function<void WEBCFACE_CALL_FP(Image)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

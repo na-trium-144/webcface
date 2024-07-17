@@ -10,7 +10,6 @@ set(WEBCFACE_SYSTEM_ADD_VERSION 0) # add soversion to filename
 set(WEBCFACE_SYSTEM_ADD_DEBUG 0) # add debug postfix
 set(WEBCFACE_SYSTEM_WCHAR_WINDOWS 0) # wchar_t=utf16, use MultiByteToWideChar API
 set(WEBCFACE_SYSTEM_WIN32SOCKET 0) # use wsock32 and ws2_32
-set(WEBCFACE_SYSTEM_WINNT 0) # _WINNT is defined by default
 set(WEBCFACE_SYSTEM_PATH_WINDOWS 0) # use windows style path
 
 if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
@@ -28,7 +27,6 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
     set(WEBCFACE_SYSTEM_WCHAR_WINDOWS 1)
     set(WEBCFACE_SYSTEM_WIN32SOCKET 1)
     set(WEBCFACE_SYSTEM_PATH_WINDOWS 1)
-    set(WEBCFACE_SYSTEM_WINNT 1)
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
         set(WEBCFACE_SYSTEM_ADD_DEBUG 1)
     endif()
@@ -36,6 +34,7 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL "Windows")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN" OR CMAKE_SYSTEM_NAME STREQUAL "MSYS")
     set(WEBCFACE_SYSTEM_DLLEXPORT 1)
     set(WEBCFACE_SYSTEM_WCHAR_WINDOWS 1)
+    # cygwinのcurlはwin32socketではなくcygwinのsocketを使用、ws2_32をリンクするとバグる
 
 else()
     message(WARNING "System name \"${CMAKE_SYSTEM_NAME}\" is not supported yet.")

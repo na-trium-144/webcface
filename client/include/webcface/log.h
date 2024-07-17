@@ -67,7 +67,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \brief ログが追加されたときに呼び出されるコールバックを設定
      * \since ver2.0
      */
-    Log &onChange(std::function<void WEBCFACE_CALL(Log)> callback);
+    Log &onChange(std::function<void WEBCFACE_CALL_FP(Log)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0

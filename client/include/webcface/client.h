@@ -232,7 +232,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    Client &onMemberEntry(std::function<void WEBCFACE_CALL(Member)> callback);
+    Client &onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback);
 
     /*!
      * \brief webcfaceに出力するstreambuf
