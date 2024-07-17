@@ -1,5 +1,6 @@
 var NAVTREEINDEX19 =
 {
+"logger__test_8cc.html#a7bcdabec6ee4a2f66febb1026c687939":[26,0,8,14,2],
 "md_00__overview.html":[6],
 "md_00__overview.html#autotoc_md1":[6,0],
 "md_00__overview.html#autotoc_md10":[6,4,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX19 =
 "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a4c41ae0ac8cc59e0caeaa4984dd5d469":[26,0,4,0,0,0,0,41,3],
 "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe":[26,0,4,0,0,0,0,41,0],
 "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5":[26,0,4,0,0,0,0,41,18],
-"message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f":[26,0,4,0,0,0,0,41,11],
-"message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a8a5db7fcf7037d194c940c851e01ffa0":[26,0,4,0,0,0,0,41,6]
+"message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f":[26,0,4,0,0,0,0,41,11]
 };
