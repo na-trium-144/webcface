@@ -92,7 +92,7 @@ jobs:
         Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickCore" -Destination "ImageMagick\include\MagickCore"
         Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickWand" -Destination "ImageMagick\include\MagickWand"
         Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++" -Destination "ImageMagick\include\Magick++"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++.h" -Destination "ImageMagick\include\Magick++"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++.h" -Destination "ImageMagick\include"
     - name: Save ImageMagick
       if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
       id: cache-im-save
