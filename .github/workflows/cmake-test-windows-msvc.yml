@@ -9,6 +9,7 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
+  IMAGEMAGICK_CACHE: 'D:\a\webcface\ImageMagick'
 
 jobs:
   test-windows-msvc:
@@ -62,11 +63,11 @@ jobs:
       uses: actions/cache/restore@v4
       with:
         path: |
-          ImageMagick
+          ${{env.IMAGEMAGICK_CACHE}}
         key: ${{ runner.os }}-${{ hashFiles('cmake/deps/magickpp-build-msvc.cmake', '.github/workflows/cmake-test-windows-msvc.yml') }}
     - name: Add ImageMagick to Path
       if: steps.cache-im-restore.outputs.cache-hit == 'true'
-      run: echo "${{github.workspace}}\ImageMagick" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+      run: echo "${{env.IMAGEMAGICK_CACHE}}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
     - name: Configure CMake
       run: |
@@ -85,21 +86,21 @@ jobs:
     - name: Copy ImageMagick directory for cache
       if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
       run: |
-        New-Item -Name "ImageMagick" -ItemType Directory -Force
-        New-Item -Name "ImageMagick\include" -ItemType Directory -Force
-        Move-Item -Path "build\_deps\imagemagick-windows-src\Output\lib" -Destination "ImageMagick\lib"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\Output\bin\*" -Include "*.exe" -Destination "ImageMagick"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickCore" -Destination "ImageMagick\include\MagickCore"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickWand" -Destination "ImageMagick\include\MagickWand"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++" -Destination "ImageMagick\include\Magick++"
-        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++.h" -Destination "ImageMagick\include"
+        New-Item -Path "${{env.IMAGEMAGICK_CACHE}}" -ItemType Directory -Force
+        New-Item -Path "${{env.IMAGEMAGICK_CACHE}}\include" -ItemType Directory -Force
+        Move-Item -Path "build\_deps\imagemagick-windows-src\Output\lib"                          -Destination "${{env.IMAGEMAGICK_CACHE}}\lib"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\Output\bin\*"      -Include "*.exe"  -Destination "${{env.IMAGEMAGICK_CACHE}}"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickCore"              -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickCore"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\MagickWand"              -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickWand"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++"   -Destination "${{env.IMAGEMAGICK_CACHE}}\include\Magick++"
+        Move-Item -Path "build\_deps\imagemagick-windows-src\ImageMagick\Magick++\lib\Magick++.h" -Destination "${{env.IMAGEMAGICK_CACHE}}\include"
     - name: Save ImageMagick
       if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
       id: cache-im-save
       uses: actions/cache/save@v4
       with:
         path: |
-          ImageMagick
+          ${{env.IMAGEMAGICK_CACHE}}
         key: ${{ steps.cache-im-restore.outputs.cache-primary-key }}
 
     - name: Test
