@@ -273,8 +273,9 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 * Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
 * MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
-* Cygwin(64bit)やMSYS2のMSYS環境ではasioが非対応なため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。CMake時に`-DWEBCFACE_SERVER=OFF`が必要です。
-([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))
+* CygwinやMSYS2のMSYS環境ではasioが動作しない([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。CMake時に`-DWEBCFACE_SERVER=OFF`が必要です。
+	* asioはCygwin32bitでビルドできると主張しているが、32bitでもなぜかビルドできない<del>がissueを建てるのはめんどくさい</del>
+	* 仮にビルドできたとしても、curlが使用するCygwinのsocketとasioが使用するWin32のsocketが干渉して動かない気もします
 
 ### Dependencies
 * webcfaceは外部ライブラリとして

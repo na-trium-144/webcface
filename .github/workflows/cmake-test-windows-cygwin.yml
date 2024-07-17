@@ -54,6 +54,7 @@ jobs:
         -DWEBCFACE_TEST=on
         -DWEBCFACE_EXAMPLE=on
         -DWEBCFACE_TEST_TIMEOUT=1000
+        -DWEBCFACE_SERVER=0
         -DWEBCFACE_SHARED=${{matrix.shared_flag}}
         -DCMAKE_INSTALL_PREFIX=./build/install
         -GNinja
