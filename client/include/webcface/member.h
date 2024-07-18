@@ -24,6 +24,8 @@ class WEBCFACE_DLL Member : protected Field {
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
+    friend struct internal::ClientData;
+    
     /*!
      * \brief Member名
      *

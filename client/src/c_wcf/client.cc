@@ -50,12 +50,12 @@ wcfStatus wcfStart(wcfClient *wcli) {
     wcli_->start();
     return WCF_OK;
 }
-wcfStatus wcfWaitConnection(wcfClient *wcli, int interval) {
+wcfStatus wcfWaitConnection(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->waitConnection(std::chrono::microseconds(interval));
+    wcli_->waitConnection();
     return WCF_OK;
 }
 wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {
@@ -158,5 +158,40 @@ wcfStatus wcfDestroy(const void *ptr) {
         }
     }
     return WCF_BAD_HANDLE;
+}
+}
+
+template <typename CharT>
+static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
+                                int *members_num) {
+    *members_num = 0;
+    if (size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    const auto &members = wcli_->members();
+    *members_num = static_cast<int>(members.size());
+    for (std::size_t i = 0;
+         i < static_cast<std::size_t>(size) && i < members.size(); i++) {
+        if constexpr (std::is_same_v<CharT, char>) {
+            list[i] = members.at(i).name().c_str();
+        } else {
+            list[i] = members.at(i).nameW().c_str();
+        }
+    }
+    return WCF_OK;
+}
+
+extern "C" {
+wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size,
+                        int *members_num) {
+    return wcfMemberListT(wcli, list, size, members_num);
+}
+wcfStatus wcfMemberListW(wcfClient *wcli, const wchar_t **list, int size,
+                         int *members_num) {
+    return wcfMemberListT(wcli, list, size, members_num);
 }
 }

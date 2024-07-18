@@ -43,15 +43,20 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
     }
     auto vec = wcli_->member(strOrEmpty(member)).value(field).tryGetVec();
     if (vec) {
-        int copy_size = size < static_cast<int>(vec->size())
-                            ? size
-                            : static_cast<int>(vec->size());
-        std::memcpy(values, vec->data(), copy_size * sizeof(double));
-        std::memset(values + copy_size, 0, (size - copy_size) * sizeof(double));
+        if (size > 0) {
+            int copy_size = size < static_cast<int>(vec->size())
+                                ? size
+                                : static_cast<int>(vec->size());
+            std::memcpy(values, vec->data(), copy_size * sizeof(double));
+            std::memset(values + copy_size, 0,
+                        (size - copy_size) * sizeof(double));
+        }
         *recv_size = static_cast<int>(vec->size());
         return WCF_OK;
     } else {
-        std::memset(values, 0, size * sizeof(double));
+        if (size > 0) {
+            std::memset(values, 0, size * sizeof(double));
+        }
         return WCF_NOT_FOUND;
     }
 }

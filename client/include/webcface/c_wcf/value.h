@@ -90,6 +90,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetW(wcfClient *wcli,
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field valueの名前
  * \param values 受信した値を格納する配列へのポインタ
+ * (ver2.0〜:size=0ならNULLも可)
  * \param size 配列のサイズ
  * \param recv_size 実際に受信した値の個数が返る
  * \return wcliが無効ならWCF_BAD_WCLI,

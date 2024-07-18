@@ -71,15 +71,13 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  *
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
- *
- * \param wcli
- * \param interval autoRecvが無効の場合、初期化が完了するまで一定間隔ごとに
+ * * autoRecvが無効の場合、初期化が完了するまで一定間隔(100μs)ごとに
  * wcfRecv() をこのスレッドで呼び出す。
+ *
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart(), wcfAutoReconnect()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli,
-                                                       int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
 /*!
  * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
  * \since ver1.11.1
@@ -159,6 +157,35 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
+
+/*!
+ * \brief サーバーに接続されている他のmemberのリストを得る。
+ * \since ver2.0
+ *
+ * * 自分自身と、無名のmemberを除く。
+ * * sizeに指定したサイズよりmemberの数が多い場合、
+ * size分のmember名を格納する。
+ * * sizeに指定したサイズよりmemberの数が少ない場合、
+ * size分より後ろの余った部分はそのまま
+ *
+ * \param wcli
+ * \param list member名を格納するchar*の配列
+ * (size=0ならNULLも可)
+ * \param size listの要素数
+ * \param members_num 実際のmember数
+ * \return wcliが無効ならWCF_BAD_WCLI
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberList(wcfClient *wcli,
+                                                   const char **list, int size,
+                                                   int *members_num);
+/*!
+ * \brief サーバーに接続されている他のmemberのリストを得る。
+ * \since ver2.0
+ * \sa wcfMemberList
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberListW(wcfClient *wcli,
+                                                    const wchar_t **list,
+                                                    int size, int *members_num);
 
 #ifdef __cplusplus
 }

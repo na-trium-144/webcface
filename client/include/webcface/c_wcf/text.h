@@ -61,6 +61,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetNW(wcfClient *wcli,
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field textの名前
  * \param text 受信した文字列を格納するポインタ
+ * (ver2.0〜:size=0ならNULLも可)
  * \param size 配列のサイズ
  * \param recv_size 実際に受信した文字列の長さが返る
  * \return wcliが無効ならWCF_BAD_WCLI,

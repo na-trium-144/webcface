@@ -206,6 +206,10 @@ void Client::recvImpl(std::optional<std::chrono::microseconds> timeout) {
             // 少なくともintervalぶんは待機する
             data->connect_state_cond.wait_until(
                 lock, next_recv_t, [&] { return data->closing.load(); });
+        } else {
+            // timeoutがintervalよりも短い場合
+            data->connect_state_cond.wait_until(
+                lock, start_t + *timeout, [&] { return data->closing.load(); });
         }
         // 遅くともtimeout経過したらreturnする
         if (timeout) {
@@ -279,9 +283,10 @@ void internal::messageThreadMain(
 }
 
 void Client::start() { data->start(); }
-void Client::waitConnection(std::chrono::microseconds interval) {
+void Client::waitConnection() {
     data->start();
     auto next_recv = std::chrono::steady_clock::now();
+    constexpr auto interval = std::chrono::microseconds(100);
     bool first_loop = true;
     while (!data->closing.load()) {
         std::unique_lock lock(data->connect_state_m);
