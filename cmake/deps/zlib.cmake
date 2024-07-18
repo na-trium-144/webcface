@@ -1,19 +1,19 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_ZLIB "try find_package(zlib) (while building zlib)" ${WEBCFACE_FIND_LIBS})
 
-# target = zlib
+# target = webcface-zlib-linker
 unset(zlib_FOUND CACHE)
 if(WEBCFACE_FIND_ZLIB)
     pkg_check_modules(zlib QUIET zlib)
 endif()
 if(zlib_FOUND)
     list(APPEND WEBCFACE_SUMMARY "zlib: ${zlib_VERSION} found at ${zlib_PREFIX}")
-    add_library(zlib INTERFACE)
-    target_link_directories(zlib INTERFACE ${zlib_LIBRARY_DIRS})
-    target_link_libraries(zlib INTERFACE ${zlib_LIBRARIES})
+    add_library(webcface-zlib-linker INTERFACE)
+    target_link_directories(webcface-zlib-linker INTERFACE ${zlib_LIBRARY_DIRS})
+    target_link_libraries(webcface-zlib-linker INTERFACE ${zlib_LIBRARIES})
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS zlib)
+        list(APPEND WEBCFACE_EXPORTS webcface-zlib-linker)
         if(NOT WEBCFACE_SHARED)
             list(APPEND WEBCFACE_PKGCONFIG_REQUIRES zlib)
         endif()
@@ -67,15 +67,15 @@ else()
     if(NOT zlib_FOUND)
         message(FATAL_ERROR "Failed to build zlib")
     endif()
-    add_library(zlib INTERFACE)
-    target_static_link(zlib
+    add_library(webcface-zlib-linker INTERFACE)
+    target_static_link(webcface-zlib-linker
         BUILD_LIBRARY_DIRS ${zlib_STATIC_LIBRARY_DIRS}
         DEBUG_LIBRARIES ${zlib_STATIC_LIBRARIES}
         RELEASE_LIBRARIES ${zlib_STATIC_LIBRARIES}
     )
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS zlib)
+        list(APPEND WEBCFACE_EXPORTS webcface-zlib-linker)
         if(NOT WEBCFACE_SHARED)
             include(cmake/linker.cmake)
             install_prefix_libs(${zlib_PREFIX}

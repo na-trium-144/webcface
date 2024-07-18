@@ -1,7 +1,7 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_CROW "try find_package(Crow)" ${WEBCFACE_FIND_LIBS})
 
-# target = crow-linker (header only)
+# target = webcface-crow-linker (header only)
 
 if(WEBCFACE_FIND_CROW)
     find_package(Crow QUIET)
@@ -24,8 +24,8 @@ int main(){
         unset(Crow_FOUND)
     else()
         list(APPEND WEBCFACE_SUMMARY "crow: ${Crow_VERSION} found at ${Crow_DIR}")
-        add_library(crow-linker INTERFACE)
-        target_link_libraries(crow-linker INTERFACE Crow::Crow)
+        add_library(webcface-crow-linker INTERFACE)
+        target_link_libraries(webcface-crow-linker INTERFACE Crow::Crow)
     endif()
 endif()
 if(NOT Crow_FOUND)
@@ -40,9 +40,9 @@ if(NOT Crow_FOUND)
         5f5372ed80860dfcef788972bb0fd3972f715842
         CMakeLists.txt
     )
-    add_library(crow-linker INTERFACE)
-    target_include_directories(crow-linker INTERFACE $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>)
-    target_link_libraries(crow-linker INTERFACE asio)
+    add_library(webcface-crow-linker INTERFACE)
+    target_include_directories(webcface-crow-linker INTERFACE $<BUILD_INTERFACE:${crow_SOURCE_DIR}/include>)
+    target_link_libraries(webcface-crow-linker INTERFACE webcface-asio-linker)
 
     if(WEBCFACE_INSTALL)
         install(FILES

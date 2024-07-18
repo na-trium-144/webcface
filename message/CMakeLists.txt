@@ -9,6 +9,6 @@ target_compile_features(webcface-message PUBLIC cxx_std_17)
 target_link_libraries(webcface-message PUBLIC
     webcface-encoding
     msgpack-cxx
-    utf8cpp
-    spdlog-linker
+    webcface-utf8cpp-linker
+    webcface-spdlog-linker
 )

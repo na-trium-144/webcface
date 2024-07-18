@@ -55,7 +55,7 @@ endforeach()
 if(WEBCFACE_SERVER)
     foreach(TARGET image-recv image-send)
         target_link_libraries(webcface-example-${TARGET} PRIVATE
-            magickpp-linker
+            webcface-magickpp-linker
         )
     endforeach()
 endif()

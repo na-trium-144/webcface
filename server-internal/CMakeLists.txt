@@ -14,7 +14,7 @@ if(WEBCFACE_SERVER)
         src/server_ws.cc
     )
     target_include_directories(webcface-server-internal PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-    target_link_libraries(webcface-server-internal PRIVATE crow-linker)
+    target_link_libraries(webcface-server-internal PRIVATE webcface-crow-linker)
     target_compile_features(webcface-server-internal PRIVATE cxx_std_17)
 else()
     # build nothing

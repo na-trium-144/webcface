@@ -1,19 +1,19 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_WEBP "try pkg_check_modules(libwebp) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
 
-# target = libwebp
+# target = webcface-libwebp-linker
 unset(libwebp_FOUND CACHE)
 if(WEBCFACE_FIND_WEBP)
     pkg_check_modules(libwebp QUIET libwebp)
 endif()
 if(libwebp_FOUND)
     list(APPEND WEBCFACE_SUMMARY "libwebp: ${libwebp_VERSION} found at ${libwebp_PREFIX}")
-    add_library(libwebp INTERFACE)
-    target_link_directories(libwebp INTERFACE ${libwebp_LIBRARY_DIRS})
-    target_link_libraries(libwebp INTERFACE ${libwebp_LIBRARIES})
+    add_library(webcface-libwebp-linker INTERFACE)
+    target_link_directories(webcface-libwebp-linker INTERFACE ${libwebp_LIBRARY_DIRS})
+    target_link_libraries(webcface-libwebp-linker INTERFACE ${libwebp_LIBRARIES})
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libwebp)
+        list(APPEND WEBCFACE_EXPORTS webcface-libwebp-linker)
         if(NOT WEBCFACE_SHARED)
             list(APPEND WEBCFACE_PKGCONFIG_REQUIRES libwebp)
         endif()
@@ -83,8 +83,8 @@ else()
             message(FATAL_ERROR "Failed to build ${libwebp_each}")
         endif()
     endforeach()
-    add_library(libwebp INTERFACE)
-    target_static_link(libwebp
+    add_library(webcface-libwebp-linker INTERFACE)
+    target_static_link(webcface-libwebp-linker
         BUILD_LIBRARY_DIRS ${libwebp_STATIC_LIBRARY_DIRS}
         # ここでlibwebpmuxなども渡すとなぜかリンクエラーになってしまう
         DEBUG_LIBRARIES ${libwebp_STATIC_LIBRARIES}
@@ -92,7 +92,7 @@ else()
     )
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libwebp)
+        list(APPEND WEBCFACE_EXPORTS webcface-libwebp-linker)
         if(NOT WEBCFACE_SHARED)
             include(cmake/linker.cmake)
             foreach(libwebp_each IN LISTS libwebp_packages)

@@ -1,7 +1,7 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_ASIO "try find_path(asio.hpp)" ${WEBCFACE_FIND_LIBS})
 
-# target = asio (header only)
+# target = webcface-asio-linker (header only)
 
 if(WEBCFACE_FIND_ASIO)
     find_path(ASIO_INCLUDE_DIR asio.hpp)
@@ -26,11 +26,11 @@ else()
     endif()
 endif()
 
-add_library(asio INTERFACE)
-target_include_directories(asio INTERFACE $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>)
-target_compile_definitions(asio INTERFACE ASIO_DISABLE_VISIBILITY)
+add_library(webcface-asio-linker INTERFACE)
+target_include_directories(webcface-asio-linker INTERFACE $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>)
+target_compile_definitions(webcface-asio-linker INTERFACE ASIO_DISABLE_VISIBILITY)
 if(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN" OR CMAKE_SYSTEM_NAME STREQUAL "MSYS")
     # for cygwin
     # todo: curlではWIN32SOCKETを使わないので、干渉する
-    target_compile_definitions(asio INTERFACE __USE_W32_SOCKETS _WIN32_WINNT=0x0601)
+    target_compile_definitions(webcface-asio-linker INTERFACE __USE_W32_SOCKETS _WIN32_WINNT=0x0601)
 endif()

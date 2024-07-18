@@ -1,19 +1,19 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_JPEG "try pkg_check_modules(libjpeg) (while building Magick++)" ${WEBCFACE_FIND_LIBS})
 
-# target = libjpeg
+# target = webcface-libjpeg-linker
 unset(libjpeg_FOUND CACHE)
 if(WEBCFACE_FIND_JPEG)
     pkg_check_modules(libjpeg QUIET libjpeg)
 endif()
 if(libjpeg_FOUND)
     list(APPEND WEBCFACE_SUMMARY "libjpeg: ${libjpeg_VERSION} found at ${libjpeg_PREFIX}")
-    add_library(libjpeg INTERFACE)
-    target_link_directories(libjpeg INTERFACE ${libjpeg_LIBRARY_DIRS})
-    target_link_libraries(libjpeg INTERFACE ${libjpeg_LIBRARIES})
+    add_library(webcface-libjpeg-linker INTERFACE)
+    target_link_directories(webcface-libjpeg-linker INTERFACE ${libjpeg_LIBRARY_DIRS})
+    target_link_libraries(webcface-libjpeg-linker INTERFACE ${libjpeg_LIBRARIES})
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libjpeg)
+        list(APPEND WEBCFACE_EXPORTS webcface-libjpeg-linker)
         if(NOT WEBCFACE_SHARED)
             list(APPEND WEBCFACE_PKGCONFIG_REQUIRES libjpeg)
         endif()
@@ -74,15 +74,15 @@ else()
     if(NOT libjpeg_FOUND)
         message(FATAL_ERROR "Failed to build libjpeg")
     endif()
-    add_library(libjpeg INTERFACE)
-    target_static_link(libjpeg
+    add_library(webcface-libjpeg-linker INTERFACE)
+    target_static_link(webcface-libjpeg-linker
         BUILD_LIBRARY_DIRS ${libjpeg_STATIC_LIBRARY_DIRS}
         DEBUG_LIBRARIES ${libjpeg_STATIC_LIBRARIES}
         RELEASE_LIBRARIES ${libjpeg_STATIC_LIBRARIES}
     )
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libjpeg)
+        list(APPEND WEBCFACE_EXPORTS webcface-libjpeg-linker)
         if(NOT WEBCFACE_SHARED)
             include(cmake/linker.cmake)
             install_prefix_libs(${libjpeg_PREFIX}

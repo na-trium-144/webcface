@@ -128,17 +128,17 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug" OR WEBCFACE_CONFIG_ALL)
     endforeach()
 endif()
 
-add_library(magickpp-linker INTERFACE)
-target_include_directories(magickpp-linker INTERFACE
+add_library(webcface-magickpp-linker INTERFACE)
+target_include_directories(webcface-magickpp-linker INTERFACE
     $<BUILD_INTERFACE:${imagemagick-windows_SOURCE_DIR}/ImageMagick/Magick++/lib>
     $<BUILD_INTERFACE:${imagemagick-windows_SOURCE_DIR}/ImageMagick>
 )
-target_link_libraries(magickpp-linker INTERFACE ${MAGICKPP_LIBS})
-target_compile_definitions(magickpp-linker INTERFACE STATIC_MAGICK)
-target_compile_definitions(magickpp-linker INTERFACE WEBCFACE_MAGICK_VER7)
+target_link_libraries(webcface-magickpp-linker INTERFACE ${MAGICKPP_LIBS})
+target_compile_definitions(webcface-magickpp-linker INTERFACE STATIC_MAGICK)
+target_compile_definitions(webcface-magickpp-linker INTERFACE WEBCFACE_MAGICK_VER7)
 
 if(WEBCFACE_INSTALL)
-    list(APPEND WEBCFACE_EXPORTS magickpp-linker)
+    list(APPEND WEBCFACE_EXPORTS webcface-magickpp-linker)
     if(NOT WEBCFACE_SHARED)
         foreach(lib IN LISTS MAGICKPP_DB_LIBS MAGICKPP_RL_LIBS)
             install(FILES ${MAGICKPP_LIB_DIR}/${lib}
