@@ -31,6 +31,8 @@ jobs:
     - run: git submodule update --init
       if: matrix.dep == 'submodule'
 
+    - uses: seanmiddleditch/gha-setup-ninja@master
+
     # - name: vcpkg build
     #   if: matrix.dep == 'vcpkg'
     #   uses: johnwason/vcpkg-action@v5
@@ -75,7 +77,7 @@ jobs:
         Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
         Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
         Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
-        cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
+        cmake -B build -GNinja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_TEST=on -DWEBCFACE_EXAMPLE=on -DWEBCFACE_TEST_TIMEOUT=1000 -DWEBCFACE_SHARED=${{matrix.shared_flag}} -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Build
