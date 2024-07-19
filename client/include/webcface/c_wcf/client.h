@@ -186,6 +186,43 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberList(wcfClient *wcli,
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberListW(wcfClient *wcli,
                                                     const wchar_t **list,
                                                     int size, int *members_num);
+/*!
+ * \brief Memberが追加された時のイベント
+ * \since ver2.0
+ * \param wcli
+ * \param callback 実行する関数:
+ * const char* 型(追加されたMemberの名前が渡される)と void*
+ * 型の引数を1つずつ取り、何もreturnしない。
+ * \param user_data 関数に引数として渡す追加のデータ
+ * callbackが呼び出されるときに第2引数にそのまま渡される。
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberEntryEvent(
+    wcfClient *wcli, wcfEventCallback1 callback, void *user_data);
+/*!
+ * \brief Memberが追加された時のイベント (wstring)
+ * \since ver2.0
+ * \sa wcfMemberEntryEvent
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberEntryEventW(
+    wcfClient *wcli, wcfEventCallback1W callback, void *user_data);
+
+/*!
+ * \brief WebCFaceサーバーのバージョン情報を返す
+ * \since ver2.0
+ * \return サーバーのバージョンを表す文字列、またはwcliが無効な場合空文字列
+ *
+ */
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerVersion(wcfClient *wcli);
+/*!
+ * \brief WebCFaceサーバーの識別情報を返す
+ * \since ver2.0
+ * \return サーバーの識別情報を表す文字列(通常は"webcface")、
+ * またはwcliが無効な場合空文字列
+ *
+ */
+WEBCFACE_DLL const char *WEBCFACE_DLL wcfServerName(wcfClient *wcli);
 
 #ifdef __cplusplus
 }

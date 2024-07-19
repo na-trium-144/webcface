@@ -87,8 +87,8 @@ std::streambuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
 std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::wstreambuf *Client::loggerWStreamBuf() { return data->logger_buf_w.get(); }
 std::wostream &Client::loggerWOStream() { return *data->logger_os_w.get(); }
-std::string Client::serverVersion() const { return data->svr_version; }
-std::string Client::serverName() const { return data->svr_name; }
+const std::string &Client::serverVersion() const { return data->svr_version; }
+const std::string &Client::serverName() const { return data->svr_name; }
 
 void internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {

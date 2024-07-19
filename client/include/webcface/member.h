@@ -182,17 +182,17 @@ class WEBCFACE_DLL Member : protected Field {
      * pythonクライアントは"python"を返す。
      *
      */
-    std::string libName() const;
+    const std::string &libName() const;
     /*!
      * \brief このMemberが使っているWebCFaceのバージョン
      *
      */
-    std::string libVersion() const;
+    const std::string &libVersion() const;
     /*!
      * \brief このMemberのIPアドレス
      *
      */
-    std::string remoteAddr() const;
+    const std::string &remoteAddr() const;
 
     /*!
      * \brief 通信速度を調べる

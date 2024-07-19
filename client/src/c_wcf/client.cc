@@ -184,6 +184,24 @@ static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
     }
     return WCF_OK;
 }
+template <typename CharT>
+static wcfStatus
+wcfMemberEntryEventT(wcfClient *wcli,
+                     typename CharType<CharT>::CEventCallback1 callback,
+                     void *user_data) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    wcli_->onMemberEntry([callback, user_data](const Member &m) {
+        if constexpr (std::is_same_v<CharT, char>) {
+            callback(m.name().c_str(), user_data);
+        } else {
+            callback(m.nameW().c_str(), user_data);
+        }
+    });
+    return WCF_OK;
+}
 
 extern "C" {
 wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size,
@@ -193,5 +211,28 @@ wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size,
 wcfStatus wcfMemberListW(wcfClient *wcli, const wchar_t **list, int size,
                          int *members_num) {
     return wcfMemberListT(wcli, list, size, members_num);
+}
+wcfStatus wcfMemberEntryEvent(wcfClient *wcli, wcfEventCallback1 callback,
+                              void *user_data) {
+    return wcfMemberEntryEventT<char>(wcli, callback, user_data);
+}
+wcfStatus wcfMemberEntryEventW(wcfClient *wcli, wcfEventCallback1W callback,
+                               void *user_data) {
+    return wcfMemberEntryEventT<wchar_t>(wcli, callback, user_data);
+}
+
+const char *wcfServerVersion(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverVersion().c_str();
+}
+const char *wcfServerName(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverName().c_str();
 }
 }

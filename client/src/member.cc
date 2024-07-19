@@ -84,31 +84,32 @@ std::chrono::system_clock::time_point Member::syncTime() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 
-std::string Member::libName() const {
+static std::string empty;
+const std::string &Member::libName() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
     if (data->member_lib_name.count(m_id)) {
         return data->member_lib_name.at(m_id);
     } else {
-        return "";
+        return empty;
     }
 }
-std::string Member::libVersion() const {
+const std::string &Member::libVersion() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
     if (data->member_lib_ver.count(m_id)) {
         return data->member_lib_ver.at(m_id);
     } else {
-        return "";
+        return empty;
     }
 }
-std::string Member::remoteAddr() const {
+const std::string &Member::remoteAddr() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
     if (data->member_addr.count(m_id)) {
         return data->member_addr.at(m_id);
     } else {
-        return "";
+        return empty;
     }
 }
 

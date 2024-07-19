@@ -280,7 +280,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief WebCFaceサーバーのバージョン情報
      *
      */
-    std::string serverVersion() const;
+    const std::string &serverVersion() const;
     /*!
      * \brief WebCFaceサーバーの識別情報
      *
@@ -288,7 +288,7 @@ class WEBCFACE_DLL Client : public Member {
      * \sa serverVersion()
      *
      */
-    std::string serverName() const;
+    const std::string &serverName() const;
 };
 
 WEBCFACE_NS_END

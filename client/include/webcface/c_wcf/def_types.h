@@ -140,14 +140,44 @@ typedef struct wcfFuncCallHandleW {
 
 /*!
  * \brief funcにsetするコールバックの型
+ *
  */
 typedef void(WEBCFACE_CALL *wcfFuncCallback)(wcfFuncCallHandle *call_handle,
                                              void *user_data);
 /*!
  * \brief funcにsetするコールバックの型 (wstring)
+ *
  */
 typedef void(WEBCFACE_CALL *wcfFuncCallbackW)(wcfFuncCallHandleW *call_handle,
                                               void *user_data);
+/*!
+ * \brief イベントに登録する、引数1つ(+voidポインタ)を取るコールバックの型
+ *
+ */
+typedef void(WEBCFACE_CALL *wcfEventCallback1)(const char *member,
+                                               void *user_data);
+/*!
+ * \brief イベントに登録する、引数1つ(+voidポインタ)を取るコールバックの型
+ * (wstring)
+ *
+ */
+typedef void(WEBCFACE_CALL *wcfEventCallback1W)(const wchar_t *member,
+                                                void *user_data);
+/*!
+ * \brief イベントに登録する、引数2つ(+voidポインタ)を取るコールバックの型
+ *
+ */
+typedef void(WEBCFACE_CALL *wcfEventCallback2)(const char *member,
+                                               const char *field,
+                                               void *user_data);
+/*!
+ * \brief イベントに登録する、引数2つ(+voidポインタ)を取るコールバックの型
+ * (wstring)
+ *
+ */
+typedef void(WEBCFACE_CALL *wcfEventCallback2W)(const wchar_t *member,
+                                                const wchar_t *field,
+                                                void *user_data);
 
 #define WCF_VIEW_TEXT 0
 #define WCF_VIEW_NEW_LINE 1
