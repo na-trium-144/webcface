@@ -41,10 +41,10 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
             const typename CharType<CharT>::CComponent *components, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto v = wcli_->view(field);
     v.init();
@@ -73,7 +73,7 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
         });
     }
     v.sync();
-    return WCF_OK;
+    return wcfOk;
 }
 
 template <typename CharT>
@@ -83,10 +83,10 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto vc = wcli_->member(strOrEmpty(member)).view(field).tryGet();
     if (vc) {
@@ -104,9 +104,9 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
             }
             *components = vcc_p;
         }
-        return WCF_OK;
+        return wcfOk;
     } else {
-        return WCF_NOT_FOUND;
+        return wcfNotFound;
     }
 }
 

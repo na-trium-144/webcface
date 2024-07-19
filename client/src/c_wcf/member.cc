@@ -9,11 +9,11 @@ static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
                                const CharT **list, int size, int *field_num) {
     *field_num = 0;
     if (size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     std::vector<V> fields;
     if constexpr (std::is_same_v<V, Value>) {
@@ -34,7 +34,7 @@ static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
             list[i] = fields.at(i).nameW().c_str();
         }
     }
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename V, typename CharT>
 static wcfStatus
@@ -43,7 +43,7 @@ wcfEntryEventT(wcfClient *wcli, const CharT *member,
                void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     auto cb = [callback, user_data](const V &m) {
         if constexpr (std::is_same_v<CharT, char>) {
@@ -61,7 +61,7 @@ wcfEntryEventT(wcfClient *wcli, const CharT *member,
     } else if constexpr (std::is_same_v<V, Func>) {
         wcli_->member(strOrEmpty(member)).onFuncEntry(cb);
     }
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus
@@ -70,7 +70,7 @@ wcfSyncEventT(wcfClient *wcli, const CharT *member,
               void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     wcli_->member(strOrEmpty(member))
         .onSync([callback, user_data](const Member &m) {
@@ -80,7 +80,7 @@ wcfSyncEventT(wcfClient *wcli, const CharT *member,
                 callback(m.nameW().c_str(), user_data);
             }
         });
-    return WCF_OK;
+    return wcfOk;
 }
 
 extern "C" {
@@ -160,6 +160,24 @@ wcfStatus wcfMemberSyncEventW(wcfClient *wcli, const wchar_t *member,
     return wcfSyncEventT(wcli, member, callback, user_data);
 }
 
+unsigned long long wcfMemberSyncTime(wcfClient *wcli, const char *member) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return 0;
+    }
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               wcli_->member(strOrEmpty(member)).syncTime().time_since_epoch())
+        .count();
+}
+unsigned long long wcfMemberSyncTimeW(wcfClient *wcli, const wchar_t *member) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return 0;
+    }
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               wcli_->member(strOrEmpty(member)).syncTime().time_since_epoch())
+        .count();
+}
 const char *wcfMemberLibName(wcfClient *wcli, const char *member) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {

@@ -7,26 +7,26 @@ static wcfStatus wcfValueSetT(wcfClient *wcli, const CharT *field,
                               double value) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     wcli_->value(field).set(value);
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfValueSetVecDT(wcfClient *wcli, const CharT *field,
                                   const double *value, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     wcli_->value(field).set(std::vector<double>(value, value + size));
-    return WCF_OK;
+    return wcfOk;
 }
 
 template <typename CharT>
@@ -36,10 +36,10 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto vec = wcli_->member(strOrEmpty(member)).value(field).tryGetVec();
     if (vec) {
@@ -52,12 +52,12 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
                         (size - copy_size) * sizeof(double));
         }
         *recv_size = static_cast<int>(vec->size());
-        return WCF_OK;
+        return wcfOk;
     } else {
         if (size > 0) {
             std::memset(values, 0, size * sizeof(double));
         }
-        return WCF_NOT_FOUND;
+        return wcfNotFound;
     }
 }
 template <typename CharT>
@@ -66,17 +66,17 @@ static wcfStatus wcfValueGetT(wcfClient *wcli, const CharT *member,
     *value = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto val = wcli_->member(strOrEmpty(member)).value(field).tryGet();
     if (val) {
         *value = *val;
-        return WCF_OK;
+        return wcfOk;
     } else {
-        return WCF_NOT_FOUND;
+        return wcfNotFound;
     }
 }
 

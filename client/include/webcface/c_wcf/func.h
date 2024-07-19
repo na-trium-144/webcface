@@ -44,9 +44,9 @@ WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValWS(const wchar_t *value);
  * \param args 引数の配列
  * \param arg_size 引数の個数
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
+ * \return wcliが無効ならwcfBadClient,
+ * 対象のmemberやfieldが存在しない場合 wcfNotFound,
+ * 関数で例外が発生した場合 wcfException
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -70,7 +70,7 @@ wcfFuncRunW(wcfClient *wcli, const wchar_t *member, const wchar_t *field,
  * \param args 引数の配列
  * \param arg_size 引数の個数
  * \param async_res 結果を格納する変数(wcfAsyncFuncResult*)へのポインタ
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncRunAsync(
@@ -90,10 +90,10 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncRunAsyncW(
  * \since ver1.5
  * \param async_res 関数呼び出しに対応するAsyncFuncResult
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return async_resが無効な場合 WCF_BAD_HANDLE,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION,
- * まだ結果が返ってきていない場合 WCF_NOT_RETURNED
+ * \return async_resが無効な場合 wcfBadHandle,
+ * 対象のmemberやfieldが存在しない場合 wcfNotFound,
+ * 関数で例外が発生した場合 wcfException,
+ * まだ結果が返ってきていない場合 wcfNotReturned
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -110,9 +110,9 @@ wcfFuncGetResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
  * \since ver1.5
  * \param async_res 関数呼び出しに対応するAsyncFuncResult
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * \return async_resが無効な場合 WCF_BAD_HANDLE,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
+ * \return async_resが無効な場合 wcfBadHandle,
+ * 対象のmemberやfieldが存在しない場合 wcfNotFound,
+ * 関数で例外が発生した場合 wcfException
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -146,7 +146,7 @@ wcfFuncWaitResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
  * wcfFuncCallhandle* 型と void* 型の引数を1つずつ取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第2引数にそのまま渡される。
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -193,7 +193,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncSetAsyncW(
  * \param arg_types 受け取る引数の型をwcfValTypeの配列で指定
  * \param arg_size 受け取る引数の個数
  * \param return_type 戻り値の型を指定
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncListen(wcfClient *wcli,
@@ -223,8 +223,8 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncListenW(wcfClient *wcli,
  * \param wcli Clientポインタ
  * \param field 関数名
  * \param handle handleポインタを受け取る変数
- * \return wcliが無効ならWCF_BAD_WCLI,
- * まだ関数が呼び出されていない or ListenしていないならWCF_NOT_CALLED
+ * \return wcliが無効ならwcfBadClient,
+ * まだ関数が呼び出されていない or ListenしていないならwcfNotCalled
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncFetchCall(
@@ -244,7 +244,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncFetchCallW(
  * 値を返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
  * \param value 返す値 (ver1.9〜 NULLも可)
- * \return handleが無効ならWCF_BAD_HANDLE
+ * \return handleが無効ならwcfBadHandle
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -263,7 +263,7 @@ wcfFuncRespondW(const wcfFuncCallHandleW *handle, const wcfMultiValW *value);
  * エラーメッセージを返すとhandleはdeleteされ使えなくなる
  * \param handle 関数呼び出しに対応するhandle
  * \param message 返すメッセージ (空文字列の代わりにNULLも可)
- * \return handleが無効ならWCF_BAD_HANDLE
+ * \return handleが無効ならwcfBadHandle
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL

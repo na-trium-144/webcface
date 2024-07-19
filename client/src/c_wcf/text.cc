@@ -7,26 +7,26 @@ static wcfStatus wcfTextSetT(wcfClient *wcli, const CharT *field,
                              const CharT *text) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     wcli_->text(field).set(strOrEmpty(text));
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfTextSetNT(wcfClient *wcli, const CharT *field,
                               const CharT *text, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     wcli_->text(field).set(std::basic_string_view<CharT>(text, size));
-    return WCF_OK;
+    return wcfOk;
 }
 
 template <typename CharT>
@@ -35,14 +35,14 @@ static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
                              int *recv_size) {
     *recv_size = 0;
     if (!field || size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     if (size > 0) {
         text[0] = 0;
     }
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     auto str = wcli_->member(strOrEmpty(member)).text(field).tryGetV();
     if (str) {
@@ -55,9 +55,9 @@ static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
             text[copy_size] = 0;
         }
         *recv_size = static_cast<int>(str2.size());
-        return WCF_OK;
+        return wcfOk;
     } else {
-        return WCF_NOT_FOUND;
+        return wcfNotFound;
     }
 }
 extern "C" {

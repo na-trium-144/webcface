@@ -30,7 +30,7 @@ WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfButton(
  * \param field viewの名前
  * \param components 送信するデータの配列へのポインタ
  * \param size 配列の要素数
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -53,8 +53,8 @@ wcfViewSetW(wcfClient *wcli, const wchar_t *field,
  * \param field viewの名前
  * \param components 受信したデータを格納する配列へのポインタが返る
  * \param recv_size 実際に受信した要素数が返る
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
+ * \return wcliが無効ならwcfBadClient,
+ * 対象のmemberやfieldが存在しない場合 wcfNotFound
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfViewGet(wcfClient *wcli,

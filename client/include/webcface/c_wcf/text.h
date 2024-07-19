@@ -10,7 +10,7 @@ extern "C" {
  * \param wcli Clientポインタ
  * \param field textの名前
  * \param text 送信する文字列(null終端)
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSet(wcfClient *wcli,
@@ -31,7 +31,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetW(wcfClient *wcli,
  * \param field textの名前
  * \param text 送信する文字列
  * \param size 送信する文字列の長さ
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetN(wcfClient *wcli,
@@ -54,7 +54,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetNW(wcfClient *wcli,
  * sizeに指定したサイズより実際に受信した文字列の長さのほうが大きいか同じ場合、
  * textには(size-1)文字+null終端を格納しrecv_sizeには本来の長さを返す
  *
- * size > recv_size の場合、またはWCF_NOT_FOUNDの場合、
+ * size > recv_size の場合、またはwcfNotFoundの場合、
  * null終端より後ろの余った範囲はそのまま
  *
  * \param wcli Clientポインタ
@@ -64,8 +64,8 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetNW(wcfClient *wcli,
  * (ver2.0〜:size=0ならNULLも可)
  * \param size 配列のサイズ
  * \param recv_size 実際に受信した文字列の長さが返る
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
+ * \return wcliが無効ならwcfBadClient,
+ * 対象のmemberやfieldが存在しない場合 wcfNotFound
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGet(wcfClient *wcli,

@@ -8,25 +8,27 @@ extern "C" {
 #endif
 
 typedef void wcfClient;
-typedef int wcfStatus;
-typedef int wcfValType;
 typedef void wcfAsyncFuncResult;
 
-#define WCF_OK 0
-#define WCF_BAD_WCLI 1
-#define WCF_BAD_HANDLE 2
-#define WCF_INVALID_ARGUMENT 3
-#define WCF_NOT_FOUND 4
-#define WCF_EXCEPTION 5
-#define WCF_NOT_CALLED 6
-#define WCF_NOT_RETURNED 7
+typedef enum wcfStatus {
+    wcfOk = 0,
+    wcfBadClient = 1,
+    wcfBadHandle = 2,
+    wcfInvalidArgument = 3,
+    wcfNotFound = 4,
+    wcfException = 5,
+    wcfNotCalled = 6,
+    wcfNotReturned = 7,
+    wcfNotReceived = 8,
+} wcfStatus;
 
-#define WCF_VAL_NONE 0
-#define WCF_VAL_STRING 1
-#define WCF_VAL_BOOL 2
-#define WCF_VAL_INT 3
-#define WCF_VAL_FLOAT 4
-#define WCF_VAL_DOUBLE 4
+typedef enum wcfValType {
+    wcfValNone = 0,
+    wcfValString = 1,
+    wcfValBool = 2,
+    wcfValInt = 3,
+    wcfValDouble = 4,
+} wcfValType;
 
 /*!
  * \brief 数値と文字列をまとめて扱うためのstruct
@@ -179,24 +181,28 @@ typedef void(WEBCFACE_CALL *wcfEventCallback2W)(const wchar_t *member,
                                                 const wchar_t *field,
                                                 void *user_data);
 
-#define WCF_VIEW_TEXT 0
-#define WCF_VIEW_NEW_LINE 1
-#define WCF_VIEW_BUTTON 2
+typedef enum wcfViewComponentType {
+    wcfViewText = 0,
+    wcfViewNewLine = 1,
+    wcfViewButton = 2,
+} wcfViewComponentType;
 
-#define WCF_COLOR_INHERIT 0
-#define WCF_COLOR_BLACK 1
-#define WCF_COLOR_WHITE 2
-#define WCF_COLOR_GRAY 4
-#define WCF_COLOR_RED 8
-#define WCF_COLOR_ORANGE 9
-#define WCF_COLOR_YELLOW 11
-#define WCF_COLOR_GREEN 13
-#define WCF_COLOR_TEAL 15
-#define WCF_COLOR_CYAN 16
-#define WCF_COLOR_BLUE 18
-#define WCF_COLOR_INDIGO 19
-#define WCF_COLOR_PURPLE 21
-#define WCF_COLOR_PINK 23
+typedef enum wcfColor {
+    wcfColorInherit = 0,
+    wcfColorBlack = 1,
+    wcfColorWhite = 2,
+    wcfColorGray = 4,
+    wcfColorRed = 8,
+    wcfColorOrange = 9,
+    wcfColorYellow = 11,
+    wcfColorGreen = 13,
+    wcfColorTeal = 15,
+    wcfColorCyan = 16,
+    wcfColorBlue = 18,
+    wcfColorIndigo = 19,
+    wcfColorPurple = 21,
+    wcfColorPink = 23,
+} wcfColor;
 
 /*!
  * \brief Viewの要素を表すstruct
@@ -207,7 +213,7 @@ typedef struct wcfViewComponent {
      * \brief Componentの種類
      *
      */
-    int type;
+    wcfViewComponentType type;
     /*!
      * \brief 表示する文字列 (空の場合nullptr)
      *
@@ -227,12 +233,12 @@ typedef struct wcfViewComponent {
      * \brief テキストの色
      *
      */
-    int text_color;
+    wcfColor text_color;
     /*!
      * \brief 背景の色
      *
      */
-    int bg_color;
+    wcfColor bg_color;
     /*!
      * \brief inputの最小値 (未設定 = -DBL_MAX)
      * \since ver2.0
@@ -266,12 +272,12 @@ typedef struct wcfViewComponent {
  * \sa wcfViewComponent
  */
 typedef struct wcfViewComponentW {
-    int type;
+    wcfViewComponentType type;
     const wchar_t *text;
     const wchar_t *on_click_member, *on_click_field;
     const wchar_t *text_ref_member, *text_ref_field;
-    int text_color;
-    int bg_color;
+    wcfColor text_color;
+    wcfColor bg_color;
     double min;
     double max;
     double step;

@@ -22,26 +22,26 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
             typename CharType<CharT>::CVal **result) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || arg_size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     try {
         *result =
             resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
                                     .func(field)
                                     .run(argsFromCVal<CharT>(args, arg_size)));
-        return WCF_OK;
+        return wcfOk;
     } catch (const FuncNotFound &e) {
         *result = resultToCVal<CharT>(ValAdaptor(e.what()));
-        return WCF_NOT_FOUND;
+        return wcfNotFound;
     } catch (const std::exception &e) {
         *result = resultToCVal<CharT>(ValAdaptor(e.what()));
-        return WCF_EXCEPTION;
+        return wcfException;
     } catch (...) {
         *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
-        return WCF_EXCEPTION;
+        return wcfException;
     }
 }
 template <typename CharT>
@@ -51,10 +51,10 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
                  wcfAsyncFuncResult **async_res) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || arg_size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     AsyncFuncResult *a_res =
         new AsyncFuncResult(wcli_->member(strOrEmpty(member))
@@ -62,7 +62,7 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
                                 .runAsync(argsFromCVal<CharT>(args, arg_size)));
     func_result_list.push_back(a_res);
     *async_res = a_res;
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
@@ -70,25 +70,25 @@ static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
                                    bool non_block) {
     auto res = getAsyncFuncResult(async_res);
     if (!res) {
-        return WCF_BAD_HANDLE;
+        return wcfBadHandle;
     }
     if (non_block && res->result.wait_for(std::chrono::milliseconds(0)) !=
                          std::future_status::ready) {
-        return WCF_NOT_RETURNED;
+        return wcfNotReturned;
     }
     int status;
     try {
         *result = resultToCVal<CharT>(res->result.get());
-        status = WCF_OK;
+        status = wcfOk;
     } catch (const FuncNotFound &e) {
         *result = resultToCVal<CharT>(ValAdaptor(e.what()));
-        status = WCF_NOT_FOUND;
+        status = wcfNotFound;
     } catch (const std::exception &e) {
         *result = resultToCVal<CharT>(ValAdaptor(e.what()));
-        status = WCF_EXCEPTION;
+        status = wcfException;
     } catch (...) {
         *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
-        status = WCF_EXCEPTION;
+        status = wcfException;
     }
     func_result_list.erase(
         std::find(func_result_list.begin(), func_result_list.end(), res));
@@ -101,7 +101,7 @@ wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
                           const typename CharType<CharT>::CVal *value) {
     auto it = CharType<CharT>::fetchedHandles().find(handle);
     if (it == CharType<CharT>::fetchedHandles().end()) {
-        return WCF_BAD_HANDLE;
+        return wcfBadHandle;
     }
     if (value) {
         it->second.respond(fromCVal(*value));
@@ -110,19 +110,19 @@ wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
     }
     CharType<CharT>::fetchedHandles().erase(it);
     delete handle;
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfFuncRejectT(const typename CharType<CharT>::CHandle *handle,
                                 const CharT *message) {
     auto it = CharType<CharT>::fetchedHandles().find(handle);
     if (it == CharType<CharT>::fetchedHandles().end()) {
-        return WCF_BAD_HANDLE;
+        return wcfBadHandle;
     }
     it->second.reject(strOrEmpty(message));
     CharType<CharT>::fetchedHandles().erase(it);
     delete handle;
-    return WCF_OK;
+    return wcfOk;
 }
 
 template <typename CharT>
@@ -132,10 +132,10 @@ wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
             typename CharType<CharT>::CCallback callback, void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || arg_size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     std::vector<Arg> args(arg_size);
     for (int i = 0; i < arg_size; i++) {
@@ -146,7 +146,7 @@ wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
                                auto whp = createHandle<CharT>(handle);
                                callback(whp, user_data);
                            });
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
@@ -156,10 +156,10 @@ static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
                                   void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || arg_size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     std::vector<Arg> args(arg_size);
     for (int i = 0; i < arg_size; i++) {
@@ -171,7 +171,7 @@ static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
             auto whp = createHandle<CharT>(handle);
             callback(whp, user_data);
         });
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
@@ -179,10 +179,10 @@ static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
                                 int return_type) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field || arg_size < 0) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     std::vector<Arg> args(arg_size);
     for (int i = 0; i < arg_size; i++) {
@@ -192,24 +192,24 @@ static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
         .setArgs(args)
         .setReturnType(static_cast<ValType>(return_type))
         .listen();
-    return WCF_OK;
+    return wcfOk;
 }
 template <typename CharT>
 static wcfStatus wcfFuncFetchCallT(wcfClient *wcli, const CharT *field,
                                    typename CharType<CharT>::CHandle **handle) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return WCF_BAD_WCLI;
+        return wcfBadClient;
     }
     if (!field) {
-        return WCF_INVALID_ARGUMENT;
+        return wcfInvalidArgument;
     }
     auto h = wcli_->funcListener(field).fetchCall();
     if (h) {
         *handle = createHandle<CharT>(*h);
-        return WCF_OK;
+        return wcfOk;
     } else {
-        return WCF_NOT_CALLED;
+        return wcfNotCalled;
     }
 }
 

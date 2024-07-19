@@ -150,16 +150,16 @@ Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするととも
     char text[6];
     int size;
     int ret = wcfTextGet(wcli, "a", "hoge", text, 6, &size);
-    // ex.) ret = WCF_NOT_FOUND
+    // ex.) ret = wcfNotFound
 
     // few moments later,
     ret = wcfTextGet(wcli, "a", "hoge", text, 6, &size);
-    // ex.) ret = WCF_OK, text = "hello\0", size = 5
+    // ex.) ret = wcfOk, text = "hello\0", size = 5
     ```
     sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。
     文字列がバッファの長さを超える場合は、(バッファのサイズ - 1) の文字列とnullが格納されます。
 
-    初回の呼び出しでは`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
+    初回の呼び出しでは`wcfNotFound`を返し、別スレッドでリクエストが送信されます。
 
     \note member名に空文字列またはNULLを指定すると自分自身を指します。
 

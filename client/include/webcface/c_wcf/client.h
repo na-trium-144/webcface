@@ -54,14 +54,14 @@ WEBCFACE_DLL int WEBCFACE_CALL wcfIsConnected(wcfClient *wcli);
 /*!
  * \brief クライアントを閉じる
  * \since ver1.5
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfClose(wcfClient *wcli);
 /*!
  * \brief サーバーへの接続を別スレッドで開始する。
  * \since ver1.5
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  * \sa wcfWaitConnection(), wcfAutoReconnect()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
@@ -74,7 +74,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  * * autoRecvが無効の場合、初期化が完了するまで一定間隔(100μs)ごとに
  * wcfRecv() をこのスレッドで呼び出す。
  *
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  * \sa wcfStart(), wcfAutoReconnect()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
@@ -83,7 +83,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
  * \since ver1.11.1
  * \param wcli
  * \param enabled 0以外にすると有効、0にすると無効になる。デフォルトは有効
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  * \sa wcfStart()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
@@ -103,7 +103,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
  *
  * \param wcli
  * \param timeout (μs単位)
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  * \sa wcfWaitRecv(), wcfAutoRecv()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
@@ -113,7 +113,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
  *
  * * wcfRecv()と同じだが、何か受信するまで無制限に待機する
  *
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  * \sa wcfRecv(), wcfAutoRecv()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecv(wcfClient *wcli);
@@ -143,7 +143,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli, int interval);
  *
  * サーバーに接続していない場合、wcfStart()を呼び出す。
  *
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
@@ -153,7 +153,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
  * \since ver1.7
  * \param ptr データを格納したポインタ
  * \return ptrが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult, wcfViewGet
- * で取得したものでない場合WCF_BAD_HANDLE
+ * で取得したものでない場合wcfBadHandle
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
@@ -173,7 +173,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
  * (size=0ならNULLも可)
  * \param size listの要素数
  * \param members_num 実際のmember数
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberList(wcfClient *wcli,
                                                    const char **list, int size,
@@ -195,7 +195,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberListW(wcfClient *wcli,
  * 型の引数を1つずつ取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第2引数にそのまま渡される。
- * \return wcliが無効ならWCF_BAD_WCLI
+ * \return wcliが無効ならwcfBadClient
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberEntryEvent(
