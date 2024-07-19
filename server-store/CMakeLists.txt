@@ -16,11 +16,11 @@ target_link_libraries(webcface-server-store PUBLIC
     webcface-message
     webcface-encoding
     webcface-std-filesystem
-    spdlog-linker
+    webcface-spdlog-linker
 )
 target_link_libraries(webcface-server-store PRIVATE
     webcface-server-internal
-    magickpp-linker
+    webcface-magickpp-linker
 )
 if(WEBCFACE_SERVER)
     target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_SERVER)

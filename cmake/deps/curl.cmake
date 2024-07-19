@@ -1,7 +1,7 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_CURL "try find_package(CURL)" ${WEBCFACE_FIND_LIBS})
 
-# target = libcurl-linker
+# target = webcface-libcurl-linker
 
 if(WEBCFACE_FIND_CURL)
     find_package(CURL QUIET)
@@ -27,11 +27,11 @@ endif()
 if(CURL_FOUND)
     list(APPEND WEBCFACE_SUMMARY "curl: ${CURL_VERSION_STRING} found at ${PC_CURL_LIBDIR}")
     set(libcurl CURL::libcurl)
-    add_library(libcurl-linker INTERFACE)
-    target_link_libraries(libcurl-linker INTERFACE CURL::libcurl)
+    add_library(webcface-libcurl-linker INTERFACE)
+    target_link_libraries(webcface-libcurl-linker INTERFACE CURL::libcurl)
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libcurl-linker)
+        list(APPEND WEBCFACE_EXPORTS webcface-libcurl-linker)
         set(CURL_INSTALLED 1)
     endif()
 
@@ -87,22 +87,22 @@ else()
     )
 
     include(cmake/linker.cmake)
-    add_library(libcurl-linker INTERFACE)
-    target_include_directories(libcurl-linker INTERFACE
+    add_library(webcface-libcurl-linker INTERFACE)
+    target_include_directories(webcface-libcurl-linker INTERFACE
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_INCLUDE_DIRECTORIES>>
     )
-    target_compile_definitions(libcurl-linker INTERFACE
+    target_compile_definitions(webcface-libcurl-linker INTERFACE
         $<BUILD_INTERFACE:$<TARGET_PROPERTY:libcurl_static,INTERFACE_COMPILE_DEFINITIONS>>
     )
     if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        target_static_link(libcurl-linker
+        target_static_link(webcface-libcurl-linker
             BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
             INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
             DEBUG_LIBRARIES libcurl-d.lib
             RELEASE_LIBRARIES libcurl.lib
         )
     else()
-        target_static_link(libcurl-linker
+        target_static_link(webcface-libcurl-linker
             BUILD_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:libcurl_static>
             INSTALL_LIBRARY_DIRS $<TARGET_LINKER_FILE_DIR:webcface::libcurl_static>
             DEBUG_LIBRARIES curl-d
@@ -112,18 +112,18 @@ else()
     get_target_property(libcurl_link_libraries libcurl_static INTERFACE_LINK_LIBRARIES)
     if(NOT libcurl_link_libraries STREQUAL "libcurl_link_libraries-NOTFOUND")
         if(WEBCFACE_SHARED)
-            target_link_libraries(libcurl-linker INTERFACE $<BUILD_INTERFACE:${libcurl_link_libraries}>)
+            target_link_libraries(webcface-libcurl-linker INTERFACE $<BUILD_INTERFACE:${libcurl_link_libraries}>)
         else()
-            target_link_libraries(libcurl-linker INTERFACE ${libcurl_link_libraries})
+            target_link_libraries(webcface-libcurl-linker INTERFACE ${libcurl_link_libraries})
         endif()
     endif()
     if(WEBCFACE_SYSTEM_WIN32SOCKET)
-        target_link_libraries(libcurl-linker INTERFACE ws2_32 wsock32)
+        target_link_libraries(webcface-libcurl-linker INTERFACE ws2_32 wsock32)
     endif()
-    add_dependencies(libcurl-linker libcurl_static)
+    add_dependencies(webcface-libcurl-linker libcurl_static)
 
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS libcurl-linker)
+        list(APPEND WEBCFACE_EXPORTS webcface-libcurl-linker)
         set(CURL_INSTALLED 0)
         # licenseファイルはリポジトリ内にないしバイナリ配布に必須ではないのでスキップ
         if(NOT WEBCFACE_SHARED)

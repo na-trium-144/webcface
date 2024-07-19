@@ -1,7 +1,7 @@
 include(cmake/fetch.cmake)
 option(WEBCFACE_FIND_UTF8CPP "try find_path(utf8.h)" ${WEBCFACE_FIND_LIBS})
 
-# target = utf8cpp (header only)
+# target = webcface-utf8cpp-linker (header only)
 
 if(WEBCFACE_FIND_UTF8CPP)
     find_path(UTF8CPP_INCLUDE_DIR utf8.h PATH_SUFFIXES utf8cpp)
@@ -26,5 +26,5 @@ else()
     endif()
 endif()
 
-add_library(utf8cpp INTERFACE)
-target_include_directories(utf8cpp INTERFACE $<BUILD_INTERFACE:${UTF8CPP_INCLUDE_DIR}>)
+add_library(webcface-utf8cpp-linker INTERFACE)
+target_include_directories(webcface-utf8cpp-linker INTERFACE $<BUILD_INTERFACE:${UTF8CPP_INCLUDE_DIR}>)
