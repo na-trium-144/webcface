@@ -96,11 +96,13 @@ TEST_F(ServerTest, sync) {
         EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         EXPECT_EQ(obj.member_id, 1);
+        EXPECT_FALSE(obj.hostname.empty());
     });
     dummy_c2->waitRecv<message::SyncInitEnd>([&](const auto &obj) {
         EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         EXPECT_EQ(obj.member_id, 2);
+        EXPECT_FALSE(obj.hostname.empty());
     });
     dummy_c2->recv<message::SyncInit>(
         [&](auto) { ADD_FAILURE() << "should not receive syncinit"; },
@@ -112,6 +114,7 @@ TEST_F(ServerTest, sync) {
         EXPECT_EQ(obj.svr_name, WEBCFACE_SERVER_NAME);
         EXPECT_EQ(obj.ver, WEBCFACE_VERSION);
         EXPECT_EQ(obj.member_id, 3);
+        EXPECT_FALSE(obj.hostname.empty());
     });
     dummy_c3->recv<message::Entry<message::Text>>(
         [&](const auto &obj) {

@@ -381,16 +381,37 @@ closeしたあと再度start()を呼んで再接続することはできませ�
 
 ## サーバーの情報
 
+### serverVersion, serverName
+
+* serverVersion でサーバーのバージョンを取得できます。
+* serverName は現在は`"webcface"`という文字列しか返しません。
+(今後webcface-serverを別言語で実装したりこれと同等の機能をもった別のプログラムを作ることがあったら判別できるようにするためのものです <del>そんなことあるのか?</del>)
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    `wcli.serverVersion()`, `wcli.serverName()` でサーバーの情報を取得できます。
+    `wcli.serverVersion()`, `wcli.serverName()` で取得できます。
 - <b class="tab-title">JavaScript</b>
-    `wcli.serverVersion`, `wcli.serverName` でサーバーの情報を取得できます。
+    `wcli.serverVersion`, `wcli.serverName` で取得できます。
 - <b class="tab-title">Python</b>
-    `wcli.server_version`, `wcli.server_name` でサーバーの情報を取得できます。
+    `wcli.server_version`, `wcli.server_name` で取得できます。
     
+</div>
+
+### serverHostName
+
+サーバーを起動しているPCのホスト名を取得できます。
+WebUI ver1.7 以降ではWebUIのページタイトルにも表示されています。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.0</span>
+    `wcli.serverHostName()` で取得できます。
+- <b class="tab-title">JavaScript</b>
+    \since <span class="since-js">1.7</span>
+    `wcli.serverHostName` で取得できます。
+
 </div>
 
 \warning
