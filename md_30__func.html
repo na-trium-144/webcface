@@ -142,20 +142,20 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md117">関数の登録</a><ul><li class="level2"><a href="#autotoc_md118">引数と戻り値型</a></li>
-<li class="level2"><a href="#autotoc_md119">関数をWebUIから隠す</a></li>
+<ul><li class="level1"><a href="#autotoc_md119">関数の登録</a><ul><li class="level2"><a href="#autotoc_md120">引数と戻り値型</a></li>
+<li class="level2"><a href="#autotoc_md121">関数をWebUIから隠す</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md120">FuncListener</a></li>
-<li class="level1"><a href="#autotoc_md121">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md122">Entry</a></li>
+<li class="level1"><a href="#autotoc_md122">FuncListener</a></li>
+<li class="level1"><a href="#autotoc_md123">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md124">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md123">関数の実行</a><ul><li class="level2"><a href="#autotoc_md124">runAsync</a></li>
+<li class="level1"><a href="#autotoc_md125">関数の実行</a><ul><li class="level2"><a href="#autotoc_md126">runAsync</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md116"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md118"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a> (<code><a class="el" href="func_8h.html">webcface/func.h</a></code>)</li>
@@ -165,7 +165,7 @@ $(document).ready(function(){initNavTree('md_30__func.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md117"></a>
+<h1><a class="anchor" id="autotoc_md119"></a>
 関数の登録</h1>
 <p>Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
 <dl class="section note"><dt>Note</dt><dd>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</dd></dl>
@@ -266,7 +266,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md118"></a>
+<h2><a class="anchor" id="autotoc_md120"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Func::setArgs() で引数名などの情報や、引数に設定する条件をセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -291,7 +291,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md119"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md121"></a>
 関数をWebUIから隠す</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span></dd></dl>
 <p>関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、 他のMemberやWebUIから関数の存在を隠すことができます。 (Valueなど他のデータ型についても同様です。)</p>
@@ -310,7 +310,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div> </details>
-<h1><a class="anchor" id="autotoc_md120"></a>
+<h1><a class="anchor" id="autotoc_md122"></a>
 FuncListener</h1>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -338,17 +338,17 @@ FuncListener</h1>
 </div><!-- fragment --><p> でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります) (<code>wcfFuncReject(handle, NULL);</code> も可)</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md121"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md123"></a>
 関数の情報の取得</h1>
 <p>Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。</p>
 <p>他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
-<h2><a class="anchor" id="autotoc_md122"></a>
+<h2><a class="anchor" id="autotoc_md124"></a>
 Entry</h2>
 <p><strike>Member::funcs() で</strike> そのMemberが送信している関数のリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::funcEntries() に変更</p>
 <p>また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h1><a class="anchor" id="autotoc_md123"></a>
+<h1><a class="anchor" id="autotoc_md125"></a>
 関数の実行</h1>
 <p>Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。 他クライアントの関数も同様にrun()で実行させることができます。</p>
 <p>実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。</p>
@@ -388,7 +388,7 @@ Entry</h2>
 <li><b class="tab-title">Python</b> <div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
 </div><!-- fragment --> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::__call__</code>)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md124"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md126"></a>
 runAsync</h2>
 <p>Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。 戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
 <p>AsyncFuncResultからは started と result が取得できます。</p><ul>
@@ -478,7 +478,7 @@ CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summar
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 19 2024 02:34:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 21 2024 15:03:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

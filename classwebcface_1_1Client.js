@@ -84,6 +84,7 @@ var classwebcface_1_1Client =
     [ "robotModel", "classwebcface_1_1Client.html#acd0f17c72d77ab150d2ebcfb09dacd6b", null ],
     [ "robotModelEntries", "classwebcface_1_1Client.html#ab37e532eaf47e650c828f9484dee08b8", null ],
     [ "robotModels", "classwebcface_1_1Client.html#a2e0eced713028d20cd2c49c819131d80", null ],
+    [ "serverHostName", "classwebcface_1_1Client.html#ae5692066f28ed1c03ca295b181a20aae", null ],
     [ "serverName", "classwebcface_1_1Client.html#addb875c9dacd4c706619c690a61c37c9", null ],
     [ "serverVersion", "classwebcface_1_1Client.html#a5bda96142bd8d7347b75963c138e31b6", null ],
     [ "setCheck", "classwebcface_1_1Client.html#a6aae196570f9dc73d6768aaaeb146220", null ],

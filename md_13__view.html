@@ -142,24 +142,24 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md56">送信</a></li>
-<li class="level1"><a href="#autotoc_md57">ViewComponent</a><ul><li class="level2"><a href="#autotoc_md58">text</a></li>
-<li class="level2"><a href="#autotoc_md59">newLine</a></li>
-<li class="level2"><a href="#autotoc_md60">button</a></li>
-<li class="level2"><a href="#autotoc_md61">input</a></li>
+<ul><li class="level1"><a href="#autotoc_md58">送信</a></li>
+<li class="level1"><a href="#autotoc_md59">ViewComponent</a><ul><li class="level2"><a href="#autotoc_md60">text</a></li>
+<li class="level2"><a href="#autotoc_md61">newLine</a></li>
+<li class="level2"><a href="#autotoc_md62">button</a></li>
+<li class="level2"><a href="#autotoc_md63">input</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md62">受信</a><ul><li class="level2"><a href="#autotoc_md63">onClick</a></li>
-<li class="level2"><a href="#autotoc_md64">onChangeとbind</a></li>
-<li class="level2"><a href="#autotoc_md65">id</a></li>
-<li class="level2"><a href="#autotoc_md66">時刻</a></li>
-<li class="level2"><a href="#autotoc_md67">Entry</a></li>
-<li class="level2"><a href="#autotoc_md68">Event</a></li>
+<li class="level1"><a href="#autotoc_md64">受信</a><ul><li class="level2"><a href="#autotoc_md65">onClick</a></li>
+<li class="level2"><a href="#autotoc_md66">onChangeとbind</a></li>
+<li class="level2"><a href="#autotoc_md67">id</a></li>
+<li class="level2"><a href="#autotoc_md68">時刻</a></li>
+<li class="level2"><a href="#autotoc_md69">Entry</a></li>
+<li class="level2"><a href="#autotoc_md70">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md55"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md57"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1View.html" title="Viewの送受信データを表すクラス">webcface::View</a> (<code><a class="el" href="view_8h.html">webcface/view.h</a></code>)</li>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 </ul>
 </dd></dl>
 <p>テキストやボタンなどの配置を送受信します。</p>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md58"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::view からViewオブジェクトを作り、 View::add() などで要素を追加し、 最後にView::sync()をしてからClient::sync()をすることで送信されます。</p>
@@ -242,7 +242,7 @@ $(document).ready(function(){initNavTree('md_13__view.html',''); initResizable()
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます</dd></dl>
-<h1><a class="anchor" id="autotoc_md57"></a>
+<h1><a class="anchor" id="autotoc_md59"></a>
 ViewComponent</h1>
 <p>Viewに追加する各種要素をViewComponentといいます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -268,7 +268,7 @@ ViewComponent</h1>
 <p class="startli">それぞれ関数のキーワード引数でオプションを設定できます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md58"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md60"></a>
 text</h2>
 <p>文字列です。そのまま表示します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -300,7 +300,7 @@ text</h2>
 <div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> canvas2d.h:7</div></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md59"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md61"></a>
 newLine</h2>
 <p>改行します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -327,7 +327,7 @@ newLine</h2>
 <div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>)).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(new_line()).<a class="code hl_function" href="classwebcface_1_1View.html#aaa234e9c4eb3737375d11e738194b54c">add</a>(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md60"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md62"></a>
 button</h2>
 <p>ボタンを表示します。</p>
 <p>クリック時の動作は、関数を登録済みの<a class="el" href="md_30__func.html">Funcオブジェクト</a>、または関数を直接設定できます。</p>
@@ -391,7 +391,7 @@ button</h2>
 <div class="line">}</div>
 </div><!-- fragment --> この後説明するinput要素についても同様です。 <br  />
  インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。</dd></dl>
-<h2><a class="anchor" id="autotoc_md61"></a>
+<h2><a class="anchor" id="autotoc_md63"></a>
 input</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span><span class="since-js">1.6</span></dd></dl>
 <p>viewに入力欄を表示します。</p>
@@ -479,34 +479,34 @@ input</h2>
 </p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md62"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md64"></a>
 受信</h1>
 <p>ValueやTextと同様、Member::view() でViewクラスのオブジェクトが得られ、 View::tryGet(), View::get() で受信したViewデータを取得できます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
 <p>Viewデータは <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html">ViewComponent</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent">webcface.ViewComponent</a>) のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。</p>
 <p><span class="since-c">1.7</span> Cの場合は wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で <a class="el" href="structwcfViewComponent.html" title="Viewの要素を表すstruct.">wcfViewComponent</a>, (<span class="since-c">2.0</span> <a class="el" href="structwcfViewComponentW.html" title="Viewの要素を表すstruct (wstring)">wcfViewComponentW</a>) の配列が得られます。 取得した配列は不要になったら wcfDestroy で破棄してください。</p>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md65"></a>
 onClick</h2>
 <p>ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が<a class="el" href="md_30__func.html">Func</a>オブジェクトとして取得できます。 したがって、ボタンを表示し、クリックされたときに<code>onClick().runAsync()</code>などとすることでそのボタンを動作させられます。</p>
-<h2><a class="anchor" id="autotoc_md64"></a>
+<h2><a class="anchor" id="autotoc_md66"></a>
 onChangeとbind</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
 <p>各種Input要素の現在の値は ViewComponent::bind() で<a class="el" href="md_11__text.html">Text</a>オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。 bind().get()で得られる <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> の値を整数、実数、bool、stringにキャストすることができます。</p>
 <p>Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</p>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md67"></a>
 id</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
 <p>ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ) 同じbutton、同じinputには常に同じidが振られます。 (実際はそのview内で種類ごとに分けて要素に連番を振っているだけです)</p>
-<h2><a class="anchor" id="autotoc_md66"></a>
+<h2><a class="anchor" id="autotoc_md68"></a>
 時刻</h2>
 <p><strike>View::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
-<h2><a class="anchor" id="autotoc_md67"></a>
+<h2><a class="anchor" id="autotoc_md69"></a>
 Entry</h2>
 <p><strike>Member::views() で</strike> そのMemberが送信しているviewのリストが得られます <br  />
  <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::viewEntries() に変更</p>
 <p>また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
 <p>いずれも使い方は <a class="el" href="md_10__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md68"></a>
+<h2><a class="anchor" id="autotoc_md70"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -523,7 +523,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 19 2024 02:34:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 21 2024 15:03:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

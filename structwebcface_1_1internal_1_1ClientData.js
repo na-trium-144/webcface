@@ -66,6 +66,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "robot_model_store", "structwebcface_1_1internal_1_1ClientData.html#a4cfd52af02318809060a55f4938acda5", null ],
     [ "self_member_id", "structwebcface_1_1internal_1_1ClientData.html#a279766b6bcff49095f88404ea18f9ed2", null ],
     [ "self_member_name", "structwebcface_1_1internal_1_1ClientData.html#a996478ee74e409baf746715e27e4f1ee", null ],
+    [ "svr_hostname", "structwebcface_1_1internal_1_1ClientData.html#a6529e326558285bd306caa438b310c76", null ],
     [ "svr_name", "structwebcface_1_1internal_1_1ClientData.html#ae962bcb5814e318a6704b4e8c9ad7cbc", null ],
     [ "svr_version", "structwebcface_1_1internal_1_1ClientData.html#af746d09c063f48f21e62cc3e37c68ecb", null ],
     [ "sync_event", "structwebcface_1_1internal_1_1ClientData.html#a1ac598a1d30d2a07568a27569fd37512", null ],

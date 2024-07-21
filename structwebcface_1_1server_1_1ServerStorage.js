@@ -14,6 +14,7 @@ var structwebcface_1_1server_1_1ServerStorage =
     [ "removeClient", "structwebcface_1_1server_1_1ServerStorage.html#aec6064f5c25334bfaa5d4f268c83daf6", null ],
     [ "clients", "structwebcface_1_1server_1_1ServerStorage.html#a6e33f9ba87ba9683a9ae161a6fde9cc1", null ],
     [ "clients_by_id", "structwebcface_1_1server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393", null ],
+    [ "hostname", "structwebcface_1_1server_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2", null ],
     [ "keep_log", "structwebcface_1_1server_1_1ServerStorage.html#aac122449fd3bbb64fd0eb7fc567a7a46", null ],
     [ "ping_status", "structwebcface_1_1server_1_1ServerStorage.html#a2284a2138f45992873563f8b5e95eaac", null ],
     [ "server", "structwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c", null ]

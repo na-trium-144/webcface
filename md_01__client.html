@@ -147,8 +147,11 @@ $(document).ready(function(){initNavTree('md_01__client.html',''); initResizable
 <li class="level1"><a href="#autotoc_md26">送受信</a></li>
 <li class="level1"><a href="#autotoc_md27">切断する</a></li>
 <li class="level1"><a href="#autotoc_md28">バージョン情報</a></li>
-<li class="level1"><a href="#autotoc_md29">サーバーの情報</a></li>
-<li class="level1"><a href="#autotoc_md30">ログ出力</a></li>
+<li class="level1"><a href="#autotoc_md29">サーバーの情報</a><ul><li class="level2"><a href="#autotoc_md30">serverVersion, serverName</a></li>
+<li class="level2"><a href="#autotoc_md31">serverHostName</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md32">ログ出力</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md23"></a></p>
@@ -456,30 +459,43 @@ Encoding</h1>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md29"></a>
 サーバーの情報</h1>
-<div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> <code>wcli.serverVersion()</code>, <code>wcli.serverName()</code> でサーバーの情報を取得できます。</li>
-<li><b class="tab-title">JavaScript</b> <code>wcli.serverVersion</code>, <code>wcli.serverName</code> でサーバーの情報を取得できます。</li>
-<li><b class="tab-title">Python</b> <code>wcli.server_version</code>, <code>wcli.server_name</code> でサーバーの情報を取得できます。</li>
+<h2><a class="anchor" id="autotoc_md30"></a>
+serverVersion, serverName</h2>
+<ul>
+<li>serverVersion でサーバーのバージョンを取得できます。</li>
+<li>serverName は現在は<code>"webcface"</code>という文字列しか返しません。 (今後webcface-serverを別言語で実装したりこれと同等の機能をもった別のプログラムを作ることがあったら判別できるようにするためのものです <del>そんなことあるのか?</del>)</li>
 </ul>
-</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd>Clientの接続が完了し受信するまでは取得できません(空文字列になります)。 受信するのは waitConnection() の待機完了よりも後です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <code>wcli.serverVersion()</code>, <code>wcli.serverName()</code> で取得できます。</li>
+<li><b class="tab-title">JavaScript</b> <code>wcli.serverVersion</code>, <code>wcli.serverName</code> で取得できます。</li>
+<li><b class="tab-title">Python</b> <code>wcli.server_version</code>, <code>wcli.server_name</code> で取得できます。</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md31"></a>
+serverHostName</h2>
+<p>サーバーを起動しているPCのホスト名を取得できます。 WebUI ver1.7 以降ではWebUIのページタイトルにも表示されています。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.0</span> <code>wcli.serverHostName()</code> で取得できます。</dd></dl>
+</li>
+<li><b class="tab-title">JavaScript</b> <dl class="section since"><dt>Since</dt><dd><span class="since-js">1.7</span> <code>wcli.serverHostName</code> で取得できます。</dd></dl>
+</li>
+</ul>
+</div><div class="tabbed"><dl class="section warning"><dt>Warning</dt><dd>Clientの接続が完了し受信するまでは取得できません(空文字列になります)。 受信するのは waitConnection() の待機完了よりも後です。</dd></dl>
+</div><h1><a class="anchor" id="autotoc_md32"></a>
 ログ出力</h1>
-<dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
-<p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
-<p><span class="since-js">1.1</span> ではClientのコンストラクタでlogLevelに <code>"trace"</code> または <code>"verbose"</code> を指定することでも表示できます。</p>
-<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<div class="tabbed"></div><div class="tabbed"><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
+<code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</div><div class="tabbed"><span class="since-js">1.1</span> ではClientのコンストラクタでlogLevelに <code>"trace"</code> または <code>"verbose"</code> を指定することでも表示できます。</div><div class="tabbed"><div class="section_buttons"></div></div><div class="tabbed"><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><a class="el" href="md_00__overview.html">Overview</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_02__member.html">Member</a>   </td></tr>
 </table>
-</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div></div><div class="tabbed"><div class="section_buttons"></div> </div></div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jul 19 2024 02:34:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Sun Jul 21 2024 15:03:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

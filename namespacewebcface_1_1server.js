@@ -7,6 +7,7 @@ var namespacewebcface_1_1server =
     [ "wsConnPtr", "namespacewebcface_1_1server.html#af92eef764fed4a1512658233c54020bf", null ],
     [ "convertLevel", "namespacewebcface_1_1server.html#aa7132eb6525527e4747e7c8ab7131d09", null ],
     [ "findReqField", "namespacewebcface_1_1server.html#aed28322feeecfdd4846624f8235d2719", null ],
+    [ "getHostName", "namespacewebcface_1_1server.html#ab052d93bb7568174c380132b046aa463", null ],
     [ "getIpAddresses", "namespacewebcface_1_1server.html#a5de683dfd44e54076715d47c2bcaa851", null ],
     [ "getStaticDir", "namespacewebcface_1_1server.html#a190126a8b357424080243a1c04ee9afc", null ],
     [ "getTempDir", "namespacewebcface_1_1server.html#af75cf09eeecbcfd458c033ac2972eb47", null ],
