@@ -1,10 +1,10 @@
 #include "webcface/server/ip.h"
 
 #if WEBCFACE_SYSTEM_WIN32SOCKET
-#include <windows.h>
 #include <winsock2.h>
 #include <iphlpapi.h>
 #include <ws2tcpip.h>
+#include <windows.h>
 #define MALLOC(x) HeapAlloc(GetProcessHeap(), 0, (x))
 #define FREE(x) HeapFree(GetProcessHeap(), 0, (x))
 
