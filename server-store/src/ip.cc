@@ -1,6 +1,7 @@
 #include "webcface/server/ip.h"
 
 #if WEBCFACE_SYSTEM_WIN32SOCKET
+#include <windows.h>
 #include <winsock2.h>
 #include <iphlpapi.h>
 #include <ws2tcpip.h>
@@ -10,8 +11,10 @@
 #else
 #include <ifaddrs.h>
 #include <arpa/inet.h>
+#include <sys/utsname.h>
 
 #endif
+
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -98,5 +101,33 @@ getIpAddresses([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
 
     return ret;
 }
+
+std::string
+getHostName([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
+#if WEBCFACE_SYSTEM_WIN32SOCKET
+    char buf[MAX_COMPUTERNAME_LENGTH + 1] = {};
+    if (GetComputerName(buf, sizeof(buf))) {
+        return buf;
+    } else {
+        auto dw = GetLastError();
+        if (dw != 0) {
+            char *lpMsgBuf = nullptr;
+            FormatMessageA(
+                FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM |
+                    FORMAT_MESSAGE_IGNORE_INSERTS,
+                nullptr, dw, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+                reinterpret_cast<LPSTR>(&lpMsgBuf), 0, nullptr);
+            logger->warn("GetComputerName failed: {}", lpMsgBuf);
+            LocalFree(lpMsgBuf);
+        }
+        return "";
+    }
+#else
+    struct utsname unameData;
+    uname(&unameData);
+    return unameData.nodename;
+#endif
+}
+
 } // namespace server
 WEBCFACE_NS_END
