@@ -39,7 +39,9 @@ Memberクラスから実際にそれぞれのデータにアクセスする方�
 
 \note
 `member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。  
-<span class="since-c">1.7</span> 引数に空文字列を入れても同様です。
+<span class="since-c">1.7</span>
+<span class="since-js">1.7</span>
+引数に空文字列を入れても同様です。
 
 ## members
 
@@ -160,8 +162,25 @@ EventTargetでの関数名(appendListenerなど)はCallbackListではなくEvent
 
 ## クライアントの情報
 
-Member::libVersion(), Member::libName(), Member::remoteAddr() でクライアントの情報を取得できます。
+以下のようなクライアントの情報を取得できます。
 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)
+
+* libVersion でWebCFaceライブラリのバージョンを取得できます。
+* libName で使用しているWebCFaceライブラリを判別できます。
+C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"python"`, JavaScriptのライブラリ(webcface-js)は`"js"`を返します。
+* remoteAddr はサーバーから見た各メンバーのIPアドレスです。
+    * <span class="since-c">1.11</span> Unixドメインソケットで接続している場合空文字列が返ります。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    `wcli.libVersion()`, `wcli.libName()`, `wcli.remoteAddr()` で取得できます。
+- <b class="tab-title">JavaScript</b>
+    `wcli.libVersion`, `wcli.libName`, `wcli.remoteAddr` で取得できます。
+- <b class="tab-title">Python</b>
+    `wcli.lib_version`, `wcli.lib_name`, `wcli.remote_addr` で取得できます。
+    
+</div>
 
 ## ping
 
@@ -183,9 +202,9 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
     ```
     * ver1.11以前では `onPing().appendListener(...)`
     * <span class="since-c">1.7</span>
-    appendListener, prependListener ではコールバックの引数が不要な場合は引数のない関数も渡すことができます。
+    <del>appendListener, prependListener では</del> コールバックの引数が不要な場合は引数のない関数も渡すことができます。
     * <span class="since-c">1.11</span>
-    onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。
+    <del>onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。</del>
     * <span class="since-c">2.0</span>
     自分自身のping値も取得できるようになりました。(`wcli.pingStatus()`, `wcli.onPing(...)`)
 
@@ -196,6 +215,9 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
         console.log(`${m.name}: ${m.pingStatus} ms`);
     });
     ```
+    * <span class="since-js">1.7</span>
+    自分自身のping値も取得できるようになりました。(`wcli.pingStatus`, `wcli.onPing`)
+
 - <b class="tab-title">Python</b>
     ```python
     def ping_update(m: webcface.Member):
@@ -204,6 +226,12 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
     ```
 
 </div>
+
+\warning
+<span class="since-c">2.0</span>
+各クライアントがPingに応答する処理は受信処理の中で行われるため、
+recv() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。
+(例えば100msに1回 recv() を呼ぶ場合通信遅延が100msあるように見える可能性があります)
 
 <div class="section_buttons">
 
