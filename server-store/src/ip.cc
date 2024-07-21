@@ -106,7 +106,8 @@ std::string
 getHostName([[maybe_unused]] const std::shared_ptr<spdlog::logger> &logger) {
 #if WEBCFACE_SYSTEM_WIN32SOCKET
     char buf[MAX_COMPUTERNAME_LENGTH + 1] = {};
-    if (GetComputerName(buf, sizeof(buf))) {
+    DWORD size = sizeof(buf);
+    if (GetComputerName(buf, &size)) {
         return buf;
     } else {
         auto dw = GetLastError();
