@@ -4,24 +4,45 @@
 extern "C" {
 #endif
 
+// todo: input
+
 /*!
  * \since 1.7
  * \param text 表示する文字列
  */
 WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfText(const char *text);
 /*!
+ * \since 2.0
+ * \param text 表示する文字列
+ */
+WEBCFACE_DLL wcfViewComponentW WEBCFACE_CALL wcfTextW(const wchar_t *text);
+/*!
  * \since 1.7
  */
 WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfNewLine(void);
 /*!
+ * \since 2.0
+ */
+WEBCFACE_DLL wcfViewComponentW WEBCFACE_CALL wcfNewLineW(void);
+/*!
  * \since 1.7
  * \param text 表示する文字列
  * \param on_click_member クリック時に実行するFuncのmember
- * またはnullptr(自分自身を表す)
+ * またはNULL(自分自身を表す)
  * \param on_click_field クリック時に実行するFuncの名前
  */
 WEBCFACE_DLL wcfViewComponent WEBCFACE_CALL wcfButton(
     const char *text, const char *on_click_member, const char *on_click_field);
+/*!
+ * \since 2.0
+ * \param text 表示する文字列
+ * \param on_click_member クリック時に実行するFuncのmember
+ * またはNULL(自分自身を表す)
+ * \param on_click_field クリック時に実行するFuncの名前
+ */
+WEBCFACE_DLL wcfViewComponentW WEBCFACE_CALL
+wcfButtonW(const wchar_t *text, const wchar_t *on_click_member,
+           const wchar_t *on_click_field);
 
 /*!
  * \brief Viewを送信する

@@ -133,8 +133,8 @@ static wcfStatus wcfFuncRejectT(const typename CharType<CharT>::CHandle *handle,
 /// \private
 template <typename CharT>
 static wcfStatus
-wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
-            int arg_size, int return_type,
+wcfFuncSetT(wcfClient *wcli, const CharT *field, const wcfValType *arg_types,
+            int arg_size, wcfValType return_type,
             typename CharType<CharT>::CCallback callback, void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -157,8 +157,8 @@ wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
 /// \private
 template <typename CharT>
 static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
-                                  const int *arg_types, int arg_size,
-                                  int return_type,
+                                  const wcfValType *arg_types, int arg_size,
+                                  wcfValType return_type,
                                   typename CharType<CharT>::CCallback callback,
                                   void *user_data) {
     auto wcli_ = getWcli(wcli);
@@ -183,8 +183,8 @@ static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
 /// \private
 template <typename CharT>
 static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
-                                const int *arg_types, int arg_size,
-                                int return_type) {
+                                const wcfValType *arg_types, int arg_size,
+                                wcfValType return_type) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return wcfBadClient;
@@ -222,7 +222,42 @@ static wcfStatus wcfFuncFetchCallT(wcfClient *wcli, const CharT *field,
     }
 }
 
+/// \private
+template <typename CharT>
+static auto wcfValTI(int value) {
+    typename CharType<CharT>::CVal val;
+    val.as_int = value;
+    val.as_double = 0;
+    val.as_str = 0;
+    return val;
+}
+/// \private
+template <typename CharT>
+static auto wcfValTD(double value) {
+    typename CharType<CharT>::CVal val;
+    val.as_int = 0;
+    val.as_double = value;
+    val.as_str = 0;
+    return val;
+}
+/// \private
+template <typename CharT>
+static auto wcfValTS(const CharT *value) {
+    typename CharType<CharT>::CVal val;
+    val.as_int = 0;
+    val.as_double = 0;
+    val.as_str = value;
+    return val;
+}
+
 extern "C" {
+wcfMultiVal wcfValI(int value) { return wcfValTI<char>(value); }
+wcfMultiVal wcfValD(double value) { return wcfValTD<char>(value); }
+wcfMultiVal wcfValS(const char *value) { return wcfValTS<char>(value); }
+wcfMultiValW wcfValWI(int value) { return wcfValTI<wchar_t>(value); }
+wcfMultiValW wcfValWD(double value) { return wcfValTD<wchar_t>(value); }
+wcfMultiValW wcfValWS(const wchar_t *value) { return wcfValTS<wchar_t>(value); }
+
 wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
                      const wcfMultiVal *args, int arg_size,
                      wcfMultiVal **result) {
@@ -253,36 +288,42 @@ wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
     return wcfFuncGetResultT<char>(async_res, result, false);
 }
 
-wcfStatus wcfFuncSet(wcfClient *wcli, const char *field, const int *arg_types,
-                     int arg_size, int return_type, wcfFuncCallback callback,
+wcfStatus wcfFuncSet(wcfClient *wcli, const char *field,
+                     const wcfValType *arg_types, int arg_size,
+                     wcfValType return_type, wcfFuncCallback callback,
                      void *user_data) {
     return wcfFuncSetT(wcli, field, arg_types, arg_size, return_type, callback,
                        user_data);
 }
 wcfStatus wcfFuncSetW(wcfClient *wcli, const wchar_t *field,
-                      const int *arg_types, int arg_size, int return_type,
-                      wcfFuncCallbackW callback, void *user_data) {
+                      const wcfValType *arg_types, int arg_size,
+                      wcfValType return_type, wcfFuncCallbackW callback,
+                      void *user_data) {
     return wcfFuncSetT(wcli, field, arg_types, arg_size, return_type, callback,
                        user_data);
 }
 wcfStatus wcfFuncSetAsync(wcfClient *wcli, const char *field,
-                          const int *arg_types, int arg_size, int return_type,
-                          wcfFuncCallback callback, void *user_data) {
+                          const wcfValType *arg_types, int arg_size,
+                          wcfValType return_type, wcfFuncCallback callback,
+                          void *user_data) {
     return wcfFuncSetAsyncT(wcli, field, arg_types, arg_size, return_type,
                             callback, user_data);
 }
 wcfStatus wcfFuncSetAsyncW(wcfClient *wcli, const wchar_t *field,
-                           const int *arg_types, int arg_size, int return_type,
-                           wcfFuncCallbackW callback, void *user_data) {
+                           const wcfValType *arg_types, int arg_size,
+                           wcfValType return_type, wcfFuncCallbackW callback,
+                           void *user_data) {
     return wcfFuncSetAsyncT(wcli, field, arg_types, arg_size, return_type,
                             callback, user_data);
 }
 wcfStatus wcfFuncListen(wcfClient *wcli, const char *field,
-                        const int *arg_types, int arg_size, int return_type) {
+                        const wcfValType *arg_types, int arg_size,
+                        wcfValType return_type) {
     return wcfFuncListenT(wcli, field, arg_types, arg_size, return_type);
 }
 wcfStatus wcfFuncListenW(wcfClient *wcli, const wchar_t *field,
-                         const int *arg_types, int arg_size, int return_type) {
+                         const wcfValType *arg_types, int arg_size,
+                         wcfValType return_type) {
     return wcfFuncListenT(wcli, field, arg_types, arg_size, return_type);
 }
 wcfStatus wcfFuncFetchCall(wcfClient *wcli, const char *field,
@@ -308,4 +349,7 @@ wcfStatus wcfFuncRejectW(const wcfFuncCallHandleW *handle,
                          const wchar_t *message) {
     return wcfFuncRejectT(handle, message);
 }
+
+// todo: args, returnType の取得と設定
+
 }

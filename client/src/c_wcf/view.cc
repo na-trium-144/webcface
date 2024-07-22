@@ -4,35 +4,55 @@
 #include <cstring>
 
 /// \private
-static inline wcfViewComponent wcfViewInit() {
-    wcfViewComponent c;
+template <typename CharT>
+static auto wcfViewInit() {
+    typename CharType<CharT>::CComponent c;
     std::memset(&c, 0, sizeof(c));
     c.min = -DBL_MAX;
     c.max = DBL_MAX;
     return c;
 }
-
-extern "C" {
-
-wcfViewComponent wcfText(const char *text) {
-    wcfViewComponent c = wcfViewInit();
-    c.type = WCF_VIEW_TEXT;
+/// \private
+template <typename CharT>
+static auto wcfTextT(const CharT *text) {
+    auto c = wcfViewInit<CharT>();
+    c.type = wcfViewText;
     c.text = text;
     return c;
 }
-wcfViewComponent wcfNewLine() {
-    wcfViewComponent c = wcfViewInit();
-    c.type = WCF_VIEW_NEW_LINE;
+/// \private
+template <typename CharT>
+static auto wcfNewLineT() {
+    auto c = wcfViewInit<CharT>();
+    c.type = wcfViewNewLine;
     return c;
 }
-wcfViewComponent wcfButton(const char *text, const char *on_click_member,
-                           const char *on_click_field) {
-    wcfViewComponent c = wcfViewInit();
-    c.type = WCF_VIEW_BUTTON;
+/// \private
+template <typename CharT>
+static auto wcfButtonT(const CharT *text, const CharT *on_click_member,
+                       const CharT *on_click_field) {
+    auto c = wcfViewInit<CharT>();
+    c.type = wcfViewButton;
     c.text = text;
     c.on_click_member = on_click_member;
     c.on_click_field = on_click_field;
     return c;
+}
+
+extern "C" {
+
+wcfViewComponent wcfText(const char *text) { return wcfTextT(text); }
+wcfViewComponentW wcfTextW(const wchar_t *text) { return wcfTextT(text); }
+wcfViewComponent wcfNewLine() { return wcfNewLineT<char>(); }
+wcfViewComponentW wcfNewLineW() { return wcfNewLineT<wchar_t>(); }
+wcfViewComponent wcfButton(const char *text, const char *on_click_member,
+                           const char *on_click_field) {
+    return wcfButtonT(text, on_click_member, on_click_field);
+}
+wcfViewComponentW wcfButtonW(const wchar_t *text,
+                             const wchar_t *on_click_member,
+                             const wchar_t *on_click_field) {
+    return wcfButtonT(text, on_click_member, on_click_field);
 }
 }
 
@@ -109,7 +129,7 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
         }
         return wcfOk;
     } else {
-        return wcfNotFound;
+        return wcfNoData;
     }
 }
 

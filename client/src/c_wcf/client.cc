@@ -98,27 +98,6 @@ wcfStatus wcfSync(wcfClient *wcli) {
     wcli_->sync();
     return wcfOk;
 }
-wcfMultiVal wcfValI(int value) {
-    wcfMultiVal val;
-    val.as_int = value;
-    val.as_double = 0;
-    val.as_str = 0;
-    return val;
-}
-wcfMultiVal wcfValD(double value) {
-    wcfMultiVal val;
-    val.as_int = 0;
-    val.as_double = value;
-    val.as_str = 0;
-    return val;
-}
-wcfMultiVal wcfValS(const char *value) {
-    wcfMultiVal val;
-    val.as_int = 0;
-    val.as_double = 0;
-    val.as_str = value;
-    return val;
-}
 
 wcfStatus wcfDestroy(const void *ptr) {
     {
@@ -236,5 +215,12 @@ const char *wcfServerName(wcfClient *wcli) {
         return "";
     }
     return wcli_->serverName().c_str();
+}
+const char *wcfServerHostName(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverHostName().c_str();
 }
 }
