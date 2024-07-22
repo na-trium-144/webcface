@@ -2,6 +2,7 @@
 #include "webcface/text.h"
 #include <cstring>
 
+/// \private
 template <typename CharT>
 static wcfStatus wcfTextSetT(wcfClient *wcli, const CharT *field,
                              const CharT *text) {
@@ -15,6 +16,7 @@ static wcfStatus wcfTextSetT(wcfClient *wcli, const CharT *field,
     wcli_->text(field).set(strOrEmpty(text));
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfTextSetNT(wcfClient *wcli, const CharT *field,
                               const CharT *text, int size) {
@@ -29,6 +31,7 @@ static wcfStatus wcfTextSetNT(wcfClient *wcli, const CharT *field,
     return wcfOk;
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
                              const CharT *field, CharT *text, int size,

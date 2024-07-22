@@ -1,6 +1,7 @@
 #include "c_wcf_internal.h"
 #include "webcface/func.h"
 
+/// \private
 template <typename CharT>
 static auto createHandle(const FuncCallHandle &h) {
     auto whp = new typename CharType<CharT>::CHandle();
@@ -15,6 +16,7 @@ static auto createHandle(const FuncCallHandle &h) {
     return whp;
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
@@ -44,6 +46,7 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
         return wcfException;
     }
 }
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
@@ -64,6 +67,7 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
     *async_res = a_res;
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
                                    typename CharType<CharT>::CVal **result,
@@ -112,6 +116,7 @@ wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
     delete handle;
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfFuncRejectT(const typename CharType<CharT>::CHandle *handle,
                                 const CharT *message) {
@@ -125,6 +130,7 @@ static wcfStatus wcfFuncRejectT(const typename CharType<CharT>::CHandle *handle,
     return wcfOk;
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
@@ -148,6 +154,7 @@ wcfFuncSetT(wcfClient *wcli, const CharT *field, const int *arg_types,
                            });
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
                                   const int *arg_types, int arg_size,
@@ -173,6 +180,7 @@ static wcfStatus wcfFuncSetAsyncT(wcfClient *wcli, const CharT *field,
         });
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
                                 const int *arg_types, int arg_size,
@@ -194,6 +202,7 @@ static wcfStatus wcfFuncListenT(wcfClient *wcli, const CharT *field,
         .listen();
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfFuncFetchCallT(wcfClient *wcli, const CharT *field,
                                    typename CharType<CharT>::CHandle **handle) {

@@ -161,6 +161,7 @@ wcfStatus wcfDestroy(const void *ptr) {
 }
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
                                 int *members_num) {
@@ -184,6 +185,7 @@ static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
     }
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfMemberEntryEventT(wcfClient *wcli,

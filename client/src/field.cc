@@ -73,6 +73,7 @@ Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
 
+/// \private
 template <typename V, typename S>
 static auto entries(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);

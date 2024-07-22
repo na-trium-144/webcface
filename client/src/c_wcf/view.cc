@@ -3,6 +3,7 @@
 #include "webcface/view.h"
 #include <cstring>
 
+/// \private
 static inline wcfViewComponent wcfViewInit() {
     wcfViewComponent c;
     std::memset(&c, 0, sizeof(c));
@@ -35,6 +36,7 @@ wcfViewComponent wcfButton(const char *text, const char *on_click_member,
 }
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfViewSetT(wcfClient *wcli, const CharT *field,
@@ -76,6 +78,7 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
     return wcfOk;
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,

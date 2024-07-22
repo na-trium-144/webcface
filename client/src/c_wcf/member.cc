@@ -4,6 +4,7 @@
 #include "webcface/view.h"
 #include "webcface/func.h"
 
+/// \private
 template <typename V, typename CharT>
 static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
                                const CharT **list, int size, int *field_num) {
@@ -36,6 +37,7 @@ static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
     }
     return wcfOk;
 }
+/// \private
 template <typename V, typename CharT>
 static wcfStatus
 wcfEntryEventT(wcfClient *wcli, const CharT *member,
@@ -63,6 +65,7 @@ wcfEntryEventT(wcfClient *wcli, const CharT *member,
     }
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus
 wcfSyncEventT(wcfClient *wcli, const CharT *member,
@@ -81,6 +84,54 @@ wcfSyncEventT(wcfClient *wcli, const CharT *member,
             }
         });
     return wcfOk;
+}
+/// \private
+template <typename CharT>
+static wcfStatus
+wcfPingEventT(wcfClient *wcli, const CharT *member,
+              typename CharType<CharT>::CEventCallback1 callback,
+              void *user_data) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return wcfBadClient;
+    }
+    wcli_->member(strOrEmpty(member))
+        .onPing([callback, user_data](const Member &m) {
+            if constexpr (std::is_same_v<CharT, char>) {
+                callback(m.name().c_str(), user_data);
+            } else {
+                callback(m.nameW().c_str(), user_data);
+            }
+        });
+    return wcfOk;
+}
+/// \private
+template <typename CharT>
+static unsigned long long wcfMemberSyncTimeT(wcfClient *wcli,
+                                             const CharT *member) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return 0;
+    }
+    return std::chrono::duration_cast<std::chrono::milliseconds>(
+               wcli_->member(strOrEmpty(member)).syncTime().time_since_epoch())
+        .count();
+}
+/// \private
+template <typename CharT>
+static wcfStatus wcfMemberPingStatusT(wcfClient *wcli, const CharT *member,
+                                      int *value) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return wcfBadClient;
+    }
+    auto s = wcli_->member(strOrEmpty(member)).pingStatus();
+    if (s) {
+        *value = *s;
+        return wcfOk;
+    } else {
+        return wcfNoData;
+    }
 }
 
 extern "C" {
@@ -161,22 +212,10 @@ wcfStatus wcfMemberSyncEventW(wcfClient *wcli, const wchar_t *member,
 }
 
 unsigned long long wcfMemberSyncTime(wcfClient *wcli, const char *member) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return 0;
-    }
-    return std::chrono::duration_cast<std::chrono::milliseconds>(
-               wcli_->member(strOrEmpty(member)).syncTime().time_since_epoch())
-        .count();
+    return wcfMemberSyncTimeT(wcli, member);
 }
 unsigned long long wcfMemberSyncTimeW(wcfClient *wcli, const wchar_t *member) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return 0;
-    }
-    return std::chrono::duration_cast<std::chrono::milliseconds>(
-               wcli_->member(strOrEmpty(member)).syncTime().time_since_epoch())
-        .count();
+    return wcfMemberSyncTimeT(wcli, member);
 }
 const char *wcfMemberLibName(wcfClient *wcli, const char *member) {
     auto wcli_ = getWcli(wcli);
@@ -198,5 +237,20 @@ const char *wcfMemberRemoteAddr(wcfClient *wcli, const char *member) {
         return "";
     }
     return wcli_->member(strOrEmpty(member)).remoteAddr().c_str();
+}
+wcfStatus wcfMemberPingStatus(wcfClient *wcli, const char *member, int *value) {
+    return wcfMemberPingStatusT(wcli, member, value);
+}
+wcfStatus wcfMemberPingStatusW(wcfClient *wcli, const wchar_t *member,
+                               int *value) {
+    return wcfMemberPingStatusT(wcli, member, value);
+}
+wcfStatus wcfMemberPingEvent(wcfClient *wcli, const char *member,
+                             wcfEventCallback1 callback, void *user_data) {
+    return wcfPingEventT(wcli, member, callback, user_data);
+}
+wcfStatus wcfMemberPingEventW(wcfClient *wcli, const wchar_t *member,
+                              wcfEventCallback1W callback, void *user_data) {
+    return wcfPingEventT(wcli, member, callback, user_data);
 }
 }

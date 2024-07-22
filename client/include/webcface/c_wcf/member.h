@@ -238,7 +238,7 @@ WEBCFACE_DLL const char *WEBCFACE_CALL wcfRemoteAddr(wcfClient *wcli,
  * \param member
  * \param value pingの往復時間(ms)が返る
  * \return wcliが無効ならwcfBadClient,
- * また値を受信していなければwcfNotReceived
+ * また値を受信していなければwcfNoData
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberPingStatus(wcfClient *wcli,
@@ -268,7 +268,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL
 wcfMemberPingEvent(wcfClient *wcli, const char *member,
                    wcfEventCallback1 callback, void *user_data);
 /*!
- * \brief Memberがsyncした時のイベント (wstring)
+ * \brief Memberの通信速度が更新された時のイベント (wstring)
  * \since ver2.0
  * \sa wcfMemberPingEvent
  */

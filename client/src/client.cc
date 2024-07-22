@@ -530,6 +530,7 @@ void Client::sync() {
     data->message_push(data->syncData(false));
 }
 
+/// \private
 template <typename M, typename K1, typename K2>
 static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
     -> std::optional<std::decay_t<decltype(map.at(key1).at(key2))>> {
@@ -542,6 +543,7 @@ static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
     }
     return std::nullopt;
 }
+/// \private
 template <typename M, typename K1>
 static auto findFromMap1(const M &map, const K1 &key1)
     -> std::optional<std::decay_t<decltype(map.at(key1))>> {
@@ -551,6 +553,7 @@ static auto findFromMap1(const M &map, const K1 &key1)
     }
     return std::nullopt;
 }
+/// \private
 template <typename Msg, typename T, typename S, typename E>
 static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
                       S &store, const E &event) {
@@ -565,6 +568,7 @@ static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
         cl->operator()(Field{this_->shared_from_this(), member, field});
     }
 }
+/// \private
 template <typename Msg, typename S, typename E>
 static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
                         const E &event) {

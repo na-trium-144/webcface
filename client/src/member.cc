@@ -84,7 +84,9 @@ std::chrono::system_clock::time_point Member::syncTime() const {
         .value_or(std::chrono::system_clock::time_point());
 }
 
+/// \private
 static std::string empty;
+
 const std::string &Member::libName() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
