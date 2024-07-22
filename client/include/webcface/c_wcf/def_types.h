@@ -19,7 +19,7 @@ typedef enum wcfStatus {
     wcfException = 5,
     wcfNotCalled = 6,
     wcfNotReturned = 7,
-    wcfNotReceived = 8,
+    wcfNoData = 8,
 } wcfStatus;
 
 typedef enum wcfValType {

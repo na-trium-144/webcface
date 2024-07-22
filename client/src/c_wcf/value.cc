@@ -2,6 +2,7 @@
 #include "webcface/value.h"
 #include <cstring>
 
+/// \private
 template <typename CharT>
 static wcfStatus wcfValueSetT(wcfClient *wcli, const CharT *field,
                               double value) {
@@ -15,6 +16,7 @@ static wcfStatus wcfValueSetT(wcfClient *wcli, const CharT *field,
     wcli_->value(field).set(value);
     return wcfOk;
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfValueSetVecDT(wcfClient *wcli, const CharT *field,
                                   const double *value, int size) {
@@ -29,6 +31,7 @@ static wcfStatus wcfValueSetVecDT(wcfClient *wcli, const CharT *field,
     return wcfOk;
 }
 
+/// \private
 template <typename CharT>
 static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
                                   const CharT *field, double *values, int size,
@@ -57,9 +60,10 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
         if (size > 0) {
             std::memset(values, 0, size * sizeof(double));
         }
-        return wcfNotFound;
+        return wcfNoData;
     }
 }
+/// \private
 template <typename CharT>
 static wcfStatus wcfValueGetT(wcfClient *wcli, const CharT *member,
                               const CharT *field, double *value) {
@@ -76,8 +80,31 @@ static wcfStatus wcfValueGetT(wcfClient *wcli, const CharT *member,
         *value = *val;
         return wcfOk;
     } else {
-        return wcfNotFound;
+        return wcfNoData;
     }
+}
+/// \private
+template <typename CharT>
+static wcfStatus
+wcfValueChangeEventT(wcfClient *wcli, const CharT *member, const CharT *field,
+                     typename CharType<CharT>::CEventCallback2 callback,
+                     void *user_data) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return wcfBadClient;
+    }
+    wcli_->member(strOrEmpty(member))
+        .value(field)
+        .onChange([callback, user_data](const Value &m) {
+            if constexpr (std::is_same_v<CharT, char>) {
+                callback(m.member().name().c_str(), m.name().c_str(),
+                         user_data);
+            } else {
+                callback(m.member().nameW().c_str(), m.nameW().c_str(),
+                         user_data);
+            }
+        });
+    return wcfOk;
 }
 
 extern "C" {
@@ -112,5 +139,15 @@ wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field,
 wcfStatus wcfValueGetW(wcfClient *wcli, const wchar_t *member,
                        const wchar_t *field, double *value) {
     return wcfValueGetT(wcli, member, field, value);
+}
+wcfStatus wcfValueChangeEvent(wcfClient *wcli, const char *member,
+                              const char *field, wcfEventCallback2 callback,
+                              void *user_data) {
+    return wcfValueChangeEventT(wcli, member, field, callback, user_data);
+}
+wcfStatus wcfValueChangeEventW(wcfClient *wcli, const wchar_t *member,
+                               const wchar_t *field,
+                               wcfEventCallback2W callback, void *user_data) {
+    return wcfValueChangeEventT(wcli, member, field, callback, user_data);
 }
 }
