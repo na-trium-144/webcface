@@ -31,10 +31,11 @@ struct WEBCFACE_DLL ServerStorage {
     Server *server;
 
     int keep_log;
+    std::string hostname;
 
     explicit ServerStorage(Server *server, int keep_log = 1000)
         : clients(), clients_by_id(), ping_status(), server(server),
-          keep_log(keep_log) {}
+          keep_log(keep_log), hostname() {}
     ~ServerStorage() { clear(); }
 
     /*!

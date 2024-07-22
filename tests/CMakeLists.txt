@@ -25,11 +25,11 @@ target_link_libraries(webcface-test PRIVATE
     webcface
     GTest::gtest_main
     msgpack-cxx
-    utf8cpp
-    spdlog-linker
-    magickpp-linker
-    crow-linker
-    libcurl-linker
+    webcface-utf8cpp-linker
+    webcface-spdlog-linker
+    webcface-magickpp-linker
+    webcface-crow-linker
+    webcface-libcurl-linker
 )
 target_compile_definitions(webcface-test PRIVATE
     WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}

@@ -100,7 +100,7 @@ TEST_F(ClientTest, connectionByWait) {
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
     EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
               std::future_status::ready);
-    dummy_s->send(message::SyncInitEnd{{}, "", "", 0});
+    dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
     t.join();
     f.get();
     EXPECT_TRUE(wcli_->connected());
@@ -124,7 +124,7 @@ TEST_F(ClientTest, noAutoReconnect) {
         wait();
     }
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
-    dummy_s->send(message::SyncInitEnd{{}, "", "", 0});
+    dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
     t.join();
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcli_->connected());
@@ -207,12 +207,13 @@ TEST_F(ClientTest, serverVersion) {
     dummy_s = std::make_shared<DummyServer>(false);
     wcli_->start();
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
-    dummy_s->send(message::SyncInitEnd{{}, "a", "1", 0});
+    dummy_s->send(message::SyncInitEnd{{}, "a", "1", 0, "b"});
     wait();
     EXPECT_EQ(wcli_->serverName(), "");
     wcli_->waitRecv();
     EXPECT_EQ(wcli_->serverName(), "a");
     EXPECT_EQ(wcli_->serverVersion(), "1");
+    EXPECT_EQ(wcli_->serverHostName(), "b");
 }
 TEST_F(ClientTest, ping) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -221,7 +222,7 @@ TEST_F(ClientTest, ping) {
         wait();
     }
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
-    dummy_s->send(message::SyncInitEnd{{}, "", "", 42});
+    dummy_s->send(message::SyncInitEnd{{}, "", "", 42, ""});
     wcli_->waitRecv();
     dummy_s->send(message::Ping{});
     wcli_->waitRecv();

@@ -289,6 +289,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      */
     const std::string &serverName() const;
+    /*!
+     * \brief サーバーのホスト名
+     * \since ver2.0
+     */
+    const std::string &serverHostName() const;
 };
 
 WEBCFACE_NS_END

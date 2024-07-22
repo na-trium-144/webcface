@@ -256,7 +256,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::unique_ptr<std::wstreambuf> logger_buf_w;
     std::unique_ptr<std::wostream> logger_os_w;
 
-    std::string svr_name, svr_version;
+    std::string svr_name, svr_version, svr_hostname;
 
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status =
         nullptr;

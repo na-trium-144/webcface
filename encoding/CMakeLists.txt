@@ -7,4 +7,4 @@ target_sources(webcface-encoding PRIVATE
 target_include_directories(webcface-encoding PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
 target_compile_definitions(webcface-encoding PRIVATE WEBCFACE_BUILDING)
 target_compile_features(webcface-encoding PUBLIC cxx_std_17)
-target_link_libraries(webcface-encoding PRIVATE utf8cpp)
+target_link_libraries(webcface-encoding PRIVATE webcface-utf8cpp-linker)

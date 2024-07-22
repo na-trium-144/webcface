@@ -39,8 +39,8 @@ target_compile_features(webcface-client PUBLIC cxx_std_17)
 target_link_libraries(webcface-client PRIVATE
     webcface-message
     webcface-server-store
-    libcurl-linker
-    spdlog-linker
+    webcface-libcurl-linker
+    webcface-spdlog-linker
 )
 target_link_libraries(webcface-client PUBLIC
     webcface-encoding

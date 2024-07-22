@@ -89,6 +89,7 @@ std::wstreambuf *Client::loggerWStreamBuf() { return data->logger_buf_w.get(); }
 std::wostream &Client::loggerWOStream() { return *data->logger_os_w.get(); }
 const std::string &Client::serverVersion() const { return data->svr_version; }
 const std::string &Client::serverName() const { return data->svr_name; }
+const std::string &Client::serverHostName() const { return data->svr_hostname; }
 
 void internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {
@@ -597,6 +598,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             this->svr_name = r.svr_name;
             this->svr_version = r.ver;
             this->self_member_id.emplace(r.member_id);
+            this->svr_hostname = r.hostname;
             break;
         }
         case MessageKind::ping: {

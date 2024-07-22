@@ -132,6 +132,9 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
     logger->debug("static dir = {}", static_dir);
     // logger->debug("temp dir = {}", temp_dir);
 
+    store->hostname = getHostName(logger);
+    logger->info("HostName is {}", store->hostname);
+
     auto unix_path = message::Path::unixSocketPath(port);
     auto wsl_path = message::Path::unixSocketPathWSLInterop(port);
 

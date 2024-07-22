@@ -137,11 +137,16 @@ struct WEBCFACE_DLL SyncInitEnd
     std::string ver;
     /*!
      * \brief クライアントのmember id
-     *
+     * \since ver2.0
      */
     unsigned int member_id;
+    /*!
+     * \brief サーバーのホスト名
+     * \since ver2.0
+     */
+    std::string hostname;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", svr_name), MSGPACK_NVP("v", ver),
-                       MSGPACK_NVP("m", member_id))
+                       MSGPACK_NVP("m", member_id), MSGPACK_NVP("h", hostname))
 };
 /*!
  * \brief ping(server->client->server)

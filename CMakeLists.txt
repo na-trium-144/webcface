@@ -134,10 +134,10 @@ if(WEBCFACE_SERVER)
     include(cmake/deps/crow.cmake)
     include(cmake/deps/magickpp.cmake)
 else()
-    add_library(crow-linker INTERFACE)
-    add_library(magickpp-linker INTERFACE)
+    add_library(webcface-crow-linker INTERFACE)
+    add_library(webcface-magickpp-linker INTERFACE)
     if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS magickpp-linker)
+        list(APPEND WEBCFACE_EXPORTS webcface-magickpp-linker)
     endif()
 endif()
 if(WEBCFACE_EXAMPLE)
@@ -260,15 +260,15 @@ if(WEBCFACE_SERVER)
 endif()
 # private: リンクが必要なもののみ
 target_link_libraries(webcface PRIVATE
-    magickpp-linker
-    libcurl-linker
-    spdlog-linker
+    webcface-magickpp-linker
+    webcface-libcurl-linker
+    webcface-spdlog-linker
 )
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
-        $<TARGET_PROPERTY:magickpp-linker,INTERFACE_LINK_DIRECTORIES>
-        $<TARGET_PROPERTY:libcurl-linker,INTERFACE_LINK_DIRECTORIES>
-        $<TARGET_PROPERTY:spdlog-linker,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:webcface-libcurl-linker,INTERFACE_LINK_DIRECTORIES>
+        $<TARGET_PROPERTY:webcface-spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
 if(WEBCFACE_SYSTEM_WIN32SOCKET)

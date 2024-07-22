@@ -87,7 +87,7 @@ TEST_F(CClientTest, connectionByWait) {
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
     EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
               std::future_status::ready);
-    dummy_s->send(message::SyncInitEnd{{}, "", "", 0});
+    dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
     t.join();
     f.get();
     EXPECT_TRUE(dummy_s->connected());
