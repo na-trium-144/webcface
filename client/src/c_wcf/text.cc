@@ -8,13 +8,13 @@ static wcfStatus wcfTextSetT(wcfClient *wcli, const CharT *field,
                              const CharT *text) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     wcli_->text(field).set(strOrEmpty(text));
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -22,13 +22,13 @@ static wcfStatus wcfTextSetNT(wcfClient *wcli, const CharT *field,
                               const CharT *text, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     wcli_->text(field).set(std::basic_string_view<CharT>(text, size));
-    return wcfOk;
+    return WCF_OK;
 }
 
 /// \private
@@ -38,14 +38,14 @@ static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
                              int *recv_size) {
     *recv_size = 0;
     if (!field || size < 0) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     if (size > 0) {
         text[0] = 0;
     }
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     auto str = wcli_->member(strOrEmpty(member)).text(field).tryGetV();
     if (str) {
@@ -58,9 +58,9 @@ static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
             text[copy_size] = 0;
         }
         *recv_size = static_cast<int>(str2.size());
-        return wcfOk;
+        return WCF_OK;
     } else {
-        return wcfNoData;
+        return WCF_NO_DATA;
     }
 }
 /// \private
@@ -71,7 +71,7 @@ wcfTextChangeEventT(wcfClient *wcli, const CharT *member, const CharT *field,
                     void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->member(strOrEmpty(member))
         .text(field)
@@ -84,7 +84,7 @@ wcfTextChangeEventT(wcfClient *wcli, const CharT *member, const CharT *field,
                          user_data);
             }
         });
-    return wcfOk;
+    return WCF_OK;
 }
 
 extern "C" {

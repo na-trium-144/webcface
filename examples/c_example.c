@@ -13,7 +13,7 @@ int main(void) {
         wcfValueSet(wcli, "hoge", i++);
 
         wcfFuncCallHandle *handle;
-        if (wcfFuncFetchCall(wcli, "hoge", &handle) == wcfOk) {
+        if (wcfFuncFetchCall(wcli, "hoge", &handle) == WCF_OK) {
             printf("hoge %d, %f, '%s'\n", handle->args[0].as_int,
                    handle->args[1].as_double, handle->args[2].as_str);
             wcfMultiVal res = wcfValD(123.45);

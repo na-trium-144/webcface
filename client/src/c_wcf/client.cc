@@ -35,68 +35,68 @@ int wcfIsConnected(wcfClient *wcli) {
 wcfStatus wcfClose(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_list.erase(std::find(wcli_list.begin(), wcli_list.end(), wcli));
     delete wcli_;
-    return wcfOk;
+    return WCF_OK;
 }
 
 wcfStatus wcfStart(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->start();
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfWaitConnection(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->waitConnection();
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->autoReconnect(enabled);
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfRecv(wcfClient *wcli, int timeout) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->recv(std::chrono::microseconds(timeout));
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfWaitRecv(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->waitRecv();
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfAutoRecv(wcfClient *wcli, int interval) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->autoRecv(interval >= 1, std::chrono::microseconds(interval));
-    return wcfOk;
+    return WCF_OK;
 }
 wcfStatus wcfSync(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->sync();
-    return wcfOk;
+    return WCF_OK;
 }
 
 wcfStatus wcfDestroy(const void *ptr) {
@@ -106,7 +106,7 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (f_it != func_val_list.end()) {
             func_val_list.erase(f_it);
             delete f_ptr;
-            return wcfOk;
+            return WCF_OK;
         }
     }
     {
@@ -115,7 +115,7 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (fw_it != func_val_list_w.end()) {
             func_val_list_w.erase(fw_it);
             delete fw_ptr;
-            return wcfOk;
+            return WCF_OK;
         }
     }
     {
@@ -124,7 +124,7 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (v_it != view_list.end()) {
             view_list.erase(v_it);
             delete[] v_ptr;
-            return wcfOk;
+            return WCF_OK;
         }
     }
     {
@@ -133,10 +133,10 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (vw_it != view_list_w.end()) {
             view_list_w.erase(vw_it);
             delete[] vw_ptr;
-            return wcfOk;
+            return WCF_OK;
         }
     }
-    return wcfBadHandle;
+    return WCF_BAD_HANDLE;
 }
 }
 
@@ -146,11 +146,11 @@ static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
                                 int *members_num) {
     *members_num = 0;
     if (size < 0) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     const auto &members = wcli_->members();
     *members_num = static_cast<int>(members.size());
@@ -162,7 +162,7 @@ static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
             list[i] = members.at(i).nameW().c_str();
         }
     }
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -172,7 +172,7 @@ wcfMemberEntryEventT(wcfClient *wcli,
                      void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->onMemberEntry([callback, user_data](const Member &m) {
         if constexpr (std::is_same_v<CharT, char>) {
@@ -181,7 +181,7 @@ wcfMemberEntryEventT(wcfClient *wcli,
             callback(m.nameW().c_str(), user_data);
         }
     });
-    return wcfOk;
+    return WCF_OK;
 }
 
 extern "C" {

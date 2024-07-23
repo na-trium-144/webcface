@@ -11,23 +11,23 @@ typedef void wcfClient;
 typedef void wcfAsyncFuncResult;
 
 typedef enum wcfStatus {
-    wcfOk = 0,
-    wcfBadClient = 1,
-    wcfBadHandle = 2,
-    wcfInvalidArgument = 3,
-    wcfNotFound = 4,
-    wcfException = 5,
-    wcfNotCalled = 6,
-    wcfNotReturned = 7,
-    wcfNoData = 8,
+    WCF_OK = 0,
+    WCF_BAD_WCLI = 1,
+    WCF_BAD_HANDLE = 2,
+    WCF_INVALID_ARGUMENT = 3,
+    WCF_NOT_FOUND = 4,
+    WCF_EXCEPTION = 5,
+    WCF_NOT_CALLED = 6,
+    WCF_NOT_RETURNED = 7,
+    WCF_NO_DATA = 8,
 } wcfStatus;
 
 typedef enum wcfValType {
-    wcfValNone = 0,
-    wcfValString = 1,
-    wcfValBool = 2,
-    wcfValInt = 3,
-    wcfValDouble = 4,
+    WCF_VAL_NONE = 0,
+    WCF_VAL_STRING = 1,
+    WCF_VAL_BOOL = 2,
+    WCF_VAL_INT = 3,
+    WCF_VAL_DOUBLE = 4,
 } wcfValType;
 
 /*!
@@ -182,26 +182,26 @@ typedef void(WEBCFACE_CALL *wcfEventCallback2W)(const wchar_t *member,
                                                 void *user_data);
 
 typedef enum wcfViewComponentType {
-    wcfViewText = 0,
-    wcfViewNewLine = 1,
-    wcfViewButton = 2,
+    WCF_VIEW_TEXT = 0,
+    WCF_VIEW_NEW_LINE = 1,
+    WCF_VIEW_BUTTON = 2,
 } wcfViewComponentType;
 
 typedef enum wcfColor {
-    wcfColorInherit = 0,
-    wcfColorBlack = 1,
-    wcfColorWhite = 2,
-    wcfColorGray = 4,
-    wcfColorRed = 8,
-    wcfColorOrange = 9,
-    wcfColorYellow = 11,
-    wcfColorGreen = 13,
-    wcfColorTeal = 15,
-    wcfColorCyan = 16,
-    wcfColorBlue = 18,
-    wcfColorIndigo = 19,
-    wcfColorPurple = 21,
-    wcfColorPink = 23,
+    WCF_COLOR_INHERIT = 0,
+    WCF_COLOR_BLACK = 1,
+    WCF_COLOR_WHITE = 2,
+    WCF_COLOR_GRAY = 4,
+    WCF_COLOR_RED = 8,
+    WCF_COLOR_ORANGE = 9,
+    WCF_COLOR_YELLOW = 11,
+    WCF_COLOR_GREEN = 13,
+    WCF_COLOR_TEAL = 15,
+    WCF_COLOR_CYAN = 16,
+    WCF_COLOR_BLUE = 18,
+    WCF_COLOR_INDIGO = 19,
+    WCF_COLOR_PURPLE = 21,
+    WCF_COLOR_PINK = 23,
 } wcfColor;
 
 /*!

@@ -16,7 +16,7 @@ static auto wcfViewInit() {
 template <typename CharT>
 static auto wcfTextT(const CharT *text) {
     auto c = wcfViewInit<CharT>();
-    c.type = wcfViewText;
+    c.type = WCF_VIEW_TEXT;
     c.text = text;
     return c;
 }
@@ -24,7 +24,7 @@ static auto wcfTextT(const CharT *text) {
 template <typename CharT>
 static auto wcfNewLineT() {
     auto c = wcfViewInit<CharT>();
-    c.type = wcfViewNewLine;
+    c.type = WCF_VIEW_NEW_LINE;
     return c;
 }
 /// \private
@@ -32,7 +32,7 @@ template <typename CharT>
 static auto wcfButtonT(const CharT *text, const CharT *on_click_member,
                        const CharT *on_click_field) {
     auto c = wcfViewInit<CharT>();
-    c.type = wcfViewButton;
+    c.type = WCF_VIEW_BUTTON;
     c.text = text;
     c.on_click_member = on_click_member;
     c.on_click_field = on_click_field;
@@ -63,10 +63,10 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
             const typename CharType<CharT>::CComponent *components, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field || size < 0) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto v = wcli_->view(field);
     v.init();
@@ -95,7 +95,7 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
         });
     }
     v.sync();
-    return wcfOk;
+    return WCF_OK;
 }
 
 /// \private
@@ -106,10 +106,10 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto vc = wcli_->member(strOrEmpty(member)).view(field).tryGet();
     if (vc) {
@@ -127,9 +127,9 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
             }
             *components = vcc_p;
         }
-        return wcfOk;
+        return WCF_OK;
     } else {
-        return wcfNoData;
+        return WCF_NO_DATA;
     }
 }
 

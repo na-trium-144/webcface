@@ -8,13 +8,13 @@ static wcfStatus wcfValueSetT(wcfClient *wcli, const CharT *field,
                               double value) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     wcli_->value(field).set(value);
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -22,13 +22,13 @@ static wcfStatus wcfValueSetVecDT(wcfClient *wcli, const CharT *field,
                                   const double *value, int size) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     wcli_->value(field).set(std::vector<double>(value, value + size));
-    return wcfOk;
+    return WCF_OK;
 }
 
 /// \private
@@ -39,10 +39,10 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
     *recv_size = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field || size < 0) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto vec = wcli_->member(strOrEmpty(member)).value(field).tryGetVec();
     if (vec) {
@@ -55,12 +55,12 @@ static wcfStatus wcfValueGetVecDT(wcfClient *wcli, const CharT *member,
                         (size - copy_size) * sizeof(double));
         }
         *recv_size = static_cast<int>(vec->size());
-        return wcfOk;
+        return WCF_OK;
     } else {
         if (size > 0) {
             std::memset(values, 0, size * sizeof(double));
         }
-        return wcfNoData;
+        return WCF_NO_DATA;
     }
 }
 /// \private
@@ -70,17 +70,17 @@ static wcfStatus wcfValueGetT(wcfClient *wcli, const CharT *member,
     *value = 0;
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     if (!field) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto val = wcli_->member(strOrEmpty(member)).value(field).tryGet();
     if (val) {
         *value = *val;
-        return wcfOk;
+        return WCF_OK;
     } else {
-        return wcfNoData;
+        return WCF_NO_DATA;
     }
 }
 /// \private
@@ -91,7 +91,7 @@ wcfValueChangeEventT(wcfClient *wcli, const CharT *member, const CharT *field,
                      void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->member(strOrEmpty(member))
         .value(field)
@@ -104,7 +104,7 @@ wcfValueChangeEventT(wcfClient *wcli, const CharT *member, const CharT *field,
                          user_data);
             }
         });
-    return wcfOk;
+    return WCF_OK;
 }
 
 extern "C" {

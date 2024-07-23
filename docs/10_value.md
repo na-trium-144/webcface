@@ -317,15 +317,15 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     double value[5];
     int size;
     int ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
-    // ex.) ret = wcfNotFound
+    // ex.) ret = WCF_NOT_FOUND
 
     // few moments later,
     ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
-    // ex.) ret = wcfOk, value = {123.45, 0, 0, 0, 0}, size = 1
+    // ex.) ret = WCF_OK, value = {123.45, 0, 0, 0, 0}, size = 1
     ```
     sizeに受信した値の個数、valueに受信した値が入ります。
 
-    値を受信していない場合`wcfNotFound`を返し、別スレッドでリクエストが送信されます。
+    値を受信していない場合`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
     
     <span class="since-c">1.7</span>
     1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">2.0</span> wcfValueGetW) も使えます。

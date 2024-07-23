@@ -10,7 +10,7 @@ extern "C" {
  * \param wcli Clientポインタ
  * \param field valueの名前
  * \param value 送信する値
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSet(wcfClient *wcli,
@@ -31,7 +31,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetW(wcfClient *wcli,
  * \param field valueの名前
  * \param values 送信する値の配列の先頭のポインタ
  * \param size 送信する値の数
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetVecD(wcfClient *wcli,
@@ -54,14 +54,14 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueSetVecDW(wcfClient *wcli,
  *
  * 配列データを受信した場合先頭の1つのみを返す
  *
- * wcfNotFoundの場合valueには0が返る
+ * WCF_NOT_FOUNDの場合valueには0が返る
  * \param wcli Clientポインタ
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field valueの名前
  * \param value 受信した値が返る
- * \return wcliが無効ならwcfBadClient,
- * ~~まだ値を受信していない場合 wcfNotFound~~,
- * (ver2.0〜)まだ値を受信していない場合 wcfNoData
+ * \return wcliが無効ならWCF_BAD_WCLI,
+ * ~~まだ値を受信していない場合 WCF_NOT_FOUND~~,
+ * (ver2.0〜)まだ値を受信していない場合 WCF_NO_DATA
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGet(wcfClient *wcli,
@@ -84,7 +84,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetW(wcfClient *wcli,
  * sizeに指定したサイズより実際に受信した値の個数のほうが大きい場合、
  * valuesにはsize分の値のみを格納しrecv_sizeには本来のサイズを返す
  *
- * size > recv_size の場合、またはwcfNotFoundの場合、
+ * size > recv_size の場合、またはWCF_NOT_FOUNDの場合、
  * 配列の余った範囲は0で埋められる
  *
  * \param wcli Clientポインタ
@@ -94,9 +94,9 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetW(wcfClient *wcli,
  * (ver2.0〜:size=0ならNULLも可)
  * \param size 配列のサイズ
  * \param recv_size 実際に受信した値の個数が返る
- * \return wcliが無効ならwcfBadClient,
- * ~~まだ値を受信していない場合 wcfNotFound~~,
- * (ver2.0〜)まだ値を受信していない場合 wcfNoData
+ * \return wcliが無効ならWCF_BAD_WCLI,
+ * ~~まだ値を受信していない場合 WCF_NOT_FOUND~~,
+ * (ver2.0〜)まだ値を受信していない場合 WCF_NO_DATA
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetVecD(wcfClient *wcli,
@@ -126,7 +126,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueGetVecDW(wcfClient *wcli,
  * 型の引数1つを取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第3引数にそのまま渡される。
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL

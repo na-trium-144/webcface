@@ -332,8 +332,8 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     とすることで関数が呼び出されたかどうかを調べることができます。
     listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)
 
-    その関数がまだ呼び出されていない場合は`wcfNotCalled`が返ります。
-    関数が呼び出された場合`wcfOk`が返り、`handle->args`に引数が格納されます。
+    その関数がまだ呼び出されていない場合は`WCF_NOT_CALLED`が返ります。
+    関数が呼び出された場合`WCF_OK`が返り、`handle->args`に引数が格納されます。
     ```c
     wcfMultiVal ans = wcfValD(123.45);
     wcfFuncRespond(handle, &ans);
@@ -407,12 +407,12 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
     };
     wcfMultiVal *ans;
     int ret = wcfFuncRun(wcli_, "a", "b", args, 3, &ans);
-    // ex.) ret = wcfOk, ans->as_double = 123.45
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
 
     wcfDestroy(ans);
     ```
-    関数が存在しない場合`wcfNotFound`を返します。
-    関数が例外を投げた場合`wcfException`を返し、ret->as_strにエラーメッセージが入ります。
+    関数が存在しない場合`WCF_NOT_FOUND`を返します。
+    関数が例外を投げた場合`WCF_EXCEPTION`を返し、ret->as_strにエラーメッセージが入ります。
 
     <span class="since-c">1.7</span>
     結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。
@@ -487,11 +487,11 @@ AsyncFuncResultからは started と result が取得できます。
     wcfMultiVal *ans;
     int ret = wcfFuncGetResult(async_res, &ans);
     // int ret = wcfFuncWaitResult(async_res, &ans);
-    // ex.) ret = wcfOk, ans->as_double = 123.45
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
 
     wcfDestroy(ans);
     ```
-    関数の実行がまだ完了していなければwcfFuncGetResultは`wcfNotReturned`を返します。
+    関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
 
     wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
 

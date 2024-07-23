@@ -19,7 +19,7 @@ extern "C" {
  * (size=0ならNULLも可)
  * \param size listの要素数
  * \param field_num 実際のfield数
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfValueEntryList(wcfClient *wcli,
                                                        const char *member,
@@ -104,7 +104,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfViewEntryListW(wcfClient *wcli,
  * 型の引数1つを取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第3引数にそのまま渡される。
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -176,7 +176,7 @@ wcfViewEntryEventW(wcfClient *wcli, const wchar_t *member,
  * 型の引数を1つずつ取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第2引数にそのまま渡される。
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -237,8 +237,8 @@ WEBCFACE_DLL const char *WEBCFACE_CALL wcfMemberRemoteAddr(wcfClient *wcli,
  * \param wcli
  * \param member
  * \param value pingの往復時間(ms)が返る
- * \return wcliが無効ならwcfBadClient,
- * また値を受信していなければwcfNoData
+ * \return wcliが無効ならWCF_BAD_WCLI,
+ * また値を受信していなければWCF_NO_DATA
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberPingStatus(wcfClient *wcli,
@@ -261,7 +261,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberPingStatusW(wcfClient *wcli,
  * 型の引数を1つずつ取り、何もreturnしない。
  * \param user_data 関数に引数として渡す追加のデータ
  * callbackが呼び出されるときに第2引数にそのまま渡される。
- * \return wcliが無効ならwcfBadClient
+ * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL

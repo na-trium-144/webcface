@@ -10,11 +10,11 @@ static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
                                const CharT **list, int size, int *field_num) {
     *field_num = 0;
     if (size < 0) {
-        return wcfInvalidArgument;
+        return WCF_INVALID_ARGUMENT;
     }
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     std::vector<V> fields;
     if constexpr (std::is_same_v<V, Value>) {
@@ -35,7 +35,7 @@ static wcfStatus wcfEntryListT(wcfClient *wcli, const CharT *member,
             list[i] = fields.at(i).nameW().c_str();
         }
     }
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename V, typename CharT>
@@ -45,7 +45,7 @@ wcfEntryEventT(wcfClient *wcli, const CharT *member,
                void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     auto cb = [callback, user_data](const V &m) {
         if constexpr (std::is_same_v<CharT, char>) {
@@ -63,7 +63,7 @@ wcfEntryEventT(wcfClient *wcli, const CharT *member,
     } else if constexpr (std::is_same_v<V, Func>) {
         wcli_->member(strOrEmpty(member)).onFuncEntry(cb);
     }
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -73,7 +73,7 @@ wcfSyncEventT(wcfClient *wcli, const CharT *member,
               void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->member(strOrEmpty(member))
         .onSync([callback, user_data](const Member &m) {
@@ -83,7 +83,7 @@ wcfSyncEventT(wcfClient *wcli, const CharT *member,
                 callback(m.nameW().c_str(), user_data);
             }
         });
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -93,7 +93,7 @@ wcfPingEventT(wcfClient *wcli, const CharT *member,
               void *user_data) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     wcli_->member(strOrEmpty(member))
         .onPing([callback, user_data](const Member &m) {
@@ -103,7 +103,7 @@ wcfPingEventT(wcfClient *wcli, const CharT *member,
                 callback(m.nameW().c_str(), user_data);
             }
         });
-    return wcfOk;
+    return WCF_OK;
 }
 /// \private
 template <typename CharT>
@@ -123,14 +123,14 @@ static wcfStatus wcfMemberPingStatusT(wcfClient *wcli, const CharT *member,
                                       int *value) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
-        return wcfBadClient;
+        return WCF_BAD_WCLI;
     }
     auto s = wcli_->member(strOrEmpty(member)).pingStatus();
     if (s) {
         *value = *s;
-        return wcfOk;
+        return WCF_OK;
     } else {
-        return wcfNoData;
+        return WCF_NO_DATA;
     }
 }
 
