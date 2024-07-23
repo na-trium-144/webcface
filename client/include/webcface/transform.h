@@ -1,5 +1,9 @@
 #pragma once
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include <array>
 
 WEBCFACE_NS_BEGIN

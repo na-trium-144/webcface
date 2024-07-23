@@ -2,7 +2,11 @@
 #include <optional>
 #include <vector>
 #include <memory>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/encoding/image_mode.h"
 
 WEBCFACE_NS_BEGIN

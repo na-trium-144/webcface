@@ -1,6 +1,10 @@
 #pragma once
 #include "webcface/robot_link.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/view.h"
 #include "webcface/components.h"
 #include <sstream>

@@ -6,7 +6,11 @@
 #include <stdexcept>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN

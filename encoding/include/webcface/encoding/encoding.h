@@ -5,7 +5,11 @@
 #include <mutex>
 #include <unordered_map>
 #include <unordered_set>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 inline namespace encoding {

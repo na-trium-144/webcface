@@ -2,7 +2,11 @@
 #include <mutex>
 #include "webcface/func_info.h"
 #include "webcface/func_result.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace internal {

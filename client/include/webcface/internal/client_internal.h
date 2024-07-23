@@ -19,7 +19,11 @@
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 

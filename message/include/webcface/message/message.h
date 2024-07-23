@@ -19,7 +19,11 @@
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/message/u8string.h"
 #include "webcface/message/val_adaptor.h"
 #include "webcface/encoding/image_mode.h"

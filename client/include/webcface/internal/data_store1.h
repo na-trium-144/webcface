@@ -1,7 +1,11 @@
 #pragma once
 #include <mutex>
 #include <optional>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/log.h"
 #include "webcface/encoding/encoding.h"
 

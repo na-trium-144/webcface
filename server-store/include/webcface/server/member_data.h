@@ -10,7 +10,11 @@
 #include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/server/server.h"
 
 WEBCFACE_NS_BEGIN

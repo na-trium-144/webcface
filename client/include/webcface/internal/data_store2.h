@@ -4,7 +4,11 @@
 #include <optional>
 #include <functional>
 #include "webcface/field.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/encoding/val_adaptor.h"
 #include "webcface/internal/func_internal.h"
 #include "webcface/image_frame.h"

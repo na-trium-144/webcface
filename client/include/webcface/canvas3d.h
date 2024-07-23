@@ -5,7 +5,11 @@
 #include <memory>
 #include <utility>
 #include <stdexcept>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "robot_model.h"
 #include "components.h"
 

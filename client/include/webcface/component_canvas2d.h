@@ -1,7 +1,11 @@
 #pragma once
 #include <vector>
 #include <optional>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "transform.h"
 #include "field.h"
 #include "webcface/component_view.h"

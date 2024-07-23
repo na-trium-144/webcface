@@ -5,7 +5,11 @@
 // clang-format on
 #endif
 
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 
 #include "encoding/encoding.h"
 #include "encoding/val_adaptor.h"

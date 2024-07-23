@@ -9,7 +9,11 @@
 #include "webcface/robot_model.h"
 #include "webcface/canvas3d.h"
 #include "webcface/canvas2d.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"

@@ -4,7 +4,11 @@
 #include <condition_variable>
 #include <chrono>
 #include <optional>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 /*!

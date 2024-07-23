@@ -3,7 +3,11 @@
 #include <vector>
 #include <optional>
 #include "field.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include "func.h"
 #include "webcface/log.h"
 
