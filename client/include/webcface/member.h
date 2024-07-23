@@ -30,12 +30,12 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Member名
      *
      */
-    std::string name() const { return member_.decode(); }
+    const std::string &name() const { return member_.decode(); }
     /*!
      * \brief Member名 (wstring)
      * \since ver2.0
      */
-    std::wstring nameW() const { return member_.decodeW(); }
+    const std::wstring &nameW() const { return member_.decodeW(); }
 
     using Field::child;
     using Field::operator[];

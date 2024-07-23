@@ -223,8 +223,8 @@ WEBCFACE_DLL const char *WEBCFACE_CALL wcfMemberLibVersion(wcfClient *wcli,
  * \brief MemberのIPアドレスを返す
  * \since ver2.0
  */
-WEBCFACE_DLL const char *WEBCFACE_CALL wcfRemoteAddr(wcfClient *wcli,
-                                                     const char *member);
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfMemberRemoteAddr(wcfClient *wcli,
+                                                           const char *member);
 
 /*!
  * \brief memberの通信速度を取得

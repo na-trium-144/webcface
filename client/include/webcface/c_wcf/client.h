@@ -222,7 +222,7 @@ WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerVersion(wcfClient *wcli);
  * またはwcliが無効な場合空文字列
  *
  */
-WEBCFACE_DLL const char *WEBCFACE_DLL wcfServerName(wcfClient *wcli);
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerName(wcfClient *wcli);
 /*!
  * \brief WebCFaceサーバーのホスト名を返す
  * \since ver2.0
@@ -230,7 +230,7 @@ WEBCFACE_DLL const char *WEBCFACE_DLL wcfServerName(wcfClient *wcli);
  * またはwcliが無効な場合空文字列
  *
  */
-WEBCFACE_DLL const char *WEBCFACE_DLL wcfServerHostName(wcfClient *wcli);
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerHostName(wcfClient *wcli);
 
 #ifdef __cplusplus
 }

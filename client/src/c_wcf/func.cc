@@ -80,7 +80,7 @@ static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
                          std::future_status::ready) {
         return wcfNotReturned;
     }
-    int status;
+    wcfStatus status;
     try {
         *result = resultToCVal<CharT>(res->result.get());
         status = wcfOk;
