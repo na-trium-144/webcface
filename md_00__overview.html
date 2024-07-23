@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('md_00__overview.html',''); initResizab
 <li class="level2"><a href="#autotoc_md4">サービスとして (Linuxのみ)</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md5">WebUI</a><ul><li class="level2"><a href="#autotoc_md6">WebUI Server Mode</a></li>
+<li class="level1"><a href="#autotoc_md5">WebUI</a><ul><li class="level2"><a href="#autotoc_md6">WebUI Desktop</a></li>
 </ul>
 </li>
 <li class="level1"><a href="#autotoc_md7">PlotJuggler</a></li>
@@ -203,7 +203,12 @@ WebUI</h1>
 <p>WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
 <p>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</p>
 <h2><a class="anchor" id="autotoc_md6"></a>
-WebUI Server Mode</h2>
+WebUI Desktop</h2>
+<p>ver2は準備中</p>
+<details >
+<summary >
+WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
+<p></p>
 <p>WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。</p>
 <ul>
 <li>Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。</li>
@@ -220,6 +225,7 @@ WebUI Server Mode</h2>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png" alt="webui-server" class="inline"/></p>
 <p>WebUIの画面を閉じるとserverも終了します。 次に画面を開いた時自動的に前回の状態が復元されます。</p>
 <dl class="section note"><dt>Note</dt><dd>設定を自動保存する場所はWindowsでは <code>C:\Users\(user)\AppData\Roaming\webcface\sg.toml</code> 、それ以外では <code>$HOME/.webcface.sg.toml</code> です。</dd></dl>
+</details>
 <h1><a class="anchor" id="autotoc_md7"></a>
 PlotJuggler</h1>
 <p><a href="https://github.com/na-trium-144/plotjuggler-webcface-plugin">plotjuggler-webcface-plugin</a> のREADMEにしたがってプラグインをビルドしてインストールすると、 <a href="https://github.com/facontidavide/PlotJuggler">PlotJuggler</a> からWebCFaceのデータにアクセスできるようになります。 ビルド済みバイナリでの配布はしていません。</p>
@@ -356,7 +362,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 21 2024 15:03:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jul 23 2024 19:10:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

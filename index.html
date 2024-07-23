@@ -146,9 +146,8 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
  <a href="https://github.com/na-trium-144/webcface-js"><img src="https://img.shields.io/badge/JavaScript%2C%20TypeScript-gray?logo=JavaScript&amp;logoColor=white" alt="javascript" class="inline"/></a> <a href="https://www.npmjs.com/package/webcface"><img src="https://img.shields.io/npm/v/webcface" alt="npm" class="inline"/></a></p>
 <p>Web-based IPC &amp; Dashboard-like UI</p>
 <blockquote class="doxtable">
-<p>&zwj;* mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。 </p>
+<p>&zwj;* mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。 ver1は <a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチにあります </p>
 </blockquote>
-<p>ver1は <a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチにあります</p>
 <p>WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。</p>
 <p>C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。</p>
 <p>Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。 Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。 WindowsとWSL1/2の間の相互通信も自動的に接続されます。</p>
@@ -203,7 +202,10 @@ Links</h1>
 </ul>
 <h1><a class="anchor" id="autotoc_md206"></a>
 Installation</h1>
-<p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。 (webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)</p>
+<blockquote class="doxtable">
+<p>&zwj;以下のインストール手順は WebCFace ver1 をインストールします。ver2はまだリリースしていません。 </p>
+</blockquote>
+<p>以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。</p>
 <h2><a class="anchor" id="autotoc_md207"></a>
 Ubuntu (x86_64, arm64, armhf)</h2>
 <p><a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。</p>
@@ -216,7 +218,7 @@ Ubuntu 24.04 Noble</h3>
 x86_64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_amd64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_amd64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -224,7 +226,7 @@ x86_64</summary>
 arm64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_arm64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_arm64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -232,7 +234,7 @@ arm64</summary>
 armhf</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_armhf.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_armhf.deb</div>
 </div><!-- fragment --> </details>
 <h3><a class="anchor" id="autotoc_md209"></a>
@@ -242,7 +244,7 @@ Ubuntu 22.04 Jammy</h3>
 x86_64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_amd64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_amd64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -250,7 +252,7 @@ x86_64</summary>
 arm64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_arm64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_arm64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -258,7 +260,7 @@ arm64</summary>
 armhf</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_armhf.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_armhf.deb</div>
 </div><!-- fragment --> </details>
 <h3><a class="anchor" id="autotoc_md210"></a>
@@ -268,7 +270,7 @@ Ubuntu 20.04 Focal</h3>
 x86_64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_amd64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_amd64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -276,7 +278,7 @@ x86_64</summary>
 arm64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_arm64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_arm64.deb</div>
 </div><!-- fragment --> </details>
 <details >
@@ -284,7 +286,7 @@ arm64</summary>
 armhf</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_armhf.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_armhf.deb</div>
 </div><!-- fragment --> </details>
 <p>ダウンロードできたら </p><div class="fragment"><div class="line">sudo apt install ./webcface*.deb</div>
@@ -308,6 +310,9 @@ Windows (MSVC)</h2>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)</p>
 <h1><a class="anchor" id="autotoc_md214"></a>
 Build from source</h1>
+<blockquote class="doxtable">
+<p>&zwj;mainブランチは現在開発中であり大幅な仕様変更が入る可能性があります。 ver1のビルド手順はv1ブランチのREADMEを参照してください </p>
+</blockquote>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
 <h2><a class="anchor" id="autotoc_md215"></a>
 Requirements</h2>
@@ -508,7 +513,7 @@ License</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Jul 21 2024 15:03:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Jul 23 2024 19:10:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

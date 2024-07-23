@@ -58,7 +58,7 @@ var NAVTREE =
         [ "サービスとして (Linuxのみ)", "md_00__overview.html#autotoc_md4", null ]
       ] ],
       [ "WebUI", "md_00__overview.html#autotoc_md5", [
-        [ "WebUI Server Mode", "md_00__overview.html#autotoc_md6", null ]
+        [ "WebUI Desktop", "md_00__overview.html#autotoc_md6", null ]
       ] ],
       [ "PlotJuggler", "md_00__overview.html#autotoc_md7", null ],
       [ "Clientライブラリ", "md_00__overview.html#autotoc_md8", [
