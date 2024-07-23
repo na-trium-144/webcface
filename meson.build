@@ -7,6 +7,7 @@ project('webcface', 'c', 'cpp',
   ]
 )
 fs = import('fs')
+cmake = import('cmake')
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
@@ -29,6 +30,21 @@ add_project_arguments(
   language: ['c', 'cpp'],
 )
 webcface_config_inc = include_directories('.')
+
+msgpack_cxx_dep = dependency('msgpack-cxx', method: 'cmake', required: false)
+if not msgpack_cxx_dep.found()
+  if fs.exists(meson.global_source_root() / 'subprojects/git_msgpack-c/CMakeLists.txt')
+    opt_var = cmake.subproject_options()
+    opt_var.add_cmake_defines({
+      'MSGPACK_USE_BOOST': false,
+    })
+    msgpack_cxx_proj = cmake.subproject('git_msgpack-c', options: opt_var)
+    msgpack_cxx_dep = msgpack_cxx_proj.dependency('msgpack-cxx')
+  else
+    msgpack_cxx_proj = subproject('msgpackc-cxx')
+    msgpack_cxx_dep = msgpack_cxx_proj.get_variable('msgpack_cxx_dep')
+  endif
+endif
 
 subdir('encoding')
 subdir('message')

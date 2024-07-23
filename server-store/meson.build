@@ -12,11 +12,22 @@ webcface_server_store_lib = static_library('webcface-server-store',
   sources: webcface_server_store_src,
   include_directories: [
     webcface_config_inc,
-    webcface_encoding_inc,
-    webcface_message_inc,
-    webcface_server_internal_inc,
     webcface_server_store_inc,
+  ],
+  dependencies: [
+    webcface_encoding_dep,
+    webcface_message_dep,
+    webcface_server_internal_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
+)
+webcface_server_store_dep = declare_dependency(
+  include_directories: [
+    webcface_server_store_inc,
+  ],
+  dependencies: [
+    webcface_encoding_dep,
+    webcface_message_dep,
+  ],
 )

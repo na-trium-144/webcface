@@ -25,7 +25,6 @@ webcface_client_src = [
   'src/component_canvas2d.cc',
   'src/component_view.cc',
   'src/c_wcf/client.cc',
-  'src/c_wcf/member.cc',
   'src/c_wcf/value.cc',
   'src/c_wcf/text.cc',
   'src/c_wcf/func.cc',
@@ -36,11 +35,23 @@ webcface_client_lib = static_library('webcface-client',
   sources: webcface_client_src,
   include_directories: [
     webcface_config_inc,
-    webcface_encoding_inc,
-    webcface_message_inc,
-    webcface_server_store_inc,
     webcface_client_inc,
+  ],
+  dependencies: [
+    webcface_encoding_dep,
+    webcface_message_dep,
+    webcface_server_store_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
+)
+webcface_client_dep = declare_dependency(
+  include_directories: [
+    webcface_client_inc,
+  ],
+  dependencies: [
+    webcface_encoding_dep,
+    webcface_message_dep,
+    webcface_server_store_dep,
+  ],
 )

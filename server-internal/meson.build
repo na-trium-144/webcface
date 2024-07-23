@@ -7,4 +7,13 @@ webcface_server_internal_lib = static_library('webcface-server-internal',
   include_directories: [
     webcface_server_internal_inc,
   ],
+  dependencies: [
+  ],
+)
+webcface_server_internal_dep = declare_dependency(
+  include_directories: [
+    webcface_server_internal_inc,
+  ],
+  dependencies: [
+  ],
 )

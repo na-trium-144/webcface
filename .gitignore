@@ -8,3 +8,6 @@ build*/
 version.rc
 /Testing/
 /.cache/
+/subprojects/*
+!/subprojects/*.wrap
+!/subprojects/git_*/

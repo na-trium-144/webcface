@@ -9,6 +9,15 @@ webcface_encoding_lib = static_library('webcface-encoding',
     webcface_config_inc,
     webcface_encoding_inc,
   ],
+  dependencies: [
+  ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
+)
+webcface_encoding_dep = declare_dependency(
+  include_directories: [
+    webcface_encoding_inc,
+  ],
+  dependencies: [
+  ],
 )
