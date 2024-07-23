@@ -184,13 +184,13 @@ TEST_F(CClientTest, valueReq) {
     int size;
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, -1, &size),
               WCF_INVALID_ARGUMENT);
-    EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_NO_DATA);
     EXPECT_EQ(value[0], 0);
     EXPECT_EQ(value[1], 0);
     EXPECT_EQ(value[2], 0);
     EXPECT_EQ(value[3], 0);
     EXPECT_EQ(value[4], 0);
-    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_NOT_FOUND);
+    EXPECT_EQ(wcfValueGet(wcli_, "a", "b", &value1), WCF_NO_DATA);
     EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
@@ -247,7 +247,7 @@ TEST_F(CClientTest, textReq) {
     int size;
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, -1, &size),
               WCF_INVALID_ARGUMENT);
-    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_NO_DATA);
     EXPECT_EQ(text[0], 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
@@ -588,7 +588,7 @@ TEST_F(CClientTest, viewReq) {
     using namespace std::string_literals;
     wcfViewComponent *vc;
     int size = 1;
-    EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_NOT_FOUND);
+    EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_NO_DATA);
     EXPECT_EQ(size, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
