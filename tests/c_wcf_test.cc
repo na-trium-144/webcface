@@ -97,12 +97,12 @@ TEST_F(CClientTest, connectionByWait) {
 TEST_F(CClientTest, noConnectionByRecv) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
-    EXPECT_EQ(wcfRecv(wcli_, 0), WCF_OK);
+    EXPECT_EQ(wcfRecv(wcli_), WCF_OK);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
 
-    EXPECT_EQ(wcfRecv(nullptr, 0), WCF_BAD_WCLI);
+    EXPECT_EQ(wcfRecv(nullptr), WCF_BAD_WCLI);
 }
 
 TEST_F(CClientTest, valueSend) {
@@ -224,7 +224,7 @@ TEST_F(CClientTest, textReq) {
 
 TEST_F(CClientTest, funcRun) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
@@ -330,7 +330,7 @@ TEST_F(CClientTest, funcRun) {
 
 TEST_F(CClientTest, funcListen) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     int arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};

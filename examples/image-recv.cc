@@ -15,6 +15,7 @@ int main() {
     img.request();
     img.onChange([](auto) { std::cout << "image updated" << std::endl; });
     while (true) {
+        wcli.waitRecv();
         auto img_frame = img.get();
         if (!img_frame.empty()) {
             std::cout << "1. Normal" << std::endl;
@@ -26,10 +27,10 @@ int main() {
             m.write("webcface-example-image-recv-1.png");
             break;
         }
-        std::this_thread::yield();
     }
     img.request(webcface::sizeWH(300, 300));
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -44,10 +45,10 @@ int main() {
             m.write("webcface-example-image-recv-2.png");
             break;
         }
-        std::this_thread::yield();
     }
     img.request(std::nullopt, webcface::ImageColorMode::gray);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -62,10 +63,11 @@ int main() {
             m.write("webcface-example-image-recv-3.jpg");
             break;
         }
-        std::this_thread::yield();
+        wcli.waitRecv();
     }
     img.request(std::nullopt, webcface::ImageCompressMode::jpeg, 20);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -79,10 +81,10 @@ int main() {
                       static_cast<int>(img_frame.data().size()));
             break;
         }
-        std::this_thread::yield();
     }
     img.request(std::nullopt, webcface::ImageCompressMode::png, 1);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -96,7 +98,6 @@ int main() {
                       static_cast<int>(img_frame.data().size()));
             break;
         }
-        std::this_thread::yield();
     }
     std::cout << "Images are in current directory." << std::endl;
 }

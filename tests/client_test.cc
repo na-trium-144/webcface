@@ -450,19 +450,19 @@ TEST_F(ClientTest, autoRecvThread) {
 }
 TEST_F(ClientTest, recvTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.9);
     start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(0));
+    wcli_->recv();
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvFor(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
@@ -470,19 +470,19 @@ TEST_F(ClientTest, recvTimeout) {
 }
 TEST_F(ClientTest, recvUntilTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start + std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvUntil(start + std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.9);
     start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start);
+    wcli_->waitRecvUntil(start);
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start - std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvUntil(start - std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
