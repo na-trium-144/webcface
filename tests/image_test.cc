@@ -99,7 +99,7 @@ TEST_F(ImageTest, field) {
     EXPECT_THROW(Image().tryGet(), std::runtime_error);
 }
 TEST_F(ImageTest, eventTarget) {
-    image("a", "b").appendListener(callback<Image>());
+    image("a", "b").onChange(callback<Image>());
     data_->image_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -148,7 +148,7 @@ TEST_F(ImageTest, imageGet) {
                                  ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0);
-    image("a", "d").appendListener(callback<Image>());
+    image("a", "d").onChange(callback<Image>());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,

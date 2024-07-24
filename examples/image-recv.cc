@@ -13,7 +13,7 @@ int main() {
 
     webcface::Image img = wcli.member("example_image_send").image("sample");
     img.request();
-    img.appendListener([](auto) { std::cout << "image updated" << std::endl; });
+    img.onChange([](auto) { std::cout << "image updated" << std::endl; });
     while (true) {
         auto img_frame = img.get();
         if (!img_frame.empty()) {

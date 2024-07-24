@@ -52,7 +52,7 @@ TEST_F(RobotModelTest, field) {
     EXPECT_THROW(RobotModel().tryGet(), std::runtime_error);
 }
 TEST_F(RobotModelTest, eventTarget) {
-    model("a", "b").appendListener(callback<RobotModel>());
+    model("a", "b").onChange(callback<RobotModel>());
     data_->robot_model_change_event["a"_ss]["b"_ss]->operator()(
         field("a", "b"));
     EXPECT_EQ(callback_called, 1);
@@ -109,6 +109,6 @@ TEST_F(RobotModelTest, get) {
     EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(model(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->robot_model_store.transferReq().count(self_name), 0);
-    model("a", "d").appendListener(callback<RobotModel>());
+    model("a", "d").onChange(callback<RobotModel>());
     EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }

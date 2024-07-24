@@ -2,7 +2,6 @@
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/client.h>
-#include <webcface/logger.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/log.h>
