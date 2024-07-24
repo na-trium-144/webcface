@@ -1,11 +1,9 @@
 project('crow', 'cpp')
 
-asio_dep = dependency('asio', required: false)
-if not asio_dep.found()
-  asio_dep = subproject('asio').get_variable('asio_dep')
-endif
+asio_dep = dependency('asio')
 
 crow_dep = declare_dependency(
   include_directories: ['include'],
   dependencies: [asio_dep],
 )
+meson.override_dependency('Crow', crow_dep)

@@ -3,3 +3,6 @@ url = https://github.com/ImageMagick/ImageMagick.git
 revision = 7.1.1-33
 depth = 1
 patch_directory = imagemagick
+
+[provide]
+dependency_names = MagickCore, MagickWand, Magick++

@@ -74,12 +74,28 @@ p = mod.add_project('configure',
   depends: magickpp_dependencies,
 )
 
-magickpp_dep = declare_dependency(
+magickcore_dep = declare_dependency(
   dependencies: [
-    p.dependency('Magick++'),
+    p.dependency('MagickCore'),
     libwebp_dep,
     libpng_dep,
     zlib_dep,
     libjpeg_dep,
   ],
 )
+magickwand_dep = declare_dependency(
+  dependencies: [
+    p.dependency('MagickWand'),
+    magickcore_dep,
+  ],
+)
+magickpp_dep = declare_dependency(
+  dependencies: [
+    p.dependency('Magick++'),
+    magickcore_dep,
+    magickwand_dep,
+  ],
+)
+meson.override_dependency('MagickCore', magickcore_dep)
+meson.override_dependency('MagickWand', magickwand_dep)
+meson.override_dependency('Magick++', magickpp_dep)

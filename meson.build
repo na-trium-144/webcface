@@ -31,35 +31,12 @@ add_project_arguments(
 )
 webcface_config_inc = include_directories('.')
 
-msgpack_cxx_dep = dependency('msgpack-cxx', required: false)
-if not msgpack_cxx_dep.found()
-  msgpack_cxx_dep = subproject('msgpackc-cxx').get_variable('msgpack_cxx_dep')
-endif
-
-spdlog_dep = dependency('spdlog', required: false)
-if not spdlog_dep.found()
-  spdlog_dep = subproject('spdlog').get_variable('spdlog_dep')
-endif
-
-utf8cpp_dep = dependency('utf8cpp', required: false)
-if not utf8cpp_dep.found()
-  utf8cpp_dep = subproject('utfcpp').get_variable('utfcpp_dep')
-endif
-
-crow_dep = dependency('crow', required: false)
-if not crow_dep.found()
-  crow_dep = subproject('crow').get_variable('crow_dep')
-endif
-
-magickpp_dep = dependency('Magick++', required: false)
-if not magickpp_dep.found()
-  magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
-endif
-
-curl_dep = dependency('libcurl', required: false)
-if not curl_dep.found()
-  curl_dep = subproject('curl').get_variable('curlu_dep')
-endif
+msgpack_cxx_dep = dependency('msgpack-cxx')
+spdlog_dep = dependency('spdlog')
+utf8cpp_dep = dependency('utf8cpp')
+crow_dep = dependency('Crow')
+magickpp_dep = dependency('Magick++')
+curl_dep = dependency('libcurl')
 
 subdir('encoding')
 subdir('message')
