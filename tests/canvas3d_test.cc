@@ -58,7 +58,7 @@ TEST_F(Canvas3DTest, field) {
     EXPECT_THROW(Canvas3D().tryGet(), std::runtime_error);
 }
 TEST_F(Canvas3DTest, eventTarget) {
-    canvas("a", "b").appendListener(callback<Canvas3D>());
+    canvas("a", "b").onChange(callback<Canvas3D>());
     data_->canvas3d_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -162,7 +162,7 @@ TEST_F(Canvas3DTest, get) {
     EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(canvas(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->canvas3d_store.transferReq().count(self_name), 0);
-    canvas("a", "d").appendListener(callback<Canvas3D>());
+    canvas("a", "d").onChange(callback<Canvas3D>());
     EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
 

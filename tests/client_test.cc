@@ -2,7 +2,6 @@
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/client.h>
-#include <webcface/logger.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/log.h>
@@ -390,7 +389,7 @@ TEST_F(ClientTest, valueReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").value("b").appendListener(callback<Value>());
+    wcli_->member("a").value("b").onChange(callback<Value>());
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
@@ -418,7 +417,7 @@ TEST_F(ClientTest, recvThread) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    wcli_->member("a").value("b").appendListener([&](const Value &) {
+    wcli_->member("a").value("b").onChange([&](const Value &) {
         EXPECT_EQ(std::this_thread::get_id(), main_id);
         callback_called++;
     });
@@ -438,7 +437,7 @@ TEST_F(ClientTest, autoRecvThread) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    wcli_->member("a").value("b").appendListener([&](const Value &) {
+    wcli_->member("a").value("b").onChange([&](const Value &) {
         EXPECT_NE(std::this_thread::get_id(), main_id);
         callback_called++;
     });
@@ -451,19 +450,19 @@ TEST_F(ClientTest, autoRecvThread) {
 }
 TEST_F(ClientTest, recvTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.9);
     start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(0));
+    wcli_->recv();
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->recv(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvFor(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
@@ -471,19 +470,19 @@ TEST_F(ClientTest, recvTimeout) {
 }
 TEST_F(ClientTest, recvUntilTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start + std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvUntil(start + std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.9);
     start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start);
+    wcli_->waitRecvUntil(start);
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->recvUntil(start - std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->waitRecvUntil(start - std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
@@ -530,7 +529,7 @@ TEST_F(ClientTest, textReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").text("b").appendListener(callback<Text>());
+    wcli_->member("a").text("b").onChange(callback<Text>());
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("z")});
     dummy_s->send(message::Res<message::Text>{
@@ -620,7 +619,7 @@ TEST_F(ClientTest, viewReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").view("b").appendListener(callback<View>());
+    wcli_->member("a").view("b").onChange(callback<View>());
 
     auto v = std::make_shared<
         std::unordered_map<std::string, message::ViewComponent>>(
@@ -796,7 +795,7 @@ TEST_F(ClientTest, canvas2DReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").canvas2D("b").appendListener(callback<Canvas2D>());
+    wcli_->member("a").canvas2D("b").onChange(callback<Canvas2D>());
 
     auto v = std::make_shared<
         std::unordered_map<std::string, message::Canvas2DComponent>>(
@@ -1054,7 +1053,7 @@ TEST_F(ClientTest, canvas3DReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").canvas3D("b").appendListener(callback<Canvas3D>());
+    wcli_->member("a").canvas3D("b").onChange(callback<Canvas3D>());
 
     auto v = std::make_shared<
         std::unordered_map<std::string, message::Canvas3DComponent>>(
@@ -1193,7 +1192,7 @@ TEST_F(ClientTest, robotModelReq) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.req_id, 1);
     });
-    wcli_->member("a").robotModel("b").appendListener(callback<RobotModel>());
+    wcli_->member("a").robotModel("b").onChange(callback<RobotModel>());
     dummy_s->send(message::Res<message::RobotModel>(
         1, ""_ss,
         std::make_shared<std::vector<message::RobotLink>>(
@@ -1245,7 +1244,7 @@ TEST_F(ClientTest, imageReq) {
                   (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
                                      ImageCompressMode::raw, 0, std::nullopt}));
     });
-    wcli_->member("a").image("b").appendListener(callback<Image>());
+    wcli_->member("a").image("b").onChange(callback<Image>());
     ImageFrame img(sizeWH(100, 100),
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr);
@@ -1300,7 +1299,7 @@ TEST_F(ClientTest, logReq) {
     wcli_->member("a").log().tryGet();
     dummy_s->waitRecv<message::LogReq>(
         [&](const auto &obj) { EXPECT_EQ(obj.member, "a"_ss); });
-    wcli_->member("a").log().appendListener(callback<Log>());
+    wcli_->member("a").log().onChange(callback<Log>());
 
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
     wcli_->waitRecv();

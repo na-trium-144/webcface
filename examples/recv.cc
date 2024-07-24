@@ -39,7 +39,7 @@ int main() {
     c.start();
     auto func_m = c.member("example_func");
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(1000));
         // example_mainのtestの値を取得する
         std::cout << "example_main.test = "
                   << c.member("example_value").value("test") << std::endl;
@@ -57,5 +57,6 @@ int main() {
         func_m.func("func_int").runAsync(1);
         func_m.func("func_double").runAsync(1.0);
         func_m.func("func_str").runAsync("1");
+        c.waitRecvFor(std::chrono::milliseconds(100));
     }
 }

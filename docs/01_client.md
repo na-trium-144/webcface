@@ -200,36 +200,35 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         * <span class="since-c">1.2</span>
         Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
     * <span class="since-c">2.0</span>
-    recv(timeout), recvUntil(timeout) または waitRecv() をすることでデータを受信します。
+    recv(), waitRecvFor(timeout), waitRecvUntil(timeout) または waitRecv() をすることでデータを受信します。
         * メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
             * sync()と違ってこちらはほぼどんな使い方の場合でも必要になります。
             各種データを受信するだけでなくFuncの呼び出しや逆にFuncを呼び出される場合などにも使われます。
-        * データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。timeoutが0μs(デフォルト)または負の値の場合は即座にreturnします。
-        * waitRecv() は何かデータを受信するまで無制限に待機します。
+        * データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。
+            * recv() は即座にreturnします。
+            * waitRecv() は何かデータを受信するまで無制限に待機します。
 
     ```cpp
     while(true){
         // ...
 
         wcli.sync();
-        wcli.recv(std::chrono::milliseconds(100));
+        wcli.waitRecvFor(std::chrono::milliseconds(100));
     }
     ```
 
     * <span class="since-c">2.0</span>
-    recv() を毎周期呼ぶ代わりに、 autoRecv(true, interval) を最初のstart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。
+    recv() を毎周期呼ぶ代わりに、 autoRecv(true) を最初のstart()前に呼ぶと、別スレッドで一定間隔(100μs)おきに自動でrecvしてくれるようになります。
     (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)
-        * intervalを短くすると受信データに早く反応できる代わりにCPU使用率とバッテリー負荷に影響があります。
-        * そもそもデータの送受信に数百μs程度の遅延があるので、intervalは早くても100μs程度が目安になると思います
-        (ちゃんと検証したわけではないけど)
 
     \note
-    recv() のtimeoutを0にする場合は、sync()の前にrecv()を呼ぶほうがよいかもしれません。
+    timeoutのない recv() を使う場合は、sync()の前にrecv()を呼んでください。
     (sync()でキューに加えられた送信データの処理中はrecv()の処理ができないため)
     ```cpp
     wcli.recv();
     wcli.sync();
     ```
+    一方timeoutのあるwaitRecvを使う場合はsync()を先に呼ばないとデータ送信が遅延します。
 
     \warning
     * これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはrecv()を呼んだスレッドで実行されます。
@@ -245,9 +244,10 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
         * Funcの呼び出しとデータ受信リクエストの送信は wcfSync() とは非同期に行われるので wcfSync() は不要です。
     * <span class="since-c">2.0</span>
-    wcfRecv(timeout) または wcfWaitRecv() をすることでデータを受信します。
-        * データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。timeoutが0μsまたは負の値の場合は即座にreturnします。
-        * wcfWaitRecv() は何かデータを受信するまで無制限に待機します。
+    wcfRecv(), wcfWaitRecvFor(timeout) または wcfWaitRecv() をすることでデータを受信します。
+        * データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。
+            * wcfRecv() は即座にreturnします。
+            * wcfWaitRecv() は何かデータを受信するまで無制限に待機します。
     ```c
     while(1){
         // ...
@@ -257,19 +257,17 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```
 
     * <span class="since-c">2.0</span>
-    wcfRecv() を毎周期呼ぶ代わりに、 wcfAutoRecv(interval) を最初のwcfStart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。
+    wcfRecv() を毎周期呼ぶ代わりに、 wcfAutoRecv() を最初のwcfStart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。
     (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)
-        * intervalを短くすると受信データに早く反応できる代わりにCPU使用率とバッテリー負荷に影響があります。
-        * そもそもデータの送受信に数百μs程度の遅延があるので、intervalは早くても100μs程度が目安になると思います
-        (ちゃんと検証したわけではないけど)
 
     \note
-    * wcfRecv() のtimeoutを0にする場合は、wcfSync()の前にwcfRecv()を呼ぶほうがよいかもしれません。
+    timeoutのない wcfRecv() を使う場合は、wcfSync()の前にwcfRecv()を呼んでください。
     (wcfSync()でキューに加えられた送信データの処理中はwcfRecv()の処理ができないため)
     ```cpp
     wcfRecv(wcli, 0);
     wcfSync(wcli);
     ```
+    一方timeoutのあるwcfWaitRecvを使う場合はwcfSync()を先に呼ばないとデータ送信が遅延します。
 
     \warning
     * これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはwcfRecv()を呼んだスレッドで実行されます。

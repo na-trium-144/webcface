@@ -15,6 +15,7 @@ int main() {
     img.request();
     img.appendListener([](auto) { std::cout << "image updated" << std::endl; });
     while (true) {
+        wcli.waitRecv();
         // auto mat = wcli.member("example_image_send").image("sample").mat();
         // NG
         // auto mat2 = img.mat(); // OK
@@ -29,10 +30,10 @@ int main() {
             cv::imwrite("recv_image.png", mat2);
             break;
         }
-        std::this_thread::yield();
     }
     img.request(webcface::sizeWH(300, 300));
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -46,10 +47,10 @@ int main() {
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
-        std::this_thread::yield();
     }
     img.request(std::nullopt, webcface::ImageColorMode::gray);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -65,6 +66,7 @@ int main() {
     }
     img.request(std::nullopt, webcface::ImageCompressMode::jpeg, 20);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -73,10 +75,10 @@ int main() {
             cv::waitKey(1); // Wait for a keystroke in the window
             break;
         }
-        std::this_thread::yield();
     }
     img.request(std::nullopt, webcface::ImageCompressMode::png, 1);
     while (true) {
+        wcli.waitRecv();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -85,6 +87,5 @@ int main() {
             cv::waitKey(0); // Wait for a keystroke in the window
             break;
         }
-        std::this_thread::yield();
     }
 }
