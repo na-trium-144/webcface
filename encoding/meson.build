@@ -10,6 +10,7 @@ webcface_encoding_lib = static_library('webcface-encoding',
     webcface_encoding_inc,
   ],
   dependencies: [
+    utf8cpp_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],

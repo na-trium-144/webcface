@@ -18,6 +18,8 @@ webcface_server_store_lib = static_library('webcface-server-store',
     webcface_encoding_dep,
     webcface_message_dep,
     webcface_server_internal_dep,
+    spdlog_dep,
+    magickpp_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
@@ -29,5 +31,6 @@ webcface_server_store_dep = declare_dependency(
   dependencies: [
     webcface_encoding_dep,
     webcface_message_dep,
+    spdlog_dep,
   ],
 )

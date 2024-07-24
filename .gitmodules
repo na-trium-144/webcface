@@ -1,10 +1,6 @@
 [submodule "doxygen-awesome-css"]
 	path = docs/doxygen-awesome-css
 	url = https://github.com/jothepro/doxygen-awesome-css.git
-[submodule "external/msgpack-c"]
-	path = subprojects/git_msgpack-c
-	url = https://github.com/msgpack/msgpack-c.git
-	branch = cpp_master
 [submodule "external/spdlog"]
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog.git

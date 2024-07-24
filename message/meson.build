@@ -11,6 +11,8 @@ webcface_message_lib = static_library('webcface-message',
   dependencies: [
     webcface_encoding_dep,
     msgpack_cxx_dep,
+    spdlog_dep,
+    utf8cpp_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
@@ -22,5 +24,7 @@ webcface_message_dep = declare_dependency(
   dependencies: [
     webcface_encoding_dep,
     msgpack_cxx_dep,
+    spdlog_dep,
+    utf8cpp_dep,
   ],
 )

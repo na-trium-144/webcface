@@ -10,4 +10,4 @@ version.rc
 /.cache/
 /subprojects/*
 !/subprojects/*.wrap
-!/subprojects/git_*/
+!/subprojects/packagefiles/

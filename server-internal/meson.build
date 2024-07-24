@@ -8,6 +8,7 @@ webcface_server_internal_lib = static_library('webcface-server-internal',
     webcface_server_internal_inc,
   ],
   dependencies: [
+    crow_dep,
   ],
 )
 webcface_server_internal_dep = declare_dependency(
