@@ -68,6 +68,9 @@ p = mod.add_project('configure',
     '--without-x',
     '--without-zip',
   ],
+  env: [
+    'ac_cv_lib_jpeg_jpeg_read_header=yes', # 無理やりチェック通ったことにする
+  ],
   depends: magickpp_dependencies,
 )
 
