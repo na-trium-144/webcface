@@ -72,6 +72,7 @@ p = mod.add_project('configure',
     'ac_cv_lib_jpeg_jpeg_read_header=yes', # 無理やりチェック通ったことにする
   ],
   depends: magickpp_dependencies,
+  verbose: true,
 )
 
 magickcore_dep = declare_dependency(
