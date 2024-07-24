@@ -32,5 +32,5 @@ var searchData=
   ['asyncfuncstate_29',['AsyncFuncState',['../classwebcface_1_1internal_1_1AsyncFuncState.html#abbe04b51d76f587b510843de7c4101cc',1,'webcface::internal::AsyncFuncState']]],
   ['at_30',['at',['../structwebcface_1_1components_1_1geometries_1_1Polygon.html#a0d3f44541a8b177359992dfb19d9ccaa',1,'webcface::components::geometries::Polygon::at()'],['../classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640',1,'webcface::ImageFrame::at(int row, int col, int ch=0) const'],['../classwebcface_1_1ImageFrame.html#a19370724be760dc6557ed348f522c0f5',1,'webcface::ImageFrame::at(int row, int col, int ch=0)']]],
   ['autoreconnect_31',['autoreconnect',['../classwebcface_1_1Client.html#acd307ea4b7bbb4a8f54b2b14efa04557',1,'webcface::Client::autoReconnect(bool enabled)'],['../classwebcface_1_1Client.html#a0a814ebcc536bc201002103aaefbe502',1,'webcface::Client::autoReconnect() const']]],
-  ['autorecv_32',['autoRecv',['../classwebcface_1_1Client.html#a80244ad7d757e128ddb3128a82fb3329',1,'webcface::Client']]]
+  ['autorecv_32',['autoRecv',['../classwebcface_1_1Client.html#ab282900fe092c2caf1d80cf3991de03c',1,'webcface::Client']]]
 ];

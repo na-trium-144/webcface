@@ -2200,7 +2200,7 @@ template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5f
 <p>関数をセットする </p>
 <ul>
 <li>引数はValAdaptorからキャスト可能な型ならいくつでも、 戻り値はvoidまたはValAdaptorにキャスト可能な型または (ver2.0〜: std::futureまたはstd::shared_future) が使用可能</li>
-<li>(ver2.0〜) <a class="el" href="classwebcface_1_1Func.html#ad572da2fd72ce09b9ee961b987e14968" title="関数をセットする">set()</a>でセットした場合、他クライアントから呼び出されたとき <a class="el" href="classwebcface_1_1Client.html#a3a359a0ae2735040a1ae270ee1d6e597" title="サーバーからデータを受信する">Client::recv()</a> (または autoRecv) のスレッドでそのまま実行され、 この関数が完了するまで他のデータの受信はブロックされる。 また、 <a class="el" href="classwebcface_1_1Func.html#a6c7d2134b3d2c7a2fc8ad11999b9c30e" title="関数を実行する (非同期)">runAsync()</a> で呼び出したとしても同じスレッドで同期実行される。</li>
+<li>(ver2.0〜) <a class="el" href="classwebcface_1_1Func.html#ad572da2fd72ce09b9ee961b987e14968" title="関数をセットする">set()</a>でセットした場合、他クライアントから呼び出されたとき <a class="el" href="classwebcface_1_1Client.html#a7ceb5c997a1763b8e1cee1edebcaf4b6" title="サーバーからデータを受信する">Client::recv()</a> (または autoRecv) のスレッドでそのまま実行され、 この関数が完了するまで他のデータの受信はブロックされる。 また、 <a class="el" href="classwebcface_1_1Func.html#a6c7d2134b3d2c7a2fc8ad11999b9c30e" title="関数を実行する (非同期)">runAsync()</a> で呼び出したとしても同じスレッドで同期実行される。</li>
 <li>ただし関数がstd::futureまたはstd::shared_futureを返す場合、 そのfutureの評価(future.get())は新しく建てたスレッドで行われる。</li>
 </ul>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Func.html#a66f2027bb7e0d9cd9e4ab37cd3a359ba" title="非同期に実行される関数をセットする">setAsync()</a> </dd></dl>
@@ -2895,7 +2895,7 @@ template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5f
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a></li>
-    <li class="footer">Generated on Tue Jul 23 2024 19:10:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Jul 24 2024 18:33:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

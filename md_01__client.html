@@ -317,13 +317,16 @@ Encoding</h1>
 <li><span class="since-c">1.2</span> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</li>
 </ul>
 </li>
-<li><span class="since-c">2.0</span> recv(timeout), recvUntil(timeout) または waitRecv() をすることでデータを受信します。<ul>
+<li><span class="since-c">2.0</span> recv(), waitRecvFor(timeout), waitRecvUntil(timeout) または waitRecv() をすることでデータを受信します。<ul>
 <li>メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。<ul>
 <li>sync()と違ってこちらはほぼどんな使い方の場合でも必要になります。 各種データを受信するだけでなくFuncの呼び出しや逆にFuncを呼び出される場合などにも使われます。</li>
 </ul>
 </li>
-<li>データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。timeoutが0μs(デフォルト)または負の値の場合は即座にreturnします。</li>
+<li>データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。<ul>
+<li>recv() は即座にreturnします。</li>
 <li>waitRecv() は何かデータを受信するまで無制限に待機します。</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -331,18 +334,14 @@ Encoding</h1>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line"> </div>
 <div class="line">    wcli.sync();</div>
-<div class="line">    wcli.recv(std::chrono::milliseconds(100));</div>
+<div class="line">    wcli.waitRecvFor(std::chrono::milliseconds(100));</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
-<li><span class="since-c">2.0</span> recv() を毎周期呼ぶ代わりに、 autoRecv(true, interval) を最初のstart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。 (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)<ul>
-<li>intervalを短くすると受信データに早く反応できる代わりにCPU使用率とバッテリー負荷に影響があります。</li>
-<li>そもそもデータの送受信に数百μs程度の遅延があるので、intervalは早くても100μs程度が目安になると思います (ちゃんと検証したわけではないけど)</li>
+<li><span class="since-c">2.0</span> recv() を毎周期呼ぶ代わりに、 autoRecv(true) を最初のstart()前に呼ぶと、別スレッドで一定間隔(100μs)おきに自動でrecvしてくれるようになります。 (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)</li>
 </ul>
-</li>
-</ul>
-<dl class="section note"><dt>Note</dt><dd>recv() のtimeoutを0にする場合は、sync()の前にrecv()を呼ぶほうがよいかもしれません。 (sync()でキューに加えられた送信データの処理中はrecv()の処理ができないため) <div class="fragment"><div class="line">wcli.recv();</div>
+<dl class="section note"><dt>Note</dt><dd>timeoutのない recv() を使う場合は、sync()の前にrecv()を呼んでください。 (sync()でキューに加えられた送信データの処理中はrecv()の処理ができないため) <div class="fragment"><div class="line">wcli.recv();</div>
 <div class="line">wcli.sync();</div>
-</div><!-- fragment --></dd></dl>
+</div><!-- fragment --> 一方timeoutのあるwaitRecvを使う場合はsync()を先に呼ばないとデータ送信が遅延します。</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd><ul>
 <li>これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはrecv()を呼んだスレッドで実行されます。 そのため長時間かかるコールバックを登録した場合、その間recv()を呼んだメインスレッドがブロックされるだけでなく、他のデータの受信もできなくなるため注意してください。</li>
 </ul>
@@ -359,30 +358,26 @@ Encoding</h1>
 <li>Funcの呼び出しとデータ受信リクエストの送信は <a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れる。">wcfSync()</a> とは非同期に行われるので <a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れる。">wcfSync()</a> は不要です。</li>
 </ul>
 </li>
-<li><span class="since-c">2.0</span> wcfRecv(timeout) または <a class="el" href="c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3" title="サーバーからデータを受信する">wcfWaitRecv()</a> をすることでデータを受信します。<ul>
-<li>データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。timeoutが0μsまたは負の値の場合は即座にreturnします。</li>
+<li><span class="since-c">2.0</span> <a class="el" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5" title="サーバーからデータを受信する">wcfRecv()</a>, wcfWaitRecvFor(timeout) または <a class="el" href="c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3" title="サーバーからデータを受信する">wcfWaitRecv()</a> をすることでデータを受信します。<ul>
+<li>データを何も受信しなかった場合、サーバーに接続していない場合、または接続試行中やデータ送信中など受信ができない場合は、timeout経過後にreturnします。<ul>
+<li><a class="el" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5" title="サーバーからデータを受信する">wcfRecv()</a> は即座にreturnします。</li>
 <li><a class="el" href="c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3" title="サーバーからデータを受信する">wcfWaitRecv()</a> は何かデータを受信するまで無制限に待機します。 <div class="fragment"><div class="line"><span class="keywordflow">while</span>(1){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a>(wcli);</div>
-<div class="line">    <a class="code hl_function" href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895">wcfRecv</a>(wcli, 100e3); <span class="comment">// 100000μs = 100ms</span></div>
+<div class="line">    <a class="code hl_function" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5">wcfRecv</a>(wcli, 100e3); <span class="comment">// 100000μs = 100ms</span></div>
 <div class="line">}</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_a121c710bacfa50f7f0c96763887d7895"><div class="ttname"><a href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895">wcfRecv</a></div><div class="ttdeci">wcfStatus wcfRecv(wcfClient *wcli, int timeout)</div><div class="ttdoc">サーバーからデータを受信する</div><div class="ttdef"><b>Definition</b> client.cc:69</div></div>
-<div class="ttc" id="ac__wcf_2client_8h_html_ad675449898eb92ab9461d31fe88b4896"><div class="ttname"><a href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a></div><div class="ttdeci">wcfStatus wcfSync(wcfClient *wcli)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れる。</div><div class="ttdef"><b>Definition</b> client.cc:93</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_ad675449898eb92ab9461d31fe88b4896"><div class="ttname"><a href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a></div><div class="ttdeci">wcfStatus wcfSync(wcfClient *wcli)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れる。</div><div class="ttdef"><b>Definition</b> client.cc:101</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_af0250a034a52ad8b9c82b79108d59cd5"><div class="ttname"><a href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5">wcfRecv</a></div><div class="ttdeci">wcfStatus wcfRecv(wcfClient *wcli)</div><div class="ttdoc">サーバーからデータを受信する</div><div class="ttdef"><b>Definition</b> client.cc:69</div></div>
 </div><!-- fragment --></li>
 </ul>
 </li>
-<li><span class="since-c">2.0</span> <a class="el" href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895" title="サーバーからデータを受信する">wcfRecv()</a> を毎周期呼ぶ代わりに、 wcfAutoRecv(interval) を最初のwcfStart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。 (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)<ul>
-<li>intervalを短くすると受信データに早く反応できる代わりにCPU使用率とバッテリー負荷に影響があります。</li>
-<li>そもそもデータの送受信に数百μs程度の遅延があるので、intervalは早くても100μs程度が目安になると思います (ちゃんと検証したわけではないけど)</li>
 </ul>
 </li>
+<li><span class="since-c">2.0</span> <a class="el" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5" title="サーバーからデータを受信する">wcfRecv()</a> を毎周期呼ぶ代わりに、 <a class="el" href="c__wcf_2client_8h.html#a44bd954a69e02c74e45344ce386bb188" title="別スレッドでwcfRecv()を自動的に呼び出すようにする。">wcfAutoRecv()</a> を最初のwcfStart()前に呼ぶと、別スレッドで一定間隔おきに自動でrecvしてくれるようになります。 (ver1.11以前ではデータの受信は常に別スレッドで行われていたので、その挙動と同じになります)</li>
 </ul>
-<dl class="section note"><dt>Note</dt><dd><ul>
-<li><a class="el" href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895" title="サーバーからデータを受信する">wcfRecv()</a> のtimeoutを0にする場合は、wcfSync()の前にwcfRecv()を呼ぶほうがよいかもしれません。 (<a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れる。">wcfSync()</a>でキューに加えられた送信データの処理中はwcfRecv()の処理ができないため) <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#a121c710bacfa50f7f0c96763887d7895">wcfRecv</a>(wcli, 0);</div>
+<dl class="section note"><dt>Note</dt><dd>timeoutのない <a class="el" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5" title="サーバーからデータを受信する">wcfRecv()</a> を使う場合は、wcfSync()の前にwcfRecv()を呼んでください。 (<a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れる。">wcfSync()</a>でキューに加えられた送信データの処理中はwcfRecv()の処理ができないため) <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5">wcfRecv</a>(wcli, 0);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a>(wcli);</div>
-</div><!-- fragment --></li>
-</ul>
-</dd></dl>
+</div><!-- fragment --> 一方timeoutのあるwcfWaitRecvを使う場合はwcfSync()を先に呼ばないとデータ送信が遅延します。</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd><ul>
 <li>これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはwcfRecv()を呼んだスレッドで実行されます。 そのため長時間かかるコールバックを登録した場合、その間wcfRecv()を呼んだメインスレッドがブロックされるだけでなく、他のデータの受信もできなくなるため注意してください。</li>
 </ul>
@@ -495,7 +490,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 23 2024 19:10:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Jul 24 2024 18:33:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
