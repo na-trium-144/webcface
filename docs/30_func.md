@@ -437,17 +437,27 @@ Func::runAsync() は関数の実行を開始し、終了を待たずに続行し
 
 AsyncFuncResultからは started と result が取得できます。
 * started は対象の関数が存在して実行が開始したときにtrueになり、存在しなければ即座にfalseとなります。
-    どちらも返ってこない場合は通信に失敗しています。
+どちらも返ってこない場合は通信に失敗しています。
 * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    startedとresultはstd::shared_futureであり、
+    <del>取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。</del>
+
+    \warning
+    <span class="since-c">2.0</span>
+    以下のように get() などで結果が返ってくるまで待機することができますが、
+    結果を受信するために Client::recv() が必要になったためデッドロックする危険性があります。
     ```cpp
     AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
     double ans = res.result.get();
     ```
-    startedとresultはstd::shared_futureです。取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。例外はresult.get()が投げます。
+    Client::autoRecv() を有効にしておくか、recv()を呼び出すのとは別のスレッドで
+    get() で待機する分には問題ありません。
+    
+    * 実行した関数が例外を投げた場合はresult.get()が投げます。
 
     <span class="since-c">2.0</span>
     `onStarted()`, `onResult()` で値が返ってきたときに実行されるコールバックを設定することができます。
