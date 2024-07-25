@@ -27,11 +27,8 @@ class Log;
 
 namespace internal {
 
-WEBCFACE_DLL void messageThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL void connectionThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL void recvThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL bool recvMain(const std::shared_ptr<ClientData> &data,
-                           std::unique_lock<std::mutex> &lock);
+WEBCFACE_DLL void WEBCFACE_CALL wsThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void WEBCFACE_CALL recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL explicit ClientData(const SharedString &name,
@@ -57,27 +54,32 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::string current_ws_buf = "";
 
     /*!
-     * \brief message_queueにたまったメッセージを送信するスレッド
+     * \brief websocket接続、通信するスレッド
+     *
+     * * 未接続状態で do_ws_initがtrue (= start()が呼ばれた) or
+     * auto_reconnectがtrueのとき、再接続を行う
+     * * 接続状態のとき、100usごとに受信したデータを recv_queue に入れ、
+     * sync_queue 内のデータを送信する
+     *
      */
-    std::thread message_thread;
+    std::thread ws_thread;
     /*!
-     * \brief websocket接続をするスレッド
-     */
-    std::thread connection_thread;
-    /*!
-     * \brief 受信してコールバックなどを処理するスレッド
+     * \brief recv_queueのメッセージを処理するスレッド
+     *
+     * auto_recv がtrueの場合のみ。
+     *
      */
     std::thread recv_thread;
 
     /*!
-     * \brief message_thread, connection_thread, recv_thread間の同期
+     * \brief ws_thread, recv_thread, queue 間の同期
      *
      * closing, connected, do_ws_init, do_ws_recv
-     * using_curl, message_queue, sync_init_end が変化した時notifyする
+     * using_curl, sync_queue, recv_queue, sync_init_end が変化した時notifyする
      *
      */
-    std::condition_variable connect_state_cond;
-    std::mutex connect_state_m;
+    std::condition_variable ws_cond;
+    std::mutex ws_m;
     /*!
      * close()が呼ばれたらtrue、すべてのスレッドは停止する
      */
@@ -100,18 +102,17 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     bool do_ws_init = false;
     /*!
-     * どこかのスレッドがcurlにアクセス中
-     * (curlへのアクセスを排他制御)
+     * Client側から関数が呼ばれたらtrue、
+     * WebSocket::側のその関数が完了したらfalse
      *
-     * falseになったときnotify
+     * trueになったときnotify
      */
-    bool using_curl = false;
+    bool do_ws_recv = false;
 
     /*!
      * ただの設定フラグなのでmutexやcondとは無関係
      */
-    std::atomic<bool> auto_reconnect = true;
-    std::atomic<int> auto_recv_us = 0;
+    std::atomic<bool> auto_reconnect = true, auto_recv = false;
 
     /*!
      * \brief 送信したいメッセージを入れるキュー
@@ -119,11 +120,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * 接続できていない場合送信されずキューにたまる
      *
      */
-    std::queue<std::string> message_queue;
-    void message_push(std::string &&msg) {
-        std::lock_guard lock(connect_state_m);
-        message_queue.push(std::move(msg));
-        connect_state_cond.notify_all();
+    std::queue<std::string> sync_queue, recv_queue;
+
+    WEBCFACE_DLL void message_push(std::string &&msg) {
+        std::lock_guard lock(this->ws_m);
+        this->sync_queue.push(std::move(msg));
+        this->ws_cond.notify_all();
     }
 
     /*!
@@ -136,6 +138,17 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     WEBCFACE_DLL void join();
+
+    /*!
+     * \brief recv_queueのメッセージを処理する
+     *
+     * * メッセージがなければtimeout後にreturn
+     * * timeoutがnulloptならclosingまで永遠にreturnしない
+     * * condはreturnする追加の条件 (mutexはかかっていない)
+     *
+     */
+    WEBCFACE_DLL void recvImpl(std::optional<std::chrono::microseconds> timeout,
+                               const std::function<bool()> &cond = nullptr);
 
     /*!
      * \brief 初期化時に送信するメッセージ

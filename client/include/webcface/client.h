@@ -105,13 +105,12 @@ class WEBCFACE_DLL Client : public Member {
      *
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
-     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで一定間隔
-     * (デフォルト=100μs) ごとに recv() をこのスレッドで呼び出す。
+     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで recv()
+     * をこのスレッドで呼び出す。
      *
      * \sa start(), autoReconnect(), autoRecv()
      */
-    void waitConnection(
-        std::chrono::microseconds interval = std::chrono::microseconds(100));
+    void waitConnection();
 
   private:
     void recvImpl(std::optional<std::chrono::microseconds> timeout);
