@@ -35,6 +35,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
                                      const SharedString &host = nullptr,
                                      int port = -1);
 
+    WEBCFACE_DLL void close();
+    WEBCFACE_DLL ~ClientData();
+
     /*!
      * \brief Client自身の名前
      *
@@ -143,12 +146,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief recv_queueのメッセージを処理する
      *
      * * メッセージがなければtimeout後にreturn
+     * * auto_reconnectがfalseで接続できてない場合はreturn (deadlock回避)
      * * timeoutがnulloptならclosingまで永遠にreturnしない
-     * * condはreturnする追加の条件 (mutexはかかっていない)
      *
      */
-    WEBCFACE_DLL void recvImpl(std::optional<std::chrono::microseconds> timeout,
-                               const std::function<bool()> &cond = nullptr);
+    WEBCFACE_DLL void recvImpl(std::optional<std::chrono::microseconds> timeout);
 
     /*!
      * \brief 初期化時に送信するメッセージ

@@ -105,7 +105,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
-     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで recv()
+     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで waitRecv()
      * をこのスレッドで呼び出す。
      *
      * \sa start(), autoReconnect(), autoRecv()
@@ -123,11 +123,8 @@ class WEBCFACE_DLL Client : public Member {
      * * データを受信した場合、各種コールバック(onEntry, onChange,
      * Func::run()など)をこのスレッドで呼び出し、
      * それがすべて完了するまでこの関数はブロックされる。
-     * * データを何も受信しなかった場合、サーバーに接続していない場合、
-     * または接続試行中やデータ送信中など受信ができない場合は、
-     * timeout経過後にreturnする。
-     * timeout=0 または負の値なら即座にreturnする。
-     * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
+     * * データをまだ何も受信していない場合やサーバーに接続していない場合は、
+     * 即座にreturnする。
      *
      * \sa waitRecvFor(), waitRecvUntil(), waitRecv(), autoRecv()
      */
@@ -139,6 +136,8 @@ class WEBCFACE_DLL Client : public Member {
      * * recv()と同じだが、何も受信できなければ
      * timeout 経過後に再試行してreturnする。
      * timeout=0 または負の値なら再試行せず即座にreturnする。(recv()と同じ)
+     * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+     * (deadlock回避)
      * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
      * \sa recv(), waitRecvUntil(), waitRecv(), autoRecv()
@@ -161,7 +160,9 @@ class WEBCFACE_DLL Client : public Member {
      * \brief サーバーからデータを受信する
      * \since ver2.0
      *
-     * waitRecvFor()と同じだが、何か受信するまで無制限に待機する
+     * * waitRecvFor()と同じだが、何か受信するまで無制限に待機する
+     * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+     * (deadlock回避)
      *
      * \sa recv(), waitRecvFor(), waitRecvUntil(), autoRecv()
      */
