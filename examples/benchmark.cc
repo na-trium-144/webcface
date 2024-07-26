@@ -12,7 +12,7 @@ int main() {
     auto bench1_recv = wcli2.member(wcli1.name());
     std::chrono::steady_clock::time_point start_t;
     std::optional<std::chrono::steady_clock::time_point> recv_t;
-    bench1_recv.text("a").appendListener([&](auto) {
+    bench1_recv.text("a").onChange([&](auto) {
         std::cout << "recv" << std::endl;
         recv_t = std::chrono::steady_clock::now();
     });
@@ -26,7 +26,7 @@ int main() {
             wcli1.text("a") = std::string(s, static_cast<char>('a' + i));
             wcli1.sync();
             do {
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
+                wcli2.waitRecv();
             } while (!recv_t);
             int latency = static_cast<int>(
                 std::chrono::duration_cast<std::chrono::microseconds>(*recv_t -

@@ -4,6 +4,7 @@ if(WIN32)
 endif()
 target_link_libraries(webcface-server PRIVATE
     webcface
+    webcface-server-store
     CLI11::CLI11
 )
 set_target_properties(webcface-server PROPERTIES

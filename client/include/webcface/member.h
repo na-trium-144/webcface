@@ -28,16 +28,18 @@ class WEBCFACE_DLL Member : protected Field {
         : Field(data_w, member) {}
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
+    friend struct internal::ClientData;
+    
     /*!
      * \brief Member名
      *
      */
-    std::string name() const { return member_.decode(); }
+    const std::string &name() const { return member_.decode(); }
     /*!
      * \brief Member名 (wstring)
      * \since ver2.0
      */
-    std::wstring nameW() const { return member_.decodeW(); }
+    const std::wstring &nameW() const { return member_.decodeW(); }
 
     using Field::child;
     using Field::operator[];
@@ -184,17 +186,17 @@ class WEBCFACE_DLL Member : protected Field {
      * pythonクライアントは"python"を返す。
      *
      */
-    std::string libName() const;
+    const std::string &libName() const;
     /*!
      * \brief このMemberが使っているWebCFaceのバージョン
      *
      */
-    std::string libVersion() const;
+    const std::string &libVersion() const;
     /*!
      * \brief このMemberのIPアドレス
      *
      */
-    std::string remoteAddr() const;
+    const std::string &remoteAddr() const;
 
     /*!
      * \brief 通信速度を調べる

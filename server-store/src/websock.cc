@@ -9,10 +9,10 @@
 #include "webcface/common/config.h"
 #endif
 #include "webcface/message/message.h"
-#include "webcface/server/unix_path.h"
+#include "webcface/internal/unix_path.h"
 #include <memory>
 #include <thread>
-#include "webcface/server/internal/server_ws.h"
+#include "webcface/server/server_ws.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 
 WEBCFACE_NS_BEGIN
@@ -66,14 +66,10 @@ void Server::pingThreadMain() {
         });
     }
 }
-void Server::send([[maybe_unused]] wsConnPtr conn,
-                  [[maybe_unused]] const std::string &msg) {
-#ifndef WEBCFACE_SERVER
-#else
+void Server::send(wsConnPtr conn, const std::string &msg) {
     if (!server_stop.load()) {
-        server_internal::AppWrapper::send(conn, msg.data(), msg.size());
+        AppWrapper::send(conn, msg.data(), msg.size());
     }
-#endif
 }
 void Server::join() {
     static std::mutex join_m;
@@ -85,27 +81,23 @@ void Server::join() {
     }
 }
 Server::~Server() {
-#ifndef WEBCFACE_SERVER
-#else
     {
         std::lock_guard lock(server_mtx);
         server_stop.store(true);
     }
     server_ping_wait.notify_one();
     for (auto &app : apps) {
-        static_cast<server_internal::AppWrapper *>(app)->stop();
+        static_cast<AppWrapper *>(app)->stop();
     }
     ping_thread.join();
     this->join();
     store.reset();
     for (auto &app : apps) {
-        delete static_cast<server_internal::AppWrapper *>(app);
+        delete static_cast<AppWrapper *>(app);
     }
-#endif
 }
 
-Server::Server([[maybe_unused]] std::uint16_t port, int level,
-               [[maybe_unused]] int keep_log)
+Server::Server(std::uint16_t port, int level, int keep_log)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
@@ -115,9 +107,6 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
     logger->set_level(static_cast<spdlog::level::level_enum>(level));
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
 
-#ifndef WEBCFACE_SERVER
-    logger->error("webcface::Server is not implemented.");
-#else
     if (std::this_thread::get_id() != MAIN_THREAD_ID) {
         logger->warn("Initialization of webcface::Server::Server should be "
                      "called in the main thread (to initialize ImageMagick).");
@@ -126,10 +115,10 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);
-    auto crow_logger_callback =
-        [crow_logger](const char *data, std::size_t size, int level) {
-            crow_logger->log(convertLevel(level), std::string(data, size));
-        };
+    auto crow_logger_callback = [crow_logger](const char *data,
+                                              std::size_t size, int level) {
+        crow_logger->log(convertLevel(level), std::string(data, size));
+    };
 
     auto static_dir = getStaticDir(logger);
     // auto temp_dir = getTempDir(logger);
@@ -139,8 +128,8 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
     store->hostname = getHostName(logger);
     logger->info("HostName is {}", store->hostname);
 
-    auto unix_path = message::Path::unixSocketPath(port);
-    auto wsl_path = message::Path::unixSocketPathWSLInterop(port);
+    auto unix_path = internal::unixSocketPath(port);
+    auto wsl_path = internal::unixSocketPathWSLInterop(port);
 
     auto open_callback = [this, sink, level](void *conn, const char *ip) {
         std::lock_guard lock(server_mtx);
@@ -160,7 +149,7 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
         }
     };
 
-    auto *app_tcp = new server_internal::AppWrapper(
+    auto *app_tcp = new AppWrapper(
         crow_logger_callback, static_dir.c_str(), port, nullptr, open_callback,
         close_callback, message_callback, [logger, port]() {
             for (const auto &addr : getIpAddresses(logger)) {
@@ -169,31 +158,31 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
         });
     apps.push_back(app_tcp);
 
-    message::Path::initUnixSocket(unix_path, logger);
-    auto *app_unix = new server_internal::AppWrapper(
+    internal::initUnixSocket(unix_path, logger);
+    auto *app_unix = new AppWrapper(
         crow_logger_callback, static_dir.c_str(), port,
         unix_path.string().c_str(), open_callback, close_callback,
         message_callback, [unix_path, logger]() {
-            message::Path::updateUnixSocketPerms(unix_path, logger);
+            internal::updateUnixSocketPerms(unix_path, logger);
             logger->info("unix domain socket at {}", unix_path.string());
         });
     apps.push_back(app_unix);
 
-    server_internal::AppWrapper *app_wsl = nullptr;
-    if (message::Path::detectWSL1()) {
-        message::Path::initUnixSocket(wsl_path, logger);
-        app_wsl = new server_internal::AppWrapper(
+    AppWrapper *app_wsl = nullptr;
+    if (internal::detectWSL1()) {
+        internal::initUnixSocket(wsl_path, logger);
+        app_wsl = new AppWrapper(
             crow_logger_callback, static_dir.c_str(), port,
             wsl_path.string().c_str(), open_callback, close_callback,
             message_callback, [wsl_path, logger]() {
-                message::Path::updateUnixSocketPerms(wsl_path, logger);
+                internal::updateUnixSocketPerms(wsl_path, logger);
                 logger->info("win32 socket at {}", wsl_path.string());
             });
         apps.push_back(app_wsl);
     }
 
     for (auto &app_v : apps) {
-        auto app = static_cast<server_internal::AppWrapper *>(app_v);
+        auto app = static_cast<AppWrapper *>(app_v);
 
         apps_running.emplace_back([app, logger] {
             app->run();
@@ -202,7 +191,6 @@ Server::Server([[maybe_unused]] std::uint16_t port, int level,
             }
         });
     }
-#endif
 }
 } // namespace server
 WEBCFACE_NS_END

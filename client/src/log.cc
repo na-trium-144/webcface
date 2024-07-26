@@ -24,6 +24,7 @@ message::LogLine LogLineData::toMessage() const {
         message_};
 }
 
+/// \private
 static void writeLog(internal::ClientData *data_p, LogLineData &&ll) {
     std::lock_guard lock(data_p->log_store.mtx);
     auto v = data_p->log_store.getRecv(data_p->self_member_name);

@@ -16,7 +16,7 @@ namespace server {
 struct MemberData;
 using MemberDataPtr = std::shared_ptr<MemberData>;
 
-struct WEBCFACE_DLL ServerStorage {
+struct ServerStorage {
     /*!
      * \brief 現在接続されているクライアントの一覧
      *
@@ -51,6 +51,8 @@ struct WEBCFACE_DLL ServerStorage {
                    const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
     void removeClient(const wsConnPtr &con);
+    void
+    removeClient(std::unordered_map<wsConnPtr, MemberDataPtr>::iterator it);
     MemberDataPtr getClient(const wsConnPtr &con);
 
     void clientSendAll();

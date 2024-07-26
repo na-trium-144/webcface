@@ -4,7 +4,7 @@
 #include <thread>
 #include "dummy_server.h"
 #include <crow.h>
-#include "webcface/server/unix_path.h"
+#include "webcface/internal/unix_path.h"
 #ifdef _WIN32
 #include <fileapi.h>
 #else
@@ -94,8 +94,8 @@ DummyServer::DummyServer(bool use_unix)
               });
 
           if (use_unix) {
-              auto unix_path = message::Path::unixSocketPath(17530);
-              message::Path::initUnixSocket(unix_path, dummy_logger);
+              auto unix_path = internal::unixSocketPath(17530);
+              internal::initUnixSocket(unix_path, dummy_logger);
               server->unix_path(unix_path.string()).run();
           } else {
               server->port(17530).run();

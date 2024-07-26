@@ -55,6 +55,8 @@ struct CharType<char> {
     using CVal = wcfMultiVal;
     using CHandle = wcfFuncCallHandle;
     using CCallback = wcfFuncCallback;
+    using CEventCallback1 = wcfEventCallback1;
+    using CEventCallback2 = wcfEventCallback2;
     using CComponent = wcfViewComponent;
     static constexpr auto &fetchedHandles() { return fetched_handles; }
     static constexpr auto &funcValList() { return func_val_list; }
@@ -65,6 +67,8 @@ struct CharType<wchar_t> {
     using CVal = wcfMultiValW;
     using CHandle = wcfFuncCallHandleW;
     using CCallback = wcfFuncCallbackW;
+    using CEventCallback1 = wcfEventCallback1W;
+    using CEventCallback2 = wcfEventCallback2W;
     using CComponent = wcfViewComponentW;
     static constexpr auto &fetchedHandles() { return fetched_handles_w; }
     static constexpr auto &funcValList() { return func_val_list_w; }

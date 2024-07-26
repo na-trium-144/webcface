@@ -13,6 +13,7 @@
 
 WEBCFACE_NS_BEGIN
 inline namespace encoding {
+/// \private
 static bool using_utf8 = true;
 
 void usingUTF8(bool flag) { using_utf8 = flag; }

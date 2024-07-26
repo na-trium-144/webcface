@@ -64,7 +64,12 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-### WebUI Server Mode
+### WebUI Desktop
+
+ver2は準備中
+
+<details><summary>WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
+
 WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
 
 * Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
@@ -87,6 +92,8 @@ WebUIの画面を閉じるとserverも終了します。
 
 \note
 設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
+
+</details>
 
 ## PlotJuggler
 
@@ -141,7 +148,8 @@ C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名
 
 ~~&lt;webcface/c_wcf.h&gt; をincludeすることで使えます。~~  
 <span class="since-c">1.7</span> &lt;webcface/wcf.h&gt; をincludeすることで使えます。(c_wcf.hも一応使えます)  
-ほとんどの関数は戻り値がint型で、成功した場合0(=`WCF_OK`)、例外が発生した場合正の値を返します。
+ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c">2.0</span> enum wcfStatus 型で、
+成功した場合 0 (= <del>WCF_OK</del> <span class="since-c">2.0</span> WCF_OK)、例外が発生した場合正の値を返します。
 
 MATLABなど、Cのライブラリにアクセスすることができる言語からwebcfaceのライブラリをロードして使用することができます。
 

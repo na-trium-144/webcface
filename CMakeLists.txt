@@ -17,7 +17,7 @@ project(webcface
 set(WEBCFACE_CONTACT "na-trium-144@users.noreply.github.com")
 set(WEBCFACE_VERSION ${PROJECT_VERSION})
 set(WEBCFACE_SOVERSION 12)
-set(WEBUI_VERSION 1.6.0)
+set(WEBUI_VERSION 1.7.0)
 
 set(WEBCFACE_VERSION_MAJOR ${PROJECT_VERSION_MAJOR})
 set(WEBCFACE_VERSION_MINOR ${PROJECT_VERSION_MINOR})
@@ -133,12 +133,6 @@ include(cmake/deps/utf8cpp.cmake)
 if(WEBCFACE_SERVER)
     include(cmake/deps/crow.cmake)
     include(cmake/deps/magickpp.cmake)
-else()
-    add_library(webcface-crow-linker INTERFACE)
-    add_library(webcface-magickpp-linker INTERFACE)
-    if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS webcface-magickpp-linker)
-    endif()
 endif()
 if(WEBCFACE_EXAMPLE)
     include(cmake/deps/opencv.cmake)
@@ -214,17 +208,13 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 ###############################################################################
 
-add_subdirectory(server-internal)
 add_subdirectory(encoding)
 add_subdirectory(message)
-add_subdirectory(server-store)
 add_subdirectory(client)
 
 set(WEBCFACE_TARGETS
-    webcface-server-internal
     webcface-encoding
     webcface-message
-    webcface-server-store
     webcface-client
 )
 
@@ -240,7 +230,6 @@ target_compile_features(webcface PUBLIC cxx_std_17)
 target_link_libraries(webcface PUBLIC webcface-std-filesystem)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
-    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>>
     $<INSTALL_INTERFACE:include>
 )
@@ -248,31 +237,18 @@ target_include_directories(webcface PUBLIC
 target_sources(webcface PRIVATE
     $<TARGET_OBJECTS:webcface-encoding>
     $<TARGET_OBJECTS:webcface-message>
-    $<TARGET_OBJECTS:webcface-server-store>
     $<TARGET_OBJECTS:webcface-client>
 )
-if(WEBCFACE_SERVER)
-    if(WEBCFACE_SHARED)
-        target_link_libraries(webcface PRIVATE webcface-server-internal-linker)
-    else()
-        target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
-    endif()
-endif()
 # private: リンクが必要なもののみ
 target_link_libraries(webcface PRIVATE
-    webcface-magickpp-linker
     webcface-libcurl-linker
     webcface-spdlog-linker
 )
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
-        $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:webcface-libcurl-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:webcface-spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
-endif()
-if(WEBCFACE_SYSTEM_WIN32SOCKET)
-    target_link_libraries(webcface PRIVATE iphlpapi)
 endif()
 if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
@@ -342,6 +318,13 @@ else()
     target_link_libraries(wcf INTERFACE webcface)
 endif()
 add_library(webcface::wcf ALIAS wcf)
+
+if(WEBCFACE_SERVER)
+    add_subdirectory(server-store)
+    if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+        set_target_properties(webcface-server-store PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    endif()
+endif()
 
 ###############################################################################
 
@@ -454,7 +437,6 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY
         ${CMAKE_CURRENT_SOURCE_DIR}/client/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/encoding/include/
-        ${CMAKE_CURRENT_SOURCE_DIR}/server-store/include/
         ${CMAKE_CURRENT_BINARY_DIR}/include/
         DESTINATION include
         PATTERN internal EXCLUDE

@@ -71,15 +71,13 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  *
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
- *
- * \param wcli
- * \param interval autoRecvが無効の場合、初期化が完了するまで一定間隔ごとに
+ * * autoRecvが無効の場合、初期化が完了するまで
  * wcfRecv() をこのスレッドで呼び出す。
+ *
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart(), wcfAutoReconnect()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli,
-                                                       int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
 /*!
  * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
  * \since ver1.11.1
@@ -99,16 +97,28 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
  * それがすべて完了するまでこの関数はブロックされる。
  * * データを何も受信しなかった場合、サーバーに接続していない場合、
  * または接続試行中やデータ送信中など受信ができない場合は、
- * timeout経過後にreturnする。
- * timeout=0 または負の値なら即座にreturnする。
- * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
+ * 即座にreturnする。
+ *
+ * \return wcliが無効ならWCF_BAD_WCLI
+ * \sa wcfWaitRecvFor(), wcfWaitRecv(), wcfAutoRecv()
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli);
+/*!
+ * \brief サーバーからデータを受信する
+ * \since ver2.0
+ *
+ * * wcfRecv()と同じだが、何も受信できなければ
+ * timeout 経過後に再試行してreturnする。
+ * timeout=0 または負の値なら再試行せず即座にreturnする。(wcfRecv()と同じ)
+ * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
  *
  * \param wcli
  * \param timeout (μs単位)
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfWaitRecv(), wcfAutoRecv()
+ * \sa wcfRecv(), wcfWaitRecv(), wcfAutoRecv()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecvFor(wcfClient *wcli,
+                                                    int timeout);
 /*!
  * \brief サーバーからデータを受信する
  * \since ver2.0
@@ -120,23 +130,19 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecv(wcfClient *wcli);
 /*!
- * \brief 別スレッドでwcfRecv()を自動的に呼び出す間隔を設定する。
+ * \brief 別スレッドでwcfRecv()を自動的に呼び出すようにする。
  * \since ver2.0
  *
  * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
- * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
- * 各種コールバック(onEntry, onChange,
- * Funcなど)も別のスレッドで呼ばれることになる
+ * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+ * 各種コールバック (onEntry, onChange, Funcなど)
+ * も別のスレッドで呼ばれることになる
  * (そのためmutexなどを適切に設定すること)
- * * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+ * * デフォルトでは無効なので、手動でwcfRecv()などを呼び出す必要がある
  *
- * \param wcli
- * \param interval (μs単位)
- * 1以上を指定するとその間隔で自動でrecv()が呼び出されるようになる。
- * 0または負の値を指定するとautoRecvは無効。
- * \sa recv(), recvUntil(), waitRecv()
+ * \sa wcfRecv(), wcfWaitRecvFor(), wcfWaitRecv()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli, int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli);
 /*!
  * \brief 送信用にセットしたデータをすべて送信キューに入れる。
  * \since ver1.5
@@ -159,6 +165,80 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
+
+/*!
+ * \brief サーバーに接続されている他のmemberのリストを得る。
+ * \since ver2.0
+ *
+ * * 自分自身と、無名のmemberを除く。
+ * * sizeに指定したサイズよりmemberの数が多い場合、
+ * size分のmember名を格納する。
+ * * sizeに指定したサイズよりmemberの数が少ない場合、
+ * size分より後ろの余った部分はそのまま
+ *
+ * \param wcli
+ * \param list member名を格納するchar*の配列
+ * (size=0ならNULLも可)
+ * \param size listの要素数
+ * \param members_num 実際のmember数
+ * \return wcliが無効ならWCF_BAD_WCLI
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberList(wcfClient *wcli,
+                                                   const char **list, int size,
+                                                   int *members_num);
+/*!
+ * \brief サーバーに接続されている他のmemberのリストを得る。
+ * \since ver2.0
+ * \sa wcfMemberList
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberListW(wcfClient *wcli,
+                                                    const wchar_t **list,
+                                                    int size, int *members_num);
+/*!
+ * \brief Memberが追加された時のイベント
+ * \since ver2.0
+ * \param wcli
+ * \param callback 実行する関数:
+ * const char* 型(追加されたMemberの名前が渡される)と void*
+ * 型の引数を1つずつ取り、何もreturnしない。
+ * \param user_data 関数に引数として渡す追加のデータ
+ * callbackが呼び出されるときに第2引数にそのまま渡される。
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberEntryEvent(
+    wcfClient *wcli, wcfEventCallback1 callback, void *user_data);
+/*!
+ * \brief Memberが追加された時のイベント (wstring)
+ * \since ver2.0
+ * \sa wcfMemberEntryEvent
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfMemberEntryEventW(
+    wcfClient *wcli, wcfEventCallback1W callback, void *user_data);
+
+/*!
+ * \brief WebCFaceサーバーのバージョン情報を返す
+ * \since ver2.0
+ * \return サーバーのバージョンを表す文字列、またはwcliが無効な場合空文字列
+ *
+ */
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerVersion(wcfClient *wcli);
+/*!
+ * \brief WebCFaceサーバーの識別情報を返す
+ * \since ver2.0
+ * \return サーバーの識別情報を表す文字列(通常は"webcface")、
+ * またはwcliが無効な場合空文字列
+ *
+ */
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerName(wcfClient *wcli);
+/*!
+ * \brief WebCFaceサーバーのホスト名を返す
+ * \since ver2.0
+ * \return サーバーのホスト名、
+ * またはwcliが無効な場合空文字列
+ *
+ */
+WEBCFACE_DLL const char *WEBCFACE_CALL wcfServerHostName(wcfClient *wcli);
 
 #ifdef __cplusplus
 }

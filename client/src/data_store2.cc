@@ -6,7 +6,7 @@ WEBCFACE_NS_BEGIN
 namespace internal {
 /*!
  * \brief setSend時にこれを実際に送信すべきかどうか
- *
+ * \private
  */
 template <typename T>
 static bool shouldSend(const T &prev, const T &current) {

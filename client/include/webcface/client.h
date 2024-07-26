@@ -109,13 +109,12 @@ class WEBCFACE_DLL Client : public Member {
      *
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
-     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで一定間隔
-     * (デフォルト=100μs) ごとに recv() をこのスレッドで呼び出す。
+     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで waitRecv()
+     * をこのスレッドで呼び出す。
      *
      * \sa start(), autoReconnect(), autoRecv()
      */
-    void waitConnection(
-        std::chrono::microseconds interval = std::chrono::microseconds(100));
+    void waitConnection();
 
   private:
     void recvImpl(std::optional<std::chrono::microseconds> timeout);
@@ -128,28 +127,36 @@ class WEBCFACE_DLL Client : public Member {
      * * データを受信した場合、各種コールバック(onEntry, onChange,
      * Func::run()など)をこのスレッドで呼び出し、
      * それがすべて完了するまでこの関数はブロックされる。
-     * * データを何も受信しなかった場合、サーバーに接続していない場合、
-     * または接続試行中やデータ送信中など受信ができない場合は、
-     * timeout経過後にreturnする。
-     * timeout=0 または負の値なら即座にreturnする。
-     * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
+     * * データをまだ何も受信していない場合やサーバーに接続していない場合は、
+     * 即座にreturnする。
      *
-     * \sa autoRecv(), recvUntil(), waitRecv()
+     * \sa waitRecvFor(), waitRecvUntil(), waitRecv(), autoRecv()
      */
-    void
-    recv(std::chrono::microseconds timeout = std::chrono::microseconds(0)) {
-        recvImpl(timeout);
-    }
+    void recv() { recvImpl(std::chrono::microseconds(0)); }
     /*!
      * \brief サーバーからデータを受信する
      * \since ver2.0
      *
-     * recv() と同じだが、timeoutを絶対時間で指定
+     * * recv()と同じだが、何も受信できなければ
+     * timeout 経過後に再試行してreturnする。
+     * timeout=0 または負の値なら再試行せず即座にreturnする。(recv()と同じ)
+     * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+     * (deadlock回避)
+     * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
-     * \sa recv(), waitRecv()
+     * \sa recv(), waitRecvUntil(), waitRecv(), autoRecv()
+     */
+    void waitRecvFor(std::chrono::microseconds timeout) { recvImpl(timeout); }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * waitRecvFor() と同じだが、timeoutを絶対時間で指定
+     *
+     * \sa recv(), waitRecvFor(), waitRecv(), autoRecv()
      */
     template <typename Clock, typename Duration>
-    void recvUntil(std::chrono::time_point<Clock, Duration> timeout) {
+    void waitRecvUntil(std::chrono::time_point<Clock, Duration> timeout) {
         recvImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
     }
@@ -157,9 +164,11 @@ class WEBCFACE_DLL Client : public Member {
      * \brief サーバーからデータを受信する
      * \since ver2.0
      *
-     * recv()と同じだが、何か受信するまで無制限に待機する
+     * * waitRecvFor()と同じだが、何か受信するまで無制限に待機する
+     * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+     * (deadlock回避)
      *
-     * \sa recv(), recvUntil()
+     * \sa recv(), waitRecvFor(), waitRecvUntil(), autoRecv()
      */
     void waitRecv() { recvImpl(std::nullopt); }
 
@@ -168,18 +177,16 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.0
      *
      * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
-     * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
-     * 各種コールバック(onEntry, onChange,
-     * Func::run()など)も別のスレッドで呼ばれることになる
+     * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+     * 各種コールバック (onEntry, onChange, Func::run()など)
+     * も別のスレッドで呼ばれることになる
      * (そのためmutexなどを適切に設定すること)
-     * * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+     * * デフォルトでは無効なので、手動でrecv()などを呼び出す必要がある
      *
      * \param enabled trueにすると自動でrecv()が呼び出されるようになる
-     * \param interval recvを呼び出す間隔 (1μs以上)
-     * \sa recv(), recvUntil(), waitRecv()
+     * \sa recv(), waitRecvFor(), waitRecvUntil(), waitRecv()
      */
-    void autoRecv(bool enabled, std::chrono::microseconds interval =
-                                    std::chrono::microseconds(100));
+    void autoRecv(bool enabled);
 
     /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。
@@ -236,7 +243,8 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    Client &onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback);
+    Client &
+    onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback);
 
     /*!
      * \brief webcfaceに出力するstreambuf
@@ -284,7 +292,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief WebCFaceサーバーのバージョン情報
      *
      */
-    std::string serverVersion() const;
+    const std::string &serverVersion() const;
     /*!
      * \brief WebCFaceサーバーの識別情報
      *
@@ -292,7 +300,7 @@ class WEBCFACE_DLL Client : public Member {
      * \sa serverVersion()
      *
      */
-    std::string serverName() const;
+    const std::string &serverName() const;
     /*!
      * \brief サーバーのホスト名
      * \since ver2.0

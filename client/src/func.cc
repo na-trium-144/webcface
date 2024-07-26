@@ -95,6 +95,7 @@ FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
     return ret;
 }
 
+/// \private
 template <typename F1, typename F2, typename F3>
 static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
     ValAdaptor error;

@@ -74,7 +74,7 @@ TEST_F(ViewTest, field) {
     EXPECT_THROW(View().tryGet(), std::runtime_error);
 }
 TEST_F(ViewTest, eventTarget) {
-    view("a", "b").appendListener(callback<View>());
+    view("a", "b").onChange(callback<View>());
     data_->view_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -252,7 +252,7 @@ TEST_F(ViewTest, viewGet) {
     EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(view(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->view_store.transferReq().count(self_name), 0);
-    view("a", "d").appendListener(callback<View>());
+    view("a", "d").onChange(callback<View>());
     EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
 

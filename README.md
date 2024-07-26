@@ -11,7 +11,7 @@
 Web-based IPC &amp; Dashboard-like UI
 
 > * mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。
-ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチにあります
+> ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチにあります
 
 WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
 
@@ -132,8 +132,10 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 * [plogjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin): PlotJuggler プラグイン
 
 ## Installation
+
+> 以下のインストール手順は WebCFace ver1 をインストールします。ver2はまだリリースしていません。
+
 以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
-(webcface-toolsの内容と使い方についてはwebcface-toolsのReadmeを参照してください)
 
 ### Ubuntu (x86_64, arm64, armhf)
 [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
@@ -149,7 +151,7 @@ Debianなど他のディストリビューションで動作するかはわか�
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_amd64.deb
 ```
 </details>
@@ -158,7 +160,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_arm64.deb
 ```
 </details>
@@ -167,7 +169,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_armhf.deb
 ```
 </details>
@@ -177,7 +179,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_amd64.deb
 ```
 </details>
@@ -186,7 +188,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_arm64.deb
 ```
 </details>
@@ -195,7 +197,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_armhf.deb
 ```
 </details>
@@ -205,7 +207,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_amd64.deb
 ```
 </details>
@@ -214,7 +216,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_arm64.deb
 ```
 </details>
@@ -223,7 +225,7 @@ curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.6.0/webcface-webui_1.6.0-s_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_armhf.deb
 ```
 </details>
@@ -251,7 +253,6 @@ brew install --cask webcface-webui-server
 
 インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html) を参照)
 
-
 ### Windows (MSVC)
 [webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からダウンロードしてください。
 
@@ -264,6 +265,9 @@ zipファイルは任意の場所に展開して使用してください。
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
 ## Build from source
+
+> mainブランチは現在開発中であり大幅な仕様変更が入る可能性があります。
+> ver1のビルド手順はv1ブランチのREADMEを参照してください
 
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 

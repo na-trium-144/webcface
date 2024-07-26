@@ -7,18 +7,13 @@
 #else
 #include "webcface/common/config.h"
 #endif
-
-#ifdef WEBCFACE_SERVER
 #include <Magick++.h>
-#endif
 
 WEBCFACE_NS_BEGIN
 namespace server {
 
 // メインのスレッドで呼ばれるべき (server側でチェック)
 void initMagick() {
-#ifndef WEBCFACE_SERVER
-#else
     static std::mutex m;
     std::lock_guard lock(m);
     static bool initialized = false;
@@ -26,10 +21,9 @@ void initMagick() {
         Magick::InitializeMagick(nullptr);
         initialized = true;
     }
-#endif
 }
 
-[[maybe_unused]] static std::string magickColorMap(ImageColorMode mode) {
+static std::string magickColorMap(ImageColorMode mode) {
     switch (mode) {
     case ImageColorMode::gray:
         return "K";
@@ -51,12 +45,8 @@ void initMagick() {
  * cd.image[field]が更新されるかリクエストが更新されたときに変換を行う。
  *
  */
-void MemberData::imageConvertThreadMain(
-    [[maybe_unused]] const SharedString &member,
-    [[maybe_unused]] const SharedString &field) {
-#ifndef WEBCFACE_SERVER
-    logger->error("MemberData::imageConvertThreadMain is not implemented.");
-#else
+void MemberData::imageConvertThreadMain(const SharedString &member,
+                                        const SharedString &field) {
     int last_image_flag = -1, last_req_flag = -1;
     logger->trace("imageConvertThreadMain started for {}, {}", member.decode(),
                   field.decode());
@@ -285,7 +275,6 @@ void MemberData::imageConvertThreadMain(
             break;
         }
     }
-#endif
 }
 
 } // namespace server
