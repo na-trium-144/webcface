@@ -10,7 +10,7 @@ int main() {
     int i = 0;
 
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
         {
             // viewを送信
@@ -85,5 +85,6 @@ int main() {
         }
         i++;
         wcli.sync();
+        wcli.waitRecvFor(std::chrono::milliseconds(100));
     }
 }

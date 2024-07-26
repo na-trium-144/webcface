@@ -129,22 +129,31 @@ class WEBCFACE_DLL Client : public Member {
      * timeout=0 または負の値なら即座にreturnする。
      * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
      *
-     * \sa autoRecv(), recvUntil(), waitRecv()
+     * \sa waitRecvFor(), waitRecvUntil(), waitRecv(), autoRecv()
      */
-    void
-    recv(std::chrono::microseconds timeout = std::chrono::microseconds(0)) {
-        recvImpl(timeout);
-    }
+    void recv() { recvImpl(std::chrono::microseconds(0)); }
     /*!
      * \brief サーバーからデータを受信する
      * \since ver2.0
      *
-     * recv() と同じだが、timeoutを絶対時間で指定
+     * * recv()と同じだが、何も受信できなければ
+     * timeout 経過後に再試行してreturnする。
+     * timeout=0 または負の値なら再試行せず即座にreturnする。(recv()と同じ)
+     * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
-     * \sa recv(), waitRecv()
+     * \sa recv(), waitRecvUntil(), waitRecv(), autoRecv()
+     */
+    void waitRecvFor(std::chrono::microseconds timeout) { recvImpl(timeout); }
+    /*!
+     * \brief サーバーからデータを受信する
+     * \since ver2.0
+     *
+     * waitRecvFor() と同じだが、timeoutを絶対時間で指定
+     *
+     * \sa recv(), waitRecvFor(), waitRecv(), autoRecv()
      */
     template <typename Clock, typename Duration>
-    void recvUntil(std::chrono::time_point<Clock, Duration> timeout) {
+    void waitRecvUntil(std::chrono::time_point<Clock, Duration> timeout) {
         recvImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
     }
@@ -152,9 +161,9 @@ class WEBCFACE_DLL Client : public Member {
      * \brief サーバーからデータを受信する
      * \since ver2.0
      *
-     * recv()と同じだが、何か受信するまで無制限に待機する
+     * waitRecvFor()と同じだが、何か受信するまで無制限に待機する
      *
-     * \sa recv(), recvUntil()
+     * \sa recv(), waitRecvFor(), waitRecvUntil(), autoRecv()
      */
     void waitRecv() { recvImpl(std::nullopt); }
 
@@ -163,18 +172,16 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.0
      *
      * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
-     * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
-     * 各種コールバック(onEntry, onChange,
-     * Func::run()など)も別のスレッドで呼ばれることになる
+     * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+     * 各種コールバック (onEntry, onChange, Func::run()など)
+     * も別のスレッドで呼ばれることになる
      * (そのためmutexなどを適切に設定すること)
-     * * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+     * * デフォルトでは無効なので、手動でrecv()などを呼び出す必要がある
      *
      * \param enabled trueにすると自動でrecv()が呼び出されるようになる
-     * \param interval recvを呼び出す間隔 (1μs以上)
-     * \sa recv(), recvUntil(), waitRecv()
+     * \sa recv(), waitRecvFor(), waitRecvUntil(), waitRecv()
      */
-    void autoRecv(bool enabled, std::chrono::microseconds interval =
-                                    std::chrono::microseconds(100));
+    void autoRecv(bool enabled);
 
     /*!
      * \brief 送信用にセットしたデータをすべて送信キューに入れる。

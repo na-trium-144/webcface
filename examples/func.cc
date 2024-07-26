@@ -16,11 +16,11 @@ int main() {
     webcface::Client wcli("example_func");
 
     // 関数を登録
-    wcli.func("func1") = hello;
+    wcli.func("func1").set(hello);
 
-    wcli.func("lambda") = [](const std::string &str) {
+    wcli.func("lambda").set([](const std::string &str) {
         std::cout << "lambda(" << str << ")" << std::endl;
-    };
+    });
 
     // 引数付きの関数は引数名や各種情報をセットできる
     using Arg = webcface::Arg;
@@ -33,9 +33,8 @@ int main() {
     wcli.func("func_double").set([](double) -> double { return 1.5; });
     wcli.func("func_str").set([](std::string) -> std::string { return "1"; });
 
+    wcli.sync();
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
-        wcli.sync();
+        wcli.waitRecv();
     }
 }

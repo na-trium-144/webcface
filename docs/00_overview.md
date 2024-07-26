@@ -64,7 +64,12 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-### WebUI Server Mode
+### WebUI Desktop
+
+ver2は準備中
+
+<details><summary>WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
+
 WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
 
 * Windowsではスタートメニューの WebCFace → WebCFace WebUI Server を起動してください。
@@ -87,6 +92,8 @@ WebUIの画面を閉じるとserverも終了します。
 
 \note
 設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
+
+</details>
 
 ## PlotJuggler
 

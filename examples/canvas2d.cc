@@ -11,8 +11,6 @@ int main() {
     double i = 0;
 
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-
         {
             auto cv = wcli.canvas2D("canvas");
             cv.init(100, 100);
@@ -64,5 +62,6 @@ int main() {
         i += 0.5;
 
         wcli.sync();
+        wcli.waitRecvFor(std::chrono::milliseconds(100));
     }
 }

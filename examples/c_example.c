@@ -21,6 +21,7 @@ int main(void) {
         }
         // ...
         wcfSync(wcli);
+        wcfWaitRecvFor(wcli, 100000);
     }
     return 0;
 }

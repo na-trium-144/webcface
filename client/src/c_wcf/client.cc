@@ -66,12 +66,20 @@ wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {
     wcli_->autoReconnect(enabled);
     return WCF_OK;
 }
-wcfStatus wcfRecv(wcfClient *wcli, int timeout) {
+wcfStatus wcfRecv(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->recv(std::chrono::microseconds(timeout));
+    wcli_->recv();
+    return WCF_OK;
+}
+wcfStatus wcfWaitRecvFor(wcfClient *wcli, int timeout) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    wcli_->waitRecvFor(std::chrono::microseconds(timeout));
     return WCF_OK;
 }
 wcfStatus wcfWaitRecv(wcfClient *wcli) {
@@ -82,12 +90,12 @@ wcfStatus wcfWaitRecv(wcfClient *wcli) {
     wcli_->waitRecv();
     return WCF_OK;
 }
-wcfStatus wcfAutoRecv(wcfClient *wcli, int interval) {
+wcfStatus wcfAutoRecv(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->autoRecv(interval >= 1, std::chrono::microseconds(interval));
+    wcli_->autoRecv(true);
     return WCF_OK;
 }
 wcfStatus wcfSync(wcfClient *wcli) {

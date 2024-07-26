@@ -78,22 +78,22 @@ TEST_F(DataTest, field) {
     EXPECT_THROW(Log().tryGet(), std::runtime_error);
 }
 TEST_F(DataTest, eventTarget) {
-    value("a", "b").appendListener(callback<Value>());
+    value("a", "b").onChange(callback<Value>());
     data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     value("a", "b").onChange(nullptr);
     EXPECT_FALSE(*data_->value_change_event["a"_ss]["b"_ss]);
-    value("a", "b").appendListener(callbackVoid());
+    value("a", "b").onChange(callbackVoid());
     data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
-    text("a", "b").appendListener(callback<Text>());
+    text("a", "b").onChange(callback<Text>());
     data_->text_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    log("a").appendListener(callback<Log>());
+    log("a").onChange(callback<Log>());
     data_->log_append_event["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
@@ -186,7 +186,7 @@ TEST_F(DataTest, valueGet) {
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(value(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->value_store.transferReq().count(self_name), 0);
-    value("a", "d").appendListener(callback<Value>());
+    value("a", "d").onChange(callback<Value>());
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
 TEST_F(DataTest, textGet) {
@@ -207,7 +207,7 @@ TEST_F(DataTest, textGet) {
     EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("c"_ss), 2);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->text_store.transferReq().count(self_name), 0);
-    text("a", "d").appendListener(callback<Text>());
+    text("a", "d").onChange(callback<Text>());
     EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("d"_ss), 3);
 }
 TEST_F(DataTest, logGet) {
@@ -238,7 +238,7 @@ TEST_F(DataTest, logGet) {
     EXPECT_EQ(log(self_name).tryGet()->size(), 0);
     EXPECT_EQ(log(self_name).tryGetW()->size(), 0);
     EXPECT_EQ(data_->log_store.transferReq().count(self_name), 0);
-    log("d").appendListener(callback<Log>());
+    log("d").onChange(callback<Log>());
     EXPECT_EQ(data_->log_store.transferReq().at("d"_ss), true);
 }
 TEST_F(DataTest, logClear) {

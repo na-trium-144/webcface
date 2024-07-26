@@ -2,7 +2,6 @@
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/client.h>
-#include <webcface/logger.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/log.h>
@@ -98,12 +97,12 @@ TEST_F(CClientTest, connectionByWait) {
 TEST_F(CClientTest, noConnectionByRecv) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
-    EXPECT_EQ(wcfRecv(wcli_, 0), WCF_OK);
+    EXPECT_EQ(wcfRecv(wcli_), WCF_OK);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
 
-    EXPECT_EQ(wcfRecv(nullptr, 0), WCF_BAD_WCLI);
+    EXPECT_EQ(wcfRecv(nullptr), WCF_BAD_WCLI);
 }
 
 std::function<void(const char *, void *)> callback1_obj;
@@ -275,7 +274,7 @@ TEST_F(CClientTest, textReq) {
 
 TEST_F(CClientTest, funcRun) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
@@ -381,7 +380,7 @@ TEST_F(CClientTest, funcRun) {
 
 TEST_F(CClientTest, funcListen) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfValType arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};

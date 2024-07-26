@@ -199,37 +199,47 @@ bool internal::recvMain(const std::shared_ptr<ClientData> &data,
 }
 void Client::recvImpl(std::optional<std::chrono::microseconds> timeout) {
     auto start_t = std::chrono::steady_clock::now();
-    auto next_recv_t = start_t;
     constexpr std::chrono::microseconds interval(100);
     while (true) {
         std::unique_lock lock(data->connect_state_m);
-        if (!timeout || next_recv_t < start_t + *timeout) {
-            // 少なくともintervalぶんは待機する
-            data->connect_state_cond.wait_until(
-                lock, next_recv_t, [&] { return data->closing.load(); });
-        } else {
-            // timeoutがintervalよりも短い場合
-            data->connect_state_cond.wait_until(
-                lock, start_t + *timeout, [&] { return data->closing.load(); });
-        }
-        // 遅くともtimeout経過したらreturnする
         if (timeout) {
+            // recv()が可能になるまで待つ
+            // 遅くともtimeout経過したら抜ける
             data->connect_state_cond.wait_until(lock, start_t + *timeout, [&] {
                 return data->closing.load() ||
                        (data->connected && !data->using_curl);
             });
+            if (data->closing.load() || !data->connected || data->using_curl) {
+                // timeoutし、recv準備完了でない場合return
+                return;
+            }
         } else {
+            // recv()が可能になるまで無制限に待つ
             data->connect_state_cond.wait(lock, [&] {
                 return data->closing.load() ||
                        (data->connected && !data->using_curl);
             });
         }
-        if (data->closing.load() || !data->connected || data->using_curl) {
+        if (data->closing.load()) {
             return;
         }
-        next_recv_t = std::chrono::steady_clock::now() + interval;
+
+        auto next_recv_t = std::chrono::steady_clock::now() + interval;
         bool has_recv = internal::recvMain(data, lock);
         if (has_recv) {
+            return;
+        }
+
+        if (!timeout || next_recv_t < start_t + *timeout) {
+            // interval < timeout の場合、interval分待機
+            data->connect_state_cond.wait_until(
+                lock, next_recv_t, [&] { return data->closing.load(); });
+        } else {
+            // interval > timeout の場合、timeout分待機
+            data->connect_state_cond.wait_until(
+                lock, start_t + *timeout, [&] { return data->closing.load(); });
+        }
+        if (data->closing.load()) {
             return;
         }
     }
@@ -329,9 +339,9 @@ void Client::waitConnection() {
         first_loop = false;
     }
 }
-void Client::autoRecv(bool enabled, std::chrono::microseconds interval) {
-    if (enabled && interval.count() > 0) {
-        data->auto_recv_us.store(static_cast<int>(interval.count()));
+void Client::autoRecv(bool enabled) {
+    if (enabled /* && interval.count() > 0 */) {
+        data->auto_recv_us.store(100);
     } else {
         data->auto_recv_us.store(0);
     }

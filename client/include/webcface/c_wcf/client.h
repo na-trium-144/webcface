@@ -97,16 +97,28 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
  * それがすべて完了するまでこの関数はブロックされる。
  * * データを何も受信しなかった場合、サーバーに接続していない場合、
  * または接続試行中やデータ送信中など受信ができない場合は、
- * timeout経過後にreturnする。
- * timeout=0 または負の値なら即座にreturnする。
- * * timeoutが100μs以上の場合、データを何も受信できなければ100μsおきに再試行する。
+ * 即座にreturnする。
+ *
+ * \return wcliが無効ならWCF_BAD_WCLI
+ * \sa wcfWaitRecvFor(), wcfWaitRecv(), wcfAutoRecv()
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli);
+/*!
+ * \brief サーバーからデータを受信する
+ * \since ver2.0
+ *
+ * * wcfRecv()と同じだが、何も受信できなければ
+ * timeout 経過後に再試行してreturnする。
+ * timeout=0 または負の値なら再試行せず即座にreturnする。(wcfRecv()と同じ)
+ * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
  *
  * \param wcli
  * \param timeout (μs単位)
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfWaitRecv(), wcfAutoRecv()
+ * \sa wcfRecv(), wcfWaitRecv(), wcfAutoRecv()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecvFor(wcfClient *wcli,
+                                                    int timeout);
 /*!
  * \brief サーバーからデータを受信する
  * \since ver2.0
@@ -118,23 +130,19 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli, int timeout);
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecv(wcfClient *wcli);
 /*!
- * \brief 別スレッドでwcfRecv()を自動的に呼び出す間隔を設定する。
+ * \brief 別スレッドでwcfRecv()を自動的に呼び出すようにする。
  * \since ver2.0
  *
  * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
- * * autoRecvが有効の場合、別スレッドで一定間隔ごとにrecv()が呼び出され、
- * 各種コールバック(onEntry, onChange,
- * Funcなど)も別のスレッドで呼ばれることになる
+ * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+ * 各種コールバック (onEntry, onChange, Funcなど)
+ * も別のスレッドで呼ばれることになる
  * (そのためmutexなどを適切に設定すること)
- * * デフォルトでは無効なので、手動でrecv()を呼び出す必要がある
+ * * デフォルトでは無効なので、手動でwcfRecv()などを呼び出す必要がある
  *
- * \param wcli
- * \param interval (μs単位)
- * 1以上を指定するとその間隔で自動でrecv()が呼び出されるようになる。
- * 0または負の値を指定するとautoRecvは無効。
- * \sa recv(), recvUntil(), waitRecv()
+ * \sa wcfRecv(), wcfWaitRecvFor(), wcfWaitRecv()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli, int interval);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli);
 /*!
  * \brief 送信用にセットしたデータをすべて送信キューに入れる。
  * \since ver1.5

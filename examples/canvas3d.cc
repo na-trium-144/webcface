@@ -76,7 +76,7 @@ int main() {
     double i = 0;
 
     while (true) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
 
         {
             auto world = wcli.canvas3D("omniwheel_world");
@@ -99,5 +99,6 @@ int main() {
         i += 0.5;
 
         wcli.sync();
+        wcli.waitRecvFor(std::chrono::milliseconds(100));
     }
 }
