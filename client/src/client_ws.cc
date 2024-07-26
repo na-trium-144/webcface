@@ -1,7 +1,7 @@
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/client.h"
-#include "webcface/server/unix_path.h"
+#include "webcface/internal/unix_path.h"
 #include <curl/curl.h>
 #include <string>
 #include <cstdlib>
@@ -36,18 +36,17 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
             if (data->host.decode() != "127.0.0.1") {
                 continue;
             }
-            if (message::Path::detectWSL1()) {
+            if (internal::detectWSL1()) {
                 data->current_curl_path =
-                    message::Path::unixSocketPathWSLInterop(data->port)
-                        .string();
+                    internal::unixSocketPathWSLInterop(data->port).string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  data->current_curl_path.c_str());
                 curl_easy_setopt(handle, CURLOPT_URL,
                                  ("ws://" + data->host.decode() + "/").c_str());
                 break;
             }
-            if (message::Path::detectWSL2()) {
-                std::string win_host = message::Path::wsl2Host();
+            if (internal::detectWSL2()) {
+                std::string win_host = internal::wsl2Host();
                 if (!win_host.empty()) {
                     data->current_curl_path =
                         win_host + ':' + std::to_string(data->port);
@@ -63,7 +62,7 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
                 continue;
             }
             data->current_curl_path =
-                message::Path::unixSocketPath(data->port).string();
+                internal::unixSocketPath(data->port).string();
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                              data->current_curl_path.c_str());
             curl_easy_setopt(handle, CURLOPT_URL,

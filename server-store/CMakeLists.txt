@@ -1,5 +1,5 @@
 # server-store: public
-add_library(webcface-server-store OBJECT)
+add_library(webcface-server-store STATIC)
 target_sources(webcface-server-store PRIVATE
     src/member_data.cc
     src/image_conversion.cc
@@ -7,21 +7,28 @@ target_sources(webcface-server-store PRIVATE
     src/websock.cc
     src/dir.cc
     src/ip.cc
-    src/unix_path.cc
+    src/server_ws.cc
 )
 target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
-target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
+target_include_directories(webcface-server-store PRIVATE
+    $<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-message,INTERFACE_INCLUDE_DIRECTORIES>
+)
 target_compile_features(webcface-server-store PUBLIC cxx_std_17)
 target_link_libraries(webcface-server-store PUBLIC
-    webcface-message
-    webcface-encoding
+    webcface
     webcface-std-filesystem
     webcface-spdlog-linker
 )
 target_link_libraries(webcface-server-store PRIVATE
-    webcface-server-internal
     webcface-magickpp-linker
+    webcface-crow-linker
+    msgpack-cxx
 )
-if(WEBCFACE_SERVER)
-    target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_SERVER)
+target_link_directories(webcface-server-store PUBLIC
+    $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
+)
+if(WEBCFACE_SYSTEM_WIN32SOCKET)
+    target_link_libraries(webcface-server-store PRIVATE iphlpapi)
 endif()

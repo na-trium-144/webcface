@@ -4,7 +4,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_client.h"
-#include "webcface/server/unix_path.h"
+#include "webcface/internal/unix_path.h"
 
 using namespace webcface;
 DummyClient::~DummyClient() {
@@ -19,7 +19,7 @@ DummyClient::DummyClient(bool use_unix)
           if (use_unix) {
               curl_easy_setopt(
                   handle, CURLOPT_UNIX_SOCKET_PATH,
-                  message::Path::unixSocketPath(27530).string().c_str());
+                  internal::unixSocketPath(27530).string().c_str());
           }
           curl_easy_setopt(handle, CURLOPT_URL, "ws://127.0.0.1");
           curl_easy_setopt(handle, CURLOPT_PORT, 27530L);
@@ -104,6 +104,6 @@ DummyClient::DummyClient(bool use_unix)
       }) {}
 
 void DummyClient::send(std::string msg) {
-  std::lock_guard lock(client_m);
-  msg_queue.push(msg);
+    std::lock_guard lock(client_m);
+    msg_queue.push(msg);
 }

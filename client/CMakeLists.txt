@@ -26,6 +26,7 @@ target_sources(webcface-client PRIVATE
     src/component_canvas3d.cc
     src/component_canvas2d.cc
     src/component_view.cc
+    src/unix_path.cc
     src/c_wcf/client.cc
     src/c_wcf/member.cc
     src/c_wcf/value.cc
@@ -38,7 +39,6 @@ target_compile_definitions(webcface-client PRIVATE WEBCFACE_BUILDING)
 target_compile_features(webcface-client PUBLIC cxx_std_17)
 target_link_libraries(webcface-client PRIVATE
     webcface-message
-    webcface-server-store
     webcface-libcurl-linker
     webcface-spdlog-linker
 )

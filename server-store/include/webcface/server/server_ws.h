@@ -1,10 +1,11 @@
 #pragma once
+#include "webcface/common/def.h"
 #include <cstdint>
 #include <functional>
 #include <string>
 
-namespace webcface {
-namespace server_internal {
+WEBCFACE_NS_BEGIN
+namespace server {
 using wsConnPtr = void *;
 
 using LoggerCallback = std::function<void(const char *, std::size_t, int)>;
@@ -32,5 +33,5 @@ class AppWrapper {
     void run() noexcept;
     const char *exception() noexcept;
 };
-} // namespace server_internal
-} // namespace webcface
+} // namespace server
+WEBCFACE_NS_END

@@ -11,9 +11,7 @@ namespace std_fs = std::filesystem;
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message::Path {
-// Messageではない気がするがほかにいいnamespaceがない
-// (clientでもserverでも使う)
+namespace internal {
 
 /*!
  * \brief unix socket のパス
@@ -54,5 +52,5 @@ WEBCFACE_DLL void WEBCFACE_CALL initUnixSocket(
 WEBCFACE_DLL void WEBCFACE_CALL updateUnixSocketPerms(
     const std_fs::path &path, const std::shared_ptr<spdlog::logger> &logger);
 
-} // namespace message::Path
+} // namespace internal
 WEBCFACE_NS_END

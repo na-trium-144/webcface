@@ -12,7 +12,7 @@ namespace server {
 struct MemberData;
 using MemberDataPtr = std::shared_ptr<MemberData>;
 
-struct WEBCFACE_DLL ServerStorage {
+struct ServerStorage {
     /*!
      * \brief 現在接続されているクライアントの一覧
      *
