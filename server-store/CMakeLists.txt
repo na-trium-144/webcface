@@ -29,3 +29,6 @@ target_link_libraries(webcface-server-store PRIVATE
 target_link_directories(webcface-server-store PUBLIC
     $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
 )
+if(WEBCFACE_SYSTEM_WIN32SOCKET)
+    target_link_libraries(webcface-server-store PRIVATE iphlpapi)
+endif()

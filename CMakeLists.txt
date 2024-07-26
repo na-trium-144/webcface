@@ -250,9 +250,6 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:webcface-spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
 endif()
-if(WEBCFACE_SYSTEM_WIN32SOCKET)
-    target_link_libraries(webcface PRIVATE iphlpapi)
-endif()
 if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
     # MSVCではデフォルトでdllexportしたもの以外exportされないので問題なし
