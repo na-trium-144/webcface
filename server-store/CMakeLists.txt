@@ -15,7 +15,6 @@ target_include_directories(webcface-server-store PRIVATE
     $<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>
     $<TARGET_PROPERTY:webcface-message,INTERFACE_INCLUDE_DIRECTORIES>
 )
-target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
 target_compile_features(webcface-server-store PUBLIC cxx_std_17)
 target_link_libraries(webcface-server-store PUBLIC
     webcface
