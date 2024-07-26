@@ -47,6 +47,8 @@ struct WEBCFACE_DLL ServerStorage {
                    const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
     void removeClient(const wsConnPtr &con);
+    void
+    removeClient(std::unordered_map<wsConnPtr, MemberDataPtr>::iterator it);
     MemberDataPtr getClient(const wsConnPtr &con);
 
     void clientSendAll();

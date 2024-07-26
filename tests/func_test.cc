@@ -528,9 +528,9 @@ TEST_F(FuncTest, funcSharedFutureRun) {
 TEST_F(FuncTest, funcRunRemote) {
     func("a", "b").runAsync(1.23, true, "abc");
     bool call_msg_found = false;
-    while (!data_->message_queue.empty()) {
-        auto msg = data_->message_queue.front();
-        data_->message_queue.pop();
+    while (!data_->sync_queue.empty()) {
+        auto msg = data_->sync_queue.front();
+        data_->sync_queue.pop();
         if (msg ==
             message::packSingle(message::Call{
                 0,

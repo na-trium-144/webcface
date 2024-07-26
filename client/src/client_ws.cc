@@ -96,7 +96,7 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
     data->current_curl_connected = false;
 }
 bool recv(const std::shared_ptr<internal::ClientData> &data,
-          const std::function<void(const std::string &)> &cb) {
+          const std::function<void(std::string)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");

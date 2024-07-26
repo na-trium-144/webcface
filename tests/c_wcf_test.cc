@@ -77,7 +77,7 @@ TEST_F(CClientTest, connectionByWait) {
         std::promise<void> p;
     auto f = p.get_future();
     std::thread t([&] {
-        EXPECT_EQ(wcfWaitConnection(wcli_, 100), WCF_OK);
+        EXPECT_EQ(wcfWaitConnection(wcli_), WCF_OK);
         p.set_value();
     });
     while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
@@ -92,7 +92,7 @@ TEST_F(CClientTest, connectionByWait) {
     EXPECT_TRUE(dummy_s->connected());
     EXPECT_TRUE(wcfIsConnected(wcli_));
 
-    EXPECT_EQ(wcfWaitConnection(nullptr, 100), WCF_BAD_WCLI);
+    EXPECT_EQ(wcfWaitConnection(nullptr), WCF_BAD_WCLI);
 }
 TEST_F(CClientTest, noConnectionByRecv) {
     EXPECT_FALSE(dummy_s->connected());
@@ -150,6 +150,7 @@ TEST_F(CClientTest, valueReq) {
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
@@ -206,6 +207,7 @@ TEST_F(CClientTest, textReq) {
     });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
     EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
@@ -561,6 +563,7 @@ TEST_F(CClientTest, viewReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
     EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
