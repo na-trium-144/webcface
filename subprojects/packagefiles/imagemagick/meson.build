@@ -77,7 +77,7 @@ p = mod.add_project('configure',
 
 magickcore_dep = declare_dependency(
   dependencies: [
-    p.dependency('MagickCore'),
+    p.dependency('MagickCore-7.Q8'),
     libwebp_dep,
     libpng_dep,
     zlib_dep,
@@ -86,14 +86,13 @@ magickcore_dep = declare_dependency(
 )
 magickwand_dep = declare_dependency(
   dependencies: [
-    p.dependency('MagickWand'),
+    p.dependency('MagickWand-7.Q8'),
     magickcore_dep,
   ],
 )
 magickpp_dep = declare_dependency(
   dependencies: [
-    p.dependency('Magick++'),
-    magickcore_dep,
+    p.dependency('Magick++-7.Q8'),
     magickwand_dep,
   ],
 )

@@ -15,6 +15,7 @@ webcface_server_store_lib = static_library('webcface-server-store',
     webcface_server_store_inc,
   ],
   dependencies: [
+    filesystem_dep,
     webcface_encoding_dep,
     webcface_message_dep,
     webcface_server_internal_dep,
@@ -23,6 +24,7 @@ webcface_server_store_lib = static_library('webcface-server-store',
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
+  gnu_symbol_visibility: 'inlineshidden',
 )
 webcface_server_store_dep = declare_dependency(
   include_directories: [
