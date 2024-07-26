@@ -7,6 +7,4 @@ int main() {
     wcli.onMemberEntry([](webcface::Member m) {});
     int i;
     wcli.func("func").set([&](int a) { i += a; });
-
-    webcface::server::Server s(7530, webcface::level::info);
 }
