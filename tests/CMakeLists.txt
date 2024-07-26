@@ -27,12 +27,14 @@ target_link_libraries(webcface-test PRIVATE
     msgpack-cxx
     webcface-utf8cpp-linker
     webcface-spdlog-linker
-    webcface-magickpp-linker
-    webcface-crow-linker
     webcface-libcurl-linker
 )
 if(WEBCFACE_SERVER)
-    target_link_libraries(webcface-test PRIVATE webcface-server-store)
+    target_link_libraries(webcface-test PRIVATE 
+        webcface-server-store
+        webcface-magickpp-linker
+        webcface-crow-linker
+    )
 endif()
 target_compile_definitions(webcface-test PRIVATE
     WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
