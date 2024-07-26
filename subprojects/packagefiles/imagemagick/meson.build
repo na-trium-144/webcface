@@ -23,10 +23,17 @@ if not libpng_dep.found()
   magickpp_dependencies += libpng_proj.get_variable('libpng')
 endif
 libwebp_dep = dependency('libwebp', required: false)
-if not libwebp_dep.found()
+if libwebp_dep.found()
+  libwebpmux_dep = dependency('libwebpmux', required: false)
+  libwebpdemux_dep = dependency('libwebpdemux', required: false)
+else
   libwebp_proj = subproject('libwebp')
   libwebp_dep = libwebp_proj.get_variable('webp_dep')
   magickpp_dependencies += libwebp_proj.get_variable('webp_lib')
+  libwebpmux_dep = libwebp_proj.get_variable('webpmux_dep')
+  magickpp_dependencies += libwebp_proj.get_variable('webpmux_lib')
+  libwebpdemux_dep = libwebp_proj.get_variable('webpdemux_dep')
+  magickpp_dependencies += libwebp_proj.get_variable('webpdemux_lib')
 endif
 
 mod = import('unstable-external_project')
@@ -75,24 +82,44 @@ p = mod.add_project('configure',
   verbose: true,
 )
 
+pkg_config = find_program('pkg-config')
+magickcore_cflags = run_command(
+  pkg_config, '--cflags-only-other', 'MagickCore',
+  env: {
+    'PKG_CONFIG_PATH': meson.current_build_dir() / 'build/MagickCore',
+  },
+  check: true,
+)
+magick_inc_subdir = 'ImageMagick-7'
 magickcore_dep = declare_dependency(
+  compile_args: magickcore_cflags.stdout().split(),
   dependencies: [
-    p.dependency('MagickCore-7.Q8'),
+    p.dependency('MagickCore-7.Q8',
+      subdir: magick_inc_subdir,
+    ),
     libwebp_dep,
+    libwebpmux_dep,
+    libwebpdemux_dep,
     libpng_dep,
     zlib_dep,
     libjpeg_dep,
   ],
 )
+# pkg-config MagickWand はdependencyが見つからないエラーになる
+# MagickWandとMagick++に追加のcflagsはなさそうなのでok
 magickwand_dep = declare_dependency(
   dependencies: [
-    p.dependency('MagickWand-7.Q8'),
+    p.dependency('MagickWand-7.Q8',
+      subdir: magick_inc_subdir,
+    ),
     magickcore_dep,
   ],
 )
 magickpp_dep = declare_dependency(
   dependencies: [
-    p.dependency('Magick++-7.Q8'),
+    p.dependency('Magick++-7.Q8',
+      subdir: magick_inc_subdir,
+    ),
     magickwand_dep,
   ],
 )

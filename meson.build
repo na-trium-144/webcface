@@ -147,7 +147,14 @@ spdlog_dep = dependency('spdlog',
 )
 utf8cpp_dep = dependency('utf8cpp')
 crow_dep = dependency('Crow')
-magickpp_dep = dependency('Magick++')
+magickpp_dep = dependency('Magick++', required: false)
+if not magickpp_dep.found()
+  dependency('libjpeg', default_options: ['default_library=static'])
+  dependency('libpng', default_options: ['default_library=static'])
+  dependency('zlib', default_options: ['default_library=static'])
+  dependency('libwebp', default_options: ['default_library=static'])
+  magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
+endif
 curl_dep = dependency('libcurl',
   default_options: [
     'websockets=enabled',
@@ -195,33 +202,31 @@ curl_dep = dependency('libcurl',
     'tftp=disabled',
   ],
 )
+cli11_dep = dependency('cli11')
+
+if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
+  add_project_arguments(
+    '-DWEBCFACE_MAGICK_VER7',
+    language: ['c', 'cpp'],
+  )
+endif
 
 subdir('encoding')
 subdir('message')
-subdir('server-internal')
-subdir('server-store')
 subdir('client')
 
-webcface_link_with = [
-  webcface_server_internal_lib,
-]
 webcface_link_args = []
-if webcface_system_win32socket
-  webcface_link_with += cxx.find_library('iphlpapi')
-endif
 if get_option('default_library') == 'shared'
   if webcface_system_exclude_libs
     webcface_link_args += '-Wl,--exclude-libs,ALL'
   endif
 endif
-library('webcface',
+webcface_lib = library('webcface',
   objects: [
     webcface_encoding_lib.extract_all_objects(recursive: false),
     webcface_message_lib.extract_all_objects(recursive: false),
-    webcface_server_store_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
-  link_with: webcface_link_with,
   link_args: webcface_link_args,
   dependencies: [
     filesystem_dep,
@@ -232,3 +237,16 @@ library('webcface',
   version: webcface_version_str,
   soversion: webcface_soversion,
 )
+webcface_dep = declare_dependency(
+  link_with: [webcface_lib],
+  include_directories: [
+    webcface_encoding_inc,
+    webcface_client_inc,
+  ],
+  dependencies: [
+    filesystem_dep,
+  ],
+)
+
+subdir('server-store')
+subdir('server')

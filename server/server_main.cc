@@ -1,5 +1,9 @@
 #include <webcface/server.h>
-#include <webcface/common/def.h>
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/config.h"
+#endif
 #include <CLI/CLI.hpp>
 
 int main(int argc, char **argv) {

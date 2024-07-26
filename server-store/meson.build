@@ -5,9 +5,14 @@ webcface_server_store_src = [
   'src/websock.cc',
   'src/dir.cc',
   'src/ip.cc',
-  'src/unix_path.cc',
+  'src/server_ws.cc',
 ]
 webcface_server_store_inc = include_directories('include')
+if webcface_system_win32socket
+  ip = cxx.find_library('iphlpapi')
+else
+  ip = declare_dependency()
+endif
 webcface_server_store_lib = static_library('webcface-server-store',
   sources: webcface_server_store_src,
   include_directories: [
@@ -15,24 +20,24 @@ webcface_server_store_lib = static_library('webcface-server-store',
     webcface_server_store_inc,
   ],
   dependencies: [
+    webcface_dep,
     filesystem_dep,
-    webcface_encoding_dep,
     webcface_message_dep,
-    webcface_server_internal_dep,
     spdlog_dep,
     magickpp_dep,
+    crow_dep,
+    ip,
   ],
-  build_by_default: false,
-  cpp_args: ['-DWEBCFACE_BUILDING'],
-  gnu_symbol_visibility: 'inlineshidden',
 )
 webcface_server_store_dep = declare_dependency(
   include_directories: [
     webcface_server_store_inc,
   ],
+  link_with: [
+    webcface_server_store_lib,
+  ],
   dependencies: [
-    webcface_encoding_dep,
-    webcface_message_dep,
+    webcface_dep,
     spdlog_dep,
   ],
 )
