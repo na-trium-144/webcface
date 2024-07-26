@@ -30,7 +30,7 @@ add_library(webcface-asio-linker INTERFACE)
 target_include_directories(webcface-asio-linker INTERFACE $<BUILD_INTERFACE:${ASIO_INCLUDE_DIR}>)
 target_compile_definitions(webcface-asio-linker INTERFACE ASIO_DISABLE_VISIBILITY)
 if(WEBCFACE_SYSTEM_WIN32SOCKET)
-    target_link_libraries(webcface-libcurl-linker INTERFACE ws2_32 wsock32)
+    target_link_libraries(webcface-asio-linker INTERFACE ws2_32 wsock32)
 endif()
 if(CMAKE_SYSTEM_NAME STREQUAL "CYGWIN" OR CMAKE_SYSTEM_NAME STREQUAL "MSYS")
     # for cygwin
