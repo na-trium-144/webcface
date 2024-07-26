@@ -22,6 +22,5 @@ var classwebcface_1_1InputRef =
     [ "operator!=", "classwebcface_1_1InputRef.html#a9022a5966eca1f27119c6464e08bafce", null ],
     [ "operator=", "classwebcface_1_1InputRef.html#a02b4bbfd8ba1aaadefd2d4f136a31511", null ],
     [ "operator=", "classwebcface_1_1InputRef.html#a12af12feb252b91ec867a3bb536a9fd4", null ],
-    [ "operator==", "classwebcface_1_1InputRef.html#a20b55b0402e00257754d0d80ec25cb56", null ],
-    [ "state", "classwebcface_1_1InputRef.html#a941bd0c09721e68ece2a5dfa838fe171", null ]
+    [ "operator==", "classwebcface_1_1InputRef.html#a20b55b0402e00257754d0d80ec25cb56", null ]
 ];

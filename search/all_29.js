@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['サーバーの情報_0',['サーバーの情報',['../md_01__client.html#autotoc_md29',1,'']]],
-  ['サービスとして_20linuxのみ_1',['サービスとして linuxのみ',['../md_00__overview.html#autotoc_md4',1,'サービスとして (Linuxのみ)'],['../md_70__launcher.html#autotoc_md134',1,'サービスとして (Linuxのみ)']]]
+  ['サーバーの情報_0',['サーバーの情報',['../md_docs_201__client.html#autotoc_md29',1,'']]],
+  ['サービスとして_20linuxのみ_1',['サービスとして linuxのみ',['../md_docs_200__overview.html#autotoc_md4',1,'サービスとして (Linuxのみ)'],['../md_docs_270__launcher.html#autotoc_md134',1,'サービスとして (Linuxのみ)']]]
 ];

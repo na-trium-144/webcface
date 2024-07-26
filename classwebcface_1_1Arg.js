@@ -9,7 +9,7 @@ var classwebcface_1_1Arg =
     [ "init", "classwebcface_1_1Arg.html#af229b885662863b6775dd006ac3ba7b1", null ],
     [ "max", "classwebcface_1_1Arg.html#a0aed672f8abc2efb3dff9708f52896a3", null ],
     [ "max", "classwebcface_1_1Arg.html#a0466a52a01e71146cab0a104f143c851", null ],
-    [ "mergeConfig", "classwebcface_1_1Arg.html#a12a7ffe03155ac78b2f065fb90b69058", null ],
+    [ "mergeConfig", "classwebcface_1_1Arg.html#a6f63fdc4404726d1e3a62a8b3b577806", null ],
     [ "min", "classwebcface_1_1Arg.html#ab9fa0cb3de8ee6996e9806a4787e237b", null ],
     [ "min", "classwebcface_1_1Arg.html#adac3ba80e06615821db3c82d7c00bd81", null ],
     [ "name", "classwebcface_1_1Arg.html#a1d89c28bd42ba9a52da008bb69367171", null ],

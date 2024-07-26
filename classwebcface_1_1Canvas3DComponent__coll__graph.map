@@ -1,7 +1,0 @@
-<map id="Canvas3DComponent" name="Canvas3DComponent">
-<area shape="rect" id="Node000001" title="Canvas3Dに表示する要素" alt="" coords="5,168,168,193"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Transform.html" title="3次元の座標と回転" alt="" coords="43,80,130,105"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,119,89,167,84,167,84,119"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標" alt="" coords="59,5,114,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="89,45,89,80,84,80,84,45"/>
-</map>

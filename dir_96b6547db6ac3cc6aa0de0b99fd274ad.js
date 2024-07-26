@@ -8,5 +8,6 @@ var dir_96b6547db6ac3cc6aa0de0b99fd274ad =
     [ "func_internal.h", "func__internal_8h.html", "func__internal_8h" ],
     [ "logger.h", "internal_2logger_8h.html", "internal_2logger_8h" ],
     [ "queue.h", "queue_8h.html", "queue_8h" ],
+    [ "unix_path.h", "unix__path_8h.html", "unix__path_8h" ],
     [ "unlock.h", "unlock_8h.html", "unlock_8h" ]
 ];

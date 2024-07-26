@@ -1,11 +1,11 @@
 var annotated_dup =
 [
-    [ "c_wcf", "namespacec__wcf.html", [
-      [ "CharType", "structc__wcf_1_1CharType.html", null ],
-      [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", "structc__wcf_1_1CharType_3_01char_01_4" ],
-      [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", "structc__wcf_1_1CharType_3_01wchar__t_01_4" ]
-    ] ],
     [ "webcface", "namespacewebcface.html", [
+      [ "c_wcf", "namespacewebcface_1_1c__wcf.html", [
+        [ "CharType", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
+        [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4" ],
+        [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4" ]
+      ] ],
       [ "components", "namespacewebcface_1_1components.html", [
         [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", [
           [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", "structwebcface_1_1components_1_1geometries_1_1Box" ],
@@ -90,13 +90,11 @@ var annotated_dup =
         [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", "structwebcface_1_1message_1_1ViewComponent" ]
       ] ],
       [ "server", "namespacewebcface_1_1server.html", [
+        [ "AppWrapper", "classwebcface_1_1server_1_1AppWrapper.html", "classwebcface_1_1server_1_1AppWrapper" ],
+        [ "CustomLogger", "classwebcface_1_1server_1_1CustomLogger.html", "classwebcface_1_1server_1_1CustomLogger" ],
         [ "MemberData", "structwebcface_1_1server_1_1MemberData.html", "structwebcface_1_1server_1_1MemberData" ],
         [ "Server", "classwebcface_1_1server_1_1Server.html", "classwebcface_1_1server_1_1Server" ],
         [ "ServerStorage", "structwebcface_1_1server_1_1ServerStorage.html", "structwebcface_1_1server_1_1ServerStorage" ]
-      ] ],
-      [ "server_internal", "namespacewebcface_1_1server__internal.html", [
-        [ "AppWrapper", "classwebcface_1_1server__internal_1_1AppWrapper.html", "classwebcface_1_1server__internal_1_1AppWrapper" ],
-        [ "CustomLogger", "classwebcface_1_1server__internal_1_1CustomLogger.html", "classwebcface_1_1server__internal_1_1CustomLogger" ]
       ] ],
       [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", "classwebcface_1_1AnonymousFunc" ],
       [ "Arg", "classwebcface_1_1Arg.html", "classwebcface_1_1Arg" ],
@@ -108,6 +106,9 @@ var annotated_dup =
       [ "Canvas2DDataBase", "structwebcface_1_1Canvas2DDataBase.html", "structwebcface_1_1Canvas2DDataBase" ],
       [ "Canvas3D", "classwebcface_1_1Canvas3D.html", "classwebcface_1_1Canvas3D" ],
       [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", "classwebcface_1_1Canvas3DComponent" ],
+      [ "CharType", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
+      [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4" ],
+      [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4" ],
       [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", "structwebcface_1_1components_1_1geometries_1_1Circle" ],
       [ "Client", "classwebcface_1_1Client.html", "classwebcface_1_1Client" ],
       [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", "structwebcface_1_1components_1_1geometries_1_1Cylinder" ],
@@ -156,9 +157,6 @@ var annotated_dup =
     [ "Canvas2DTest", "classCanvas2DTest.html", "classCanvas2DTest" ],
     [ "Canvas3DTest", "classCanvas3DTest.html", "classCanvas3DTest" ],
     [ "CClientTest", "classCClientTest.html", "classCClientTest" ],
-    [ "CharType", "structc__wcf_1_1CharType.html", null ],
-    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", "structc__wcf_1_1CharType_3_01char_01_4" ],
-    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", "structc__wcf_1_1CharType_3_01wchar__t_01_4" ],
     [ "ClientTest", "classClientTest.html", "classClientTest" ],
     [ "CopyCounter", "structCopyCounter.html", "structCopyCounter" ],
     [ "CustomLogger", "classCustomLogger.html", "classCustomLogger" ],

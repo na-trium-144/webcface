@@ -1,7 +1,7 @@
 var classwebcface_1_1Text =
 [
     [ "Text", "classwebcface_1_1Text.html#aeb4b135264393aff0c5510b05a1a32cb", null ],
-    [ "Text", "classwebcface_1_1Text.html#a4080d03cf93f77f0aa12817f484d126f", null ],
+    [ "Text", "classwebcface_1_1Text.html#aaf905a31f86887d217ca1fe887ae8d87", null ],
     [ "Text", "classwebcface_1_1Text.html#a9a8d977642f93c23bbc34e1a88089d6e", null ],
     [ "appendListener", "classwebcface_1_1Text.html#ac08489fff9ea455ad213be400b285c35", null ],
     [ "canvas2D", "classwebcface_1_1Text.html#af9bd15e71b656e996127c88145c582ad", null ],

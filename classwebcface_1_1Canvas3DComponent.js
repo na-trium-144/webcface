@@ -21,13 +21,6 @@ var classwebcface_1_1Canvas3DComponent =
     [ "origin", "classwebcface_1_1Canvas3DComponent.html#a0643df1501196ceea4ed9739946a01b9", null ],
     [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#a7cff1114f5ead5eda00e701078120999", null ],
     [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#a891f6e5a473afa69e6dace023a87298a", null ],
-    [ "toMessage", "classwebcface_1_1Canvas3DComponent.html#af59d7547715d27108baf93fbc9930abd", null ],
-    [ "type", "classwebcface_1_1Canvas3DComponent.html#a40f6f491a20ff340c7200c677c65b1b4", null ],
-    [ "angles_", "classwebcface_1_1Canvas3DComponent.html#a5b7790f6f999db195b4cb4a0b436bfc4", null ],
-    [ "color_", "classwebcface_1_1Canvas3DComponent.html#a6a3c6f623cefece397f2c40ae313e1db", null ],
-    [ "data_w", "classwebcface_1_1Canvas3DComponent.html#acf663a756c76fb2936c0042257df739c", null ],
-    [ "field_base_", "classwebcface_1_1Canvas3DComponent.html#a3441695c8f602f1b0e8223a604139bb1", null ],
-    [ "geometry_", "classwebcface_1_1Canvas3DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9", null ],
-    [ "origin_", "classwebcface_1_1Canvas3DComponent.html#a05df68f5f0d213367feacfc47d7ac757", null ],
-    [ "type_", "classwebcface_1_1Canvas3DComponent.html#ade33ccd5e0c067939e3b5d6b3be53720", null ]
+    [ "toMessage", "classwebcface_1_1Canvas3DComponent.html#aaa7e6023e18b2818480a9b8f36ca6d64", null ],
+    [ "type", "classwebcface_1_1Canvas3DComponent.html#a40f6f491a20ff340c7200c677c65b1b4", null ]
 ];

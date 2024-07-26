@@ -1,9 +1,5 @@
 var classwebcface_1_1encoding_1_1ValAdaptor =
 [
-    [ "ValVariant", "classwebcface_1_1encoding_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1", [
-      [ "DOUBLEV", "classwebcface_1_1encoding_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1a82415e6a4dd3ea15c13484032c2ae7b5", null ],
-      [ "INT64V", "classwebcface_1_1encoding_1_1ValAdaptor.html#ab1fc347c8dab24ea630b07eefc5f81b1ae1da5f2e4757f309483763f280f89ea2", null ]
-    ] ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html#ae6db5443b47ee479ef0c5f576b0226e1", null ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html#adae84f6076fdd8d3bee2287e15fd39fb", null ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html#abbf1980ca1fddaf61c99abd79f4f796e", null ],
@@ -46,8 +42,5 @@ var classwebcface_1_1encoding_1_1ValAdaptor =
     [ "operator=", "classwebcface_1_1encoding_1_1ValAdaptor.html#ac8325c6c1614c634ec41954e58722a1e", null ],
     [ "operator==", "classwebcface_1_1encoding_1_1ValAdaptor.html#a20b55b0402e00257754d0d80ec25cb56", null ],
     [ "operator==", "classwebcface_1_1encoding_1_1ValAdaptor.html#a7a7383a6c7642d96aa72fef85e1def15", null ],
-    [ "valType", "classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007", null ],
-    [ "as_str", "classwebcface_1_1encoding_1_1ValAdaptor.html#abb0dfe6de98f4f8f22b553ccc9683892", null ],
-    [ "as_val", "classwebcface_1_1encoding_1_1ValAdaptor.html#aade1e2e8377b65365c5c0d70d37b773e", null ],
-    [ "type", "classwebcface_1_1encoding_1_1ValAdaptor.html#a2013c6c2a968a8954cef0f06289d4166", null ]
+    [ "valType", "classwebcface_1_1encoding_1_1ValAdaptor.html#abbfeeae645abbaf39aeb6fb0c8b00007", null ]
 ];

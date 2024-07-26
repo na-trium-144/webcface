@@ -1,6 +1,6 @@
 var hierarchy =
 [
-    [ "AppWrapper", "classwebcface_1_1server__internal_1_1AppWrapper.html", null ],
+    [ "AppWrapper", "classwebcface_1_1server_1_1AppWrapper.html", null ],
     [ "Arg", "classwebcface_1_1Arg.html", null ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", null ],
     [ "basic_streambuf", null, [
@@ -16,12 +16,12 @@ var hierarchy =
       [ "RobotModel", "classwebcface_1_1RobotModel.html", null ]
     ] ],
     [ "Canvas3DComponent", "structwebcface_1_1message_1_1Canvas3DComponent.html", null ],
-    [ "CharType< CharT >", "structc__wcf_1_1CharType.html", null ],
-    [ "CharType< CharT >", "structc__wcf_1_1CharType.html", null ],
-    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", null ],
-    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", null ],
-    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
-    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
+    [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
+    [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
+    [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", null ],
+    [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", null ],
+    [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
+    [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
@@ -29,7 +29,6 @@ var hierarchy =
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
-    [ "Data", "structwebcface_1_1encoding_1_1SharedString_1_1Data.html", null ],
     [ "DataSetBuffer< Component >", "classwebcface_1_1internal_1_1DataSetBuffer.html", null ],
     [ "DataSetBuffer< Canvas2DComponent >", "classwebcface_1_1internal_1_1DataSetBuffer.html", [
       [ "Canvas2DDataBuf", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html", null ]
@@ -71,7 +70,6 @@ var hierarchy =
     ] ],
     [ "Geometry2D", "structwebcface_1_1Geometry2D.html", null ],
     [ "Geometry3D", "structwebcface_1_1Geometry3D.html", null ],
-    [ "HandleData", "structwebcface_1_1FuncCallHandle_1_1HandleData.html", null ],
     [ "hash", null, [
       [ "Hash", "structwebcface_1_1encoding_1_1SharedString_1_1Hash.html", null ]
     ] ],
@@ -84,7 +82,7 @@ var hierarchy =
     ] ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classCustomLogger.html", null ],
-      [ "CustomLogger", "classwebcface_1_1server__internal_1_1CustomLogger.html", null ]
+      [ "CustomLogger", "classwebcface_1_1server_1_1CustomLogger.html", null ]
     ] ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html", null ],
     [ "ImageFrame", "structwebcface_1_1message_1_1ImageFrame.html", [

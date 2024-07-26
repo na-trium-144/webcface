@@ -1,11 +1,11 @@
-<map id="/home/runner/work/webcface/webcface/client/include/webcface/c_wcf/value.h" name="/home/runner/work/webcface/webcface/client/include/webcface/c_wcf/value.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="141,5,352,60"/>
-<area shape="rect" id="Node000002" href="$def__types_8h.html" title=" " alt="" coords="197,108,296,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,60,249,94,244,94,244,60"/>
-<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="5,181,187,207"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="224,136,134,178,132,173,221,131"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="211,181,283,207"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="249,134,249,168,244,168,244,134"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="307,181,370,207"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="263,131,315,171,311,175,260,135"/>
+<map id="client/include/webcface/c_wcf/value.h" name="client/include/webcface/c_wcf/value.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="159,5,334,45"/>
+<area shape="rect" id="Node000002" href="$def__types_8h.html" title=" " alt="" coords="197,93,296,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,46,249,79,244,79,244,46"/>
+<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="5,167,187,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="224,121,134,163,132,158,221,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="211,167,283,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="249,119,249,153,244,153,244,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="307,167,370,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="263,117,315,156,311,160,260,121"/>
 </map>

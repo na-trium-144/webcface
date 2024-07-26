@@ -1,5 +1,7 @@
 var c__wcf_2value_8h =
 [
+    [ "wcfValueChangeEvent", "c__wcf_2value_8h.html#abd3376600c98a2dc2a6f617493c9d931", null ],
+    [ "wcfValueChangeEventW", "c__wcf_2value_8h.html#a425c2879bcea94454b70d1af55455db2", null ],
     [ "wcfValueGet", "c__wcf_2value_8h.html#a6b8bc18477f9e8bca7a5b1965f4905a0", null ],
     [ "wcfValueGetVecD", "c__wcf_2value_8h.html#a0f854340c16f01ef95424003d1ae84ca", null ],
     [ "wcfValueGetVecDW", "c__wcf_2value_8h.html#a1983451ac70a3c9a70f7267c81a97834", null ],

@@ -1,15 +1,15 @@
-<map id="/home/runner/work/webcface/webcface/client/include/webcface/internal/queue.h" name="/home/runner/work/webcface/webcface/client/include/webcface/internal/queue.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="211,5,422,60"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,108,68,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="232,63,82,108,80,103,230,58"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="93,108,157,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="259,63,164,105,162,100,257,58"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="181,108,324,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="299,62,272,99,267,95,295,58"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="349,108,415,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="339,58,367,95,363,99,335,62"/>
-<area shape="rect" id="Node000006" title=" " alt="" coords="439,108,514,133"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="367,58,444,99,442,104,364,62"/>
-<area shape="rect" id="Node000007" href="$def_8h.html" title=" " alt="" coords="538,108,719,133"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="413,57,575,102,573,107,411,63"/>
+<map id="client/include/webcface/internal/queue.h" name="client/include/webcface/internal/queue.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="229,5,404,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,68,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="250,48,82,95,81,90,249,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="93,93,157,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="272,48,166,91,164,86,270,43"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="181,93,324,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="303,47,273,84,269,81,299,44"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="349,93,415,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="335,44,366,81,362,84,330,47"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="439,93,514,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="356,43,442,85,440,90,354,48"/>
+<area shape="rect" id="Node000007" href="$def_8h.html" title=" " alt="" coords="538,93,719,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="392,43,571,87,569,93,391,48"/>
 </map>

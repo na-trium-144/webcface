@@ -1,13 +1,7 @@
 <map id="Canvas2DComponent" name="Canvas2DComponent">
-<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="226,196,389,221"/>
+<area shape="rect" id="Node000001" title="Canvas2Dの各要素を表すクラス。" alt="" coords="35,183,198,208"/>
 <area shape="rect" id="Node000002" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="5,93,228,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,137,285,194,283,198,166,142"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="13,5,175,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="100,44,105,69,112,92,107,94,99,70,95,45"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1Transform.html" title="3次元の座標と回転" alt="" coords="264,101,351,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="310,140,310,196,305,196,305,140"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標" alt="" coords="292,5,347,31"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="319,45,311,101,306,100,313,44"/>
-<area shape="rect" id="Node000006" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="375,101,480,126"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="407,137,364,174,328,198,325,194,360,170,404,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,147,119,182,114,182,114,147"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="35,5,198,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,44,119,93,114,93,114,44"/>
 </map>

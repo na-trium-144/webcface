@@ -140,7 +140,6 @@ $(document).ready(function(){initNavTree('classwebcface_1_1internal_1_1FuncResul
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classwebcface_1_1internal_1_1FuncResultStore-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FuncResultStore Class Reference</div></div>
 </div><!--header-->
@@ -149,7 +148,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1internal_1_1FuncResul
 <p>AsyncFuncResultのリストを保持する。  
  <a href="classwebcface_1_1internal_1_1FuncResultStore.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="func__internal_8h_source.html">/home/runner/work/webcface/webcface/client/include/webcface/internal/func_internal.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="func__internal_8h_source.html">webcface/internal/func_internal.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -162,15 +161,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a95e77e1ed013fc33eeff38c0f3dc25fa" id="r_a95e77e1ed013fc33eeff38c0f3dc25fa"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1FuncResultStore.html#a95e77e1ed013fc33eeff38c0f3dc25fa">removeResult</a> (std::size_t caller_id)</td></tr>
 <tr class="memdesc:a95e77e1ed013fc33eeff38c0f3dc25fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">resultを設定し終わったstateを削除  <br /></td></tr>
 <tr class="separator:a95e77e1ed013fc33eeff38c0f3dc25fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ad5e0dbd36f0d71fce9b00b7f991b2f38" id="r_ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1FuncResultStore.html#ad5e0dbd36f0d71fce9b00b7f991b2f38">mtx</a></td></tr>
-<tr class="separator:ad5e0dbd36f0d71fce9b00b7f991b2f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3fcc20d1f142d6bc53ccbcb76a76ff91" id="r_a3fcc20d1f142d6bc53ccbcb76a76ff91"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; std::size_t, std::shared_ptr&lt; <a class="el" href="classwebcface_1_1internal_1_1AsyncFuncState.html">AsyncFuncState</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1FuncResultStore.html#a3fcc20d1f142d6bc53ccbcb76a76ff91">result_setter</a></td></tr>
-<tr class="separator:a3fcc20d1f142d6bc53ccbcb76a76ff91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9420448994757ee4ac10d0428747c56" id="r_ad9420448994757ee4ac10d0428747c56"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1FuncResultStore.html#ad9420448994757ee4ac10d0428747c56">next_caller_id</a> = 0</td></tr>
-<tr class="separator:ad9420448994757ee4ac10d0428747c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>AsyncFuncResultのリストを保持する。 </p>
@@ -260,75 +250,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad5e0dbd36f0d71fce9b00b7f991b2f38" name="ad5e0dbd36f0d71fce9b00b7f991b2f38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad5e0dbd36f0d71fce9b00b7f991b2f38">&#9670;&#160;</a></span>mtx</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex mtx</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ad9420448994757ee4ac10d0428747c56" name="ad9420448994757ee4ac10d0428747c56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9420448994757ee4ac10d0428747c56">&#9670;&#160;</a></span>next_caller_id</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::size_t next_caller_id = 0</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a3fcc20d1f142d6bc53ccbcb76a76ff91" name="a3fcc20d1f142d6bc53ccbcb76a76ff91"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3fcc20d1f142d6bc53ccbcb76a76ff91">&#9670;&#160;</a></span>result_setter</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::unordered_map&lt;std::size_t, std::shared_ptr&lt;<a class="el" href="classwebcface_1_1internal_1_1AsyncFuncState.html">AsyncFuncState</a>&gt; &gt; result_setter</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>/home/runner/work/webcface/webcface/client/include/webcface/internal/<a class="el" href="func__internal_8h_source.html">func_internal.h</a></li>
+<li>client/include/webcface/internal/<a class="el" href="func__internal_8h_source.html">func_internal.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -336,7 +259,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1internal_1_1FuncResultStore.html">FuncResultStore</a></li>
-    <li class="footer">Generated on Wed Jul 24 2024 18:33:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 26 2024 16:24:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

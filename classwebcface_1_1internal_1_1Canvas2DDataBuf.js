@@ -16,13 +16,12 @@ var classwebcface_1_1internal_1_1Canvas2DDataBuf =
     [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
     [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
     [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
+    [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
+    [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
+    [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
+    [ "onSync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#af7f30faf9f8fbfdaa320ce8a23300215", null ],
     [ "set", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a0c412d457ad42ad2b156897afbc05ccd", null ],
     [ "set", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a13ad6d15bee6dc5a1d0c28c27f7fa3f9", null ],
     [ "sync", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#ad55f80ed3cd8b6c4f247763b747016af", null ],
-    [ "components_", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#aaec72af97159f3e5793512e09fab10a3", null ],
-    [ "DataSetBuffer< Canvas2DComponent >", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#ab05ccab212d8152ff81e2f86f893b596", null ],
-    [ "height_", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#ab03eb0667c032c7ffa558f43ac22d524", null ],
-    [ "modified_", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a6be52bc3ce35ddb41d76d9ad6c0ad05f", null ],
-    [ "target_", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a6a225ddf956f1245f5283ddbcd24d676", null ],
-    [ "width_", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a1576dd174f6e67d26433b628c60ad82b", null ]
+    [ "DataSetBuffer< Canvas2DComponent >", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html#ab05ccab212d8152ff81e2f86f893b596", null ]
 ];

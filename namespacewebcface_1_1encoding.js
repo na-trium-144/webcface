@@ -37,6 +37,5 @@ var namespacewebcface_1_1encoding =
     [ "usingUTF8", "namespacewebcface_1_1encoding.html#ae57423f1244b067999069f20f73eb166", null ],
     [ "usingUTF8", "namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b", null ],
     [ "valTypeOf", "namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
-    [ "valTypeStr", "namespacewebcface_1_1encoding.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ],
-    [ "using_utf8", "namespacewebcface_1_1encoding.html#af3606c1f9e63f6fdca78d6ec6226a4ee", null ]
+    [ "valTypeStr", "namespacewebcface_1_1encoding.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ]
 ];

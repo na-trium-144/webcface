@@ -1,9 +1,7 @@
 <map id="ViewComponent" name="ViewComponent">
-<area shape="rect" id="Node000001" title="Viewに表示する要素です" alt="" coords="201,181,331,207"/>
+<area shape="rect" id="Node000001" title="Viewに表示する要素です" alt="" coords="57,168,187,193"/>
 <area shape="rect" id="Node000002" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="5,93,239,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,123,248,179,245,183,152,128"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,133,125,168,119,168,119,133"/>
 <area shape="rect" id="Node000003" href="$classwebcface_1_1IdBase.html" title=" " alt="" coords="41,5,203,31"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="125,45,125,93,119,93,119,45"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="263,93,368,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="304,132,275,182,271,179,300,129"/>
 </map>

@@ -1,7 +1,7 @@
-<map id="/home/runner/work/webcface/webcface/client/src/component_id.cc" name="/home/runner/work/webcface/webcface/client/src/component_id.cc">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1087,5,1353,45"/>
+<map id="client/src/component_id.cc" name="client/src/component_id.cc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1141,5,1299,45"/>
 <area shape="rect" id="Node000002" href="$component__id_8h.html" title=" " alt="" coords="427,504,619,529"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1087,35,794,53,621,67,449,85,291,108,162,134,112,149,75,166,52,183,44,201,44,357,48,390,59,414,78,434,106,454,143,462,221,474,416,500,415,505,220,479,142,467,104,458,75,438,55,417,43,391,39,357,39,199,48,179,72,161,111,144,161,129,290,102,448,80,620,62,793,48,1087,30"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1141,33,857,49,677,62,492,80,320,103,176,131,121,147,79,164,53,182,46,191,44,200,44,357,48,390,59,414,78,434,106,454,143,462,221,474,416,500,415,505,220,479,142,467,104,458,75,438,55,417,43,391,39,357,39,200,41,189,49,178,76,159,119,141,175,126,319,98,491,75,676,57,857,43,1140,27"/>
 <area shape="rect" id="Node000006" href="$component__view_8h.html" title=" " alt="" coords="1139,181,1301,221"/>
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1223,46,1223,168,1217,168,1217,46"/>
 <area shape="rect" id="Node000033" href="$component__canvas2d_8h.html" title=" " alt="" coords="1442,93,1603,133"/>

@@ -1,6 +1,5 @@
 var classwebcface_1_1encoding_1_1SharedString =
 [
-    [ "Data", "structwebcface_1_1encoding_1_1SharedString_1_1Data.html", "structwebcface_1_1encoding_1_1SharedString_1_1Data" ],
     [ "Hash", "structwebcface_1_1encoding_1_1SharedString_1_1Hash.html", "structwebcface_1_1encoding_1_1SharedString_1_1Hash" ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html#a4f7694bed8232dbe6186a0b404c4c0da", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html#abc28f3062823a6f4e9351a3719b38573", null ],
@@ -20,6 +19,5 @@ var classwebcface_1_1encoding_1_1SharedString =
     [ "startsWith", "classwebcface_1_1encoding_1_1SharedString.html#ad3f01c068bb6513a43331a004dfc0c87", null ],
     [ "startsWith", "classwebcface_1_1encoding_1_1SharedString.html#add2d5f7d9b140a1a8c4735fd8acd6110", null ],
     [ "u8String", "classwebcface_1_1encoding_1_1SharedString.html#a0f47241963fefbf3fa5caa44765990c6", null ],
-    [ "u8StringView", "classwebcface_1_1encoding_1_1SharedString.html#abd4190403c607dda7622b15684a327fc", null ],
-    [ "data", "classwebcface_1_1encoding_1_1SharedString.html#a66f45b214fd764a720ac215035efd069", null ]
+    [ "u8StringView", "classwebcface_1_1encoding_1_1SharedString.html#abd4190403c607dda7622b15684a327fc", null ]
 ];

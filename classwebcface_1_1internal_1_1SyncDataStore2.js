@@ -24,12 +24,5 @@ var classwebcface_1_1internal_1_1SyncDataStore2 =
     [ "transferSend", "classwebcface_1_1internal_1_1SyncDataStore2.html#a22afb4fd0854f97e567f980a90b83831", null ],
     [ "unsetRecv", "classwebcface_1_1internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0", null ],
     [ "unsetRecv", "classwebcface_1_1internal_1_1SyncDataStore2.html#a2d592fe1ce0fe80c99623dffd9463ad6", null ],
-    [ "data_recv", "classwebcface_1_1internal_1_1SyncDataStore2.html#a4db7e2c1f2cfeb99d831caa5951d6fdf", null ],
-    [ "data_send", "classwebcface_1_1internal_1_1SyncDataStore2.html#a2133f6c3262531086b542e8e5d284668", null ],
-    [ "data_send_prev", "classwebcface_1_1internal_1_1SyncDataStore2.html#a4cadd00c4608944965ced6a59403785c", null ],
-    [ "entry", "classwebcface_1_1internal_1_1SyncDataStore2.html#a4f867aa1d8287a0e9b9b264deb1a54a6", null ],
-    [ "mtx", "classwebcface_1_1internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c", null ],
-    [ "req", "classwebcface_1_1internal_1_1SyncDataStore2.html#a99e4e9d0f74ad99683910c1e8966964f", null ],
-    [ "req_info", "classwebcface_1_1internal_1_1SyncDataStore2.html#a1bed8d06f29cf46de78e62581749d357", null ],
-    [ "self_member_name", "classwebcface_1_1internal_1_1SyncDataStore2.html#a996478ee74e409baf746715e27e4f1ee", null ]
+    [ "mtx", "classwebcface_1_1internal_1_1SyncDataStore2.html#a8e3a00b8e2de7776167cc2c41c29294c", null ]
 ];

@@ -1,7 +1,7 @@
-<map id="/home/runner/work/webcface/webcface/client/include/webcface/version.h" name="/home/runner/work/webcface/webcface/client/include/webcface/version.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,216,60"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="12,108,68,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="91,62,60,99,56,96,87,58"/>
-<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="92,108,273,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="135,58,166,96,162,99,131,62"/>
+<map id="client/include/webcface/version.h" name="client/include/webcface/version.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="17,5,191,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,61,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,47,55,85,51,81,85,44"/>
+<area shape="rect" id="Node000003" href="$def_8h.html" title=" " alt="" coords="85,93,267,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="123,44,158,81,154,85,119,47"/>
 </map>

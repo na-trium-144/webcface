@@ -12,6 +12,7 @@ var structwebcface_1_1server_1_1ServerStorage =
     [ "getClient", "structwebcface_1_1server_1_1ServerStorage.html#a4a3520533434e6f352d586c9092aac56", null ],
     [ "newClient", "structwebcface_1_1server_1_1ServerStorage.html#ab07367191bdc9192fa11850cc627489e", null ],
     [ "removeClient", "structwebcface_1_1server_1_1ServerStorage.html#aec6064f5c25334bfaa5d4f268c83daf6", null ],
+    [ "removeClient", "structwebcface_1_1server_1_1ServerStorage.html#af351c7ba3419e323b42d0ed250599a63", null ],
     [ "clients", "structwebcface_1_1server_1_1ServerStorage.html#a6e33f9ba87ba9683a9ae161a6fde9cc1", null ],
     [ "clients_by_id", "structwebcface_1_1server_1_1ServerStorage.html#a251dad409f9e95706c46495528eed393", null ],
     [ "hostname", "structwebcface_1_1server_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2", null ],

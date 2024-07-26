@@ -1,13 +1,11 @@
 <map id="SyncDataStore2Test" name="SyncDataStore2Test">
-<area shape="rect" id="Node000001" title=" " alt="" coords="15,299,167,324"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,203,53,229"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="47,239,85,297,81,300,42,242"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="131,5,237,31"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="174,44,150,96,125,158,105,238,95,299,90,298,100,237,120,157,145,93,169,42"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1internal_1_1SyncDataStore2.html" title=" " alt="" coords="129,196,290,236"/>
-<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="189,44,200,133,209,196,204,196,195,134,184,45"/>
-<area shape="rect" id="Node000005" href="$classwebcface_1_1internal_1_1SyncDataStore2.html" title="送受信するデータを保持するクラス" alt="" coords="343,93,497,133"/>
-<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="226,33,373,91,371,96,224,38"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="176,247,107,300,104,296,173,242"/>
-<area shape="poly" id="edge5_Node000004_Node000005" title=" " alt="" coords="369,142,250,198,248,194,367,137"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="55,211,207,236"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,115,53,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="54,148,120,209,116,213,50,152"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="78,115,183,141"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="133,154,133,211,128,211,128,154"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1internal_1_1SyncDataStore2.html" title=" " alt="" coords="207,108,369,148"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="256,159,211,189,161,213,159,208,208,184,253,154"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1internal_1_1SyncDataStore2.html" title="送受信するデータを保持するクラス" alt="" coords="211,5,365,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="291,59,291,108,285,108,285,59"/>
 </map>

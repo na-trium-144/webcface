@@ -28,15 +28,6 @@ var namespacewebcface_1_1message =
         [ "ping_status_req", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]
       ] ]
     ] ],
-    [ "Path", "namespacewebcface_1_1message_1_1Path.html", [
-      [ "detectWSL1", "namespacewebcface_1_1message_1_1Path.html#a6e2d4741011d4256173c3fa335809d64", null ],
-      [ "detectWSL2", "namespacewebcface_1_1message_1_1Path.html#a133fac0549803267565a9c07f0f45b68", null ],
-      [ "initUnixSocket", "namespacewebcface_1_1message_1_1Path.html#a014b3e55940d3fda2e9d2f3c1fde6806", null ],
-      [ "unixSocketPath", "namespacewebcface_1_1message_1_1Path.html#a128100029ac970e04ef5082c5ceb6b91", null ],
-      [ "unixSocketPathWSLInterop", "namespacewebcface_1_1message_1_1Path.html#a8afb05983581f6ed761162fb6498dd78", null ],
-      [ "updateUnixSocketPerms", "namespacewebcface_1_1message_1_1Path.html#acf16ef85442812ea0597b9bc2d9df693", null ],
-      [ "wsl2Host", "namespacewebcface_1_1message_1_1Path.html#a6f66b6ebca37cbc0fd22190142e37fb3", null ]
-    ] ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", "structwebcface_1_1message_1_1Arg" ],
     [ "Call", "structwebcface_1_1message_1_1Call.html", "structwebcface_1_1message_1_1Call" ],
     [ "CallResponse", "structwebcface_1_1message_1_1CallResponse.html", "structwebcface_1_1message_1_1CallResponse" ],
@@ -80,5 +71,6 @@ var namespacewebcface_1_1message =
     [ "pack", "namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35", null ],
     [ "packDone", "namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62", null ],
     [ "packSingle", "namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618", null ],
+    [ "printMsg", "namespacewebcface_1_1message.html#aaaae13bc09562632bfc1591ce70ed469", null ],
     [ "unpack", "namespacewebcface_1_1message.html#af4c21164f578c30ba84af08bd406b981", null ]
 ];

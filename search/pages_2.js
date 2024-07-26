@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['func_0',['Func',['../md_30__func.html',1,'']]]
+  ['func_0',['Func',['../md_docs_230__func.html',1,'']]]
 ];

@@ -1,0 +1,280 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: Text</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_211__text.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Text</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md51">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md52">送信</a></li>
+<li class="level1"><a href="#autotoc_md53">受信</a><ul><li class="level2"><a href="#autotoc_md54">時刻</a></li>
+<li class="level2"><a href="#autotoc_md55">Entry</a></li>
+<li class="level2"><a href="#autotoc_md56">Event</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md50"></a></p>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a> (<code><a class="el" href="text_8h.html">webcface/text.h</a></code>)</li>
+<li>C Reference: <a class="el" href="c__wcf_2text_8h.html">c_wcf/text.h</a></li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Text.html">Text</a></li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text">webcface.Text</a></li>
+</ul>
+</dd></dl>
+<p>文字列データを送受信します。</p>
+<p>使い方は<a class="el" href="md_docs_210__value.html">Value</a>とほぼ同じです。</p>
+<h1><a class="anchor" id="autotoc_md51"></a>
+コマンドライン</h1>
+<div class="fragment"><div class="line">webcface-send -t text</div>
+</div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
+<p>詳細は <a class="el" href="md_docs_271__send.html">webcface-send</a> のページを参照</p>
+<h1><a class="anchor" id="autotoc_md52"></a>
+送信</h1>
+<p>Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
+</div><!-- fragment --> (C++のみ) set() の代わりに代入演算子(Text::operator=)でも同様のことができます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">C</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
+null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a94470a2a84a02b9af795174cf9d317f9"><div class="ttname"><a href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a></div><div class="ttdeci">wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:91</div></div>
+</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a2dbf1b9e940ba3f11d8a61e533ac39b8"><div class="ttname"><a href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a></div><div class="ttdeci">wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:98</div></div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_docs_213__view.html">View</a>のInputRefで内部的に使用するため) <br  />
+ C++はset,getで文字列と同様に送信、受信できます。 <br  />
+ JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。</dd></dl>
+<details >
+<summary >
+(deprecated, ver1.10で削除) C++でwebcface::Text::Dictを使った値のセット</summary>
+<p></p>
+<p>webcface::Text::Dict オブジェクトを使うと複数の値をまとめて送ることができます。 </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+<div class="line">    std::string x, y;</div>
+<div class="line">    <span class="keyword">operator</span> webcface::Text::Dict()<span class="keyword"> const </span>{</div>
+<div class="line">        <span class="keywordflow">return</span> {</div>
+<div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
+<div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
+<div class="line">            <span class="comment">// Value::Dictと同様、入れ子にもできます</span></div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">A a_instance;</div>
+<div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
+</div><!-- fragment --><p></p>
+</details>
+<h1><a class="anchor" id="autotoc_md53"></a>
+受信</h1>
+<p>Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet(), Text::tryGetRecurse() で値のリクエストをするとともに受信した値を取得できます。 (Dict はC++のみ)</p>
+<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;std::string&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="ttc" id="afunc__test_8cc_html_a4d8f3927869eff6b32d7b3e0f8b1561f"><div class="ttname"><a href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a></div><div class="ttdeci">void hoge()</div><div class="ttdef"><b>Definition</b> func_test.cc:186</div></div>
+</div><!-- fragment --><p> 初回の呼び出しではまだ受信していないため、 tryGet() はstd::nulloptを返します。 <br  />
+ get() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
+ また、std::string にキャストすることでも同様に値が得られます。</p>
+<p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
+<p class="startli">std::ostreamにTextを直接渡して表示することもできます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.11</span> Textオブジェクト同士を比較するとTextが参照するデータの名前が一致するかどうかで判定されます。(Valueなど他のデータ型でも同様です。) <br  />
+ 値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
+<p>wcfTextGet, (<span class="since-c">2.0</span> wcfTextGetW) に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> text[6];</div>
+<div class="line"><span class="keywordtype">int</span> size;</div>
+<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
+<div class="line"><span class="comment">// ex.) ret = WCF_NOT_FOUND</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// few moments later,</span></div>
+<div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
+<div class="line"><span class="comment">// ex.) ret = WCF_OK, text = &quot;hello\0&quot;, size = 5</span></div>
+<div class="ttc" id="ac__wcf_2text_8h_html_abf4899fe704f996d49ee477cfb8002dd"><div class="ttname"><a href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a></div><div class="ttdeci">wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:106</div></div>
+</div><!-- fragment --><p> sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。 文字列がバッファの長さを超える場合は、(バッファのサイズ - 1) の文字列とnullが格納されます。</p>
+<p class="startli">初回の呼び出しでは<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
+<dl class="section note"><dt>Note</dt><dd>member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
+</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">const hoge: string | null = wcli.member(&quot;foo&quot;).text(&quot;hoge&quot;).tryGet();</div>
+</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 tryGet() はnullを返します。 <br  />
+ get() はnullの代わりに空文字列を返します。</li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+</div><!-- fragment --> 初回の呼び出しではまだ受信していないため、 try_get() はNoneを返します。 <br  />
+ get() はNoneの代わりに空文字列を返します。</li>
+</ul>
+</div><div class="tabbed"></div><p><strike>その後Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 別スレッドでリクエストが送信され、それ以降は値が得られるようになります。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Text::request()で明示的にリクエストを送信することもできます。</dd></dl>
+<h2><a class="anchor" id="autotoc_md54"></a>
+時刻</h2>
+<p><strike>Text::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</p>
+<h2><a class="anchor" id="autotoc_md55"></a>
+Entry</h2>
+<p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
+ <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
+<p>また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
+<p>いずれも使い方は <a class="el" href="md_docs_210__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md56"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>使い方は <a class="el" href="md_docs_210__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_210__value.html">Value</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_213__view.html">View</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Fri Jul 26 2024 16:24:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

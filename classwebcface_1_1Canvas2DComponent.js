@@ -11,9 +11,9 @@ var classwebcface_1_1Canvas2DComponent =
     [ "fillColor", "classwebcface_1_1Canvas2DComponent.html#a3069b6998135f6ffeacb4eb377e22f29", null ],
     [ "geometry", "classwebcface_1_1Canvas2DComponent.html#a1024785cc008a70ae7c2de6042c73aef", null ],
     [ "geometry", "classwebcface_1_1Canvas2DComponent.html#a3fe3db6863309177c8a952f639cd39a4", null ],
-    [ "id", "classwebcface_1_1Canvas2DComponent.html#a67a39581664812c20ea4a5dd7d692106", null ],
+    [ "id", "classwebcface_1_1Canvas2DComponent.html#a4c5cdd8165762b000c6518db56830677", null ],
     [ "initIdx", "classwebcface_1_1Canvas2DComponent.html#a2fa537b87d448f408ce19c24cfc27d91", null ],
-    [ "lockTmp", "classwebcface_1_1Canvas2DComponent.html#ab065e522324dd1675c458be9b8fdae00", null ],
+    [ "lockTmp", "classwebcface_1_1Canvas2DComponent.html#a5eee7383c80754fa82a9988f10abbf8f", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a376cacc3cf036d47178c1dea1fa94cd0", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#abe35a3114027d8ff2a66d81ad843650f", null ],
     [ "onClick", "classwebcface_1_1Canvas2DComponent.html#a73502e201128c9e38daf749557da32f4", null ],
@@ -32,15 +32,5 @@ var classwebcface_1_1Canvas2DComponent =
     [ "textW", "classwebcface_1_1Canvas2DComponent.html#afab8d648f381a6398bd51c7c592027d4", null ],
     [ "toMessage", "classwebcface_1_1Canvas2DComponent.html#a6d257b65525f8ef69bf132ecce4b4a84", null ],
     [ "type", "classwebcface_1_1Canvas2DComponent.html#a603e6a5037327812d883d1ff7f2a87a5", null ],
-    [ "color_", "classwebcface_1_1Canvas2DComponent.html#a6a3c6f623cefece397f2c40ae313e1db", null ],
-    [ "data_w", "classwebcface_1_1Canvas2DComponent.html#acf663a756c76fb2936c0042257df739c", null ],
-    [ "fill_", "classwebcface_1_1Canvas2DComponent.html#ac7b37626ed2c4a3d06caa351f8233a33", null ],
-    [ "geometry_", "classwebcface_1_1Canvas2DComponent.html#ac20e2e86e45228f035f10618e2ef5fe9", null ],
-    [ "idx_for_type_", "classwebcface_1_1Canvas2DComponent.html#a6a68e323e2b6113a0da24c1b667999ad", null ],
-    [ "on_click_func_", "classwebcface_1_1Canvas2DComponent.html#a237b2153601b38352bfec5cbd156378f", null ],
-    [ "on_click_func_tmp", "classwebcface_1_1Canvas2DComponent.html#a7fe287aa5f80f8b41fe462137a324504", null ],
-    [ "origin_", "classwebcface_1_1Canvas2DComponent.html#a05df68f5f0d213367feacfc47d7ac757", null ],
-    [ "stroke_width_", "classwebcface_1_1Canvas2DComponent.html#a2b65e2d5b08af22d6d671f77aba1cc41", null ],
-    [ "text_", "classwebcface_1_1Canvas2DComponent.html#ae1af4940359c29f642b7a8ffbc57e622", null ],
-    [ "type_", "classwebcface_1_1Canvas2DComponent.html#aeebeae276313d63ad1c8b523e9d5ece6", null ]
+    [ "idx_for_type_", "classwebcface_1_1Canvas2DComponent.html#a6a68e323e2b6113a0da24c1b667999ad", null ]
 ];

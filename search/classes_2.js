@@ -13,14 +13,14 @@ var searchData=
   ['canvas3dcomponent_10',['canvas3dcomponent',['../classwebcface_1_1Canvas3DComponent.html',1,'Canvas3DComponent'],['../structwebcface_1_1message_1_1Canvas3DComponent.html',1,'Canvas3DComponent']]],
   ['canvas3dtest_11',['Canvas3DTest',['../classCanvas3DTest.html',1,'']]],
   ['cclienttest_12',['CClientTest',['../classCClientTest.html',1,'']]],
-  ['chartype_13',['chartype',['../structc__wcf_1_1CharType.html',1,'CharType&lt; CharT &gt;'],['../structc__wcf_1_1CharType.html',1,'CharType&lt; CharT &gt;']]],
-  ['chartype_3c_20char_20_3e_14',['chartype&lt; char &gt;',['../structc__wcf_1_1CharType_3_01char_01_4.html',1,'CharType&lt; char &gt;'],['../structc__wcf_1_1CharType_3_01char_01_4.html',1,'CharType&lt; char &gt;']]],
-  ['chartype_3c_20wchar_5ft_20_3e_15',['chartype&lt; wchar_t &gt;',['../structc__wcf_1_1CharType_3_01wchar__t_01_4.html',1,'CharType&lt; wchar_t &gt;'],['../structc__wcf_1_1CharType_3_01wchar__t_01_4.html',1,'CharType&lt; wchar_t &gt;']]],
+  ['chartype_13',['chartype',['../structwebcface_1_1c__wcf_1_1CharType.html',1,'CharType&lt; CharT &gt;'],['../structwebcface_1_1c__wcf_1_1CharType.html',1,'CharType&lt; CharT &gt;']]],
+  ['chartype_3c_20char_20_3e_14',['chartype&lt; char &gt;',['../structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html',1,'CharType&lt; char &gt;'],['../structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html',1,'CharType&lt; char &gt;']]],
+  ['chartype_3c_20wchar_5ft_20_3e_15',['chartype&lt; wchar_t &gt;',['../structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html',1,'CharType&lt; wchar_t &gt;'],['../structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html',1,'CharType&lt; wchar_t &gt;']]],
   ['circle_16',['circle',['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle']]],
   ['client_17',['Client',['../classwebcface_1_1Client.html',1,'webcface']]],
   ['clientdata_18',['ClientData',['../structwebcface_1_1internal_1_1ClientData.html',1,'webcface::internal']]],
   ['clienttest_19',['ClientTest',['../classClientTest.html',1,'']]],
   ['copycounter_20',['CopyCounter',['../structCopyCounter.html',1,'']]],
-  ['customlogger_21',['customlogger',['../classCustomLogger.html',1,'CustomLogger'],['../classwebcface_1_1server__internal_1_1CustomLogger.html',1,'CustomLogger']]],
+  ['customlogger_21',['customlogger',['../classCustomLogger.html',1,'CustomLogger'],['../classwebcface_1_1server_1_1CustomLogger.html',1,'CustomLogger']]],
   ['cylinder_22',['cylinder',['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

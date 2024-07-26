@@ -82,6 +82,5 @@ var classwebcface_1_1View =
     [ "viewEntries", "classwebcface_1_1View.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
     [ "data_w", "classwebcface_1_1View.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_", "classwebcface_1_1View.html#ac6ffd336e43abb201663ab9b064a0607", null ],
-    [ "member_", "classwebcface_1_1View.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ],
-    [ "sb", "classwebcface_1_1View.html#a433e88bf547ee25db329483c7b5e46c0", null ]
+    [ "member_", "classwebcface_1_1View.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ]
 ];

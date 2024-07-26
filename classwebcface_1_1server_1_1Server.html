@@ -141,14 +141,12 @@ $(document).ready(function(){initNavTree('classwebcface_1_1server_1_1Server.html
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classwebcface_1_1server_1_1Server-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Server Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="server_2server_8h_source.html">/home/runner/work/webcface/webcface/server-store/include/webcface/server/server.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="server_2server_8h_source.html">webcface/server/server.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -175,26 +173,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4898db8d9fe1cf7bf83e4c7ac242a245"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbdb653f5816184b32e991d675f3f542" id="r_abbdb653f5816184b32e991d675f3f542"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structwebcface_1_1server_1_1ServerStorage.html">ServerStorage</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#abbdb653f5816184b32e991d675f3f542">store</a></td></tr>
 <tr class="separator:abbdb653f5816184b32e991d675f3f542"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a33df3bc6f542e57bb6b239b084301718" id="r_a33df3bc6f542e57bb6b239b084301718"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#a33df3bc6f542e57bb6b239b084301718">pingThreadMain</a> ()</td></tr>
-<tr class="separator:a33df3bc6f542e57bb6b239b084301718"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89588a12f638c6d1f212e8a69947b299" id="r_a89588a12f638c6d1f212e8a69947b299"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#a89588a12f638c6d1f212e8a69947b299">send</a> (<a class="el" href="namespacewebcface_1_1server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">conn</a>, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::string &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">msg</a>)</td></tr>
-<tr class="separator:a89588a12f638c6d1f212e8a69947b299"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ae1c86e419a05625de482e50f342733db" id="r_ae1c86e419a05625de482e50f342733db"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">bool</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#ae1c86e419a05625de482e50f342733db">server_stop</a></td></tr>
-<tr class="separator:ae1c86e419a05625de482e50f342733db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229b454d156fec6ab3e561a195813199" id="r_a229b454d156fec6ab3e561a195813199"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#a229b454d156fec6ab3e561a195813199">server_mtx</a></td></tr>
-<tr class="separator:a229b454d156fec6ab3e561a195813199"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a676e39b485e418ed5852c9627b824ca7" id="r_a676e39b485e418ed5852c9627b824ca7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#a676e39b485e418ed5852c9627b824ca7">apps</a></td></tr>
-<tr class="separator:a676e39b485e418ed5852c9627b824ca7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae93518a40dd879e6850702fe48fd3626" id="r_ae93518a40dd879e6850702fe48fd3626"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#ae93518a40dd879e6850702fe48fd3626">apps_running</a></td></tr>
-<tr class="separator:ae93518a40dd879e6850702fe48fd3626"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75c91443fbd32b858ad9bde63a2fbfcc" id="r_a75c91443fbd32b858ad9bde63a2fbfcc"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1Server.html#a75c91443fbd32b858ad9bde63a2fbfcc">ping_thread</a></td></tr>
-<tr class="separator:a75c91443fbd32b858ad9bde63a2fbfcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a0f76175cd03308cdfee8dff68fe2e1d8" name="a0f76175cd03308cdfee8dff68fe2e1d8"></a>
@@ -370,112 +348,7 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a33df3bc6f542e57bb6b239b084301718" name="a33df3bc6f542e57bb6b239b084301718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33df3bc6f542e57bb6b239b084301718">&#9670;&#160;</a></span>pingThreadMain()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> pingThreadMain </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a89588a12f638c6d1f212e8a69947b299" name="a89588a12f638c6d1f212e8a69947b299"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89588a12f638c6d1f212e8a69947b299">&#9670;&#160;</a></span>send()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> send </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebcface_1_1server.html#af92eef764fed4a1512658233c54020bf">wsConnPtr</a>&#160;</td>
-          <td class="paramname"><em>conn</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::string &amp;&#160;</td>
-          <td class="paramname"><em>msg</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a676e39b485e418ed5852c9627b824ca7" name="a676e39b485e418ed5852c9627b824ca7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a676e39b485e418ed5852c9627b824ca7">&#9670;&#160;</a></span>apps</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> *&gt; apps</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae93518a40dd879e6850702fe48fd3626" name="ae93518a40dd879e6850702fe48fd3626"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae93518a40dd879e6850702fe48fd3626">&#9670;&#160;</a></span>apps_running</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::vector&lt;std::thread&gt; apps_running</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a0b0b3c9564350ff99e70e6fdd2cab292" name="a0b0b3c9564350ff99e70e6fdd2cab292"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0b0b3c9564350ff99e70e6fdd2cab292">&#9670;&#160;</a></span>MemberData</h2>
 
@@ -490,50 +363,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a75c91443fbd32b858ad9bde63a2fbfcc" name="a75c91443fbd32b858ad9bde63a2fbfcc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75c91443fbd32b858ad9bde63a2fbfcc">&#9670;&#160;</a></span>ping_thread</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::thread ping_thread</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a229b454d156fec6ab3e561a195813199" name="a229b454d156fec6ab3e561a195813199"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a229b454d156fec6ab3e561a195813199">&#9670;&#160;</a></span>server_mtx</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex server_mtx</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a4898db8d9fe1cf7bf83e4c7ac242a245" name="a4898db8d9fe1cf7bf83e4c7ac242a245"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4898db8d9fe1cf7bf83e4c7ac242a245">&#9670;&#160;</a></span>server_ping_wait</h2>
 
@@ -544,28 +373,6 @@ Private Attributes</h2></td></tr>
           <td class="memname">std::condition_variable server_ping_wait</td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ae1c86e419a05625de482e50f342733db" name="ae1c86e419a05625de482e50f342733db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1c86e419a05625de482e50f342733db">&#9670;&#160;</a></span>server_stop</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::atomic&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">bool</a>&gt; server_stop</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -585,8 +392,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/runner/work/webcface/webcface/server-store/include/webcface/server/<a class="el" href="server_2server_8h_source.html">server.h</a></li>
-<li>/home/runner/work/webcface/webcface/server-store/src/<a class="el" href="websock_8cc.html">websock.cc</a></li>
+<li>server-store/include/webcface/server/<a class="el" href="server_2server_8h_source.html">server.h</a></li>
+<li>server-store/src/<a class="el" href="websock_8cc.html">websock.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -594,7 +401,7 @@ Private Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1server.html">server</a></li><li class="navelem"><a class="el" href="classwebcface_1_1server_1_1Server.html">Server</a></li>
-    <li class="footer">Generated on Wed Jul 24 2024 18:33:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 26 2024 16:24:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

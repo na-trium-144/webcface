@@ -10,10 +10,17 @@ var c__wcf_2client_8h =
     [ "wcfInitW", "c__wcf_2client_8h.html#a7087bccb0f309cac0104c179954395a8", null ],
     [ "wcfIsConnected", "c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57", null ],
     [ "wcfIsValid", "c__wcf_2client_8h.html#ab9d51c692b17a6d3376494d8da0dbf40", null ],
+    [ "wcfMemberEntryEvent", "c__wcf_2client_8h.html#aaad75c221bfdb0db71b2233ae3daf722", null ],
+    [ "wcfMemberEntryEventW", "c__wcf_2client_8h.html#a5b77246b5a72618c59486c0af574aad9", null ],
+    [ "wcfMemberList", "c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086", null ],
+    [ "wcfMemberListW", "c__wcf_2client_8h.html#ae7e531ec49477818da8d877a753c1f16", null ],
     [ "wcfRecv", "c__wcf_2client_8h.html#af0250a034a52ad8b9c82b79108d59cd5", null ],
+    [ "wcfServerHostName", "c__wcf_2client_8h.html#a1888f68716ed376c609a07790c00933d", null ],
+    [ "wcfServerName", "c__wcf_2client_8h.html#a5c1a2425e06206d5989d7dcaf12754cd", null ],
+    [ "wcfServerVersion", "c__wcf_2client_8h.html#acf22cc57c65c0a84ee62dc40318b5ee1", null ],
     [ "wcfStart", "c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c", null ],
     [ "wcfSync", "c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896", null ],
-    [ "wcfWaitConnection", "c__wcf_2client_8h.html#aa7da62a9b282f6dcc1c0d4613799e337", null ],
+    [ "wcfWaitConnection", "c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838", null ],
     [ "wcfWaitRecv", "c__wcf_2client_8h.html#ae22ffc6f00fd812e9d7d1cfee86101c3", null ],
     [ "wcfWaitRecvFor", "c__wcf_2client_8h.html#a15228db8993d9d438775b1f403d2c97d", null ]
 ];

@@ -1,9 +1,9 @@
-<map id="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/unix_path.h" name="/home/runner/work/webcface/webcface/server&#45;store/include/webcface/server/unix_path.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="161,5,383,60"/>
-<area shape="rect" id="Node000002" href="$def_8h.html" title=" " alt="" coords="5,108,187,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,62,133,104,131,100,217,58"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="211,108,333,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,60,275,94,269,94,269,60"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="357,108,448,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="313,58,375,98,372,103,310,62"/>
+<map id="client/include/webcface/internal/unix_path.h" name="client/include/webcface/internal/unix_path.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="185,5,359,45"/>
+<area shape="rect" id="Node000002" href="$def_8h.html" title=" " alt="" coords="5,93,187,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="231,48,136,90,133,85,229,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="211,93,333,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="275,46,275,79,269,79,269,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="357,93,448,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="305,43,373,84,370,88,302,48"/>
 </map>

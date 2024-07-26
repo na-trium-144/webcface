@@ -79,7 +79,7 @@ var classwebcface_1_1RobotModel =
     [ "text", "classwebcface_1_1RobotModel.html#a0b7e573e3f1dd1ee4853b85d47c6a4af", null ],
     [ "textEntries", "classwebcface_1_1RobotModel.html#a56970716d867cddc9b9dfe92ad8394bb", null ],
     [ "time", "classwebcface_1_1RobotModel.html#a3799c65797b21f35329dc284df16a65d", null ],
-    [ "toMessage", "classwebcface_1_1RobotModel.html#af59d7547715d27108baf93fbc9930abd", null ],
+    [ "toMessage", "classwebcface_1_1RobotModel.html#aaa7e6023e18b2818480a9b8f36ca6d64", null ],
     [ "tryGet", "classwebcface_1_1RobotModel.html#a0a06eeaa7547fd61235574e7125e1da4", null ],
     [ "type", "classwebcface_1_1RobotModel.html#a40f6f491a20ff340c7200c677c65b1b4", null ],
     [ "value", "classwebcface_1_1RobotModel.html#a8954365ff9e8954832517ed39349fafe", null ],
@@ -90,14 +90,7 @@ var classwebcface_1_1RobotModel =
     [ "viewEntries", "classwebcface_1_1RobotModel.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
     [ "Canvas3D", "classwebcface_1_1RobotModel.html#ae85fd7d5b31473ad0f0ddf0c4b14ef39", null ],
     [ "Canvas3DComponent", "classwebcface_1_1RobotModel.html#ace13a8294fb07df351723775716b2e61", null ],
-    [ "angles_", "classwebcface_1_1RobotModel.html#a5b7790f6f999db195b4cb4a0b436bfc4", null ],
-    [ "color_", "classwebcface_1_1RobotModel.html#a6a3c6f623cefece397f2c40ae313e1db", null ],
     [ "data_w", "classwebcface_1_1RobotModel.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_", "classwebcface_1_1RobotModel.html#ac6ffd336e43abb201663ab9b064a0607", null ],
-    [ "field_base_", "classwebcface_1_1RobotModel.html#a3441695c8f602f1b0e8223a604139bb1", null ],
-    [ "geometry_", "classwebcface_1_1RobotModel.html#ac20e2e86e45228f035f10618e2ef5fe9", null ],
-    [ "member_", "classwebcface_1_1RobotModel.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ],
-    [ "origin_", "classwebcface_1_1RobotModel.html#a05df68f5f0d213367feacfc47d7ac757", null ],
-    [ "sb", "classwebcface_1_1RobotModel.html#a01e130a063667013ca50d351da20d0e1", null ],
-    [ "type_", "classwebcface_1_1RobotModel.html#ade33ccd5e0c067939e3b5d6b3be53720", null ]
+    [ "member_", "classwebcface_1_1RobotModel.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ]
 ];

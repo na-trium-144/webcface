@@ -1,0 +1,495 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: Value</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_210__value.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Value</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md40">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md41">送信</a><ul><li class="level2"><a href="#autotoc_md42">通信データについて</a></li>
+<li class="level2"><a href="#autotoc_md43">グループ化</a></li>
+<li class="level2"><a href="#autotoc_md44">複数の値をまとめて送る</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md45">受信</a><ul><li class="level2"><a href="#autotoc_md46">リクエスト</a></li>
+<li class="level2"><a href="#autotoc_md47">時刻</a></li>
+<li class="level2"><a href="#autotoc_md48">Entry</a></li>
+<li class="level2"><a href="#autotoc_md49">Event</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md39"></a></p>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a> (<code><a class="el" href="value_8h.html">webcface/value.h</a></code>)</li>
+<li>C Reference: <a class="el" href="c__wcf_2value_8h.html">c_wcf/value.h</a></li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Value.html">Value</a></li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value">webcface.Value</a></li>
+</ul>
+</dd></dl>
+<p>数値データ、または1次元数値配列を送受信する型です。</p>
+<h1><a class="anchor" id="autotoc_md40"></a>
+コマンドライン</h1>
+<div class="fragment"><div class="line">webcface-send </div>
+</div><!-- fragment --><p> を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)</p>
+<p>オプションでclientやデータの名前を変更できます。 詳細は <a class="el" href="md_docs_271__send.html">webcface-send</a> のページを参照</p>
+<h1><a class="anchor" id="autotoc_md41"></a>
+送信</h1>
+<p>Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(5);</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set({1, 2, 3, 4, 5});</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</dd></dl>
+<p>(C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> valueに直接<code>[]</code>(または<code>child()</code>)で要素アクセスが可能です。 また、resize()で配列を初期化しpush_back()で追加する使い方もできます。 </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).resize(5);</div>
+<div class="line"><span class="keywordflow">for</span>(<span class="keywordtype">int</span> i = 0; i &lt; 5; i++){</div>
+<div class="line">    wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).push_back(i);</div>
+<div class="line">}</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>)[3] = 100; <span class="comment">// 上書き</span></div>
+<div class="line"><span class="comment">// wcli.value(&quot;fuga&quot;).child(3) = 100; としても同じ</span></div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">C</b> double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW) <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, 123.45);</div>
+<div class="ttc" id="ac__wcf_2value_8h_html_aa11a6ea52672771139a39b354bd78346"><div class="ttname"><a href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a></div><div class="ttdeci">wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value)</div><div class="ttdoc">単一の値を送信する</div><div class="ttdef"><b>Definition</b> value.cc:111</div></div>
+</div><!-- fragment --> 配列データは wcfValueSetVecD, (<span class="since-c">2.0</span> wcfValueSetVecDW) <div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5] = {1, 2, 3, 4, 5};</div>
+<div class="line"><a class="code hl_function" href="c__wcf_2value_8h.html#a28bdf7e1102e753766f30043725ec516">wcfValueSetVecD</a>(wcli, <span class="stringliteral">&quot;fuga&quot;</span>, value, 5);</div>
+<div class="ttc" id="ac__wcf_2value_8h_html_a28bdf7e1102e753766f30043725ec516"><div class="ttname"><a href="c__wcf_2value_8h.html#a28bdf7e1102e753766f30043725ec516">wcfValueSetVecD</a></div><div class="ttdeci">wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field, const double *values, int size)</div><div class="ttdoc">複数の値を送信する(doubleの配列)</div><div class="ttdef"><b>Definition</b> value.cc:117</div></div>
+</div><!-- fragment --> で送信できます。</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.value(&quot;hoge&quot;).set(5);</div>
+<div class="line">wcli.value(&quot;fuga&quot;).set([1, 2, 3, 4, 5]);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(5)</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set([1, 2, 3, 4, 5])</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
+ 半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。 <br  />
+ Text、Funcなど他のデータ型についても同様です。</dd></dl>
+<h2><a class="anchor" id="autotoc_md42"></a>
+通信データについて</h2>
+<p>クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。 (Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)</p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
+<p>サーバー→クライアント間では、初期状態ではデータは送信されず、 クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。</p>
+<p><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。</p>
+<p>基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。 (通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)</p>
+<dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd></dl>
+<h2><a class="anchor" id="autotoc_md43"></a>
+グループ化</h2>
+<p>Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
+<p>Valueに限らず他のデータ型 (<a class="el" href="md_docs_213__view.html">View</a>, <a class="el" href="md_docs_214__canvas2d.html">Canvas2D</a>, <a class="el" href="md_docs_215__image.html">Image</a>, <a class="el" href="md_docs_220__canvas3d.html">Canvas3D</a>, <a class="el" href="md_docs_221__robot__model.html">RobotModel</a>) でも同様です。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>) = 1;</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;pos.y&quot;</span>) = 2;</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;pos.z&quot;</span>) = 3;</div>
+</div><!-- fragment --><p> Value::child() でも同じ結果になります。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> pos = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;x&quot;</span>) = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;y&quot;</span>) = 2; <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line">pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;z&quot;</span>) = 3; <span class="comment">// = &quot;pos.z&quot;</span></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:18</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_a674a58b1300ca229bdb0729000c60f0a"><div class="ttname"><a href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">webcface::Value::child</a></div><div class="ttdeci">Value child(std::string_view field) const</div><div class="ttdoc">「(thisの名前).(追加の名前)」を新しい名前とするField</div><div class="ttdef"><b>Definition</b> value.h:33</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">webcface::Field::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:49</div></div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> Member::child() で <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> 型としてオブジェクトが得られ、そこからvalue()でValue型に変換することもできます。 (この場合はValue以外の型に変換することもでき汎用性が高いです) また、<code>[]</code>を使ってもchild()と同じ結果になります。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> pos = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>() = 1; <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line">pos[<span class="stringliteral">&quot;y&quot;</span>].<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>() = 2;       <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;z&quot;</span>) = 3;         <span class="comment">// = &quot;pos.z&quot;</span></div>
+<div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:65</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_ac495d25f6992031499cac9742d799703"><div class="ttname"><a href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">webcface::Field::child</a></div><div class="ttdeci">Field child(const SharedString &amp;field) const</div><div class="ttdef"><b>Definition</b> field.cc:37</div></div>
+</div><!-- fragment --><p> FieldとValue(とTextなどその他の型)は相互にキャストすることもできます。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.11</span> child() (または<code>[]</code>)の引数が数値(または<code>"1"</code>のような文字列でも同じ)の場合、 グループ化ではなく配列としての値代入が優先されます。 (これはValue型のみの特別な処理です。) ただし以下のような場合は通常の文字列と同様に処理します。 <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;data&quot;</span>)[0][<span class="stringliteral">&quot;a&quot;</span>] = 1; <span class="comment">// value(&quot;data.0.a&quot;) = 1</span></div>
+</div><!-- fragment --></dd></dl>
+</li>
+<li><b class="tab-title">C</b> <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;pos.x&quot;</span>, 1);</div>
+<div class="line"><a class="code hl_function" href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;pos.y&quot;</span>, 2);</div>
+<div class="line"><a class="code hl_function" href="c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;pos.z&quot;</span>, 3);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.value(&quot;pos.x&quot;).set(1);</div>
+<div class="line">wcli.value(&quot;pos.y&quot;).set(2);</div>
+<div class="line">wcli.value(&quot;pos.z&quot;).set(3);</div>
+</div><!-- fragment --> Value.child() でも同じ結果になります。 <div class="fragment"><div class="line">const pos: Value = wcli.value(&quot;pos&quot;);</div>
+<div class="line">pos.child(&quot;x&quot;).set(1);</div>
+<div class="line">pos.child(&quot;y&quot;).set(2);</div>
+<div class="line">pos.child(&quot;z&quot;).set(3);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;pos.x&quot;</span>).set(1)</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;pos.y&quot;</span>).set(2)</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;pos.z&quot;</span>).set(3)</div>
+</div><!-- fragment --> Value.child() でも同じ結果になります。 <div class="fragment"><div class="line">pos = wcli.value(<span class="stringliteral">&quot;pos&quot;</span>)</div>
+<div class="line">pos.child(<span class="stringliteral">&quot;x&quot;</span>).set(1)</div>
+<div class="line">pos.child(<span class="stringliteral">&quot;y&quot;</span>).set(2)</div>
+<div class="line">pos.child(<span class="stringliteral">&quot;z&quot;</span>).set(3)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
+<p>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</p>
+<h2><a class="anchor" id="autotoc_md44"></a>
+複数の値をまとめて送る</h2>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">JavaScript</b> オブジェクトを渡すことができます。 <div class="fragment"><div class="line">wcli.value(&quot;a&quot;).set({</div>
+<div class="line">    x: 1,</div>
+<div class="line">    y: 2,</div>
+<div class="line">    vec: [1, 2, 3],</div>
+<div class="line">    a: {</div>
+<div class="line">        a: 1,</div>
+<div class="line">        b: 1,</div>
+<div class="line">    },</div>
+<div class="line">});</div>
+<div class="line">/* 結果は以下のようになる</div>
+<div class="line">  value(&quot;a.x&quot;) -&gt; 1</div>
+<div class="line">  value(&quot;a.y&quot;) -&gt; 2</div>
+<div class="line">  value(&quot;a.vec&quot;) -&gt; {1, 2, 3}</div>
+<div class="line">  value(&quot;a.a.a&quot;) -&gt; 1</div>
+<div class="line">  value(&quot;a.a.b&quot;) -&gt; 1</div>
+<div class="line">*/</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><details >
+<summary >
+(deprecated, ver2.0で削除) C++でwebcface::Value::Dictを使った値のセット</summary>
+<p></p>
+<p>webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。 これは構造体などのデータを送るときに使えます </p><div class="fragment"><div class="line"><span class="keyword">struct </span>A {</div>
+<div class="line">    <span class="keywordtype">double</span> x, y;</div>
+<div class="line">    <span class="keyword">operator</span> webcface::Value::Dict()<span class="keyword"> const </span>{</div>
+<div class="line">        <span class="keywordflow">return</span> {</div>
+<div class="line">            {<span class="stringliteral">&quot;x&quot;</span>, x},</div>
+<div class="line">            {<span class="stringliteral">&quot;y&quot;</span>, y},</div>
+<div class="line">            {<span class="stringliteral">&quot;vec&quot;</span>, {1, 2, 3}}, <span class="comment">// vectorも入れられます</span></div>
+<div class="line">            {<span class="stringliteral">&quot;a&quot;</span>, {             <span class="comment">// 入れ子にもできます</span></div>
+<div class="line">                {<span class="stringliteral">&quot;a&quot;</span>, 1},</div>
+<div class="line">                {<span class="stringliteral">&quot;b&quot;</span>, 1},</div>
+<div class="line">            }}</div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">};</div>
+<div class="line"> </div>
+<div class="line">A a_instance;</div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">/* 結果は以下のようになる</span></div>
+<div class="line"><span class="comment">  value(&quot;a.x&quot;) -&gt; a_instance.x</span></div>
+<div class="line"><span class="comment">  value(&quot;a.y&quot;) -&gt; a_instance.y</span></div>
+<div class="line"><span class="comment">  value(&quot;a.vec&quot;) -&gt; {1, 2, 3}</span></div>
+<div class="line"><span class="comment">  value(&quot;a.a.a&quot;) -&gt; 1</span></div>
+<div class="line"><span class="comment">  value(&quot;a.a.b&quot;) -&gt; 1</span></div>
+<div class="line"><span class="comment">*/</span></div>
+</div><!-- fragment --><p></p>
+</details>
+<h1><a class="anchor" id="autotoc_md45"></a>
+受信</h1>
+<p>Member::value() でValueクラスのオブジェクトが得られ、 Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
+<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">std::optional&lt;double&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="line">std::optional&lt;std::vector&lt;double&gt;&gt; <a class="code hl_function" href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a> = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
+<div class="ttc" id="afunc__test_8cc_html_a4d8f3927869eff6b32d7b3e0f8b1561f"><div class="ttname"><a href="func__test_8cc.html#a4d8f3927869eff6b32d7b3e0f8b1561f">hoge</a></div><div class="ttdeci">void hoge()</div><div class="ttdef"><b>Definition</b> func_test.cc:186</div></div>
+</div><!-- fragment --><p> 値を受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返します。 <br  />
+ get(), getVec() はstd::nulloptの代わりにデフォルト値を返します。 <br  />
+ また、doubleやstd::vector&lt;double&gt; などの型にキャストすることでも同様に値が得られます。</p>
+<p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
+</div><!-- fragment --><p class="startli">グループ化したデータは送信時と同様child()を使って要素を参照できます。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> pos = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line"><span class="keywordtype">double</span> x = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> y = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;y&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> z = pos.<a class="code hl_function" href="classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a">child</a>(<span class="stringliteral">&quot;z&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.z&quot;</span></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">webcface::Member::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:49</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_af53ec2e557ea14cce1373e0f77954c82"><div class="ttname"><a href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">webcface::Value::get</a></div><div class="ttdeci">double get() const</div><div class="ttdoc">値を返す</div><div class="ttdef"><b>Definition</b> value.h:194</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
+</div><!-- fragment --> <div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> pos = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Member.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
+<div class="line"><span class="keywordtype">double</span> x = pos.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;x&quot;</span>).<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>().<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>(); <span class="comment">// = &quot;pos.x&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> y = pos[<span class="stringliteral">&quot;y&quot;</span>].<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>().<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>();       <span class="comment">// = &quot;pos.y&quot;</span></div>
+<div class="line"><span class="keywordtype">double</span> z = pos.<a class="code hl_function" href="structwebcface_1_1Field.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;z&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>();         <span class="comment">// = &quot;pos.z&quot;</span></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_ac495d25f6992031499cac9742d799703"><div class="ttname"><a href="classwebcface_1_1Member.html#ac495d25f6992031499cac9742d799703">webcface::Member::child</a></div><div class="ttdeci">Field child(const SharedString &amp;field) const</div><div class="ttdef"><b>Definition</b> field.cc:37</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="classwebcface_1_1Value.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Value::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:16</div></div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> 送信時と同様、配列データはchild()または<code>[]</code>を使ってもアクセスできます。 <code>cpp double hoge = wcli.member("foo").value("hoge")[3].get(); </code></p>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.11</span> Valueオブジェクト同士を比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。) <br  />
+ ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。 値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">C</b> wcfValueGetVecD, (<span class="since-c">2.0</span> wcfValueGetVecDW) で受信できます </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5];</div>
+<div class="line"><span class="keywordtype">int</span> size;</div>
+<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2value_8h.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, value, 5, &amp;size);</div>
+<div class="line"><span class="comment">// ex.) ret = WCF_NOT_FOUND</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// few moments later,</span></div>
+<div class="line">ret = <a class="code hl_function" href="c__wcf_2value_8h.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, value, 5, &amp;size);</div>
+<div class="line"><span class="comment">// ex.) ret = WCF_OK, value = {123.45, 0, 0, 0, 0}, size = 1</span></div>
+<div class="ttc" id="ac__wcf_2value_8h_html_a0f854340c16f01ef95424003d1ae84ca"><div class="ttname"><a href="c__wcf_2value_8h.html#a0f854340c16f01ef95424003d1ae84ca">wcfValueGetVecD</a></div><div class="ttdeci">wcfStatus wcfValueGetVecD(wcfClient *wcli, const char *member, const char *field, double *values, int size, int *recv_size)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:125</div></div>
+</div><!-- fragment --><p> sizeに受信した値の個数、valueに受信した値が入ります。</p>
+<p class="startli">値を受信していない場合<code>WCF_NOT_FOUND</code>を返し、別スレッドでリクエストが送信されます。</p>
+<p class="startli"><span class="since-c">1.7</span> 1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">2.0</span> wcfValueGetW) も使えます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value;</div>
+<div class="line">ret = <a class="code hl_function" href="c__wcf_2value_8h.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, &amp;value);</div>
+<div class="ttc" id="ac__wcf_2value_8h_html_a6b8bc18477f9e8bca7a5b1965f4905a0"><div class="ttname"><a href="c__wcf_2value_8h.html#a6b8bc18477f9e8bca7a5b1965f4905a0">wcfValueGet</a></div><div class="ttdeci">wcfStatus wcfValueGet(wcfClient *wcli, const char *member, const char *field, double *value)</div><div class="ttdoc">値を受信する</div><div class="ttdef"><b>Definition</b> value.cc:135</div></div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
+</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">const hoge: double | null = wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).tryGet();</div>
+<div class="line">const hoge: double[] | null = wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).tryGetVec();</div>
+</div><!-- fragment --> 値を受信していない場合 tryGet(), tryGetVec() はnullを返します。 <br  />
+ get(), getVec() はnullの代わりにデフォルト値を返します。</li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+<div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).try_get_vec()</div>
+</div><!-- fragment --> 値を受信していない場合 try_get(), try_get_vec() はNoneを返します。 <br  />
+ get(), getVec() はNoneの代わりにデフォルト値を返します。</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md46"></a>
+リクエスト</h2>
+<p>get()などの初回の呼び出しではまだ値を受信していないためnullなどを返しますが、 <br  />
+ <strike>Client::sync()したときに実際にリクエストが送信され、</strike> <br  />
+ <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> 自動的に別スレッドでリクエストが送信され、サーバーから値が返ってきたら値が得られるようになります。 そのため、次の例のように繰り返し取得して使ってください。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>) {</div>
+<div class="line">    std::optional&lt;double&gt; val = wcli.member(<span class="stringliteral">&quot;a&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="line">    <span class="keywordflow">if</span>(val) {</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; *val &lt;&lt; std::endl;</div>
+<div class="line">    }</div>
+<div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(100));</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">setInterval(() =&gt; {</div>
+<div class="line">    const val = wcli.member(&quot;a&quot;).value(&quot;hoge&quot;).tryGet();</div>
+<div class="line">    if(val !== null){</div>
+<div class="line">        console.log(`hoge = ${val}`);</div>
+<div class="line">    }</div>
+<div class="line">}, 100);</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    val = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+<div class="line">    <span class="keywordflow">if</span> val <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line">        print(f<span class="stringliteral">&quot;hoge = {val}&quot;</span>)</div>
+<div class="line">    time.sleep(0.1)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd><span class="since-c">1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span> Value::request()で明示的にリクエストを送信することもできます。</dd></dl>
+<h2><a class="anchor" id="autotoc_md47"></a>
+時刻</h2>
+<p><strike>Value::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</p>
+<h2><a class="anchor" id="autotoc_md48"></a>
+Entry</h2>
+<p><strike>Member::values() で</strike> そのMemberが送信しているvalueのリストが得られます <br  />
+ <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::valueEntries() に変更</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> &amp;v: wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).valueEntries()){</div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> Field::valueEntries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">std::vector&lt;webcface::Value&gt; values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).valueEntries();</div>
+<div class="line"><span class="comment">// pos.x, pos.y などのvalueが得られる</span></div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">for(const v of wcli.member(&quot;foo&quot;).values()){</div>
+<div class="line">    // ...</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keywordflow">for</span> v <span class="keywordflow">in</span> wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).values():</div>
+<div class="line">    <span class="comment"># ...</span></div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><p>Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます。</p>
+<p>ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。 すべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() 前に、 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。</p>
+<p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_docs_202__member.html">Member</a> のページを参照してください)。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
+</div><!-- fragment --><p class="startli">ver1.11以前では <code>.onValueEntry().appendListener(...)</code></p>
+<p class="startli"><span class="since-c">2.0</span> Client::waitConnection()はこのクライアントが接続する前から存在したデータすべてについてコールバックを呼んでからreturnします。</p>
+</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Value } from &quot;webcface&quot;;</div>
+<div class="line">wcli.member(&quot;foo&quot;).onValueEntry.on((v: Value) =&gt; { /* ... */ });</div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keyword">def </span>value_entry(v: webcface.Value):</div>
+<div class="line">    <span class="keywordflow">pass</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).on_value_entry.connect(value_entry)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md49"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。</p>
+<p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_docs_202__member.html">Member</a> のページを参照してください)。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){ <span class="comment">/* ... */</span> });</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:19</div></div>
+</div><!-- fragment --><p> 例えば全Memberの全Valueデータを受信するには </p><div class="fragment"><div class="line">wcli.onMemberEntry([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
+<div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#aa5fbd3761d69e935401de3513065bad3">onValueEntry</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<div class="line">        v.<a class="code hl_function" href="classwebcface_1_1Value.html#ab1b25ad1477d200c4e9c75bec34f39cc">onChange</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<div class="line">            <span class="comment">// ...</span></div>
+<div class="line">        });</div>
+<div class="line">    });</div>
+<div class="line">});</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_aa5fbd3761d69e935401de3513065bad3"><div class="ttname"><a href="classwebcface_1_1Member.html#aa5fbd3761d69e935401de3513065bad3">webcface::Member::onValueEntry</a></div><div class="ttdeci">Member &amp; onValueEntry(std::function&lt; void(Value)&gt; callback)</div><div class="ttdoc">valueが追加された時のイベント</div><div class="ttdef"><b>Definition</b> member.cc:16</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_ab1b25ad1477d200c4e9c75bec34f39cc"><div class="ttname"><a href="classwebcface_1_1Value.html#ab1b25ad1477d200c4e9c75bec34f39cc">webcface::Value::onChange</a></div><div class="ttdeci">Value &amp; onChange(std::function&lt; void(Value)&gt; callback)</div><div class="ttdoc">値が変化したときに呼び出されるコールバックを設定</div><div class="ttdef"><b>Definition</b> value.cc:55</div></div>
+</div><!-- fragment --><p> のようにすると可能です。</p>
+<p class="startli"><span class="since-c">1.7</span> 引数を持たない関数もイベントのコールバックに設定可能です。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).onChange([]() {</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;foo.hoge changed&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">});</div>
+</div><!-- fragment --><p class="startli">ver1.11以前は <code>value("hoge").appendListener(...)</code> です</p>
+</li>
+<li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">import { Member, Value } from &quot;webcface&quot;;</div>
+<div class="line">wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).on((v: Value) =&gt; { /* ... */ });</div>
+<div class="line">wcli.member(&quot;foo&quot;).onSync.on((m: Member) =&gt; { /* ... */ });</div>
+</div><!-- fragment --> 例えば全Memberの全Valueデータを受信するには <div class="fragment"><div class="line">wcli.onMemberEntry.on((m: Member) =&gt; {</div>
+<div class="line">    m.onValueEntry.on((v: Value) =&gt; {</div>
+<div class="line">        v.on((v: Value) =&gt; {</div>
+<div class="line">            // ...</div>
+<div class="line">        });</div>
+<div class="line">    });</div>
+<div class="line">});</div>
+</div><!-- fragment --> のようにすると可能です。</li>
+<li><b class="tab-title">Python</b> pythonでは Value.signal プロパティがこのイベントのsignalを返します。 <div class="fragment"><div class="line"><span class="keyword">def </span>value_change(v: webcface.Value):</div>
+<div class="line">    <span class="keywordflow">pass</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).signal.connect(value_change)</div>
+<div class="line"><span class="keyword">def </span>synced(m: webcface.Member):</div>
+<div class="line">    <span class="keywordflow">pass</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).on_sync.connect(synced)</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_202__member.html">Member</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_211__text.html">Text</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Fri Jul 26 2024 16:24:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

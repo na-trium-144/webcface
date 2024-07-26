@@ -1,7 +1,7 @@
 var classwebcface_1_1Image =
 [
     [ "Image", "classwebcface_1_1Image.html#a149e06f2677943852d4e59bdadf4e23f", null ],
-    [ "Image", "classwebcface_1_1Image.html#ab674cec8ac4975afa0afe8cbac9a68c3", null ],
+    [ "Image", "classwebcface_1_1Image.html#a482e4bb1c3c5d4318386caba1d0da865", null ],
     [ "Image", "classwebcface_1_1Image.html#aff8cd5d47d515d03eb6d20be5b253b68", null ],
     [ "appendListener", "classwebcface_1_1Image.html#ac08489fff9ea455ad213be400b285c35", null ],
     [ "canvas2D", "classwebcface_1_1Image.html#af9bd15e71b656e996127c88145c582ad", null ],
@@ -51,7 +51,6 @@ var classwebcface_1_1Image =
     [ "operator[]", "classwebcface_1_1Image.html#abb3d65bcc68f57a9f4a3a6e4363ea3b3", null ],
     [ "parent", "classwebcface_1_1Image.html#afcccb3bf2f641fc6b7e26ee81f923ad5", null ],
     [ "request", "classwebcface_1_1Image.html#a53059c77c2972d8d85df28aee08e0f6e", null ],
-    [ "request", "classwebcface_1_1Image.html#a646369f5fe8c25ee7a841a46f32a3b30", null ],
     [ "request", "classwebcface_1_1Image.html#a574b14a81fe64d61e65048e51ccbdf04", null ],
     [ "request", "classwebcface_1_1Image.html#a32d65895899db21913916bd63c33c9f8", null ],
     [ "request", "classwebcface_1_1Image.html#ae39e10e77e774aedc00e542a607818fa", null ],

@@ -1,10 +1,9 @@
 var searchData=
 [
-  ['data_0',['Data',['../structwebcface_1_1encoding_1_1SharedString_1_1Data.html',1,'webcface::encoding::SharedString']]],
-  ['datasetbuffer_1',['DataSetBuffer',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
-  ['datasetbuffer_3c_20canvas2dcomponent_20_3e_2',['DataSetBuffer&lt; Canvas2DComponent &gt;',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
-  ['datasetbuffer_3c_20viewcomponent_20_3e_3',['DataSetBuffer&lt; ViewComponent &gt;',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
-  ['datatest_4',['DataTest',['../classDataTest.html',1,'']]],
-  ['dummyclient_5',['DummyClient',['../structDummyClient.html',1,'']]],
-  ['dummyserver_6',['DummyServer',['../structDummyServer.html',1,'']]]
+  ['datasetbuffer_0',['DataSetBuffer',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
+  ['datasetbuffer_3c_20canvas2dcomponent_20_3e_1',['DataSetBuffer&lt; Canvas2DComponent &gt;',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
+  ['datasetbuffer_3c_20viewcomponent_20_3e_2',['DataSetBuffer&lt; ViewComponent &gt;',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
+  ['datatest_3',['DataTest',['../classDataTest.html',1,'']]],
+  ['dummyclient_4',['DummyClient',['../structDummyClient.html',1,'']]],
+  ['dummyserver_5',['DummyServer',['../structDummyServer.html',1,'']]]
 ];

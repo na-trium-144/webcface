@@ -141,20 +141,13 @@ $(document).ready(function(){initNavTree('classwebcface_1_1FuncCallHandle.html',
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classwebcface_1_1FuncCallHandle-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">FuncCallHandle Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="func__result_8h_source.html">/home/runner/work/webcface/webcface/client/include/webcface/func_result.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="func__result_8h_source.html">webcface/func_result.h</a>&gt;</code></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FuncCallHandle_1_1HandleData.html">HandleData</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c472ef405a65b5f7302be7bda3ab9ea" id="r_a2c472ef405a65b5f7302be7bda3ab9ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html#a2c472ef405a65b5f7302be7bda3ab9ea">FuncCallHandle</a> ()=<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">default</a></td></tr>
@@ -181,16 +174,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a01e6d1730813e46998afb7a918b75993" id="r_a01e6d1730813e46998afb7a918b75993"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html#a01e6d1730813e46998afb7a918b75993">reject</a> (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::wstring &amp;message)</td></tr>
 <tr class="memdesc:a01e6d1730813e46998afb7a918b75993"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の結果を例外として送信する (wstring)  <br /></td></tr>
 <tr class="separator:a01e6d1730813e46998afb7a918b75993"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-static-methods" name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a47adbb6f95e22db4b1e09d8cc7073d2c" id="r_a47adbb6f95e22db4b1e09d8cc7073d2c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">static</a> std::runtime_error &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html#a47adbb6f95e22db4b1e09d8cc7073d2c">invalidHandle</a> ()</td></tr>
-<tr class="separator:a47adbb6f95e22db4b1e09d8cc7073d2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-attribs" name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a761dae0435f1ee4e470c6d525aacae5a" id="r_a761dae0435f1ee4e470c6d525aacae5a"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1FuncCallHandle_1_1HandleData.html">HandleData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1FuncCallHandle.html#a761dae0435f1ee4e470c6d525aacae5a">handle_data_</a></td></tr>
-<tr class="separator:a761dae0435f1ee4e470c6d525aacae5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a2c472ef405a65b5f7302be7bda3ab9ea" name="a2c472ef405a65b5f7302be7bda3ab9ea"></a>
@@ -288,7 +271,7 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>引数データを表すwcfMultiValの配列を構築 (<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a7a40743b051602159176a975ef33f9bf">createHandle()</a> 用) </p><dl class="section since"><dt>Since</dt><dd>ver1.7 </dd></dl>
+<p>引数データを表すwcfMultiValの配列を構築 (createHandle() 用) </p><dl class="section since"><dt>Since</dt><dd>ver1.7 </dd></dl>
 
 </div>
 </div>
@@ -306,32 +289,7 @@ Private Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>引数データを表すwcfMultiValの配列を構築 (<a class="el" href="client_2src_2c__wcf_2func_8cc.html#a7a40743b051602159176a975ef33f9bf">createHandle()</a> 用) </p><dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
-
-</div>
-</div>
-<a id="a47adbb6f95e22db4b1e09d8cc7073d2c" name="a47adbb6f95e22db4b1e09d8cc7073d2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47adbb6f95e22db4b1e09d8cc7073d2c">&#9670;&#160;</a></span>invalidHandle()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::runtime_error &amp; invalidHandle </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>引数データを表すwcfMultiValの配列を構築 (createHandle() 用) </p><dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
 
 </div>
 </div>
@@ -449,32 +407,9 @@ template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5f
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a761dae0435f1ee4e470c6d525aacae5a" name="a761dae0435f1ee4e470c6d525aacae5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a761dae0435f1ee4e470c6d525aacae5a">&#9670;&#160;</a></span>handle_data_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="structwebcface_1_1FuncCallHandle_1_1HandleData.html">HandleData</a>&gt; handle_data_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
-<li>/home/runner/work/webcface/webcface/client/include/webcface/<a class="el" href="func__result_8h_source.html">func_result.h</a></li>
-<li>/home/runner/work/webcface/webcface/client/src/<a class="el" href="func__result_8cc.html">func_result.cc</a></li>
+<li>client/include/webcface/<a class="el" href="func__result_8h_source.html">func_result.h</a></li>
+<li>client/src/<a class="el" href="func__result_8cc.html">func_result.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -482,7 +417,7 @@ template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5f
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1FuncCallHandle.html">FuncCallHandle</a></li>
-    <li class="footer">Generated on Wed Jul 24 2024 18:33:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Jul 26 2024 16:24:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

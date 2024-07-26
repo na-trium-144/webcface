@@ -75,6 +75,5 @@ var classwebcface_1_1Canvas3D =
     [ "viewEntries", "classwebcface_1_1Canvas3D.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
     [ "data_w", "classwebcface_1_1Canvas3D.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_", "classwebcface_1_1Canvas3D.html#ac6ffd336e43abb201663ab9b064a0607", null ],
-    [ "member_", "classwebcface_1_1Canvas3D.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ],
-    [ "sb", "classwebcface_1_1Canvas3D.html#a903a45dfa882af05657dac4fdeb64d72", null ]
+    [ "member_", "classwebcface_1_1Canvas3D.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32", null ]
 ];
