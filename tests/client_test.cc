@@ -532,6 +532,7 @@ TEST_F(ClientTest, textReq) {
     wcli_->member("a").text("b").onChange(callback<Text>());
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("z")});
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("z")});
     wcli_->waitRecv();
@@ -637,6 +638,7 @@ TEST_F(ClientTest, viewReq) {
                  .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);
@@ -826,6 +828,7 @@ TEST_F(ClientTest, canvas2DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 200, 200, v, 3});
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::Canvas2D>{1, "c"_ss, 200, 200, v, 3});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);
@@ -1085,6 +1088,7 @@ TEST_F(ClientTest, canvas3DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v, 3});
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::Canvas3D>{1, "c"_ss, v, 3});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);
@@ -1198,6 +1202,7 @@ TEST_F(ClientTest, robotModelReq) {
         std::make_shared<std::vector<message::RobotLink>>(
             std::vector<message::RobotLink>{
                 RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::RobotModel>(
         1, "c"_ss,
         std::make_shared<std::vector<message::RobotLink>>(
@@ -1249,6 +1254,7 @@ TEST_F(ClientTest, imageReq) {
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr);
     dummy_s->send(message::Res<message::Image>{1, ""_ss, img.toMessage()});
+    wcli_->waitRecv();
     dummy_s->send(message::Res<message::Image>{1, "c"_ss, img.toMessage()});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);

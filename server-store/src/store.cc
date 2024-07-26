@@ -5,8 +5,11 @@
 WEBCFACE_NS_BEGIN
 namespace server {
 void ServerStorage::clear() {
-    clients.clear();
-    clients_by_id.clear();
+    // clients.clear();
+    // clients_by_id.clear();
+    while (!clients.empty()) {
+        removeClient(clients.begin());
+    }
     MemberData::last_member_id = 0;
 }
 void ServerStorage::newClient(const wsConnPtr &con,
@@ -21,13 +24,17 @@ void ServerStorage::newClient(const wsConnPtr &con,
 void ServerStorage::removeClient(const wsConnPtr &con) {
     auto it = clients.find(con);
     if (it != clients.end()) {
-        it->second->onClose();
-        // 名前があるクライアントのデータはclients_by_idに残す
-        if (it->second->name.empty()) {
-            clients_by_id.erase(it->second->member_id);
-        }
-        clients.erase(con);
+        removeClient(it);
     }
+}
+void ServerStorage::removeClient(
+    std::unordered_map<wsConnPtr, MemberDataPtr>::iterator it) {
+    it->second->onClose();
+    // 名前があるクライアントのデータはclients_by_idに残す
+    if (it->second->name.empty()) {
+        clients_by_id.erase(it->second->member_id);
+    }
+    clients.erase(it);
 }
 MemberDataPtr ServerStorage::getClient(const wsConnPtr &con) {
     auto it = clients.find(con);

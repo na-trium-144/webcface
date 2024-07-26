@@ -71,7 +71,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  *
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
- * * autoRecvが無効の場合、初期化が完了するまで一定間隔(100μs)ごとに
+ * * autoRecvが無効の場合、初期化が完了するまで
  * wcfRecv() をこのスレッドで呼び出す。
  *
  * \return wcliが無効ならWCF_BAD_WCLI

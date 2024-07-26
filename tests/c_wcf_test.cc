@@ -200,6 +200,7 @@ TEST_F(CClientTest, valueReq) {
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
@@ -256,6 +257,7 @@ TEST_F(CClientTest, textReq) {
     });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
     EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
@@ -611,6 +613,7 @@ TEST_F(CClientTest, viewReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
+    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
     EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
