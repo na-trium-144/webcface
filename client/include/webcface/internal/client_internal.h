@@ -27,8 +27,10 @@ class Log;
 
 namespace internal {
 
-WEBCFACE_DLL void WEBCFACE_CALL wsThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL void WEBCFACE_CALL recvThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void WEBCFACE_CALL
+wsThreadMain(const std::shared_ptr<ClientData> &data);
+WEBCFACE_DLL void WEBCFACE_CALL
+recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     WEBCFACE_DLL explicit ClientData(const SharedString &name,
@@ -125,7 +127,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::queue<std::string> sync_queue, recv_queue;
 
-    WEBCFACE_DLL void message_push(std::string &&msg) {
+    void message_push(std::string &&msg) {
         std::lock_guard lock(this->ws_m);
         this->sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();
@@ -150,7 +152,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * * timeoutがnulloptならclosingまで永遠にreturnしない
      *
      */
-    WEBCFACE_DLL void recvImpl(std::optional<std::chrono::microseconds> timeout);
+    WEBCFACE_DLL void
+    recvImpl(std::optional<std::chrono::microseconds> timeout);
 
     /*!
      * \brief 初期化時に送信するメッセージ
