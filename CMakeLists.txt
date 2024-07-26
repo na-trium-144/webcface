@@ -211,14 +211,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 add_subdirectory(encoding)
 add_subdirectory(message)
 add_subdirectory(client)
-if(WEBCFACE_SERVER)
-    add_subdirectory(server-store)
-endif()
 
 set(WEBCFACE_TARGETS
     webcface-encoding
     webcface-message
-    webcface-server-store
     webcface-client
 )
 
@@ -253,9 +249,6 @@ if(NOT WEBCFACE_SHARED)
         $<TARGET_PROPERTY:webcface-libcurl-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:webcface-spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
-endif()
-if(WEBCFACE_SYSTEM_WIN32SOCKET)
-    target_link_libraries(webcface PRIVATE iphlpapi)
 endif()
 if(WEBCFACE_SHARED AND WEBCFACE_SYSTEM_VISIBILITY)
     # webcfaceのAPI以外をexportしない。
@@ -325,6 +318,13 @@ else()
     target_link_libraries(wcf INTERFACE webcface)
 endif()
 add_library(webcface::wcf ALIAS wcf)
+
+if(WEBCFACE_SERVER)
+    add_subdirectory(server-store)
+    if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+        set_target_properties(webcface-server-store PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    endif()
+endif()
 
 ###############################################################################
 
