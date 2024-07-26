@@ -31,12 +31,14 @@ target_link_libraries(webcface-test PRIVATE
     webcface-crow-linker
     webcface-libcurl-linker
 )
+if(WEBCFACE_SERVER)
+    target_link_libraries(webcface-test PRIVATE webcface-server-store)
+endif()
 target_compile_definitions(webcface-test PRIVATE
     WEBCFACE_TEST_TIMEOUT=${WEBCFACE_TEST_TIMEOUT}
 )
 target_include_directories(webcface-test PRIVATE
     $<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>
-    $<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>
     $<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>
     $<TARGET_PROPERTY:webcface-message,INTERFACE_INCLUDE_DIRECTORIES>
 )

@@ -1,4 +1,4 @@
-#include "webcface/server/unix_path.h"
+#include "webcface/internal/unix_path.h"
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
@@ -9,7 +9,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message::Path {
+namespace internal {
 std_fs::path unixSocketPath(int port) {
 #if WEBCFACE_SYSTEM_PATH_WINDOWS
     wchar_t *fpath;
@@ -104,6 +104,5 @@ void updateUnixSocketPerms(const std_fs::path &path,
         logger->warn("{}", e.what());
     }
 }
-
-} // namespace message::Path
+} // namespace internal
 WEBCFACE_NS_END

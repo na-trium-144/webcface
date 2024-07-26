@@ -133,12 +133,6 @@ include(cmake/deps/utf8cpp.cmake)
 if(WEBCFACE_SERVER)
     include(cmake/deps/crow.cmake)
     include(cmake/deps/magickpp.cmake)
-else()
-    add_library(webcface-crow-linker INTERFACE)
-    add_library(webcface-magickpp-linker INTERFACE)
-    if(WEBCFACE_INSTALL)
-        list(APPEND WEBCFACE_EXPORTS webcface-magickpp-linker)
-    endif()
 endif()
 if(WEBCFACE_EXAMPLE)
     include(cmake/deps/opencv.cmake)
@@ -214,14 +208,14 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 
 ###############################################################################
 
-add_subdirectory(server-internal)
 add_subdirectory(encoding)
 add_subdirectory(message)
-add_subdirectory(server-store)
 add_subdirectory(client)
+if(WEBCFACE_SERVER)
+    add_subdirectory(server-store)
+endif()
 
 set(WEBCFACE_TARGETS
-    webcface-server-internal
     webcface-encoding
     webcface-message
     webcface-server-store
@@ -240,7 +234,6 @@ target_compile_features(webcface PUBLIC cxx_std_17)
 target_link_libraries(webcface PUBLIC webcface-std-filesystem)
 target_include_directories(webcface PUBLIC
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>>
-    $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-server-store,INTERFACE_INCLUDE_DIRECTORIES>>
     $<BUILD_INTERFACE:$<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>>
     $<INSTALL_INTERFACE:include>
 )
@@ -248,25 +241,15 @@ target_include_directories(webcface PUBLIC
 target_sources(webcface PRIVATE
     $<TARGET_OBJECTS:webcface-encoding>
     $<TARGET_OBJECTS:webcface-message>
-    $<TARGET_OBJECTS:webcface-server-store>
     $<TARGET_OBJECTS:webcface-client>
 )
-if(WEBCFACE_SERVER)
-    if(WEBCFACE_SHARED)
-        target_link_libraries(webcface PRIVATE webcface-server-internal-linker)
-    else()
-        target_sources(webcface PRIVATE $<TARGET_OBJECTS:webcface-server-internal>)
-    endif()
-endif()
 # private: リンクが必要なもののみ
 target_link_libraries(webcface PRIVATE
-    webcface-magickpp-linker
     webcface-libcurl-linker
     webcface-spdlog-linker
 )
 if(NOT WEBCFACE_SHARED)
     target_link_directories(webcface PUBLIC
-        $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:webcface-libcurl-linker,INTERFACE_LINK_DIRECTORIES>
         $<TARGET_PROPERTY:webcface-spdlog-linker,INTERFACE_LINK_DIRECTORIES>
     )
@@ -454,7 +437,6 @@ if(WEBCFACE_INSTALL)
     install(DIRECTORY
         ${CMAKE_CURRENT_SOURCE_DIR}/client/include/
         ${CMAKE_CURRENT_SOURCE_DIR}/encoding/include/
-        ${CMAKE_CURRENT_SOURCE_DIR}/server-store/include/
         ${CMAKE_CURRENT_BINARY_DIR}/include/
         DESTINATION include
         PATTERN internal EXCLUDE

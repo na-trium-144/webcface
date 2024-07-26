@@ -1,21 +1,20 @@
-#include "webcface/server/internal/server_ws.h"
+#include "webcface/server/server_ws.h"
 #include <string>
 #include <functional>
 #include <memory>
 
-namespace webcface {
-namespace server_internal {
+WEBCFACE_NS_BEGIN
+namespace server {
 static std::string static_dir;
 }
-} // namespace webcface
+WEBCFACE_NS_END
 
-#define CROW_STATIC_DIRECTORY webcface::server_internal::static_dir
+#define CROW_STATIC_DIRECTORY webcface::server::static_dir
 #define CROW_STATIC_ENDPOINT "/<path>"
 #include <crow.h>
 
-namespace webcface {
-namespace server_internal {
-
+WEBCFACE_NS_BEGIN
+namespace server {
 class CustomLogger : public crow::ILogHandler {
     LoggerCallback callback;
 
@@ -67,7 +66,7 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
         crow_custom_logger = std::make_unique<CustomLogger>(callback);
         crow::logger::setHandler(crow_custom_logger.get());
 
-        webcface::server_internal::static_dir = static_dir_s;
+        webcface::server::static_dir = static_dir_s;
 
         crow::SimpleApp *crow_app = new crow::SimpleApp();
         this->app = crow_app;
@@ -111,5 +110,5 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
         setException(e.what());
     }
 }
-} // namespace server_internal
-} // namespace webcface
+} // namespace server
+WEBCFACE_NS_END
