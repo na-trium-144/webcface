@@ -211,14 +211,10 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
 add_subdirectory(encoding)
 add_subdirectory(message)
 add_subdirectory(client)
-if(WEBCFACE_SERVER)
-    add_subdirectory(server-store)
-endif()
 
 set(WEBCFACE_TARGETS
     webcface-encoding
     webcface-message
-    webcface-server-store
     webcface-client
 )
 
@@ -325,6 +321,13 @@ else()
     target_link_libraries(wcf INTERFACE webcface)
 endif()
 add_library(webcface::wcf ALIAS wcf)
+
+if(WEBCFACE_SERVER)
+    add_subdirectory(server-store)
+    if(NOT "${WEBCFACE_CLANG_TIDY}" STREQUAL "")
+        set_target_properties(webcface-server-store PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_CMD}")
+    endif()
+endif()
 
 ###############################################################################
 

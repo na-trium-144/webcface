@@ -10,18 +10,22 @@ target_sources(webcface-server-store PRIVATE
     src/server_ws.cc
 )
 target_include_directories(webcface-server-store PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
+target_include_directories(webcface-server-store PRIVATE
+    $<TARGET_PROPERTY:webcface-encoding,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-client,INTERFACE_INCLUDE_DIRECTORIES>
+    $<TARGET_PROPERTY:webcface-message,INTERFACE_INCLUDE_DIRECTORIES>
+)
 target_compile_definitions(webcface-server-store PRIVATE WEBCFACE_BUILDING)
 target_compile_features(webcface-server-store PUBLIC cxx_std_17)
 target_link_libraries(webcface-server-store PUBLIC
-    webcface-message
-    webcface-encoding
+    webcface
     webcface-std-filesystem
     webcface-spdlog-linker
 )
 target_link_libraries(webcface-server-store PRIVATE
-    webcface-client
     webcface-magickpp-linker
     webcface-crow-linker
+    msgpack-cxx
 )
 target_link_directories(webcface-server-store PUBLIC
     $<TARGET_PROPERTY:webcface-magickpp-linker,INTERFACE_LINK_DIRECTORIES>
