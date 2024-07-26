@@ -61,10 +61,12 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetNW(wcfClient *wcli,
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field textの名前
  * \param text 受信した文字列を格納するポインタ
+ * (ver2.0〜:size=0ならNULLも可)
  * \param size 配列のサイズ
  * \param recv_size 実際に受信した文字列の長さが返る
  * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND
+ * ~~まだ値を受信していない場合 WCF_NOT_FOUND~~,
+ * (ver2.0〜)まだ値を受信していない場合 WCF_NO_DATA
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGet(wcfClient *wcli,
@@ -81,6 +83,33 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGetW(wcfClient *wcli,
                                                  const wchar_t *field,
                                                  wchar_t *text, int size,
                                                  int *recv_size);
+
+/*!
+ * \brief Textが変化した時のイベント
+ * \since ver2.0
+ * \param wcli
+ * \param member member名 (NULLまたは空文字列で自分自身を指す)
+ * \param field textの名前
+ * \param callback 実行する関数:
+ * const char* 型2つ(Memberとfieldの名前が渡される)と void*
+ * 型の引数1つを取り、何もreturnしない。
+ * \param user_data 関数に引数として渡す追加のデータ
+ * callbackが呼び出されるときに第3引数にそのまま渡される。
+ * \return wcliが無効ならWCF_BAD_WCLI
+ *
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL
+wcfTextChangeEvent(wcfClient *wcli, const char *member, const char *field,
+                   wcfEventCallback2 callback, void *user_data);
+/*!
+ * \brief Textが変化した時のイベント (wstring)
+ * \since ver2.0
+ * \sa wcfTextChangeEvent
+ */
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextChangeEventW(
+    wcfClient *wcli, const wchar_t *member, const wchar_t *field,
+    wcfEventCallback2W callback, void *user_data);
+
 
 #ifdef __cplusplus
 }

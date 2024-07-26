@@ -27,6 +27,7 @@ target_sources(webcface-client PRIVATE
     src/component_canvas2d.cc
     src/component_view.cc
     src/c_wcf/client.cc
+    src/c_wcf/member.cc
     src/c_wcf/value.cc
     src/c_wcf/text.cc
     src/c_wcf/func.cc

@@ -37,7 +37,7 @@ ViewComponent::lockTmp(const std::shared_ptr<internal::ClientData> &data,
 template <typename CComponent, typename CVal, std::size_t v_index>
 CComponent ViewComponent::cDataT() const {
     CComponent vcc;
-    vcc.type = static_cast<int>(this->type());
+    vcc.type = static_cast<wcfViewComponentType>(this->type());
     if constexpr (v_index == 0) {
         vcc.text = this->text_.decode().c_str();
     } else {
@@ -69,8 +69,8 @@ CComponent ViewComponent::cDataT() const {
         vcc.text_ref_member = nullptr;
         vcc.text_ref_field = nullptr;
     }
-    vcc.text_color = static_cast<int>(this->text_color_);
-    vcc.bg_color = static_cast<int>(this->bg_color_);
+    vcc.text_color = static_cast<wcfColor>(this->text_color_);
+    vcc.bg_color = static_cast<wcfColor>(this->bg_color_);
     vcc.min = this->min_.value_or(-DBL_MAX);
     vcc.max = this->max_.value_or(DBL_MAX);
     vcc.step = this->step_.value_or(0);

@@ -88,8 +88,8 @@ std::streambuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
 std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
 std::wstreambuf *Client::loggerWStreamBuf() { return data->logger_buf_w.get(); }
 std::wostream &Client::loggerWOStream() { return *data->logger_os_w.get(); }
-std::string Client::serverVersion() const { return data->svr_version; }
-std::string Client::serverName() const { return data->svr_name; }
+const std::string &Client::serverVersion() const { return data->svr_version; }
+const std::string &Client::serverName() const { return data->svr_name; }
 const std::string &Client::serverHostName() const { return data->svr_hostname; }
 
 void internal::ClientData::pingStatusReq() {
@@ -519,6 +519,7 @@ void Client::sync() {
     data->message_push(data->syncData(false));
 }
 
+/// \private
 template <typename M, typename K1, typename K2>
 static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
     -> std::optional<std::decay_t<decltype(map.at(key1).at(key2))>> {
@@ -531,6 +532,7 @@ static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
     }
     return std::nullopt;
 }
+/// \private
 template <typename M, typename K1>
 static auto findFromMap1(const M &map, const K1 &key1)
     -> std::optional<std::decay_t<decltype(map.at(key1))>> {
@@ -540,6 +542,7 @@ static auto findFromMap1(const M &map, const K1 &key1)
     }
     return std::nullopt;
 }
+/// \private
 template <typename Msg, typename T, typename S, typename E>
 static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
                       S &store, const E &event) {
@@ -554,6 +557,7 @@ static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
         cl->operator()(Field{this_->shared_from_this(), member, field});
     }
 }
+/// \private
 template <typename Msg, typename S, typename E>
 static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
                         const E &event) {

@@ -106,27 +106,6 @@ wcfStatus wcfSync(wcfClient *wcli) {
     wcli_->sync();
     return WCF_OK;
 }
-wcfMultiVal wcfValI(int value) {
-    wcfMultiVal val;
-    val.as_int = value;
-    val.as_double = 0;
-    val.as_str = 0;
-    return val;
-}
-wcfMultiVal wcfValD(double value) {
-    wcfMultiVal val;
-    val.as_int = 0;
-    val.as_double = value;
-    val.as_str = 0;
-    return val;
-}
-wcfMultiVal wcfValS(const char *value) {
-    wcfMultiVal val;
-    val.as_int = 0;
-    val.as_double = 0;
-    val.as_str = value;
-    return val;
-}
 
 wcfStatus wcfDestroy(const void *ptr) {
     {
@@ -166,5 +145,90 @@ wcfStatus wcfDestroy(const void *ptr) {
         }
     }
     return WCF_BAD_HANDLE;
+}
+}
+
+/// \private
+template <typename CharT>
+static wcfStatus wcfMemberListT(wcfClient *wcli, const CharT **list, int size,
+                                int *members_num) {
+    *members_num = 0;
+    if (size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    const auto &members = wcli_->members();
+    *members_num = static_cast<int>(members.size());
+    for (std::size_t i = 0;
+         i < static_cast<std::size_t>(size) && i < members.size(); i++) {
+        if constexpr (std::is_same_v<CharT, char>) {
+            list[i] = members.at(i).name().c_str();
+        } else {
+            list[i] = members.at(i).nameW().c_str();
+        }
+    }
+    return WCF_OK;
+}
+/// \private
+template <typename CharT>
+static wcfStatus
+wcfMemberEntryEventT(wcfClient *wcli,
+                     typename CharType<CharT>::CEventCallback1 callback,
+                     void *user_data) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    wcli_->onMemberEntry([callback, user_data](const Member &m) {
+        if constexpr (std::is_same_v<CharT, char>) {
+            callback(m.name().c_str(), user_data);
+        } else {
+            callback(m.nameW().c_str(), user_data);
+        }
+    });
+    return WCF_OK;
+}
+
+extern "C" {
+wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size,
+                        int *members_num) {
+    return wcfMemberListT(wcli, list, size, members_num);
+}
+wcfStatus wcfMemberListW(wcfClient *wcli, const wchar_t **list, int size,
+                         int *members_num) {
+    return wcfMemberListT(wcli, list, size, members_num);
+}
+wcfStatus wcfMemberEntryEvent(wcfClient *wcli, wcfEventCallback1 callback,
+                              void *user_data) {
+    return wcfMemberEntryEventT<char>(wcli, callback, user_data);
+}
+wcfStatus wcfMemberEntryEventW(wcfClient *wcli, wcfEventCallback1W callback,
+                               void *user_data) {
+    return wcfMemberEntryEventT<wchar_t>(wcli, callback, user_data);
+}
+
+const char *wcfServerVersion(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverVersion().c_str();
+}
+const char *wcfServerName(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverName().c_str();
+}
+const char *wcfServerHostName(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return "";
+    }
+    return wcli_->serverHostName().c_str();
 }
 }

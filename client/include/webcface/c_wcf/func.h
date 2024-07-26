@@ -33,7 +33,7 @@ WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValS(const char *value);
  * \brief 文字列型のwcfMultiValWを構築 (wstring)
  * \since ver2.0
  */
-WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValWS(const wchar_t *value);
+WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWS(const wchar_t *value);
 
 /*!
  * \brief 関数を呼び出す
