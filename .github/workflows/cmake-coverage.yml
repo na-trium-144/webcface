@@ -6,10 +6,6 @@ on:
   push:
     branches: [ "main" ]
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Debug
-
 jobs:
   test:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
@@ -23,39 +19,30 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
+        sudo apt-get install -y ninja-build
+        sudo apt-get install -y lcov
         sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev
     
-    - name: Configure CMake
+    - name: Install meson
+      run: pip install meson || pip install --break-system-packages meson
+    - name: Setup Meson
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
       run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=on
-        -DWEBCFACE_COVERAGE=on
-        -DWEBCFACE_TEST_TIMEOUT=50
-
-    - name: Build
-      # Build your program with the given configuration
-      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
-
+        meson setup build
+        --buildtype=debug
+        -Dtest_wait=200
+        -Db_coverage=true
+    - name: Compile
+      run: meson compile -C build
     - name: Test
-      env:
-        WEBCFACE_TRACE: 1
-      working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      run: ctest --output-on-failure --timeout 5
+      run: meson test -C build
 
-    - name: Install gcovr
-      run: sudo apt-get update && sudo apt-get install -y gcovr
-    
-    # https://stackoverflow.com/questions/59203704/how-to-create-a-badge-with-test-coverage-jacoco-on-github-actions
     - name: Get coverage
       id: coverage
       run: |
-        gcovr -s -e src/example/ -e src/test/ -e external/ -e build/
-        COVERAGE=$(gcovr -e src/example/ -e src/test/ -e external/ -e build/ | grep TOTAL | awk '{print $4}')
+        ninja coverage -C build
+        COVERAGE=$(ninja coverage -C build | grep -A 1 Overall | grep lines | awk '{print $2}')
         echo "##[set-output name=lines;]${COVERAGE}"
 
     - uses: actions/checkout@v3

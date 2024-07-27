@@ -37,12 +37,14 @@ elif get_option('version_suffix') != ''
   webcface_version_str = meson.project_version() + '-' + get_option('version_suffix')
 endif
 summary('Version', webcface_version_str)
+summary('ABI Version', webcface_soversion)
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
   'building both shared and static webcface libraries is currently not supported',
 )
 summary('Library', get_option('default_library'))
+summary('Build type', get_option('buildtype'))
 conf_data = configuration_data({
   'WEBCFACE_VERSION_MAJOR': meson.project_version().split('.')[0],
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],

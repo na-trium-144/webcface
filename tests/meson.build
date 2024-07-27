@@ -46,6 +46,7 @@ webcface_test = executable('webcface-test',
   ],
   dependencies: test_dependencies,
 )
+summary('Test wait (ms)', get_option('test_wait'))
 test_parsed = run_command(py,
   meson.project_source_root() / 'scripts' / 'add_tests.py',
   test_src,
@@ -65,6 +66,6 @@ foreach case: test_parsed
       'WEBCFACE_TRACE': '1',
     },
     protocol: 'gtest',
-    timeout: -1,
+    timeout: 300,
   )
 endforeach
