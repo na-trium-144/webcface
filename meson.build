@@ -161,11 +161,12 @@ configure_file(
   output: 'version.rc',
   configuration: conf_data
 )
-add_project_arguments(
-  '-DWEBCFACE_MESON',
-  language: ['c', 'cpp'],
+webcface_config_dep = declare_dependency(
+  include_directories: [include_directories('.')],
+  compile_args: [
+    '-DWEBCFACE_MESON',
+  ],
 )
-webcface_config_inc = include_directories('.')
 
 if get_option('download_webui').allowed()
   download_webui = run_command(py,
@@ -386,11 +387,11 @@ webcface_lib = library('webcface',
 webcface_dep = declare_dependency(
   link_with: [webcface_lib],
   include_directories: [
-    webcface_config_inc,
     webcface_encoding_inc,
     webcface_client_inc,
   ],
   dependencies: [
+    webcface_config_dep,
     filesystem_dep,
   ],
 )

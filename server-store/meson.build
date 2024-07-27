@@ -16,10 +16,10 @@ endif
 webcface_server_store_lib = static_library('webcface-server-store',
   sources: webcface_server_store_src,
   include_directories: [
-    webcface_config_inc,
     webcface_server_store_inc,
   ],
   dependencies: [
+    webcface_config_dep,
     warning_options,
     webcface_dep,
     filesystem_dep,

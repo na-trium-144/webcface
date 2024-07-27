@@ -61,10 +61,6 @@ Client::~Client() {
     data->close();
     data->join();
 }
-internal::ClientData::~ClientData() {
-    close();
-    join();
-}
 void internal::ClientData::join() {
     if (ws_thread.joinable()) {
         ws_thread.join();

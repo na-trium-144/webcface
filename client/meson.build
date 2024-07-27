@@ -36,10 +36,10 @@ webcface_client_inc = include_directories('include')
 webcface_client_lib = static_library('webcface-client',
   sources: webcface_client_src,
   include_directories: [
-    webcface_config_inc,
     webcface_client_inc,
   ],
   dependencies: [
+    webcface_config_dep,
     warning_options,
     webcface_encoding_dep,
     webcface_message_dep,

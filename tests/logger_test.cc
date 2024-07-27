@@ -18,6 +18,11 @@ class LoggerTest : public ::testing::Test {
         data_ = std::make_shared<internal::ClientData>(self_name);
         data_->start();
     }
+    void TearDown() override {
+        data_->close();
+        data_->join();
+        data_.reset();
+    }
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
 };

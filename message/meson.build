@@ -5,11 +5,11 @@ webcface_message_inc = include_directories('include')
 webcface_message_lib = static_library('webcface-message',
   sources: webcface_message_src,
   include_directories: [
-    webcface_config_inc,
     webcface_message_inc,
   ],
   dependencies: [
     warning_options,
+    webcface_config_dep,
     webcface_encoding_dep,
     msgpack_cxx_dep,
     spdlog_dep,

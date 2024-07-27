@@ -42,7 +42,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
                                      int port = -1);
 
     WEBCFACE_DLL void close();
-    WEBCFACE_DLL ~ClientData();
 
     /*!
      * \brief Client自身の名前

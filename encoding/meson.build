@@ -6,10 +6,10 @@ webcface_encoding_inc = include_directories('include')
 webcface_encoding_lib = static_library('webcface-encoding',
   sources: webcface_encoding_src,
   include_directories: [
-    webcface_config_inc,
     webcface_encoding_inc,
   ],
   dependencies: [
+    webcface_config_dep,
     warning_options,
     utf8cpp_dep,
   ],
