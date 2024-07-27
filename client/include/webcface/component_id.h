@@ -30,4 +30,27 @@ class WEBCFACE_DLL_TEMPLATE IdBase {
     std::string id() const;
 };
 
+enum class ViewComponentType {
+    text = 0,
+    new_line = 1,
+    button = 2,
+    text_input = 3,
+    decimal_input = 4,
+    number_input = 5,
+    toggle_input = 6,
+    select_input = 7,
+    slider_input = 8,
+    check_input = 9,
+};
+
+enum class Canvas2DComponentType {
+    geometry = 0,
+    text = 3,
+};
+
+#if WEBCFACE_SYSTEM_DLLEXPORT
+extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<ViewComponentType>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
+#endif
+
 WEBCFACE_NS_END

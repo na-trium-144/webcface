@@ -13,6 +13,7 @@ test_src = [
   'encoding_test.cc',
 ]
 test_dependencies = [
+  warning_options,
   webcface_dep,
   webcface_encoding_dep,
   webcface_message_dep,

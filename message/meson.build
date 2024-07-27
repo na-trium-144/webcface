@@ -9,6 +9,7 @@ webcface_message_lib = static_library('webcface-message',
     webcface_message_inc,
   ],
   dependencies: [
+    warning_options,
     webcface_encoding_dep,
     msgpack_cxx_dep,
     spdlog_dep,

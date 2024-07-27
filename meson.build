@@ -4,10 +4,11 @@ project('webcface', 'c', 'cpp',
   meson_version: '>=0.59.0',
   default_options: [
     'buildtype=release',
-    'warning_level=everything',
+    'warning_level=3', # everythingはたぶん通らない
     'werror=true',
     'c_std=c99',
     'cpp_std=c++17',
+    'wrap_mode=forcefallback',
   ],
 )
 fs = import('fs')
@@ -159,6 +160,7 @@ add_project_arguments(
 webcface_config_inc = include_directories('.')
 
 if get_option('download_webui').allowed()
+  # todo: 別スクリプトに分ける
   curl = find_program('curl', required: false)
   if curl.found()
     run_command(curl,
@@ -203,7 +205,7 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'boost=disabled',
     'tests=disabled',
   ],
-)
+).as_system('system')
 spdlog_dep = dependency('spdlog',
   default_options: [
     'tests=disabled',
@@ -211,52 +213,14 @@ spdlog_dep = dependency('spdlog',
     'default_library=static',
     'external_fmt=disabled',
     'std_format=disabled',
+    'warning_level=0',
+    'werror=false',
   ],
-)
-utf8cpp_dep = dependency('utf8cpp')
-if build_server
-  crow_dep = dependency('Crow')
-  magickpp_dep = dependency('Magick++', required: false)
-  if not magickpp_dep.found()
-    dependency('libjpeg',
-      default_options: [
-        'default_library=static',
-        'jpeg-turbo=disabled',
-        'tests=disabled',
-      ]
-    )
-    dependency('libpng',
-      default_options: [
-        'default_library=static',
-      ]
-    )
-    dependency('zlib',
-      default_options: [
-        'default_library=static',
-        'tests=disabled',
-      ]
-    )
-    dependency('libwebp',
-      default_options: [
-        'default_library=static',
-        'cwebp=disabled',
-        'dwebp=disabled',
-        'webpinfo=disabled',
-        'webpmux=disabled',
-      ]
-    )
-    magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
-    if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
-      add_project_arguments(
-        '-DWEBCFACE_MAGICK_VER7',
-        language: ['c', 'cpp'],
-      )
-    endif
-  endif
-  cli11_dep = dependency('cli11')
-endif
+).as_system('system')
 curl_dep = dependency('libcurl',
   default_options: [
+    'warning_level=0',
+    'werror=false',
     'websockets=enabled',
     'default_library=static',
     'tool=disabled',
@@ -301,24 +265,82 @@ curl_dep = dependency('libcurl',
     'telnet=disabled',
     'tftp=disabled',
   ],
-)
+).as_system('system')
+utf8cpp_dep = dependency('utf8cpp').as_system('system')
+
+if build_server
+  crow_dep = dependency('Crow').as_system('system')
+  cli11_dep = dependency('cli11').as_system('system')
+
+  magickpp_dep = dependency('Magick++', required: false)
+  if not magickpp_dep.found()
+    dependency('libjpeg',
+      default_options: [
+        'default_library=static',
+        'jpeg-turbo=disabled',
+        'tests=disabled',
+        'warning_level=0',
+        'werror=false',
+      ]
+    )
+    dependency('zlib',
+      default_options: [
+        'default_library=static',
+        'tests=disabled',
+        'warning_level=0',
+        'werror=false',
+      ]
+    )
+    dependency('libpng',
+      default_options: [
+        'default_library=static',
+        'warning_level=0',
+        'werror=false',
+      ]
+    )
+    dependency('libwebp',
+      default_options: [
+        'default_library=static',
+        'cwebp=disabled',
+        'dwebp=disabled',
+        'webpinfo=disabled',
+        'webpmux=disabled',
+        'warning_level=0',
+        'werror=false',
+      ]
+    )
+    magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
+    if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
+      add_project_arguments(
+        '-DWEBCFACE_MAGICK_VER7',
+        language: ['c', 'cpp'],
+      )
+    endif
+  endif
+  magickpp_dep = magickpp_dep.as_system('system')
+endif
+
 if build_examples
-  opencv_dep = dependency('OpenCV', required: false)
+  opencv_dep = dependency('OpenCV', required: false).as_system('system')
 endif
 if build_tests
   gtest_proj = subproject('gtest')
-  gtest_dep = gtest_proj.get_variable('gtest_dep')
-  gtest_main_dep = gtest_proj.get_variable('gtest_main_dep')
+  gtest_dep = gtest_proj.get_variable('gtest_dep').as_system('system')
+  gtest_main_dep = gtest_proj.get_variable('gtest_main_dep').as_system('system')
+endif
+
+if cxx.get_id() == 'gcc' or cxx.get_id() == 'clang'
+  warning_options = declare_dependency(compile_args: [
+    '-Wno-inline',
+  ])
+else
+  warning('Unsupported compiler id ' + cxx.get_id())
+  warning_options = declare_dependency()
 endif
 
 subdir('encoding')
 subdir('message')
 subdir('client')
-
-# if cxx.get_id() == 'gcc'
-#   warning_options = declare_dependency(compile_args: [
-#   ])
-# endif
 
 webcface_link_args = []
 if get_option('default_library') == 'shared'

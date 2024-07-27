@@ -25,18 +25,6 @@ namespace message {
 struct ViewComponent;
 }
 
-enum class ViewComponentType {
-    text = 0,
-    new_line = 1,
-    button = 2,
-    text_input = 3,
-    decimal_input = 4,
-    number_input = 5,
-    toggle_input = 6,
-    select_input = 7,
-    slider_input = 8,
-    check_input = 9,
-};
 enum class ViewColor {
     inherit = 0,
     black = 1,
@@ -64,10 +52,6 @@ enum class ViewColor {
     pink = 23,
     // rose = 24,
 };
-
-#if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<ViewComponentType>;
-#endif
 
 /*!
  * \brief Viewに表示する要素です

@@ -22,6 +22,7 @@ foreach src: example_src
   executable('webcface-example-' + fs.replace_suffix(src, ''),
     sources: src,
     dependencies: [
+      warning_options,
       webcface_dep,
     ]
   )
@@ -31,6 +32,7 @@ if build_server
     executable('webcface-example-' + fs.replace_suffix(src, ''),
       sources: src,
       dependencies: [
+        warning_options,
         webcface_dep,
         magickpp_dep,
       ]
@@ -42,6 +44,7 @@ if opencv_dep.found()
     executable('webcface-example-' + fs.replace_suffix(src, ''),
       sources: src,
       dependencies: [
+        warning_options,
         webcface_dep,
         opencv_dep,
       ]

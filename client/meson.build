@@ -40,6 +40,7 @@ webcface_client_lib = static_library('webcface-client',
     webcface_client_inc,
   ],
   dependencies: [
+    warning_options,
     webcface_encoding_dep,
     webcface_message_dep,
     spdlog_dep,

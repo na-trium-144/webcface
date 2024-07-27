@@ -16,15 +16,6 @@ namespace message {
 struct Canvas2DComponent;
 }
 
-enum class Canvas2DComponentType {
-    geometry = 0,
-    text = 3,
-};
-
-#if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
-#endif
-
 /*!
  * \brief Canvas2Dの各要素を表すクラス。
  *

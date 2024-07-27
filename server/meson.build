@@ -3,6 +3,7 @@ executable('webcface-server',
     'server_main.cc',
   ],
   dependencies: [
+    warning_options,
     webcface_dep,
     webcface_server_store_dep,
     cli11_dep,

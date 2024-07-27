@@ -1,6 +1,4 @@
 #include "webcface/component_id.h"
-#include "webcface/component_view.h"
-#include "webcface/component_canvas2d.h"
 WEBCFACE_NS_BEGIN
 
 template <typename TypeEnum>
