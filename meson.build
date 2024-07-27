@@ -36,13 +36,13 @@ if get_option('version_suffix') == 'git'
 elif get_option('version_suffix') != ''
   webcface_version_str = meson.project_version() + '-' + get_option('version_suffix')
 endif
-summary('Version', webcface_version_str, section: 'Configuration')
+summary('Version', webcface_version_str)
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
   'building both shared and static webcface libraries is currently not supported',
 )
-summary('Library', get_option('default_library'), section: 'Configuration')
+summary('Library', get_option('default_library'))
 conf_data = configuration_data({
   'WEBCFACE_VERSION_MAJOR': meson.project_version().split('.')[0],
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
@@ -62,11 +62,11 @@ webcface_system_win32socket = false
 webcface_system_path_windows = false
 webcface_system_add_debug = false
 if host_machine.system() == 'linux'
-  summary('System', 'linux', section: 'Configuration')
+  summary('System', 'linux')
   webcface_system_visibility = true
   webcface_system_exclude_libs = true
 elif host_machine.system() == 'darwin'
-  summary('System', 'darwin', section: 'Configuration')
+  summary('System', 'darwin')
   webcface_system_visibility = true
   webcface_system_hidden_l = true
 elif host_machine.system() == 'windows'
@@ -75,13 +75,13 @@ elif host_machine.system() == 'windows'
   webcface_system_win32socket = true
   webcface_system_path_windows = true
   if cxx.get_argument_syntax() == 'msvc'
-    summary('System', 'windows (msvc)', section: 'Configuration')
+    summary('System', 'windows (msvc)')
     webcface_system_add_debug = true
   else
-    summary('System', 'windows (mingw)', section: 'Configuration')
+    summary('System', 'windows (mingw)')
   endif
 elif host_machine.system() == 'cygwin'
-  summary('System', 'windows (cygwin)', section: 'Configuration')
+  summary('System', 'windows (cygwin)')
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
 else
@@ -177,18 +177,20 @@ if get_option('download_webui').allowed()
   if download_webui.returncode() == 0
     message(download_webui.stdout())
     summary('WebUI',
-      webcface_webui_version + ' Downloaded to ' + (meson.current_build_dir() / 'dist'),
-      section: 'Configuration',
+      [true, webcface_webui_version, 'Downloaded to ' + (meson.current_build_dir() / 'dist')],
+      bool_yn: true,
+      list_sep: ' ',
     )
   else
     warning(download_webui.stderr())
     summary('WebUI',
-      webcface_webui_version + ' Failed to download',
-      section: 'Configuration',
+      [false, webcface_webui_version, 'Failed to download'],
+      bool_yn: true,
+      list_sep: ' ',
     )
   endif
 else
-  summary('WebUI', false, section: 'Configuration')
+  summary('WebUI', false, bool_yn: true)
 endif
 
 build_server = get_option('server').enabled() \
@@ -197,20 +199,23 @@ build_server = get_option('server').enabled() \
     and host_machine.system() != 'cygwin' \
   )
 summary('Build server',
-  build_server.to_string() + get_option('server').auto().to_string(' (auto)', ''),
-  section: 'Configuration',
+  [build_server, get_option('server').auto().to_string('(auto)', '')],
+  bool_yn: true,
+  list_sep: ' ',
 )
 build_examples = get_option('examples').enabled() \
   or (get_option('examples').allowed() and not meson.is_subproject())
 summary('Build examples',
-  build_examples.to_string() + get_option('examples').auto().to_string(' (auto)', ''),
-  section: 'Configuration',
+  [build_examples, get_option('examples').auto().to_string('(auto)', '')],
+  bool_yn: true,
+  list_sep: ' ',
 )
 build_tests = get_option('tests').enabled() \
   or (get_option('tests').allowed() and not meson.is_subproject())
 summary('Build tests',
-  build_tests.to_string() + get_option('tests').auto().to_string(' (auto)', ''),
-  section: 'Configuration',
+  [build_tests, get_option('tests').auto().to_string('(auto)', '')],
+  bool_yn: true,
+  list_sep: ' ',
 )
 
 msgpack_cxx_dep = dependency('msgpack-cxx',

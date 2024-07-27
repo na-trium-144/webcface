@@ -50,8 +50,9 @@ test_parsed = run_command(py,
   meson.project_source_root() / 'scripts' / 'add_tests.py',
   test_src,
   check: true,
-)
-foreach case: test_parsed.stdout().strip().split()
+).stdout().strip().split()
+summary('Test cases', test_parsed.length())
+foreach case: test_parsed
   test(case.split('.')[1], webcface_test,
     suite: case.split('.')[0],
     args: [
