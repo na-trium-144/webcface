@@ -168,37 +168,27 @@ add_project_arguments(
 webcface_config_inc = include_directories('.')
 
 if get_option('download_webui').allowed()
-  # todo: 別スクリプトに分ける
-  curl = find_program('curl', required: false)
-  if curl.found()
-    run_command(curl,
-      '-o', meson.current_build_dir() / f'webcface-webui_@webcface_webui_version@.tar.gz',
-      '-L', f'https://github.com/na-trium-144/webcface-webui/releases/download/v@webcface_webui_version@/webcface-webui_@webcface_webui_version@.tar.gz',
-      check: get_option('download_webui').enabled()
+  download_webui = run_command(py,
+    meson.project_source_root() / 'scripts' / 'fetch_webui.py',
+    webcface_webui_version,
+    meson.current_build_dir(),
+    check: get_option('download_webui').enabled(),
+  )
+  if download_webui.returncode() == 0
+    message(download_webui.stdout())
+    summary('WebUI',
+      webcface_webui_version + ' Downloaded to ' + (meson.current_build_dir() / 'dist'),
+      section: 'Configuration',
     )
-  elif get_option('download_webui').enabled()
-    error('Could not download webui')
+  else
+    warning(download_webui.stderr())
+    summary('WebUI',
+      webcface_webui_version + ' Failed to download',
+      section: 'Configuration',
+    )
   endif
-  tar = find_program('tar', required: false)
-  if tar.found()
-    run_command(tar, 'zxf',
-      meson.current_build_dir() / f'webcface-webui_@webcface_webui_version@.tar.gz',
-      check: true,
-    )
-    if fs.exists(meson.current_build_dir() / 'dist')
-      run_command(find_program('rm'), '-r',
-        meson.current_build_dir() / 'dist',
-        check: true
-      )
-    endif
-    run_command(find_program('mv'),
-      'dist',
-      meson.current_build_dir(),
-      check: true,
-    )
-  elif get_option('download_webui').enabled()
-    error('Could not extract webui')
-  endif
+else
+  summary('WebUI', false, section: 'Configuration')
 endif
 
 build_server = get_option('server').enabled() \
@@ -347,6 +337,7 @@ endif
 if build_examples
   opencv_dep = dependency('OpenCV', required: false).as_system('system')
 endif
+
 if build_tests
   gtest_proj = subproject('gtest')
   gtest_dep = gtest_proj.get_variable('gtest_dep').as_system('system')
