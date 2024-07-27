@@ -231,12 +231,9 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
 spdlog_dep = dependency('spdlog',
   default_options: [
     'tests=disabled',
-    'compile_library=true',
-    'default_library=static',
+    'compile_library=false',
     'external_fmt=disabled',
     'std_format=disabled',
-    'warning_level=0',
-    'werror=false',
   ],
 ).as_system('system')
 curl_dep = dependency('libcurl',
@@ -368,19 +365,18 @@ subdir('encoding')
 subdir('message')
 subdir('client')
 
-webcface_link_args = []
-if get_option('default_library') == 'shared'
-  if webcface_system_exclude_libs
-    webcface_link_args += '-Wl,--exclude-libs,ALL'
-  endif
-endif
+# 外部ライブラリのシンボルを公開しないようにするために
+# 以前は -Wl,--exclude-libs や -Wl,-hidden-l オプションが必要だったが、
+# spdlogはヘッダーオンリーにし、
+# curlはvisibilityがhiddenになっており、
+# magickppとasioはserverのみにしかリンクしないようにしたので
+# 特殊なリンクオプションは一切不要
 webcface_lib = library('webcface',
   objects: [
     webcface_encoding_lib.extract_all_objects(recursive: false),
     webcface_message_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
-  link_args: webcface_link_args,
   dependencies: [
     filesystem_dep,
     spdlog_dep,
