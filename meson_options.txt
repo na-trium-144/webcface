@@ -8,7 +8,7 @@ option('test_wait', type: 'integer', min: 1, value: 10,
   description: 'Delays of wait() in tests, in milliseconds',
 )
 option('server', type: 'feature', value: 'auto',
-  description: 'Build server. (auto = enabled when WebCFace is top-level.)',
+  description: 'Build server. (auto = enabled when WebCFace is top-level and not cygwin.)',
 )
 option('version_suffix', type: 'string', value: 'git',
   description: 'Version suffix ("git" to get automatically from git describe command)',

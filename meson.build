@@ -27,7 +27,7 @@ if get_option('version_suffix') == 'git'
   if git.found()
     git_describe = run_command(git, 'describe', '--tags', check: false)
     if git_describe.returncode() == 0
-      webcface_version_str = git_describe.stdout().strip('v')
+      webcface_version_str = git_describe.stdout().strip('v').strip()
     else
       warning('Failed to get version from git describe:\n' + git_describe.stderr())
     endif
@@ -41,6 +41,7 @@ assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
   'building both shared and static webcface libraries is currently not supported',
 )
+summary('Library', get_option('default_library'), section: 'Configuration')
 conf_data = configuration_data({
   'WEBCFACE_VERSION_MAJOR': meson.project_version().split('.')[0],
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
@@ -60,9 +61,11 @@ webcface_system_win32socket = false
 webcface_system_path_windows = false
 webcface_system_add_debug = false
 if host_machine.system() == 'linux'
+  summary('System', 'linux', section: 'Configuration')
   webcface_system_visibility = true
   webcface_system_exclude_libs = true
 elif host_machine.system() == 'darwin'
+  summary('System', 'darwin', section: 'Configuration')
   webcface_system_visibility = true
   webcface_system_hidden_l = true
 elif host_machine.system() == 'windows'
@@ -71,9 +74,13 @@ elif host_machine.system() == 'windows'
   webcface_system_win32socket = true
   webcface_system_path_windows = true
   if cxx.get_argument_syntax() == 'msvc'
+    summary('System', 'windows (msvc)', section: 'Configuration')
     webcface_system_add_debug = true
+  else
+    summary('System', 'windows (mingw)', section: 'Configuration')
   endif
 elif host_machine.system() == 'cygwin'
+  summary('System', 'windows (cygwin)', section: 'Configuration')
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
 else
@@ -193,12 +200,27 @@ if get_option('download_webui').allowed()
   endif
 endif
 
-build_server = get_option('server').enabled() or (get_option('server').allowed() and not meson.is_subproject())
-summary('Build server', build_server, bool_yn: true, section: 'Configuration')
-build_examples = get_option('examples').enabled() or (get_option('examples').allowed() and not meson.is_subproject())
-summary('Build examples', build_examples, bool_yn: true, section: 'Configuration')
-build_tests = get_option('tests').enabled() or (get_option('tests').allowed() and not meson.is_subproject())
-summary('Build tests', build_tests, bool_yn: true, section: 'Configuration')
+build_server = get_option('server').enabled() \
+  or (get_option('server').allowed() \
+    and not meson.is_subproject() \
+    and host_machine.system() != 'cygwin' \
+  )
+summary('Build server',
+  build_server.to_string() + get_option('server').auto().to_string(' (auto)', ''),
+  section: 'Configuration',
+)
+build_examples = get_option('examples').enabled() \
+  or (get_option('examples').allowed() and not meson.is_subproject())
+summary('Build examples',
+  build_examples.to_string() + get_option('examples').auto().to_string(' (auto)', ''),
+  section: 'Configuration',
+)
+build_tests = get_option('tests').enabled() \
+  or (get_option('tests').allowed() and not meson.is_subproject())
+summary('Build tests',
+  build_tests.to_string() + get_option('tests').auto().to_string(' (auto)', ''),
+  section: 'Configuration',
+)
 
 msgpack_cxx_dep = dependency('msgpack-cxx',
   default_options: [
@@ -272,7 +294,11 @@ if build_server
   crow_dep = dependency('Crow').as_system('system')
   cli11_dep = dependency('cli11').as_system('system')
 
-  magickpp_dep = dependency('Magick++', required: false)
+  if get_option('wrap_mode') != 'forcefallback' and get_option('force_fallback_for').contains('Magick++')
+    magickpp_dep = dependency('Magick++', required: false)
+  else
+    magickpp_dep = dependency('', required: false)
+  endif
   if not magickpp_dep.found()
     dependency('libjpeg',
       default_options: [
