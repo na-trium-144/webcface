@@ -11,32 +11,39 @@ test_src = [
   'member_test.cc',
   'logger_test.cc',
   'encoding_test.cc',
-  'client_test.cc',
-  'dummy_server.cc',
-  'dummy_client.cc',
-  'server_test.cc',
-  'c_wcf_test.cc',
 ]
-webcface_test = executable('webcface-test',
-  sources: test_src,
-  cpp_args: [
-    '-DWEBCFACE_TEST_TIMEOUT=10',
-  ],
-  dependencies: [
-    webcface_dep,
-    webcface_encoding_dep,
-    webcface_message_dep,
-    webcface_client_dep,
+test_dependencies = [
+  webcface_dep,
+  webcface_encoding_dep,
+  webcface_message_dep,
+  webcface_client_dep,
+  gtest_dep,
+  gtest_main_dep,
+  msgpack_cxx_dep,
+  utf8cpp_dep,
+  spdlog_dep,
+]
+if build_server
+  test_src += [
+    'client_test.cc',
+    'dummy_server.cc',
+    'dummy_client.cc',
+    'server_test.cc',
+    'c_wcf_test.cc',
+  ]
+  test_dependencies += [
     webcface_server_store_dep,
-    gtest_dep,
-    gtest_main_dep,
-    msgpack_cxx_dep,
-    utf8cpp_dep,
-    spdlog_dep,
     magickpp_dep,
     crow_dep,
     curl_dep,
+  ]
+endif
+webcface_test = executable('webcface-test',
+  sources: test_src,
+  cpp_args: [
+    '-DWEBCFACE_TEST_TIMEOUT=' + get_option('test_wait').to_string(),
   ],
+  dependencies: test_dependencies,
 )
 # test('webcface-test', webcface_test,
 #   env: {

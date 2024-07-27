@@ -26,15 +26,17 @@ foreach src: example_src
     ]
   )
 endforeach
-foreach src: example_magick_src
-  executable('webcface-example-' + fs.replace_suffix(src, ''),
-    sources: src,
-    dependencies: [
-      webcface_dep,
-      magickpp_dep,
-    ]
-  )
-endforeach
+if build_server
+  foreach src: example_magick_src
+    executable('webcface-example-' + fs.replace_suffix(src, ''),
+      sources: src,
+      dependencies: [
+        webcface_dep,
+        magickpp_dep,
+      ]
+    )
+  endforeach
+endif
 if opencv_dep.found()
   foreach src: example_cv_src
     executable('webcface-example-' + fs.replace_suffix(src, ''),

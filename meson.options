@@ -1,0 +1,24 @@
+option('examples', type: 'feature', value: 'auto',
+  description: 'Build examples. (auto = enabled when WebCFace is top-level.)',
+)
+option('tests', type: 'feature', value: 'auto',
+  description: 'Build tests. (auto = enabled when WebCFace is top-level.)',
+)
+option('test_wait', type: 'integer', min: 1, value: 10,
+  description: 'Delays of wait() in tests, in milliseconds',
+)
+option('server', type: 'feature', value: 'auto',
+  description: 'Build server. (auto = enabled when WebCFace is top-level.)',
+)
+option('version_suffix', type: 'string', value: 'git',
+  description: 'Version suffix ("git" to get automatically from git describe command)',
+)
+option('download_webui', type: 'feature', value: 'auto',
+  description: 'Download WebUI.'
+)
+# builtin options
+# build_type -> buildtype (default: release)
+# shared -> default_library (default: shared)
+# pic -> b_staticpic
+# coverage -> b_coverage
+# find_libs -> wrap_mode, force_fallback_for

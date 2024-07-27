@@ -1,9 +1,11 @@
 project('webcface', 'c', 'cpp',
   version: '2.0.0',
   license: 'MIT',
-  meson_version: '>=0.55.0',
+  meson_version: '>=1.1.0',
   default_options: [
     'buildtype=release',
+    'warning_level=everything',
+    'werror=true',
     'c_std=c99',
     'cpp_std=c++17',
   ],
@@ -13,7 +15,26 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 
 webcface_soversion = '20'
+webcface_webui_version = '1.7.0'
+
+webcface_description = 'Web-based IPC & Dashboard-like UI'
+webcface_contact = 'na-trium-144@users.noreply.github.com'
+
 webcface_version_str = meson.project_version()
+if get_option('version_suffix') == 'git'
+  git = find_program('git', required: false)
+  if git.found()
+    git_describe = run_command(git, 'describe', '--tags', check: false)
+    if git_describe.returncode() == 0
+      webcface_version_str = git_describe.stdout().strip('v')
+    else
+      warning('Failed to get version from git describe:\n' + git_describe.stderr())
+    endif
+  endif
+elif get_option('version_suffix') != ''
+  webcface_version_str = meson.project_version() + '-' + get_option('version_suffix')
+endif
+summary('Version', webcface_version_str, section: 'Configuration')
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
@@ -24,6 +45,8 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
   'WEBCFACE_VERSION': '"@webcface_version_str@"',
+  'PROJECT_DESCRIPTION': webcface_description,
+  'WEBCFACE_CONTACT': webcface_contact,
 })
 conf_data.set10('WEBCFACE_SHARED', get_option('default_library') == 'shared')
 
@@ -124,11 +147,56 @@ configure_file(
   output: 'webcface-config.h',
   configuration: conf_data
 )
+configure_file(
+  input: 'version.rc.in',
+  output: 'version.rc',
+  configuration: conf_data
+)
 add_project_arguments(
   '-DWEBCFACE_MESON',
   language: ['c', 'cpp'],
 )
 webcface_config_inc = include_directories('.')
+
+if get_option('download_webui').allowed()
+  curl = find_program('curl', required: false)
+  if curl.found()
+    run_command(curl,
+      '-o', meson.current_build_dir() / f'webcface-webui_@webcface_webui_version@.tar.gz',
+      '-L', f'https://github.com/na-trium-144/webcface-webui/releases/download/v@webcface_webui_version@/webcface-webui_@webcface_webui_version@.tar.gz',
+      check: get_option('download_webui').enabled()
+    )
+  elif get_option('download_webui').enabled()
+    error('Could not download webui')
+  endif
+  tar = find_program('tar', required: false)
+  if tar.found()
+    run_command(tar, 'zxf',
+      meson.current_build_dir() / f'webcface-webui_@webcface_webui_version@.tar.gz',
+      check: true,
+    )
+    if fs.exists(meson.current_build_dir() / 'dist')
+      run_command(find_program('rm'), '-r',
+        meson.current_build_dir() / 'dist',
+        check: true
+      )
+    endif
+    run_command(find_program('mv'),
+      'dist',
+      meson.current_build_dir(),
+      check: true,
+    )
+  elif get_option('download_webui').enabled()
+    error('Could not extract webui')
+  endif
+endif
+
+build_server = get_option('server').enable_auto_if(not meson.is_subproject()).enabled()
+summary('Build server', build_server, bool_yn: true, section: 'Configuration')
+build_examples = get_option('examples').enable_auto_if(not meson.is_subproject()).enabled()
+summary('Build examples', build_examples, bool_yn: true, section: 'Configuration')
+build_tests = get_option('tests').enable_auto_if(not meson.is_subproject()).enabled()
+summary('Build tests', build_tests, bool_yn: true, section: 'Configuration')
 
 msgpack_cxx_dep = dependency('msgpack-cxx',
   default_options: [
@@ -146,29 +214,46 @@ spdlog_dep = dependency('spdlog',
   ],
 )
 utf8cpp_dep = dependency('utf8cpp')
-crow_dep = dependency('Crow')
-magickpp_dep = dependency('Magick++', required: false)
-if not magickpp_dep.found()
-  dependency('libjpeg', default_options: [
-    'default_library=static',
-    'jpeg-turbo=disabled',
-    'tests=disabled',
-  ])
-  dependency('libpng', default_options: [
-    'default_library=static',
-  ])
-  dependency('zlib', default_options: [
-    'default_library=static',
-    'tests=disabled',
-  ])
-  dependency('libwebp', default_options: [
-    'default_library=static',
-    'cwebp=disabled',
-    'dwebp=disabled',
-    'webpinfo=disabled',
-    'webpmux=disabled',
-  ])
-  magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
+if build_server
+  crow_dep = dependency('Crow')
+  magickpp_dep = dependency('Magick++', required: false)
+  if not magickpp_dep.found()
+    dependency('libjpeg',
+      default_options: [
+        'default_library=static',
+        'jpeg-turbo=disabled',
+        'tests=disabled',
+      ]
+    )
+    dependency('libpng',
+      default_options: [
+        'default_library=static',
+      ]
+    )
+    dependency('zlib',
+      default_options: [
+        'default_library=static',
+        'tests=disabled',
+      ]
+    )
+    dependency('libwebp',
+      default_options: [
+        'default_library=static',
+        'cwebp=disabled',
+        'dwebp=disabled',
+        'webpinfo=disabled',
+        'webpmux=disabled',
+      ]
+    )
+    magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
+    if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
+      add_project_arguments(
+        '-DWEBCFACE_MAGICK_VER7',
+        language: ['c', 'cpp'],
+      )
+    endif
+  endif
+  cli11_dep = dependency('cli11')
 endif
 curl_dep = dependency('libcurl',
   default_options: [
@@ -217,23 +302,23 @@ curl_dep = dependency('libcurl',
     'tftp=disabled',
   ],
 )
-cli11_dep = dependency('cli11')
-opencv_dep = dependency('OpenCV', required: false)
-
-gtest_proj = subproject('gtest')
-gtest_dep = gtest_proj.get_variable('gtest_dep')
-gtest_main_dep = gtest_proj.get_variable('gtest_main_dep')
-
-if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
-  add_project_arguments(
-    '-DWEBCFACE_MAGICK_VER7',
-    language: ['c', 'cpp'],
-  )
+if build_examples
+  opencv_dep = dependency('OpenCV', required: false)
+endif
+if build_tests
+  gtest_proj = subproject('gtest')
+  gtest_dep = gtest_proj.get_variable('gtest_dep')
+  gtest_main_dep = gtest_proj.get_variable('gtest_main_dep')
 endif
 
 subdir('encoding')
 subdir('message')
 subdir('client')
+
+# if cxx.get_id() == 'gcc'
+#   warning_options = declare_dependency(compile_args: [
+#   ])
+# endif
 
 webcface_link_args = []
 if get_option('default_library') == 'shared'
@@ -254,7 +339,7 @@ webcface_lib = library('webcface',
     magickpp_dep,
     curl_dep,
   ],
-  version: webcface_version_str,
+  version: meson.project_version(),
   soversion: webcface_soversion,
 )
 webcface_dep = declare_dependency(
@@ -269,7 +354,14 @@ webcface_dep = declare_dependency(
   ],
 )
 
-subdir('server-store')
-subdir('server')
-subdir('examples')
-subdir('tests')
+if build_server
+  subdir('server-store')
+  subdir('server')
+endif
+if build_examples
+  subdir('examples')
+endif
+if build_tests
+  subdir('tests')
+endif
+
