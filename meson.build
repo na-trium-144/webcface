@@ -14,6 +14,7 @@ project('webcface', 'c', 'cpp',
 fs = import('fs')
 cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
+py = find_program('python3')
 
 webcface_soversion = '20'
 webcface_webui_version = '1.7.0'

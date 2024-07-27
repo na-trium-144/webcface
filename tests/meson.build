@@ -46,11 +46,24 @@ webcface_test = executable('webcface-test',
   ],
   dependencies: test_dependencies,
 )
-# test('webcface-test', webcface_test,
-#   env: {
-#     'WEBCFACE_TRACE': '1',
-#   },
-#   protocol: 'gtest',
-#   verbose: true,
-#   timeout: 
-# )
+test_parsed = run_command(py,
+  meson.project_source_root() / 'scripts' / 'add_tests.py',
+  test_src,
+  check: true,
+)
+foreach case: test_parsed.stdout().strip().split()
+  test(case.split('.')[1], webcface_test,
+    suite: case.split('.')[0],
+    args: [
+      '--gtest_filter=' + case,
+      '--gtest_catch_exceptions=0',
+      '--gtest_break_on_failure',
+    ],
+    is_parallel: false,
+    env: {
+      'WEBCFACE_TRACE': '1',
+    },
+    protocol: 'gtest',
+    timeout: -1,
+  )
+endforeach
