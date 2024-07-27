@@ -1,7 +1,7 @@
 project('webcface', 'c', 'cpp',
   version: '2.0.0',
   license: 'MIT',
-  meson_version: '>=1.1.0',
+  meson_version: '>=0.59.0',
   default_options: [
     'buildtype=release',
     'warning_level=everything',
@@ -191,11 +191,11 @@ if get_option('download_webui').allowed()
   endif
 endif
 
-build_server = get_option('server').enable_auto_if(not meson.is_subproject()).enabled()
+build_server = get_option('server').enabled() or (get_option('server').allowed() and not meson.is_subproject())
 summary('Build server', build_server, bool_yn: true, section: 'Configuration')
-build_examples = get_option('examples').enable_auto_if(not meson.is_subproject()).enabled()
+build_examples = get_option('examples').enabled() or (get_option('examples').allowed() and not meson.is_subproject())
 summary('Build examples', build_examples, bool_yn: true, section: 'Configuration')
-build_tests = get_option('tests').enable_auto_if(not meson.is_subproject()).enabled()
+build_tests = get_option('tests').enabled() or (get_option('tests').allowed() and not meson.is_subproject())
 summary('Build tests', build_tests, bool_yn: true, section: 'Configuration')
 
 msgpack_cxx_dep = dependency('msgpack-cxx',
