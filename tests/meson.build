@@ -1,0 +1,48 @@
+test_src = [
+  'client_data_test.cc',
+  'data_test.cc',
+  'func_test.cc',
+  'func_listener_test.cc',
+  'view_test.cc',
+  'robot_model_test.cc',
+  'canvas3d_test.cc',
+  'canvas2d_test.cc',
+  'image_test.cc',
+  'member_test.cc',
+  'logger_test.cc',
+  'encoding_test.cc',
+  'client_test.cc',
+  'dummy_server.cc',
+  'dummy_client.cc',
+  'server_test.cc',
+  'c_wcf_test.cc',
+]
+webcface_test = executable('webcface-test',
+  sources: test_src,
+  cpp_args: [
+    '-DWEBCFACE_TEST_TIMEOUT=10',
+  ],
+  dependencies: [
+    webcface_dep,
+    webcface_encoding_dep,
+    webcface_message_dep,
+    webcface_client_dep,
+    webcface_server_store_dep,
+    gtest_dep,
+    gtest_main_dep,
+    msgpack_cxx_dep,
+    utf8cpp_dep,
+    spdlog_dep,
+    magickpp_dep,
+    crow_dep,
+    curl_dep,
+  ],
+)
+# test('webcface-test', webcface_test,
+#   env: {
+#     'WEBCFACE_TRACE': '1',
+#   },
+#   protocol: 'gtest',
+#   verbose: true,
+#   timeout: 
+# )

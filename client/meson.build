@@ -26,6 +26,7 @@ webcface_client_src = [
   'src/component_view.cc',
   'src/unix_path.cc',
   'src/c_wcf/client.cc',
+  'src/c_wcf/member.cc',
   'src/c_wcf/value.cc',
   'src/c_wcf/text.cc',
   'src/c_wcf/func.cc',

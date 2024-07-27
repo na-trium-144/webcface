@@ -4,7 +4,6 @@
 #include "webcface/server/member_data.h"
 #include "webcface/server/store.h"
 #include "webcface/message/message.h"
-#include <webcface/common/def.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
 #include <webcface/image.h>

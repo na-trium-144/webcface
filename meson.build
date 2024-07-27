@@ -149,10 +149,25 @@ utf8cpp_dep = dependency('utf8cpp')
 crow_dep = dependency('Crow')
 magickpp_dep = dependency('Magick++', required: false)
 if not magickpp_dep.found()
-  dependency('libjpeg', default_options: ['default_library=static'])
-  dependency('libpng', default_options: ['default_library=static'])
-  dependency('zlib', default_options: ['default_library=static'])
-  dependency('libwebp', default_options: ['default_library=static'])
+  dependency('libjpeg', default_options: [
+    'default_library=static',
+    'jpeg-turbo=disabled',
+    'tests=disabled',
+  ])
+  dependency('libpng', default_options: [
+    'default_library=static',
+  ])
+  dependency('zlib', default_options: [
+    'default_library=static',
+    'tests=disabled',
+  ])
+  dependency('libwebp', default_options: [
+    'default_library=static',
+    'cwebp=disabled',
+    'dwebp=disabled',
+    'webpinfo=disabled',
+    'webpmux=disabled',
+  ])
   magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
 endif
 curl_dep = dependency('libcurl',
@@ -203,6 +218,11 @@ curl_dep = dependency('libcurl',
   ],
 )
 cli11_dep = dependency('cli11')
+opencv_dep = dependency('OpenCV', required: false)
+
+gtest_proj = subproject('gtest')
+gtest_dep = gtest_proj.get_variable('gtest_dep')
+gtest_main_dep = gtest_proj.get_variable('gtest_main_dep')
 
 if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
   add_project_arguments(
@@ -240,6 +260,7 @@ webcface_lib = library('webcface',
 webcface_dep = declare_dependency(
   link_with: [webcface_lib],
   include_directories: [
+    webcface_config_inc,
     webcface_encoding_inc,
     webcface_client_inc,
   ],
@@ -250,3 +271,5 @@ webcface_dep = declare_dependency(
 
 subdir('server-store')
 subdir('server')
+subdir('examples')
+subdir('tests')

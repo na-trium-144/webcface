@@ -7,7 +7,6 @@
 #include <webcface/log.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
-#include <webcface/common/def.h>
 #include <webcface/wcf.h>
 #include "webcface/message/message.h"
 #include <chrono>

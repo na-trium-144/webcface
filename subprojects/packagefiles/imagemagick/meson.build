@@ -2,28 +2,54 @@ project('imagemagick', 'c', 'cpp',
   meson_version : '>=0.63.0',
 )
 
+pkg_config = find_program('pkg-config')
+fs = import('fs')
+
 magickpp_dependencies = []
+magickpp_config_vars = []
 
 libjpeg_dep = dependency('libjpeg', required: false)
-if not libjpeg_dep.found()
+if not libjpeg_dep.found() or libjpeg_dep.type_name() == 'internal'
   libjpeg_proj = subproject('libjpeg-turbo')
   libjpeg_dep = libjpeg_proj.get_variable('jpeg_dep')
   magickpp_dependencies += libjpeg_proj.get_variable('jpeg')
+  # 無理やりチェック通ったことにする
+  magickpp_config_vars += 'ac_cv_lib_jpeg_jpeg_read_header=yes'
 endif
+
 zlib_dep = dependency('zlib', required: false)
-if not zlib_dep.found()
+if not zlib_dep.found() or zlib_dep.type_name() == 'internal'
   zlib_proj = subproject('zlib')
   zlib_dep = zlib_proj.get_variable('zlib_dep')
   magickpp_dependencies += zlib_proj.get_variable('zlib')
 endif
+
 libpng_dep = dependency('libpng', required: false)
-if not libpng_dep.found()
+if not libpng_dep.found() or libpng_dep.type_name() == 'internal'
   libpng_proj = subproject('libpng')
   libpng_dep = get_variable('libpng_dep')
   magickpp_dependencies += libpng_proj.get_variable('libpng')
+  # libpngのwrapがpc.generate()してくれずmagickppがpngを見つけることができないので、でっちあげをする
+  libpng_pc_cdata = configuration_data()
+  libpng_pc_cdata.merge_from(libpng_proj.get_variable('cdata'))
+  libpng_pc_cdata.set('builddir', meson.current_build_dir() / '../libpng-' + libpng_dep.version())
+  libpng_pc_cdata.set('srcdir', meson.global_source_root() / 'subprojects' / 'libpng-' + libpng_dep.version())
+  configure_file(
+    input: 'libpng-uninstalled.pc.in',
+    output: 'libpng-uninstalled.pc',
+    configuration: libpng_pc_cdata,
+    install: false,
+  )
+  run_command(
+    find_program('cp'),
+    meson.current_build_dir() / 'libpng-uninstalled.pc',
+    meson.global_build_root() / 'meson-uninstalled',
+    check: true,
+  )
 endif
+
 libwebp_dep = dependency('libwebp', required: false)
-if libwebp_dep.found()
+if libwebp_dep.found() and libwebp_dep.type_name() != 'internal'
   libwebpmux_dep = dependency('libwebpmux', required: false)
   libwebpdemux_dep = dependency('libwebpdemux', required: false)
 else
@@ -75,14 +101,11 @@ p = mod.add_project('configure',
     '--without-x',
     '--without-zip',
   ],
-  env: [
-    'ac_cv_lib_jpeg_jpeg_read_header=yes', # 無理やりチェック通ったことにする
-  ],
+  env: magickpp_config_vars,
   depends: magickpp_dependencies,
   verbose: true,
 )
 
-pkg_config = find_program('pkg-config')
 magickcore_cflags = run_command(
   pkg_config, '--cflags-only-other', 'MagickCore',
   env: {

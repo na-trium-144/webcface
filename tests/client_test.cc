@@ -11,7 +11,6 @@
 #include <webcface/canvas3d.h>
 #include <webcface/canvas2d.h>
 #include <webcface/robot_model.h>
-#include <webcface/common/def.h>
 #include "webcface/message/message.h"
 #include <chrono>
 #include <thread>
