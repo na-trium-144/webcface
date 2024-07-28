@@ -8,14 +8,22 @@ cxx = meson.get_compiler('cpp')
 sed = find_program('sed')
 cp = find_program('cp')
 mv = find_program('mv')
-git = find_program('git')
 
-current_source_dir = meson.current_source_dir()
+# Make.comというファイルがあるせいでmakeコマンドを誤認識する
+if fs.exists('Make.com')
+  run_command(mv, 'Make.com', 'Make.com_', check: true)
+endif
 
-run_command(git, 'reset', '--hard', check: true)
+# configureを別名にし、複数のビルドで干渉しないようにする
+new_configure_name = 'configure_' + fs.name(meson.global_build_root())
+
+# configureファイルを毎回新しく生成してもそのままにしても、
+# 結局configureを実行するたびにすべて再ビルドすることになる
+
+message('copying configure to ' + new_configure_name)
+run_command(cp, 'configure', new_configure_name, check: true)
 
 if build_machine.system() == 'windows'
-  run_command(mv, 'Make.com', 'Make.com_', check: true)
   # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
   cygpath = find_program('cygpath', required: false)
   if cygpath.found()
@@ -23,14 +31,14 @@ if build_machine.system() == 'windows'
       '-e', 's/\$0/$self/g',
       '-e', '1a self=$(cygpath -u "$0")',
       '-e', '/^cat >\$CONFIG_STATUS.*/a self=$(cygpath -u "$0")',
-      'configure',
+      new_configure_name,
       check: true,
     )
   endif
   run_command(sed, '-i',
     # winpath.sh: permission denied になることがある
     '-e', 's/\$WinPathScript/sh $WinPathScript/g',
-    'configure',
+    new_configure_name,
     check: true,
   )
 endif
@@ -93,7 +101,7 @@ endif
 
 mod = import('unstable-external_project')
 
-p = mod.add_project('configure',
+p = mod.add_project(new_configure_name,
   configure_options: [
     '--prefix=@PREFIX@',
     '--disable-shared',
