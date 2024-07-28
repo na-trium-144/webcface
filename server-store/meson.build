@@ -9,9 +9,13 @@ webcface_server_store_src = [
 ]
 webcface_server_store_inc = include_directories('include')
 if webcface_system_win32socket
-  ip = cxx.find_library('iphlpapi')
+  win32socket_deps = [
+    cxx.find_library('iphlpapi'),
+    cxx.find_library('ws2_32'),
+    cxx.find_library('wsock32'), # asioの依存ライブラリなのでasioに追加されているべきでは?
+  ]
 else
-  ip = declare_dependency()
+  win32socket_deps = []
 endif
 webcface_server_store_lib = static_library('webcface-server-store',
   sources: webcface_server_store_src,
@@ -27,7 +31,7 @@ webcface_server_store_lib = static_library('webcface-server-store',
     spdlog_dep,
     magickpp_dep,
     crow_dep,
-    ip,
+    win32socket_deps,
   ],
 )
 webcface_server_store_dep = declare_dependency(
@@ -39,6 +43,9 @@ webcface_server_store_dep = declare_dependency(
   ],
   dependencies: [
     webcface_dep,
+    filesystem_dep,
     spdlog_dep,
+    magickpp_dep,
+    win32socket_deps,
   ],
 )

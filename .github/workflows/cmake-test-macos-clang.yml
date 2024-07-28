@@ -49,7 +49,7 @@ jobs:
       # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
       # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
     - name: Compile
-      run: meson compile -C build
+      run: meson compile -C build || meson compile -C build
     - name: Test
       run: meson test -C build
 

@@ -51,7 +51,7 @@ jobs:
         $([[ ${{matrix.dep}} = apt ]] && echo "-Dwrap_mode=default")
         -Dtest_wait=200
     - name: Compile
-      run: meson compile -C build
+      run: meson compile -C build || meson compile -C build
     - name: Test
       run: meson test -C build
     - name: clang-tidy

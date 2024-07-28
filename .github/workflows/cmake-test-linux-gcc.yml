@@ -53,7 +53,7 @@ jobs:
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
     - name: Compile
-      run: meson compile -C build
+      run: meson compile -C build || meson compile -C build
     - name: Test
       run: meson test -C build
 

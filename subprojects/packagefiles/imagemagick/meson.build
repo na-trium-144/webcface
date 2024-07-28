@@ -4,6 +4,36 @@ project('imagemagick', 'c', 'cpp',
 
 pkg_config = find_program('pkg-config')
 fs = import('fs')
+cxx = meson.get_compiler('cpp')
+sed = find_program('sed')
+
+current_source_dir = meson.current_source_dir()
+if build_machine.system() == 'windows'
+  if fs.exists('make.com')
+    run_command(find_program('rm'), 'make.com', check: true)
+  endif
+  if not fs.read('configure').contains('#modified by imagemagick/meson.build')
+    # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
+    cygpath = find_program('cygpath', required: false)
+    if cygpath.found()
+      run_command(sed, '-i',
+        '-e', 's/\$0/$self/g',
+        '-e', '1a self=$(cygpath -u "$0")',
+        '-e', '/^cat >\$CONFIG_STATUS.*/a self=$(cygpath -u "$0")',
+        'configure',
+        check: true,
+      )
+    endif
+    run_command(sed, '-i',
+      # winpath.sh: permission denied になることがある
+      '-e', 's/\$WinPathScript/sh $WinPathScript/g',
+      # 2回目以降書き換えられないようにする
+      '-e', '1a #modified by imagemagick/meson.build',
+      'configure',
+      check: true,
+    )
+  endif
+endif
 
 magickpp_dependencies = []
 magickpp_config_vars = []
@@ -106,6 +136,11 @@ p = mod.add_project('configure',
   verbose: true,
 )
 
+if host_machine.system() == 'windows'
+  urlmon = cxx.find_library('urlmon')
+else
+  urlmon = declare_dependency()
+endif
 magickcore_cflags = run_command(
   pkg_config, '--cflags-only-other', 'MagickCore',
   env: {
@@ -120,6 +155,7 @@ magickcore_dep = declare_dependency(
     p.dependency('MagickCore-7.Q8',
       subdir: magick_inc_subdir,
     ),
+    urlmon,
     libwebp_dep,
     libwebpmux_dep,
     libwebpdemux_dep,

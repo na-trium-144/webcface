@@ -272,8 +272,10 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
 ### Requirements
-* C++17に対応したコンパイラが必要です
-	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
+
+* C++17に対応したコンパイラと、CMake, Meson(0.59.0以上), Ninja, Make が必要です
+	* ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました
+	* ビルドにはMesonを使用しますが、依存ライブラリにCMakeやMakeを使うものがあるのでそれもインストールする必要があります
 * Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
 * MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
@@ -314,11 +316,14 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 <details><summary>Ubuntu</summary>
 
 ```sh
-sudo apt install build-essential git cmake pkg-config
+sudo apt install build-essential git cmake pkg-config python3-pip ninja-build
+sudo apt install meson  # (only on 22.04 or later)
+# ubuntu20.04 -> pip install meson
+
 # optional:
-sudo apt install libspdlog-dev libasio-dev
-sudo apt install libcli11-dev # only on 22.04 or later
-sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
+# sudo apt install libspdlog-dev libasio-dev
+# sudo apt install libcli11-dev        # (only on 22.04 or later)
+# sudo apt install libmsgpack-cxx-dev  # (only on 24.04 or later)
 ```
 
 </details>
@@ -326,9 +331,9 @@ sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 <details><summary>Homebrew (MacOS, Linux)</summary>
 
 ```sh
-brew install cmake nasm
+brew install cmake meson ninja
 # optional:
-brew install msgpack-cxx spdlog asio cli11 utf8cpp
+# brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
 libjpegをソースからビルドする際にnasmがあるとよいです
 
@@ -357,27 +362,24 @@ ImageMagickをソースからビルドするために Visual C++ ATL と MFC の
 
 ```sh
 pacman -S pactoys
-pacboy -S git make gcc:p cmake:p ninja:p
+pacboy -S git make gcc:p cmake:p ninja:p meson:p python:p
 # optional:
-pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p
+# pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p
 ```
-imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
 </details>
 
 <details><summary>MSYS2 MSYS</summary>
 
 ```sh
-pacman -S git make gcc cmake ninja
+pacman -S git make gcc cmake ninja meson python
 ```
-imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
 </details>
 
 <details><summary>Cygwin</summary>
 
-gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください
-(ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)
+gcc-core, gcc-g++, cmake, make, meson, pkg-config, ninja をインストールしてください
 
 </details>
 

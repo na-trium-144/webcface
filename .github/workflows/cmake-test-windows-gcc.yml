@@ -6,25 +6,11 @@ on:
   pull_request:
     branches: []
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  # Debugはなぜかリンクエラー
-  BUILD_TYPE: Release
-
 jobs:
   test-windows-gcc:
     strategy:
       matrix:
-        dep: ["pacman", "source", "submodule", "static"]
-        include:
-        - dep: pacman
-          shared_flag: on
-        - dep: source
-          shared_flag: on
-        - dep: submodule
-          shared_flag: on
-        - dep: static
-          shared_flag: off
+        dep: ["pacman", "source", "static"]
     runs-on: windows-latest
     defaults:
       run:
@@ -38,37 +24,33 @@ jobs:
           git
           mingw-w64-x86_64-gcc
           mingw-w64-x86_64-cmake
+          mingw-w64-x86_64-meson
+          mingw-w64-x86_64-ninja
           make
         msystem: MINGW64
 
-    - run: git submodule update --init
-      if: matrix.dep == 'submodule'
+    # - run: git submodule update --init
+    #   if: matrix.dep == 'submodule'
 
     - name: Install dependencies
       if: matrix.dep == 'pacman'
-      run: pacman -S --noconfirm mingw-w64-x86_64-spdlog mingw-w64-x86_64-imagemagick
+      run: pacman -S --noconfirm mingw-w64-x86_64-spdlog
 
-    - name: Configure CMake
+    - name: Setup Meson
       env:
         CC: gcc
         CXX: g++
       run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=on
-        -DWEBCFACE_EXAMPLE=on
-        -DWEBCFACE_TEST_TIMEOUT=1000
-        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
-        -DCMAKE_INSTALL_PREFIX=./build/install
-
-    - name: Build
-      run: cmake --build build -t install
-
+        meson setup build
+        --buildtype=debug
+        $([[ ${{matrix.dep}} = pacman ]] && echo -Dwrap_mode=default)
+        -Dtest_wait=1000
+        $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
+        --prefix=${{github.workspace}}/build/install
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
     - name: Test
-      env:
-        WEBCFACE_TRACE: 1
-      working-directory: ${{github.workspace}}/build
-      run: ctest --output-on-failure --timeout 100
+      run: meson test -C build
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
@@ -80,6 +62,9 @@ jobs:
         Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
+
+    - name: install
+      run: meson install -C build
 
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
