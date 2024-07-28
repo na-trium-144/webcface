@@ -6,33 +6,34 @@ pkg_config = find_program('pkg-config')
 fs = import('fs')
 cxx = meson.get_compiler('cpp')
 sed = find_program('sed')
+cp = find_program('cp')
+git = find_program('git')
 
 current_source_dir = meson.current_source_dir()
+
+run_command(git, 'reset', '--hard', check: true)
+
 if build_machine.system() == 'windows'
   if fs.exists('make.com')
     run_command(find_program('rm'), 'make.com', check: true)
   endif
-  if not fs.read('configure').contains('#modified by imagemagick/meson.build')
-    # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
-    cygpath = find_program('cygpath', required: false)
-    if cygpath.found()
-      run_command(sed, '-i',
-        '-e', 's/\$0/$self/g',
-        '-e', '1a self=$(cygpath -u "$0")',
-        '-e', '/^cat >\$CONFIG_STATUS.*/a self=$(cygpath -u "$0")',
-        'configure',
-        check: true,
-      )
-    endif
+  # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
+  cygpath = find_program('cygpath', required: false)
+  if cygpath.found()
     run_command(sed, '-i',
-      # winpath.sh: permission denied になることがある
-      '-e', 's/\$WinPathScript/sh $WinPathScript/g',
-      # 2回目以降書き換えられないようにする
-      '-e', '1a #modified by imagemagick/meson.build',
+      '-e', 's/\$0/$self/g',
+      '-e', '1a self=$(cygpath -u "$0")',
+      '-e', '/^cat >\$CONFIG_STATUS.*/a self=$(cygpath -u "$0")',
       'configure',
       check: true,
     )
   endif
+  run_command(sed, '-i',
+    # winpath.sh: permission denied になることがある
+    '-e', 's/\$WinPathScript/sh $WinPathScript/g',
+    'configure',
+    check: true,
+  )
 endif
 
 magickpp_dependencies = []
@@ -70,8 +71,7 @@ if not libpng_dep.found() or libpng_dep.type_name() == 'internal'
     configuration: libpng_pc_cdata,
     install: false,
   )
-  run_command(
-    find_program('cp'),
+  run_command(cp,
     meson.current_build_dir() / 'libpng-uninstalled.pc',
     meson.global_build_root() / 'meson-uninstalled',
     check: true,
