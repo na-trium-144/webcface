@@ -7,19 +7,14 @@ on:
     branches: []
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Debug
   SHELLOPTS: igncr
+
 jobs:
   test-windows-cygwin:
     strategy:
       matrix:
-        dep: ["submodule", "static"]
+        dep: ["source", "static"]
         include:
-        - dep: submodule
-          shared_flag: on
-        - dep: static
-          shared_flag: off
     runs-on: windows-latest
     steps:
     # Cygwinのgawkがcrlfを処理できないので、必要 (SHELLOPTSを設定しても意味ない)
@@ -27,8 +22,8 @@ jobs:
     - run: git config --global core.autocrlf input
 
     - uses: actions/checkout@v4
-    - run: git submodule update --init
-      if: matrix.dep == 'submodule'
+    # - run: git submodule update --init
+    #   if: matrix.dep == 'submodule'
 
     - uses: cygwin/cygwin-install-action@master
       with:
@@ -40,41 +35,29 @@ jobs:
           make
           ninja
           pkg-config
+          meson
         # git -> error setting certificate verify locations:  CAfile: /etc/pki/tls/certs/ca-bundle.crt CApath: none
     
     # cygwinの中でもconfigを設定する?
     - run: git config --global core.autocrlf input
       shell: C:\cygwin\bin\bash.exe '{0}'
 
-    - name: Configure CMake
+    - name: Setup Meson
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=on
-        -DWEBCFACE_EXAMPLE=on
-        -DWEBCFACE_TEST_TIMEOUT=1000
-        -DWEBCFACE_SERVER=0
-        -DWEBCFACE_SHARED=${{matrix.shared_flag}}
-        -DCMAKE_INSTALL_PREFIX=./build/install
-        -GNinja
+        meson setup build
+        --buildtype=debug
+        -Dtest_wait=1000
+        $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
+        --prefix=${{github.workspace}}/build/install
 
-    - name: show cmake log
-      if: failure()
-      run: |
-        Get-Content build\CMakeFiles\CMakeOutput.log
-        Get-Content build\CMakeFiles\CMakeError.log
-
-    - name: Build
+    - name: Compile
       shell: C:\cygwin\bin\bash.exe '{0}'
-      run: cmake --build build -t install
+      run: meson compile -C build || meson compile -C build
 
     - name: Test
-      env:
-        WEBCFACE_TRACE: 1
-      working-directory: ${{github.workspace}}/build
       shell: C:\cygwin\bin\bash.exe '{0}'
-      run: ctest --output-on-failure --timeout 100
+      run: meson test -C build -v
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
@@ -87,6 +70,9 @@ jobs:
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
 
+    - name: install
+      run: meson install -C build
+      
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
       shell: C:\cygwin\bin\bash.exe '{0}'

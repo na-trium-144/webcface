@@ -55,7 +55,7 @@ jobs:
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build
+      run: meson test -C build -v
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'

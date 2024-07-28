@@ -36,7 +36,7 @@ jobs:
     - name: Compile
       run: meson compile -C build
     - name: Test
-      run: meson test -C build
+      run: meson test -C build -v
 
     - name: Get coverage
       id: coverage

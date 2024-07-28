@@ -60,7 +60,9 @@ DummyServer::DummyServer(bool use_unix)
           auto crow_logger_callback = [crow_logger](const char *data,
                                                     unsigned long long size,
                                                     int level) {
-              crow_logger->log(convertLevel(level), std::string(data, size));
+              crow_logger->log(
+                  convertLevel(level),
+                  std::string(data, static_cast<std::size_t>(size)));
           };
           crow_custom_logger =
               std::make_unique<CustomLogger>(crow_logger_callback);
