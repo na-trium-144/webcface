@@ -1,4 +1,4 @@
-name: CMake Test (Windows Cygwin32)
+name: CMake Test (Windows Cygwin64)
 
 on:
   push:
@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         dep: ["source", "static"]
-        include:
     runs-on: windows-latest
     steps:
     # Cygwinのgawkがcrlfを処理できないので、必要 (SHELLOPTSを設定しても意味ない)
@@ -27,7 +26,7 @@ jobs:
 
     - uses: cygwin/cygwin-install-action@master
       with:
-        platform: x86
+        # platform: x86
         packages: >-
           gcc-core
           gcc-g++
@@ -49,7 +48,7 @@ jobs:
         --buildtype=debug
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
-        --prefix=${{github.workspace}}/build/install
+        --prefix=$(cygpath -u '${{github.workspace}}/build/install')
 
     - name: Compile
       shell: C:\cygwin\bin\bash.exe '{0}'

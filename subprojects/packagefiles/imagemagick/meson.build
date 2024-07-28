@@ -7,6 +7,7 @@ fs = import('fs')
 cxx = meson.get_compiler('cpp')
 sed = find_program('sed')
 cp = find_program('cp')
+mv = find_program('mv')
 git = find_program('git')
 
 current_source_dir = meson.current_source_dir()
@@ -14,9 +15,7 @@ current_source_dir = meson.current_source_dir()
 run_command(git, 'reset', '--hard', check: true)
 
 if build_machine.system() == 'windows'
-  if fs.exists('make.com')
-    run_command(find_program('rm'), 'make.com', check: true)
-  endif
+  run_command(mv, 'Make.com', 'Make.com_', check: true)
   # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
   cygpath = find_program('cygpath', required: false)
   if cygpath.found()
@@ -162,6 +161,7 @@ magickcore_dep = declare_dependency(
     libpng_dep,
     zlib_dep,
     libjpeg_dep,
+    dependency('threads'),
   ],
 )
 # pkg-config MagickWand はdependencyが見つからないエラーになる
@@ -185,3 +185,8 @@ magickpp_dep = declare_dependency(
 meson.override_dependency('MagickCore', magickcore_dep)
 meson.override_dependency('MagickWand', magickwand_dep)
 meson.override_dependency('Magick++', magickpp_dep)
+
+if not fs.exists('Make.com')
+  # もとに戻しておかないとエラー なんで?
+  run_command(cp, 'Make.com_', 'Make.com', check: true)
+endif

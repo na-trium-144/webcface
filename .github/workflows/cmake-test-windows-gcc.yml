@@ -46,7 +46,8 @@ jobs:
         $([[ ${{matrix.dep}} = pacman ]] && echo -Dwrap_mode=default)
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
-        --prefix=${{github.workspace}}/build/install
+        --prefix=$(cygpath -m '${{github.workspace}}/build/install')
+        "-Dforce_fallback_for=['libcurl']"
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

@@ -13,6 +13,6 @@ run("msbuild", im_sln,
 )
 print("copying libraries to build_dir")
 for lib in os.listdir(os.path.join(im_win_dir, "Output", "lib")):
-    if lib.startswith("CORE_" + libtype):
+    if lib.startswith("CORE_" + libtype) and lib.endswith(".lib"):
         # print(lib)
         shutil.copy(os.path.join(im_win_dir, "Output", "lib", lib), build_dir)

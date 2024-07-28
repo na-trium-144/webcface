@@ -6,7 +6,7 @@ project('webcface', 'c', 'cpp',
     'buildtype=release',
     'warning_level=3', # everythingはたぶん通らない
     'werror=true',
-    'c_std=c99',
+    # 'c_std=c99',
     'cpp_std=c++17',
     'wrap_mode=forcefallback',
   ],
@@ -249,6 +249,7 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
   default_options: [
     'boost=disabled',
     'tests=disabled',
+    'std_variant=false', # msvcでなんかエラーになる
   ],
 ).as_system('system')
 spdlog_dep = dependency('spdlog',
