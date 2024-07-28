@@ -541,10 +541,10 @@ subdir('client')
 # magickppとasioはserverのみにしかリンクしないようにしたので
 # 特殊なリンクオプションは一切不要
 webcface_lib = library('webcface',
-  objects: [
-    webcface_encoding_lib.extract_all_objects(recursive: false),
-    webcface_message_lib.extract_all_objects(recursive: false),
-    webcface_client_lib.extract_all_objects(recursive: false),
+  link_whole: [
+    webcface_encoding_lib,
+    webcface_message_lib,
+    webcface_client_lib,
   ],
   dependencies: [
     filesystem_dep,

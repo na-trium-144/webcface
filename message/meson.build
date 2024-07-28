@@ -15,7 +15,6 @@ webcface_message_lib = static_library('webcface-message',
     spdlog_dep,
     utf8cpp_dep,
   ],
-  build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
   gnu_symbol_visibility: 'inlineshidden',
 )

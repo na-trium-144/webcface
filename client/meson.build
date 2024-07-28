@@ -46,7 +46,6 @@ webcface_client_lib = static_library('webcface-client',
     spdlog_dep,
     curl_dep,
   ],
-  build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
   gnu_symbol_visibility: 'inlineshidden',
 )
