@@ -235,67 +235,109 @@ spdlog_dep = dependency('spdlog',
     'std_format=disabled',
   ],
 ).as_system('system')
-curl_dep = dependency('libcurl',
-  default_options: [
-    'warning_level=0',
-    'werror=false',
-    'websockets=enabled',
-    'default_library=static',
-    'tool=disabled',
-    'tests=disabled',
-    'unittests=disabled',
-    'bindlocal=disabled',
-    'brotli=disabled',
-    'doh=disabled',
-    'form-api=disabled',
-    'getoptions=disabled',
-    'gsasl=disabled',
-    'libcurl-option=disabled',
-    'libz=disabled',
-    'netrc=disabled',
-    'parsedate=disabled',
-    'progress-meter=disabled',
-    'psl=disabled',
-    'sspi=disabled',
-    'zstd=disabled',
-    'gss-api=disabled',
-    'idn=disabled',
-    'ntlm=disabled',
-    'ssh=disabled',
-    'ssl=disabled',
-    'tls-srp=disabled',
-    'openssl=disabled',
-    'schannel=disabled',
-    'secure-transport=disabled',
-    'dict=disabled',
-    'file=disabled',
-    'ftp=disabled',
-    'gopher=disabled',
-    'imap=disabled',
-    'ldap=disabled',
-    'ldaps=disabled',
-    'mqtt=disabled',
-    'pop3=disabled',
-    'rtmp=disabled',
-    'rtsp=disabled',
-    'smb=disabled',
-    'smtp=disabled',
-    'telnet=disabled',
-    'tftp=disabled',
-  ],
-).as_system('system')
 utf8cpp_dep = dependency('utf8cpp').as_system('system')
+
+if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
+  curl_dep = dependency('libcurl', required: false)
+else
+  curl_dep = dependency('', required: false)
+endif
+if curl_dep.found()
+  curl_has_ws_support = cxx.run('''
+#include <curl/curl.h>
+#include <cassert>
+#include <cstddef>
+int main() {
+    CURL *curl = curl_easy_init();
+    std::size_t s;
+    assert(curl_ws_send(curl, nullptr, 0, &s, 0, 0) != CURLE_NOT_BUILT_IN);
+}
+''',
+    dependencies: [curl_dep],
+    name: 'curl_has_ws_support',
+  )
+  if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
+    error('''The installed curl has no websocket support, so WebCFace cannot use it.
+Set "-Dwrap_mode=forcefallback" or "-Dforce_fallback_for=['libcurl']".''')
+  endif
+else
+  curl_dep = subproject('curl',
+    default_options: [
+      'warning_level=0',
+      'werror=false',
+      'websockets=enabled',
+      'default_library=static',
+      'tool=disabled',
+      'tests=disabled',
+      'unittests=disabled',
+      'bindlocal=disabled',
+      'brotli=disabled',
+      'doh=disabled',
+      'form-api=disabled',
+      'getoptions=disabled',
+      'gsasl=disabled',
+      'libcurl-option=disabled',
+      'libz=disabled',
+      'netrc=disabled',
+      'parsedate=disabled',
+      'progress-meter=disabled',
+      'psl=disabled',
+      'sspi=disabled',
+      'zstd=disabled',
+      'gss-api=disabled',
+      'idn=disabled',
+      'ntlm=disabled',
+      'ssh=disabled',
+      'ssl=disabled',
+      'tls-srp=disabled',
+      'openssl=disabled',
+      'schannel=disabled',
+      'secure-transport=disabled',
+      'dict=disabled',
+      'file=disabled',
+      'ftp=disabled',
+      'gopher=disabled',
+      'imap=disabled',
+      'ldap=disabled',
+      'ldaps=disabled',
+      'mqtt=disabled',
+      'pop3=disabled',
+      'rtmp=disabled',
+      'rtsp=disabled',
+      'smb=disabled',
+      'smtp=disabled',
+      'telnet=disabled',
+      'tftp=disabled',
+    ],
+  ).get_variable('curl_dep')
+endif
+curl_dep = curl_dep.as_system('system')
 
 if build_server
   crow_dep = dependency('Crow').as_system('system')
   cli11_dep = dependency('cli11').as_system('system')
 
-  if get_option('wrap_mode') != 'forcefallback' and get_option('force_fallback_for').contains('Magick++')
-    magickpp_dep = dependency('Magick++', required: false)
+  if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
+    magickpp_dep = dependency('Magick++', method: 'pkg-config', required: false)
   else
     magickpp_dep = dependency('', required: false)
   endif
-  if not magickpp_dep.found()
+  if magickpp_dep.found()
+    magickpp_enables_openmp = cxx.compiles('''
+int main() {
+  #pragma omp parallel for
+  for (int i = 0; i < 1000; i++) {
+  }
+}
+''',
+      dependencies: [magickpp_dep],
+      name: 'magickpp_enables_openmp'
+    )
+    if magickpp_enables_openmp
+      error('''The installed ImageMagick uses openmp, so WebCFace cannot use it.
+Set "-Dwrap_mode=forcefallback" or "-Dforce_fallback_for=['Magick++']".''')
+    endif
+  else
     dependency('libjpeg',
       default_options: [
         'default_library=static',

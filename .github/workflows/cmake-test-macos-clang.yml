@@ -44,7 +44,8 @@ jobs:
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
-        "-Dcmake_prefix_path=$(brew --prefix)/opt/imagemagick-no-openmp;$(brew --prefix)/opt/curl-ws;$(brew --prefix)/opt/crow-unix-socket"
+        "-Dpkg_config_path=['$(brew --prefix)/opt/imagemagick-no-openmp','$(brew --prefix)/opt/curl-ws']"
+        "-Dcmake_prefix_path=['$(brew --prefix)/opt/crow-unix-socket']"
       # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
       # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
     - name: Compile
