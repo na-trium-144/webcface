@@ -1,5 +1,10 @@
+# 1ソースファイルのサイズが大きすぎるとmingwで大量のundefined referenceが起きる。
+# エラーが起きたら分割することにしたが、解決するリンクオプションとかあるのかな?
+# 分割したらmsvcで/bigobjフラグが要らなくなった。関係ありそう
 webcface_client_src = [
-  'src/client.cc',
+  'src/client_threading.cc',
+  'src/client_msg_sync.cc',
+  'src/client_msg_recv.cc',
   'src/client_ws.cc',
   'src/data_store1.cc',
   'src/data_store2.cc',

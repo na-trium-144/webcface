@@ -27,9 +27,12 @@ test_dependencies = [
 if build_server
   test_src += [
     'client_test.cc',
+    'client_test_2.cc',
+    'client_test_3.cc',
     'dummy_server.cc',
     'dummy_client.cc',
     'server_test.cc',
+    'server_test_2.cc',
     'c_wcf_test.cc',
   ]
   test_dependencies += [
@@ -39,11 +42,17 @@ if build_server
     curl_dep,
   ]
 endif
+test_link_args = []
+if host_machine.system() == 'windows' and cxx.get_argument_syntax() != 'msvc'
+  # https://stackoverflow.com/questions/10486116/what-does-this-gcc-error-relocation-truncated-to-fit-mean
+  test_link_args += '-Wl,--default-image-base-low'
+endif
 webcface_test = executable('webcface-test',
   sources: test_src,
   cpp_args: [
     '-DWEBCFACE_TEST_TIMEOUT=' + get_option('test_wait').to_string(),
   ],
+  link_args: test_link_args,
   dependencies: test_dependencies,
 )
 summary('Test wait (ms)', get_option('test_wait'))

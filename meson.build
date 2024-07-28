@@ -104,7 +104,6 @@ elif cxx.get_argument_syntax() == 'msvc'
     '/wd4996',
     '/external:anglebrackets',
     '/external:W0',
-    '/bigobj',
   ])
 else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \

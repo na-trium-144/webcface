@@ -51,7 +51,7 @@ struct DummyServer {
 
     bool connected();
     void *connPtr = nullptr;
-    std::shared_ptr<void> server_;
+    void *server_;
     std::shared_ptr<spdlog::logger> dummy_logger;
     std::mutex server_m;
 

@@ -20,7 +20,7 @@ namespace server {
 
 static const std::thread::id MAIN_THREAD_ID = std::this_thread::get_id();
 
-[[maybe_unused]] static spdlog::level::level_enum convertLevel(int level) {
+static inline spdlog::level::level_enum convertLevel(int level) {
     switch (level) {
     case 4:
         return spdlog::level::critical;
