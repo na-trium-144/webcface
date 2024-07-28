@@ -14,7 +14,8 @@ test_src = [
 ]
 test_dependencies = [
   warning_options,
-  webcface_dep,
+  # webcface_dep,
+  webcface_config_dep,
   webcface_encoding_dep,
   webcface_message_dep,
   webcface_client_dep,
@@ -23,6 +24,11 @@ test_dependencies = [
   msgpack_cxx_dep,
   utf8cpp_dep,
   spdlog_dep,
+]
+test_link_libs = [
+  webcface_encoding_lib,
+  webcface_message_lib,
+  webcface_client_lib,
 ]
 if build_server
   test_src += [
@@ -41,6 +47,9 @@ if build_server
     crow_dep,
     curl_dep,
   ]
+  test_link_libs += [
+    webcface_server_store_lib,
+  ]
 endif
 test_link_args = []
 if host_machine.system() == 'windows' and cxx.get_argument_syntax() != 'msvc'
@@ -50,10 +59,12 @@ endif
 webcface_test = executable('webcface-test',
   sources: test_src,
   cpp_args: [
+    '-DWEBCFACE_BUILDING',
     '-DWEBCFACE_TEST_TIMEOUT=' + get_option('test_wait').to_string(),
   ],
   link_args: test_link_args,
   dependencies: test_dependencies,
+  link_with: test_link_libs,
 )
 summary('Test wait (ms)', get_option('test_wait'))
 test_parsed = run_command(py,

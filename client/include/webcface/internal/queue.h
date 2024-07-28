@@ -4,11 +4,6 @@
 #include <condition_variable>
 #include <chrono>
 #include <optional>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/config.h"
-#endif
 
 WEBCFACE_NS_BEGIN
 /*!

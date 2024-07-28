@@ -9,9 +9,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace server {
-std::string WEBCFACE_CALL
-getStaticDir(const std::shared_ptr<spdlog::logger> &logger);
-std::string WEBCFACE_CALL
-getTempDir(const std::shared_ptr<spdlog::logger> &logger);
+std::string getStaticDir(const std::shared_ptr<spdlog::logger> &logger);
+std::string getTempDir(const std::shared_ptr<spdlog::logger> &logger);
 } // namespace server
 WEBCFACE_NS_END

@@ -10,19 +10,14 @@
 #include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/config.h"
-#endif
 #include "webcface/server/server.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
 
-std::pair<unsigned int, SharedString> WEBCFACE_CALL
-findReqField(StrMap2<unsigned int> &req, const SharedString &member,
-             const SharedString &field);
+std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
+                                                   const SharedString &member,
+                                                   const SharedString &field);
 
 struct MemberData {
     spdlog::sink_ptr sink;
@@ -70,7 +65,7 @@ struct MemberData {
      * * image_req_changedを変えるときnotify
      * * image_changedが変えるとき全メンバーの中でこれをリクエストしてるやつをすべてnotify
      * * closingのときnotify、全メンバーの中でこれをリクエストしてるやつをすべてnotify
-     * 
+     *
      * \todo 今後いつかマルチスレッド化したときにデッドロックする気がする
      */
     std::condition_variable image_cv;

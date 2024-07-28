@@ -4,11 +4,6 @@
 #include <optional>
 #include <functional>
 #include "webcface/field.h"
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/config.h"
-#endif
 #include "webcface/encoding/val_adaptor.h"
 #include "webcface/internal/func_internal.h"
 #include "webcface/image_frame.h"
@@ -30,7 +25,7 @@ namespace internal {
  *
  */
 template <typename T, typename ReqT = int>
-class WEBCFACE_DLL_TEMPLATE SyncDataStore2 {
+class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
      *
@@ -211,20 +206,15 @@ using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = ImageFrame;
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<std::string, int>; // test用
-extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ValueData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<TextData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<FuncData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL SyncDataStore2<ViewData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<RobotModelData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<Canvas3DData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<Canvas2DData, int>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore2<ImageData, message::ImageReq>;
+extern template class SyncDataStore2<std::string, int>; // test用
+extern template class SyncDataStore2<ValueData, int>;
+extern template class SyncDataStore2<TextData, int>;
+extern template class SyncDataStore2<FuncData, int>;
+extern template class SyncDataStore2<ViewData, int>;
+extern template class SyncDataStore2<RobotModelData, int>;
+extern template class SyncDataStore2<Canvas3DData, int>;
+extern template class SyncDataStore2<Canvas2DData, int>;
+extern template class SyncDataStore2<ImageData, message::ImageReq>;
 #endif
 
 } // namespace internal

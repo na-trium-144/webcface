@@ -3,11 +3,6 @@
 #include <msgpack.hpp>
 #include <string>
 #include <cstdint>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/config.h"
-#endif
 #include <utf8.h>
 #include "webcface/message/u8string.h"
 

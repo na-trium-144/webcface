@@ -25,24 +25,26 @@ webcface_server_store_lib = static_library('webcface-server-store',
   dependencies: [
     webcface_config_dep,
     warning_options,
-    webcface_dep,
-    filesystem_dep,
+    # webcface_dep,
+    webcface_encoding_dep,
     webcface_message_dep,
+    webcface_client_dep,
+    filesystem_dep,
     spdlog_dep,
     magickpp_dep,
     crow_dep,
     win32socket_deps,
   ],
+  cpp_args: ['-DWEBCFACE_BUILDING'],
 )
 webcface_server_store_dep = declare_dependency(
   include_directories: [
     webcface_server_store_inc,
   ],
-  link_with: [
-    webcface_server_store_lib,
-  ],
   dependencies: [
-    webcface_dep,
+    # webcface_dep,
+    webcface_config_dep,
+    webcface_encoding_dep,
     filesystem_dep,
     spdlog_dep,
     magickpp_dep,

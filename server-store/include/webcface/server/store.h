@@ -3,11 +3,6 @@
 #include <memory>
 #include <functional>
 #include <spdlog/common.h>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/config.h"
-#endif
 #include "webcface/server/server.h"
 #include "webcface/encoding/encoding.h"
 

@@ -21,40 +21,40 @@ namespace internal {
  * \brief unix socket のパス
  *
  */
-WEBCFACE_DLL std_fs::path WEBCFACE_CALL unixSocketPath(int port);
+std_fs::path unixSocketPath(int port);
 /*!
  * \brief wslから見たwindows側で開いている unix socket のパス
  *
  */
-WEBCFACE_DLL std_fs::path WEBCFACE_CALL unixSocketPathWSLInterop(int port);
+std_fs::path unixSocketPathWSLInterop(int port);
 /*!
  * \brief wsl1ならtrue
  *
  */
-WEBCFACE_DLL bool WEBCFACE_CALL detectWSL1();
+bool detectWSL1();
 /*!
  * \brief wsl2ならtrue
  *
  */
-WEBCFACE_DLL bool WEBCFACE_CALL detectWSL2();
+bool detectWSL2();
 /*!
  * \brief wslから見たwindowsのipアドレス
  *
  */
-WEBCFACE_DLL std::string WEBCFACE_CALL wsl2Host();
+std::string wsl2Host();
 
 /*!
  * \brief socketファイルがすでにあれば削除する
  *
  */
-WEBCFACE_DLL void WEBCFACE_CALL initUnixSocket(
-    const std_fs::path &path, const std::shared_ptr<spdlog::logger> &logger);
+void initUnixSocket(const std_fs::path &path,
+                    const std::shared_ptr<spdlog::logger> &logger);
 /*!
  * \brief socketファイルのパーミッション設定
  *
  */
-WEBCFACE_DLL void WEBCFACE_CALL updateUnixSocketPerms(
-    const std_fs::path &path, const std::shared_ptr<spdlog::logger> &logger);
+void updateUnixSocketPerms(const std_fs::path &path,
+                           const std::shared_ptr<spdlog::logger> &logger);
 
 } // namespace internal
 WEBCFACE_NS_END
