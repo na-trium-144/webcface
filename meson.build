@@ -78,20 +78,19 @@ elif host_machine.system() == 'windows'
   webcface_system_win32socket = true
   webcface_system_path_windows = true
   if cxx.get_argument_syntax() == 'msvc'
-    summary('System', 'windows (msvc)')
+    summary('System', 'windows msvc ' + host_machine.cpu_family())
     webcface_system_add_debug = true
     magick_vs = true
   else
-    summary('System', 'windows (mingw)')
+    summary('System', 'windows mingw')
   endif
 elif host_machine.system() == 'cygwin'
-  summary('System', 'windows (cygwin)')
+  summary('System', 'cygwin')
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
 else
   warning('unsupported system: ' + host_machine.system())
 endif
-summary('Platform', host_machine.cpu_family())
 
 if (cxx.get_id() == 'gcc' or cxx.get_id() == 'clang') and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
