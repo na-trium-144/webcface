@@ -40,7 +40,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = apt ]] && echo "-Dwrap_mode=default")
+        $([[ ${{matrix.dep}} = brew ]] && echo "-Dwrap_mode=default")
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
@@ -51,7 +51,7 @@ jobs:
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build -v
+      run: meson test -C build --print-errorlog
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'

@@ -56,7 +56,7 @@ jobs:
 
     - name: Test
       shell: C:\cygwin\bin\bash.exe '{0}'
-      run: meson test -C build -v
+      run: meson test -C build --print-errorlog
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
@@ -77,7 +77,7 @@ jobs:
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=../../build/install -GNinja
-        cmake --build build --config ${{env.BUILD_TYPE}}
+        cmake --build build --config Debug
 
     - name: Test building with pkg-config
       working-directory: ${{github.workspace}}/.github/test

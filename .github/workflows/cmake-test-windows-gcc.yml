@@ -51,7 +51,7 @@ jobs:
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build -v
+      run: meson test -C build --print-errorlog
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
@@ -71,7 +71,7 @@ jobs:
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=../../build/install
-        cmake --build build --config ${{env.BUILD_TYPE}}
+        cmake --build build --config Debug
 
     # なぜかpkg_config_pathを認識してくれない
     # - name: Test building with pkg-config
