@@ -16,9 +16,10 @@ else:
 
 libs = []
 lib_re = re.compile(fr"^[A-Z]+_{libtype}_.*\.lib$")
-for lib in os.listdir(os.path.join(magick_path, "lib")):
-    if lib_re.match(lib):
-        libs.append(lib)
+if os.path.exists(os.path.join(magick_path, "lib")):
+    for lib in os.listdir(os.path.join(magick_path, "lib")):
+        if lib_re.match(lib):
+            libs.append(lib)
 if libs:
     print(os.path.join(magick_path, "lib"))
     for lib in libs:

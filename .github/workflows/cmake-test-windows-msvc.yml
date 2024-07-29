@@ -72,21 +72,17 @@ jobs:
       if: steps.cache-im-restore.outputs.cache-hit == 'true'
       run: echo "${{env.IMAGEMAGICK_CACHE}}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: amd64_x86
+
     - name: Setup Meson
       run: |
-        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
-        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
-        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
-        meson setup build --buildtype=debug -Dtest_wait=1000 -Ddefault_library=${{matrix.shared_flag}} --prefix=${{github.workspace}}/build/install
+        meson setup build --buildtype=debug -Dtest_wait=1000 -Ddefault_library=${{matrix.shared_flag}} --prefix=${{github.workspace}}/build/install -Dwrap_mode=default
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
       run: |
-        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
-        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
-        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
         meson compile -C build || meson compile -C build
 
     # 1回の実行で1回のみsaveされるようにする
@@ -96,12 +92,12 @@ jobs:
       run: |
         New-Item -Path "${{env.IMAGEMAGICK_CACHE}}" -ItemType Directory -Force
         New-Item -Path "${{env.IMAGEMAGICK_CACHE}}\include" -ItemType Directory -Force
-        Move-Item -Path "build\imagemagick-windows\Output\lib"                          -Destination "${{env.IMAGEMAGICK_CACHE}}\lib"
-        Move-Item -Path "build\imagemagick-windows\Output\bin\*"      -Include "*.exe"  -Destination "${{env.IMAGEMAGICK_CACHE}}"
-        Move-Item -Path "build\imagemagick-windows\ImageMagick\MagickCore"              -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickCore"
-        Move-Item -Path "build\imagemagick-windows\ImageMagick\MagickWand"              -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickWand"
-        Move-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++"   -Destination "${{env.IMAGEMAGICK_CACHE}}\include\Magick++"
-        Move-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++.h" -Destination "${{env.IMAGEMAGICK_CACHE}}\include"
+        Copy-Item -Path "build\imagemagick-windows\Output\lib"                          -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\lib"
+        Copy-Item -Path "build\imagemagick-windows\Output\bin\*"      -Include "*.exe"           -Destination "${{env.IMAGEMAGICK_CACHE}}"
+        Copy-Item -Path "build\imagemagick-windows\ImageMagick\MagickCore"              -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickCore"
+        Copy-Item -Path "build\imagemagick-windows\ImageMagick\MagickWand"              -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickWand"
+        Copy-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++"   -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\Magick++"
+        Copy-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++.h"          -Destination "${{env.IMAGEMAGICK_CACHE}}\include"
     - name: Save ImageMagick
       if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
       id: cache-im-save
@@ -117,10 +113,6 @@ jobs:
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
       run: |
-        ${VS_INST_PATH} = & "${env:ProgramFiles(x86)}/Microsoft Visual Studio/Installer/vswhere.exe" -latest -property installationPath
-        Write-Output "  <-> VS Install Path: ${VS_INST_PATH}"
-        Import-Module ${VS_INST_PATH}/Common7/Tools/Microsoft.VisualStudio.DevShell.dll
-        Enter-VsDevShell -VsInstallPath ${VS_INST_PATH} -SkipAutomaticLocation -DevCmdArguments '-arch=${{matrix.config.arch}} -no_logo'
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
 

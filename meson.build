@@ -91,6 +91,7 @@ elif host_machine.system() == 'cygwin'
 else
   warning('unsupported system: ' + host_machine.system())
 endif
+summary('Platform', host_machine.cpu_family())
 
 if (cxx.get_id() == 'gcc' or cxx.get_id() == 'clang') and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
@@ -349,27 +350,13 @@ if build_server
     else
       magick_libtype = 'RL'
     endif
-    magick_dep = dependency('', required: false)
-    magick_libs = []
-    magick_includes = []
-    magick_args = []
+    magickpp_dep = dependency('', required: false)
 
     if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
       magick = find_program('magick',
         required: get_option('wrap_mode') == 'nofallback',
       )
       if magick.found()
-        magick_ver = run_command('magick', '-version', check: false)
-        if magick_ver.returncode() != 0
-          error('''Failed to get version information from installed ImageMagick.
-  Set "-Dforce_fallback_for=['Magick++']".''' + '\n\noutput:\n' + \
-            magick_ver.stderr(),
-          )
-        elif magick_ver.stdout().contains('OpenMP')
-          error('''The installed ImageMagick uses openmp, so WebCFace cannot use it.
-  Set "-Dforce_fallback_for=['Magick++']".''')
-        endif
-
         find_magick = run_command(py,
           meson.project_source_root() / 'scripts' / 'magick_msvc_find.py',
           fs.parent(magick.full_path()),
@@ -382,21 +369,35 @@ if build_server
             ' libraries and headers was not found.',
           )
         else
-          magick_includes = include_directories(find_magick[0])
+          magick_ver = run_command('magick', '-version', check: false)
+          if magick_ver.returncode() != 0
+            error('''Failed to get version information from installed ImageMagick.
+Set "-Dforce_fallback_for=['Magick++']".''' + '\n\noutput:\n' + \
+              magick_ver.stderr(),
+            )
+          elif magick_ver.stdout().contains('OpenMP')
+            error('''The installed ImageMagick uses openmp, so WebCFace cannot use it.
+Set "-Dforce_fallback_for=['Magick++']".''')
+          endif
+
+          magick_libs = []
           foreach lib: find_magick
-            if lib.endswith('.lib')
-              # magick_libs += cxx.find_library(
-              #   lib.strip('.lib'),
-              #   dirs: [find_magick[1]],
-              # )
-              magick_libs += find_magick[1] / lib
+            if lib.endswith('_.lib')
+              magick_libs += cxx.find_library(
+                lib.strip('.lib'),
+                dirs: [find_magick[1]],
+              )
             endif
           endforeach
+          magickpp_dep = declare_dependency(
+            include_directories: include_directories(find_magick[0]),
+            dependencies: magick_libs,
+          )
         endif
       endif
     endif
 
-    if magick_libs.length() == 0
+    if not magickpp_dep.found()
       message('running magick_msvc_configure.py...')
       magick_script_args = [
         meson.project_source_root(),
@@ -422,31 +423,27 @@ if build_server
         magick_script_args,
         check: true,
       ).stdout().strip().split('\n')
+      magick_libs = []
       foreach lib: find_magick
-        if lib.endswith('.lib')
+        if lib.endswith('_.lib')
           # must not contain a path segment.
           magick_libs += lib
         endif
       endforeach
-      magick_args = ['-DSTATIC_MAGICK']
-      magick_includes = include_directories(find_magick[0].split(','))
-      magick_libs = custom_target('imagemagick-windows',
-        build_always_stale: true,
-        command: [py,
-          meson.project_source_root() / 'scripts' / 'magick_msvc_build.py',
-          magick_script_args,
-        ],
-        console: true,
-        output: magick_libs,
+      magickpp_dep = declare_dependency(
+        compile_args: ['-DSTATIC_MAGICK'],
+        include_directories: include_directories(find_magick[0].split(',')),
+        sources: custom_target('imagemagick-windows',
+          build_always_stale: true,
+          command: [py,
+            meson.project_source_root() / 'scripts' / 'magick_msvc_build.py',
+            magick_script_args,
+          ],
+          console: true,
+          output: magick_libs,
+        ),
       )
     endif
-
-    magickpp_dep = declare_dependency(
-      compile_args: magick_args,
-      include_directories: magick_includes,
-      # dependencies: magick_libs,
-      sources: magick_libs,
-    )
 
   else
     if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')

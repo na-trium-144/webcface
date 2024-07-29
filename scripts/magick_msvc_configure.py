@@ -25,7 +25,8 @@ if is_old(im_sln):
         run("devenv", "/upgrade", "Configure.2017.sln")
         run("msbuild", "Configure.2017.sln",
             "/m",
-            f"/p:PlatformToolset={vs_toolchain}",
+            f"/p:PlatformToolset={vs_toolchain},Configuration=Release,Platform=Win32",
+            # ここはx86ではなくWin32
         )
         if not os.path.exists(im_configure):
             print("Failed to build configure.exe")
@@ -34,7 +35,7 @@ if is_old(im_sln):
     os.chdir(im_configure_dir)
     run("Configure.exe",
         "/noWizard", "/noAliases", "/noDpc", "/noHdri", "/noOpenMP", "/Q8",
-        f"/{arch}", f"/VS{vs}", "/smtd",
+        f"/{im_arch}", f"/VS{vs}", "/smtd",
     )
     if not os.path.exists(im_sln):
         print("Failed to configure imagemagick-windows")

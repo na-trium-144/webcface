@@ -22,19 +22,24 @@ else:
     print(f"Compiler version {cl_ver} is older than vs2017(19.10)")
     sys.exit(1)
 
+config = {
+    "DB": "Debug",
+    "RL": "Release",
+}[libtype]
+
 # mesonのcpu_family -> vsのarch
 if cpu == "x86":
-    arch = "x86"
-elif cpu == "x64":
-    arch = "x64"
+    im_arch = "x86"
+elif cpu == "x86_64":
+    im_arch = "x64"
 elif cpu == "aarch64":
-    arch = "arm64"
+    im_arch = "arm64"
 else:
     print(f"CPU family {cpu} is not supported")
     sys.exit(1)
 
 im_win_dir = os.path.join(build_dir, "imagemagick-windows")
-im_sln = os.path.join(im_win_dir, f"IM7.StaticDLL.{arch}.sln")
+im_sln = os.path.join(im_win_dir, f"IM7.StaticDLL.{im_arch}.sln")
 im_configure_dir = os.path.join(im_win_dir, "Configure")
 im_configure = os.path.join(im_configure_dir, "Configure.exe")
 
