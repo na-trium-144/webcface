@@ -270,21 +270,22 @@ else
 endif
 if curl_dep.found()
   curl_has_ws_support = cxx.run('''
-#include <curl/curl.h>
-#include <cassert>
-#include <cstddef>
-int main() {
-    CURL *curl = curl_easy_init();
-    std::size_t s;
-    assert(curl_ws_send(curl, nullptr, 0, &s, 0, 0) != CURLE_NOT_BUILT_IN);
-}
-''',
+    #include <curl/curl.h>
+    #include <cassert>
+    #include <cstddef>
+    int main() {
+        CURL *curl = curl_easy_init();
+        std::size_t s;
+        assert(curl_ws_send(curl, nullptr, 0, &s, 0, 0) != CURLE_NOT_BUILT_IN);
+    }
+    ''',
     dependencies: [curl_dep],
     name: 'curl_has_ws_support',
   )
   if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
-    error('''The installed curl has no websocket support, so WebCFace cannot use it.
-Set "-Dforce_fallback_for=['libcurl']".''')
+    error('The installed curl has no websocket support, so WebCFace cannot use it.\n' + \
+      'Set "-Dforce_fallback_for=[\'libcurl\']".',
+    )
   endif
 else
   curl_dep = subproject('curl',
@@ -341,8 +342,36 @@ endif
 curl_dep = curl_dep.as_system('system')
 
 if build_server
-  crow_dep = dependency('Crow').as_system('system')
   cli11_dep = dependency('cli11').as_system('system')
+
+  if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
+    crow_dep = dependency('Crow', required: false)
+  else
+    crow_dep = dependency('', required: false)
+  endif
+  if crow_dep.found()
+    crow_has_unix_socket_support = cxx.compiles('''
+      #include <crow.h>
+      int main(){
+          crow::SimpleApp app;
+          CROW_ROUTE(app, "/")([](){
+              return "Hello world";
+          });
+          app.unix_path("/tmp/test.sock").multithreaded().run();
+      }
+      ''',
+      dependencies: [crow_dep],
+      name: 'crow_has_unix_socket_support',
+    )
+    if not crow_has_unix_socket_support
+      error('The installed Crow has no unix socket support, so WebCFace cannot use it.\n' + \
+        'Set "-Dforce_fallback_for=[\'Crow\']".',
+      )
+    endif
+  else
+    crow_dep = subproject('crow').get_variable('crow_dep')
+  endif
+  crow_dep = crow_dep.as_system('system')
 
   if magick_vs
     if get_option('buildtype') == 'debug'
@@ -371,13 +400,15 @@ if build_server
         else
           magick_ver = run_command('magick', '-version', check: false)
           if magick_ver.returncode() != 0
-            error('''Failed to get version information from installed ImageMagick.
-Set "-Dforce_fallback_for=['Magick++']".''' + '\n\noutput:\n' + \
+            error('Failed to get version information from installed ImageMagick.\n' + \
+              'Set "-Dforce_fallback_for=[\'Magick++\']".\n\n' + \
+              'output:\n' + \
               magick_ver.stderr(),
             )
           elif magick_ver.stdout().contains('OpenMP')
-            error('''The installed ImageMagick uses openmp, so WebCFace cannot use it.
-Set "-Dforce_fallback_for=['Magick++']".''')
+            error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
+              'Set "-Dforce_fallback_for=[\'Magick++\']".',
+            )
           endif
 
           magick_libs = []
@@ -412,7 +443,8 @@ Set "-Dforce_fallback_for=['Magick++']".''')
         check: false,
       )
       if config_magick.returncode() != 0
-        error('Failed to configure ImageMagick-Windows\n\nstdout:\n' + \
+        error('Failed to configure ImageMagick-Windows\n\n' + \
+          'stdout:\n' + \
           config_magick.stdout() + \
           '\nstderr:\n' + \
           config_magick.stderr(),
@@ -452,20 +484,18 @@ Set "-Dforce_fallback_for=['Magick++']".''')
       magickpp_dep = dependency('', required: false)
     endif
     if magickpp_dep.found()
-      # todo: このチェックは機能してない
-      magickpp_enables_openmp = cxx.compiles('''
-int main() {
-  #pragma omp parallel for
-  for (int i = 0; i < 1000; i++) {
-  }
-}
-''',
-        dependencies: [magickpp_dep],
-        name: 'magickpp_enables_openmp'
+      pkg_config = find_program('pkg-config')
+      magickcore_cflags = run_command(
+        pkg_config, '--cflags', 'MagickCore',
+        env: {
+          'PKG_CONFIG_PATH': get_option('pkg_config_path'),
+        },
+        check: true,
       )
-      if magickpp_enables_openmp
-        error('''The installed ImageMagick uses openmp, so WebCFace cannot use it.
-Set "-Dforce_fallback_for=['Magick++']".''')
+      if magickcore_cflags.stdout().contains('fopenmp')
+        error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
+          'Set "-Dforce_fallback_for=[\'Magick++\']".',
+        )
       endif
     else
       dependency('libjpeg',
