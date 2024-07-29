@@ -8,7 +8,7 @@
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
-#include "webcface/common/config.h"
+#include "webcface/common/webcface-config.h"
 #endif
 #include "robot_model.h"
 #include "components.h"

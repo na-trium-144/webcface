@@ -9,6 +9,7 @@ project('webcface', 'c', 'cpp',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'wrap_mode=forcefallback',
+    'pkgconfig.relocatable=true',
   ],
 )
 fs = import('fs')
@@ -21,6 +22,7 @@ webcface_webui_version = '1.7.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
+webcface_url = 'https://github.com/na-trium-144/webcface'
 
 webcface_version_str = meson.project_version()
 if get_option('version_suffix') == 'git'
@@ -180,12 +182,14 @@ conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
 configure_file(
   input: 'config.h.in',
   output: 'webcface-config.h',
-  configuration: conf_data
+  configuration: conf_data,
+  install: true,
+  install_dir: get_option('includedir') / 'webcface' / 'common',
 )
 configure_file(
   input: 'version.rc.in',
   output: 'version.rc',
-  configuration: conf_data
+  configuration: conf_data,
 )
 webcface_config_dep = declare_dependency(
   include_directories: [include_directories('.')],
@@ -207,6 +211,9 @@ if get_option('download_webui').allowed()
       [true, webcface_webui_version, 'Downloaded to ' + (meson.current_build_dir() / 'dist')],
       bool_yn: true,
       list_sep: ' ',
+    )
+    install_subdir(meson.current_build_dir() / 'dist',
+      install_dir: get_option('datadir') / 'webcface',
     )
   else
     warning(download_webui.stderr())
@@ -567,18 +574,23 @@ subdir('client')
 # magickppとasioはserverのみにしかリンクしないようにしたので
 # 特殊なリンクオプションは一切不要
 webcface_lib = library('webcface',
-  link_whole: [
-    webcface_encoding_lib,
-    webcface_message_lib,
-    webcface_client_lib,
+  # link_wholeではなくobjectsにすることで、
+  # それぞれのlibに追加したcpp_argsとかが含まれないようにする
+  objects: [
+    webcface_encoding_lib.extract_all_objects(recursive: false),
+    webcface_message_lib.extract_all_objects(recursive: false),
+    webcface_client_lib.extract_all_objects(recursive: false),
   ],
   dependencies: [
     filesystem_dep,
+    msgpack_cxx_dep,
+    utf8cpp_dep,
     spdlog_dep,
     curl_dep,
   ],
   version: meson.project_version(),
   soversion: webcface_soversion,
+  install: true,
 )
 webcface_dep = declare_dependency(
   link_with: [webcface_lib],
@@ -591,6 +603,14 @@ webcface_dep = declare_dependency(
     filesystem_dep,
   ],
 )
+import('pkgconfig').generate(
+  name: 'WebCFace',
+  description: webcface_description,
+  url: webcface_url,
+  filebase: 'webcface',
+  libraries: [webcface_lib],
+)
+meson.override_dependency('webcface', webcface_dep)
 
 if build_server
   subdir('server-store')
@@ -603,3 +623,22 @@ if build_tests
   subdir('tests')
 endif
 
+headers = run_command(py,
+  meson.project_source_root() / 'scripts' / 'list_headers.py',
+  check: true,
+).stdout().strip().split('\n')
+foreach h: headers
+  h_root = h.split(';')[0]
+  h_dir = h.split(';')[1]
+  h_name = h.split(';')[2]
+  install_headers(h_root / h_dir / h_name,
+    subdir: h_dir,
+  )
+endforeach
+
+install_data('webcface-server.service',
+  install_dir: get_option('libdir') / 'systemd' / 'system',
+)
+install_data(['README.md', 'LICENSE'],
+  install_dir: get_option('datadir') / 'doc' / 'webcface',
+)

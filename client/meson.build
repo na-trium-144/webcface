@@ -46,11 +46,13 @@ webcface_client_lib = static_library('webcface-client',
   dependencies: [
     webcface_config_dep,
     warning_options,
+    filesystem_dep,
     webcface_encoding_dep,
     webcface_message_dep,
     spdlog_dep,
     curl_dep,
   ],
+  build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],
   gnu_symbol_visibility: 'inlineshidden',
 )
@@ -59,6 +61,7 @@ webcface_client_dep = declare_dependency(
     webcface_client_inc,
   ],
   dependencies: [
+    filesystem_dep,
     webcface_encoding_dep,
   ],
 )

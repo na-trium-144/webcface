@@ -24,7 +24,8 @@ foreach src: example_src
     dependencies: [
       warning_options,
       webcface_dep,
-    ]
+    ],
+    install: true,
   )
 endforeach
 if build_server
@@ -35,7 +36,8 @@ if build_server
         warning_options,
         webcface_dep,
         magickpp_dep,
-      ]
+      ],
+      install: true,
     )
   endforeach
 endif
@@ -47,7 +49,8 @@ if opencv_dep.found()
         warning_options,
         webcface_dep,
         opencv_dep,
-      ]
+      ],
+      install: true,
     )
   endforeach
 endif

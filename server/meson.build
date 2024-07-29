@@ -15,4 +15,5 @@ executable('webcface-server',
     webcface_client_lib,
     webcface_server_store_lib,
   ],
+  install: true,
 )
