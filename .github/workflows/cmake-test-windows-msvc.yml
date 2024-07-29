@@ -77,13 +77,19 @@ jobs:
         arch: amd64_x86
 
     - name: Setup Meson
-      run: |
-        meson setup build --buildtype=debug -Dtest_wait=1000 -Ddefault_library=${{matrix.shared_flag}} --prefix=${{github.workspace}}/build/install -Dwrap_mode=default
+      run: >
+        meson setup build
+        --buildtype=debug
+        -Dtest_wait=1000
+        -Ddefault_library=${{matrix.shared_flag}}
+        --prefix=${{github.workspace}}/build/install
+        -Dwrap_mode=default
+        -Dcpp_args=-DSTATIC_MAGICK
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
       run: |
-        meson compile -C build || meson compile -C build
+        meson compile -C build
 
     # 1回の実行で1回のみsaveされるようにする
     # restoreとsaveでpathが一致している必要があるらしい
