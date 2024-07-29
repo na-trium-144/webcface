@@ -1,13 +1,13 @@
 project('webcface', 'c', 'cpp',
   version: '2.0.0',
   license: 'MIT',
-  meson_version: '>=0.59.0',
+  meson_version: '>=1.3.0',
   default_options: [
     'buildtype=release',
-    'warning_level=3', # everythingはたぶん通らない
+    'warning_level=3', # everythingは現在たぶん通らない
     'werror=true',
-    # 'c_std=c99',
-    'cpp_std=c++17',
+    # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
+    'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'wrap_mode=forcefallback',
   ],
 )

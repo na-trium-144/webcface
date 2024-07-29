@@ -273,9 +273,10 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 
 ### Requirements
 
-* C++17に対応したコンパイラと、CMake, Meson(0.59.0以上), Ninja, Make が必要です
+* C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja が必要です
 	* ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました
-	* ビルドにはMesonを使用しますが、依存ライブラリにCMakeやMakeを使うものがあるのでそれもインストールする必要があります
+	* ビルドにはMesonを使用しますが、依存ライブラリにCMakeを使うものがあるのでそれもインストールする必要があります
+	* MSVC以外では make と pkg-config も必要です
 * Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
 * MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
@@ -312,9 +313,18 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 
 ```sh
 sudo apt install build-essential git cmake pkg-config ninja-build
-sudo apt install meson  # (only on 22.04 or later)
-# ubuntu20.04 -> sudo apt install python3-pip && pip install meson
+```
+* ubuntu24.04
+```sh
+sudo apt install meson  # (only on 24.04)
+```
+* ubuntu22.04またはそれ以前ではaptでインストールできるmesonは古いので
+```sh
+sudo apt install python3-pip
+pip install meson
+```
 
+```sh
 # optional:
 # sudo apt install libspdlog-dev libasio-dev
 # sudo apt install libcli11-dev        # (only on 22.04 or later)
@@ -330,7 +340,6 @@ brew install cmake meson ninja
 # optional:
 # brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
-libjpegをソースからビルドする際にnasmがあるとよいです
 
 </details>
 
@@ -388,9 +397,12 @@ gcc-core, gcc-g++, cmake, make, meson, pkg-config, ninja をインストール�
 meson setup build
 ```
 * Visual Studio の場合 `--backend vs` を指定すると Visual Studio のプロジェクトファイルを生成します
-* buildtypeを変更するには `--buildtype=release` または `--buildtype-debug` を指定してください (デフォルトはrelease)
+* buildtypeを変更するには `--buildtype=release` または `--buildtype-debug` を指定してください
+(WebCFaceがsubprojectでない場合デフォルトでrelease)
 * staticライブラリをビルドするには `-Ddefault_library=static` を指定してください
 	* `default_library=both` は現在非対応です
+* `cpp_std`はc++17以上が必要です。またcygwinではgnu++17が必要です。
+(WebCFaceがsubprojectでない場合デフォルトはgnu++17,c++17)
 * `warning_level`は3以下であればビルドできるはずです
 (WebCFaceがsubprojectでない場合デフォルトで3)。
 	* todo: `warning_level=everything` でビルドできるかは未確認です。
