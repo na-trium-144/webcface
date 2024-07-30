@@ -52,7 +52,7 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MAJOR': meson.project_version().split('.')[0],
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
-  'WEBCFACE_VERSION': '"@webcface_version_str@"',
+  'WEBCFACE_VERSION': '"' + webcface_version_str + '"',
   'PROJECT_DESCRIPTION': webcface_description,
   'WEBCFACE_CONTACT': webcface_contact,
 })
@@ -658,12 +658,14 @@ run_command(cmake_cmd,
   '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
   check: true,
 )
+cmake_dir = get_option('libdir') / 'cmake' / 'webcface'
 install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
-  install_dir: get_option('libdir') / 'cmake' / 'webcface',
+  install_dir: cmake_dir,
 )
 conf_data = configuration_data({
   'libdir': get_option('libdir'),
   'includedir': get_option('includedir'),
+  'cmakedir': cmake_dir,
   'webcface_lib_debug': webcface_lib_name_debug,
   'webcface_lib_release': webcface_lib_name_release,
 })
@@ -672,5 +674,5 @@ configure_file(
   output: 'webcface-config.cmake',
   configuration: conf_data,
   install: true,
-  install_dir: get_option('libdir') / 'cmake' / 'webcface',
+  install_dir: cmake_dir,
 )

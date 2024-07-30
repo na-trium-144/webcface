@@ -2,13 +2,20 @@
 # 動けばヨシ
 
 # Compute the installation prefix relative to this file.
-get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-if(_IMPORT_PREFIX STREQUAL "/")
-  set(_IMPORT_PREFIX "")
-endif()
+string(LENGTH "${CMAKE_CURRENT_LIST_FILE}" _CURRENT_LIST_FILE_LEN)
+set(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}")
+while(1)
+  get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+  if(_IMPORT_PREFIX STREQUAL "/")
+    set(_IMPORT_PREFIX "")
+  endif()
+  string(LENGTH "${_IMPORT_PREFIX}/@cmakedir@/webcface-config.cmake" _REL_LIST_FILE_LEN)
+  if("${_IMPORT_PREFIX}/@cmakedir@/webcface-config.cmake" STREQUAL CMAKE_CURRENT_LIST_FILE)
+    break()
+  elseif(_REL_LIST_FILE_LEN LESS _CURRENT_LIST_FILE_LEN)
+    message(FATAL_ERROR "Failed to compute import prefix")
+  endif()
+endwhile()
 
 # Create imported target webcface::webcface
 add_library(webcface::webcface INTERFACE IMPORTED)
