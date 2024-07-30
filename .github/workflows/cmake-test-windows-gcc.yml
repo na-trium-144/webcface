@@ -22,19 +22,20 @@ jobs:
         update: true
         install: >-
           git
-          mingw-w64-x86_64-gcc
-          mingw-w64-x86_64-cmake
-          mingw-w64-x86_64-meson
-          mingw-w64-x86_64-ninja
+          mingw-w64-ucrt-x86_64-gcc
+          mingw-w64-ucrt-x86_64-cmake
+          mingw-w64-ucrt-x86_64-meson
+          mingw-w64-ucrt-x86_64-ninja
           make
-        msystem: MINGW64
+        msystem: UCRT64
 
     # - run: git submodule update --init
     #   if: matrix.dep == 'submodule'
 
     - name: Install dependencies
       if: matrix.dep == 'pacman'
-      run: pacman -S --noconfirm mingw-w64-x86_64-spdlog
+      run: pacman -S --noconfirm mingw-w64-ucrt-x86_64-msgpack-cxx mingw-w64-ucrt-x86_64-spdlog mingw-w64-ucrt-x86_64-asio mingw-w64-ucrt-x86_64-cli11 mingw-w64-ucrt-x86_64-utf8cpp
+      # msgpack-cxx はmingw64だけ無い
 
     - name: Setup Meson
       env:
