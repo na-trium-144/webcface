@@ -128,5 +128,5 @@ jobs:
     - name: Test CMake with installed package
       working-directory: ${{github.workspace}}/.github/test
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake -B build -A x86 -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
         cmake --build build --config Debug

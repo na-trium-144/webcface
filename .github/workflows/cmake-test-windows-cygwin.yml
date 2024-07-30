@@ -70,6 +70,7 @@ jobs:
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
 
     - name: install
+      shell: C:\cygwin\bin\bash.exe '{0}'
       run: meson install -C build
       
     - name: Test CMake with installed package

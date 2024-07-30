@@ -81,7 +81,7 @@ jobs:
     - name: Test building with pkg-config
       working-directory: ${{github.workspace}}/.github/test
       env:
-        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/pkgconfig
+        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/x86_64-linux-gnu/pkgconfig
       run: |
         pkg-config --cflags --libs webcface
         g++-${{matrix.gcc_ver}} -std=c++17 test.cc $(pkg-config --cflags --libs webcface)

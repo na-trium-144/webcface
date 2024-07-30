@@ -645,9 +645,11 @@ foreach h: headers
   )
 endforeach
 
-install_data('scripts' / 'webcface-server.service',
-  install_dir: get_option('libdir') / 'systemd' / 'system',
-)
+if host_machine.system() == 'linux'
+  install_data('scripts' / 'webcface-server.service',
+    install_dir: 'lib' / 'systemd' / 'system', # lib/x86_64-linux-gnu/ ではない
+  )
+endif
 install_data(['README.md', 'LICENSE'],
   install_dir: get_option('datadir') / 'doc' / 'webcface',
 )
