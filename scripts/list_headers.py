@@ -1,15 +1,12 @@
 import glob
 import os
 
-os.chdir(os.path.join(os.path.dirname(__file__), ".."))
+base_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..")
 
 for s_dir in ["client", "encoding"]:
     root_dir = os.path.join(s_dir, "include")
-    for h in glob.iglob(
-        "**/*.h",
-        root_dir=root_dir,
-        recursive=True,
-    ):
+    os.chdir(os.path.join(base_dir, root_dir))
+    for h in glob.glob("**/*.h", recursive=True):
         if "internal" not in h:
             print(";".join([
                 root_dir,
