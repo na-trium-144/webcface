@@ -17,7 +17,7 @@ option(WEBCFACE_EXAMPLE "build example" ${IS_MAIN})
 option(WEBCFACE_PIC "enable PIC for shared library" ON)
 set(WEBCFACE_VERSION_SUFFIX "git" CACHE STRING "version suffix ('git' to get automatically from git describe command)")
 option(WEBCFACE_DOWNLOAD_WEBUI "download and install webui" ${IS_MAIN})
-option(WEBCFACE_FIND_LIBS "if false, disables every find_package and pkg_check_modules" OFF)
+option(WEBCFACE_FIND_LIBS "if false, disables searching dependency" OFF)
 # option(WEBCFACE_FIND_AMENT "try find_package(ament_cmake)" ON)
 
 if(NOT WEBCFACE_SERVER)
@@ -40,6 +40,7 @@ if(NOT WEBCFACE_DOWNLOAD_WEBUI)
 endif()
 if(WEBCFACE_FIND_LIBS)
     list(APPEND SETUP_ARG "-Dwrap_mode=default")
+    list(APPEND SETUP_ARG "-Dforce_fallback_for=['libcurl','Magick++','Crow']")
 endif()
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     list(APPEND SETUP_ARG "--buildtype=debug")
@@ -82,12 +83,16 @@ add_dependencies(webcface webcface-build)
 add_dependencies(wcf webcface-build)
 target_compile_features(webcface INTERFACE cxx_std_17)
 target_compile_features(wcf INTERFACE c_std_99)
+target_compile_definitions(webcface INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
+target_compile_definitions(wcf INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
 target_include_directories(webcface INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/encoding/include>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
 )
 target_include_directories(wcf INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
 )
 target_link_directories(webcface INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
