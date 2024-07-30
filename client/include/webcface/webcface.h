@@ -11,8 +11,8 @@
 #include "webcface/common/webcface-config.h"
 #endif
 
-#include "encoding/encoding.h"
-#include "encoding/val_adaptor.h"
+#include "webcface/encoding/encoding.h"
+#include "webcface/encoding/val_adaptor.h"
 
 #include "wcf.h"
 
