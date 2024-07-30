@@ -70,6 +70,7 @@ jobs:
       run: meson install -C build
 
     - name: Test CMake with installed package
+      if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       env:
         CC: gcc-${{matrix.gcc_ver}}

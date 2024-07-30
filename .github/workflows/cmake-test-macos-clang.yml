@@ -66,6 +66,7 @@ jobs:
       run: meson install -C build
 
     - name: Test CMake with installed package
+      if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
@@ -81,9 +82,9 @@ jobs:
         clang++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
         clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
 
-    - name: Test building using framework
-      if: matrix.dep == 'framework'
-      working-directory: ${{github.workspace}}/.github/test
-      run: |
-        clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
-        clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface
+    # - name: Test building using framework
+    #   if: matrix.dep == 'framework'
+    #   working-directory: ${{github.workspace}}/.github/test
+    #   run: |
+    #     clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
+    #     clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface

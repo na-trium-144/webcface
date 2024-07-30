@@ -68,6 +68,7 @@ jobs:
       run: meson install -C build
 
     - name: Test CMake with installed package
+      if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=../../build/install

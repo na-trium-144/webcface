@@ -74,6 +74,7 @@ jobs:
       run: meson install -C build
       
     - name: Test CMake with installed package
+      if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: |

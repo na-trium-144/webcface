@@ -653,28 +653,30 @@ endif
 install_data(['README.md', 'LICENSE'],
   install_dir: get_option('datadir') / 'doc' / 'webcface',
 )
-run_command(cmake_cmd,
-  '-Dsizeof_void_p=' + (host_machine.cpu_family().endswith('64') ? '8' : '4'),
-  '-Dbuild_dir=' + meson.current_build_dir(),
-  '-Dversion=' + meson.project_version(),
-  '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
-  check: true,
-)
-cmake_dir = get_option('libdir') / 'cmake' / 'webcface'
-install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
-  install_dir: cmake_dir,
-)
-conf_data = configuration_data({
-  'libdir': get_option('libdir'),
-  'includedir': get_option('includedir'),
-  'cmakedir': cmake_dir,
-  'webcface_lib_debug': webcface_lib_name_debug,
-  'webcface_lib_release': webcface_lib_name_release,
-})
-configure_file(
-  input: 'scripts' / 'webcface-config.cmake.in',
-  output: 'webcface-config.cmake',
-  configuration: conf_data,
-  install: true,
-  install_dir: cmake_dir,
-)
+if get_option('default_library') == 'shared'
+  run_command(cmake_cmd,
+    '-Dsizeof_void_p=' + (host_machine.cpu_family().endswith('64') ? '8' : '4'),
+    '-Dbuild_dir=' + meson.current_build_dir(),
+    '-Dversion=' + meson.project_version(),
+    '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
+    check: true,
+  )
+  cmake_dir = get_option('libdir') / 'cmake' / 'webcface'
+  install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
+    install_dir: cmake_dir,
+  )
+  conf_data = configuration_data({
+    'libdir': get_option('libdir'),
+    'includedir': get_option('includedir'),
+    'cmakedir': cmake_dir,
+    'webcface_lib_debug': webcface_lib_name_debug,
+    'webcface_lib_release': webcface_lib_name_release,
+  })
+  configure_file(
+    input: 'scripts' / 'webcface-config.cmake.in',
+    output: 'webcface-config.cmake',
+    configuration: conf_data,
+    install: true,
+    install_dir: cmake_dir,
+  )
+endif
