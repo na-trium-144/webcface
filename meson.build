@@ -90,6 +90,7 @@ elif host_machine.system() == 'cygwin'
   summary('System', 'cygwin')
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
+  webcface_system_version_rc = true
 else
   warning('unsupported system: ' + host_machine.system())
 endif
