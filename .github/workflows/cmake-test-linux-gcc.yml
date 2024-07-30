@@ -36,7 +36,7 @@ jobs:
         sudo apt-get install -y ninja-build
         sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
         if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev; fi
-        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libopencv-dev; fi
+        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libopencv-dev googletest; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-22.04 ]]; then sudo apt-get install -y libcli11-dev; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-24.04 ]]; then sudo apt-get install -y libcli11-dev libmsgpack-cxx-dev; fi
     - name: Install meson

@@ -567,9 +567,9 @@ if build_examples
 endif
 
 if build_tests
-  gtest_proj = subproject('gtest')
-  gtest_dep = gtest_proj.get_variable('gtest_dep').as_system('system')
-  gtest_main_dep = gtest_proj.get_variable('gtest_main_dep').as_system('system')
+  gtest_dep = dependency('gtest', main: true,
+    fallback: ['gtest', 'gtest_main_dep'],
+  ).as_system('system')
 endif
 
 subdir('encoding')
