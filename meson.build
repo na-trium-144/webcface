@@ -189,14 +189,14 @@ endif
 conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
 
 configure_file(
-  input: 'config.h.in',
+  input: 'scripts' / 'config.h.in',
   output: 'webcface-config.h',
   configuration: conf_data,
   install: true,
   install_dir: get_option('includedir') / 'webcface' / 'common',
 )
 configure_file(
-  input: 'version.rc.in',
+  input: 'scripts'/ 'version.rc.in',
   output: 'version.rc',
   configuration: conf_data,
 )
@@ -645,7 +645,7 @@ foreach h: headers
   )
 endforeach
 
-install_data('webcface-server.service',
+install_data('scripts' / 'webcface-server.service',
   install_dir: get_option('libdir') / 'systemd' / 'system',
 )
 install_data(['README.md', 'LICENSE'],
@@ -670,7 +670,7 @@ conf_data = configuration_data({
   'webcface_lib_release': webcface_lib_name_release,
 })
 configure_file(
-  input: 'webcface-config.cmake.in',
+  input: 'scripts' / 'webcface-config.cmake.in',
   output: 'webcface-config.cmake',
   configuration: conf_data,
   install: true,
