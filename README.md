@@ -445,9 +445,10 @@ meson test -C build
 でテストを実行できます。
 
 ```sh
-meson install -C build
+meson install -C build --skip-subprojects
 ```
 でsetup時に指定したディレクトリにインストールできます。
+(staticライブラリの場合は `--skip-subprojects` を使用せず、依存ライブラリもインストールした方がいいかも)
 
 ### WebUI
 

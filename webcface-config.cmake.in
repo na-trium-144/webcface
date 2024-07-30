@@ -1,0 +1,34 @@
+# 手書き
+# 動けばヨシ
+
+# Compute the installation prefix relative to this file.
+get_filename_component(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
+if(_IMPORT_PREFIX STREQUAL "/")
+  set(_IMPORT_PREFIX "")
+endif()
+
+# Create imported target webcface::webcface
+add_library(webcface::webcface INTERFACE IMPORTED)
+set_target_properties(webcface::webcface PROPERTIES
+  INTERFACE_COMPILE_FEATURES "cxx_std_17"
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@includedir@"
+  INTERFACE_LINK_DIRECTORIES "${_IMPORT_PREFIX}/@libdir@"
+)
+target_link_libraries(webcface::webcface INTERFACE
+  debug @webcface_lib_debug@
+  optimized @webcface_lib_release@
+)
+# Create imported target webcface::wcf
+add_library(webcface::wcf INTERFACE IMPORTED)
+set_target_properties(webcface::wcf PROPERTIES
+  INTERFACE_COMPILE_FEATURES "c_std_99"
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@includedir@"
+  INTERFACE_LINK_DIRECTORIES "${_IMPORT_PREFIX}/@libdir@"
+)
+target_link_libraries(webcface::wcf INTERFACE
+  debug @webcface_lib_debug@
+  optimized @webcface_lib_release@
+)

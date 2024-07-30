@@ -16,6 +16,7 @@ fs = import('fs')
 cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
+cmake_cmd = find_program('cmake')
 
 webcface_soversion = '20'
 webcface_webui_version = '1.7.0'
@@ -92,6 +93,14 @@ elif host_machine.system() == 'cygwin'
   webcface_system_wchar_windows = true
 else
   warning('unsupported system: ' + host_machine.system())
+endif
+
+webcface_lib_name_release = 'webcface'
+webcface_lib_name_debug = 'webcface' + (webcface_system_add_debug ? 'd' : '')
+if get_option('buildtype') == 'debug'
+  webcface_lib_name = webcface_lib_name_debug
+else
+  webcface_lib_name = webcface_lib_name_release
 endif
 
 if (cxx.get_id() == 'gcc' or cxx.get_id() == 'clang') and cxx.get_argument_syntax() != 'msvc'
@@ -573,7 +582,7 @@ subdir('client')
 # curlはvisibilityがhiddenになっており、
 # magickppとasioはserverのみにしかリンクしないようにしたので
 # 特殊なリンクオプションは一切不要
-webcface_lib = library('webcface',
+webcface_lib = library(webcface_lib_name,
   # link_wholeではなくobjectsにすることで、
   # それぞれのlibに追加したcpp_argsとかが含まれないようにする
   objects: [
@@ -641,4 +650,27 @@ install_data('webcface-server.service',
 )
 install_data(['README.md', 'LICENSE'],
   install_dir: get_option('datadir') / 'doc' / 'webcface',
+)
+run_command(cmake_cmd,
+  '-Dsizeof_void_p=' + (host_machine.cpu_family().endswith('64') ? '8' : '4'),
+  '-Dbuild_dir=' + meson.current_build_dir(),
+  '-Dversion=' + meson.project_version(),
+  '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
+  check: true,
+)
+install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
+  install_dir: get_option('libdir') / 'cmake' / 'webcface',
+)
+conf_data = configuration_data({
+  'libdir': get_option('libdir'),
+  'includedir': get_option('includedir'),
+  'webcface_lib_debug': webcface_lib_name_debug,
+  'webcface_lib_release': webcface_lib_name_release,
+})
+configure_file(
+  input: 'webcface-config.cmake.in',
+  output: 'webcface-config.cmake',
+  configuration: conf_data,
+  install: true,
+  install_dir: get_option('libdir') / 'cmake' / 'webcface',
 )
