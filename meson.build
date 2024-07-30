@@ -47,7 +47,6 @@ assert(
   'building both shared and static webcface libraries is currently not supported',
 )
 summary('Library', get_option('default_library'))
-summary('Build type', get_option('buildtype'))
 conf_data = configuration_data({
   'WEBCFACE_VERSION_MAJOR': meson.project_version().split('.')[0],
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
@@ -97,8 +96,16 @@ endif
 
 webcface_lib_name_release = 'webcface'
 webcface_lib_name_debug = 'webcface' + (webcface_system_add_debug ? 'd' : '')
-if get_option('buildtype') == 'debug'
-  webcface_lib_name = webcface_lib_name_debug
+summary('Build type', get_option('buildtype'))
+if webcface_system_add_debug
+  debug_crt = get_option('b_vscrt') == 'mtd' or get_option('b_vscrt') == 'mdd' or \
+    (get_option('b_vscrt').endswith('from_buildtype') and get_option('buildtype') == 'debug')
+  if debug_crt
+    webcface_lib_name = webcface_lib_name_debug
+  else
+    webcface_lib_name = webcface_lib_name_release
+  endif
+  summary('Debug CRT', debug_crt, bool_yn: true)
 else
   webcface_lib_name = webcface_lib_name_release
 endif
@@ -389,7 +396,7 @@ if build_server
   crow_dep = crow_dep.as_system('system')
 
   if magick_vs
-    if get_option('buildtype') == 'debug'
+    if debug_crt
       magick_libtype = 'DB'
     else
       magick_libtype = 'RL'
@@ -409,7 +416,7 @@ if build_server
         ).stdout().strip().split('\n')
         if find_magick[0] == '' or find_magick[1] == '' or find_magick.length() < 3
           warning('ImageMagick found but its ' + \
-            (get_option('buildtype') == 'debug' ? 'debug' : 'release') + \
+            (debug_crt ? 'debug' : 'release') + \
             ' libraries and headers was not found.',
           )
         else
