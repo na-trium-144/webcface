@@ -614,6 +614,7 @@ webcface_lib = library(webcface_lib_name,
   sources: sources,
   dependencies: [
     filesystem_dep,
+    win32folders_dep,
     msgpack_cxx_dep,
     utf8cpp_dep,
     spdlog_dep,
@@ -632,6 +633,7 @@ webcface_dep = declare_dependency(
   dependencies: [
     webcface_config_dep,
     filesystem_dep,
+    win32folders_dep,
   ],
 )
 import('pkgconfig').generate(
