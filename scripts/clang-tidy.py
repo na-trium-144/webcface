@@ -16,7 +16,11 @@ jobs: List[subprocess.Popen] = []
 fail = False
 
 for s_dir in os.listdir(base_dir):
-    if s_dir.startswith("build") or s_dir == "subprojects":
+    if (
+        s_dir.startswith("build")
+        or s_dir == "subprojects"
+        or not os.path.isdir(os.path.join(base_dir, s_dir))
+    ):
         continue
     os.chdir(os.path.join(base_dir, s_dir))
     for src in glob.glob("**/*.cc", recursive=True):
