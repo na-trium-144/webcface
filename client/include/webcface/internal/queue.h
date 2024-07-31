@@ -1,4 +1,9 @@
 #pragma once
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include <queue>
 #include <mutex>
 #include <condition_variable>

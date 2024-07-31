@@ -44,7 +44,7 @@ TEST_F(ImageFrameTest, baseRawPtrCtor) {
 }
 TEST_F(ImageFrameTest, baseCopyCtor) {
     ImageFrame img(sizeHW(100, 100), dp, ImageColorMode::bgr);
-    ImageFrame img2 = img;
+    ImageFrame img2 = img; // NOLINT
     EXPECT_FALSE(img2.empty());
     EXPECT_EQ(img2.rows(), 100);
     EXPECT_EQ(img2.cols(), 100);

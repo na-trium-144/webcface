@@ -97,13 +97,18 @@ Server::~Server() {
     }
 }
 
-Server::Server(std::uint16_t port, int level, int keep_log)
+Server::Server(std::uint16_t port, int level, int keep_log,
+               spdlog::sink_ptr sink, std::shared_ptr<spdlog::logger> logger)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
 
-    auto sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
-    auto logger = std::make_shared<spdlog::logger>("webcface_server", sink);
+    if (!sink) {
+        sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    }
+    if (!logger) {
+        logger = std::make_shared<spdlog::logger>("webcface_server", sink);
+    }
     logger->set_level(static_cast<spdlog::level::level_enum>(level));
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
 

@@ -32,6 +32,7 @@ class DataSetBuffer {
         try {
             onDestroy();
         } catch (...) {
+            // ignore exception
         }
     }
     void onDestroy() {
@@ -162,6 +163,7 @@ class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
         try {
             onDestroy();
         } catch (...) {
+            // ignore exception
         }
     }
 };

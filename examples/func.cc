@@ -31,7 +31,9 @@ int main() {
     wcli.func("func_bool").set([](bool) -> bool { return true; });
     wcli.func("func_int").set([](int) -> int { return 1; });
     wcli.func("func_double").set([](double) -> double { return 1.5; });
-    wcli.func("func_str").set([](std::string) -> std::string { return "1"; });
+    wcli.func("func_str").set([](const std::string &) -> std::string {
+        return "1";
+    });
 
     wcli.sync();
     while (true) {

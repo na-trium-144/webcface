@@ -1,7 +1,7 @@
 #pragma once
 #ifdef WEBCFACE_STATIC_DIR
 // clang-format off
-#error "This header file is for WebCFace ver.1.x but is used with WebCFace ver.0.x CMake files"
+#error "This header file is for WebCFace ver.2 but is used with WebCFace ver.0.x CMake files"
 // clang-format on
 #endif
 
@@ -11,8 +11,8 @@
 #include "webcface/common/webcface-config.h"
 #endif
 
-#include "encoding/encoding.h"
-#include "encoding/val_adaptor.h"
+#include "webcface/encoding/encoding.h"
+#include "webcface/encoding/val_adaptor.h"
 
 #include "wcf.h"
 

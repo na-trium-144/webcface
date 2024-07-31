@@ -136,7 +136,7 @@ TEST_F(FuncTest, funcSet) {
 
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
-    f.set([](int, double, bool, std::string) { return 0; });
+    f.set([](int, double, bool, const std::string &) { return 0; });
     EXPECT_EQ(f.returnType(), ValType::int_);
     EXPECT_EQ(f.args().size(), 4);
     EXPECT_EQ(f.args(0).type(), ValType::int_);
@@ -202,19 +202,20 @@ TEST_F(FuncTest, funcRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        ++called;
-        // setしてるのでrunAsyncしてもmainスレッドで実行される
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return 123.45;
-    });
+    func(self_name, "a")
+        .set([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            ++called;
+            // setしてるのでrunAsyncしてもmainスレッドで実行される
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return 123.45;
+        });
     EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
                  std::invalid_argument);
     auto ret = func(self_name, "a").run(123, 123.45, "a", true);
@@ -266,19 +267,20 @@ TEST_F(FuncTest, funcAsyncRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    func(self_name, "a").setAsync([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        ++called;
-        // runなのでmainスレッド
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return 123.45;
-    });
+    func(self_name, "a")
+        .setAsync([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            ++called;
+            // runなのでmainスレッド
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return 123.45;
+        });
     EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
                  std::invalid_argument);
     auto ret = func(self_name, "a").run(123, 123.45, "a", true);
@@ -286,19 +288,20 @@ TEST_F(FuncTest, funcAsyncRun) {
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    func(self_name, "a").setAsync([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        ++called;
-        // setAsyncかつrunAsyncなので別スレッド
-        EXPECT_NE(std::this_thread::get_id(), main_id);
-        return 123.45;
-    });
+    func(self_name, "a")
+        .setAsync([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            ++called;
+            // setAsyncかつrunAsyncなので別スレッド
+            EXPECT_NE(std::this_thread::get_id(), main_id);
+            return 123.45;
+        });
     auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
     EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
     ret_a.onStarted([&](bool started) {
@@ -343,25 +346,26 @@ TEST_F(FuncTest, funcFutureRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        // EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred, [&, a] {
-            if (a == 1) {
-                throw std::invalid_argument("a == 1");
+    func(self_name, "a")
+        .set([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
             }
-            ++called;
-            // runなのでmainスレッド
+            // EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
             EXPECT_EQ(std::this_thread::get_id(), main_id);
-            return 123.45;
+            return std::async(std::launch::deferred, [&, a] {
+                if (a == 1) {
+                    throw std::invalid_argument("a == 1");
+                }
+                ++called;
+                // runなのでmainスレッド
+                EXPECT_EQ(std::this_thread::get_id(), main_id);
+                return 123.45;
+            });
         });
-    });
     EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
                  std::invalid_argument);
     EXPECT_THROW(func(self_name, "a").run(1, 123.45, "a", true),
@@ -371,25 +375,26 @@ TEST_F(FuncTest, funcFutureRun) {
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        // EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred, [&, a] {
-            if (a == 1) {
-                throw std::invalid_argument("a == 1");
+    func(self_name, "a")
+        .set([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
             }
-            ++called;
-            // runAsyncなので別スレッド
-            EXPECT_NE(std::this_thread::get_id(), main_id);
-            return 123.45;
+            // EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return std::async(std::launch::deferred, [&, a] {
+                if (a == 1) {
+                    throw std::invalid_argument("a == 1");
+                }
+                ++called;
+                // runAsyncなので別スレッド
+                EXPECT_NE(std::this_thread::get_id(), main_id);
+                return 123.45;
+            });
         });
-    });
     auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
     EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
     ret_a = func(self_name, "a").runAsync(1, 123.45, "a", true);
@@ -435,27 +440,29 @@ TEST_F(FuncTest, funcSharedFutureRun) {
     // 引数と戻り値
     int called = 0;
     auto main_id = std::this_thread::get_id();
-    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        // EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred,
-                          [&, a] {
-                              if (a == 0) {
-                                  throw std::invalid_argument("a == 1");
-                              }
-                              ++called;
-                              // runなのでmainスレッド
-                              EXPECT_EQ(std::this_thread::get_id(), main_id);
-                              return 123.45;
-                          })
-            .share();
-    });
+    func(self_name, "a")
+        .set([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            // EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return std::async(std::launch::deferred,
+                              [&, a] {
+                                  if (a == 0) {
+                                      throw std::invalid_argument("a == 1");
+                                  }
+                                  ++called;
+                                  // runなのでmainスレッド
+                                  EXPECT_EQ(std::this_thread::get_id(),
+                                            main_id);
+                                  return 123.45;
+                              })
+                .share();
+        });
     EXPECT_THROW(func(self_name, "a").run(0, 123.45, "a", true),
                  std::invalid_argument);
     auto ret = func(self_name, "a").run(123, 123.45, "a", true);
@@ -463,27 +470,29 @@ TEST_F(FuncTest, funcSharedFutureRun) {
     EXPECT_EQ(static_cast<double>(ret), 123.45);
     called = 0;
 
-    func(self_name, "a").set([&](int a, double b, std::string c, bool d) {
-        if (a == 0) {
-            throw std::invalid_argument("a == 0");
-        }
-        // EXPECT_EQ(a, 123);
-        EXPECT_EQ(b, 123.45);
-        EXPECT_EQ(c, "a");
-        EXPECT_TRUE(d);
-        EXPECT_EQ(std::this_thread::get_id(), main_id);
-        return std::async(std::launch::deferred,
-                          [&, a] {
-                              if (a == 1) {
-                                  throw std::invalid_argument("a == 1");
-                              }
-                              ++called;
-                              // runAsyncなので別スレッド
-                              EXPECT_NE(std::this_thread::get_id(), main_id);
-                              return 123.45;
-                          })
-            .share();
-    });
+    func(self_name, "a")
+        .set([&](int a, double b, const std::string &c, bool d) {
+            if (a == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            // EXPECT_EQ(a, 123);
+            EXPECT_EQ(b, 123.45);
+            EXPECT_EQ(c, "a");
+            EXPECT_TRUE(d);
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            return std::async(std::launch::deferred,
+                              [&, a] {
+                                  if (a == 1) {
+                                      throw std::invalid_argument("a == 1");
+                                  }
+                                  ++called;
+                                  // runAsyncなので別スレッド
+                                  EXPECT_NE(std::this_thread::get_id(),
+                                            main_id);
+                                  return 123.45;
+                              })
+                .share();
+        });
     auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
     EXPECT_THROW(ret_a.result.get(), std::invalid_argument);
     ret_a = func(self_name, "a").runAsync(1, 123.45, "a", true);

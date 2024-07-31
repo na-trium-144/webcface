@@ -4,6 +4,8 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include <spdlog/common.h>
+#include <spdlog/logger.h>
 #include <condition_variable>
 #include <mutex>
 #include <memory>
@@ -39,7 +41,9 @@ class Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(std::uint16_t port, int level, int keep_log = 1000);
+    Server(std::uint16_t port, int level, int keep_log = 1000,
+           spdlog::sink_ptr sink = nullptr,
+           std::shared_ptr<spdlog::logger> logger = nullptr);
     ~Server();
     void join();
 
