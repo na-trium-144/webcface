@@ -1,10 +1,14 @@
 #pragma once
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include <queue>
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
 #include <optional>
-#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 /*!

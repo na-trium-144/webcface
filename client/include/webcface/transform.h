@@ -1,5 +1,9 @@
 #pragma once
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include <array>
 
 WEBCFACE_NS_BEGIN
@@ -61,14 +65,14 @@ class Transform : public Point {
      *
      */
     Transform(const Point &pos, const std::array<double, 3> &rot)
-        : Point(pos), rot_(rot){};
+        : Point(pos), rot_(rot) {};
     /**
      * 2次元用、ver1.6から追加
      * \param pos x, y 座標
      * \param rot 回転角(z)
      *
      */
-    Transform(const Point &pos, double rot) : Transform(pos, {rot, 0, 0}){};
+    Transform(const Point &pos, double rot) : Transform(pos, {rot, 0, 0}) {};
     Transform(double x, double y, double z, double z_angle, double y_angle,
               double x_angle)
         : Transform(std::array<double, 3>{x, y, z},

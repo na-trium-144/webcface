@@ -1,6 +1,4 @@
 #include "webcface/component_id.h"
-#include "webcface/component_view.h"
-#include "webcface/component_canvas2d.h"
 WEBCFACE_NS_BEGIN
 
 template <typename TypeEnum>
@@ -9,7 +7,8 @@ std::string IdBase<TypeEnum>::id() const {
            std::to_string(idx_for_type_);
 }
 template <typename TypeEnum>
-void IdBase<TypeEnum>::initIdx(std::unordered_map<int, int> *idx_next, TypeEnum type) {
+void IdBase<TypeEnum>::initIdx(std::unordered_map<int, int> *idx_next,
+                               TypeEnum type) {
     if (idx_next) {
         idx_for_type_ = (*idx_next)[static_cast<int>(type)]++;
     }

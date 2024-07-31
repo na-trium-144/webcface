@@ -3,7 +3,6 @@
 #include "webcface/encoding/encoding.h"
 #include <msgpack.hpp>
 #include <string>
-#include "webcface/common/def.h"
 
 namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {

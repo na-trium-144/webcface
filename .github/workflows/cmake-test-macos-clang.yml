@@ -14,55 +14,47 @@ jobs:
   test-macos-clang:
     strategy:
       matrix:
-        dep: ["brew", "source", "submodule", "static", "framework"]
+        dep: ["brew", "source", "static"]
     runs-on: macos-latest
     steps:
     - uses: actions/checkout@v4
-    - run: git submodule update --init
-      if: matrix.dep == 'submodule'
+    # - run: git submodule update --init
+    #   if: matrix.dep == 'submodule'
 
     - name: Install Homebrew dependencies
-      if: matrix.dep == 'brew'
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew update --preinstall
-        brew tap na-trium-144/webcface
-        brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true
-    - name: Install Nasm
-      if: matrix.dep == 'framework'
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
-      run: |
-        brew update --preinstall
-        brew install nasm
+        brew install meson
+        if [[ ${{matrix.dep}} = brew ]]; then brew tap na-trium-144/webcface; fi
+        if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv na-trium-144/webcface/imagemagick-no-openmp na-trium-144/webcface/curl-ws na-trium-144/webcface/crow-unix-socket || true; fi
+    # - name: Install Nasm
+    #   if: matrix.dep == 'framework'
+    #   env:
+    #     HOMEBREW_NO_AUTO_UPDATE: 1
+    #   run: |
+    #     brew update --preinstall
 
-    - name: Configure CMake
+    - name: Setup Meson
       run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=on
-        -DWEBCFACE_EXAMPLE=on
-        -DWEBCFACE_TEST_TIMEOUT=1000
-        "-DWEBCFACE_SHARED=$([[ ${{matrix.dep}} = static ]]; echo $?)"
-        "-DWEBCFACE_FIND_OPENCV=$([[ ${{matrix.dep}} != brew ]]; echo $?)"
-        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
-        "-DCMAKE_PREFIX_PATH=$(brew --prefix)/opt/imagemagick-no-openmp;$(brew --prefix)/opt/curl-ws;$(brew --prefix)/opt/crow-unix-socket"
-        "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
-        "-DWEBCFACE_FIND_LIBS=$([[ ${{matrix.dep}} = submodule || ${{matrix.dep}} = static || ${{matrix.dep}} = framework ]]; echo $?)"
-        "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
-
-    - name: Build
-      run: cmake --build build -t install
-
+        meson setup build
+        --buildtype=debug
+        $([[ ${{matrix.dep}} = brew ]] && echo "-Dwrap_mode=default")
+        -Dtest_wait=1000
+        $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
+        --prefix=${{github.workspace}}/build/install
+        "-Dpkg_config_path=['$(brew --prefix)/opt/imagemagick-no-openmp/lib/pkgconfig','$(brew --prefix)/opt/curl-ws/lib/pkgconfig']"
+        "-Dcmake_prefix_path=['$(brew --prefix)/opt/crow-unix-socket']"
+      # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
+      # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
     - name: Test
-      env:
-        WEBCFACE_TRACE: 1
-      working-directory: ${{github.workspace}}/build
-      run: ctest --output-on-failure --timeout 100
+      run: meson test -C build --print-errorlog
 
     - name: Check Exported Symbol
-      if: matrix.dep == 'submodule'
+      if: matrix.dep == 'source'
       run: |
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep -v St"
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep spdlog"
@@ -70,7 +62,11 @@ jobs:
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep asio"
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep utf8"
 
+    - name: install
+      run: meson install -C build
+
     - name: Test CMake with installed package
+      if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
@@ -86,9 +82,9 @@ jobs:
         clang++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
         clang -std=c99 test.c $(pkg-config --cflags --libs webcface) -lc++
 
-    - name: Test building using framework
-      if: matrix.dep == 'framework'
-      working-directory: ${{github.workspace}}/.github/test
-      run: |
-        clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
-        clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface
+    # - name: Test building using framework
+    #   if: matrix.dep == 'framework'
+    #   working-directory: ${{github.workspace}}/.github/test
+    #   run: |
+    #     clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
+    #     clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface

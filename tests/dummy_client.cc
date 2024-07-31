@@ -105,5 +105,5 @@ DummyClient::DummyClient(bool use_unix)
 
 void DummyClient::send(std::string msg) {
     std::lock_guard lock(client_m);
-    msg_queue.push(msg);
+    msg_queue.push(std::move(msg));
 }

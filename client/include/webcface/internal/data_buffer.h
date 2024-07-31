@@ -1,6 +1,5 @@
 #pragma once
 #include "webcface/robot_link.h"
-#include "webcface/common/def.h"
 #include "webcface/view.h"
 #include "webcface/components.h"
 #include <sstream>
@@ -33,6 +32,7 @@ class DataSetBuffer {
         try {
             onDestroy();
         } catch (...) {
+            // ignore exception
         }
     }
     void onDestroy() {
@@ -163,6 +163,7 @@ class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
         try {
             onDestroy();
         } catch (...) {
+            // ignore exception
         }
     }
 };

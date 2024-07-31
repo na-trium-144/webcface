@@ -105,8 +105,8 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
                                              const SharedString &field,
                                              const ReqT &info) {
     std::lock_guard lock(mtx);
-    if (!isSelf(member) && (req[member][field] == 0 ||
-                            this->req_info[member][field] != info)) {
+    if (!isSelf(member) &&
+        (req[member][field] == 0 || this->req_info[member][field] != info)) {
         unsigned int max_req = 0;
         for (const auto &r : req) {
             for (const auto &r2 : r.second) {

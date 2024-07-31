@@ -1,5 +1,11 @@
 #pragma once
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
+#include <spdlog/common.h>
+#include <spdlog/logger.h>
 #include <condition_variable>
 #include <mutex>
 #include <memory>
@@ -14,7 +20,7 @@ struct MemberData;
 
 using wsConnPtr = void *;
 
-void WEBCFACE_CALL initMagick();
+void initMagick();
 
 class Server {
     std::atomic<bool> server_stop;
@@ -35,7 +41,9 @@ class Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(std::uint16_t port, int level, int keep_log = 1000);
+    Server(std::uint16_t port, int level, int keep_log = 1000,
+           spdlog::sink_ptr sink = nullptr,
+           std::shared_ptr<spdlog::logger> logger = nullptr);
     ~Server();
     void join();
 

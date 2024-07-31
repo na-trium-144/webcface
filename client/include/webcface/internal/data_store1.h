@@ -1,14 +1,13 @@
 #pragma once
 #include <mutex>
 #include <optional>
-#include "webcface/common/def.h"
 #include "webcface/log.h"
 #include "webcface/encoding/encoding.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
 template <typename T>
-class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
+class SyncDataStore1 {
     StrMap1<T> data_recv;
     StrMap1<bool> req;
     StrMap1<bool> req_send;
@@ -41,12 +40,9 @@ class WEBCFACE_DLL_TEMPLATE SyncDataStore1 {
 };
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore1<std::string>; // test用
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL
-    SyncDataStore1<std::chrono::system_clock::time_point>;
+extern template class SyncDataStore1<std::string>; // test用
+extern template class SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>>;
+extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 
 } // namespace internal

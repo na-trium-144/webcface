@@ -351,5 +351,4 @@ wcfStatus wcfFuncRejectW(const wcfFuncCallHandleW *handle,
 }
 
 // todo: args, returnType の取得と設定
-
 }

@@ -6,7 +6,11 @@
 #include <stdexcept>
 #include "field.h"
 #include "webcface/encoding/val_adaptor.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN
@@ -81,9 +85,9 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * すでにresultに値または例外が入っている場合は即座にcallbackが呼ばれる。
      *
      */
-    AsyncFuncResult &
-    onResult(std::function<void WEBCFACE_CALL_FP(std::shared_future<ValAdaptor>)>
-                 callback);
+    AsyncFuncResult &onResult(
+        std::function<void WEBCFACE_CALL_FP(std::shared_future<ValAdaptor>)>
+            callback);
 
     using Field::member;
     using Field::name;

@@ -19,7 +19,6 @@
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
-#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -27,18 +26,14 @@ class Log;
 
 namespace internal {
 
-WEBCFACE_DLL void WEBCFACE_CALL
-wsThreadMain(const std::shared_ptr<ClientData> &data);
-WEBCFACE_DLL void WEBCFACE_CALL
-recvThreadMain(const std::shared_ptr<ClientData> &data);
+void wsThreadMain(const std::shared_ptr<ClientData> &data);
+void recvThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
-    WEBCFACE_DLL explicit ClientData(const SharedString &name,
-                                     const SharedString &host = nullptr,
-                                     int port = -1);
+    explicit ClientData(const SharedString &name,
+                        const SharedString &host = nullptr, int port = -1);
 
-    WEBCFACE_DLL void close();
-    WEBCFACE_DLL ~ClientData();
+    void close();
 
     /*!
      * \brief Client自身の名前
@@ -137,12 +132,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief 通信関係のスレッドを開始する
      *
      */
-    WEBCFACE_DLL void start();
+    void start();
     /*!
      * \brief threadを待機 (close時)
      *
      */
-    WEBCFACE_DLL void join();
+    void join();
 
     /*!
      * \brief recv_queueのメッセージを処理する
@@ -152,8 +147,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * * timeoutがnulloptならclosingまで永遠にreturnしない
      *
      */
-    WEBCFACE_DLL void
-    recvImpl(std::optional<std::chrono::microseconds> timeout);
+    void recvImpl(std::optional<std::chrono::microseconds> timeout);
 
     /*!
      * \brief 初期化時に送信するメッセージ
@@ -163,7 +157,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * ws接続直後に送信される
      *
      */
-    WEBCFACE_DLL std::string syncDataFirst();
+    std::string syncDataFirst();
     /*!
      * \brief sync() 1回分のメッセージ
      *
@@ -174,14 +168,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * (syncDataFirst()内から呼ばれる)
      *
      */
-    WEBCFACE_DLL std::string syncData(bool is_first);
-    WEBCFACE_DLL std::string syncData(bool is_first, std::stringstream &buffer,
-                                      int &len);
+    std::string syncData(bool is_first);
+    std::string syncData(bool is_first, std::stringstream &buffer, int &len);
     /*!
      * \brief 受信時の処理
      *
      */
-    WEBCFACE_DLL void onRecv(const std::string &message);
+    void onRecv(const std::string &message);
 
     std::mutex entry_m;
     StrSet1 member_entry;
@@ -283,7 +276,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief ping_status_reqをtrueにしmessage_queueに投げる
      *
      */
-    WEBCFACE_DLL void pingStatusReq();
+    void pingStatusReq();
 };
 } // namespace internal
 WEBCFACE_NS_END

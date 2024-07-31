@@ -3,7 +3,11 @@
 #include <stdexcept>
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 

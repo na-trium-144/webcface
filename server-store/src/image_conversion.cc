@@ -2,7 +2,11 @@
 #include "webcface/server/store.h"
 #include "webcface/server/server.h"
 #include "webcface/message/message.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include <Magick++.h>
 
 WEBCFACE_NS_BEGIN

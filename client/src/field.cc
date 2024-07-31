@@ -10,7 +10,11 @@
 #include "webcface/canvas3d.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 Member Field::member() const { return *this; }

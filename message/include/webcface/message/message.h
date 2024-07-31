@@ -19,7 +19,6 @@
 #include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
-#include "webcface/common/def.h"
 #include "webcface/message/u8string.h"
 #include "webcface/message/val_adaptor.h"
 #include "webcface/encoding/image_mode.h"
@@ -87,7 +86,7 @@ struct MessageBase {
  * serverはmember_idを振り、
  * member_nameが空でなかった場合は他の全クライアントにmember_idとaddrを載せて通知する
  */
-struct WEBCFACE_DLL SyncInit : public MessageBase<MessageKind::sync_init> {
+struct SyncInit : public MessageBase<MessageKind::sync_init> {
     /*!
      * \brief member名
      *
@@ -121,8 +120,7 @@ struct WEBCFACE_DLL SyncInit : public MessageBase<MessageKind::sync_init> {
  * serverはSyncInitを受信してEntryをすべて送信し終わった後にこれを返す
  *
  */
-struct WEBCFACE_DLL SyncInitEnd
-    : public MessageBase<MessageKind::sync_init_end> {
+struct SyncInitEnd : public MessageBase<MessageKind::sync_init_end> {
     /*!
      * \brief serverの名前
      *
@@ -159,14 +157,14 @@ struct WEBCFACE_DLL SyncInitEnd
  * (送り返さなくても何も起きないが)
  *
  */
-struct WEBCFACE_DLL Ping : public MessageBase<MessageKind::ping> {
+struct Ping : public MessageBase<MessageKind::ping> {
     Ping() = default;
 };
 /*!
  * \brief 各クライアントのping状況 (server->client)
  *
  */
-struct WEBCFACE_DLL PingStatus : public MessageBase<MessageKind::ping_status> {
+struct PingStatus : public MessageBase<MessageKind::ping_status> {
     /*!
      * \brief member_id: ping応答時間(ms) のmap
      *
@@ -180,8 +178,7 @@ struct WEBCFACE_DLL PingStatus : public MessageBase<MessageKind::ping_status> {
  * これを送ると以降serverが一定間隔でPingStatusを送り返す
  *
  */
-struct WEBCFACE_DLL PingStatusReq
-    : public MessageBase<MessageKind::ping_status_req> {
+struct PingStatusReq : public MessageBase<MessageKind::ping_status_req> {
     PingStatusReq() = default;
 };
 /*!
@@ -193,7 +190,7 @@ struct WEBCFACE_DLL PingStatusReq
  * member_idを載せて送る
  *
  */
-struct WEBCFACE_DLL Sync : public MessageBase<MessageKind::sync> {
+struct Sync : public MessageBase<MessageKind::sync> {
     unsigned int member_id; //!< member id
     /*!
      * \brief 1970/1/1 0:00(utc) からの経過ミリ秒数で表し、閏秒はカウントしない
@@ -222,7 +219,7 @@ struct WEBCFACE_DLL Sync : public MessageBase<MessageKind::sync> {
  * serverはcaller_member_idをつけてreceiverに送る
  *
  */
-struct WEBCFACE_DLL Call : public MessageBase<MessageKind::call> {
+struct Call : public MessageBase<MessageKind::call> {
     using CallerId = std::size_t;
     using MemberId = unsigned int;
 
@@ -254,8 +251,7 @@ struct WEBCFACE_DLL Call : public MessageBase<MessageKind::call> {
  * serverはそれをそのままcallerに送る
  *
  */
-struct WEBCFACE_DLL CallResponse
-    : public MessageBase<MessageKind::call_response> {
+struct CallResponse : public MessageBase<MessageKind::call_response> {
     std::size_t caller_id;
     unsigned int caller_member_id;
     bool started; //!< 関数の実行を開始したかどうか
@@ -275,7 +271,7 @@ struct WEBCFACE_DLL CallResponse
  * serverはそれをそのままcallerに送る
  *
  */
-struct WEBCFACE_DLL CallResult : public MessageBase<MessageKind::call_result> {
+struct CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
     unsigned int caller_member_id;
     bool is_error;
@@ -284,17 +280,17 @@ struct WEBCFACE_DLL CallResult : public MessageBase<MessageKind::call_result> {
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result))
 };
-struct WEBCFACE_DLL Value : public MessageBase<MessageKind::value> {
+struct Value : public MessageBase<MessageKind::value> {
     SharedString field;
     std::shared_ptr<std::vector<double>> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
-struct WEBCFACE_DLL Text : public MessageBase<MessageKind::text> {
+struct Text : public MessageBase<MessageKind::text> {
     SharedString field;
     std::shared_ptr<ValAdaptor> data;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
-struct WEBCFACE_DLL RobotLink {
+struct RobotLink {
     SharedString name;
     SharedString joint_name;
     int joint_parent;
@@ -326,7 +322,7 @@ struct WEBCFACE_DLL RobotLink {
                        MSGPACK_NVP("gp", geometry_properties),
                        MSGPACK_NVP("c", color))
 };
-struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
+struct RobotModel : public MessageBase<MessageKind::robot_model> {
     SharedString field;
     std::shared_ptr<std::vector<RobotLink>> data;
     RobotModel() = default;
@@ -335,7 +331,7 @@ struct WEBCFACE_DLL RobotModel : public MessageBase<MessageKind::robot_model> {
         : field(field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
-struct WEBCFACE_DLL ViewComponent {
+struct ViewComponent {
     int type = 0;
     SharedString text;
     std::optional<SharedString> on_click_member, on_click_field;
@@ -354,7 +350,7 @@ struct WEBCFACE_DLL ViewComponent {
                        MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
                        MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_))
 };
-struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
+struct View : public MessageBase<MessageKind::view> {
     SharedString field;
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
     std::size_t length = 0;
@@ -379,7 +375,7 @@ struct WEBCFACE_DLL View : public MessageBase<MessageKind::view> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-struct WEBCFACE_DLL Canvas3DComponent {
+struct Canvas3DComponent {
     int type = 0;
     std::array<double, 3> origin_pos, origin_rot;
     int color = 0;
@@ -395,7 +391,7 @@ struct WEBCFACE_DLL Canvas3DComponent {
                        MSGPACK_NVP("fm", field_member),
                        MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
 };
-struct WEBCFACE_DLL Canvas3D : public MessageBase<MessageKind::canvas3d> {
+struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
     std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
         data_diff;
@@ -421,7 +417,7 @@ struct WEBCFACE_DLL Canvas3D : public MessageBase<MessageKind::canvas3d> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-struct WEBCFACE_DLL Canvas2DComponent {
+struct Canvas2DComponent {
     int type = 0;
     std::array<double, 2> origin_pos;
     double origin_rot;
@@ -444,7 +440,7 @@ struct Canvas2DData {
     double width = 0, height = 0;
     std::vector<Canvas2DComponent> components;
 };
-struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
+struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
     std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
@@ -473,14 +469,13 @@ struct WEBCFACE_DLL Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
 };
-struct WEBCFACE_DLL ImageFrame {
+struct ImageFrame {
     int width_, height_;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
 };
-struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image>,
-                            public ImageFrame {
+struct Image : public MessageBase<MessageKind::image>, public ImageFrame {
     SharedString field;
     Image() = default;
     Image(const SharedString &field, const ImageFrame &img)
@@ -491,7 +486,7 @@ struct WEBCFACE_DLL Image : public MessageBase<MessageKind::image>,
                        MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
 };
-struct WEBCFACE_DLL LogLine {
+struct LogLine {
     int level_ = 0;
     /*!
      * \brief 1970/1/1からの経過ミリ秒
@@ -513,7 +508,7 @@ struct WEBCFACE_DLL LogLine {
  * client->server時はmemberは無視
  *
  */
-struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
+struct Log : public MessageBase<MessageKind::log> {
     unsigned int member_id = 0;
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;
@@ -536,7 +531,7 @@ struct WEBCFACE_DLL Log : public MessageBase<MessageKind::log> {
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log))
 };
-struct WEBCFACE_DLL LogReq : public MessageBase<MessageKind::log_req> {
+struct LogReq : public MessageBase<MessageKind::log_req> {
     SharedString member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member))
 };
@@ -546,7 +541,7 @@ struct WEBCFACE_DLL LogReq : public MessageBase<MessageKind::log_req> {
  * client->server時はmemberは無視
  *
  */
-struct WEBCFACE_DLL Arg {
+struct Arg {
     SharedString name_;
     ValType type_ = ValType::none_;
     std::optional<ValAdaptor> init_ = std::nullopt;
@@ -562,7 +557,7 @@ struct WEBCFACE_DLL Arg {
                        MSGPACK_NVP("i", init_), MSGPACK_NVP("m", min_),
                        MSGPACK_NVP("x", max_), MSGPACK_NVP("o", option_))
 };
-struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
+struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     SharedString field;
     ValType return_type;
@@ -582,8 +577,7 @@ struct WEBCFACE_DLL FuncInfo : public MessageBase<MessageKind::func_info> {
  *
  */
 template <typename T>
-struct WEBCFACE_DLL_TEMPLATE Req
-    : public MessageBase<T::kind + MessageKind::req> {
+struct Req : public MessageBase<T::kind + MessageKind::req> {
     SharedString member;
     SharedString field;
     unsigned int req_id = 0;
@@ -591,14 +585,14 @@ struct WEBCFACE_DLL_TEMPLATE Req
                        MSGPACK_NVP("f", field))
 };
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Value>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Text>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<View>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Canvas2D>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<Canvas3D>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Req<RobotModel>;
+extern template struct Req<Value>;
+extern template struct Req<Text>;
+extern template struct Req<View>;
+extern template struct Req<Canvas2D>;
+extern template struct Req<Canvas3D>;
+extern template struct Req<RobotModel>;
 #endif
-struct WEBCFACE_DLL ImageReq {
+struct ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;
     std::optional<ImageColorMode> color_mode = std::nullopt;
     ImageCompressMode cmp_mode = ImageCompressMode::raw;
@@ -613,9 +607,8 @@ struct WEBCFACE_DLL ImageReq {
     bool operator!=(const ImageReq &rhs) const { return !(*this == rhs); }
 };
 template <>
-struct WEBCFACE_DLL Req<Image>
-    : public MessageBase<MessageKind::image + MessageKind::req>,
-      public ImageReq {
+struct Req<Image> : public MessageBase<MessageKind::image + MessageKind::req>,
+                    public ImageReq {
     SharedString member;
     SharedString field;
     unsigned int req_id;
@@ -638,20 +631,19 @@ struct WEBCFACE_DLL Req<Image>
  *
  */
 template <typename T>
-struct WEBCFACE_DLL_TEMPLATE Entry
-    : public MessageBase<T::kind + MessageKind::entry> {
+struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     unsigned int member_id = 0;
     SharedString field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Value>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Text>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<View>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Canvas2D>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Image>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<Canvas3D>;
-extern template struct WEBCFACE_DLL_INSTANCE_DECL Entry<RobotModel>;
+extern template struct Entry<Value>;
+extern template struct Entry<Text>;
+extern template struct Entry<View>;
+extern template struct Entry<Canvas2D>;
+extern template struct Entry<Image>;
+extern template struct Entry<Canvas3D>;
+extern template struct Entry<RobotModel>;
 #endif
 template <typename T>
 struct Res {};
@@ -663,8 +655,7 @@ struct Res {};
  *
  */
 template <>
-struct WEBCFACE_DLL Res<Value>
-    : public MessageBase<MessageKind::value + MessageKind::res> {
+struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<std::vector<double>> data;
@@ -676,8 +667,7 @@ struct WEBCFACE_DLL Res<Value>
                        MSGPACK_NVP("d", data))
 };
 template <>
-struct WEBCFACE_DLL Res<Text>
-    : public MessageBase<MessageKind::text + MessageKind::res> {
+struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<ValAdaptor> data;
@@ -689,7 +679,7 @@ struct WEBCFACE_DLL Res<Text>
                        MSGPACK_NVP("d", data))
 };
 template <>
-struct WEBCFACE_DLL Res<RobotModel>
+struct Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
@@ -702,8 +692,7 @@ struct WEBCFACE_DLL Res<RobotModel>
                        MSGPACK_NVP("d", data))
 };
 template <>
-struct WEBCFACE_DLL Res<View>
-    : public MessageBase<MessageKind::view + MessageKind::res> {
+struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
@@ -719,7 +708,7 @@ struct WEBCFACE_DLL Res<View>
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 template <>
-struct WEBCFACE_DLL Res<Canvas3D>
+struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
@@ -737,7 +726,7 @@ struct WEBCFACE_DLL Res<Canvas3D>
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 template <>
-struct WEBCFACE_DLL Res<Canvas2D>
+struct Res<Canvas2D>
     : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
@@ -759,9 +748,8 @@ struct WEBCFACE_DLL Res<Canvas2D>
 };
 
 template <>
-struct WEBCFACE_DLL Res<Image>
-    : public MessageBase<MessageKind::image + MessageKind::res>,
-      public ImageFrame {
+struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
+                    public ImageFrame {
     unsigned int req_id = 0;
     SharedString sub_field;
     Res() = default;
@@ -778,9 +766,9 @@ struct WEBCFACE_DLL Res<Image>
  * \brief msgpackのメッセージをパースしstd::anyで返す
  *
  */
-WEBCFACE_DLL std::vector<std::pair<int, std::any>>
-    WEBCFACE_CALL unpack(const std::string &message,
-                         const std::shared_ptr<spdlog::logger> &logger);
+std::vector<std::pair<int, std::any>>
+unpack(const std::string &message,
+       const std::shared_ptr<spdlog::logger> &logger);
 
 /*!
  * \brief メッセージ1つを要素数2の配列としてシリアル化

@@ -3,7 +3,11 @@
 #include <optional>
 #include <vector>
 #include "field.h"
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace message {
@@ -73,7 +77,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver2.0
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
-                                                  std::nullptr_t> = nullptr>
+                                                    std::nullptr_t> = nullptr>
     Log &onChange(F callback) {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });

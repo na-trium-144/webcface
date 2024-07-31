@@ -272,12 +272,15 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)
 
 ### Requirements
-* C++17に対応したコンパイラが必要です
-	* (ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました)
+
+* C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja が必要です
+	* ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました
+	* ビルドにはMesonを使用しますが、依存ライブラリにCMakeを使うものがあるのでそれもインストールする必要があります
+	* MSVC以外では make と pkg-config も必要です
 * Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
-* MinGWでもビルドできます。MSYS2のMINGW64環境でテストしていますがUCRT64やCLANG64環境でもビルドできると思います。
-* CygwinやMSYS2のMSYS環境ではasioが動作しない([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。CMake時に`-DWEBCFACE_SERVER=OFF`が必要です。
+* MinGWでもビルドできます。MSYS2のUCRT64環境でテストしていますがMINGW64やCLANG64環境でもビルドできると思います。
+* CygwinやMSYS2のMSYS環境ではasioが動作しない([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。
 	* asioはCygwin32bitでビルドできると主張しているが、32bitでもなぜかビルドできない<del>がissueを建てるのはめんどくさい</del>
 	* 仮にビルドできたとしても、curlが使用するCygwinのsocketとasioが使用するWin32のsocketが干渉して動かない気もします
 
@@ -295,30 +298,37 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 [Magick++](https://github.com/ImageMagick/ImageMagick),
 [GoogleTest](https://github.com/google/googletest)(testのみ)
 を使用します。
-* いずれもシステムにインストールされていてfind_packageなどで使うことができるか確認します。
-	* 特にsharedまたはstaticライブラリとしてビルドできるspdlog,libcurl,Magick++は事前にインストールしておいたほうがビルドが高速になります。
-		* ただしインストールされたlibcurl,Magick++を使用するには条件があります。(後述)
-	* 見つからない場合は、CMake時に自動的にFetchContentでソースコードを取得してビルドするので、必ずしもこれらをインストールする必要はありません。
-* また、`git submodule update --init` をしておくとsubmoduleとしてexternalディレクトリ以下に依存ライブラリをすべてcloneすることができます。その場合はFetchContentでのダウンロードはされません。
-	* ダウンロード量は増えますが、インターネット接続のないところでcmakeをしたい場合などに有用です。
-	* ただしMSVCの場合ImageMagick-Windowsリポジトリは例外として常にFetchContentを使います
-* システムにインストールされているものを使用した場合、ビルドしたWebCFaceはそのライブラリに依存することになります。
-一方FetchContentまたはsubmoduleでソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、外部ライブラリのシンボルがWebCFace内部に隠されます。
+* デフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします。
+	* 依存ライブラリをソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、外部ライブラリのシンボルがWebCFace内部に隠されます。
 	* そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。
-		* CMake時に`-DWEBCFACE_FIND_LIBS=OFF`とすることですべてソースからビルドさせることができます。
-* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合使用せずソースからビルドします。
-* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合使用せずソースからビルドします
-* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合使用せずソースからビルドします
-* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでほぼ必要ないと思います。
+* しかし、オプションでインストールされたものを探して使うようにすることもできます。
+	* 特にsharedまたはstaticライブラリとしてビルドできるspdlog,libcurl,Magick++は事前にインストールしておいたほうがビルドが高速になります。
+	* システムにインストールされているものを使用した場合、ビルドしたWebCFaceはそのライブラリに依存することになります。
+* libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合エラーになります。
+* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合エラーになります。
+* Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合エラーになります、
+* OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。
 
 <details><summary>Ubuntu</summary>
 
 ```sh
-sudo apt install build-essential git cmake pkg-config
+sudo apt install build-essential git cmake pkg-config ninja-build
+```
+* ubuntu24.04
+```sh
+sudo apt install meson  # (only on 24.04)
+```
+* ubuntu22.04またはそれ以前ではaptでインストールできるmesonは古いので
+```sh
+sudo apt install python3-pip
+pip install meson
+```
+
+```sh
 # optional:
-sudo apt install libspdlog-dev libasio-dev
-sudo apt install libcli11-dev # only on 22.04 or later
-sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
+# sudo apt install libspdlog-dev libasio-dev
+# sudo apt install libcli11-dev        # (only on 22.04 or later)
+# sudo apt install libmsgpack-cxx-dev  # (only on 24.04 or later)
 ```
 
 </details>
@@ -326,18 +336,23 @@ sudo apt install libmsgpack-cxx-dev # only on 24.04 or later
 <details><summary>Homebrew (MacOS, Linux)</summary>
 
 ```sh
-brew install cmake nasm
+brew install cmake meson ninja
 # optional:
-brew install msgpack-cxx spdlog asio cli11 utf8cpp
+# brew install msgpack-cxx spdlog asio cli11 utf8cpp
 ```
-libjpegをソースからビルドする際にnasmがあるとよいです
 
 </details>
 
 <details><summary>Visual Studio</summary>
 
-Visual Studio 2019 または 2022 でcloneしたwebcfaceのフォルダーを開くか、
-Developer Command Promptからcmakeコマンドを使ってもビルドできます。
+* Visual Studio 2019 または 2022 をインストールしてください。
+	* ImageMagickをソースからビルドするために Visual C++ ATL と MFC のコンポーネントも必要になります。
+	* 2017でもビルドできるかもしれません(未確認)
+* MesonとNinjaをインストールしてください。
+	* https://github.com/mesonbuild/meson/releases からmsi形式でダウンロード、インストールできます
+	(see also https://mesonbuild.com/Getting-meson.html)
+	* または `choco install meson`
+* Visual Studio の Developer Command Prompt からmesonコマンドを起動してください。
 
 <!--
 https://imagemagick.org/script/download.php からImageMagickをダウンロード、インストールしてPATHを通せばそれを使用してビルドすることができます。
@@ -346,8 +361,6 @@ https://imagemagick.org/script/download.php からImageMagickをダウンロー�
 または、chocolateyをインストールしてあれば `choco install imagemagick -PackageParameters InstallDevelopmentHeaders=true` でok
 ImageMagickをインストールしない場合CMake時に自動的にソースをダウンロードしてビルドします。
 -->
-ImageMagickをソースからビルドするために Visual C++ ATL と MFC のコンポーネントも必要になります。
-(Visual Studio Installer からインストールしてください)  
 公式サイトからダウンロードできるImageMagickはOpenMPを使ってビルドされているため、インストールされていても使いません。
 (またはImageMagickを別途 /noOpenMP オプション付きでビルドしたものを用意しPATHを通せばそれを使用することは可能です)
 
@@ -357,81 +370,85 @@ ImageMagickをソースからビルドするために Visual C++ ATL と MFC の
 
 ```sh
 pacman -S pactoys
-pacboy -S git make gcc:p cmake:p ninja:p
+pacboy -S git make gcc:p cmake:p ninja:p meson:p
 # optional:
-pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p
+# pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p
 ```
-imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
 </details>
 
 <details><summary>MSYS2 MSYS</summary>
 
 ```sh
-pacman -S git make gcc cmake ninja
+pacman -S git make gcc cmake ninja meson
 ```
-imagemagickをソースからビルドする際にninjaではなくmakeが必要になります
 
 </details>
 
 <details><summary>Cygwin</summary>
 
-gcc-core, gcc-g++, cmake, make, pkg-config, (ninja) をインストールしてください
-(ninjaでもいいですが、imagemagickをソースからビルドする際にはninjaではなくmakeが必要になります)
+gcc-core, gcc-g++, cmake, make, meson, pkg-config, ninja をインストールしてください
 
 </details>
 
-### CMake
+### Build with Meson
 
 ```sh
-cmake -Bbuild
+meson setup build
 ```
-* ImageMagickなど、CMakeを使わない依存ライブラリのビルドはCMake時に行われます。そのため初回のCMakeで大量のログ出力が流れ時間もかかりますが仕様です。
-* CMakeの最後に `** WebCFace (バージョン番号) Summary**` と指定されているオプション、依存ライブラリの状態がまとめて表示されます。
-* BUILD_TYPEは `-DCMAKE_BUILD_TYPE=Release` または `-DCMAKE_BUILD_TYPE=Debug` を指定してください (デフォルトはRelease)
-	* Windows(MSVC)ではImageMagickをソースからビルドする際デフォルトでは`CMAKE_BUILD_TYPE`に指定したconfigurationのみビルドされますが、DebugとReleaseの両方をビルドしたい場合は `-DWEBCFACE_CONFIG_ALL=ON` を指定してください
-* `-DWEBCFACE_SHARED=OFF`にすると共有ライブラリではなくすべて静的ライブラリになります
-* `-DWEBCFACE_PIC=ON`または`-DCMAKE_POSITION_INDEPENDENT_CODE=ON`にすると-fPICフラグが有効になります (Linux,Macのみ、WEBCFACE_SHAREDがONの場合はデフォルトでON)
-* `-DWEBCFACE_FRAMEWORK=ON`, `"-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"` などとするとユニバーサルなframework (webcface.framework) をビルド、インストールできます
-* `-DWEBCFACE_SERVER=ON`でserverをビルドします(デフォルトでON)
-* `-DWEBCFACE_EXAMPLE=ON`でexampleをビルドします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
-* `-DWEBCFACE_INSTALL=ON`でinstallターゲットを生成します(デフォルトでON、subdirectoryの場合デフォルトでOFF)
-	* さらに`-DWEBCFACE_INSTALL_SERVICE=ON`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)
-	* インストール先はデフォルトで /usr/local ですが、 `-DCMAKE_INSTALL_PREFIX=~/.webcface` などと指定すると変更することができます
-* `-DWEBCFACE_TEST=ON`でtestをビルドします(デフォルトでOFF)
-	* テストが通らない場合テスト中の通信の待機時間を`-DWEBCFACE_TEST_TIMEOUT=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
-* `-DWEBCFACE_VERSION_SUFFIX`でバージョン表記を変更できます
-	* 例えばバージョン(common/def.hに定義されている)が1.2.0のとき
-	* `-DWEBCFACE_VERSION_SUFFIX=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
-	* `git`以外の任意の文字列の場合 `-DWEBCFACE_VERSION_SUFFIX=hoge` で 1.2.0-hoge になります
-	* `-DWEBCFACE_VERSION_SUFFIX=` で 1.2.0 だけになります
-* `-DWEBCFACE_WARNING=ON`でコンパイラのWarningをすべてONにし、さらにほとんどのWarningをErrorにします(デフォルトでON、subdirectoryの場合デフォルトでOFF)
-* `-DWEBCFACE_CLANG_TIDY=/path/to/clang-tidy`でコンパイル時にclang-tidyのチェックを実行します(空文字列で無効、デフォルトで無効)
-	* チェックの設定は .clang-tidy ファイル参照
-* `-DWEBCFACE_DOWNLOAD_WEBUI=ON`でCMake時にWebUIをダウンロードします。(デフォルトでON、subdirectoryの場合デフォルトでOFF)
-* 依存ライブラリ
-	* `-DWEBCFACE_FIND_(ライブラリ)=OFF` にするとfind_packageなどで依存ライブラリを確認せず、常にソースからビルドするようになります。
-	* 設定可能なライブラリ名は以下
-		* `MSGPACK`, `SPDLOG`, `EVENTPP`, `CURL`, `CROW`, `ASIO`, `CLI11`, `UTF8CPP`, `MAGICK`
-		* `OPENCV` (デフォルトでoff、見つからなかった場合ソースからのビルドもしません)
-		* Magickをソースビルドする場合のみ: `JPEG`, `PNG`, `ZLIB`, `WEBP`
-	* `-DWEBCFACE_FIND_LIBS=OFF` とすると上記設定をすべてOFFにします
-		* WEBCFACE_SHAREDがOFFの場合デフォルトでOFF
+* Visual Studio の場合 `--backend vs` を指定すると Visual Studio のプロジェクトファイルを生成します
+* buildtypeを変更するには `--buildtype=release` または `--buildtype-debug` を指定してください
+(WebCFaceがsubprojectでない場合デフォルトでrelease)
+* staticライブラリをビルドするには `-Ddefault_library=static` を指定してください
+	* `default_library=both` は現在非対応です
+* `cpp_std`はc++17以上が必要です。またcygwinではgnu++17が必要です。
+(WebCFaceがsubprojectでない場合デフォルトはgnu++17,c++17)
+* `warning_level`は3以下であればビルドできるはずです
+(WebCFaceがsubprojectでない場合デフォルトで3)。
+	* todo: `warning_level=everything` でビルドできるかは未確認です。
+* `-Dserver=disabled` でserverのビルドをオフ、 `enabled` でオンにできます
+(デフォルト(auto)はWebCFaceがsubprojectでない and cygwinでない 場合のみenabledになります)
+* `-Dexamples=disabled` でexampleのビルドをオフ、 `enabled` でオンにできます
+(デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)
+* `-Dtests=disabled` でexampleのビルドをオフ、 `enabled` でオンにできます
+(デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)
+	* テストが通らない場合テスト中の通信の待機時間を `-Dtest_wait=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))
+* インストール先はデフォルトで /usr/local ですが、 `--prefix=~/.webcface` などと指定すると変更することができます
+<!--
+* `-Dinstall_service=true`で [webcface-server.service](cmake/webcafce-server.service) を lib/systemd/system にインストールします (デフォルトでOFF)
+-->
+* `-Dversion_suffix`でバージョン表記を変更できます
+	* 例えばバージョンが1.2.0のとき
+	* `-Dversion_suffix=git` なら `git describe --tags` コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)
+	* `git`以外の任意の文字列の場合 `-Dversion_suffix=hoge` で 1.2.0-hoge になります
+	* `-Dversion_suffix=` で 1.2.0 だけになります
+* デフォルトでは最新のWebUIがbuildディレクトリにダウンロードされます。
+`-Ddownload_webui=enabled` とするとダウンロードできなかった場合エラーになり、
+`disabled` にするとダウンロードしません。
+* WebCFaceがsubprojectでない場合、依存ライブラリはデフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします(`wrap_mode=forcefallback`)。
+	* `-Dwrap_mode=default` とするとインストールされたものを探して使用します。
+		* ただしlibcurl,Magick++,Crowはインストールされているものが使用できない場合エラーになるため、その場合は
+		`"-Dforce_fallback_for=['libcurl','Magick++','Crow']"`
+		などとして除外するとよいです。
 
-### Build
+setupが成功したら
+```sh
+meson compile -C build
+```
+でビルドします。
+* Magick++-7.Q8 が見つからない などというエラーになった場合、そのまま再度compileをやり直すと成功する場合があります
+(Mesonのバグ?)
 
 ```sh
-cmake --build build
+meson test -C build
 ```
-でビルドします
-(Windows(MSVC)の場合は `--config Release` または `--config Debug` を追加してください。)
+でテストを実行できます。
 
-インストールもしたい場合は
 ```sh
-sudo cmake --build build -t install
+meson install -C build --skip-subprojects
 ```
-でできます
-(Windows(MSVC)の場合は `--config Release` または `--config Debug` を追加してください。)
+でsetup時に指定したディレクトリにインストールできます。
+(staticライブラリの場合は `--skip-subprojects` を使用せず、依存ライブラリもインストールした方がいいかも)
 
 ### WebUI
 

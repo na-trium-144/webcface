@@ -28,7 +28,8 @@ int main() {
               << " => ";
             if (input_toggle == "visible") {
                 // テキストの表示、非表示
-                v << webcface::text("hello!").textColor(webcface::ViewColor::blue);
+                v << webcface::text("hello!").textColor(
+                    webcface::ViewColor::blue);
             }
             v << std::endl;
 

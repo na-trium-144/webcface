@@ -91,9 +91,11 @@ const std::string &ValAdaptor::asU8StringRef() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
-            as_str = SharedString::fromU8String(std::to_string(std::get<DOUBLEV>(as_val)));
+            as_str = SharedString::fromU8String(
+                std::to_string(std::get<DOUBLEV>(as_val)));
         } else {
-            as_str = SharedString::fromU8String(std::to_string(std::get<INT64V>(as_val)));
+            as_str = SharedString::fromU8String(
+                std::to_string(std::get<INT64V>(as_val)));
         }
     }
     return as_str.u8String();

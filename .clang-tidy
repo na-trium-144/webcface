@@ -8,7 +8,8 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -clang-analyzer-optin.performance.Padding,
   -performance-enum-size,
-  -bugprone-unchecked-optional-access
+  -bugprone-unchecked-optional-access,
+  -performance-avoid-endl
 WarningsAsErrors: '*'
 CheckOptions:
     - key: bugprone-empty-catch.IgnoreCatchWithKeywords

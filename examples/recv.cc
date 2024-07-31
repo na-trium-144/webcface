@@ -11,13 +11,13 @@ int main() {
     webcface::Client c("example_recv");
     c.onMemberEntry([](webcface::Member m) {
         std::cout << "member entry " << m.name() << std::endl;
-        m.onValueEntry([](webcface::Value v) {
+        m.onValueEntry([](const webcface::Value &v) {
             std::cout << "value entry " << v.name() << std::endl;
         });
-        m.onTextEntry([](webcface::Text v) {
+        m.onTextEntry([](const webcface::Text &v) {
             std::cout << "text entry " << v.name() << std::endl;
         });
-        m.onFuncEntry([](webcface::Func f) {
+        m.onFuncEntry([](const webcface::Func &f) {
             std::cout << "func entry " << f.name() << " arg: ";
             auto args = f.args();
             for (std::size_t i = 0; i < args.size(); i++) {
@@ -48,10 +48,11 @@ int main() {
         func_m.func("func1").runAsync();
         // example_mainのfunc2を実行し結果を取得
         auto result = func_m.func("func2").runAsync(9, 7.1, false, "");
-        result.onResult([](std::shared_future<webcface::ValAdaptor> result) {
-            std::cout << "func2(9, 7.1, false, \"\") = "
-                      << result.get().asStringRef() << std::endl;
-        });
+        result.onResult(
+            [](const std::shared_future<webcface::ValAdaptor> &result) {
+                std::cout << "func2(9, 7.1, false, \"\") = "
+                          << result.get().asStringRef() << std::endl;
+            });
 
         func_m.func("func_bool").runAsync(true);
         func_m.func("func_int").runAsync(1);

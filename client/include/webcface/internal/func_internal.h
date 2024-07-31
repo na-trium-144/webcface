@@ -2,7 +2,6 @@
 #include <mutex>
 #include "webcface/func_info.h"
 #include "webcface/func_result.h"
-#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -10,8 +9,7 @@ namespace internal {
  * \brief AsyncFuncResultのデータを保持するクラス
  *
  */
-class WEBCFACE_DLL AsyncFuncState
-    : public std::enable_shared_from_this<AsyncFuncState> {
+class AsyncFuncState : public std::enable_shared_from_this<AsyncFuncState> {
     std::recursive_mutex m;
     std::function<void(bool)> started_event;
     std::function<void(std::shared_future<ValAdaptor>)> result_event;
@@ -25,7 +23,6 @@ class WEBCFACE_DLL AsyncFuncState
     Field base;
 
   public:
-
     /*!
      * startedとresultを空の状態で初期化
      */
@@ -34,7 +31,7 @@ class WEBCFACE_DLL AsyncFuncState
           caller_id(caller_id), started_f(started_p.get_future().share()),
           result_f(result_p.get_future().share()), base(base) {}
 
-    AsyncFuncResult getter() ;
+    AsyncFuncResult getter();
     std::size_t callerId() const { return caller_id; }
 
     /*!
@@ -62,7 +59,8 @@ class WEBCFACE_DLL AsyncFuncState
     /*!
      * resultEventをセットしresultEventを呼ぶ
      */
-    void setResultEvent(std::function<void(std::shared_future<ValAdaptor>)> &&callback);
+    void setResultEvent(
+        std::function<void(std::shared_future<ValAdaptor>)> &&callback);
     /*!
      * startedとstartedEventが両方セットされていればコールバック発動
      */

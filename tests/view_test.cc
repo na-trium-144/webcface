@@ -105,7 +105,7 @@ TEST_F(ViewTest, viewSet) {
         manip_called++;
         EXPECT_EQ(&v, &v2);
     };
-    auto manip2 = [&](webcface::View v2) {
+    auto manip2 = [&](const webcface::View &v2) {
         manip_called++;
         EXPECT_EQ(v, v2);
     };

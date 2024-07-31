@@ -3,7 +3,11 @@
 #include <string>
 #include <string_view>
 #include <vector>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include "webcface/encoding/encoding.h"
 
 WEBCFACE_NS_BEGIN

@@ -1,7 +1,11 @@
 #pragma once
 #include <vector>
 #include <optional>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include "transform.h"
 #include "field.h"
 #include "webcface/component_view.h"
@@ -11,15 +15,6 @@ WEBCFACE_NS_BEGIN
 namespace message {
 struct Canvas2DComponent;
 }
-
-enum class Canvas2DComponentType {
-    geometry = 0,
-    text = 3,
-};
-
-#if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL IdBase<Canvas2DComponentType>;
-#endif
 
 /*!
  * \brief Canvas2Dの各要素を表すクラス。

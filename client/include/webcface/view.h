@@ -3,7 +3,11 @@
 #include <ostream>
 #include <memory>
 #include <utility>
-#include "webcface/common/def.h"
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 #include "components.h"
 
 WEBCFACE_NS_BEGIN

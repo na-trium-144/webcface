@@ -15,7 +15,7 @@
 using namespace webcface;
 
 // 同じ実装がserver-internalにあるがimportもincludeもできないのでコピペしている
-static spdlog::level::level_enum convertLevel(int level) {
+static inline spdlog::level::level_enum convertLevel(int level) {
     switch (level) {
     case 4:
         return spdlog::level::critical;
@@ -43,7 +43,7 @@ class CustomLogger : public crow::ILogHandler {
 };
 
 DummyServer::~DummyServer() {
-    std::static_pointer_cast<crow::SimpleApp>(server_)->stop();
+    static_cast<crow::SimpleApp *>(server_)->stop();
     t.join();
 }
 DummyServer::DummyServer(bool use_unix)
@@ -53,24 +53,23 @@ DummyServer::DummyServer(bool use_unix)
               spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
           dummy_logger->set_level(spdlog::level::trace);
 
-          auto crow_logger =
+          static auto crow_logger =
               spdlog::stdout_color_mt("crow_server_" + std::to_string(sn++));
           crow_logger->set_level(spdlog::level::trace);
-          static std::unique_ptr<CustomLogger> crow_custom_logger;
-          auto crow_logger_callback = [crow_logger](const char *data,
-                                                    unsigned long long size,
-                                                    int level) {
-              crow_logger->log(convertLevel(level), std::string(data, size));
-          };
-          crow_custom_logger =
-              std::make_unique<CustomLogger>(crow_logger_callback);
-          crow::logger::setHandler(crow_custom_logger.get());
+          static auto crow_logger_callback =
+              [](const char *data, unsigned long long size, int level) {
+                  crow_logger->log(
+                      convertLevel(level),
+                      std::string(data, static_cast<std::size_t>(size)));
+              };
+          static CustomLogger crow_custom_logger(crow_logger_callback);
+          crow::logger::setHandler(&crow_custom_logger);
 
-          auto server = std::make_shared<crow::SimpleApp>();
-          server_ = std::static_pointer_cast<void>(server);
+          crow::SimpleApp server;
+          server_ = static_cast<void *>(&server);
 
 
-          CROW_WEBSOCKET_ROUTE((*server), "/")
+          CROW_WEBSOCKET_ROUTE((server), "/")
               // route.websocket<std::remove_reference<decltype(*app)>::type>(app.get())
               .onopen([&](crow::websocket::connection &conn) {
                   std::lock_guard lock(server_m);
@@ -96,9 +95,9 @@ DummyServer::DummyServer(bool use_unix)
           if (use_unix) {
               auto unix_path = internal::unixSocketPath(17530);
               internal::initUnixSocket(unix_path, dummy_logger);
-              server->unix_path(unix_path.string()).run();
+              server.unix_path(unix_path.string()).run();
           } else {
-              server->port(17530).run();
+              server.port(17530).run();
           }
           std::this_thread::sleep_for(std::chrono::milliseconds(10));
       }) {}
@@ -108,7 +107,7 @@ void DummyServer::send(std::string msg) {
     if (connPtr) {
         dummy_logger->info("send {} bytes", msg.size());
         reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary(
-            msg);
+            std::move(msg));
     }
 }
 

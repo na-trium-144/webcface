@@ -1,0 +1,117 @@
+#pragma once
+#define WEBCFACE_STR(v) #v
+#define WEBCFACE_DEFAULT_PORT 7530
+#define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
+#define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)
+#define WEBCFACE_SERVER_NAME "webcface"
+// clang-format off
+#mesondefine WEBCFACE_VERSION_MAJOR
+#mesondefine WEBCFACE_VERSION_MINOR
+#mesondefine WEBCFACE_VERSION_REVISION
+// clang-format on
+#ifndef WEBCFACE_VERSION_MINOR
+#define WEBCFACE_VERSION_MINOR 0
+#endif
+#ifndef WEBCFACE_VERSION_REVISION
+#define WEBCFACE_VERSION_REVISION 0
+#endif
+#mesondefine WEBCFACE_VERSION
+#mesondefine WEBCFACE_SHARED
+#mesondefine WEBCFACE_SYSTEM_DLLEXPORT
+#mesondefine WEBCFACE_SYSTEM_VISIBILITY
+#mesondefine WEBCFACE_SYSTEM_WCHAR_WINDOWS
+#mesondefine WEBCFACE_SYSTEM_WIN32SOCKET
+#mesondefine WEBCFACE_SYSTEM_PATH_WINDOWS
+#mesondefine WEBCFACE_SYSTEM_ADD_DEBUG
+#mesondefine WEBCFACE_EXP_FILESYSTEM
+
+// clang-format off
+/*
+WEBCFACE_DLL: 関数の宣言 (msvc, mingw, unix)
+WEBCFACE_DLL_TEMPLATE: テンプレートクラスの定義 (unix)
+WEBCFACE_DLL_INSTANCE_DECL: 明示的実体化の宣言 (msvc_import, mingw) (unixでは消す:gcc-10でエラー)
+WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
+*/
+// clang-format on
+
+#if WEBCFACE_SHARED
+#if WEBCFACE_SYSTEM_DLLEXPORT
+#ifdef WEBCFACE_BUILDING
+#ifdef _MSC_VER
+#define WEBCFACE_DLL __declspec(dllexport)
+#define WEBCFACE_DLL_TEMPLATE
+#define WEBCFACE_DLL_INSTANCE_DECL
+#define WEBCFACE_DLL_INSTANCE_DEF WEBCFACE_DLL
+#else // !_MSC_VER => on MinGW
+#define WEBCFACE_DLL __declspec(dllexport)
+#define WEBCFACE_DLL_TEMPLATE
+#define WEBCFACE_DLL_INSTANCE_DECL WEBCFACE_DLL
+#define WEBCFACE_DLL_INSTANCE_DEF
+#endif // _MSC_VER
+#else  // !WEBCFACE_BUILDING
+#define WEBCFACE_DLL __declspec(dllimport)
+#define WEBCFACE_DLL_TEMPLATE
+#define WEBCFACE_DLL_INSTANCE_DECL WEBCFACE_DLL
+#define WEBCFACE_DLL_INSTANCE_DEF
+#endif // WEBCFACE_BUILDING
+#elif WEBCFACE_SYSTEM_VISIBILITY
+#ifdef WEBCFACE_BUILDING
+#define WEBCFACE_DLL __attribute__((visibility("default")))
+#define WEBCFACE_DLL_TEMPLATE WEBCFACE_DLL
+#undef WEBCFACE_DLL_INSTANCE_DECL
+#define WEBCFACE_DLL_INSTANCE_DEF WEBCFACE_DLL
+#else // !WEBCFACE_BUILDING
+#define WEBCFACE_DLL
+#define WEBCFACE_DLL_TEMPLATE
+#undef WEBCFACE_DLL_INSTANCE_DECL
+#define WEBCFACE_DLL_INSTANCE_DEF
+#endif // WEBCFACE_BUILDING
+#else // DLLEXPORT, VISIBILITY
+#error "neither WEBCFACE_SYSTEM_DLLEXPORT nor WEBCFACE_SYSTEM_VISIBILITY is defined"
+#endif
+#else  // !WEBCFACE_SHARED
+#define WEBCFACE_DLL
+#define WEBCFACE_DLL_TEMPLATE
+#define WEBCFACE_DLL_INSTANCE_DECL
+#define WEBCFACE_DLL_INSTANCE_DEF
+#endif // WEBCFACE_SHARED
+
+// clang-format off
+/*
+calling convention
+
+通常の関数またはstaticメンバ関数(dllexportしているもの)につける。
+メンバ関数はthiscallなのでつけない
+std::function<>の中には要る(ただし型推論ができたりできなかったりする)
+ただしcygwinでstd::functionの中にcdecl宣言するとmanglingがおかしなことになった(なぜ?)
+関数ポインタには要る (typedef return_type (WEBCFACE_CALL *name)(args...); )
+
+*/
+// clang-format on
+#if WEBCFACE_SYSTEM_DLLEXPORT
+#define WEBCFACE_CALL __cdecl
+#ifdef __CYGWIN__
+#define WEBCFACE_CALL_FP
+#else
+#define WEBCFACE_CALL_FP WEBCFACE_CALL
+#endif
+#else // !DLLEXPORT
+#define WEBCFACE_CALL
+#define WEBCFACE_CALL_FP
+#endif
+
+#if WEBCFACE_SYSTEM_ADD_DEBUG
+#ifdef _DEBUG
+#define WEBCFACE_NS_BEGIN                                                      \
+    namespace webcface {                                                       \
+    inline namespace debug {
+#define WEBCFACE_NS_END                                                        \
+    }                                                                          \
+    }
+#endif
+#endif
+
+#ifndef WEBCFACE_NS_BEGIN
+#define WEBCFACE_NS_BEGIN namespace webcface {
+#define WEBCFACE_NS_END }
+#endif

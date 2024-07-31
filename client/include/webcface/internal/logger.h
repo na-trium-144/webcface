@@ -3,13 +3,11 @@
 #include <memory>
 #include <string>
 #include "webcface/log.h"
-#include "webcface/common/def.h"
 
 WEBCFACE_NS_BEGIN
 
 template <typename CharT>
-class WEBCFACE_DLL_TEMPLATE BasicLoggerBuf final
-    : public std::basic_streambuf<CharT> {
+class BasicLoggerBuf final : public std::basic_streambuf<CharT> {
     using traits_type = typename std::basic_streambuf<CharT>::traits_type;
     using char_type = typename std::basic_streambuf<CharT>::char_type;
     using int_type = typename std::basic_streambuf<CharT>::int_type;
@@ -30,8 +28,8 @@ class WEBCFACE_DLL_TEMPLATE BasicLoggerBuf final
     ~BasicLoggerBuf() = default;
 };
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class WEBCFACE_DLL_INSTANCE_DECL BasicLoggerBuf<char>;
-extern template class WEBCFACE_DLL_INSTANCE_DECL BasicLoggerBuf<wchar_t>;
+extern template class BasicLoggerBuf<char>;
+extern template class BasicLoggerBuf<wchar_t>;
 #endif
 using LoggerBuf = BasicLoggerBuf<char>;
 using LoggerBufW = BasicLoggerBuf<wchar_t>;
