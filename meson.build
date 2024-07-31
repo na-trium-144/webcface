@@ -52,8 +52,6 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
   'WEBCFACE_VERSION': '"' + webcface_version_str + '"',
-  'PROJECT_DESCRIPTION': webcface_description,
-  'WEBCFACE_CONTACT': webcface_contact,
 })
 conf_data.set10('WEBCFACE_SHARED', get_option('default_library') == 'shared')
 
@@ -65,6 +63,7 @@ webcface_system_wchar_windows = false
 webcface_system_win32socket = false
 webcface_system_path_windows = false
 webcface_system_add_debug = false
+webcface_system_version_rc = false
 magick_vs = false
 if host_machine.system() == 'linux'
   summary('System', 'linux')
@@ -79,6 +78,7 @@ elif host_machine.system() == 'windows'
   webcface_system_wchar_windows = true
   webcface_system_win32socket = true
   webcface_system_path_windows = true
+  webcface_system_version_rc = true
   if cxx.get_argument_syntax() == 'msvc'
     summary('System', 'windows msvc ' + host_machine.cpu_family())
     webcface_system_add_debug = true
@@ -90,6 +90,7 @@ elif host_machine.system() == 'cygwin'
   summary('System', 'cygwin')
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
+  webcface_system_version_rc = true
 else
   warning('unsupported system: ' + host_machine.system())
 endif
@@ -202,17 +203,14 @@ configure_file(
   install: true,
   install_dir: get_option('includedir') / 'webcface' / 'common',
 )
-configure_file(
-  input: 'scripts'/ 'version.rc.in',
-  output: 'version.rc',
-  configuration: conf_data,
-)
+webcface_config_inc = include_directories('.')
 webcface_config_dep = declare_dependency(
-  include_directories: [include_directories('.')],
+  include_directories: [webcface_config_inc],
   compile_args: [
     '-DWEBCFACE_MESON',
   ],
 )
+version_rc_in = meson.project_source_root() / 'scripts' / 'version.rc.in'
 
 if get_option('download_webui').allowed()
   download_webui = run_command(py,
@@ -583,6 +581,22 @@ subdir('encoding')
 subdir('message')
 subdir('client')
 
+sources = []
+if webcface_system_version_rc
+  sources += import('windows').compile_resources(
+    configure_file(
+      input: version_rc_in,
+      output: 'webcface_version.rc',
+      configuration: configuration_data({
+        'company_name': webcface_contact,
+        'file_description': 'WebCFace Client Library',
+        'filetype_app': 0,
+      }),
+    ),
+    include_directories: [webcface_config_inc],
+  )
+endif
+
 # 外部ライブラリのシンボルを公開しないようにするために
 # 以前は -Wl,--exclude-libs や -Wl,-hidden-l オプションが必要だったが、
 # spdlogはヘッダーオンリーにし、
@@ -597,8 +611,10 @@ webcface_lib = library(webcface_lib_name,
     webcface_message_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
+  sources: sources,
   dependencies: [
     filesystem_dep,
+    win32folders_dep,
     msgpack_cxx_dep,
     utf8cpp_dep,
     spdlog_dep,
@@ -617,6 +633,7 @@ webcface_dep = declare_dependency(
   dependencies: [
     webcface_config_dep,
     filesystem_dep,
+    win32folders_dep,
   ],
 )
 import('pkgconfig').generate(
