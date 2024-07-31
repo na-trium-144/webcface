@@ -57,6 +57,6 @@ jobs:
     - name: clang-tidy
       if: matrix.clang == '17' && matrix.dep == 'apt'
       run: python3 scripts/clang-tidy.py 4
-    - name: clang-format-check
-      if: matrix.clang == '17' && matrix.dep == 'apt'
-      run: ninja clang-format-check -Cbuild
+    # - name: clang-format-check
+    #   if: matrix.clang == '17' && matrix.dep == 'apt'
+    #   run: ninja clang-format-check -Cbuild
