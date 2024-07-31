@@ -85,9 +85,9 @@ class WEBCFACE_DLL AsyncFuncResult : Field {
      * すでにresultに値または例外が入っている場合は即座にcallbackが呼ばれる。
      *
      */
-    AsyncFuncResult &
-    onResult(std::function<void WEBCFACE_CALL_FP(std::shared_future<ValAdaptor>)>
-                 callback);
+    AsyncFuncResult &onResult(
+        std::function<void WEBCFACE_CALL_FP(std::shared_future<ValAdaptor>)>
+            callback);
 
     using Field::member;
     using Field::name;

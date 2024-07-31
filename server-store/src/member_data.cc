@@ -275,8 +275,11 @@ void MemberData::onRecv(const std::string &message) {
                 }
             });
             logger->trace("send sync_init_end");
-            this->pack(webcface::message::SyncInitEnd{
-                {}, WEBCFACE_SERVER_NAME, WEBCFACE_VERSION, this->member_id, store->hostname});
+            this->pack(webcface::message::SyncInitEnd{{},
+                                                      WEBCFACE_SERVER_NAME,
+                                                      WEBCFACE_VERSION,
+                                                      this->member_id,
+                                                      store->hostname});
             break;
         }
         case MessageKind::sync: {

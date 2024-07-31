@@ -73,7 +73,7 @@ TEST_F(CClientTest, connectionBySync) {
 TEST_F(CClientTest, connectionByWait) {
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcfIsConnected(wcli_));
-        std::promise<void> p;
+    std::promise<void> p;
     auto f = p.get_future();
     std::thread t([&] {
         EXPECT_EQ(wcfWaitConnection(wcli_), WCF_OK);
@@ -105,10 +105,8 @@ TEST_F(CClientTest, noConnectionByRecv) {
 }
 
 std::function<void(const char *, void *)> callback1_obj;
-void callback1(const char *m, void *u){
-    callback1_obj(m, u);
-}
-TEST_F(CClientTest, MemberList){
+void callback1(const char *m, void *u) { callback1_obj(m, u); }
+TEST_F(CClientTest, MemberList) {
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
         wait();
@@ -116,10 +114,10 @@ TEST_F(CClientTest, MemberList){
     int u_obj = 42;
     int called = 0;
     using namespace std::string_literals;
-    callback1_obj = [&](const char *m, void *u){
+    callback1_obj = [&](const char *m, void *u) {
         EXPECT_EQ(m, "a"s);
         EXPECT_EQ(u, &u_obj);
-        called ++;
+        called++;
     };
     EXPECT_EQ(wcfMemberEntryEvent(wcli_, callback1, &u_obj), WCF_OK);
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
@@ -127,7 +125,8 @@ TEST_F(CClientTest, MemberList){
     EXPECT_EQ(called, 1);
     const char *members[3] = {};
     int member_num = 0;
-    EXPECT_EQ(wcfMemberList(wcli_, members, sizeof(members), &member_num), WCF_OK);
+    EXPECT_EQ(wcfMemberList(wcli_, members, sizeof(members), &member_num),
+              WCF_OK);
     EXPECT_EQ(member_num, 1);
     ASSERT_NE(members[0], nullptr);
     EXPECT_EQ(members[0], "a"s);
@@ -478,13 +477,12 @@ TEST_F(CClientTest, funcSet) {
         EXPECT_EQ(obj.caller_member_id, 1);
         EXPECT_TRUE(obj.started);
     });
-    dummy_s->waitRecv<message::CallResult>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_FALSE(obj.is_error);
-            EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        });
+    dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_FALSE(obj.is_error);
+        EXPECT_EQ(static_cast<double>(obj.result), 123.45);
+    });
 }
 TEST_F(CClientTest, funcSetAsync) {
     using namespace std::string_literals;
@@ -530,13 +528,12 @@ TEST_F(CClientTest, funcSetAsync) {
         EXPECT_EQ(obj.caller_member_id, 1);
         EXPECT_TRUE(obj.started);
     });
-    dummy_s->waitRecv<message::CallResult>(
-        [&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, 0);
-            EXPECT_EQ(obj.caller_member_id, 1);
-            EXPECT_FALSE(obj.is_error);
-            EXPECT_EQ(static_cast<double>(obj.result), 123.45);
-        });
+    dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, 0);
+        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_FALSE(obj.is_error);
+        EXPECT_EQ(static_cast<double>(obj.result), 123.45);
+    });
 }
 
 TEST_F(CClientTest, viewSend) {

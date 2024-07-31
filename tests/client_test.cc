@@ -328,8 +328,9 @@ TEST_F(ClientTest, logReq) {
     dummy_s->send(message::Log{
         10, std::make_shared<std::deque<message::LogLine>>(
                 std::deque<message::LogLine>{
-                    LogLineData{0, std::chrono::system_clock::now(),
-                                  SharedString::fromU8String(std::string(100000, 'a'))}
+                    LogLineData{
+                        0, std::chrono::system_clock::now(),
+                        SharedString::fromU8String(std::string(100000, 'a'))}
                         .toMessage(),
                     LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
                         .toMessage(),
@@ -339,7 +340,11 @@ TEST_F(ClientTest, logReq) {
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2);
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 0);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).message_.u8String().size(),
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss)
+                  .value()
+                  ->at(0)
+                  .message_.u8String()
+                  .size(),
               100000);
 
     dummy_s->send(message::Log{

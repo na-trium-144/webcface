@@ -43,7 +43,7 @@ class CustomLogger : public crow::ILogHandler {
 };
 
 DummyServer::~DummyServer() {
-    static_cast<crow::SimpleApp*>(server_)->stop();
+    static_cast<crow::SimpleApp *>(server_)->stop();
     t.join();
 }
 DummyServer::DummyServer(bool use_unix)

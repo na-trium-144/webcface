@@ -82,8 +82,8 @@ class WEBCFACE_DLL SharedString {
 
     static SharedString WEBCFACE_CALL fromU8String(std::string_view u8s);
     static SharedString WEBCFACE_CALL encode(std::string_view s);
-    static SharedString WEBCFACE_CALL encode(std::wstring_view ws,
-                               std::string_view s = std::string_view());
+    static SharedString WEBCFACE_CALL
+    encode(std::wstring_view ws, std::string_view s = std::string_view());
 
     const std::string &u8String() const;
     std::string_view u8StringView() const;

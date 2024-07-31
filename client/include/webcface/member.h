@@ -29,7 +29,7 @@ class WEBCFACE_DLL Member : protected Field {
     Member(const Field &base) : Field(base.data_w, base.member_) {}
 
     friend struct internal::ClientData;
-    
+
     /*!
      * \brief Member名
      *
@@ -128,8 +128,8 @@ class WEBCFACE_DLL Member : protected Field {
      * コールバックの型は void(RobotModel)
      *
      */
-    Member &
-    onRobotModelEntry(std::function<void WEBCFACE_CALL_FP(RobotModel)> callback);
+    Member &onRobotModelEntry(
+        std::function<void WEBCFACE_CALL_FP(RobotModel)> callback);
     /*!
      * \brief funcが追加された時のイベント
      *
