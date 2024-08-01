@@ -71,8 +71,8 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  *
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
- * * autoRecvが無効の場合、初期化が完了するまで
- * wcfRecv() をこのスレッドで呼び出す。
+ * * autoSyncが無効の場合、初期化が完了するまで
+ * wcfSync() をこのスレッドで呼び出す。
  *
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfStart(), wcfAutoReconnect()
@@ -88,73 +88,69 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
                                                       int enabled);
+
 /*!
- * \brief サーバーからデータを受信する
- * \since ver2.0
+ * \brief
+ * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する
+ * \since ver1.5
  *
- * * データを受信した場合、各種コールバック(onEntry, onChange,
+ * * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+ * * サーバーに接続していない場合、wcfStart()を呼び出す。
+ * * ver2.0以降: データを受信した場合、各種コールバック(onEntry, onChange,
  * Funcなど)をこのスレッドで呼び出し、
  * それがすべて完了するまでこの関数はブロックされる。
- * * データを何も受信しなかった場合、サーバーに接続していない場合、
+ *   * データを何も受信しなかった場合、サーバーに接続していない場合、
  * または接続試行中やデータ送信中など受信ができない場合は、
  * 即座にreturnする。
  *
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfWaitRecvFor(), wcfWaitRecv(), wcfAutoRecv()
+ * \sa wcfWaitSyncFor(), wcfWaitSync(), wcfAutoSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfRecv(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
 /*!
- * \brief サーバーからデータを受信する
+ * \brief
+ * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する
  * \since ver2.0
  *
- * * wcfRecv()と同じだが、何も受信できなければ
+ * * wcfSync()と同じだが、何も受信できなければ
  * timeout 経過後に再試行してreturnする。
- * timeout=0 または負の値なら再試行せず即座にreturnする。(wcfRecv()と同じ)
+ * timeout=0 または負の値なら再試行せず即座にreturnする。(wcfSync()と同じ)
  * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
  *
  * \param wcli
  * \param timeout (μs単位)
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfRecv(), wcfWaitRecv(), wcfAutoRecv()
+ * \sa wcfSync(), wcfWaitSync(), wcfAutoSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecvFor(wcfClient *wcli,
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitSyncFor(wcfClient *wcli,
                                                     int timeout);
 /*!
- * \brief サーバーからデータを受信する
+ * \brief
+ * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する
  * \since ver2.0
  *
- * * wcfRecv()と同じだが、何か受信するまで無制限に待機する
+ * * wcfSync()と同じだが、何か受信するまで無制限に待機する
  *
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfRecv(), wcfAutoRecv()
+ * \sa wcfSync(), wcfAutoSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitRecv(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitSync(wcfClient *wcli);
 /*!
- * \brief 別スレッドでwcfRecv()を自動的に呼び出すようにする。
+ * \brief 別スレッドでwcfSync()を自動的に呼び出すようにする。
  * \since ver2.0
  *
  * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
- * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+ * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにwcfSync()が呼び出され、
  * 各種コールバック (onEntry, onChange, Funcなど)
  * も別のスレッドで呼ばれることになる
  * (そのためmutexなどを適切に設定すること)
- * * デフォルトでは無効なので、手動でwcfRecv()などを呼び出す必要がある
+ * * デフォルトでは無効なので、手動でwcfSync()などを呼び出す必要がある
  *
- * \sa wcfRecv(), wcfWaitRecvFor(), wcfWaitRecv()
+ * \param wcli
+ * \param enabled 0以外にすると有効、0にすると無効になる。デフォルトは無効
+ * \sa wcfSync(), wcfWaitSyncFor(), wcfWaitSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoRecv(wcfClient *wcli);
-/*!
- * \brief 送信用にセットしたデータをすべて送信キューに入れる。
- * \since ver1.5
- *
- * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
- *
- * サーバーに接続していない場合、wcfStart()を呼び出す。
- *
- * \return wcliが無効ならWCF_BAD_WCLI
- *
- */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoSync(wcfClient *wcli, int enabled);
 
 /*!
  * \brief wcfの関数から取得したポインタのデータを破棄

@@ -93,16 +93,6 @@ TEST_F(CClientTest, connectionByWait) {
 
     EXPECT_EQ(wcfWaitConnection(nullptr), WCF_BAD_WCLI);
 }
-TEST_F(CClientTest, noConnectionByRecv) {
-    EXPECT_FALSE(dummy_s->connected());
-    EXPECT_FALSE(wcfIsConnected(wcli_));
-    EXPECT_EQ(wcfRecv(wcli_), WCF_OK);
-    wait();
-    EXPECT_FALSE(dummy_s->connected());
-    EXPECT_FALSE(wcfIsConnected(wcli_));
-
-    EXPECT_EQ(wcfRecv(nullptr), WCF_BAD_WCLI);
-}
 
 std::function<void(const char *, void *)> callback1_obj;
 void callback1(const char *m, void *u) { callback1_obj(m, u); }
@@ -121,7 +111,7 @@ TEST_F(CClientTest, MemberList) {
     };
     EXPECT_EQ(wcfMemberEntryEvent(wcli_, callback1, &u_obj), WCF_OK);
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     EXPECT_EQ(called, 1);
     const char *members[3] = {};
     int member_num = 0;
@@ -147,7 +137,7 @@ TEST_F(CClientTest, serverVersion) {
     wait();
     using namespace std::string_literals;
     EXPECT_EQ(wcfServerName(wcli_), ""s);
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     EXPECT_EQ(wcfServerName(wcli_), "a"s);
     EXPECT_EQ(wcfServerVersion(wcli_), "1"s);
     EXPECT_EQ(wcfServerHostName(wcli_), "b"s);
@@ -198,11 +188,11 @@ TEST_F(CClientTest, valueReq) {
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);
     EXPECT_EQ(value[0], 1);
@@ -255,10 +245,10 @@ TEST_F(CClientTest, textReq) {
     });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
     EXPECT_EQ(size, 5);
     EXPECT_EQ(text[0], 'h');
@@ -274,7 +264,7 @@ TEST_F(CClientTest, textReq) {
 
 TEST_F(CClientTest, funcRun) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfAutoSync(wcli_, true), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfMultiVal args[3] = {
@@ -340,7 +330,7 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfWaitSync(wcli_);
     }
 
     // 2
@@ -356,7 +346,7 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->send(
             message::CallResult{{}, caller_id, 1, false, ValAdaptor("123.45")});
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfWaitSync(wcli_);
     }
 
     // 3
@@ -372,7 +362,7 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->send(
             message::CallResult{{}, caller_id, 1, true, ValAdaptor("error")});
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfWaitSync(wcli_);
     }
 
     t.join();
@@ -380,7 +370,7 @@ TEST_F(CClientTest, funcRun) {
 
 TEST_F(CClientTest, funcListen) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfAutoSync(wcli_, true), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfValType arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
@@ -435,7 +425,7 @@ std::function<void(wcfFuncCallHandle *h, void *u)> callback_obj = nullptr;
 void callbackFunc(wcfFuncCallHandle *h, void *u) { callback_obj(h, u); }
 TEST_F(CClientTest, funcSet) {
     using namespace std::string_literals;
-    // EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    // EXPECT_EQ(wcfAutoSync(wcli_, 100), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     auto main_id = std::this_thread::get_id();
     int u = 9999;
@@ -470,7 +460,7 @@ TEST_F(CClientTest, funcSet) {
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
-    wcfWaitRecv(wcli_);
+    wcfWaitSync(wcli_);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 0);
@@ -486,7 +476,7 @@ TEST_F(CClientTest, funcSet) {
 }
 TEST_F(CClientTest, funcSetAsync) {
     using namespace std::string_literals;
-    // EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    // EXPECT_EQ(wcfAutoSync(wcli_, 100), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     auto main_id = std::this_thread::get_id();
     int u = 9999;
@@ -521,7 +511,7 @@ TEST_F(CClientTest, funcSetAsync) {
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
-    wcfWaitRecv(wcli_);
+    wcfWaitSync(wcli_);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 0);
@@ -609,9 +599,9 @@ TEST_F(CClientTest, viewReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfWaitSync(wcli_), WCF_OK);
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
     EXPECT_EQ(size, 3);
     EXPECT_EQ(vc[0].type, WCF_VIEW_TEXT);

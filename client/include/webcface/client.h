@@ -109,96 +109,91 @@ class WEBCFACE_DLL Client : public Member {
      *
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
-     * * ver2.0以降: autoRecvが無効の場合、初期化が完了するまで waitRecv()
+     * * ver2.0以降: autoSyncが無効の場合、初期化が完了するまで waitSync()
      * をこのスレッドで呼び出す。
      *
-     * \sa start(), autoReconnect(), autoRecv()
+     * \sa start(), autoReconnect(), autoSync()
      */
     void waitConnection();
 
   private:
-    void recvImpl(std::optional<std::chrono::microseconds> timeout);
+    void syncImpl(std::optional<std::chrono::microseconds> timeout);
 
   public:
     /*!
-     * \brief サーバーからデータを受信する
-     * \since ver2.0
+     * \brief
+     * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      *
-     * * データを受信した場合、各種コールバック(onEntry, onChange,
+     * * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
+     * * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
+     * * ver2.0以降: データを受信した場合、各種コールバック(onEntry, onChange,
      * Func::run()など)をこのスレッドで呼び出し、
      * それがすべて完了するまでこの関数はブロックされる。
-     * * データをまだ何も受信していない場合やサーバーに接続していない場合は、
+     *   * データをまだ何も受信していない場合やサーバーに接続していない場合は、
      * 即座にreturnする。
      *
-     * \sa waitRecvFor(), waitRecvUntil(), waitRecv(), autoRecv()
+     * \sa start(), waitSyncFor(), waitSyncUntil(), waitSync(), autoSync()
      */
-    void recv() { recvImpl(std::chrono::microseconds(0)); }
+    void sync() { syncImpl(std::chrono::microseconds(0)); }
     /*!
-     * \brief サーバーからデータを受信する
+     * \brief
+     * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * * recv()と同じだが、何も受信できなければ
+     * * sync()と同じだが、何も受信できなければ
      * timeout 経過後に再試行してreturnする。
-     * timeout=0 または負の値なら再試行せず即座にreturnする。(recv()と同じ)
+     * timeout=0 または負の値なら再試行せず即座にreturnする。(sync()と同じ)
      * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
      * (deadlock回避)
      * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
-     * \sa recv(), waitRecvUntil(), waitRecv(), autoRecv()
+     * \sa sync(), waitSyncUntil(), waitSync(), autoSync()
      */
-    void waitRecvFor(std::chrono::microseconds timeout) { recvImpl(timeout); }
+    void waitSyncFor(std::chrono::microseconds timeout) { syncImpl(timeout); }
     /*!
-     * \brief サーバーからデータを受信する
+     * \brief
+     * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * waitRecvFor() と同じだが、timeoutを絶対時間で指定
+     * waitSyncFor() と同じだが、timeoutを絶対時間で指定
      *
-     * \sa recv(), waitRecvFor(), waitRecv(), autoRecv()
+     * \sa sync(), waitSyncFor(), waitSync(), autoSync()
      */
     template <typename Clock, typename Duration>
-    void waitRecvUntil(std::chrono::time_point<Clock, Duration> timeout) {
-        recvImpl(std::chrono::duration_cast<std::chrono::microseconds>(
+    void waitSyncUntil(std::chrono::time_point<Clock, Duration> timeout) {
+        syncImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
     }
     /*!
-     * \brief サーバーからデータを受信する
+     * \brief
+     * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * * waitRecvFor()と同じだが、何か受信するまで無制限に待機する
+     * * waitSyncFor()と同じだが、何か受信するまで無制限に待機する
      * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
      * (deadlock回避)
      *
-     * \sa recv(), waitRecvFor(), waitRecvUntil(), autoRecv()
+     * \sa sync(), waitSyncFor(), waitSyncUntil(), autoSync()
      */
-    void waitRecv() { recvImpl(std::nullopt); }
+    void waitSync() { syncImpl(std::nullopt); }
 
     /*!
-     * \brief 別スレッドでrecv()を自動的に呼び出す間隔を設定する。
+     * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
      * \since ver2.0
      *
-     * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
-     * * autoRecvが有効の場合、別スレッドで一定間隔(100μs)ごとにrecv()が呼び出され、
+     * * start() や waitConnection() より前に設定する必要がある。
+     * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
      * 各種コールバック (onEntry, onChange, Func::run()など)
      * も別のスレッドで呼ばれることになる
      * (そのためmutexなどを適切に設定すること)
-     * * デフォルトでは無効なので、手動でrecv()などを呼び出す必要がある
+     * * デフォルトでは無効なので、手動でsync()などを呼び出す必要がある
      *
-     * \param enabled trueにすると自動でrecv()が呼び出されるようになる
-     * \sa recv(), waitRecvFor(), waitRecvUntil(), waitRecv()
+     * \param enabled trueにすると自動でsync()が呼び出されるようになる
+     * \sa sync(), waitSyncFor(), waitSyncUntil(), waitSync()
      */
-    void autoRecv(bool enabled);
+    void autoSync(bool enabled);
 
-    /*!
-     * \brief 送信用にセットしたデータをすべて送信キューに入れる。
-     *
-     * * 実際に送信をするのは別スレッドであり、この関数はブロックしない。
-     * * ver1.2以降: サーバーに接続していない場合、start()を呼び出す。
-     *
-     * \sa start()
-     */
-    void sync();
-
-  protected:
+  private:
     Member member(const SharedString &name) const {
         if (name.empty()) {
             return *this;

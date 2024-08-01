@@ -15,7 +15,7 @@ int main() {
     img.request();
     img.onChange([](auto) { std::cout << "image updated" << std::endl; });
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
         auto img_frame = img.get();
         if (!img_frame.empty()) {
             std::cout << "1. Normal" << std::endl;
@@ -30,7 +30,7 @@ int main() {
     }
     img.request(webcface::sizeWH(300, 300));
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -48,7 +48,7 @@ int main() {
     }
     img.request(std::nullopt, webcface::ImageColorMode::gray);
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -63,11 +63,11 @@ int main() {
             m.write("webcface-example-image-recv-3.jpg");
             break;
         }
-        wcli.waitRecv();
+        wcli.waitSync();
     }
     img.request(std::nullopt, webcface::ImageCompressMode::jpeg, 20);
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {
@@ -84,7 +84,7 @@ int main() {
     }
     img.request(std::nullopt, webcface::ImageCompressMode::png, 1);
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
         // auto mat2 = img.mat(); // OK
         auto img_frame = img.get();
         if (!img_frame.empty()) {

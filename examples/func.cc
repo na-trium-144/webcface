@@ -35,8 +35,7 @@ int main() {
         return "1";
     });
 
-    wcli.sync();
     while (true) {
-        wcli.waitRecv();
+        wcli.waitSync();
     }
 }

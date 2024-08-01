@@ -51,8 +51,8 @@ void internal::ClientData::join() {
     if (ws_thread.joinable()) {
         ws_thread.join();
     }
-    if (recv_thread.joinable()) {
-        recv_thread.join();
+    if (sync_thread.joinable()) {
+        sync_thread.join();
     }
 }
 
@@ -63,8 +63,8 @@ void internal::ClientData::start() {
     if (!ws_thread.joinable()) {
         ws_thread = std::thread(internal::wsThreadMain, shared_from_this());
     }
-    if (!recv_thread.joinable() && this->auto_recv.load()) {
-        recv_thread = std::thread(internal::recvThreadMain, shared_from_this());
+    if (!sync_thread.joinable() && this->auto_sync.load()) {
+        sync_thread = std::thread(internal::syncThreadMain, shared_from_this());
     }
 }
 void Client::close() { data->close(); }
@@ -111,11 +111,13 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
         } else {
             if (last_recv) {
                 // syncデータがなければ、100us間隔を空ける
+                data->recv_ready = true;
                 data->ws_cond.wait_until(
                     lock, *last_recv + std::chrono::microseconds(100), [&] {
                         return data->closing.load() || data->do_ws_recv ||
                                !data->sync_queue.empty();
                     });
+                data->do_ws_recv = true;
             }
 
             if (data->closing.load()) {
@@ -124,13 +126,13 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     internal::WebSocket::close(data);
                 }
                 data->connected = data->current_curl_connected;
+                data->do_ws_recv = false;
+                data->recv_ready = false;
                 data->ws_cond.notify_all();
                 return;
             }
             {
                 // syncの前にrecv
-                // この間にdo_ws_recvがtrueになることもあるだろうが、無問題
-                // (完了したらどのみちfalseにする)
                 ScopedUnlock un(lock);
                 while (true) { // データがなくなるまで受信
                     bool has_recv = internal::WebSocket::recv(
@@ -145,6 +147,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 }
             }
             data->do_ws_recv = false;
+            data->recv_ready = false;
             data->ws_cond.notify_all();
             last_recv = std::chrono::steady_clock::now();
 
@@ -167,28 +170,37 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
         data->ws_cond.notify_all();
     }
 }
-void Client::recvImpl(std::optional<std::chrono::microseconds> timeout) {
-    data->recvImpl(timeout);
+void Client::syncImpl(std::optional<std::chrono::microseconds> timeout) {
+    start();
+    data->syncImpl(true, timeout);
 }
-void internal::ClientData::recvImpl(
-    std::optional<std::chrono::microseconds> timeout) {
+void internal::ClientData::syncImpl(
+    bool sync, std::optional<std::chrono::microseconds> timeout) {
     auto start_t = std::chrono::steady_clock::now();
     {
         std::unique_lock lock(this->ws_m);
-        this->do_ws_recv = true;
-        // 接続できてるなら、recvが完了するまで待つ
-        // 1回のrecvはすぐ終わるのでtimeoutいらない
-        this->ws_cond.wait(lock, [&] {
-            return this->closing.load() ||
-                   !(this->connected && this->do_ws_recv);
-        });
+        if (this->recv_ready) {
+            this->do_ws_recv = true;
+            // 接続できてるなら、recvが完了するまで待つ
+            // 1回のrecvはすぐ終わるのでtimeoutいらない
+            this->ws_cond.wait(lock, [&] {
+                return this->closing.load() || !this->do_ws_recv;
+            });
+        } else {
+            this->do_ws_recv = true;
+            // recvさせるけど、待たない
+        }
+    }
+    if (sync) {
+        this->message_push(this->syncData(false));
     }
     std::unique_lock lock(this->ws_m);
     if (timeout) {
         // recv_queueにデータが入るまで待つ
         // 遅くともtimeout経過したら抜ける
         this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
-            return this->closing.load() || !this->recv_queue.empty() ||
+            return this->closing.load() ||
+                   (!this->recv_queue.empty() && !this->do_ws_recv) ||
                    (!this->connected && !this->auto_reconnect.load());
         });
         if (this->recv_queue.empty()) {
@@ -198,7 +210,8 @@ void internal::ClientData::recvImpl(
     } else {
         // recv_queueにデータが入るまで無制限に待つ
         this->ws_cond.wait(lock, [&] {
-            return this->closing.load() || !this->recv_queue.empty() ||
+            return this->closing.load() ||
+                   (!this->recv_queue.empty() && !this->do_ws_recv) ||
                    (!this->connected && !this->auto_reconnect.load());
         });
     }
@@ -217,7 +230,7 @@ void internal::ClientData::recvImpl(
     // なにか受信できたらreturn
     // または (!this->connected && !this->auto_reconnect.load()) の場合もreturn
 }
-void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
+void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
     }
@@ -230,7 +243,7 @@ void internal::recvThreadMain(const std::shared_ptr<ClientData> &data) {
                 return;
             }
         }
-        data->recvImpl(std::nullopt);
+        data->syncImpl(true, std::nullopt);
     }
 }
 
@@ -258,25 +271,25 @@ void Client::waitConnection() {
             } else {
                 // autoRecvならsyncInit完了まで待機
                 // そうでなければrecvを呼ぶ
-                if (data->auto_recv.load()) {
+                if (data->auto_sync.load()) {
                     data->ws_cond.wait(lock, [this] {
                         return data->closing.load() || !data->connected ||
                                data->sync_init_end;
                     });
                 } else {
                     ScopedUnlock un(lock);
-                    data->recvImpl(std::nullopt);
+                    data->syncImpl(false, std::nullopt);
                 }
             }
         }
         first_loop = false;
     }
 }
-void Client::autoRecv(bool enabled) {
+void Client::autoSync(bool enabled) {
     if (enabled /* && interval.count() > 0 */) {
-        data->auto_recv.store(true);
+        data->auto_sync.store(true);
     } else {
-        data->auto_recv.store(false);
+        data->auto_sync.store(false);
     }
 }
 
