@@ -90,14 +90,14 @@ wcfStatus wcfWaitSync(wcfClient *wcli) {
     wcli_->waitSync();
     return WCF_OK;
 }
-wcfStatus wcfAutoSync(wcfClient *wcli, int enabled) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return WCF_BAD_WCLI;
-    }
-    wcli_->autoSync(enabled);
-    return WCF_OK;
-}
+// wcfStatus wcfAutoSync(wcfClient *wcli, int enabled) {
+//     auto wcli_ = getWcli(wcli);
+//     if (!wcli_) {
+//         return WCF_BAD_WCLI;
+//     }
+//     wcli_->autoSync(enabled);
+//     return WCF_OK;
+// }
 
 wcfStatus wcfDestroy(const void *ptr) {
     {

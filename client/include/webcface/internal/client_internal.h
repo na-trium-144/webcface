@@ -27,7 +27,7 @@ class Log;
 namespace internal {
 
 void wsThreadMain(const std::shared_ptr<ClientData> &data);
-void syncThreadMain(const std::shared_ptr<ClientData> &data);
+// void syncThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(const SharedString &name,
@@ -63,13 +63,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     std::thread ws_thread;
-    /*!
-     * \brief recv_queueのメッセージを処理するスレッド
-     *
-     * auto_recv がtrueの場合のみ。
-     *
-     */
-    std::thread sync_thread;
+    // /*!
+    //  * \brief recv_queueのメッセージを処理するスレッド
+    //  *
+    //  * auto_recv がtrueの場合のみ。
+    //  *
+    //  */
+    // std::thread sync_thread;
 
     /*!
      * \brief ws_thread, recv_thread, queue 間の同期
@@ -121,7 +121,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     /*!
      * ただの設定フラグなのでmutexやcondとは無関係
      */
-    std::atomic<bool> auto_reconnect = true, auto_sync = false;
+    std::atomic<bool> auto_reconnect = true;
 
     /*!
      * \brief 送信したいメッセージを入れるキュー

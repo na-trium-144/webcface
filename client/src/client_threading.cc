@@ -51,9 +51,9 @@ void internal::ClientData::join() {
     if (ws_thread.joinable()) {
         ws_thread.join();
     }
-    if (sync_thread.joinable()) {
-        sync_thread.join();
-    }
+    // if (sync_thread.joinable()) {
+    //     sync_thread.join();
+    // }
 }
 
 void internal::ClientData::start() {
@@ -63,9 +63,10 @@ void internal::ClientData::start() {
     if (!ws_thread.joinable()) {
         ws_thread = std::thread(internal::wsThreadMain, shared_from_this());
     }
-    if (!sync_thread.joinable() && this->auto_sync.load()) {
-        sync_thread = std::thread(internal::syncThreadMain, shared_from_this());
-    }
+    // if (!sync_thread.joinable() && this->auto_sync.load()) {
+    //     sync_thread = std::thread(internal::syncThreadMain,
+    //     shared_from_this());
+    // }
 }
 void Client::close() { data->close(); }
 void internal::ClientData::close() {
@@ -230,6 +231,7 @@ void internal::ClientData::syncImpl(
     // なにか受信できたらreturn
     // または (!this->connected && !this->auto_reconnect.load()) の場合もreturn
 }
+/*
 void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
@@ -246,6 +248,7 @@ void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
         data->syncImpl(true, std::nullopt);
     }
 }
+*/
 
 void Client::start() { data->start(); }
 void Client::waitConnection() {
@@ -271,27 +274,27 @@ void Client::waitConnection() {
             } else {
                 // autoRecvならsyncInit完了まで待機
                 // そうでなければrecvを呼ぶ
-                if (data->auto_sync.load()) {
-                    data->ws_cond.wait(lock, [this] {
-                        return data->closing.load() || !data->connected ||
-                               data->sync_init_end;
-                    });
-                } else {
-                    ScopedUnlock un(lock);
-                    data->syncImpl(false, std::nullopt);
-                }
+                // if (data->auto_sync.load()) {
+                //     data->ws_cond.wait(lock, [this] {
+                //         return data->closing.load() || !data->connected ||
+                //                data->sync_init_end;
+                //     });
+                // } else {
+                ScopedUnlock un(lock);
+                data->syncImpl(false, std::nullopt);
+                // }
             }
         }
         first_loop = false;
     }
 }
-void Client::autoSync(bool enabled) {
-    if (enabled /* && interval.count() > 0 */) {
-        data->auto_sync.store(true);
-    } else {
-        data->auto_sync.store(false);
-    }
-}
+// void Client::autoSync(bool enabled) {
+//     if (enabled /* && interval.count() > 0 */) {
+//         data->auto_sync.store(true);
+//     } else {
+//         data->auto_sync.store(false);
+//     }
+// }
 
 void Client::autoReconnect(bool enabled) {
     data->auto_reconnect.store(enabled);

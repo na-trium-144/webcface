@@ -161,26 +161,26 @@ TEST_F(ClientTest, syncThread) {
     wcli_->waitSync();
     EXPECT_EQ(callback_called, 1);
 }
-TEST_F(ClientTest, autoSyncThread) {
-    dummy_s = std::make_shared<DummyServer>(false);
-    auto main_id = std::this_thread::get_id();
-    wait();
-    wcli_->autoSync(true);
-    wcli_->start();
-    while (!dummy_s->connected() || !wcli_->connected()) {
-        wait();
-    }
-    wcli_->member("a").value("b").onChange([&](const Value &) {
-        EXPECT_NE(std::this_thread::get_id(), main_id);
-        callback_called++;
-    });
-    wait();
-    dummy_s->send(message::Res<message::Value>{
-        1, ""_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
-    wait();
-    EXPECT_EQ(callback_called, 1);
-}
+// TEST_F(ClientTest, autoSyncThread) {
+//     dummy_s = std::make_shared<DummyServer>(false);
+//     auto main_id = std::this_thread::get_id();
+//     wait();
+//     wcli_->autoSync(true);
+//     wcli_->start();
+//     while (!dummy_s->connected() || !wcli_->connected()) {
+//         wait();
+//     }
+//     wcli_->member("a").value("b").onChange([&](const Value &) {
+//         EXPECT_NE(std::this_thread::get_id(), main_id);
+//         callback_called++;
+//     });
+//     wait();
+//     dummy_s->send(message::Res<message::Value>{
+//         1, ""_ss,
+//         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+//     wait();
+//     EXPECT_EQ(callback_called, 1);
+// }
 TEST_F(ClientTest, syncTimeout) {
     auto start = std::chrono::steady_clock::now();
     wcli_->waitSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));

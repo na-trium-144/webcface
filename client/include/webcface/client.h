@@ -109,10 +109,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
-     * * ver2.0以降: autoSyncが無効の場合、初期化が完了するまで waitSync()
-     * をこのスレッドで呼び出す。
+     * * ver2.0以降: 接続だけでなくentryの受信や初期化が完了するまで待機する。
+     * waitSync() と同様、このスレッドで受信処理
+     * (onEntry コールバックの呼び出しなど) が行われる。
      *
-     * \sa start(), autoReconnect(), autoSync()
+     * \sa start(), autoReconnect()
      */
     void waitConnection();
 
@@ -132,7 +133,7 @@ class WEBCFACE_DLL Client : public Member {
      *   * データをまだ何も受信していない場合やサーバーに接続していない場合は、
      * 即座にreturnする。
      *
-     * \sa start(), waitSyncFor(), waitSyncUntil(), waitSync(), autoSync()
+     * \sa start(), waitSyncFor(), waitSyncUntil(), waitSync()
      */
     void sync() { syncImpl(std::chrono::microseconds(0)); }
     /*!
@@ -147,7 +148,7 @@ class WEBCFACE_DLL Client : public Member {
      * (deadlock回避)
      * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
-     * \sa sync(), waitSyncUntil(), waitSync(), autoSync()
+     * \sa sync(), waitSyncUntil(), waitSync()
      */
     void waitSyncFor(std::chrono::microseconds timeout) { syncImpl(timeout); }
     /*!
@@ -157,7 +158,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * waitSyncFor() と同じだが、timeoutを絶対時間で指定
      *
-     * \sa sync(), waitSyncFor(), waitSync(), autoSync()
+     * \sa sync(), waitSyncFor(), waitSync()
      */
     template <typename Clock, typename Duration>
     void waitSyncUntil(std::chrono::time_point<Clock, Duration> timeout) {
@@ -173,25 +174,25 @@ class WEBCFACE_DLL Client : public Member {
      * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
      * (deadlock回避)
      *
-     * \sa sync(), waitSyncFor(), waitSyncUntil(), autoSync()
+     * \sa sync(), waitSyncFor(), waitSyncUntil()
      */
     void waitSync() { syncImpl(std::nullopt); }
 
-    /*!
-     * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
-     * \since ver2.0
-     *
-     * * start() や waitConnection() より前に設定する必要がある。
-     * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
-     * 各種コールバック (onEntry, onChange, Func::run()など)
-     * も別のスレッドで呼ばれることになる
-     * (そのためmutexなどを適切に設定すること)
-     * * デフォルトでは無効なので、手動でsync()などを呼び出す必要がある
-     *
-     * \param enabled trueにすると自動でsync()が呼び出されるようになる
-     * \sa sync(), waitSyncFor(), waitSyncUntil(), waitSync()
-     */
-    void autoSync(bool enabled);
+    // /*!
+    //  * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
+    //  * \since ver2.0
+    //  *
+    //  * * start() や waitConnection() より前に設定する必要がある。
+    //  * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
+    //  * 各種コールバック (onEntry, onChange, Func::run()など)
+    //  * も別のスレッドで呼ばれることになる
+    //  * (そのためmutexなどを適切に設定すること)
+    //  * * デフォルトでは無効なので、手動でsync()などを呼び出す必要がある
+    //  *
+    //  * \param enabled trueにすると自動でsync()が呼び出されるようになる
+    //  * \sa sync(), waitSyncFor(), waitSyncUntil(), waitSync()
+    //  */
+    // void autoSync(bool enabled);
 
   private:
     Member member(const SharedString &name) const {
