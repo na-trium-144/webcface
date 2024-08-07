@@ -104,7 +104,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 internal::WebSocket::init(data);
             }
             data->do_ws_init = false;
-            data->ws_cond.notify_all();
+            data->connected = data->current_curl_connected;
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
 
@@ -118,15 +118,6 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     });
             }
 
-            if (data->closing.load()) {
-                {
-                    ScopedUnlock un(lock);
-                    internal::WebSocket::close(data);
-                }
-                data->connected = data->current_curl_connected;
-                data->ws_cond.notify_all();
-                return;
-            }
             {
                 // syncの前にrecv
                 // この間にdo_ws_recvがtrueになることもあるだろうが、無問題
@@ -145,10 +136,15 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 }
             }
             data->do_ws_recv = false;
+            data->connected = data->current_curl_connected;
+            if (!data->connected) {
+                data->self_member_id = std::nullopt;
+                data->sync_init_end = false;
+            }
             data->ws_cond.notify_all();
             last_recv = std::chrono::steady_clock::now();
 
-            while (!data->sync_queue.empty()) {
+            while (data->connected && !data->sync_queue.empty()) {
                 // sync
                 std::string msg = std::move(data->sync_queue.front());
                 data->sync_queue.pop();
@@ -157,13 +153,17 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     internal::WebSocket::send(data, msg);
                 }
             }
-        }
 
-        if (!data->connected) {
-            data->self_member_id = std::nullopt;
-            data->sync_init_end = false;
+            if (data->closing.load()) {
+                {
+                    ScopedUnlock un(lock);
+                    internal::WebSocket::close(data);
+                }
+                data->connected = data->current_curl_connected;
+                data->ws_cond.notify_all();
+                return;
+            }
         }
-        data->connected = data->current_curl_connected;
         data->ws_cond.notify_all();
     }
 }
