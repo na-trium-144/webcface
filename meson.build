@@ -18,7 +18,8 @@ cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 cmake_cmd = find_program('cmake')
 
-webcface_soversion = '20'
+webcface_soversion = '20' # ABIの破壊的変更で1増やす
+webcface_compatibility_version = '0' # ABIの追加で1増やす
 webcface_webui_version = '1.7.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
@@ -622,6 +623,10 @@ webcface_lib = library(webcface_lib_name,
   ],
   version: meson.project_version(),
   soversion: webcface_soversion,
+  darwin_versions: [
+    webcface_soversion + '.' + webcface_compatibility_version,
+    meson.project_version(),
+  ],
   install: true,
 )
 webcface_dep = declare_dependency(
