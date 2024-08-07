@@ -12,6 +12,7 @@ example_src = [
   {'src': 'image-recv.cc', 'magick': true, 'cv': false},
   {'src': 'cv-send.cc', 'magick': false, 'cv': true},
   {'src': 'cv-recv.cc', 'magick': false, 'cv': true},
+  {'src': 'tutorial-vis.cc', 'magick': false, 'cv': false},
 ]
 
 foreach e: example_src

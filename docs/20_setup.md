@@ -1,4 +1,4 @@
-# Overview
+# Setup
 
 \tableofcontents
 
@@ -10,13 +10,15 @@ webcface-js <span class="since-js"></span>,
 webcface-python <span class="since-py"></span>
 の画像で示します。
 
-## 環境構築
+## WebCFaceのインストール
+
 READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
 さらにJavaScriptで利用したい場合は `npm install webcface` 、
 Pythonで利用したい場合は `pip install webcface` でクライアントをインストールしてください。
 
 ## Server
+
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります。
 
 ### コマンドラインから
