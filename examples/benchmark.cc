@@ -26,7 +26,7 @@ int main() {
             wcli1.text("a") = std::string(s, static_cast<char>('a' + i));
             wcli1.sync();
             do {
-                wcli2.waitRecv();
+                wcli2.waitSync();
             } while (!recv_t);
             int latency = static_cast<int>(
                 std::chrono::duration_cast<std::chrono::microseconds>(*recv_t -

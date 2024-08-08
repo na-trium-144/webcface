@@ -11,7 +11,6 @@
 #include <spdlog/logger.h>
 #include "webcface/encoding/encoding.h"
 #include "webcface/field.h"
-#include "webcface/func_info.h"
 #include "webcface/log.h"
 #include "queue.h"
 #include "webcface/image_frame.h"
@@ -27,7 +26,7 @@ class Log;
 namespace internal {
 
 void wsThreadMain(const std::shared_ptr<ClientData> &data);
-void recvThreadMain(const std::shared_ptr<ClientData> &data);
+// void syncThreadMain(const std::shared_ptr<ClientData> &data);
 
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(const SharedString &name,
@@ -63,19 +62,19 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      */
     std::thread ws_thread;
-    /*!
-     * \brief recv_queueのメッセージを処理するスレッド
-     *
-     * auto_recv がtrueの場合のみ。
-     *
-     */
-    std::thread recv_thread;
+    // /*!
+    //  * \brief recv_queueのメッセージを処理するスレッド
+    //  *
+    //  * auto_recv がtrueの場合のみ。
+    //  *
+    //  */
+    // std::thread sync_thread;
 
     /*!
      * \brief ws_thread, recv_thread, queue 間の同期
      *
-     * closing, connected, do_ws_init, do_ws_recv
-     * using_curl, sync_queue, recv_queue, sync_init_end が変化した時notifyする
+     * closing, connected, do_ws_init, do_ws_recv,
+     * sync_queue, recv_queue, sync_init_end が変化した時notifyする
      *
      */
     std::condition_variable ws_cond;
@@ -96,23 +95,32 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     bool sync_init_end = false;
     /*!
      * Client側から関数が呼ばれたらtrue、
-     * WebSocket::側のその関数が完了したらfalse
+     * WebSocket::側のinit関数が完了したらfalse
      *
      * trueになったときnotify
      */
     bool do_ws_init = false;
     /*!
      * Client側から関数が呼ばれたらtrue、
-     * WebSocket::側のその関数が完了したらfalse
+     * WebSocket::側のrecv関数が完了したらfalse
      *
-     * trueになったときnotify
+     * true,falseになったときnotify
+     * 
+     * recv_readyの間にdo_ws_recvを立て、
+     * recv()を行い、これがfalseになったことで完了したことを知る
      */
     bool do_ws_recv = false;
+    /*!
+     * recv待機中true
+     * WebSocket::側のrecv関数が完了したらfalse
+     */
+    bool recv_ready = false;
+
 
     /*!
      * ただの設定フラグなのでmutexやcondとは無関係
      */
-    std::atomic<bool> auto_reconnect = true, auto_recv = false;
+    std::atomic<bool> auto_reconnect = true;
 
     /*!
      * \brief 送信したいメッセージを入れるキュー
@@ -147,7 +155,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * * timeoutがnulloptならclosingまで永遠にreturnしない
      *
      */
-    void recvImpl(std::optional<std::chrono::microseconds> timeout);
+    void syncImpl(bool sync, std::optional<std::chrono::microseconds> timeout);
 
     /*!
      * \brief 初期化時に送信するメッセージ
