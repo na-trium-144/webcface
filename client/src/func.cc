@@ -1,6 +1,7 @@
 #include "webcface/func.h"
 #include <thread>
 #include <stdexcept>
+#include "webcface/internal/func_internal.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #ifdef WEBCFACE_MESON
@@ -34,7 +35,7 @@ Func &Func::set(const std::vector<Arg> &args, ValType return_type,
             }
             std::promise<ValAdaptor> result;
             std::future<ValAdaptor> result_f = result.get_future();
-            FuncCallHandle handle{args_vec, std::move(result)};
+            CallHandle handle{args_vec, std::move(result)};
             callback(handle);
             try {
                 handle.respond();
@@ -60,7 +61,7 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
                 std::launch::async, [callback, args_vec = std::move(args_vec)] {
                     std::promise<ValAdaptor> result;
                     std::future<ValAdaptor> result_f = result.get_future();
-                    FuncCallHandle handle{args_vec, std::move(result)};
+                    CallHandle handle{args_vec, std::move(result)};
                     callback->operator()(handle);
                     try {
                         handle.respond();
@@ -74,16 +75,18 @@ Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
 
 std::shared_future<ValAdaptor>
 FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
-              const std::shared_ptr<internal::AsyncFuncState> &state) {
+              const std::shared_ptr<internal::PromiseData> &state) {
     std::shared_future<ValAdaptor> ret = func_impl(call_args).share();
-    if (state) {
-        state->setResultFuture(ret);
-    }
+    // if (state) {
+    //     state->setResultFuture(ret);
+    // }
     if (eval_async && caller_async) {
         std::thread([ret, state]() {
             ret.wait();
             if (state) {
-                state->callResultEvent();
+                try {
+                    state->setResult(ret.get());
+                }catch()
             }
         }).detach();
     } else {
@@ -95,28 +98,6 @@ FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
     return ret;
 }
 
-/// \private
-template <typename F1, typename F2, typename F3>
-static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
-    ValAdaptor error;
-    try {
-        f_ok(f_run());
-        return;
-    } catch (const std::exception &e) {
-        error = e.what();
-    } catch (const std::string &e) {
-        error = e;
-    } catch (const char *e) {
-        error = e;
-    } catch (const std::wstring &e) {
-        error = e;
-    } catch (const wchar_t *e) {
-        error = e;
-    } catch (...) {
-        error = "unknown exception";
-    }
-    f_fail(error);
-}
 void FuncInfo::run(webcface::message::Call &&call,
                    const std::shared_ptr<internal::ClientData> &data) {
     tryRun(

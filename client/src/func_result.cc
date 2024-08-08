@@ -9,111 +9,136 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          ".func(\"" + base.field_.decode() + "\") is not set") {
 }
 
-AsyncFuncResult &
-AsyncFuncResult::onStarted(std::function<void(bool)> callback) {
-    state->setStartedEvent(std::move(callback));
-    return *this;
-}
-AsyncFuncResult &AsyncFuncResult::onResult(
-    std::function<void(std::shared_future<ValAdaptor>)> callback) {
-    state->setResultEvent(std::move(callback));
-    return *this;
-}
-
-AsyncFuncResult internal::AsyncFuncState::getter() {
+void internal::PromiseData::reach(bool found) {
     std::lock_guard lock(m);
-    return AsyncFuncResult(base, shared_from_this(), started_f, result_f);
-}
-
-void internal::AsyncFuncState::setStarted(bool is_started) {
-    std::lock_guard lock(m);
-    started_p.set_value(is_started);
-    callStartedEvent();
-    if (!is_started) {
+    this->reached = true;
+    this->found = found;
+    started_p.set_value(found);
+    callReachEvent();
+    if (!found) {
+        this->finished = true;
         try {
             throw FuncNotFound(base);
-        } catch (...) {
-            setResultException(std::current_exception());
+        } catch (const FuncNotFound &e) {
+            this->rejection = SharedString::encode(e.what());
+            this->result_p.set_exception(std::current_exception());
         }
+        callFinishEvent();
     }
 }
-void internal::AsyncFuncState::setResult(const ValAdaptor &result_val) {
+void internal::PromiseData::respond(const ValAdaptor &result_val) {
     std::lock_guard lock(m);
-    result_p.set_value(result_val);
-    callResultEvent();
+    this->finished = true;
+    this->response = result_val;
+    this->result_p.set_value(result_val);
+    callFinishEvent();
 }
-void internal::AsyncFuncState::setResultException(const std::exception_ptr &e) {
-    std::lock_guard lock(m);
-    result_p.set_exception(e);
-    callResultEvent();
-}
-void internal::AsyncFuncState::setResultFuture(
-    const std::shared_future<ValAdaptor> &result) {
-    std::lock_guard lock(m);
-    result_f = result;
-}
-void internal::AsyncFuncState::setStartedEvent(
-    std::function<void(bool)> &&callback) {
-    std::lock_guard lock(m);
-    started_event = std::move(callback);
-    callStartedEvent();
-}
-void internal::AsyncFuncState::setResultEvent(
-    std::function<void(std::shared_future<ValAdaptor>)> &&callback) {
-    std::lock_guard lock(m);
-    result_event = std::move(callback);
-    callResultEvent();
-}
-void internal::AsyncFuncState::callStartedEvent() {
-    std::lock_guard lock(m);
-    if (!started_event_done &&
-        started_f.wait_for(std::chrono::seconds(0)) ==
-            std::future_status::ready &&
-        started_event) {
-        started_event_done = true;
-        started_event(started_f.get());
-    }
-}
-void internal::AsyncFuncState::callResultEvent() {
-    std::lock_guard lock(m);
-    if (!result_event_done &&
-        result_f.wait_for(std::chrono::seconds(0)) ==
-            std::future_status::ready &&
-        result_event) {
-        result_event_done = true;
-        result_event(result_f);
-    }
-}
-
-std::ostream &operator<<(std::ostream &os, const AsyncFuncResult &r) {
-    os << "Func(\"" << r.name() << "\"): ";
-    if (r.started.wait_for(std::chrono::seconds(0)) !=
-        std::future_status::ready) {
-        os << "<Connecting>";
-    } else if (r.started.get() == false) {
-        os << "<Not Found>";
-    } else if (r.result.wait_for(std::chrono::seconds(0)) !=
-               std::future_status::ready) {
-        os << "<Running>";
+void CallHandle::respond(const ValAdaptor &value) const {
+    if (data) {
+        data->respond(value);
     } else {
-        try {
-            os << static_cast<std::string>(r.result.get());
-        } catch (const std::exception &e) {
-            os << "<Error> " << e.what();
-        }
+        throw invalidHandle();
     }
-    return os;
+}
+void internal::PromiseData::reject(const ValAdaptor &message) {
+    std::lock_guard lock(m);
+    this->finished = true;
+    this->rejection = message;
+    try {
+        throw std::runtime_error(message.asStringRef().c_str());
+    } catch (...) {
+        this->result_p.set_exception(std::current_exception());
+    }
+    callFinishEvent();
+}
+void CallHandle::reject(const ValAdaptor &message) const {
+    if (data) {
+        data->reject(message);
+    } else {
+        throw invalidHandle();
+    }
+}
+void internal::PromiseData::setReachEvent(
+    std::function<void(Promise)> &&callback) {
+    std::lock_guard lock(m);
+    reach_event = std::move(callback);
+    callReachEvent();
+}
+Promise &Promise::onReached(std::function<void(Promise)> callback) {
+    data->setReachEvent(std::move(callback));
+    return *this;
+}
+void internal::PromiseData::setFinishEvent(
+    std::function<void(Promise)> &&callback) {
+    std::lock_guard lock(m);
+    finish_event = std::move(callback);
+    callFinishEvent();
+}
+Promise &Promise::onFinished(std::function<void(Promise)> callback) {
+    data->setFinishEvent(std::move(callback));
+    return *this;
+}
+void internal::PromiseData::callReachEvent() {
+    std::lock_guard lock(m);
+    if (!reach_event_done && reached && reach_event) {
+        reach_event_done = true;
+        reach_event(getter());
+    }
+}
+void internal::PromiseData::callFinishEvent() {
+    std::lock_guard lock(m);
+    if (!finish_event_done && finished && finish_event) {
+        finish_event_done = true;
+        finish_event(getter());
+    }
 }
 
-std::runtime_error &FuncCallHandle::invalidHandle() {
-    static std::runtime_error invalid_handle(
-        "FuncCallHandle does not have valid "
-        "pointer to function call");
+Promise internal::PromiseData::getter() {
+    std::lock_guard lock(m);
+    return Promise(base, shared_from_this(), started_f, result_f);
+}
+Promise::Promise(const Field &base,
+                 const std::shared_ptr<internal::PromiseData> &data,
+                 const std::shared_future<bool> &started,
+                 const std::shared_future<ValAdaptor> &result)
+    : Field(base), data(data), started(started), result(result) {}
+
+CallHandle internal::PromiseData::setter() {
+    std::lock_guard lock(m);
+    return CallHandle(base, shared_from_this());
+}
+CallHandle::CallHandle(const Field &base,
+                       const std::shared_ptr<internal::PromiseData> &data)
+    : Field(base), data(data) {}
+
+// std::ostream &operator<<(std::ostream &os, const Promise &r) {
+//     os << "Func(\"" << r.name() << "\"): ";
+//     if (r.started.wait_for(std::chrono::seconds(0)) !=
+//         std::future_status::ready) {
+//         os << "<Connecting>";
+//     } else if (r.started.get() == false) {
+//         os << "<Not Found>";
+//     } else if (r.result.wait_for(std::chrono::seconds(0)) !=
+//                std::future_status::ready) {
+//         os << "<Running>";
+//     } else {
+//         try {
+//             os << static_cast<std::string>(r.result.get());
+//         } catch (const std::exception &e) {
+//             os << "<Error> " << e.what();
+//         }
+//     }
+//     return os;
+// }
+
+std::runtime_error &CallHandle::invalidHandle() {
+    static std::runtime_error invalid_handle("CallHandle does not have valid "
+                                             "pointer to function call");
     return invalid_handle;
 }
 
 template <std::size_t v_index, typename CVal>
-std::vector<CVal> &FuncCallHandle::HandleData::initCArgs() {
+std::vector<CVal> &internal::PromiseData::initCArgs() {
     if (this->c_args_.index() != v_index) {
         std::vector<CVal> c_args;
         c_args.reserve(this->args_.size());
@@ -128,43 +153,28 @@ std::vector<CVal> &FuncCallHandle::HandleData::initCArgs() {
     }
     return std::get<v_index>(this->c_args_);
 }
-const wcfMultiVal *FuncCallHandle::cArgs() const {
-    if (handle_data_) {
-        auto &c_args = handle_data_->initCArgs<1, wcfMultiVal>();
+const wcfMultiVal *CallHandle::cArgs() const {
+    if (data) {
+        auto &c_args = data->initCArgs<1, wcfMultiVal>();
         return c_args.data();
     } else {
         throw invalidHandle();
     }
 }
-const wcfMultiValW *FuncCallHandle::cWArgs() const {
-    if (handle_data_) {
-        auto &c_args = handle_data_->initCArgs<2, wcfMultiValW>();
+const wcfMultiValW *CallHandle::cWArgs() const {
+    if (data) {
+        auto &c_args = data->initCArgs<2, wcfMultiValW>();
         return c_args.data();
     } else {
         throw invalidHandle();
     }
 }
-const std::vector<ValAdaptor> &FuncCallHandle::args() const {
-    if (handle_data_) {
-        return handle_data_->args_;
+const std::vector<ValAdaptor> &CallHandle::args() const {
+    if (data) {
+        return data->args_;
     } else {
         throw invalidHandle();
     }
-}
-
-void FuncCallHandle::reject(const std::string &message) {
-    if (handle_data_) {
-        try {
-            throw std::runtime_error(message);
-        } catch (const std::runtime_error &) {
-            handle_data_->result_.set_exception(std::current_exception());
-        }
-    } else {
-        throw invalidHandle();
-    }
-}
-void FuncCallHandle::reject(const std::wstring &message) {
-    reject(encoding::toNarrow(message));
 }
 
 WEBCFACE_NS_END

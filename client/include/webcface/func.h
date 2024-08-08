@@ -1,16 +1,9 @@
 #pragma once
-#include <vector>
-#include "func_info.h"
 #include "webcface/encoding/val_adaptor.h"
 #include "func_result.h"
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/webcface-config.h"
-#endif
+#include "arg.h"
 
 WEBCFACE_NS_BEGIN
-
 /*!
  * \brief 関数1つを表すクラス
  *
@@ -78,44 +71,94 @@ class WEBCFACE_DLL Func : protected Field {
      */
     Func parent() const { return this->Field::parent(); }
 
+    using FuncType = void WEBCFACE_CALL_FP(CallHandle, std::vector<ValAdaptor>);
+
   protected:
     /*!
      * set2()で構築された関数の情報(FuncInfo)をclientにセット
      *
      */
-    Func &setImpl(const std::shared_ptr<FuncInfo> &v);
+    Func &setImpl(ValType return_type, std::vector<Arg> &&args,
+                  std::function<FuncType> &&func_impl);
+
+    /*!
+     * f_run()を実行し結果をf_ok()に渡すか、例外が発生した場合はf_fail()にエラーを渡す
+     *
+     */
+    template <typename F1, typename F2, typename F3>
+    static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
+        ValAdaptor error;
+        try {
+            f_ok(f_run());
+            return;
+        } catch (const std::exception &e) {
+            error = e.what();
+        } catch (const std::string &e) {
+            error = e;
+        } catch (const char *e) {
+            error = e;
+        } catch (const std::wstring &e) {
+            error = e;
+        } catch (const wchar_t *e) {
+            error = e;
+        } catch (...) {
+            error = "unknown exception";
+        }
+        f_fail(error);
+    }
+    /*!
+     * f_run()を実行し結果をCallHandleに渡す
+     *
+     */
+    template <typename F1>
+    static void tryRun(F1 &&f_run, const CallHandle &handle) {
+        ValAdaptor error;
+        try {
+            handle.respond(f_run());
+            return;
+        } catch (const std::exception &e) {
+            error = e.what();
+        } catch (const std::string &e) {
+            error = e;
+        } catch (const char *e) {
+            error = e;
+        } catch (const std::wstring &e) {
+            error = e;
+        } catch (const wchar_t *e) {
+            error = e;
+        } catch (...) {
+            error = "unknown exception";
+        }
+        handle.reject(error);
+    }
 
     template <typename... Args>
     using ArgsTuple = std::tuple<std::decay_t<Args>...>;
 
     /*!
      * 関数の引数をvectorで受け取りtupleに変換する。
-     * \param eval_async
-     * futureがdeferであり関数の結果を取得するのをasyncで実行するべきならtrue,
-     * 結果のfutureが即座に返るので非同期にする意味がないならfalse
      * \param func_casted
      * set1()で引数をtuple、戻り値をfutureにした、これからセットする関数
      *
      */
     template <typename Ret, typename... Args>
-    Func &
-    set2(bool eval_async,
-         std::function<std::future<ValAdaptor>(const ArgsTuple<Args...> &)>
-             func_casted) {
-        return setImpl(std::make_shared<FuncInfo>(
-            valTypeOf<Ret>(), std::vector<Arg>{Arg{valTypeOf<Args>()}...},
-            eval_async,
-            [func_casted = std::move(func_casted)](
-                const std::vector<ValAdaptor> &args_vec) {
-                ArgsTuple<Args...> args_tuple;
-                if (args_vec.size() != sizeof...(Args)) {
-                    throw std::invalid_argument(
-                        "requires " + std::to_string(sizeof...(Args)) +
-                        " arguments, got " + std::to_string(args_vec.size()));
-                }
-                argToTuple(args_vec, args_tuple);
-                return func_casted(args_tuple);
-            }));
+    Func &set2(std::function<void(const CallHandle &,
+                                  const ArgsTuple<Args...> &)> &&func_casted) {
+        return setImpl(valTypeOf<Ret>(),
+                       std::vector<Arg>{Arg{valTypeOf<Args>()}...},
+                       [func_casted = std::move(func_casted)](
+                           const CallHandle &handle,
+                           const std::vector<ValAdaptor> &args_vec) {
+                           ArgsTuple<Args...> args_tuple;
+                           if (args_vec.size() != sizeof...(Args)) {
+                               handle.reject("requires " +
+                                             std::to_string(sizeof...(Args)) +
+                                             " arguments, got " +
+                                             std::to_string(args_vec.size()));
+                           }
+                           argToTuple(args_vec, args_tuple);
+                           func_casted(handle, args_tuple);
+                       });
     }
 
     /*!
@@ -128,20 +171,24 @@ class WEBCFACE_DLL Func : protected Field {
     template <typename Ret, typename... Args>
     Func &set1(std::function<std::shared_future<Ret>(Args...)> func) {
         return set2<Ret, Args...>(
-            true,
-            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
-                auto ret = std::apply(func, args_tuple);
-                return std::async(
-                    std::launch::deferred,
-                    [](std::shared_future<Ret> ret) {
-                        if constexpr (std::is_void_v<Ret>) {
-                            ret.get();
-                            return ValAdaptor{};
-                        } else {
-                            return static_cast<ValAdaptor>(ret.get());
-                        }
-                    },
-                    std::move(ret));
+            [func = std::move(func)](const CallHandle &handle,
+                                     const ArgsTuple<Args...> &args_tuple) {
+                tryRun([&] { return std::apply(func, args_tuple); },
+                       [&](const std::shared_future<Ret> &ret) {
+                           std::thread([handle, ret] {
+                               tryRun(
+                                   [&] {
+                                       if constexpr (std::is_void_v<Ret>) {
+                                           ret.get();
+                                           return ValAdaptor{};
+                                       } else {
+                                           return ret.get();
+                                       }
+                                   },
+                                   handle);
+                           }).detach();
+                       },
+                       [&](const ValAdaptor &error) { handle.reject(error); });
             });
     }
     /*!
@@ -154,69 +201,78 @@ class WEBCFACE_DLL Func : protected Field {
     template <typename Ret, typename... Args>
     Func &set1(std::function<std::future<Ret>(Args...)> func) {
         return set2<Ret, Args...>(
-            true,
-            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
-                auto ret = std::apply(func, args_tuple);
-                return std::async(
-                    std::launch::deferred,
-                    [](std::future<Ret> ret) {
-                        if constexpr (std::is_void_v<Ret>) {
-                            ret.get();
-                            return ValAdaptor{};
-                        } else {
-                            return static_cast<ValAdaptor>(ret.get());
-                        }
-                    },
-                    std::move(ret));
+            [func = std::move(func)](const CallHandle &handle,
+                                     const ArgsTuple<Args...> &args_tuple) {
+                tryRun([&] { return std::apply(func, args_tuple); },
+                       [&](std::future<Ret> ret) {
+                           std::thread([handle, ret = std::move(ret)] {
+                               tryRun(
+                                   [&] {
+                                       if constexpr (std::is_void_v<Ret>) {
+                                           ret.get();
+                                           return ValAdaptor{};
+                                       } else {
+                                           return ret.get();
+                                       }
+                                   },
+                                   handle);
+                           }).detach();
+                       },
+                       [&](const ValAdaptor &error) { handle.reject(error); });
             });
     }
     /*!
      * set()に渡された関数が戻り値が値の普通の関数の場合:
-     * 引数をtuple型で受け取り、関数をそのまま実行し、戻り値をfuture<ValAdaptor>型で返す関数を
+     * 引数をtuple型で受け取り、関数をそのまま実行し、戻り値をCallHandleにセットする関数を
      * set2()に渡す
      *
      */
     template <typename Ret, typename... Args>
     Func &set1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
-            false,
-            [func = std::move(func)](const ArgsTuple<Args...> &args_tuple) {
-                std::packaged_task<ValAdaptor()> task([&] {
-                    if constexpr (std::is_void_v<Ret>) {
-                        std::apply(func, args_tuple);
-                        return ValAdaptor{};
-                    } else {
-                        Ret ret = std::apply(func, args_tuple);
-                        return static_cast<ValAdaptor>(ret);
-                    }
-                });
-                task();
-                return task.get_future();
+            [func = std::move(func)](const CallHandle &handle,
+                                     const ArgsTuple<Args...> &args_tuple) {
+                tryRun(
+                    [&] {
+                        if constexpr (std::is_void_v<Ret>) {
+                            std::apply(func, args_tuple);
+                            return ValAdaptor{};
+                        } else {
+                            Ret ret = std::apply(func, args_tuple);
+                            return ret;
+                        }
+                    },
+                    handle);
             });
     }
     /*!
      * setAsync()に渡された関数が戻り値が値の普通の関数の場合:
-     * 引数をtuple型で受け取り、関数をdefer状態でfutureに格納して返す関数を
+     * 引数をtuple型で受け取り、関数を別スレッドで実行し戻り値をhandleにセットする関数を
      * set2()に渡す
      *
      */
     template <typename Ret, typename... Args>
     Func &setAsync1(std::function<Ret(Args...)> func) {
         return set2<Ret, Args...>(
-            true, [func = std::make_shared<std::function<Ret(Args...)>>(
-                       std::move(func))](ArgsTuple<Args...> args_tuple) {
-                return std::async(
-                    std::launch::deferred,
-                    [func](ArgsTuple<Args...> args_tuple) {
-                        if constexpr (std::is_void_v<Ret>) {
-                            std::apply(*func, args_tuple);
-                            return ValAdaptor{};
-                        } else {
-                            Ret ret = std::apply(*func, args_tuple);
-                            return static_cast<ValAdaptor>(ret);
-                        }
+            [func = std::make_shared<std::function<Ret(Args...)>>(
+                 std::move(func))](const CallHandle &handle,
+                                   ArgsTuple<Args...> args_tuple) {
+                std::thread(
+                    [func, handle](ArgsTuple<Args...> args_tuple) {
+                        tryRun(
+                            [&] {
+                                if constexpr (std::is_void_v<Ret>) {
+                                    std::apply(*func, args_tuple);
+                                    return ValAdaptor{};
+                                } else {
+                                    Ret ret = std::apply(*func, args_tuple);
+                                    return ret;
+                                }
+                            },
+                            handle);
                     },
-                    std::move(args_tuple));
+                    std::move(args_tuple))
+                    .detach();
             });
     }
 

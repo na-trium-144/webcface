@@ -11,7 +11,6 @@
 #include <spdlog/logger.h>
 #include "webcface/encoding/encoding.h"
 #include "webcface/field.h"
-#include "webcface/func_info.h"
 #include "webcface/log.h"
 #include "queue.h"
 #include "webcface/image_frame.h"
