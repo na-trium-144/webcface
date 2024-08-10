@@ -15,7 +15,6 @@ fs = import('fs')
 cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
-cmake_cmd = find_program('cmake')
 
 webcface_abi_major = '20' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
@@ -683,29 +682,21 @@ install_data(['README.md', 'LICENSE'],
   install_dir: get_option('datadir') / 'doc' / 'webcface',
 )
 if get_option('default_library') == 'shared'
-  run_command(cmake_cmd,
-    '-Dsizeof_void_p=' + (host_machine.cpu_family().endswith('64') ? '8' : '4'),
-    '-Dbuild_dir=' + meson.current_build_dir(),
-    '-Dversion=' + meson.project_version(),
-    '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
-    check: true,
-  )
-  cmake_dir = get_option('libdir') / 'cmake' / 'webcface'
-  install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
-    install_dir: cmake_dir,
+  cmake.write_basic_package_version_file(
+    name: 'webcface',
+    version: meson.project_version(),
+    compatibility: 'SameMajorVersion',
+    arch_independent: false,
   )
   conf_data = configuration_data({
     'libdir': get_option('libdir'),
     'includedir': get_option('includedir'),
-    'cmakedir': cmake_dir,
     'webcface_lib_debug': webcface_lib_name_debug,
     'webcface_lib_release': webcface_lib_name_release,
   })
-  configure_file(
+  cmake.configure_package_config_file(
+    name: 'webcface',
     input: 'scripts' / 'webcface-config.cmake.in',
-    output: 'webcface-config.cmake',
-    configuration: conf_data,
-    install: true,
-    install_dir: cmake_dir,
+    configuration: conf_data
   )
 endif
