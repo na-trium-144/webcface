@@ -21,11 +21,9 @@ inline namespace encoding {
  * std::string をすべてANSIエンコーディングとみなし、
  * 内部でutf8と相互変換する。
  * * デフォルトは true (以前のバージョンとの互換性のため)
- * * unixでは効果がない。
- * * std::wstring をspdlogに渡して使用する場合、内部で
- * wstring→utf-8 の変換がされる場合があるのでtrueにすることを推奨
- * * spdlogのloggerではなく Client::loggerWStreamBuf() を使用する場合は、
- * 出力するコンソールのコードページに合わせた設定にする必要がある
+ * * unixでは効果がない(この設定に関わらず文字列はすべてutf8とみなされ相互変換は行われない)
+ * * std::wstringには影響しないが、windowsで loggerWStreamBuf(), loggerWOStream()
+ * を使用する場合は出力するコンソールのコードページに合わせること
  *
  */
 WEBCFACE_DLL void WEBCFACE_CALL usingUTF8(bool flag);
