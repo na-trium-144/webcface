@@ -323,6 +323,7 @@ else
       'form-api=disabled',
       'getoptions=disabled',
       'gsasl=disabled',
+      'http2=disabled',
       'ipv6=disabled',
       'libcurl-option=disabled',
       'libz=disabled',
