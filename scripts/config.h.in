@@ -103,7 +103,7 @@ std::function<>の中には要る(ただし型推論ができたりできなか�
 #endif
 #endif
 
-#ifndef WEBCFACE_NS_ABI
+#ifndef WEBCFACE_NS_ABI_2
 #define WEBCFACE_NS_ABI_2(ver) v##ver##_
 #endif
 
