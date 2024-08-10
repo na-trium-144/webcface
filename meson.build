@@ -52,6 +52,7 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
   'WEBCFACE_VERSION': '"' + webcface_version_str + '"',
+  'WEBCFACE_PTR_SIZE': cxx.sizeof('void*'),
 })
 conf_data.set10('WEBCFACE_SHARED', get_option('default_library') == 'shared')
 

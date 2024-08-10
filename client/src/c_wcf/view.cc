@@ -3,6 +3,17 @@
 #include "webcface/view.h"
 #include <cstring>
 
+// 変更するとABI互換性がなくなる
+#if WEBCFACE_PTR_SIZE == 4
+static_assert(sizeof(wcfViewComponent) == 4L * 24, "sizeof wcfViewCompoenent mismatch");
+static_assert(sizeof(wcfViewComponentW) == 4L * 24, "sizeof wcfViewCompoenentW mismatch");
+#elif WEBCFACE_PTR_SIZE == 8
+static_assert(sizeof(wcfViewComponent) == 4L * 36, "sizeof wcfViewCompoenent mismatch");
+static_assert(sizeof(wcfViewComponentW) == 4L * 36, "sizeof wcfViewCompoenentW mismatch");
+#else
+#pragma message("warning: sizeof void* is neither 4 or 8")
+#endif
+
 /// \private
 template <typename CharT>
 static auto wcfViewInit() {

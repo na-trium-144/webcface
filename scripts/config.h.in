@@ -24,6 +24,7 @@
 #mesondefine WEBCFACE_SYSTEM_PATH_WINDOWS
 #mesondefine WEBCFACE_SYSTEM_ADD_DEBUG
 #mesondefine WEBCFACE_EXP_FILESYSTEM
+#mesondefine WEBCFACE_PTR_SIZE
 
 // clang-format off
 /*
