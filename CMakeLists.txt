@@ -77,42 +77,30 @@ add_custom_target(webcface-build ALL
     VERBATIM
 )
 
-add_library(webcface INTERFACE)
-add_library(wcf INTERFACE)
-add_dependencies(webcface webcface-build)
-add_dependencies(wcf webcface-build)
+foreach(target webcface wcf)
+    add_library(${target} INTERFACE)
+    add_dependencies(${target} webcface-build)
+    target_compile_definitions(${target} INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
+    target_include_directories(${target} INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/encoding/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
+    )
+    target_link_directories(${target} INTERFACE
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
+    )
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        target_link_libraries(${target} INTERFACE
+            debug webcfaced.lib
+            optimized webcface.lib
+        )
+    else()
+        target_link_libraries(${target} INTERFACE -lwebcface)
+    endif()
+endforeach()
 target_compile_features(webcface INTERFACE cxx_std_17)
 target_compile_features(wcf INTERFACE c_std_99)
-target_compile_definitions(webcface INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
-target_compile_definitions(wcf INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
-target_include_directories(webcface INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/encoding/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
-)
-target_include_directories(wcf INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
-)
-target_link_directories(webcface INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
-)
-target_link_directories(wcf INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
-)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_link_libraries(webcface INTERFACE
-        debug webcfaced.lib
-        optimized webcface.lib
-    )
-    target_link_libraries(wcf INTERFACE
-        debug webcfaced.lib
-        optimized webcface.lib
-    )
-else()
-    target_link_libraries(webcface INTERFACE -lwebcface)
-    target_link_libraries(wcf INTERFACE -lwebcface)
-endif()
+
 add_library(webcface::webcface ALIAS webcface)
 add_library(webcface::wcf ALIAS wcf)
 

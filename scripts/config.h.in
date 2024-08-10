@@ -1,20 +1,14 @@
 #pragma once
+
 #define WEBCFACE_STR(v) #v
 #define WEBCFACE_DEFAULT_PORT 7530
 #define WEBCFACE_DEFAULT_PORT_SI(port) WEBCFACE_STR(port)
 #define WEBCFACE_DEFAULT_PORT_S WEBCFACE_DEFAULT_PORT_SI(WEBCFACE_DEFAULT_PORT)
 #define WEBCFACE_SERVER_NAME "webcface"
-// clang-format off
 #mesondefine WEBCFACE_VERSION_MAJOR
 #mesondefine WEBCFACE_VERSION_MINOR
 #mesondefine WEBCFACE_VERSION_REVISION
-// clang-format on
-#ifndef WEBCFACE_VERSION_MINOR
-#define WEBCFACE_VERSION_MINOR 0
-#endif
-#ifndef WEBCFACE_VERSION_REVISION
-#define WEBCFACE_VERSION_REVISION 0
-#endif
+#mesondefine WEBCFACE_ABI_MAJOR
 #mesondefine WEBCFACE_VERSION
 #mesondefine WEBCFACE_SHARED
 #mesondefine WEBCFACE_SYSTEM_DLLEXPORT
@@ -32,6 +26,7 @@ WEBCFACE_DLL: 関数の宣言 (msvc, mingw, unix)
 WEBCFACE_DLL_TEMPLATE: テンプレートクラスの定義 (unix)
 WEBCFACE_DLL_INSTANCE_DECL: 明示的実体化の宣言 (msvc_import, mingw) (unixでは消す:gcc-10でエラー)
 WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
+
 */
 // clang-format on
 
@@ -67,10 +62,12 @@ WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
 #undef WEBCFACE_DLL_INSTANCE_DECL
 #define WEBCFACE_DLL_INSTANCE_DEF
 #endif // WEBCFACE_BUILDING
-#else // DLLEXPORT, VISIBILITY
+#else  // DLLEXPORT, VISIBILITY
+// clang-format off
 #error "neither WEBCFACE_SYSTEM_DLLEXPORT nor WEBCFACE_SYSTEM_VISIBILITY is defined"
+// clang-format on
 #endif
-#else  // !WEBCFACE_SHARED
+#else // !WEBCFACE_SHARED
 #define WEBCFACE_DLL
 #define WEBCFACE_DLL_TEMPLATE
 #define WEBCFACE_DLL_INSTANCE_DECL
@@ -103,16 +100,18 @@ std::function<>の中には要る(ただし型推論ができたりできなか�
 
 #if WEBCFACE_SYSTEM_ADD_DEBUG
 #ifdef _DEBUG
-#define WEBCFACE_NS_BEGIN                                                      \
-    namespace webcface {                                                       \
-    inline namespace debug {
-#define WEBCFACE_NS_END                                                        \
-    }                                                                          \
-    }
+#define WEBCFACE_NS_ABI_2(ver) v##ver##_debug
 #endif
 #endif
 
-#ifndef WEBCFACE_NS_BEGIN
-#define WEBCFACE_NS_BEGIN namespace webcface {
-#define WEBCFACE_NS_END }
+#ifndef WEBCFACE_NS_ABI_2
+#define WEBCFACE_NS_ABI_2(ver) v##ver##_
 #endif
+
+#define WEBCFACE_NS_ABI(ver) WEBCFACE_NS_ABI_2(ver)
+#define WEBCFACE_NS_BEGIN                                                      \
+    namespace webcface {                                                       \
+    inline namespace WEBCFACE_NS_ABI(WEBCFACE_ABI_MAJOR) {
+#define WEBCFACE_NS_END                                                        \
+    }                                                                          \
+    }
