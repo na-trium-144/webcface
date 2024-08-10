@@ -9,7 +9,6 @@ project('webcface', 'c', 'cpp',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'wrap_mode=forcefallback',
-    'pkgconfig.relocatable=true',
   ],
 )
 fs = import('fs')
@@ -18,8 +17,8 @@ cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 cmake_cmd = find_program('cmake')
 
-webcface_soversion = '20' # ABIの破壊的変更で1増やす
-webcface_compatibility_version = '0' # ABIの追加で1増やす
+webcface_abi_major = '20' # ABIの破壊的変更で1増やす
+webcface_abi_minor = '0' # ABIの追加で1増やす
 webcface_webui_version = '1.7.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
@@ -41,7 +40,7 @@ elif get_option('version_suffix') != ''
   webcface_version_str = meson.project_version() + '-' + get_option('version_suffix')
 endif
 summary('Version', webcface_version_str)
-summary('ABI Version', webcface_soversion)
+summary('ABI Version', webcface_abi_major + '.' + webcface_abi_minor)
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
@@ -53,6 +52,7 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
   'WEBCFACE_VERSION': '"' + webcface_version_str + '"',
+  'WEBCFACE_ABI_MAJOR': webcface_abi_major,
 })
 conf_data.set10('WEBCFACE_SHARED', get_option('default_library') == 'shared')
 
@@ -622,9 +622,9 @@ webcface_lib = library(webcface_lib_name,
     curl_dep,
   ],
   version: meson.project_version(),
-  soversion: webcface_soversion,
+  soversion: webcface_abi_major,
   darwin_versions: [
-    webcface_soversion + '.' + webcface_compatibility_version,
+    webcface_abi_major + '.' + webcface_abi_minor,
     meson.project_version(),
   ],
   install: true,
