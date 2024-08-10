@@ -111,25 +111,22 @@ find_package(webcface CONFIG REQUIRED)
 target_link_libraries(target PRIVATE webcface::webcface)
 ```
 
-* find_packageでwebcfaceが見つからない場合はwebcfaceのインストール場所を`CMAKE_PREFIX_PATH`か`webcface_DIR`に設定してください。
-* FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。また、ROS2のワークスペースのsrcに追加してcolconでビルドすることもできます。
-    * CMakeのオプション(OpenCVを使用しないようにする、staticライブラリにするなど)はREADMEを参照してください
+* find_packageでwebcfaceが見つからない場合はwebcfaceのインストール場所を`CMAKE_PREFIX_PATH`か`webcface_ROOT`, `webcface_DIR`などに設定してください。
+* FetchContentやsubmoduleでこのリポジトリを追加して使うこともできます。
+* 複数バージョンのWebCFaceがインストールされている可能性がある場合は`find_package(webcface 2.0 CONFIG REQUIRED)`のようにバージョン指定をするとよいかも
+    * 同じメジャーバージョンで、指定したマイナーバージョン以上のものが選ばれます
+    (例えば2.0と書いて2.1が選ばれることはあるが、1.0と書いて2.0や2.1が選ばれることはない)
 
 <details><summary>CMakeを使わない場合は</summary>
 
 * Windows (MSVC)
-    * インクルードディレクトリ: `C:\Program Files\WebCFace\include`, `C:\Program Files\WebCFace\opencv\include`
-    * ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`, `C:\Program Files\WebCFace\opencv\x64\vc16\lib`
-    * リンクするライブラリは
-        * Releaseの場合 webcface10.lib, spdlog.lib, opencv_world490.lib
-        * Debugの場合 webcface10d.lib, spdlogd.lib, opencv_world490d.lib
-    * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にあるdllファイルを実行ファイルのディレクトリにコピーして読み込ませてください
-* Linux
+    * インクルードディレクトリ: `C:\Program Files\WebCFace\include`
+    * ライブラリディレクトリ: `C:\Program Files\WebCFace\lib`
+    * リンクするライブラリは、 webcface.lib (Release) / webcfaced.lib (Debug)
+    * また、`C:\Program Files\WebCFace\bin` を環境変数のPathに追加するか、その中にある webcface-20.dll / webcfaced-20.dll ファイルを実行ファイルのディレクトリにコピーして読み込ませてください
+* MSVC以外
     * pkgconfigを使用してコンパイル時の引数に `$(pkg-config --cflags webcface)` 、リンク時に `$(pkg-config --libs webcface)` を渡せばよいです
-    * 手動でリンクするなら lib/libwebcface.so をリンクしてください
-        * Releasesで配布しているdebパッケージの場合はインストール先は /usr です
-* MacOS
-    * Linuxと同様pkgconfigを使ってコンパイル、リンクできると思います
+    * 手動でリンクするなら webcfaceのインストール先/lib/ にあるwebcfaceのライブラリをリンクしてください
 
 </details>
 

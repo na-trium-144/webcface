@@ -13,15 +13,11 @@ Web-based IPC &amp; Dashboard-like UI
 > * mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。
 > ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチにあります
 
-WebSocketとMessagePackを使った、ROSのような分散型の通信ライブラリです。
+ROS1のようなプロセス間通信と、GUIによるデータの可視化や関数呼び出しができるシステムです。
 
-C++ (C++17以上), C (C99), Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数(手続き)を呼び出したりすることができます。
+C++ (C++17以上), C, Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
 
 Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
-Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
-WindowsとWSL1/2の間の相互通信も自動的に接続されます。
-
-さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用するようにし、パフォーマンスが改善しました。
 
 ## Features
 
@@ -38,8 +34,8 @@ pkg-config なら`pkg-config --cflags --libs webcface`
 で簡単に利用できます。  
 またライブラリ本体は
 * Linux: `libwebcface.so.<version>`
-* Mac: `webcface.framework` (または `libwebcface.<version>.dylib`)
-* Windows: `webcface<version>.dll` (MinGWの場合 `libwebcface<version>.dll`)
+* Mac: `libwebcface.<version>.dylib`
+* Windows: `webcface-<version>.dll` (Release) or `webcfaced-<version>.dll` (Debug)
 
 の1つのみであり、手動でこのライブラリにリンクして使うこともできます。  
 WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。
@@ -51,6 +47,13 @@ Python, JavaScript には PyPI / npm に `webcface` パッケージを用意し�
 少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。
 
 ### Inter-Process Communication
+
+WebCFaceの通信にはWebSocketとMessagePackを使っています。
+このためプロセス間だけでなくWebブラウザーとの通信が可能になっています。
+さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用します。
+
+Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
+WindowsとWSL1/2の間の相互通信も自動的に接続されます。
 
 WebCFaceで送受信できるデータ型として
 * 数値型・数値配列型(Value)
@@ -76,7 +79,7 @@ WebCFaceの通信データ形式はOSやライブラリの言語によらず共�
 WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
 WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
 
-さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++などのプログラムの側で定義してそれをWebUIに表示させることができ、
+さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++,Pythonなどのプログラムの側で定義してそれをWebUIに表示させることができ、
 これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
 
 また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
