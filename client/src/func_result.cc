@@ -1,5 +1,6 @@
 #include "webcface/func_result.h"
 #include "webcface/internal/func_internal.h"
+#include "webcface/internal/unlock.h"
 
 
 WEBCFACE_NS_BEGIN
@@ -9,99 +10,30 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          ".func(\"" + base.field_.decode() + "\") is not set") {
 }
 
-void internal::PromiseData::reach(bool found) {
-    std::lock_guard lock(m);
-    this->reached = true;
-    this->found = found;
-    started_p.set_value(found);
-    callReachEvent();
-    if (!found) {
-        this->finished = true;
-        try {
-            throw FuncNotFound(base);
-        } catch (const FuncNotFound &e) {
-            this->rejection = SharedString::encode(e.what());
-            this->result_p.set_exception(std::current_exception());
-        }
-        callFinishEvent();
-    }
-}
-void internal::PromiseData::respond(const ValAdaptor &result_val) {
-    std::lock_guard lock(m);
-    this->finished = true;
-    this->response = result_val;
-    this->result_p.set_value(result_val);
-    callFinishEvent();
-}
-void CallHandle::respond(const ValAdaptor &value) const {
-    if (data) {
-        data->respond(value);
-    } else {
-        throw invalidHandle();
-    }
-}
-void internal::PromiseData::reject(const ValAdaptor &message) {
-    std::lock_guard lock(m);
-    this->finished = true;
-    this->rejection = message;
-    try {
-        throw std::runtime_error(message.asStringRef().c_str());
-    } catch (...) {
-        this->result_p.set_exception(std::current_exception());
-    }
-    callFinishEvent();
-}
-void CallHandle::reject(const ValAdaptor &message) const {
-    if (data) {
-        data->reject(message);
-    } else {
-        throw invalidHandle();
-    }
-}
-void internal::PromiseData::setReachEvent(
-    std::function<void(Promise)> &&callback) {
-    std::lock_guard lock(m);
-    reach_event = std::move(callback);
-    callReachEvent();
-}
-Promise &Promise::onReached(std::function<void(Promise)> callback) {
-    data->setReachEvent(std::move(callback));
-    return *this;
-}
-void internal::PromiseData::setFinishEvent(
-    std::function<void(Promise)> &&callback) {
-    std::lock_guard lock(m);
-    finish_event = std::move(callback);
-    callFinishEvent();
-}
-Promise &Promise::onFinished(std::function<void(Promise)> callback) {
-    data->setFinishEvent(std::move(callback));
-    return *this;
-}
-void internal::PromiseData::callReachEvent() {
-    std::lock_guard lock(m);
-    if (!reach_event_done && reached && reach_event) {
-        reach_event_done = true;
-        reach_event(getter());
-    }
-}
-void internal::PromiseData::callFinishEvent() {
-    std::lock_guard lock(m);
-    if (!finish_event_done && finished && finish_event) {
-        finish_event_done = true;
-        finish_event(getter());
-    }
-}
-
 Promise internal::PromiseData::getter() {
     std::lock_guard lock(m);
     return Promise(base, shared_from_this(), started_f, result_f);
 }
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 Promise::Promise(const Field &base,
                  const std::shared_ptr<internal::PromiseData> &data,
                  const std::shared_future<bool> &started,
                  const std::shared_future<ValAdaptor> &result)
     : Field(base), data(data), started(started), result(result) {}
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#else
+#pragma GCC diagnostic pop
+#endif
 
 CallHandle internal::PromiseData::setter() {
     std::lock_guard lock(m);
@@ -110,6 +42,228 @@ CallHandle internal::PromiseData::setter() {
 CallHandle::CallHandle(const Field &base,
                        const std::shared_ptr<internal::PromiseData> &data)
     : Field(base), data(data) {}
+
+
+void CallHandle::reach(bool found) const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        if (!data->reached) {
+            data->reached = true;
+            data->found = found;
+            data->started_p.set_value(found);
+            data->callReachEvent();
+            if (!found) {
+                data->finished = true;
+                data->is_error = true;
+                try {
+                    throw FuncNotFound(*this);
+                } catch (const FuncNotFound &e) {
+                    data->rejection = SharedString::encode(e.what());
+                    data->result_p.set_exception(std::current_exception());
+                }
+                data->callFinishEvent();
+            }
+            data->cond.notify_all();
+        } else {
+            throw std::runtime_error("CallHandle::reach called twice");
+        }
+    } else {
+        throw invalidHandle();
+    }
+}
+
+bool CallHandle::respondable() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return !data->finished;
+    } else {
+        return false;
+    }
+}
+void CallHandle::respond(const ValAdaptor &value) const {
+    if (data) {
+        if (respondable()) {
+            std::lock_guard lock(data->m);
+            data->finished = true;
+            data->is_error = false;
+            data->response = value;
+            data->result_p.set_value(value);
+            data->callFinishEvent();
+            data->cond.notify_all();
+        } else {
+            throw std::runtime_error(
+                "already responded or rejected with this CallHandle");
+        }
+    } else {
+        throw invalidHandle();
+    }
+}
+void CallHandle::reject(const ValAdaptor &message) const {
+    if (data) {
+        if (respondable()) {
+            std::lock_guard lock(data->m);
+            data->finished = true;
+            data->is_error = true;
+            data->rejection = message;
+            try {
+                throw std::runtime_error(message.asStringRef().c_str());
+            } catch (...) {
+                data->result_p.set_exception(std::current_exception());
+            }
+            data->callFinishEvent();
+            data->cond.notify_all();
+        } else {
+            throw std::runtime_error(
+                "already responded or rejected with this CallHandle");
+        }
+    } else {
+        throw invalidHandle();
+    }
+}
+bool CallHandle::assertArgsNum(std::size_t expected) const {
+    if (data) {
+        if (args().size() == expected) {
+            return true;
+        } else {
+            reject(name() + "() requires " + std::to_string(expected) +
+                   " arguments, but received " + std::to_string(args().size()));
+            return false;
+        }
+    } else {
+        throw invalidHandle();
+    }
+}
+
+Promise &Promise::onReach(std::function<void(Promise)> callback) {
+    if (data) {
+        std::lock_guard lock(data->m);
+        if (!data->reach_event_done) {
+            data->reach_event = std::move(callback);
+            data->callReachEvent();
+        }
+        return *this;
+    } else {
+        throw invalidPromise();
+    }
+}
+Promise &Promise::onFinish(std::function<void(Promise)> callback) {
+    if (data) {
+        std::lock_guard lock(data->m);
+        if (!data->finish_event_done) {
+            data->finish_event = std::move(callback);
+            data->callFinishEvent();
+        }
+        return *this;
+    } else {
+        throw invalidPromise();
+    }
+}
+void internal::PromiseData::callReachEvent() {
+    std::function<void(Promise)> event;
+    if (!reach_event_done && reached && reach_event) {
+        reach_event_done = true;
+        event = std::move(reach_event);
+    }
+    if (event) {
+        ScopedUnlock unlock(m);
+        event(getter());
+    }
+}
+void internal::PromiseData::callFinishEvent() {
+    std::function<void(Promise)> event;
+    if (!finish_event_done && finished && finish_event) {
+        finish_event_done = true;
+        event = std::move(finish_event);
+    }
+    if (event) {
+        ScopedUnlock unlock(m);
+        event(getter());
+    }
+}
+
+void Promise::waitReachImpl(
+    std::optional<std::chrono::microseconds> timeout) const {
+    if (data) {
+        std::unique_lock lock(data->m);
+        if (timeout) {
+            data->cond.wait_for(lock, *timeout, [&] { return data->reached; });
+        } else {
+            data->cond.wait(lock, [&] { return data->reached; });
+        }
+    } else {
+        throw invalidPromise();
+    }
+}
+void Promise::waitFinishImpl(
+    std::optional<std::chrono::microseconds> timeout) const {
+    if (data) {
+        std::unique_lock lock(data->m);
+        if (timeout) {
+            data->cond.wait_for(lock, *timeout, [&] { return data->finished; });
+        } else {
+            data->cond.wait(lock, [&] { return data->finished; });
+        }
+    } else {
+        throw invalidPromise();
+    }
+}
+
+bool Promise::reached() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->reached;
+    } else {
+        throw invalidPromise();
+    }
+}
+bool Promise::found() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->found;
+    } else {
+        throw invalidPromise();
+    }
+}
+bool Promise::finished() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->finished;
+    } else {
+        throw invalidPromise();
+    }
+}
+bool Promise::isError() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->is_error;
+    } else {
+        throw invalidPromise();
+    }
+}
+ValAdaptor Promise::response() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->response;
+    } else {
+        throw invalidPromise();
+    }
+}
+const std::string &Promise::rejection() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->rejection.asStringRef();
+    } else {
+        throw invalidPromise();
+    }
+}
+const std::wstring &Promise::rejectionW() const {
+    if (data) {
+        std::lock_guard lock(data->m);
+        return data->rejection.asWStringRef();
+    } else {
+        throw invalidPromise();
+    }
+}
 
 // std::ostream &operator<<(std::ostream &os, const Promise &r) {
 //     os << "Func(\"" << r.name() << "\"): ";
@@ -130,6 +284,12 @@ CallHandle::CallHandle(const Field &base,
 //     }
 //     return os;
 // }
+
+std::runtime_error &Promise::invalidPromise() {
+    static std::runtime_error invalid_promise("Promise does not have valid "
+                                              "pointer to function call");
+    return invalid_promise;
+}
 
 std::runtime_error &CallHandle::invalidHandle() {
     static std::runtime_error invalid_handle("CallHandle does not have valid "

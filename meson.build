@@ -120,7 +120,6 @@ elif cxx.get_argument_syntax() == 'msvc'
     '/wd4251',
     '/wd4275',
     '/wd4661',
-    '/wd4996',
     '/external:anglebrackets',
     '/external:W0',
     '/utf-8',

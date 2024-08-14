@@ -6,7 +6,8 @@
 WEBCFACE_NS_BEGIN
 namespace message {
 struct FuncInfo;
-}
+struct Call;
+} // namespace message
 
 namespace internal {
 /*!
@@ -14,7 +15,12 @@ namespace internal {
  *
  */
 struct PromiseData : public std::enable_shared_from_this<PromiseData> {
-    std::recursive_mutex m;
+    /*!
+     * PromiseDataのメソッドはmutexをロックしないので、呼び出し側がロックすること
+     * また、eventの中ではunlockされる
+     */
+    std::mutex m;
+    std::condition_variable cond;
 
     std::function<void(Promise)> reach_event;
     std::function<void(Promise)> finish_event;
@@ -24,16 +30,17 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
     bool reached = false;
     bool found = false;
     bool finished = false;
+    bool is_error = false;
     ValAdaptor response;
     ValAdaptor rejection;
 
     std::promise<bool> started_p;
     std::promise<ValAdaptor> result_p;
-    // std::size_t caller_id;
     std::shared_future<bool> started_f;
     std::shared_future<ValAdaptor> result_f;
 
     Field base;
+    std::size_t caller_id;
     const std::vector<ValAdaptor> args_;
     std::variant<int, std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
         c_args_;
@@ -47,15 +54,15 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
      */
     void callFinishEvent();
 
-  public:
     /*!
      * startedとresultを空の状態で初期化
      */
-    explicit PromiseData(const Field &base, std::vector<ValAdaptor> &&args)
+    explicit PromiseData(const Field &base, std::vector<ValAdaptor> &&args,
+                         std::size_t caller_id = 0)
         : reach_event(), finish_event(), started_p(), result_p(),
           started_f(started_p.get_future().share()),
           result_f(result_p.get_future().share()), base(base),
-          args_(std::move(args)) {}
+          caller_id(caller_id), args_(std::move(args)) {}
 
     /*!
      * c_args_ をwcfMultiValの配列またはwcfMultiValWの配列で初期化
@@ -66,30 +73,8 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
 
     Promise getter();
     CallHandle setter();
-    // std::size_t callerId() const { return caller_id; }
 
-    /*!
-     * reached, found をセットしreachedEventを呼ぶ
-     * found=falseならfinishEventも呼ぶ
-     */
-    void reach(bool found);
-    /*!
-     * resultをセットしfinishEventを呼ぶ
-     */
-    void respond(const ValAdaptor &result_val);
-    /*!
-     * resultをセットしfinishEventを呼ぶ
-     */
-    void reject(const ValAdaptor &message);
-
-    /*!
-     * reachEventをセットしreachEventを呼ぶ
-     */
-    void setReachEvent(std::function<void(Promise)> &&callback);
-    /*!
-     * finishEventをセットしfinishEventを呼ぶ
-     */
-    void setFinishEvent(std::function<void(Promise)> &&callback);
+    std::size_t callerId() const { return caller_id; }
 };
 
 /*!
@@ -112,7 +97,8 @@ class FuncResultStore {
     std::shared_ptr<PromiseData> addResult(const Field &base) {
         std::lock_guard lock(mtx);
         std::size_t caller_id = next_caller_id++;
-        auto state = std::make_shared<PromiseData>(base, caller_id);
+        auto state = std::make_shared<PromiseData>(
+            base, std::vector<ValAdaptor>{}, caller_id);
         promises.emplace(caller_id, state);
         return state;
     }
@@ -148,7 +134,7 @@ class FuncResultStore {
  * \brief 関数1つの情報を表す。関数の実体も持つ
  *
  */
-struct FuncInfo {
+struct FuncInfo : public Field {
     ValType return_type;
     std::vector<Arg> args;
     std::function<Func::FuncType> func_impl;
@@ -159,19 +145,25 @@ struct FuncInfo {
      * 非同期実行する必要のある関数はfunc_impl内(Func::set1()内)でスレッドを建てる
      *
      */
-    void run(const CallHandle &handle,
-             const std::vector<ValAdaptor> &call_args) {
+    void run(const CallHandle &handle) {
         if (func_impl) {
-            func_impl(handle, call_args);
+            func_impl(handle);
         } else {
             throw std::runtime_error("func_impl is null");
         }
     }
 
-    FuncInfo() : return_type(ValType::none_), args(), func_impl() {}
-    FuncInfo(ValType return_type, std::vector<Arg> args,
-             std::function<Func::FuncType> func_impl)
-        : return_type(return_type), args(std::move(args)),
+    /*!
+     * \brief
+     * func_implをこのスレッドで実行し、完了時にCallResultメッセージを送る
+     *
+     */
+    void run(webcface::message::Call &&call);
+
+    FuncInfo() : Field(), return_type(ValType::none_), args(), func_impl() {}
+    FuncInfo(const Field &base, ValType return_type, std::vector<Arg> &&args,
+             std::function<Func::FuncType> &&func_impl)
+        : Field(base), return_type(return_type), args(std::move(args)),
           func_impl(std::move(func_impl)) {}
     FuncInfo(const message::FuncInfo &m);
     message::FuncInfo toMessage(const SharedString &field) const;

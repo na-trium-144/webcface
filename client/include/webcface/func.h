@@ -4,6 +4,10 @@
 #include "arg.h"
 
 WEBCFACE_NS_BEGIN
+namespace internal {
+struct FuncInfo;
+}
+
 /*!
  * \brief 関数1つを表すクラス
  *
@@ -71,7 +75,7 @@ class WEBCFACE_DLL Func : protected Field {
      */
     Func parent() const { return this->Field::parent(); }
 
-    using FuncType = void WEBCFACE_CALL_FP(CallHandle, std::vector<ValAdaptor>);
+    using FuncType = void WEBCFACE_CALL_FP(CallHandle);
 
   protected:
     /*!
@@ -80,6 +84,7 @@ class WEBCFACE_DLL Func : protected Field {
      */
     Func &setImpl(ValType return_type, std::vector<Arg> &&args,
                   std::function<FuncType> &&func_impl);
+    Func &setImpl(const std::shared_ptr<internal::FuncInfo> &func_info);
 
     /*!
      * f_run()を実行し結果をf_ok()に渡すか、例外が発生した場合はf_fail()にエラーを渡す
@@ -138,89 +143,23 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * 関数の引数をvectorで受け取りtupleに変換する。
      * \param func_casted
-     * set1()で引数をtuple、戻り値をfutureにした、これからセットする関数
+     * set1()で引数をhandleとtupleにした、これからセットする関数
      *
      */
     template <typename Ret, typename... Args>
     Func &set2(std::function<void(const CallHandle &,
                                   const ArgsTuple<Args...> &)> &&func_casted) {
-        return setImpl(valTypeOf<Ret>(),
-                       std::vector<Arg>{Arg{valTypeOf<Args>()}...},
-                       [func_casted = std::move(func_casted)](
-                           const CallHandle &handle,
-                           const std::vector<ValAdaptor> &args_vec) {
-                           ArgsTuple<Args...> args_tuple;
-                           if (args_vec.size() != sizeof...(Args)) {
-                               handle.reject("requires " +
-                                             std::to_string(sizeof...(Args)) +
-                                             " arguments, got " +
-                                             std::to_string(args_vec.size()));
-                           }
-                           argToTuple(args_vec, args_tuple);
-                           func_casted(handle, args_tuple);
-                       });
+        return setImpl(
+            valTypeOf<Ret>(), std::vector<Arg>{Arg{valTypeOf<Args>()}...},
+            [func_casted = std::move(func_casted)](const CallHandle &handle) {
+                ArgsTuple<Args...> args_tuple;
+                if (handle.assertArgsNum(sizeof...(Args))) {
+                    argToTuple(handle.args(), args_tuple);
+                    func_casted(handle, args_tuple);
+                }
+            });
     }
 
-    /*!
-     * set()に渡された関数が戻り値がshared_futureの関数の場合:
-     * 引数をtuple型で受け取り、関数をそのまま実行し、
-     * shared_futureから戻り値を取得する処理をdefer状態でfutureに格納して返す関数を
-     * set2()に渡す
-     *
-     */
-    template <typename Ret, typename... Args>
-    Func &set1(std::function<std::shared_future<Ret>(Args...)> func) {
-        return set2<Ret, Args...>(
-            [func = std::move(func)](const CallHandle &handle,
-                                     const ArgsTuple<Args...> &args_tuple) {
-                tryRun([&] { return std::apply(func, args_tuple); },
-                       [&](const std::shared_future<Ret> &ret) {
-                           std::thread([handle, ret] {
-                               tryRun(
-                                   [&] {
-                                       if constexpr (std::is_void_v<Ret>) {
-                                           ret.get();
-                                           return ValAdaptor{};
-                                       } else {
-                                           return ret.get();
-                                       }
-                                   },
-                                   handle);
-                           }).detach();
-                       },
-                       [&](const ValAdaptor &error) { handle.reject(error); });
-            });
-    }
-    /*!
-     * set()に渡された関数が戻り値がfutureの関数の場合:
-     * 引数をtuple型で受け取り、関数をそのまま実行し、
-     * futureから戻り値を取得する処理をdefer状態でfutureに格納して返す関数を
-     * set2()に渡す
-     *
-     */
-    template <typename Ret, typename... Args>
-    Func &set1(std::function<std::future<Ret>(Args...)> func) {
-        return set2<Ret, Args...>(
-            [func = std::move(func)](const CallHandle &handle,
-                                     const ArgsTuple<Args...> &args_tuple) {
-                tryRun([&] { return std::apply(func, args_tuple); },
-                       [&](std::future<Ret> ret) {
-                           std::thread([handle, ret = std::move(ret)] {
-                               tryRun(
-                                   [&] {
-                                       if constexpr (std::is_void_v<Ret>) {
-                                           ret.get();
-                                           return ValAdaptor{};
-                                       } else {
-                                           return ret.get();
-                                       }
-                                   },
-                                   handle);
-                           }).detach();
-                       },
-                       [&](const ValAdaptor &error) { handle.reject(error); });
-            });
-    }
     /*!
      * set()に渡された関数が戻り値が値の普通の関数の場合:
      * 引数をtuple型で受け取り、関数をそのまま実行し、戻り値をCallHandleにセットする関数を
@@ -276,6 +215,11 @@ class WEBCFACE_DLL Func : protected Field {
             });
     }
 
+    Func &setH2(std::vector<Arg> &&args, ValType return_type,
+                std::function<void WEBCFACE_CALL_FP(CallHandle)> callback);
+    Func &setAsyncH2(std::vector<Arg> &&args, ValType return_type,
+                     std::function<void WEBCFACE_CALL_FP(CallHandle)> callback);
+
     void runImpl(std::size_t caller_id, std::vector<ValAdaptor> args_vec,
                  bool caller_async) const;
 
@@ -284,15 +228,11 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 関数をセットする
      *
      * * 引数はValAdaptorからキャスト可能な型ならいくつでも、
-     * 戻り値はvoidまたはValAdaptorにキャスト可能な型または
-     * (ver2.0〜: std::futureまたはstd::shared_future)
-     * が使用可能
+     * 戻り値はvoidまたはValAdaptorにキャスト可能な型が使用可能
      * * (ver2.0〜) set()でセットした場合、他クライアントから呼び出されたとき
      * Client::recv() (または autoRecv) のスレッドでそのまま実行され、
      * この関数が完了するまで他のデータの受信はブロックされる。
      * また、 runAsync() で呼び出したとしても同じスレッドで同期実行される。
-     * * ただし関数がstd::futureまたはstd::shared_futureを返す場合、
-     * そのfutureの評価(future.get())は新しく建てたスレッドで行われる。
      *
      * \sa setAsync()
      */
@@ -306,8 +246,6 @@ class WEBCFACE_DLL Func : protected Field {
      *
      * * setAsync()でセットした場合、他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
      * ver1.11以前のset()と同じ。
-     * また、`set([](args...){ return std::async(std::launch::deferred, func,
-     * args...); })` と同じ。
      * * 排他制御などはセットする関数の側で用意してください。
      *
      * \sa set()
@@ -333,14 +271,17 @@ class WEBCFACE_DLL Func : protected Field {
     }
 
     /*!
-     * \brief 引数にFuncCallHandleを取る関数を登録する
+     * \brief 引数にCallHandleを取る関数を登録する
      * \since ver1.9
      *
      * cからの呼び出し用
      *
      */
-    Func &set(const std::vector<Arg> &args, ValType return_type,
-              std::function<void(FuncCallHandle)> callback);
+    template <typename T>
+    Func &set(std::vector<Arg> args, ValType return_type, T &&callback) {
+        return this->setH2(std::move(args), return_type,
+                           std::forward<T>(callback));
+    }
     /*!
      * \brief 引数にFuncCallHandleを取り非同期に実行される関数を登録する
      * \since ver2.0
@@ -348,8 +289,11 @@ class WEBCFACE_DLL Func : protected Field {
      * cからの呼び出し用
      *
      */
-    Func &setAsync(const std::vector<Arg> &args, ValType return_type,
-                   std::function<void(FuncCallHandle)> callback);
+    template <typename T>
+    Func &setAsync(std::vector<Arg> args, ValType return_type, T &&callback) {
+        return this->setH2(std::move(args), return_type,
+                           std::forward<T>(callback));
+    }
 
     /*!
      * \brief 関数を関数リストで非表示にする
@@ -359,8 +303,8 @@ class WEBCFACE_DLL Func : protected Field {
      * hiddenの指定は無効 (この関数は効果がない)
      *
      */
-    [[deprecated("Func::hidden() does nothing since ver1.10")]] Func &
-    hidden(bool) {
+    [[deprecated("Func::hidden() does nothing since ver1.10")]]
+    Func &hidden(bool) {
         return *this;
     }
 
@@ -373,25 +317,40 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 関数を実行する (同期)
      *
-     * selfの関数の場合、このスレッドで直接実行する
-     * 例外が発生した場合そのままthrow, 関数が存在しない場合 FuncNotFound
-     * をthrowする
-     *
-     * リモートの場合、関数呼び出しを送信し結果が返ってくるまで待機
      * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
      * をthrowする
      *
-     */
-    template <typename... Args>
-    ValAdaptor run(Args... args) const {
-        return run({ValAdaptor(args)...});
-    }
-    ValAdaptor run(const std::vector<ValAdaptor> &args_vec) const;
-    /*!
-     * \brief run()と同じ
+     * \deprecated ver2.0〜 runAsync()を推奨。
+     * Promise::waitFinish() と response(), rejection() で同等のことができるが、
+     * 使い方によってはデッドロックを起こす可能性がある。
+     * 詳細は waitFinish() のドキュメントを参照
      *
      */
     template <typename... Args>
+    [[deprecated("use runAsync")]]
+    ValAdaptor run(Args... args) const {
+        return run({ValAdaptor(args)...});
+    }
+    [[deprecated("use runAsync")]]
+    ValAdaptor run(std::vector<ValAdaptor> &&args_vec) const {
+        auto p = runAsync(std::move(args_vec));
+        p.waitFinish();
+        if (p.found()) {
+            if (p.isError()) {
+                throw std::runtime_error(p.rejection());
+            } else {
+                return p.response();
+            }
+        } else {
+            throw FuncNotFound(*this);
+        }
+    }
+    /*!
+     * \brief run()と同じ
+     * \deprecated ver2.0〜
+     */
+    template <typename... Args>
+    [[deprecated("use runAsync")]]
     ValAdaptor operator()(Args... args) const {
         return run(args...);
     }
@@ -400,17 +359,17 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 関数を実行する (非同期)
      *
      * * 非同期で実行する。
-     * 戻り値やエラー、例外は AsyncFuncResult から取得する
+     * 戻り値やエラー、例外は Promise から取得する
      * * 関数を実行したスレッドはdetachされるので、戻り値が不要な場合は
-     * AsyncFuncResult を破棄してもよい。
-     * (std::async とは異なる)
+     * Promise を破棄してもよい。
+     * (std::async などとは異なる)
      *
      */
     template <typename... Args>
-    AsyncFuncResult runAsync(Args... args) const {
+    Promise runAsync(Args... args) const {
         return runAsync({ValAdaptor(args)...});
     }
-    AsyncFuncResult runAsync(const std::vector<ValAdaptor> &args_vec) const;
+    Promise runAsync(std::vector<ValAdaptor> args_vec) const;
 
     /*!
      * \brief 戻り値の型を返す
@@ -574,9 +533,8 @@ class WEBCFACE_DLL FuncListener : protected Func {
      * hiddenの指定は無効 (この関数は効果がない)
      *
      */
-    [[deprecated(
-        "FuncListener::hidden() does nothing since ver1.10")]] FuncListener &
-    hidden(bool) {
+    [[deprecated("FuncListener::hidden() does nothing since ver1.10")]]
+    FuncListener &hidden(bool) {
         return *this;
     }
     /*!

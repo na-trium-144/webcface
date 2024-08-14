@@ -48,11 +48,10 @@ int main() {
         func_m.func("func1").runAsync();
         // example_mainのfunc2を実行し結果を取得
         auto result = func_m.func("func2").runAsync(9, 7.1, false, "");
-        result.onResult(
-            [](const std::shared_future<webcface::ValAdaptor> &result) {
-                std::cout << "func2(9, 7.1, false, \"\") = "
-                          << result.get().asStringRef() << std::endl;
-            });
+        result.onFinish([](const webcface::Promise &result) {
+            std::cout << "func2(9, 7.1, false, \"\") = "
+                      << result.response().asStringRef() << std::endl;
+        });
 
         func_m.func("func_bool").runAsync(true);
         func_m.func("func_int").runAsync(1);

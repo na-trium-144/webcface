@@ -16,6 +16,8 @@
 WEBCFACE_NS_BEGIN
 namespace internal {
 struct PromiseData;
+struct FuncInfo;
+struct ClientData;
 } // namespace internal
 
 /*!
@@ -31,6 +33,14 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const FieldBase &base);
 };
 
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
+
 /*!
  * \brief 非同期で実行した関数の実行結果を取得するインタフェース。
  *
@@ -39,6 +49,8 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
  */
 class WEBCFACE_DLL Promise : Field {
     std::shared_ptr<internal::PromiseData> data;
+
+    static std::runtime_error &WEBCFACE_CALL invalidPromise();
 
   public:
     Promise(const Field &base,
@@ -104,6 +116,8 @@ class WEBCFACE_DLL Promise : Field {
      * \since ver2.0
      *
      * * reached() がtrueになるまで待機する。
+     * * onReached
+     * にコールバックが設定されている場合そのコールバックの完了も待機する。
      * * Client::sync() を呼ぶのとは別のスレッドで使用することを想定している。
      * 呼び出しが成功したかどうかの情報の受信は Client::sync() で行われるため、
      * この関数を使用して待機している間に Client::sync()
@@ -116,7 +130,7 @@ class WEBCFACE_DLL Promise : Field {
      * \brief リモートに呼び出しメッセージが到達するまで待機
      * \since ver2.0
      *
-     * * reached() がtrueになるか、timeoutが経過するまで待機する。
+     * * waitReach()と同じだが、timeoutが経過したらreturnする。
      *
      * \sa waitReach(), waitReachUntil(), onReached()
      */
@@ -127,7 +141,7 @@ class WEBCFACE_DLL Promise : Field {
      * \brief リモートに呼び出しメッセージが到達するまで待機
      * \since ver2.0
      *
-     * * reached() がtrueになるか、timeoutが経過するまで待機する。
+     * * waitReach()と同じだが、timeoutが経過したらreturnする。
      *
      * \sa waitReach(), waitReachFor(), onReached()
      */
@@ -142,38 +156,48 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行が完了したかどうかを返す
      * \since ver2.0
      *
+     * finishedがtrueの場合、 response() または rejection() (rejectionW())
+     * のどちらかに結果が入る。
+     *
      */
     bool finished() const;
+    /*!
+     * \brief 関数がエラーになったかどうかを返す
+     * \since ver2.0
+     *
+     * * trueの場合、rejection()にエラーメッセージが入る。
+     * * 実行が完了していてfalseの場合は、
+     * response()に戻り値が入る。
+     * * まだ実行が完了していない場合falseを返す。
+     *
+     */
+    bool isError() const;
     /*!
      * \brief 関数の実行が完了した場合その戻り値を返す
      * \since ver2.0
      *
-     * まだ完了していない場合、または関数がエラーを返した場合、
-     * std::nullopt を返す
-     *
      */
-    std::optional<ValAdaptor> response() const;
+    ValAdaptor response() const;
     /*!
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す
      * \since ver2.0
      *
-     * まだ完了していない場合、または関数がエラーではなく戻り値を返した場合、
-     * std::nullopt を返す
-     *
      */
-    std::optional<std::string> rejection() const;
+    const std::string &rejection() const;
     /*!
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す (wstring)
      * \since ver2.0
      * \sa rejection()
      */
-    std::optional<std::wstring> rejectionW() const;
+    const std::wstring &rejectionW() const;
 
     /*!
      * \brief 関数の実行が完了するまで待機
      * \since ver2.0
      *
      * * finished() がtrueになるまで待機する。
+     * * onFinished
+     * にコールバックが設定されている場合そのコールバックの完了も待機する。
      * * Client::sync() を呼ぶのとは別のスレッドで使用することを想定している。
      * 関数実行が完了したかどうかの情報の受信は Client::sync() で行われるため、
      * この関数を使用して待機している間に Client::sync()
@@ -186,7 +210,7 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行が完了するまで待機
      * \since ver2.0
      *
-     * * finished() がtrueになるか、timeoutが経過するまで待機する。
+     * * waitFinish()と同じだが、timeoutが経過したらreturnする。
      *
      * \sa waitFinish(), waitFinishUntil(), onFinished()
      */
@@ -197,7 +221,7 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行が完了するまで待機
      * \since ver2.0
      *
-     * * finished() がtrueになるか、timeoutが経過するまで待機する。
+     * * waitFinish()と同じだが、timeoutが経過したらreturnする。
      *
      * \sa waitFinish(), waitFinishFor(), onFinished()
      */
@@ -219,7 +243,7 @@ class WEBCFACE_DLL Promise : Field {
      * * すでにreached()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
      *
      */
-    Promise &onReached(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
+    Promise &onReach(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
@@ -230,8 +254,15 @@ class WEBCFACE_DLL Promise : Field {
      * * すでにfinished()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
      *
      */
-    Promise &onFinished(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
+    Promise &onFinish(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
 };
+
+#ifdef _MSC_VER
+#pragma warning(pop)
+#else
+#pragma GCC diagnostic pop
+#endif
+
 using AsyncFuncResult = Promise;
 
 /*!
@@ -252,6 +283,9 @@ class WEBCFACE_DLL CallHandle : Field {
                const std::shared_ptr<internal::PromiseData> &data);
 
     friend class Func;
+    friend class FuncListener;
+    friend struct internal::FuncInfo;
+    friend struct internal::ClientData;
 
     using Field::name;
     using Field::nameW;
@@ -272,7 +306,6 @@ class WEBCFACE_DLL CallHandle : Field {
      */
     const wcfMultiValW *cWArgs() const;
 
-  private:
     /*!
      * \since ver2.0
      */
@@ -281,13 +314,29 @@ class WEBCFACE_DLL CallHandle : Field {
      * \since ver2.0
      */
     void reject(const ValAdaptor &message) const;
+    /*!
+     * \since ver2.0
+     */
+    void reach(bool found) const;
 
-  public:
+    /*!
+     * \brief 引数の数をチェックする
+     * \since ver2.0
+     *
+     * args().size() != expected
+     * ならエラーメッセージとともにrejectし、falseを返す
+     *
+     * \return 引数の個数がexpectedと一致していたらtrue
+     *
+     */
+    bool assertArgsNum(std::size_t expected) const;
+
     /*!
      * \brief 関数の結果を送信する
      *
-     * * 2回呼ぶと std::future_error を投げる
-     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver1.11まで: 2回呼ぶと std::future_error を投げ、
+     * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
     template <typename T>
@@ -297,8 +346,9 @@ class WEBCFACE_DLL CallHandle : Field {
     /*!
      * \brief 空の値を関数の結果として送信する
      *
-     * * 2回呼ぶと std::future_error を投げる
-     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver1.11まで: 2回呼ぶと std::future_error を投げ、
+     * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
     void respond() const { respond(ValAdaptor()); }
@@ -306,8 +356,9 @@ class WEBCFACE_DLL CallHandle : Field {
     /*!
      * \brief 関数の結果を例外として送信する
      *
-     * * 2回呼ぶと std::future_error を投げる
-     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver1.11まで: 2回呼ぶと std::future_error を投げ、
+     * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
     void reject(std::string_view message) const { reject(ValAdaptor(message)); }
@@ -315,13 +366,21 @@ class WEBCFACE_DLL CallHandle : Field {
      * \brief 関数の結果を例外として送信する (wstring)
      * \since ver2.0
      *
-     * * 2回呼ぶと std::future_error を投げる
-     * * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
+     * * respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
     void reject(std::wstring_view message) const {
         reject(ValAdaptor(message));
     }
+
+    /*!
+     * \brief respond()またはreject()が可能かどうかを返す
+     * \since ver2.0
+     * \return このhandleが有効(デフォルト構築などではない)、
+     * かつまだrespond()もreject()もしていない状態ならtrue
+     *
+     */
+    bool respondable() const;
 };
 using FuncCallHandle = CallHandle;
 
