@@ -31,6 +31,6 @@ int main() {
         // std::this_thread::sleep_for(std::chrono::milliseconds(100));
         wcli.loggerOStream() << "info " << i++ << std::endl;
 
-        wcli.waitSyncFor(std::chrono::milliseconds(100));
+        wcli.loopSyncFor(std::chrono::milliseconds(100));
     }
 }

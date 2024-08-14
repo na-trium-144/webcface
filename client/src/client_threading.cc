@@ -195,41 +195,42 @@ void internal::ClientData::syncImpl(
     if (sync) {
         this->message_push(this->syncData(false));
     }
-    std::unique_lock lock(this->ws_m);
-    if (timeout) {
-        // recv_queueにデータが入るまで待つ
-        // 遅くともtimeout経過したら抜ける
-        this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
-            return this->closing.load() ||
-                   (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                   (!this->connected && !this->auto_reconnect.load());
-        });
-        if (this->recv_queue.empty()) {
-            // timeoutし、recv準備完了でない場合return
+    while(true){
+        std::unique_lock lock(this->ws_m);
+        if (timeout) {
+            // recv_queueにデータが入るまで待つ
+            // 遅くともtimeout経過したら抜ける
+            this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
+                return this->closing.load() ||
+                       (!this->recv_queue.empty() && !this->do_ws_recv) ||
+                       (!this->connected && !this->auto_reconnect.load());
+            });
+            if (this->recv_queue.empty()) {
+                // timeoutし、recv準備完了でない場合return
+                return;
+            }
+        } else {
+            // recv_queueにデータが入るまで無制限に待つ
+            this->ws_cond.wait(lock, [&] {
+                return this->closing.load() ||
+                       (!this->recv_queue.empty() && !this->do_ws_recv) ||
+                       (!this->connected && !this->auto_reconnect.load());
+            });
+        }
+        if (this->closing.load() || (!this->connected && !this->auto_reconnect.load())) {
+            // close時と接続されてないときreturn
             return;
         }
-    } else {
-        // recv_queueにデータが入るまで無制限に待つ
-        this->ws_cond.wait(lock, [&] {
-            return this->closing.load() ||
-                   (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                   (!this->connected && !this->auto_reconnect.load());
-        });
-    }
-    if (this->closing.load()) {
-        return;
-    }
 
-    while (!this->recv_queue.empty()) {
-        std::string msg = std::move(this->recv_queue.front());
-        this->recv_queue.pop();
-        {
-            ScopedUnlock un(lock);
-            this->onRecv(msg);
+        while (!this->recv_queue.empty()) {
+            std::string msg = std::move(this->recv_queue.front());
+            this->recv_queue.pop();
+            {
+                ScopedUnlock un(lock);
+                this->onRecv(msg);
+            }
         }
     }
-    // なにか受信できたらreturn
-    // または (!this->connected && !this->auto_reconnect.load()) の場合もreturn
 }
 /*
 void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {

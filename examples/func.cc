@@ -35,7 +35,5 @@ int main() {
         return "1";
     });
 
-    while (true) {
-        wcli.waitSync();
-    }
+    wcli.loopSync();
 }

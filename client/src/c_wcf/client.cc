@@ -74,20 +74,20 @@ wcfStatus wcfSync(wcfClient *wcli) {
     wcli_->sync();
     return WCF_OK;
 }
-wcfStatus wcfWaitSyncFor(wcfClient *wcli, int timeout) {
+wcfStatus wcfLoopSyncFor(wcfClient *wcli, int timeout) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->waitSyncFor(std::chrono::microseconds(timeout));
+    wcli_->loopSyncFor(std::chrono::microseconds(timeout));
     return WCF_OK;
 }
-wcfStatus wcfWaitSync(wcfClient *wcli) {
+wcfStatus wcfLoopSync(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_->waitSync();
+    wcli_->loopSync();
     return WCF_OK;
 }
 // wcfStatus wcfAutoSync(wcfClient *wcli, int enabled) {

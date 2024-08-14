@@ -72,7 +72,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfStart(wcfClient *wcli);
  * * wcfAutoReconnect が無効の場合は1回目の接続のみ待機し、
  * 失敗しても再接続せずreturnする。
  * * 接続だけでなくentryの受信や初期化が完了するまで待機する。
- * wcfWaitSync() と同様、このスレッドで受信処理
+ * wcfLoopSync() と同様、このスレッドで受信処理
  * (EntryEvent コールバックの呼び出しなど) が行われる。
  *
  * \return wcliが無効ならWCF_BAD_WCLI
@@ -100,12 +100,11 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
  * * ver2.0以降: データを受信した場合、各種コールバック(onEntry, onChange,
  * Funcなど)をこのスレッドで呼び出し、
  * それがすべて完了するまでこの関数はブロックされる。
- *   * データを何も受信しなかった場合、サーバーに接続していない場合、
- * または接続試行中やデータ送信中など受信ができない場合は、
+ *   * データを何も受信しなかった場合やサーバーに接続していない場合は、
  * 即座にreturnする。
  *
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfWaitSyncFor(), wcfWaitSync()
+ * \sa wcfLoopSyncFor(), wcfLoopSync()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
 /*!
@@ -113,29 +112,32 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
  * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する
  * \since ver2.0
  *
- * * wcfSync()と同じだが、何も受信できなければ
- * timeout 経過後に再試行してreturnする。
+ * * wcfSync()と同じだが、データを受信してもしなくても
+ * timeout 経過するまでは繰り返しwcfSync()を再試行する。
  * timeout=0 または負の値なら再試行せず即座にreturnする。(wcfSync()と同じ)
- * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
+ * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+ * (deadlock回避)
  *
  * \param wcli
  * \param timeout (μs単位)
  * \return wcliが無効ならWCF_BAD_WCLI
- * \sa wcfSync(), wcfWaitSync()
+ * \sa wcfSync(), wcfLoopSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitSyncFor(wcfClient *wcli,
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfLoopSyncFor(wcfClient *wcli,
                                                     int timeout);
 /*!
  * \brief
  * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する
  * \since ver2.0
  *
- * * wcfSync()と同じだが、何か受信するまで無制限に待機する
+ * * wcfLoopSyncFor()と同じだが、close()されるまで無制限にwcfSync()を再試行する。
+ * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
+ * (deadlock回避)
  *
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfSync()
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitSync(wcfClient *wcli);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfLoopSync(wcfClient *wcli);
 // /*!
 //  * \brief 別スレッドでwcfSync()を自動的に呼び出すようにする。
 //  * \since ver2.0
@@ -149,7 +151,7 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitSync(wcfClient *wcli);
 //  *
 //  * \param wcli
 //  * \param enabled 0以外にすると有効、0にすると無効になる。デフォルトは無効
-//  * \sa wcfSync(), wcfWaitSyncFor(), wcfWaitSync()
+//  * \sa wcfSync(), wcfLoopSyncFor(), wcfLoopSync()
 //  */
 // WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoSync(wcfClient *wcli, int enabled);
 

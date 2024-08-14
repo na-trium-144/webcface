@@ -110,7 +110,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver1.11.1以降: autoReconnect が false
      * の場合は1回目の接続のみ待機し、失敗しても再接続せずreturnする。
      * * ver2.0以降: 接続だけでなくentryの受信や初期化が完了するまで待機する。
-     * waitSync() と同様、このスレッドで受信処理
+     * loopSync() と同様、このスレッドで受信処理
      * (onEntry コールバックの呼び出しなど) が行われる。
      *
      * \sa start(), autoReconnect()
@@ -133,7 +133,7 @@ class WEBCFACE_DLL Client : public Member {
      *   * データをまだ何も受信していない場合やサーバーに接続していない場合は、
      * 即座にreturnする。
      *
-     * \sa start(), waitSyncFor(), waitSyncUntil(), waitSync()
+     * \sa start(), loopSyncFor(), loopSyncUntil(), loopSync()
      */
     void sync() { syncImpl(std::chrono::microseconds(0)); }
     /*!
@@ -141,27 +141,26 @@ class WEBCFACE_DLL Client : public Member {
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * * sync()と同じだが、何も受信できなければ
-     * timeout 経過後に再試行してreturnする。
+     * * sync()と同じだが、データを受信してもしなくても
+     * timeout 経過するまでは繰り返しsync()を再試行する。
      * timeout=0 または負の値なら再試行せず即座にreturnする。(sync()と同じ)
      * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
      * (deadlock回避)
-     * * timeoutが100μs以上の場合、100μsおきに繰り返し再試行し、timeout経過後return
      *
-     * \sa sync(), waitSyncUntil(), waitSync()
+     * \sa sync(), loopSyncUntil(), loopSync()
      */
-    void waitSyncFor(std::chrono::microseconds timeout) { syncImpl(timeout); }
+    void loopSyncFor(std::chrono::microseconds timeout) { syncImpl(timeout); }
     /*!
      * \brief
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * waitSyncFor() と同じだが、timeoutを絶対時間で指定
+     * loopSyncFor() と同じだが、timeoutを絶対時間で指定
      *
-     * \sa sync(), waitSyncFor(), waitSync()
+     * \sa sync(), loopSyncFor(), loopSync()
      */
     template <typename Clock, typename Duration>
-    void waitSyncUntil(std::chrono::time_point<Clock, Duration> timeout) {
+    void loopSyncUntil(std::chrono::time_point<Clock, Duration> timeout) {
         syncImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
     }
@@ -170,13 +169,13 @@ class WEBCFACE_DLL Client : public Member {
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
      * \since ver2.0
      *
-     * * waitSyncFor()と同じだが、何か受信するまで無制限に待機する
+     * * loopSyncFor()と同じだが、close()されるまで無制限にsync()を再試行する。
      * * autoReconnectがfalseでサーバーに接続できてない場合はreturnする。
      * (deadlock回避)
      *
-     * \sa sync(), waitSyncFor(), waitSyncUntil()
+     * \sa sync(), loopSyncFor(), loopSyncUntil()
      */
-    void waitSync() { syncImpl(std::nullopt); }
+    void loopSync() { syncImpl(std::nullopt); }
 
     // /*!
     //  * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
@@ -190,7 +189,7 @@ class WEBCFACE_DLL Client : public Member {
     //  * * デフォルトでは無効なので、手動でsync()などを呼び出す必要がある
     //  *
     //  * \param enabled trueにすると自動でsync()が呼び出されるようになる
-    //  * \sa sync(), waitSyncFor(), waitSyncUntil(), waitSync()
+    //  * \sa sync(), loopSyncFor(), loopSyncUntil(), loopSync()
     //  */
     // void autoSync(bool enabled);
 

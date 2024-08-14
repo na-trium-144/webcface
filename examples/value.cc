@@ -35,6 +35,6 @@ int main() {
 
         i += 0.5;
 
-        wcli.waitSyncFor(std::chrono::milliseconds(100));
+        wcli.loopSyncFor(std::chrono::milliseconds(100));
     }
 }

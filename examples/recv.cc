@@ -57,6 +57,6 @@ int main() {
         func_m.func("func_int").runAsync(1);
         func_m.func("func_double").runAsync(1.0);
         func_m.func("func_str").runAsync("1");
-        c.waitSyncFor(std::chrono::milliseconds(100));
+        c.loopSyncFor(std::chrono::milliseconds(100));
     }
 }

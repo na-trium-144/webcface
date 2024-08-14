@@ -85,6 +85,6 @@ int main() {
             v.sync();
         }
         i++;
-        wcli.waitSyncFor(std::chrono::milliseconds(100));
+        wcli.loopSyncFor(std::chrono::milliseconds(100));
     }
 }
