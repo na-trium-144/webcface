@@ -8,6 +8,82 @@ namespace internal {
 struct FuncInfo;
 }
 
+template <typename T>
+constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
+    return &T::operator();
+}
+template <typename Ret, typename... Args>
+constexpr auto getInvokeSignature(Ret (*p)(Args...)) {
+    return p;
+}
+template <typename T>
+using InvokeSignature =
+    decltype(getInvokeSignature(std::declval<std::decay_t<T>>()));
+
+template <bool>
+struct FuncArgTypeCheck {};
+template <>
+struct FuncArgTypeCheck<true> {
+    using ArgTypesSupportedByWebCFaceFunc = std::nullptr_t;
+};
+template <typename... Args>
+struct FuncArgTypesTrait
+    : FuncArgTypeCheck<(std::is_convertible_v<ValAdaptor, Args> && ...)> {};
+
+template <bool>
+struct FuncReturnTypeCheck {};
+template <>
+struct FuncReturnTypeCheck<true> {
+    using ReturnTypeSupportedByWebCFaceFunc = std::nullptr_t;
+};
+template <typename Ret>
+struct FuncReturnTypeTrait
+    : FuncReturnTypeCheck<std::is_same_v<Ret, void> ||
+                          std::is_constructible_v<ValAdaptor, Ret>> {};
+
+template <typename T>
+struct FuncSignatureTrait {};
+/*!
+ * RetとArgsが条件を満たすときだけ、
+ * ReturnTypeTrait::ReturnTypeSupportedByWebCFaceFunc と
+ * ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc が定義される
+ * (enable_ifを使ってないのはエラーメッセージがわかりにくかったから)
+ *
+ */
+template <typename Ret, typename... Args>
+struct FuncSignatureTrait<Ret(Args...)> {
+    using ReturnTypeTrait = FuncReturnTypeTrait<Ret>;
+    using ArgTypesTrait = FuncArgTypesTrait<Args...>;
+    static constexpr bool return_void = std::is_same_v<Ret, void>;
+    static inline bool assertArgsNum(const CallHandle &handle) {
+        return handle.assertArgsNum(sizeof...(Args));
+    }
+    static inline std::vector<Arg> argsInfo() {
+        return std::vector<Arg>{Arg{valTypeOf<Args>()}...};
+    }
+    using ReturnType = Ret;
+    using ArgsTuple = std::tuple<std::decay_t<Args>...>;
+};
+template <typename Ret, typename T, typename... Args>
+struct FuncSignatureTrait<Ret (T::*)(Args...)>
+    : FuncSignatureTrait<Ret(Args...)> {};
+template <typename Ret, typename T, typename... Args>
+struct FuncSignatureTrait<Ret (T::*)(Args...) const>
+    : FuncSignatureTrait<Ret(Args...)> {};
+template <typename Ret, typename... Args>
+struct FuncSignatureTrait<Ret (*)(Args...)> : FuncSignatureTrait<Ret(Args...)> {
+};
+
+/*!
+ * * Tは関数オブジェクト型、または関数型
+ * * InvokeSignature<T> で関数呼び出しの型 ( Ret(*)(Args...) や
+ * Ret(T::*)(Args...) ) を取得し、
+ * * FuncSignatureTrait<Ret(Args...)> が各種メンバー型や定数を定義する
+ *
+ */
+template <typename T>
+using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
+
 /*!
  * \brief 関数1つを表すクラス
  *
@@ -137,55 +213,7 @@ class WEBCFACE_DLL Func : protected Field {
         handle.reject(error);
     }
 
-    template <typename T>
-    static constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
-        return &T::operator();
-    }
-    template <typename Ret, typename... Args>
-    static constexpr auto getInvokeSignature(Ret (*p)(Args...)) {
-        return p;
-    }
-    template <typename T>
-    using InvokeSignature =
-        decltype(getInvokeSignature(std::declval<std::decay_t<T>>()));
-
-    template <typename T>
-    struct FuncSignatureTrait {};
-    template <typename Ret, typename... Args>
-    struct FuncSignatureTrait<Ret(Args...)> {
-        static constexpr bool args_and_return_type_is_supported =
-            (std::is_same_v<Ret, void> ||
-             std::is_constructible_v<ValAdaptor, Ret>) &&
-            (std::is_convertible_v<ValAdaptor, Args> && ...);
-        static constexpr bool return_void = std::is_same_v<Ret, void>;
-        static inline bool assertArgsNum(const CallHandle &handle) {
-            return handle.assertArgsNum(sizeof...(Args));
-        }
-        static inline std::vector<Arg> argsInfo() {
-            return std::vector<Arg>{Arg{valTypeOf<Args>()}...};
-        }
-        using ReturnType = Ret;
-        using ArgsTuple = std::tuple<std::decay_t<Args>...>;
-    };
-    template <typename Ret, typename T, typename... Args>
-    struct FuncSignatureTrait<Ret (T::*)(Args...)>
-        : FuncSignatureTrait<Ret(Args...)> {};
-    template <typename Ret, typename T, typename... Args>
-    struct FuncSignatureTrait<Ret (T::*)(Args...) const>
-        : FuncSignatureTrait<Ret(Args...)> {};
-    template <typename Ret, typename... Args>
-    struct FuncSignatureTrait<Ret (*)(Args...)>
-        : FuncSignatureTrait<Ret(Args...)> {};
-
-    /*!
-     * * Tは関数オブジェクト型、または関数型
-     * * InvokeSignature<T> で関数呼び出しの型 ( Ret(*)(Args...) や
-     * Ret(T::*)(Args...) ) を取得し、
-     * * FuncSignatureTrait<Rer(Args...)> が各種メンバー型や定数を定義する
-     *
-     */
-    template <typename T>
-    using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
+    static constexpr std::nullptr_t TraitOk = nullptr;
 
   public:
     /*!
@@ -201,10 +229,11 @@ class WEBCFACE_DLL Func : protected Field {
      * 戻り値はvoidまたはValAdaptorにキャスト可能な型が使用可能
      * \sa setAsync()
      */
-    template <
-        typename T,
-        std::enable_if_t<FuncObjTrait<T>::args_and_return_type_is_supported,
-                         std::nullptr_t> = nullptr>
+    template <typename T,
+              typename FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
+              typename FuncObjTrait<
+                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
     Func &set(T func) {
         return setImpl(
             valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
@@ -240,10 +269,11 @@ class WEBCFACE_DLL Func : protected Field {
      * 戻り値はvoidまたはValAdaptorにキャスト可能な型が使用可能
      * \sa set()
      */
-    template <
-        typename T,
-        std::enable_if_t<FuncObjTrait<T>::args_and_return_type_is_supported,
-                         std::nullptr_t> = nullptr>
+    template <typename T,
+              typename FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
+              typename FuncObjTrait<
+                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
     Func &setAsync(T func) {
         return setImpl(
             valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
@@ -294,6 +324,7 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 引数にCallHandleを取る関数を登録する
      * \since ver1.9
      *
+     * * WebCFace内部でCのAPIからの呼び出しに使うためのもの
      * * <del>ver1.11まで:
      * 関数がrespond()もreject()もせず終了した場合自動でrespondする。</del>
      * * ver2.0〜: 自動でrespondされることはないので、
@@ -325,6 +356,7 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 引数にFuncCallHandleを取り非同期に実行される関数を登録する
      * \since ver2.0
      *
+     * * WebCFace内部でCのAPIからの呼び出しに使うためのもの
      * * 関数がrespond()もreject()もせず終了した場合自動でrespondされることはないので、
      * 関数が受け取ったhandleを別スレッドに渡すなどして、
      * ここでセットした関数の終了後にrespond()やreject()することも可能。
@@ -494,10 +526,11 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      * lockTmp() 呼び出し時に正式な名前のFuncに内容を移動する。
      *
      */
-    template <
-        typename T,
-        std::enable_if_t<FuncObjTrait<T>::args_and_return_type_is_supported,
-                         std::nullptr_t> = nullptr>
+    template <typename T,
+              typename FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
+              typename FuncObjTrait<
+                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
     AnonymousFunc(const Field &base, T func)
         : Func(base, fieldNameTmp()), base_init(true) {
         this->set(std::move(func));
@@ -507,10 +540,11 @@ class WEBCFACE_DLL AnonymousFunc : public Func {
      * lockTmp() 時にdataに登録する
      *
      */
-    template <
-        typename T,
-        std::enable_if_t<FuncObjTrait<T>::args_and_return_type_is_supported,
-                         std::nullptr_t> = nullptr>
+    template <typename T,
+              typename FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
+              typename FuncObjTrait<
+                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
     explicit AnonymousFunc(T func)
         : func_setter([func = std::move(func)](AnonymousFunc &a) mutable {
               a.set(std::move(func));
