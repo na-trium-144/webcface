@@ -9,39 +9,43 @@ WebCFaceの機能紹介・チュートリアルです。
 
 このチュートリアルでは C++ (Meson または CMake)、または Python を使用します。
 
-## 1 WebCFaceのインストール
+## WebCFaceのインストール
 
 READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
 C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれていますが、
 Pythonで利用したい場合は別途 `pip install webcface` でクライアントライブラリをインストールしてください。
 
-## 2 Server
+## Server
 
 WebCFaceを使用するときはserverを常時立ち上げておく必要があります。
-次のように WebCFace-Desktop アプリから、またはコマンドラインからの2つの方法があります。
+次のように WebCFace Desktop アプリから、またはコマンドラインからの2つの方法があります。
 
-### 2-1 WebCFace-Desktop
+<div class="tabbed">
 
-todo
+- <b class="tab-title">WebCFace Desktop</b>
 
-### 2-2 コマンドラインから
+    todo
 
-ターミナルを開いて
-```sh
-webcface-server
-```
-コマンドでサーバーが起動します。
-デフォルトでは7530番ポートを開きクライアントの接続を待ちます。
+- <b class="tab-title">コマンドライン</b>
 
-コマンドラインオプションで起動するポートなどを変更できたりします。
-Serverの機能については詳細は [Server](./10_server.md)
+    ターミナルを開いて
+    ```sh
+    webcface-server
+    ```
+    コマンドでサーバーが起動します。
+    デフォルトでは7530番ポートを開きクライアントの接続を待ちます。
 
-serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開くと、
-WebCFaceのメイン画面(WebUI)が開きます。
-使用しているターミナルによっては、Ctrl(Command)+クリックなどで開くことができるかもしれません。
+    コマンドラインオプションで起動するポートなどを変更できたりします。
+    Serverの機能については詳細は [Server](./10_server.md)
 
-## 3 WebUI
+    serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開くと、
+    WebCFaceのメイン画面(WebUI)が開きます。
+    使用しているターミナルによっては、Ctrl(Command)+クリックなどで開くことができるかもしれません。
+
+</div>
+
+## WebUI
 
 WebCFaceのメイン画面が起動します。
 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
@@ -49,14 +53,14 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-## 4 Setup
+## Setup
 
 ここからWebCFaceを使ったプログラムを書いていきます。
 
 まずはプロジェクトを作成しWebCFaceライブラリを使えるようにします。
 
 \note
-MesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパイル・リンクすることも可能です。
+C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパイル・リンクすることも可能です。
 詳細な説明は [Setup](./20_setup.md)
 
 <div class="tabbed">
@@ -72,7 +76,7 @@ MesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパ
     * main.cc
     ```cpp
     #include <iostream>
-    #include <webcface/webcface.h>
+    #include <webcface/client.h> // ← webcface::Client
 
     int main() {
         webcface::Client wcli("tutorial");
@@ -98,8 +102,13 @@ MesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパ
     meson compile -C build
     ./build/tutorial
     ```
+    実行すると、`Hello, World!` と出力されると同時に、
+    WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。
+
+    \note
     このチュートリアルでは以降ビルドと実行の手順は省略しますが、
     同様に `meson compile` (またはninja) でビルドして `./build/tutorial` を実行してください。
+
 
 - <b class="tab-title">C++ (CMake)</b>
     適当にディレクトリを作ります
@@ -112,11 +121,11 @@ MesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパ
     * main.cc
     ```cpp
     #include <iostream>
-    #include <webcface/webcface.h>
+    #include <webcface/client.h> // ← webcface::Client
 
     int main() {
         webcface::Client wcli("tutorial");
-        wcli.start();
+        wcli.waitConnection(); // serverに接続できるまで待機
 
         std::cout << "Hello, World!" << std::endl;
     }
@@ -136,17 +145,98 @@ MesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパ
     cmake --build build
     ./build/tutorial
     ```
+    実行すると、`Hello, World!` と出力されると同時に、
+    WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。
+
+    \note
     このチュートリアルでは以降ビルドと実行の手順は省略しますが、
     同様に `cmake --build` (またはmakeやninjaなどでも可) でビルドして `./build/tutorial` を実行してください。
 
 </div>
 
-このプログラムを実行すると、`Hello, World!` と出力されると同時に、
-WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。
+## Log
 
-## 5 データの送信
+コンソールに出力していた `Hello, World!` を、WebCFaceにも送信してみましょう。
 
+<div class="tabbed">
 
+- <b class="tab-title">C++</b>
 
+    * main.cc
+    ```cpp
+    #include <iostream>
+    #include <webcface/client.h>
 
+    int main() {
+        webcface::Client wcli("tutorial");
+        wcli.waitConnection();
+        std::ostream &logger = wcli.loggerOStream();
+        // loggerOStream() は std::cout と同様に文字列を出力して使うことができる
+
+        logger << "Hello, World!" << std::endl;
+
+        wcli.sync(); // wcli に書き込んだデータを送信する
+    }
+    ```
+
+    これを実行すると、コンソール (std::coutではなくstd::cerrと同じ標準エラー出力ですが) には今まで通り `Hello, World!` と表示されます。
+
+    それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも `Hello, World!` を確認できるはずです。
+
+    \note
+    std::wostream を使うこともできます。
+    また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
+    詳細は [Log](./40_log.md)
+
+</div>
+
+## Value, Text
+
+数値や文字列のデータを送信すると、それをリアルタイムに表示することができます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+
+    * main.cc
+    ```cpp
+    #include <iostream>
+    #include <thread>
+    #include <webcface/client.h>
+    #include <webcface/value.h> // ← value() を使うのに必要
+    #include <webcface/text.h> // ← text() を使うのに必要
+
+    int main() {
+        webcface::Client wcli("tutorial");
+        wcli.waitConnection();
+        std::ostream &logger = wcli.loggerOStream();
+
+        logger << "Hello, World!" << std::endl;
+
+        int i = 0;
+
+        while(true){
+            i++;
+            wcli.value("hoge") = i; // 「hoge」という名前のvalueに値をセット
+            if(i % 2 == 0){
+                wcli.text("fuga") = "even"; // 「fuga」という名前のtextに文字列をセット
+            }else{
+                wcli.text("fuga") = "odd";
+            }
+
+            wcli.sync(); // wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。
+
+    また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
+
+</div>
+
+## Func
+
+プログラムからWebUIに情報を送信するだけでなく、WebUIからプログラムを操作することも可能です。
 

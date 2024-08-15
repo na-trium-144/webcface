@@ -38,7 +38,7 @@ webcface-send -t log
     wcli.log().append(webcface::level::error, "this is error");
     ```
 
-    ostream, (<span class="since-c">2.0</span>wostream) を使いたい場合は
+    std::ostreamを使いたい場合は
     ```cpp
     wcli.loggerOStream() << "hello" << std::endl;
     ```
@@ -49,7 +49,7 @@ webcface-send -t log
     ```
     のようにcoutやcerrの出力先を置き換えることができます。
     これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。
-    (ver1.11以前はspdlogのstderr_sink、 ver2.0以降はfputs,fputcを使って直接stderrに出力されます)
+    (<del>spdlogのstderr_sinkを使って</del> <span class="since-c">2.0</span>fputs,fputcを使って 直接stderrに出力されます)
     またこの場合はログレベルが設定できず、常にinfoになります。
     
     <span class="since-c">2.0</span>
