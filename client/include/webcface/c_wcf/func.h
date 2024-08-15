@@ -131,8 +131,11 @@ wcfFuncWaitResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
  *
  * * 登録した関数は引数でcallhandleを受け取り、
  * wcfFuncRespond または wcfFuncReject を使って結果を返す。
- * (何も返さずreturnしても良いが、return後にはそのhandleは使えない)
- * * (ver2.0〜) wcfFuncSet()でセットした場合、他クライアントから呼び出されたとき
+ * * <del>ver1.11まで: 関数がrespondもrejectもせず終了した場合自動でrespondする。</del>
+ * * ver2.0〜: 自動でrespondされることはないので、
+ * 関数が受け取ったhandleを別スレッドに渡すなどして、
+ * ここでセットした関数の終了後にrespond()やreject()することも可能。
+ * * ver2.0〜: wcfFuncSet()でセットした場合、他クライアントから呼び出されたとき
  * wcfRecv() (または autoRecv) のスレッドでそのまま実行され、
  * この関数が完了するまで他のデータの受信はブロックされる。
  * また、 wcfFuncRunAsync() で呼び出したとしても同じスレッドで同期実行される。
@@ -166,7 +169,7 @@ wcfFuncSetW(wcfClient *wcli, const wchar_t *field, const wcfValType *arg_types,
  * \brief 非同期に実行される関数を登録する
  * \since ver2.0
  *
- * 登録した関数は他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
+ * * 登録した関数は他クライアントから呼び出されたとき新しいスレッドを建てて実行される。
  * ver1.11以前のwcfFuncSet()と同じ。
  *
  * \sa wcfFuncSet

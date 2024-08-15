@@ -28,36 +28,6 @@ Func &Func::free() {
     return *this;
 }
 
-Func &
-Func::setH2(std::vector<Arg> &&args, ValType return_type,
-            std::function<void WEBCFACE_CALL_FP(FuncCallHandle)> callback) {
-    return setImpl(return_type, std::move(args),
-                   [args_size = args.size(),
-                    callback = std::move(callback)](const CallHandle &handle) {
-                       if (handle.assertArgsNum(args_size)) {
-                           callback(handle);
-                           // if(handle.respondable()){
-                           //      handle.respond();
-                           // }
-                       }
-                   });
-}
-Func &Func::setAsyncH2(
-    std::vector<Arg> &&args, ValType return_type,
-    std::function<void WEBCFACE_CALL_FP(FuncCallHandle)> callback) {
-    return setImpl(
-        return_type, std::move(args),
-        [args_size = args.size(),
-         callback = std::make_shared<std::function<void(FuncCallHandle)>>(
-             std::move(callback))](const CallHandle &handle) {
-            if (handle.assertArgsNum(args_size)) {
-                std::thread([callback, handle] {
-                    callback->operator()(handle);
-                }).detach();
-            }
-        });
-}
-
 void internal::FuncInfo::run(webcface::message::Call &&call) {
     auto state = std::make_shared<internal::PromiseData>(
         static_cast<Field>(*this), std::move(call.args));
