@@ -1,5 +1,6 @@
 sources = [
   'server_main.cc',
+  'config.cc',
 ]
 if webcface_system_version_rc
   sources += import('windows').compile_resources(
@@ -19,9 +20,12 @@ executable('webcface-server',
   sources: sources,
   dependencies: [
     warning_options,
+    webcface_config_dep,
     # webcface_dep,
     webcface_server_store_dep,
+    webcface_launcher_dep,
     cli11_dep,
+    tomlplusplus_dep,
   ],
   cpp_args: ['-DWEBCFACE_BUILDING'],
   link_with: [
@@ -29,6 +33,7 @@ executable('webcface-server',
     webcface_message_lib,
     webcface_client_lib,
     webcface_server_store_lib,
+    webcface_launcher_lib,
   ],
   install: true,
 )

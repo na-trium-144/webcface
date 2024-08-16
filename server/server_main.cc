@@ -1,12 +1,10 @@
+#include "./config.h"
 #include <webcface/server.h>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/webcface-config.h"
-#endif
 #include <CLI/CLI.hpp>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
+
+#define DEFAULT_TOML "webcface.toml"
 
 int main(int argc, char **argv) {
     spdlog::sink_ptr sink;
@@ -34,6 +32,13 @@ int main(int argc, char **argv) {
                         "(keep all log by setting -1)")
                            .c_str());
 
+        bool use_stdin = false;
+        app.add_flag("-s,--stdin", use_stdin,
+                     "Read config from stdin instead of file");
+        std::string toml_path = DEFAULT_TOML;
+        app.add_option("config_path", toml_path,
+                       "Path of config file (default: " DEFAULT_TOML ")");
+
         CLI11_PARSE(app, argc, argv);
 
         int level;
@@ -45,7 +50,10 @@ int main(int argc, char **argv) {
             level = 2;
         }
 
-        webcface::server::Server(port, level, keep_log).join();
+        auto toml_config = parseToml(toml_path, use_stdin);
+        ServerConfig config = parseConfig(toml_config);
+        webcface::server::Server(port, level, config.commands, keep_log).join();
+
     } catch (const std::exception &e) {
         if (sink && logger) {
             logger->critical("Unhandled exception: {}", e.what());

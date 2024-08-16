@@ -3,11 +3,6 @@
 #include "webcface/server/dir.h"
 #include "webcface/server/ip.h"
 #include "webcface/server/server.h"
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/webcface-config.h"
-#endif
 #include "webcface/message/message.h"
 #include "webcface/internal/unix_path.h"
 #include <memory>
@@ -35,37 +30,7 @@ static inline spdlog::level::level_enum convertLevel(int level) {
         return spdlog::level::debug;
     }
 }
-void Server::pingThreadMain() {
-    std::unique_lock lock(server_mtx);
-    while (!server_stop.load()) {
-        // ping_interval経過するかserver_stop_condで起こされるまで待機
-        server_ping_wait.wait_for(lock, MemberData::ping_interval);
 
-        if (server_stop.load()) {
-            return;
-        }
-        auto new_ping_status =
-            std::make_shared<std::unordered_map<unsigned int, int>>();
-        store->forEach([&](auto cd) {
-            if (cd->last_ping_duration) {
-                new_ping_status->emplace(
-                    cd->member_id,
-                    static_cast<int>(cd->last_ping_duration->count()));
-            }
-        });
-        store->ping_status = new_ping_status;
-        auto msg =
-            message::packSingle(message::PingStatus{{}, store->ping_status});
-        store->forEach([&](auto cd) {
-            cd->logger->trace("ping");
-            cd->sendPing();
-            if (cd->ping_status_req) {
-                cd->send(msg);
-                cd->logger->trace("send ping_status");
-            }
-        });
-    }
-}
 void Server::send(wsConnPtr conn, const std::string &msg) {
     if (!server_stop.load()) {
         AppWrapper::send(conn, msg.data(), msg.size());
@@ -79,6 +44,7 @@ void Server::join() {
             running_th.join();
         }
     }
+    ping_thread.join();
 }
 Server::~Server() {
     {
@@ -89,7 +55,6 @@ Server::~Server() {
     for (auto &app : apps) {
         static_cast<AppWrapper *>(app)->stop();
     }
-    ping_thread.join();
     this->join();
     store.reset();
     for (auto &app : apps) {
@@ -97,10 +62,12 @@ Server::~Server() {
     }
 }
 
-Server::Server(std::uint16_t port, int level, int keep_log,
-               spdlog::sink_ptr sink, std::shared_ptr<spdlog::logger> logger)
+Server::Server(std::uint16_t port, int level,
+               const std::vector<std::shared_ptr<launcher::Command>> &commands,
+               int keep_log, spdlog::sink_ptr sink,
+               std::shared_ptr<spdlog::logger> logger)
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
-      store(std::make_unique<ServerStorage>(this, keep_log)),
+      store(std::make_unique<ServerStorage>(this, commands, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
 
     if (!sink) {
@@ -109,6 +76,7 @@ Server::Server(std::uint16_t port, int level, int keep_log,
     if (!logger) {
         logger = std::make_shared<spdlog::logger>("webcface_server", sink);
     }
+    this->logger = logger;
     logger->set_level(static_cast<spdlog::level::level_enum>(level));
     logger->info("WebCFace Server {}", WEBCFACE_VERSION);
 

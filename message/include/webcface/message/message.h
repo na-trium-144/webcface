@@ -30,7 +30,7 @@ MSGPACK_ADD_ENUM(webcface::encoding::ImageCompressMode)
 WEBCFACE_NS_BEGIN
 namespace message {
 // 新しいメッセージの定義は
-// kind追記→struct作成→message.ccに追記→s_client_data.ccに追記→client.ccに追記
+// kind追記→struct作成→message.ccに追記→member_data.ccに追記→client.ccに追記
 
 namespace MessageKind {
 enum MessageKindEnum {
@@ -59,6 +59,11 @@ enum MessageKindEnum {
     ping = 89,
     ping_status = 90,
     ping_status_req = 91,
+    command_entry = 92,
+    command_status = 93,
+    command_log = 94,
+    command_action = 95,
+    command_req = 96,
 };
 }
 
@@ -762,6 +767,84 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
 };
+
+/*!
+ * \brief server->client サーバーに登録されているLauncherコマンドの情報
+ * \since ver2.0
+ *
+ * SyncInitEndの前にサーバー→クライアントに送られる
+ *
+ */
+struct CommandEntry : public MessageBase<MessageKind::command_entry> {
+    std::size_t command_id = 0;
+    SharedString name;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", command_id), MSGPACK_NVP("n", name))
+};
+/*!
+ * \brief server->client Launcherコマンドの現在の実行状態
+ * \since ver2.0
+ *
+ * CommandReqが送られてきたクライアントに対してのみ、
+ * 状態が変化するごとにサーバー→クライアントに送られる
+ *
+ */
+struct CommandStatus : public MessageBase<MessageKind::command_status> {
+    std::size_t command_id = 0;
+    bool running = false;
+    int status_code = 0;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", command_id), MSGPACK_NVP("r", running),
+                       MSGPACK_NVP("s", status_code))
+};
+/*!
+ * \brief server->client Launcherコマンドのログ出力
+ * \since ver2.0
+ *
+ * CommandReqが送られてきたクライアントに対してのみ、
+ * 前回からの追加分のログをサーバー→クライアントに送る
+ *
+ */
+struct CommandLog : public MessageBase<MessageKind::command_log> {
+    std::size_t command_id = 0;
+    std::shared_ptr<std::deque<LogLine>> log;
+    CommandLog() = default;
+    template <typename It>
+    CommandLog(std::size_t id, const It &begin, const It &end)
+        : command_id(id) {
+        this->log = std::make_shared<std::deque<LogLine>>();
+        for (auto it = begin; it < end; it++) {
+            if constexpr (std::is_same_v<decltype(*it), LogLine>) {
+                this->log->push_back(*it);
+            } else {
+                this->log->emplace_back(it->toMessage());
+            }
+        }
+    }
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", command_id), MSGPACK_NVP("l", log))
+};
+/*!
+ * \brief client->server Launcherコマンドの操作
+ * \since ver2.0
+ */
+struct CommandAction : public MessageBase<MessageKind::command_action> {
+    std::size_t command_id = 0;
+    enum ActionType {
+        start = 1,
+        stop = 2,
+    };
+    int action = 0;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", command_id), MSGPACK_NVP("a", action))
+};
+/*!
+ * \brief client->server CommandStatusとCommandLogをリクエスト
+ * \since ver2.0
+ */
+struct CommandReq : public MessageBase<MessageKind::command_req> {
+    std::size_t command_id = 0;
+    bool log_req = false;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", command_id), MSGPACK_NVP("l", log_req))
+};
+
+
 /*!
  * \brief msgpackのメッセージをパースしstd::anyで返す
  *

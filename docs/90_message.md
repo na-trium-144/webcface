@@ -43,7 +43,7 @@ data = {
 * <del>サーバーからクライアントに1回送られます</del>
 * <span class="since-c">2.0</span>
 クライアントからサーバーに sync init が送られたあと、
-サーバーはクライアントにすべてのentryを送り、最後に sync init end を送ります
+サーバーはクライアントにすべてのメンバーの各種entryと command entry を送り、最後に sync init end を送ります
 	* クライアントはwaitConnection()でこれが送られてくるまで待機します
 * <span class="since-c">2.0</span> member id 追加 (sync init をしたメンバーのid)
 
@@ -480,3 +480,57 @@ data = {
 ```
 * logの受信をリクエストします
 
+## Command
+
+\since <span class="since-c">2.0</span>
+
+### command entry (kind = 92)
+```js
+data = {
+	i: number, // id
+	n: name, // name
+}
+```
+* クライアントからサーバーに sync init が送られたあと、サーバーに登録されているLauncherコマンドの情報をクライアントに送ります
+
+### command status (kind = 93)
+```js
+data = {
+	i: number, // id
+	r: boolean, // running
+	s: number, // status code
+}
+```
+* リクエストを送ってきたクライアントに対してのみ、状態が変化するごとにサーバー→クライアントに送られる
+
+### command log (kind = 94)
+```js
+data = {
+	i: number, // id
+	l: {
+		v: number, // level 0〜5
+		t: number, // time
+		m: string, // message
+	}[],
+}
+```
+* リクエストを送ってきたクライアントに対してのみ、前回からの追加分のログをサーバー→クライアントに送る
+
+### command action (kind = 95)
+```js
+data = {
+	i: number, // id
+	a: number, // action
+}
+```
+* クライアント→サーバーに送って、コマンドを操作
+	* action=1でコマンドをstart, 2でstop
+
+### command req (kind = 96)
+```js
+data = {
+	i: number, // id
+	l: boolean, // log_req
+}
+```
+* log_reqがtrueなら、statusだけでなくlogもリクエストする
