@@ -297,8 +297,10 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 [asio](https://github.com/chriskohlhoff/asio),
 [cli11](https://github.com/CLIUtils/CLI11.git),
 [UTF8-CPP](https://github.com/nemtrif/utfcpp),
-[OpenCV](https://opencv.org/)(exampleのみ),
+[tiny-process-library](https://gitlab.com/eidheim/tiny-process-library),
+[toml++](https://github.com/marzer/tomlplusplus),
 [Magick++](https://github.com/ImageMagick/ImageMagick),
+[OpenCV](https://opencv.org/)(exampleのみ),
 [GoogleTest](https://github.com/google/googletest)(testのみ)
 を使用します。
 * デフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします。
@@ -492,7 +494,7 @@ WebCFace本体とtoolsが使用しているサードパーティーのライブ�
 * Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
 * UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
-* OpenCV (Apache 2.0) : https://opencv.org/license/
+* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library
+* toml++ (MIT) : https://github.com/marzer/tomlplusplus
 * ImageMagick: https://imagemagick.org/script/license.php
-* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
-* toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)
+* OpenCV (Apache 2.0) : https://opencv.org/license/

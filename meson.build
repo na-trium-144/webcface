@@ -365,6 +365,8 @@ curl_dep = curl_dep.as_system('system')
 
 if build_server
   cli11_dep = dependency('cli11').as_system('system')
+  tomlplusplus_dep = dependency('tomlplusplus').as_system('system')
+  tiny_process_library_dep = dependency('tiny-process-library').as_system('system')
 
   if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
     crow_dep = dependency('Crow', required: false)
@@ -653,6 +655,7 @@ meson.override_dependency('webcface', webcface_dep)
 
 if build_server
   subdir('server-store')
+  subdir('launcher')
   subdir('server')
 endif
 if build_examples

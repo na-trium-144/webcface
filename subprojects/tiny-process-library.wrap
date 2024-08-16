@@ -1,0 +1,8 @@
+[wrap-git]
+url = https://gitlab.com/eidheim/tiny-process-library.git
+revision = 6166ba5dce461438cefb57e847832aca25d510d7
+depth = 1
+method = cmake
+
+[provide]
+tiny-process-library = tiny_process_library_dep
