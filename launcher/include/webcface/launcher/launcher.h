@@ -14,10 +14,7 @@ namespace launcher {
 
 std::shared_ptr<Process> parseTomlProcess(toml::node &config_node,
                                           const std::string &default_name);
-std::vector<std::shared_ptr<Command>> parseToml(webcface::Client &wcli,
-                                                toml::parse_result &config);
-void launcherLoop(webcface::Client &wcli,
-                  const std::vector<std::shared_ptr<Command>> &commands);
+std::vector<std::shared_ptr<Command>> parseToml(toml::parse_result &config);
 
 }
 WEBCFACE_NS_END

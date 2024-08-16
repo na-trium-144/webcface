@@ -5,6 +5,7 @@
 #include <spdlog/common.h>
 #include "webcface/server/server.h"
 #include "webcface/encoding/encoding.h"
+#include "webcface/launcher/command.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -31,6 +32,8 @@ struct ServerStorage {
 
     int keep_log;
     std::string hostname;
+
+    std::vector<std::shared_ptr<launcher::Command>> commands;
 
     explicit ServerStorage(Server *server, int keep_log = 1000)
         : clients(), clients_by_id(), ping_status(), server(server),

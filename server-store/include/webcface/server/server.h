@@ -29,6 +29,8 @@ class Server {
     std::vector<std::thread> apps_running;
 
     void pingThreadMain();
+    void ping();
+    void updateCommandStatus();
 
     void send(wsConnPtr conn, const std::string &msg);
 

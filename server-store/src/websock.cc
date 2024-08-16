@@ -37,35 +37,64 @@ static inline spdlog::level::level_enum convertLevel(int level) {
 }
 void Server::pingThreadMain() {
     std::unique_lock lock(server_mtx);
+    std::chrono::steady_clock::time_point last_ping =
+        std::chrono::steady_clock::now();
     while (!server_stop.load()) {
-        // ping_interval経過するかserver_stop_condで起こされるまで待機
-        server_ping_wait.wait_for(lock, MemberData::ping_interval);
-
+        // 50ms or server_stop_condで起こされるまで待機
+        server_ping_wait.wait_for(lock, std::chrono::milliseconds(50));
         if (server_stop.load()) {
             return;
         }
-        auto new_ping_status =
-            std::make_shared<std::unordered_map<unsigned int, int>>();
-        store->forEach([&](auto cd) {
-            if (cd->last_ping_duration) {
-                new_ping_status->emplace(
-                    cd->member_id,
-                    static_cast<int>(cd->last_ping_duration->count()));
-            }
-        });
-        store->ping_status = new_ping_status;
-        auto msg =
-            message::packSingle(message::PingStatus{{}, store->ping_status});
-        store->forEach([&](auto cd) {
-            cd->logger->trace("ping");
-            cd->sendPing();
-            if (cd->ping_status_req) {
-                cd->send(msg);
-                cd->logger->trace("send ping_status");
-            }
-        });
+        updateCommandStatus();
+        if (std::chrono::steady_clock::now() - last_ping >=
+            MemberData::ping_interval) {
+            ping();
+            last_ping += MemberData::ping_interval;
+        }
     }
 }
+void Server::ping() {
+    auto new_ping_status =
+        std::make_shared<std::unordered_map<unsigned int, int>>();
+    store->forEach([&](auto cd) {
+        if (cd->last_ping_duration) {
+            new_ping_status->emplace(
+                cd->member_id,
+                static_cast<int>(cd->last_ping_duration->count()));
+        }
+    });
+    store->ping_status = new_ping_status;
+    auto msg = message::packSingle(message::PingStatus{{}, store->ping_status});
+    store->forEach([&](auto cd) {
+        cd->logger->trace("ping");
+        cd->sendPing();
+        if (cd->ping_status_req) {
+            cd->send(msg);
+            cd->logger->trace("send ping_status");
+        }
+    });
+}
+void Server::updateCommandStatus() {
+    for (auto c : store->commands) {
+        c->checkStatusChanged([&](bool running, int status) {
+            store->forEach([&](auto cd) {
+                cd->logger->trace(
+                    "send command_status {}: running = {}, status = {}",
+                    c->name(), running, status);
+                cd->pack(message::CommandStatus{running, status});
+            });
+        });
+        c->checkLogs(
+            [&](std::deque<LogLineData> &logs, std::size_t prev_log_lines) {
+                store->forEach([&](auto cd) {
+                    cd->pack(message::CommandLog{logs.begin() + prev_log_lines,
+                                                 logs.end()});
+                });
+            });
+    }
+    store->forEach([&](auto cd) { cd->send(); });
+}
+
 void Server::send(wsConnPtr conn, const std::string &msg) {
     if (!server_stop.load()) {
         AppWrapper::send(conn, msg.data(), msg.size());

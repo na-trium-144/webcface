@@ -654,8 +654,8 @@ import('pkgconfig').generate(
 meson.override_dependency('webcface', webcface_dep)
 
 if build_server
-  subdir('server-store')
   subdir('launcher')
+  subdir('server-store')
   subdir('server')
 endif
 if build_examples

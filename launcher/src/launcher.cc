@@ -104,8 +104,7 @@ std::shared_ptr<Process> parseTomlProcess(toml::node &config_node,
     return std::make_shared<Process>(name, exec, workdir, capture, utf8, env);
 }
 
-std::vector<std::shared_ptr<Command>> parseToml(webcface::Client &wcli,
-                                                toml::parse_result &config) {
+std::vector<std::shared_ptr<Command>> parseToml(toml::parse_result &config) {
     std::vector<std::shared_ptr<Command>> commands;
     if (!config["command"].is_array()) {
         spdlog::error("No commands specified in config.");
@@ -154,64 +153,11 @@ std::vector<std::shared_ptr<Command>> parseToml(webcface::Client &wcli,
         }
 
         auto cmd = std::make_shared<Command>(start_p, stop_p);
-        cmd->initFunc(wcli);
+        // cmd->initFunc(wcli);
         commands.push_back(cmd);
     }
     return commands;
 }
-
-void launcherLoop(WebCFace::Client &wcli,
-                  const std::vector<std::shared_ptr<Command>> &commands) {
-    auto v = wcli.view("launcher");
-    for (auto c : commands) {
-        v << c->start_p->name << " ";
-        auto start = webcface::button("start", c->start_f);
-        auto stop = webcface::button("stop", c->stop_f);
-        if (c->start_p->is_running()) {
-            // todo: button.disable がほしい
-            start.bgColor(WebCFace::ViewColor::gray);
-            stop.bgColor(WebCFace::ViewColor::orange);
-        } else {
-            start.bgColor(WebCFace::ViewColor::green);
-            stop.bgColor(WebCFace::ViewColor::gray);
-        }
-        v << start;
-        if (c->stop_p.index() != 0) {
-            v << stop;
-        }
-        if (!c->start_p->is_running() && c->start_p->exit_status != 0) {
-            v << webcface::text("(" + std::to_string(c->start_p->exit_status) +
-                                ") ")
-                     .textColor(WebCFace::ViewColor::red);
-        }
-        if (!c->start_p->is_running() &&
-            (c->start_p->exit_status != 0 ||
-             c->start_p->capture_stdout == CaptureMode::always)) {
-            std::string logs = c->start_p->logs;
-            if (!logs.empty()) {
-                v << webcface::button("Clear Logs",
-                                      [c] { c->start_p->logs.clear(); })
-                         .bgColor(webcface::ViewColor::cyan)
-                  << std::endl;
-                for (int i;
-                     (i = logs.find_first_of("\n")) != std::string::npos;) {
-                    v << "　　" << logs.substr(0, i) << std::endl;
-                    logs = logs.substr(i + 1);
-                }
-                if (!logs.empty()) {
-                    v << "　　" << logs << std::endl;
-                }
-            } else {
-                v << std::endl;
-            }
-        } else {
-            v << std::endl;
-        }
-    }
-    v.sync();
-    wcli.sync();
-}
-
 
 }
 WEBCFACE_NS_END

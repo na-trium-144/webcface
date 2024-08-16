@@ -1,5 +1,6 @@
 webcface_launcher_src = [
   'src/launcher.cc',
+  'src/command.cc',
 ]
 webcface_launcher_inc = include_directories('include')
 webcface_launcher_lib = static_library('webcface-launcher',
