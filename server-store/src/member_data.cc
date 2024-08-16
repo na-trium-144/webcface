@@ -154,6 +154,54 @@ void MemberData::onRecv(const std::string &message) {
             }
             break;
         }
+        case MessageKind::command_req: {
+            auto v = std::any_cast<webcface::message::CommandReq>(obj);
+            if (v.command_id < store->commands.size()) {
+                auto c = store->commands[v.command_id];
+                logger->debug("command_status_req id={}, log={}", v.command_id,
+                              v.log_req);
+                this->command_status_req.emplace(v.command_id);
+                auto [running, exit_status] = c->isRunning();
+                logger->trace("send command_status");
+                this->pack(message::CommandStatus{
+                    {}, v.command_id, running, exit_status});
+                if (v.log_req) {
+                    this->command_log_req.emplace(v.command_id);
+                    c->getAllLogs([&](const std::deque<LogLineData> &logs) {
+                        this->pack(message::CommandLog{c->id(), logs.begin(),
+                                                       logs.end()});
+                        logger->trace("send command_log {} lines", logs.size());
+                    });
+                }
+            } else {
+                logger->warn("command_status_req id={} is out of range",
+                             v.command_id);
+            }
+            break;
+        }
+        case MessageKind::command_action: {
+            auto v = std::any_cast<webcface::message::CommandAction>(obj);
+            if (v.command_id < store->commands.size()) {
+                auto c = store->commands[v.command_id];
+                logger->debug("command_action id={}, action={}", v.command_id,
+                              v.action);
+                switch (v.action) {
+                case 1:
+                    c->start();
+                    break;
+                case 2:
+                    c->stop();
+                    break;
+                default:
+                    logger->warn("unknown command action: {}", v.action);
+                    break;
+                }
+            } else {
+                logger->warn("command_action id={} is out of range",
+                             v.command_id);
+            }
+            break;
+        }
         case MessageKind::sync_init: {
             auto v = std::any_cast<webcface::message::SyncInit>(obj);
             this->name = v.member_name;
@@ -274,6 +322,11 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 }
             });
+            for (const auto &c : store->commands) {
+                logger->trace("send command_entry {}: {}", c->id(),
+                              c->name().decode());
+                this->pack(message::CommandEntry{{}, c->id(), c->name()});
+            }
             logger->trace("send sync_init_end");
             this->pack(webcface::message::SyncInitEnd{{},
                                                       WEBCFACE_SERVER_NAME,

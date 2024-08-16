@@ -33,13 +33,13 @@ class Process : std::enable_shared_from_this<Process> {
 
   public:
     std::mutex m;
-    std::string name;
+    SharedString name;
     std::deque<LogLineData> logs;
     std::shared_ptr<spdlog::logger> logger;
 
     Process(const Process &) = delete;
     Process &operator=(const Process &) = delete;
-    Process(const std::string &name, const std::string &exec,
+    Process(const SharedString &name, const std::string &exec,
             const std::string &workdir, CaptureMode capture_stdout,
             bool stdout_is_utf8,
             const std::unordered_map<std::string, std::string> &env,
@@ -54,14 +54,14 @@ class Process : std::enable_shared_from_this<Process> {
     std::pair<bool, int> isRunning();
 };
 
+using StopOption = std::variant<std::nullopt_t, std::shared_ptr<Process>, int>;
 /*!
  * ProcessにStart/Stopボタンの実装を追加したもの
  *
  */
 class Command : std::enable_shared_from_this<Command> {
+    std::size_t id_;
     std::shared_ptr<Process> start_p;
-    using StopOption =
-        std::variant<std::nullopt_t, std::shared_ptr<Process>, int>;
     StopOption stop_p;
 
     std::mutex m;
@@ -71,12 +71,27 @@ class Command : std::enable_shared_from_this<Command> {
   public:
     Command(const Command &) = delete;
     Command &operator=(const Command &) = delete;
-    Command(const std::shared_ptr<Process> &start_p, const StopOption &stop_p)
-        : start_p(start_p), stop_p(stop_p) {}
+    Command(std::size_t id, const std::shared_ptr<Process> &start_p,
+            const StopOption &stop_p)
+        : id_(id), start_p(start_p), stop_p(stop_p) {}
 
-    const std::string &name();
+    SharedString name() { return start_p->name; }
+    std::size_t id() { return id_; }
     void start();
     void stop();
+
+    /*!
+     * start_pだけでなくstop_pも動いていればkill
+     */
+    void kill(int sig);
+    /*!
+     * start_pだけでなくstop_pも動いてないか確認する
+     */
+    bool shutdownOk();
+
+    std::pair<bool, int> isRunning();
+    void getAllLogs(
+        const std::function<void(const std::deque<LogLineData> &)> &func);
 
     /*!
      * \brief
@@ -89,9 +104,8 @@ class Command : std::enable_shared_from_this<Command> {
      * プロセスのログが前回呼び出し時から増えていたらコールバックに渡す
      *
      */
-    void checkLogs(const std::function<void(std::deque<LogLineData> &,
+    void checkLogs(const std::function<void(const std::deque<LogLineData> &,
                                             std::size_t)> &func);
-    std::deque<LogLineData> getAllLogs();
 };
 
 } // namespace launcher

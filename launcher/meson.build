@@ -30,6 +30,7 @@ webcface_launcher_dep = declare_dependency(
     # webcface_dep,
     webcface_config_dep,
     webcface_encoding_dep,
+    webcface_client_dep,
     filesystem_dep,
     spdlog_dep,
   ],

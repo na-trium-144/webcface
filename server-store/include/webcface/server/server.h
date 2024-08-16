@@ -4,6 +4,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include "webcface/launcher/command.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include <condition_variable>
@@ -23,14 +24,21 @@ using wsConnPtr = void *;
 void initMagick();
 
 class Server {
+    std::shared_ptr<spdlog::logger> logger;
     std::atomic<bool> server_stop;
     std::mutex server_mtx;
     std::vector<void *> apps;
     std::vector<std::thread> apps_running;
 
+    /*!
+     * ping_thread内で、一定時間ごとにpingを送ったり、commandの状態をアップデートしたりする
+     *
+     */
     void pingThreadMain();
+
     void ping();
     void updateCommandStatus();
+    void shutdownCommands();
 
     void send(wsConnPtr conn, const std::string &msg);
 
@@ -43,8 +51,9 @@ class Server {
     std::thread ping_thread; // storeよりも後ろ
 
   public:
-    Server(std::uint16_t port, int level, int keep_log = 1000,
-           spdlog::sink_ptr sink = nullptr,
+    Server(std::uint16_t port, int level,
+           const std::vector<std::shared_ptr<launcher::Command>> &commands,
+           int keep_log = 1000, spdlog::sink_ptr sink = nullptr,
            std::shared_ptr<spdlog::logger> logger = nullptr);
     ~Server();
     void join();

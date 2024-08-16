@@ -1,5 +1,6 @@
 sources = [
   'server_main.cc',
+  'config.cc',
 ]
 if webcface_system_version_rc
   sources += import('windows').compile_resources(
@@ -19,6 +20,7 @@ executable('webcface-server',
   sources: sources,
   dependencies: [
     warning_options,
+    webcface_config_dep,
     # webcface_dep,
     webcface_server_store_dep,
     webcface_launcher_dep,

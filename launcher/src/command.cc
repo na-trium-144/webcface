@@ -9,14 +9,14 @@
 WEBCFACE_NS_BEGIN
 namespace launcher {
 
-Process::Process(const std::string &name, const std::string &exec,
+Process::Process(const SharedString &name, const std::string &exec,
                  const std::string &workdir, CaptureMode capture_stdout,
                  bool stdout_is_utf8,
                  const std::unordered_map<std::string, std::string> &env,
                  spdlog::sink_ptr sink)
     : std::enable_shared_from_this<Process>(), exec(exec), workdir(workdir),
       capture_stdout(capture_stdout), stdout_is_utf8(stdout_is_utf8), env(env),
-      name(name), logger(std::make_shared<spdlog::logger>(name, sink)) {
+      name(name), logger(std::make_shared<spdlog::logger>("command_" + name.decode(), sink)) {
     // logger->set_pattern("[%n] %v");
 }
 
@@ -65,10 +65,10 @@ void Process::start() {
     };
     int exit_status;
     if (p && !p->try_get_exit_status(exit_status)) {
-        this->logger->warn("Command '{}' is already started.", this->name);
+        this->logger->warn("Command is already started.");
         // throw std::runtime_error("already started");
     } else {
-        this->logger->info("Starting command '{}'.", this->name);
+        this->logger->info("Starting command.");
         this->logs.clear();
         if (this->capture_stdout != CaptureMode::never) {
             p = std::make_shared<TinyProcessLib::Process>(
@@ -84,15 +84,14 @@ void Process::kill([[maybe_unused]] int sig) {
     int exit_status;
     if (p && !p->try_get_exit_status(exit_status)) {
 #ifdef _WIN32
-        this->logger->info("Stopping command '{}'.", this->name);
+        this->logger->info("Stopping command.");
         p->kill(false);
 #else
-        this->logger->info("Sending signal {} to command '{}'.", sig,
-                           this->name);
+        this->logger->info("Sending signal {} to command.", sig);
         p->signal(sig);
 #endif
     } else {
-        this->logger->warn("Command '{}' is already stopped.", this->name);
+        this->logger->warn("Command is already stopped.");
         // throw std::runtime_error("already stopped");
     }
 }
@@ -126,6 +125,27 @@ void Command::stop() {
         break;
     }
 }
+void Command::kill(int sig) {
+    std::lock_guard lock(m);
+    if (this->start_p->isRunning().first) {
+        this->start_p->kill(sig);
+    }
+    if (this->stop_p.index() == 1 &&
+        std::get<1>(this->stop_p)->isRunning().first) {
+        std::get<1>(this->stop_p)->kill(sig);
+    }
+}
+bool Command::shutdownOk() {
+    std::lock_guard lock(m);
+    if (this->start_p->isRunning().first) {
+        return false;
+    }
+    if (this->stop_p.index() == 1 &&
+        std::get<1>(this->stop_p)->isRunning().first) {
+        return false;
+    }
+    return true;
+}
 
 void Command::checkStatusChanged(const std::function<void(bool, int)> &func) {
     std::lock_guard lock(m);
@@ -136,7 +156,8 @@ void Command::checkStatusChanged(const std::function<void(bool, int)> &func) {
     }
 }
 void Command::checkLogs(
-    const std::function<void(std::deque<LogLineData> &, std::size_t)> &func) {
+    const std::function<void(const std::deque<LogLineData> &, std::size_t)>
+        &func) {
     std::lock_guard lock(m);
     std::lock_guard proc_lock(start_p->m);
     if (start_p->logs.size() > prev_log_lines) {
@@ -144,10 +165,15 @@ void Command::checkLogs(
     }
     prev_log_lines = start_p->logs.size();
 }
-std::deque<LogLineData> Command::getAllLogs() {
+std::pair<bool, int> Command::isRunning() {
+    std::lock_guard lock(m);
+    return start_p->isRunning();
+}
+void Command::getAllLogs(
+    const std::function<void(const std::deque<LogLineData> &)> &func) {
     std::lock_guard lock(m);
     std::lock_guard proc_lock(start_p->m);
-    return start_p->logs;
+    func(start_p->logs);
 }
 
 } // namespace launcher

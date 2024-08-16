@@ -143,6 +143,8 @@ struct MemberData {
     std::chrono::system_clock::time_point last_send_ping;
     std::optional<std::chrono::milliseconds> last_ping_duration;
     bool ping_status_req = false;
+    std::unordered_set<std::size_t> command_status_req;
+    std::unordered_set<std::size_t> command_log_req;
 
     std::stringstream send_buffer;
     int send_len = 0;

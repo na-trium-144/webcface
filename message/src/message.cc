@@ -92,6 +92,11 @@ unpack(const std::string &message,
                 MSG_PARSE(Ping)
                 MSG_PARSE(PingStatus)
                 MSG_PARSE(PingStatusReq)
+                MSG_PARSE(CommandEntry)
+                MSG_PARSE(CommandStatus)
+                MSG_PARSE(CommandLog)
+                MSG_PARSE(CommandAction)
+                MSG_PARSE(CommandReq)
 
 #undef MSG_PARSE_DATA
 #undef MSG_PARSE

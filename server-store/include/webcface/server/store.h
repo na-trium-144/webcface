@@ -33,11 +33,17 @@ struct ServerStorage {
     int keep_log;
     std::string hostname;
 
+    /*!
+     * vectorのindexがそのままコマンドのidになっているはず
+     */
     std::vector<std::shared_ptr<launcher::Command>> commands;
 
-    explicit ServerStorage(Server *server, int keep_log = 1000)
+    explicit ServerStorage(
+        Server *server,
+        const std::vector<std::shared_ptr<launcher::Command>> &commands,
+        int keep_log = 1000)
         : clients(), clients_by_id(), ping_status(), server(server),
-          keep_log(keep_log), hostname() {}
+          keep_log(keep_log), hostname(), commands(commands) {}
     ~ServerStorage() { clear(); }
 
     /*!

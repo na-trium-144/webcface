@@ -114,7 +114,7 @@ std::vector<std::shared_ptr<Command>> parseToml(toml::parse_result &config) {
     for (auto &&config_node : *config_commands) {
         auto start_p = parseTomlProcess(config_node, "");
 
-        Command::StopOption stop_p = 2;
+        StopOption stop_p = 2;
         auto t_stop = config_node[toml::path("stop")];
         if (t_stop) {
             if (t_stop.is_boolean()) {
@@ -141,7 +141,7 @@ std::vector<std::shared_ptr<Command>> parseToml(toml::parse_result &config) {
                 auto t_exec = tb_stop[toml::path("exec")];
                 if (t_exec.is_string()) {
                     stop_p.emplace<1>(
-                        parseTomlProcess(tb_stop, start_p->name + "/stop"));
+                        parseTomlProcess(tb_stop, start_p->name.decode() + "/stop"));
                 } else {
                     spdlog::error("Error reading 'stop'");
                     std::exit(1);
@@ -159,5 +159,5 @@ std::vector<std::shared_ptr<Command>> parseToml(toml::parse_result &config) {
     return commands;
 }
 
-}
+} // namespace launcher
 WEBCFACE_NS_END

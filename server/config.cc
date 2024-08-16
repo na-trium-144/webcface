@@ -1,4 +1,5 @@
 #include "./config.h"
+#include "webcface/launcher/launcher.h"
 #include <iostream>
 #include <sstream>
 #include <toml++/toml.hpp>
@@ -9,8 +10,7 @@ static inline std::string tomlSourceInfo(const toml::source_region &src) {
     return ss.str();
 }
 
-ServerConfig parseConfig(const std::string &toml_path, bool use_stdin){
-    ServerConfig config_ret;
+toml::parse_result parseToml(const std::string &toml_path, bool use_stdin){
     toml::parse_result config;
     if (use_stdin) {
         std::string config_str = "";
@@ -27,13 +27,16 @@ ServerConfig parseConfig(const std::string &toml_path, bool use_stdin){
             spdlog::error("Error reading config file {}: {} ({})", toml_path,
                           std::string(e.description()),
                           tomlSourceInfo(e.source()));
-            return config_ret;
         } catch (const std::exception &e) {
             spdlog::error("Error reading config file {}: {}", toml_path,
                           e.what());
-            return config_ret;
         }
     }
+    return config;
+}
+
+ServerConfig parseConfig(toml::parse_result &config){
+    ServerConfig config_ret;
     // if (wcli_name.empty()) {
     //     wcli_name = config["init"]["name"].value_or("webcface-launcher");
     // }
@@ -42,6 +45,7 @@ ServerConfig parseConfig(const std::string &toml_path, bool use_stdin){
     // }
     config_ret.port = config["init"]["port"].value_or(0);
 
-    config.commands = webcface::launcher::parseToml(wcli, config);
+    config_ret.commands = webcface::launcher::parseToml(config);
 
+    return config_ret;
 }
