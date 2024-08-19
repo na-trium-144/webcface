@@ -301,6 +301,7 @@ TEST_F(FuncTest, funcAsyncRun) {
             return 123.45;
         });
     auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    ret_a.waitFinish();
     EXPECT_TRUE(ret_a.isError());
     EXPECT_TRUE(ret_a.response().empty());
     EXPECT_EQ(ret_a.rejection(), "a == 0");
@@ -311,7 +312,7 @@ TEST_F(FuncTest, funcAsyncRun) {
     });
     ret_a.onFinish([&](const Promise &p) {
         called++;
-        EXPECT_FALSE(ret_a.isError());
+        EXPECT_TRUE(p.isError());
         EXPECT_TRUE(p.response().empty());
         EXPECT_EQ(p.rejection(), "a == 0");
         EXPECT_EQ(p.rejectionW(), L"a == 0");

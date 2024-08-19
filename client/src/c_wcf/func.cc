@@ -49,7 +49,7 @@ template <typename CharT>
 static wcfStatus
 wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
                  const typename CharType<CharT>::CVal *args, int arg_size,
-                 wcfAsyncFuncResult **async_res) {
+                 wcfPromise **async_res) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -57,8 +57,8 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    AsyncFuncResult *a_res =
-        new AsyncFuncResult(wcli_->member(strOrEmpty(member))
+    Promise *a_res =
+        new Promise(wcli_->member(strOrEmpty(member))
                                 .func(field)
                                 .runAsync(argsFromCVal<CharT>(args, arg_size)));
     func_result_list.push_back(a_res);
@@ -67,10 +67,10 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
 }
 /// \private
 template <typename CharT>
-static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
+static wcfStatus wcfFuncGetResultT(wcfPromise *async_res,
                                    typename CharType<CharT>::CVal **result,
                                    bool non_block) {
-    auto res = getAsyncFuncResult(async_res);
+    auto res = getPromise(async_res);
     if (!res) {
         return WCF_BAD_HANDLE;
     }
@@ -265,20 +265,20 @@ wcfStatus wcfFuncRunW(wcfClient *wcli, const wchar_t *member,
 }
 wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
                           const char *field, const wcfMultiVal *args,
-                          int arg_size, wcfAsyncFuncResult **async_res) {
+                          int arg_size, wcfPromise **async_res) {
     return wcfFuncRunAsyncT(wcli, member, field, args, arg_size, async_res);
 }
 wcfStatus wcfFuncRunAsyncW(wcfClient *wcli, const wchar_t *member,
                            const wchar_t *field, const wcfMultiValW *args,
-                           int arg_size, wcfAsyncFuncResult **async_res) {
+                           int arg_size, wcfPromise **async_res) {
     return wcfFuncRunAsyncT(wcli, member, field, args, arg_size, async_res);
 }
 
-wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
+wcfStatus wcfFuncGetResult(wcfPromise *async_res,
                            wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, true);
 }
-wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
+wcfStatus wcfFuncWaitResult(wcfPromise *async_res,
                             wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, false);
 }

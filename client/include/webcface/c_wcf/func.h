@@ -44,9 +44,13 @@ WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWS(const wchar_t *value);
  * \param args 引数の配列
  * \param arg_size 引数の個数
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
+ * (破棄するときには wcfDestroy() を使ってください)
  * \return wcliが無効ならWCF_BAD_WCLI,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
  * 関数で例外が発生した場合 WCF_EXCEPTION
+ * \deprecated ver2.0〜 wcfFuncRunAsync()を推奨。
+ * wcfFuncWaitResult() で同等のことができるが、
+ * 使い方によってはデッドロックを起こす可能性がある。
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
@@ -55,7 +59,11 @@ wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
 /*!
  * \brief 関数を呼び出す (wstring)
  * \since ver2.0
+ * \deprecated ver2.0〜 wcfFuncRunAsyncW()を推奨。
+ * wcfFuncWaitResultW() で同等のことができるが、
+ * 使い方によってはデッドロックを起こす可能性がある。
  * \sa wcfFuncRun
+ *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
 wcfFuncRunW(wcfClient *wcli, const wchar_t *member, const wchar_t *field,
@@ -64,18 +72,23 @@ wcfFuncRunW(wcfClient *wcli, const wchar_t *member, const wchar_t *field,
 /*!
  * \brief 関数を非同期で呼び出す
  * \since ver1.5
+ *
+ * * 戻り値やエラーは wcfFuncGetResult, wcfFuncWaitResult などを使って取得する
+ * * ver2.0〜: 戻り値が不要な場合は wcfDestroy で破棄してください。
+ *
  * \param wcli Clientポインタ
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field funcの名前
  * \param args 引数の配列
  * \param arg_size 引数の個数
- * \param async_res 結果を格納する変数(wcfAsyncFuncResult*)へのポインタ
+ * \param async_res 結果を格納する変数(wcfPromise*)へのポインタ
+ * (破棄するときには wcfWaitResult() または wcfDestroy() を使ってください)
  * \return wcliが無効ならWCF_BAD_WCLI
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncRunAsync(
     wcfClient *wcli, const char *member, const char *field,
-    const wcfMultiVal *args, int arg_size, wcfAsyncFuncResult **async_res);
+    const wcfMultiVal *args, int arg_size, wcfPromise **async_res);
 /*!
  * \brief 関数を非同期で呼び出す (wstring)
  * \since ver2.0
@@ -83,47 +96,55 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncRunAsync(
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfFuncRunAsyncW(
     wcfClient *wcli, const wchar_t *member, const wchar_t *field,
-    const wcfMultiValW *args, int arg_size, wcfAsyncFuncResult **async_res);
+    const wcfMultiValW *args, int arg_size, wcfPromise **async_res);
 
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得
  * \since ver1.5
- * \param async_res 関数呼び出しに対応するAsyncFuncResult
+ * \param async_res 関数呼び出しに対応するPromise
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
+ * (破棄するときには wcfDestroy() を使ってください)
  * \return async_resが無効な場合 WCF_BAD_HANDLE,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION,
+ * 関数で例外が発生した場合 WCF_EXCEPTION (エラーメッセージがresultに入る),
  * まだ結果が返ってきていない場合 WCF_NOT_RETURNED
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncGetResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result);
+wcfFuncGetResult(wcfPromise *async_res, wcfMultiVal **result);
 /*!
  * \brief 非同期で呼び出した関数の実行結果を取得 (wstring)
  * \since ver2.0
  * \sa wcfFuncGetResult
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncGetResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
+wcfFuncGetResultW(wcfPromise *async_res, wcfMultiValW **result);
 /*!
  * \brief 非同期で呼び出した関数の実行完了まで待機し、結果を取得
  * \since ver1.5
- * \param async_res 関数呼び出しに対応するAsyncFuncResult
+ *
+ * * ver2.0〜: wcfSync() を呼ぶのとは別のスレッドで使用することを想定している。
+ * 関数実行が完了したかどうかの情報の受信は wcfSync() で行われるため、
+ * この関数を使用して待機している間に wcfSync()
+ * が呼ばれていないとデッドロックしてしまうので注意。
+ *
+ * \param async_res 関数呼び出しに対応するPromise
  * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
+ * (破棄するときには wcfDestroy() を使ってください)
  * \return async_resが無効な場合 WCF_BAD_HANDLE,
  * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
+ * 関数で例外が発生した場合 WCF_EXCEPTION (エラーメッセージがresultに入る)
  *
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncWaitResult(wcfAsyncFuncResult *async_res, wcfMultiVal **result);
+wcfFuncWaitResult(wcfPromise *async_res, wcfMultiVal **result);
 /*!
  * \brief 非同期で呼び出した関数の実行完了まで待機し、結果を取得 (wstring)
  * \since ver2.0
  * \sa wcfFuncWaitResult
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncWaitResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
+wcfFuncWaitResultW(wcfPromise *async_res, wcfMultiValW **result);
 
 /*!
  * \brief 関数を登録する
@@ -131,7 +152,8 @@ wcfFuncWaitResultW(wcfAsyncFuncResult *async_res, wcfMultiValW **result);
  *
  * * 登録した関数は引数でcallhandleを受け取り、
  * wcfFuncRespond または wcfFuncReject を使って結果を返す。
- * * <del>ver1.11まで: 関数がrespondもrejectもせず終了した場合自動でrespondする。</del>
+ * * <del>ver1.11まで:
+ * 関数がrespondもrejectもせず終了した場合自動でrespondする。</del>
  * * ver2.0〜: 自動でrespondされることはないので、
  * 関数が受け取ったhandleを別スレッドに渡すなどして、
  * ここでセットした関数の終了後にrespond()やreject()することも可能。

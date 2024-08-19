@@ -105,7 +105,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * WebSocket::側のrecv関数が完了したらfalse
      *
      * true,falseになったときnotify
-     * 
+     *
      * recv_readyの間にdo_ws_recvを立て、
      * recv()を行い、これがfalseになったことで完了したことを知る
      */
@@ -155,7 +155,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * * timeoutがnulloptならclosingまで永遠にreturnしない
      *
      */
-    void syncImpl(bool sync, std::optional<std::chrono::microseconds> timeout);
+    void syncImpl(bool sync, bool forever,
+                  std::optional<std::chrono::microseconds> timeout);
 
     /*!
      * \brief 初期化時に送信するメッセージ

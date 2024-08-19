@@ -99,7 +99,7 @@ wcfStatus wcfLoopSync(wcfClient *wcli) {
 //     return WCF_OK;
 // }
 
-wcfStatus wcfDestroy(const void *ptr) {
+wcfStatus wcfDestroy(void *ptr) {
     {
         auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
         auto f_it = func_val_list.find(f_ptr);
@@ -133,6 +133,16 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (vw_it != view_list_w.end()) {
             view_list_w.erase(vw_it);
             delete[] vw_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto res = static_cast<Promise *>(ptr);
+        auto res_it =
+            std::find(func_result_list.begin(), func_result_list.end(), res);
+        if (res_it != func_result_list.end()) {
+            func_result_list.erase(res_it);
+            delete res;
             return WCF_OK;
         }
     }

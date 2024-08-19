@@ -171,10 +171,10 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
 }
 void Client::syncImpl(std::optional<std::chrono::microseconds> timeout) {
     start();
-    data->syncImpl(true, timeout);
+    data->syncImpl(true, true, timeout);
 }
 void internal::ClientData::syncImpl(
-    bool sync, std::optional<std::chrono::microseconds> timeout) {
+    bool sync, bool forever, std::optional<std::chrono::microseconds> timeout) {
     auto start_t = std::chrono::steady_clock::now();
     {
         std::unique_lock lock(this->ws_m);
@@ -193,7 +193,7 @@ void internal::ClientData::syncImpl(
     if (sync) {
         this->message_push(this->syncData(false));
     }
-    while(true){
+    do {
         std::unique_lock lock(this->ws_m);
         if (timeout) {
             // recv_queueにデータが入るまで待つ
@@ -215,7 +215,8 @@ void internal::ClientData::syncImpl(
                        (!this->connected && !this->auto_reconnect.load());
             });
         }
-        if (this->closing.load() || (!this->connected && !this->auto_reconnect.load())) {
+        if (this->closing.load() ||
+            (!this->connected && !this->auto_reconnect.load())) {
             // close時と接続されてないときreturn
             return;
         }
@@ -228,7 +229,7 @@ void internal::ClientData::syncImpl(
                 this->onRecv(msg);
             }
         }
-    }
+    } while (forever);
 }
 /*
 void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
@@ -280,7 +281,7 @@ void Client::waitConnection() {
                 //     });
                 // } else {
                 ScopedUnlock un(lock);
-                data->syncImpl(false, std::nullopt);
+                data->syncImpl(false, false, std::nullopt);
                 // }
             }
         }

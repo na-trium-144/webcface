@@ -143,7 +143,8 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfLoopSync(wcfClient *wcli);
 //  * \since ver2.0
 //  *
 //  * * wcfStart() や wcfWaitConnection() より前に設定する必要がある。
-//  * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにwcfSync()が呼び出され、
+//  * *
+//  autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにwcfSync()が呼び出され、
 //  * 各種コールバック (onEntry, onChange, Funcなど)
 //  * も別のスレッドで呼ばれることになる
 //  * (そのためmutexなどを適切に設定すること)
@@ -153,17 +154,25 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfLoopSync(wcfClient *wcli);
 //  * \param enabled 0以外にすると有効、0にすると無効になる。デフォルトは無効
 //  * \sa wcfSync(), wcfLoopSyncFor(), wcfLoopSync()
 //  */
-// WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoSync(wcfClient *wcli, int enabled);
+// WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoSync(wcfClient *wcli, int
+// enabled);
 
 /*!
  * \brief wcfの関数から取得したポインタのデータを破棄
  * \since ver1.7
+ *
+ * 対象となるのは
+ * * wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult で取得した wcfMultiVal
+ * 型ポインタ
+ * * wcfViewGet で取得した wcfViewComponent 型ポインタ
+ * * ver2.0〜: wcfFuncRunAsync で取得した wcfPromise 型ポインタ
+ *
  * \param ptr データを格納したポインタ
- * \return ptrが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult, wcfViewGet
- * で取得したものでない場合WCF_BAD_HANDLE
+ * \return ptrが wcfFuncRun, wcfFuncGetResult, wcfFuncWaitResult, wcfViewGet,
+ * wcfFuncRunAsync で取得したものでない場合WCF_BAD_HANDLE
  *
  */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(const void *ptr);
+WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfDestroy(void *ptr);
 
 /*!
  * \brief サーバーに接続されている他のmemberのリストを得る。

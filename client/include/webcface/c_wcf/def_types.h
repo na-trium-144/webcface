@@ -12,7 +12,8 @@ extern "C" {
 #endif
 
 typedef void wcfClient;
-typedef void wcfAsyncFuncResult;
+typedef void wcfPromise;
+typedef wcfPromise wcfAsyncFuncResult;
 
 typedef enum wcfStatus {
     WCF_OK = 0,
