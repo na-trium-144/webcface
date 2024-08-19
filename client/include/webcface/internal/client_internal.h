@@ -130,7 +130,47 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::queue<std::string> sync_queue, recv_queue;
 
-    void message_push(std::string &&msg) {
+    /*!
+     * 次回接続後一番最初に送信するメッセージ
+     * 
+     * * syncDataFirst() の返り値であり、
+     * すべてのリクエストとすべてのsyncデータ(1時刻分)が含まれる
+     * * sync()時に未接続かつこれが空ならその時点のsyncDataFirstをこれにセット
+     * * 接続時にこれが空でなければ、
+     *   * これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ) を、
+     *   * これが空ならその時点のsyncDataFirstを、
+     * * 送信する
+     * * 送信したら再度これを空にする
+     */
+    std::string sync_first;
+    /*!
+     * sync_firstとsyncData(),syncDataFirst()呼び出しをガードするmutex
+     */
+    std::mutex sync_m;
+
+    /*!
+     * 接続中の場合メッセージをキューに入れtrueを返し、
+     * 接続していない場合なにもせずfalseを返す
+     * 
+     * 未接続の間送る必要のないデータに使う。
+     * Req, Callなど
+     */
+    bool messagePushOnline(std::string &&msg) {
+        std::lock_guard lock(this->ws_m);
+        if(this->connected){
+            this->sync_queue.push(std::move(msg));
+            this->ws_cond.notify_all();
+            return true;
+        }else{
+            return false;
+        }
+    }
+    /*!
+     * 接続中かどうかに関係なくメッセージをキューに入れる
+     * 
+     * syncで確実に送信するデータに使う。
+     */
+    void messagePushAlways(std::string &&msg) {
         std::lock_guard lock(this->ws_m);
         this->sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();
@@ -163,7 +203,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * 各種req と syncData(true) の全データが含まれる。
      *
-     * ws接続直後に送信される
+     * 変数 sync_first の説明を参照
      *
      */
     std::string syncDataFirst();

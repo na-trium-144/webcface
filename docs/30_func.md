@@ -384,6 +384,8 @@ Member::funcEntries() に変更
     \deprecated
     <del>AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。</del>
     * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+        * <span class="since-c">2.0</span>
+        runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
     * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
         * 実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。
     * <span class="since-c">2.0</span>
@@ -396,8 +398,9 @@ Member::funcEntries() に変更
     * reached(): 関数呼び出しのメッセージが相手のクライアントに到達したらtrue、それまでの間はfalseです。
         * waitReach(), waitReachFor(), waitReachUntil(): reach()がtrueになるまで待機します。
         For, Until の場合はタイムアウトを指定します。
-    * found(): reach()がtrueになった後、相手のクライアントが関数の実行を開始したらtrue、指定したクライアントまたは関数が存在しなかった場合falseです。
+    * found(): reached()がtrueになった後、相手のクライアントが関数の実行を開始したらtrue、指定したクライアントまたは関数が存在しなかった場合falseです。
         * reach()がfalseの間はfalseです。
+        * runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
     * finished(): 関数の実行が完了し戻り値かエラーメッセージを受け取ったらtrue、それまでの間はfalseです。
         * waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。
         For, Until の場合はタイムアウトを指定します。

@@ -75,7 +75,10 @@ wcfFuncRunW(wcfClient *wcli, const wchar_t *member, const wchar_t *field,
  *
  * * 戻り値やエラーは wcfFuncGetResult, wcfFuncWaitResult などを使って取得する
  * * ver2.0〜: 戻り値が不要な場合は wcfDestroy で破棄してください。
- *
+ * * ver2.0～: wcfFuncRunAsyncを呼んだ時点でclientがサーバーに接続していない場合、
+ * 関数呼び出しメッセージは送信されず呼び出しは失敗する
+ * (funcGetResult() でWCF_NOT_FOUNDになる)
+ * 
  * \param wcli Clientポインタ
  * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
  * \param field funcの名前

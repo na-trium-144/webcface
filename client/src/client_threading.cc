@@ -108,7 +108,16 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             data->connected = data->current_curl_connected;
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
-
+            data->ws_cond.notify_all();
+            if(data->connected){
+                ScopedUnlock un(lock);
+                std::lock_guard lock_s(data->sync_m);
+                if(data->sync_first.empty()){
+                    data->sync_first = data->syncDataFirst();
+                }
+                internal::WebSocket::send(data, data->sync_first);
+                data->sync_first.clear();
+            }
         } else {
             if (last_recv) {
                 // syncデータがなければ、100us間隔を空ける
@@ -165,8 +174,8 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 data->ws_cond.notify_all();
                 return;
             }
+            data->ws_cond.notify_all();
         }
-        data->ws_cond.notify_all();
     }
 }
 void Client::syncImpl(std::optional<std::chrono::microseconds> timeout) {
@@ -191,7 +200,17 @@ void internal::ClientData::syncImpl(
         }
     }
     if (sync) {
-        this->message_push(this->syncData(false));
+        std::lock_guard lock_s(this->sync_m);
+        bool c;
+        {
+            std::unique_lock lock(this->ws_m);
+            c = this->connected;
+        }
+        if(c && this->sync_first.empty()){
+            this->sync_first = this->syncDataFirst();
+        }else{
+            this->messagePushAlways(this->syncData(false));
+        }
     }
     do {
         std::unique_lock lock(this->ws_m);

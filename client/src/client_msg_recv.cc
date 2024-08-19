@@ -87,7 +87,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::ping: {
-            this->message_push(
+            this->messagePushOnline(
                 webcface::message::packSingle(webcface::message::Ping{}));
             break;
         }
@@ -286,12 +286,12 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto func_info =
                 this->func_store.getRecv(this->self_member_name, r.field);
             if (func_info) {
-                this->message_push(webcface::message::packSingle(
+                this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, true}));
                 (*func_info)->run(std::move(r));
             } else {
-                this->message_push(webcface::message::packSingle(
+                this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, false}));
             }

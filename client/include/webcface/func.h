@@ -455,6 +455,9 @@ class WEBCFACE_DLL Func : protected Field {
      * * 関数を実行したスレッドはdetachされるので、戻り値が不要な場合は
      * Promise を破棄してもよい。
      * (std::async などとは異なる)
+     * * ver2.0～: runAsyncを呼んだ時点でclientがサーバーに接続していない場合、
+     * 関数呼び出しメッセージは送信されず呼び出しは失敗する
+     * (Promise::found() が false になる)
      *
      */
     template <typename... Args>
