@@ -12,6 +12,22 @@
 #endif
 
 WEBCFACE_NS_BEGIN
+
+namespace internal {
+struct SharedStringData {
+    std::string u8s;
+    std::string s;
+    std::wstring ws;
+    std::recursive_mutex m;
+    explicit SharedStringData(std::string_view u8s)
+        : u8s(u8s), s(), ws(), m() {}
+    SharedStringData(std::string_view u8s, std::string_view s,
+                     std::wstring_view ws)
+        : u8s(u8s), s(s), ws(ws), m() {}
+};
+
+} // namespace internal
+
 inline namespace encoding {
 /// \private
 static bool using_utf8 = true;
@@ -19,8 +35,29 @@ static bool using_utf8 = true;
 void usingUTF8(bool flag) { using_utf8 = flag; }
 bool usingUTF8() { return using_utf8; }
 
+SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
+    : data(std::move(data)) {}
+bool SharedString::operator==(const SharedString &other) const {
+    return this->data == other.data || this->u8String() == other.u8String();
+}
+bool SharedString::operator<=(const SharedString &other) const {
+    return this->data == other.data || this->u8String() <= other.u8String();
+}
+bool SharedString::operator>=(const SharedString &other) const {
+    return this->data == other.data || this->u8String() >= other.u8String();
+}
+bool SharedString::operator!=(const SharedString &other) const {
+    return this->data != other.data && this->u8String() != other.u8String();
+}
+bool SharedString::operator<(const SharedString &other) const {
+    return this->data != other.data && this->u8String() < other.u8String();
+}
+bool SharedString::operator>(const SharedString &other) const {
+    return this->data != other.data && this->u8String() > other.u8String();
+}
+
 SharedString SharedString::fromU8String(std::string_view u8s) {
-    return SharedString(std::make_shared<Data>(u8s));
+    return SharedString(std::make_shared<internal::SharedStringData>(u8s));
 }
 SharedString SharedString::encode(std::string_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
@@ -48,12 +85,14 @@ SharedString SharedString::encode(std::wstring_view name, std::string_view s) {
     WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
                         result_utf8.data(),
                         static_cast<int>(result_utf8.size()), nullptr, nullptr);
-    return SharedString(std::make_shared<Data>(result_utf8, s, name));
+    return SharedString(
+        std::make_shared<internal::SharedStringData>(result_utf8, s, name));
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     std::string result_utf8;
     utf8::utf32to8(name.cbegin(), name.cend(), std::back_inserter(result_utf8));
-    return SharedString(std::make_shared<Data>(result_utf8, s, name));
+    return SharedString(
+        std::make_shared<internal::SharedStringData>(result_utf8, s, name));
 #endif
 }
 
