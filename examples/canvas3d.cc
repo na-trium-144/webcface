@@ -1,10 +1,6 @@
-#ifdef _MSC_VER
 #define _USE_MATH_DEFINES
-#endif
 #include <webcface/client.h>
 #include <webcface/canvas3d.h>
-#include <thread>
-#include <iostream>
 #include <chrono>
 #include <cmath>
 
