@@ -124,6 +124,7 @@ elif cxx.get_argument_syntax() == 'msvc'
     '/external:anglebrackets',
     '/external:W0',
     '/utf-8',
+    '/D_CRT_SECURE_NO_WARNINGS',
   ])
 else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
