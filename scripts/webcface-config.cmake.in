@@ -1,41 +1,14 @@
-# 手書き
-# 動けばヨシ
-
-# Compute the installation prefix relative to this file.
-string(LENGTH "${CMAKE_CURRENT_LIST_FILE}" _CURRENT_LIST_FILE_LEN)
-set(_IMPORT_PREFIX "${CMAKE_CURRENT_LIST_FILE}")
-while(1)
-  get_filename_component(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
-  if(_IMPORT_PREFIX STREQUAL "/")
-    set(_IMPORT_PREFIX "")
-  endif()
-  string(LENGTH "${_IMPORT_PREFIX}/@cmakedir@/webcface-config.cmake" _REL_LIST_FILE_LEN)
-  if("${_IMPORT_PREFIX}/@cmakedir@/webcface-config.cmake" STREQUAL CMAKE_CURRENT_LIST_FILE)
-    break()
-  elseif(_REL_LIST_FILE_LEN LESS _CURRENT_LIST_FILE_LEN)
-    message(FATAL_ERROR "Failed to compute import prefix")
-  endif()
-endwhile()
+@PACKAGE_INIT@
 
 # Create imported target webcface::webcface
-add_library(webcface::webcface INTERFACE IMPORTED)
-set_target_properties(webcface::webcface PROPERTIES
-  INTERFACE_COMPILE_FEATURES "cxx_std_17"
-  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@includedir@"
-  INTERFACE_LINK_DIRECTORIES "${_IMPORT_PREFIX}/@libdir@"
-)
-target_link_libraries(webcface::webcface INTERFACE
-  debug @webcface_lib_debug@
-  optimized @webcface_lib_release@
-)
-# Create imported target webcface::wcf
-add_library(webcface::wcf INTERFACE IMPORTED)
-set_target_properties(webcface::wcf PROPERTIES
-  INTERFACE_COMPILE_FEATURES "c_std_99"
-  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/@includedir@"
-  INTERFACE_LINK_DIRECTORIES "${_IMPORT_PREFIX}/@libdir@"
-)
-target_link_libraries(webcface::wcf INTERFACE
-  debug @webcface_lib_debug@
-  optimized @webcface_lib_release@
-)
+foreach(target webcface wcf)
+    add_library(webcface::${target} INTERFACE IMPORTED)
+    target_include_directories(webcface::${target} INTERFACE "${PACKAGE_PREFIX_DIR}/@includedir@")
+    target_link_directories(webcface::${target} INTERFACE "${PACKAGE_PREFIX_DIR}/@libdir@")
+    target_link_libraries(webcface::${target} INTERFACE
+        debug @webcface_lib_debug@
+        optimized @webcface_lib_release@
+    )
+endforeach()
+target_compile_features(webcface::webcface INTERFACE cxx_std_17)
+target_compile_features(webcface::wcf INTERFACE c_std_99)

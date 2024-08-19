@@ -174,17 +174,17 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 <span class="since-c">2.0</span>
 
-webcfaceのAPIではほぼすべての関数でマルチバイト文字列(`std::string`, `const char *`)の代わりにワイド文字列(`std::wstring`, `const wchar_t *`)が使用可能です。
+webcfaceのAPIではほぼすべての関数でマルチバイト文字列(`std::string`, `char *`)の代わりにワイド文字列(`std::wstring`, `wchar_t *`)が使用可能です。
 
 マルチバイト文字列はデフォルトではWindows,Linux,MacOSともにUTF-8エンコーディングとして扱われます。
-ただしWindowsでのみClientの初期化前に最初に C++: webcface::Encoding::usingUTF8(), C: wcfUsingUTF8() を false に設定することでANSIエンコーディング(日本語環境ではShiftJIS)として扱われるようにすることもできます。
-(webcface内部でUTF-8との変換が行われます)
+ただしWindowsでのみClientの初期化前に最初に `webcface::usingUTF8(false)` (Cでは `wcfUsingUTF8(0)`) をすることでANSIエンコーディング(日本語環境ではShiftJIS)として扱われるようにすることもできます。
+(その場合webcface内部でUTF-8との変換が行われます)
+デフォルトでは `webcface::usingUTF8(true)` (Cでは `wcfUsingUTF8(1)`) が設定されています。
 
 ワイド文字列はWindowsではUTF-16、Linux/MacOSではUTF-32でエンコードされていることを想定しています。
-Windowsでは、ワイド文字列を使用する場合の usingUTF8 の設定は
-Client::loggerSink(), logger() を使用する場合はtrueに、
-Client::loggerWStreamBuf(), loggerWOStream() を使用する場合は出力するコンソールのコードページに合わせてください。
-(詳細は[log](./40_log.md)のページを参照)
+usingUTF8 の設定はワイド文字列の扱いには影響しませんが、
+windowsで Client::loggerWStreamBuf(), loggerWOStream() を使用する場合は出力するコンソールのコードページに合わせてください。
+(内部でstringに変換してコンソールへ出力されるため)
 
 C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を使用する関数やstruct名には末尾に`W`が付きます。
 
