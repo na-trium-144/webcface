@@ -345,14 +345,25 @@ TEST_F(FuncTest, funcAsyncRun) {
     EXPECT_TRUE(func(self_name, "a").runAsync().found());
 }
 TEST_F(FuncTest, funcRunRemote) {
-    func("a", "b").runAsync(1.23, true, "abc");
+    // 未接続
+    auto res = func("a", "b").runAsync(1.23, true, "abc");
+    EXPECT_TRUE(res.reached());
+    EXPECT_TRUE(res.finished());
+    EXPECT_FALSE(res.found());
+    EXPECT_TRUE(res.isError());
+    EXPECT_TRUE(data_->sync_queue.empty());
+
+    data_->connected = true;
+
+    res = func("a", "b").runAsync(1.23, true, "abc");
+    EXPECT_FALSE(res.reached());
     bool call_msg_found = false;
     while (!data_->sync_queue.empty()) {
         auto msg = data_->sync_queue.front();
         data_->sync_queue.pop();
         if (msg ==
             message::packSingle(message::Call{
-                0,
+                1,
                 0,
                 0,
                 "b"_ss,

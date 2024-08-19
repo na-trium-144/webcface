@@ -263,6 +263,7 @@ TEST_F(CClientTest, textReq) {
 TEST_F(CClientTest, funcRun) {
     using namespace std::string_literals;
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+    wait();
 
     wcfMultiVal args[3] = {
         wcfValI(42),
