@@ -34,7 +34,7 @@ TEST_F(ClientTest, canvas2DSend) {
                     }));
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas2D>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.length, 3);
         ASSERT_EQ(obj.data_diff->size(), 3);
         EXPECT_EQ(obj.width, 100);
@@ -86,7 +86,7 @@ TEST_F(ClientTest, canvas2DSend) {
                     }));
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas2D>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.length, 3);
         ASSERT_EQ(obj.data_diff->size(), 1);
         EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -107,8 +107,8 @@ TEST_F(ClientTest, canvas2DReq) {
     }
     wcli_->member("a").canvas2D("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Canvas2D>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1);
     });
     wcli_->member("a").canvas2D("b").onChange(callback<Canvas2D>());
@@ -300,7 +300,7 @@ TEST_F(ClientTest, canvas3DSend) {
             }));
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas3D>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.length, 3);
         ASSERT_EQ(obj.data_diff->size(), 3);
         EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -345,7 +345,7 @@ TEST_F(ClientTest, canvas3DSend) {
             }));
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas3D>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.length, 3);
         ASSERT_EQ(obj.data_diff->size(), 1);
         EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -366,8 +366,8 @@ TEST_F(ClientTest, canvas3DReq) {
     }
     wcli_->member("a").canvas3D("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Canvas3D>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1);
     });
     wcli_->member("a").canvas3D("b").onChange(callback<Canvas3D>());
@@ -494,7 +494,7 @@ TEST_F(ClientTest, robotModelSend) {
                     {"a", Geometry{}, ViewColor::black}}));
     wcli_->sync();
     dummy_s->waitRecv<message::RobotModel>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.data->size(), 1);
     });
 }
@@ -506,8 +506,8 @@ TEST_F(ClientTest, robotModelReq) {
     }
     wcli_->member("a").robotModel("b").tryGet();
     dummy_s->waitRecv<message::Req<message::RobotModel>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1);
     });
     wcli_->member("a").robotModel("b").onChange(callback<RobotModel>());
@@ -544,7 +544,7 @@ TEST_F(ClientTest, imageSend) {
                    ImageColorMode::bgr});
     wcli_->sync();
     dummy_s->waitRecv<message::Image>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.data_->size(), 100 * 100 * 3);
     });
 }
@@ -556,8 +556,8 @@ TEST_F(ClientTest, imageReq) {
     }
     wcli_->member("a").image("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Image>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj,
                   (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,

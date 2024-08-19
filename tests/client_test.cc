@@ -392,7 +392,7 @@ TEST_F(ClientTest, logReq) {
     }
     wcli_->member("a").log().tryGet();
     dummy_s->waitRecv<message::LogReq>(
-        [&](const auto &obj) { EXPECT_EQ(obj.member, "a"_ss); });
+        [&](const auto &obj) { EXPECT_EQ(obj.member.u8String(), "a"); });
     wcli_->member("a").log().onChange(callback<Log>());
 
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
