@@ -201,12 +201,12 @@ void internal::ClientData::syncImpl(
     }
     if (sync) {
         std::lock_guard lock_s(this->sync_m);
-        bool c;
+        bool connected;
         {
             std::unique_lock lock(this->ws_m);
-            c = this->connected;
+            connected = this->connected;
         }
-        if(c && this->sync_first.empty()){
+        if(!connected && this->sync_first.empty()){
             this->sync_first = this->syncDataFirst();
         }else{
             this->messagePushAlways(this->syncData(false));
