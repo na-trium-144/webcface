@@ -142,9 +142,9 @@ TEST_F(ClientTest, canvas2DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 200, 200, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Canvas2D>{1, "c"_ss, 200, 200, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).value()->width,
@@ -222,7 +222,7 @@ TEST_F(ClientTest, canvas2DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 100, 100, v2, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
                   .value()
@@ -402,9 +402,9 @@ TEST_F(ClientTest, canvas3DReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Canvas3D>{1, "c"_ss, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -452,7 +452,7 @@ TEST_F(ClientTest, canvas3DReq) {
                  .toMessage()},
         });
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
     EXPECT_EQ(
@@ -516,13 +516,13 @@ TEST_F(ClientTest, robotModelReq) {
         std::make_shared<std::vector<message::RobotLink>>(
             std::vector<message::RobotLink>{
                 RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::RobotModel>(
         1, "c"_ss,
         std::make_shared<std::vector<message::RobotLink>>(
             std::vector<message::RobotLink>{
                 RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b"_ss).value()->size(),
@@ -568,9 +568,9 @@ TEST_F(ClientTest, imageReq) {
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr);
     dummy_s->send(message::Res<message::Image>{1, ""_ss, img.toMessage()});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Image>{1, "c"_ss, img.toMessage()});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->image_store.getRecv("a"_ss, "b"_ss)->data().size(),

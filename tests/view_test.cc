@@ -5,7 +5,6 @@
 #include <webcface/func.h>
 #include <webcface/text.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -155,7 +154,7 @@ TEST_F(ViewTest, viewSet) {
     //         text(self_name,
     //         view_data[8].text_ref_->field_).tryGetV().value()),
     //     123);
-    func(self_name, view_data[8].onClick()->name()).run(10);
+    func(self_name, view_data[8].onClick()->name()).runAsync(10);
     EXPECT_EQ(static_cast<int>(ref1.get()), 10);
     // EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "10");
     // EXPECT_EQ(
@@ -173,7 +172,7 @@ TEST_F(ViewTest, viewSet) {
     // EXPECT_EQ(view_data[9].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
     EXPECT_EQ(view_data[9].option().size(), 3);
-    func(self_name, view_data[9].onClick()->name()).run("a");
+    func(self_name, view_data[9].onClick()->name()).runAsync("a");
     EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
     // EXPECT_EQ(static_cast<std::string>(
     //               text(self_name, view_data[9].text_ref_->field_).get()),
@@ -185,7 +184,7 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_FALSE(view_data[10].onClick()->name().empty());
     // EXPECT_EQ(view_data[10].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
-    func(self_name, view_data[10].onClick()->name()).run("aaa");
+    func(self_name, view_data[10].onClick()->name()).runAsync("aaa");
     EXPECT_EQ(called_ref3, 1);
     // EXPECT_EQ(static_cast<std::string>(
     //               text(self_name, view_data[10].text_ref_->field_).get()),

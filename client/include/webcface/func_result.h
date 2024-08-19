@@ -125,7 +125,10 @@ class WEBCFACE_DLL Promise : Field {
      *
      * \sa waitReachFor(), waitReachUntil(), onReached()
      */
-    void waitReach() const { waitReachImpl(std::nullopt); }
+    Promise &waitReach() {
+        waitReachImpl(std::nullopt);
+        return *this;
+    }
     /*!
      * \brief リモートに呼び出しメッセージが到達するまで待機
      * \since ver2.0
@@ -134,8 +137,9 @@ class WEBCFACE_DLL Promise : Field {
      *
      * \sa waitReach(), waitReachUntil(), onReached()
      */
-    void waitReachFor(std::chrono::microseconds timeout) const {
+    Promise &waitReachFor(std::chrono::microseconds timeout) {
         waitReachImpl(timeout);
+        return *this;
     }
     /*!
      * \brief リモートに呼び出しメッセージが到達するまで待機
@@ -146,10 +150,10 @@ class WEBCFACE_DLL Promise : Field {
      * \sa waitReach(), waitReachFor(), onReached()
      */
     template <typename Clock, typename Duration>
-    void
-    waitReachUntil(std::chrono::time_point<Clock, Duration> timeout) const {
+    Promise &waitReachUntil(std::chrono::time_point<Clock, Duration> timeout) {
         waitReachImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
+        return *this;
     }
 
     /*!
@@ -205,7 +209,10 @@ class WEBCFACE_DLL Promise : Field {
      *
      * \sa waitFinishFor(), waitFinishUntil(), onFinished()
      */
-    void waitFinish() const { waitFinishImpl(std::nullopt); }
+    Promise &waitFinish() {
+        waitFinishImpl(std::nullopt);
+        return *this;
+    }
     /*!
      * \brief 関数の実行が完了するまで待機
      * \since ver2.0
@@ -214,8 +221,9 @@ class WEBCFACE_DLL Promise : Field {
      *
      * \sa waitFinish(), waitFinishUntil(), onFinished()
      */
-    void waitFinishFor(std::chrono::microseconds timeout) const {
+    Promise &waitFinishFor(std::chrono::microseconds timeout) {
         waitFinishImpl(timeout);
+        return *this;
     }
     /*!
      * \brief 関数の実行が完了するまで待機
@@ -226,10 +234,10 @@ class WEBCFACE_DLL Promise : Field {
      * \sa waitFinish(), waitFinishFor(), onFinished()
      */
     template <typename Clock, typename Duration>
-    void
-    waitFinishUntil(std::chrono::time_point<Clock, Duration> timeout) const {
+    Promise &waitFinishUntil(std::chrono::time_point<Clock, Duration> timeout) {
         waitFinishImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
+        return *this;
     }
 
     /*!
@@ -242,8 +250,28 @@ class WEBCFACE_DLL Promise : Field {
      * この関数が完了するまで他のデータの受信処理はブロックされる。
      * * すでにreached()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
      *
+     * \param callback 引数にPromiseをとる関数
+     *
      */
     Promise &onReach(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
+    /*!
+     * \brief
+     * リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定
+     * \since ver2.0
+     *
+     * * コールバックは Client::sync() のスレッドで実行され、
+     * この関数が完了するまで他のデータの受信処理はブロックされる。
+     * * すでにreached()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
+     *
+     * \param callback 引数をとらない関数
+     *
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    Promise &onReach(F callback) {
+        return onReach(
+            [callback = std::move(callback)](const Promise &) { callback(); });
+    }
     /*!
      * \brief 関数の実行が完了した時呼び出すコールバックを設定
      * \since ver2.0
@@ -253,8 +281,28 @@ class WEBCFACE_DLL Promise : Field {
      * この関数が完了するまで他のデータの受信処理はブロックされる。
      * * すでにfinished()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
      *
+     * \param callback 引数にPromiseをとる関数
+     *
      */
     Promise &onFinish(std::function<void WEBCFACE_CALL_FP(Promise)> callback);
+    /*!
+     * \brief 関数の実行が完了した時呼び出すコールバックを設定
+     * \since ver2.0
+     *
+     * * コールバックの引数にはこのPromiseオブジェクトが渡される。
+     * * コールバックは Client::sync() のスレッドで実行され、
+     * この関数が完了するまで他のデータの受信処理はブロックされる。
+     * * すでにfinished()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。
+     *
+     * \param callback 引数をとらない関数
+     *
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    Promise &onFinish(F callback) {
+        return onFinish(
+            [callback = std::move(callback)](const Promise &) { callback(); });
+    }
 };
 
 #ifdef _MSC_VER

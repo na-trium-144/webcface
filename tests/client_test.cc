@@ -143,7 +143,7 @@ TEST_F(ClientTest, syncThread) {
     wcli_->autoReconnect(false);
     wcli_->start();
     // 未接続&autoReconnectがfalseなら即return
-    wcli_->waitSync();
+    wcli_->loopSync();
 
     dummy_s = std::make_shared<DummyServer>(false);
     auto main_id = std::this_thread::get_id();
@@ -158,7 +158,7 @@ TEST_F(ClientTest, syncThread) {
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
 }
 // TEST_F(ClientTest, autoSyncThread) {
@@ -177,13 +177,14 @@ TEST_F(ClientTest, syncThread) {
 //     wait();
 //     dummy_s->send(message::Res<message::Value>{
 //         1, ""_ss,
-//         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+//         std::make_shared<std::vector<double>>(std::vector<double>{1, 2,
+//         3})});
 //     wait();
 //     EXPECT_EQ(callback_called, 1);
 // }
 TEST_F(ClientTest, syncTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->waitSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
@@ -195,7 +196,7 @@ TEST_F(ClientTest, syncTimeout) {
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->waitSyncFor(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
+    wcli_->loopSyncFor(std::chrono::milliseconds(-WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
@@ -203,20 +204,20 @@ TEST_F(ClientTest, syncTimeout) {
 }
 TEST_F(ClientTest, syncUntilTimeout) {
     auto start = std::chrono::steady_clock::now();
-    wcli_->waitSyncUntil(start +
+    wcli_->loopSyncUntil(start +
                          std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto end = std::chrono::steady_clock::now();
     EXPECT_GE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.9);
     start = std::chrono::steady_clock::now();
-    wcli_->waitSyncUntil(start);
+    wcli_->loopSyncUntil(start);
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
                   .count(),
               WEBCFACE_TEST_TIMEOUT * 0.1);
     start = std::chrono::steady_clock::now();
-    wcli_->waitSyncUntil(start -
+    wcli_->loopSyncUntil(start -
                          std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     end = std::chrono::steady_clock::now();
     EXPECT_LE(std::chrono::duration_cast<std::chrono::milliseconds>(end - start)
@@ -232,20 +233,20 @@ TEST_F(ClientTest, ping) {
     }
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
     dummy_s->send(message::SyncInitEnd{{}, "", "", 42, ""});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Ping{});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::Ping>([&](const auto &) {});
 
     wcli_->member("a").onPing(callback<Member>());
     wcli_->onPing(callback<Member>());
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::PingStatus{
         {},
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{10, 15}, {42, 99}})});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::PingStatusReq>([&](const auto &) {});
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(wcli_->member("a").pingStatus().value(), 15);
@@ -259,7 +260,7 @@ TEST_F(ClientTest, entry) {
     }
     wcli_->onMemberEntry(callback<Member>());
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_EQ(wcli_->members().size(), 1);
@@ -274,7 +275,7 @@ TEST_F(ClientTest, entry) {
 
     m.onValueEntry(callback<Value>());
     dummy_s->send(message::Entry<message::Value>{{}, 10, "b"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.valueEntries().size(), 1);
@@ -283,7 +284,7 @@ TEST_F(ClientTest, entry) {
 
     m.onTextEntry(callback<Text>());
     dummy_s->send(message::Entry<message::Text>{{}, 10, "c"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.textEntries().size(), 1);
@@ -292,7 +293,7 @@ TEST_F(ClientTest, entry) {
 
     m.onViewEntry(callback<View>());
     dummy_s->send(message::Entry<message::View>{{}, 10, "d"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.viewEntries().size(), 1);
@@ -301,7 +302,7 @@ TEST_F(ClientTest, entry) {
 
     m.onCanvas2DEntry(callback<Canvas2D>());
     dummy_s->send(message::Entry<message::Canvas2D>{{}, 10, "d"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.canvas2DEntries().size(), 1);
@@ -310,7 +311,7 @@ TEST_F(ClientTest, entry) {
 
     m.onCanvas3DEntry(callback<Canvas3D>());
     dummy_s->send(message::Entry<message::Canvas3D>{{}, 10, "d"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.canvas3DEntries().size(), 1);
@@ -319,7 +320,7 @@ TEST_F(ClientTest, entry) {
 
     m.onRobotModelEntry(callback<RobotModel>());
     dummy_s->send(message::Entry<message::RobotModel>{{}, 10, "d"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.robotModelEntries().size(), 1);
@@ -328,7 +329,7 @@ TEST_F(ClientTest, entry) {
 
     m.onImageEntry(callback<Image>());
     dummy_s->send(message::Entry<message::Image>{{}, 10, "d"_ss});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     ASSERT_EQ(m.imageEntries().size(), 1);
@@ -339,7 +340,7 @@ TEST_F(ClientTest, entry) {
     dummy_s->send(
         message::FuncInfo{10, "a"_ss, ValType::int_,
                           std::make_shared<std::vector<message::Arg>>(1)});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_EQ(m.funcEntries().size(), 1);
@@ -348,7 +349,7 @@ TEST_F(ClientTest, entry) {
 
     m.onSync(callback<Member>());
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
@@ -395,7 +396,7 @@ TEST_F(ClientTest, logReq) {
     wcli_->member("a").log().onChange(callback<Log>());
 
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Log{
         10, std::make_shared<std::deque<message::LogLine>>(
                 std::deque<message::LogLine>{
@@ -406,7 +407,7 @@ TEST_F(ClientTest, logReq) {
                     LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
                         .toMessage(),
                 })});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2);
@@ -424,7 +425,7 @@ TEST_F(ClientTest, logReq) {
                     LogLineData{2, std::chrono::system_clock::now(), "c"_ss}
                         .toMessage(),
                 })});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3);

@@ -51,11 +51,11 @@ TEST_F(ClientTest, valueReq) {
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
@@ -112,10 +112,10 @@ TEST_F(ClientTest, textReq) {
     wcli_->member("a").text("b").onChange(callback<Text>());
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("z")});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("z")});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->text_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(*data_->text_store.getRecv("a"_ss, "b"_ss).value(), "z");
@@ -218,9 +218,9 @@ TEST_F(ClientTest, viewReq) {
                  .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
@@ -250,7 +250,7 @@ TEST_F(ClientTest, viewReq) {
                       .toMessage()},
         });
     dummy_s->send(message::Res<message::View>{1, ""_ss, v2, 3});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0).type(),
@@ -290,7 +290,7 @@ TEST_F(ClientTest, funcCall) {
     }
     // call
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 0);
@@ -304,12 +304,16 @@ TEST_F(ClientTest, funcCall) {
         EXPECT_EQ(static_cast<std::string>(obj.args[2]), "a");
         EXPECT_EQ(obj.args[2].valType(), ValType::string_);
     });
+    ASSERT_FALSE(r.reached());
+    ASSERT_FALSE(r.finished());
 
     // started=false
     dummy_s->send(message::CallResponse{{}, 0, 0, false});
-    wcli_->waitSync();
-    EXPECT_FALSE(r.started.get());
-    EXPECT_THROW(r.result.get(), FuncNotFound);
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    ASSERT_TRUE(r.reached());
+    EXPECT_FALSE(r.found());
+    ASSERT_TRUE(r.finished());
+    EXPECT_TRUE(r.isError());
     dummy_s->recvClear();
 
     // 2nd call id=1
@@ -319,21 +323,20 @@ TEST_F(ClientTest, funcCall) {
         EXPECT_EQ(obj.target_member_id, 10);
         EXPECT_EQ(obj.field, "b"_ss);
     });
+    ASSERT_FALSE(r.reached());
+    ASSERT_FALSE(r.finished());
 
     // started=true
     dummy_s->send(message::CallResponse{{}, 1, 0, true});
-    wcli_->waitSync();
-    EXPECT_TRUE(r.started.get());
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    ASSERT_TRUE(r.reached());
+    EXPECT_TRUE(r.found());
     // return error
     dummy_s->send(message::CallResult{{}, 1, 0, true, ValAdaptor("a")});
-    wcli_->waitSync();
-    EXPECT_THROW(r.result.get(), std::runtime_error);
-    try {
-        r.result.get();
-    } catch (const std::runtime_error &e) {
-        using namespace std::string_literals;
-        EXPECT_EQ(e.what(), "a"s);
-    }
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    ASSERT_TRUE(r.finished());
+    EXPECT_TRUE(r.isError());
+    EXPECT_EQ(r.rejection(), "a");
     dummy_s->recvClear();
 
     // 3rd call id=2
@@ -343,14 +346,18 @@ TEST_F(ClientTest, funcCall) {
         EXPECT_EQ(obj.target_member_id, 10);
         EXPECT_EQ(obj.field, "b"_ss);
     });
+    ASSERT_FALSE(r.reached());
+    ASSERT_FALSE(r.finished());
 
     // started=true
     dummy_s->send(message::CallResponse{{}, 2, 0, true});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    ASSERT_TRUE(r.reached());
     // return
     dummy_s->send(message::CallResult{{}, 2, 0, false, ValAdaptor("b")});
-    wcli_->waitSync();
-    EXPECT_EQ(static_cast<std::string>(r.result.get()), "b");
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    ASSERT_TRUE(r.finished());
+    EXPECT_EQ(static_cast<std::string>(r.response()), "b");
 }
 TEST_F(ClientTest, funcResponse) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -364,19 +371,12 @@ TEST_F(ClientTest, funcResponse) {
         if (a == 0) {
             throw std::invalid_argument("a==0");
         } else {
-            return std::async(std::launch::deferred, [&, a] {
-                EXPECT_NE(std::this_thread::get_id(), main_id);
-                if (a == 1) {
-                    throw std::invalid_argument("a==1");
-                } else {
-                    return a;
-                }
-            });
+            return a;
         }
     });
     // not found
     dummy_s->send(message::Call{7, 100, 0, "n"_ss, {}});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 7);
         EXPECT_EQ(obj.caller_member_id, 100);
@@ -387,7 +387,7 @@ TEST_F(ClientTest, funcResponse) {
     // arg error
     dummy_s->send(
         message::Call{8, 100, 0, "a"_ss, {ValAdaptor(1), ValAdaptor("zzz")}});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 8);
         EXPECT_EQ(obj.caller_member_id, 100);
@@ -404,7 +404,7 @@ TEST_F(ClientTest, funcResponse) {
 
     // throw
     dummy_s->send(message::Call{9, 100, 0, "a"_ss, {ValAdaptor(0)}});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 9);
         EXPECT_EQ(obj.caller_member_id, 100);
@@ -419,26 +419,9 @@ TEST_F(ClientTest, funcResponse) {
     });
     dummy_s->recvClear();
 
-    // throw
-    dummy_s->send(message::Call{10, 100, 0, "a"_ss, {ValAdaptor(1)}});
-    wcli_->waitSync();
-    dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 10);
-        EXPECT_EQ(obj.caller_member_id, 100);
-        EXPECT_EQ(obj.started, true);
-    });
-    dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 10);
-        EXPECT_EQ(obj.caller_member_id, 100);
-        EXPECT_EQ(obj.is_error, true);
-        // 関数の中でthrowされた内容
-        EXPECT_EQ(static_cast<std::string>(obj.result), "a==1");
-    });
-    dummy_s->recvClear();
-
     // success
     dummy_s->send(message::Call{19, 100, 0, "a"_ss, {ValAdaptor(123)}});
-    wcli_->waitSync();
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 19);
         EXPECT_EQ(obj.caller_member_id, 100);

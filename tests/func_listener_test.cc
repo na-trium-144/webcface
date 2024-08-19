@@ -5,7 +5,6 @@
 #include <stdexcept>
 #include <thread>
 #include <chrono>
-#include "webcface/message/message.h"
 
 using namespace webcface;
 
@@ -105,7 +104,9 @@ TEST_F(FuncListenerTest, funcRun) {
     EXPECT_EQ(fl.fetchCall(), std::nullopt);
 
     auto ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
-    EXPECT_TRUE(ret_a.started.get());
+    EXPECT_TRUE(ret_a.reached());
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.finished());
     wait();
     auto h = fl.fetchCall();
     ASSERT_NE(h, std::nullopt);
@@ -114,16 +115,17 @@ TEST_F(FuncListenerTest, funcRun) {
     EXPECT_EQ(static_cast<std::string>(h->args()[2]), "a");
     EXPECT_TRUE(static_cast<bool>(h->args()[3]));
     h->respond(123.45);
-    EXPECT_EQ(static_cast<double>(ret_a.result.get()), 123.45);
+    EXPECT_TRUE(ret_a.finished());
+    EXPECT_EQ(static_cast<double>(ret_a.response()), 123.45);
 
     ret_a = func(self_name, "a").runAsync(0, 0, 0, 0);
     wait();
     fl.fetchCall()->reject("aaa");
-    EXPECT_THROW(ret_a.result.get(), std::runtime_error);
+    EXPECT_TRUE(ret_a.finished());
+    EXPECT_TRUE(ret_a.isError());
+    EXPECT_EQ(ret_a.rejection(), "aaa");
 
     // 引数の間違い
-    EXPECT_THROW(func(self_name, "a").run(), std::invalid_argument);
-    EXPECT_THROW(func(self_name, "a").runAsync().result.get(),
-                 std::invalid_argument);
-    EXPECT_TRUE(func(self_name, "a").runAsync().started.get());
+    EXPECT_FALSE(func(self_name, "a").runAsync().rejection().empty());
+    EXPECT_TRUE(func(self_name, "a").runAsync().found());
 }
