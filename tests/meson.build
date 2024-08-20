@@ -85,6 +85,6 @@ foreach case: test_parsed
       'WEBCFACE_TRACE': '1',
     },
     protocol: 'gtest',
-    timeout: 300,
+    timeout: get_option('test_wait') * 2 / 10,
   )
 endforeach

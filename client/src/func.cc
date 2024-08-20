@@ -1,6 +1,7 @@
 #include "webcface/func.h"
 #include <thread>
 #include <stdexcept>
+#include "webcface/internal/func_internal.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #ifdef WEBCFACE_MESON
@@ -12,7 +13,13 @@
 WEBCFACE_NS_BEGIN
 
 Func::Func(const Field &base) : Field(base) {}
-Func &Func::setImpl(const std::shared_ptr<FuncInfo> &v) {
+Func &Func::setImpl(ValType return_type, std::vector<Arg> &&args,
+                    std::function<FuncType> &&func_impl) {
+    return setImpl(std::make_shared<internal::FuncInfo>(
+        static_cast<Field>(*this), return_type, std::move(args),
+        std::move(func_impl)));
+}
+Func &Func::setImpl(const std::shared_ptr<internal::FuncInfo> &v) {
     setCheck()->func_store.setSend(*this, v);
     return *this;
 }
@@ -21,211 +28,56 @@ Func &Func::free() {
     return *this;
 }
 
-Func &Func::set(const std::vector<Arg> &args, ValType return_type,
-                std::function<void(FuncCallHandle)> callback) {
-    return setImpl(std::make_shared<FuncInfo>(
-        return_type, args, true,
-        [args_size = args.size(), callback = std::move(callback)](
-            const std::vector<ValAdaptor> &args_vec) {
-            if (args_size != args_vec.size()) {
-                throw std::invalid_argument(
-                    "requires " + std::to_string(args_size) +
-                    " arguments, got " + std::to_string(args_vec.size()));
-            }
-            std::promise<ValAdaptor> result;
-            std::future<ValAdaptor> result_f = result.get_future();
-            FuncCallHandle handle{args_vec, std::move(result)};
-            callback(handle);
-            try {
-                handle.respond();
-            } catch (const std::future_error &) {
-                // ignore exception
-            }
-            return result_f;
-        }));
-}
-Func &Func::setAsync(const std::vector<Arg> &args, ValType return_type,
-                     std::function<void(FuncCallHandle)> callback) {
-    return setImpl(std::make_shared<FuncInfo>(
-        return_type, args, true,
-        [args_size = args.size(),
-         callback = std::make_shared<std::function<void(FuncCallHandle)>>(
-             std::move(callback))](std::vector<ValAdaptor> args_vec) {
-            if (args_size != args_vec.size()) {
-                throw std::invalid_argument(
-                    "requires " + std::to_string(args_size) +
-                    " arguments, got " + std::to_string(args_vec.size()));
-            }
-            return std::async(
-                std::launch::async, [callback, args_vec = std::move(args_vec)] {
-                    std::promise<ValAdaptor> result;
-                    std::future<ValAdaptor> result_f = result.get_future();
-                    FuncCallHandle handle{args_vec, std::move(result)};
-                    callback->operator()(handle);
-                    try {
-                        handle.respond();
-                    } catch (const std::future_error &) {
-                        // ignore exception
-                    }
-                    return result_f.get();
-                });
-        }));
-}
-
-std::shared_future<ValAdaptor>
-FuncInfo::run(const std::vector<ValAdaptor> &call_args, bool caller_async,
-              const std::shared_ptr<internal::AsyncFuncState> &state) {
-    std::shared_future<ValAdaptor> ret = func_impl(call_args).share();
-    if (state) {
-        state->setResultFuture(ret);
-    }
-    if (eval_async && caller_async) {
-        std::thread([ret, state]() {
-            ret.wait();
-            if (state) {
-                state->callResultEvent();
-            }
-        }).detach();
-    } else {
-        ret.wait();
-        if (state) {
-            state->callResultEvent();
-        }
-    }
-    return ret;
-}
-
-/// \private
-template <typename F1, typename F2, typename F3>
-static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
-    ValAdaptor error;
-    try {
-        f_ok(f_run());
-        return;
-    } catch (const std::exception &e) {
-        error = e.what();
-    } catch (const std::string &e) {
-        error = e;
-    } catch (const char *e) {
-        error = e;
-    } catch (const std::wstring &e) {
-        error = e;
-    } catch (const wchar_t *e) {
-        error = e;
-    } catch (...) {
-        error = "unknown exception";
-    }
-    f_fail(error);
-}
-void FuncInfo::run(webcface::message::Call &&call,
-                   const std::shared_ptr<internal::ClientData> &data) {
-    tryRun(
-        [this, &call] {
-            // まだこのスレッド内
-            return func_impl(call.args);
-        },
-        [this, &call, &data](std::future<ValAdaptor> &&result_f) {
-            if (eval_async) {
-                std::weak_ptr<internal::ClientData> data_w = data;
-                std::thread(
-                    [data_w, call](std::future<ValAdaptor> result_f) {
-                        // ここで別スレッドになるのでコピーキャプチャ
-                        tryRun(
-                            [&result_f] {
-                                return result_f.get();
-                                // 時間かかってこの間にdata消えるかもしれない
-                            },
-                            [&data_w, &call](const ValAdaptor &result) {
-                                // ok
-                                auto data = data_w.lock();
-                                if (data) {
-                                    data->message_push(
-                                        webcface::message::packSingle(
-                                            webcface::message::CallResult{
-                                                {},
-                                                call.caller_id,
-                                                call.caller_member_id,
-                                                false,
-                                                result}));
-                                }
-                            },
-                            [&data_w, &call](const ValAdaptor &error) {
-                                // error
-                                auto data = data_w.lock();
-                                if (data) {
-                                    data->message_push(
-                                        webcface::message::packSingle(
-                                            webcface::message::CallResult{
-                                                {},
-                                                call.caller_id,
-                                                call.caller_member_id,
-                                                true,
-                                                error}));
-                                }
-                            });
-                    },
-                    std::move(result_f))
-                    .detach();
+void internal::FuncInfo::run(webcface::message::Call &&call) {
+    auto state = std::make_shared<internal::PromiseData>(
+        static_cast<Field>(*this), std::move(call.args));
+    state->setter().reach(true);
+    this->run(state->setter());
+    state->getter().onFinish([call = std::move(call),
+                              data_w = this->data_w](const Promise &p) {
+        auto data = data_w.lock();
+        if (data) {
+            if (p.isError()) {
+                data->messagePushAlways(webcface::message::packSingle(
+                    webcface::message::CallResult{{},
+                                                  call.caller_id,
+                                                  call.caller_member_id,
+                                                  true,
+                                                  ValAdaptor(p.rejection())}));
             } else {
-                // ok
-                data->message_push(webcface::message::packSingle(
+                data->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResult{{},
                                                   call.caller_id,
                                                   call.caller_member_id,
                                                   false,
-                                                  result_f.get()}));
+                                                  p.response()}));
             }
-        },
-        [&call, &data](const ValAdaptor &error) {
-            // まだこのスレッド内
-            // error
-            data->message_push(
-                webcface::message::packSingle(webcface::message::CallResult{
-                    {}, call.caller_id, call.caller_member_id, true, error}));
-        });
-}
-
-
-ValAdaptor Func::run(const std::vector<ValAdaptor> &args_vec) const {
-    auto data = dataLock();
-    if (data->isSelf(*this)) {
-        // selfの場合このスレッドでそのまま関数を実行する
-        auto func_info = data->func_store.getRecv(*this);
-        if (func_info) {
-            return (*func_info)->run(args_vec, false).get();
-        } else {
-            throw FuncNotFound(*this);
         }
-    } else {
-        // リモートの場合runAsyncし結果が返るまで待機
-        return this->runAsync(args_vec).result.get();
-        // 例外が発生した場合はthrowされる
-    }
+    });
 }
-AsyncFuncResult Func::runAsync(const std::vector<ValAdaptor> &args_vec) const {
+
+AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに実行した結果を入れる
         auto func_info = data->func_store.getRecv(*this);
-        auto state = std::make_shared<internal::AsyncFuncState>(
-            static_cast<Field>(*this));
+        auto state = std::make_shared<internal::PromiseData>(
+            static_cast<Field>(*this), std::move(args_vec));
         if (func_info) {
-            state->setStarted(true);
-            try {
-                (*func_info)->run(args_vec, true, state);
-            } catch (...) {
-                state->setResultException(std::current_exception());
-            }
+            state->setter().reach(true);
+            (*func_info)->run(state->setter());
         } else {
-            state->setStarted(false);
+            state->setter().reach(false);
         }
         return state->getter();
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         auto state = data->func_result_store.addResult(*this);
-        data->message_push(message::packSingle(message::Call{
+        if(!data->messagePushOnline(message::packSingle(message::Call{
             state->callerId(), 0, data->getMemberIdFromName(member_), field_,
-            args_vec}));
+            args_vec}))){
+            state->setter().reach(false);
+        }
         // resultはcli.onRecv内でセットされる。
         return state->getter();
     }
@@ -289,7 +141,7 @@ void AnonymousFunc::lockTo(Func &target) {
     if (!func_info) {
         throw std::runtime_error("AnonymousFunc not set");
     } else {
-        target.setImpl(std::make_shared<FuncInfo>(**func_info));
+        target.setImpl(std::make_shared<internal::FuncInfo>(**func_info));
         this->free();
         func_setter = nullptr;
         base_init = false;

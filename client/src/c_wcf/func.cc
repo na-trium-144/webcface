@@ -29,21 +29,19 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    try {
-        *result =
-            resultToCVal<CharT>(wcli_->member(strOrEmpty(member))
-                                    .func(field)
-                                    .run(argsFromCVal<CharT>(args, arg_size)));
-        return WCF_OK;
-    } catch (const FuncNotFound &e) {
-        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+    Promise p = wcli_->member(strOrEmpty(member))
+                    .func(field)
+                    .runAsync(argsFromCVal<CharT>(args, arg_size));
+    p.waitFinish();
+    if (!p.found()) {
+        *result = resultToCVal<CharT>(ValAdaptor(p.rejection()));
         return WCF_NOT_FOUND;
-    } catch (const std::exception &e) {
-        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+    } else if (p.isError()) {
+        *result = resultToCVal<CharT>(ValAdaptor(p.rejection()));
         return WCF_EXCEPTION;
-    } catch (...) {
-        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
-        return WCF_EXCEPTION;
+    } else {
+        *result = resultToCVal<CharT>(p.response());
+        return WCF_OK;
     }
 }
 /// \private
@@ -51,7 +49,7 @@ template <typename CharT>
 static wcfStatus
 wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
                  const typename CharType<CharT>::CVal *args, int arg_size,
-                 wcfAsyncFuncResult **async_res) {
+                 wcfPromise **async_res) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -59,8 +57,8 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
     if (!field || arg_size < 0) {
         return WCF_INVALID_ARGUMENT;
     }
-    AsyncFuncResult *a_res =
-        new AsyncFuncResult(wcli_->member(strOrEmpty(member))
+    Promise *a_res =
+        new Promise(wcli_->member(strOrEmpty(member))
                                 .func(field)
                                 .runAsync(argsFromCVal<CharT>(args, arg_size)));
     func_result_list.push_back(a_res);
@@ -69,30 +67,27 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
 }
 /// \private
 template <typename CharT>
-static wcfStatus wcfFuncGetResultT(wcfAsyncFuncResult *async_res,
+static wcfStatus wcfFuncGetResultT(wcfPromise *async_res,
                                    typename CharType<CharT>::CVal **result,
                                    bool non_block) {
-    auto res = getAsyncFuncResult(async_res);
+    auto res = getPromise(async_res);
     if (!res) {
         return WCF_BAD_HANDLE;
     }
-    if (non_block && res->result.wait_for(std::chrono::milliseconds(0)) !=
-                         std::future_status::ready) {
+    if (non_block && !res->finished()) {
         return WCF_NOT_RETURNED;
     }
     wcfStatus status;
-    try {
-        *result = resultToCVal<CharT>(res->result.get());
-        status = WCF_OK;
-    } catch (const FuncNotFound &e) {
-        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+    res->waitFinish();
+    if (!res->found()) {
+        *result = resultToCVal<CharT>(ValAdaptor(res->rejection()));
         status = WCF_NOT_FOUND;
-    } catch (const std::exception &e) {
-        *result = resultToCVal<CharT>(ValAdaptor(e.what()));
+    } else if (res->isError()) {
+        *result = resultToCVal<CharT>(ValAdaptor(res->rejection()));
         status = WCF_EXCEPTION;
-    } catch (...) {
-        *result = resultToCVal<CharT>(ValAdaptor("unknown exception"));
-        status = WCF_EXCEPTION;
+    } else {
+        *result = resultToCVal<CharT>(res->response());
+        status = WCF_OK;
     }
     func_result_list.erase(
         std::find(func_result_list.begin(), func_result_list.end(), res));
@@ -270,20 +265,20 @@ wcfStatus wcfFuncRunW(wcfClient *wcli, const wchar_t *member,
 }
 wcfStatus wcfFuncRunAsync(wcfClient *wcli, const char *member,
                           const char *field, const wcfMultiVal *args,
-                          int arg_size, wcfAsyncFuncResult **async_res) {
+                          int arg_size, wcfPromise **async_res) {
     return wcfFuncRunAsyncT(wcli, member, field, args, arg_size, async_res);
 }
 wcfStatus wcfFuncRunAsyncW(wcfClient *wcli, const wchar_t *member,
                            const wchar_t *field, const wcfMultiValW *args,
-                           int arg_size, wcfAsyncFuncResult **async_res) {
+                           int arg_size, wcfPromise **async_res) {
     return wcfFuncRunAsyncT(wcli, member, field, args, arg_size, async_res);
 }
 
-wcfStatus wcfFuncGetResult(wcfAsyncFuncResult *async_res,
+wcfStatus wcfFuncGetResult(wcfPromise *async_res,
                            wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, true);
 }
-wcfStatus wcfFuncWaitResult(wcfAsyncFuncResult *async_res,
+wcfStatus wcfFuncWaitResult(wcfPromise *async_res,
                             wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, false);
 }

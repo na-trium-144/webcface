@@ -197,10 +197,6 @@ std::string internal::ClientData::syncData(bool is_first,
 
     return message::packDone(buffer, len);
 }
-void Client::sync() {
-    start();
-    data->message_push(data->syncData(false));
-}
 
 std::vector<Member> Client::members() {
     std::lock_guard lock(data->entry_m);

@@ -8,7 +8,6 @@ namespace WebSocket {
  * \brief WebSocketに接続する
  *
  * 成功すると
- * data->syncDataFirst()をsendし、
  * data->connectedをtrueにし、
  * data->current_curl_handleがnullptrでない値になる
  *
