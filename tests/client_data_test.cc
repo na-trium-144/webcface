@@ -25,16 +25,16 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     auto send = s2.transferSend(false);
     EXPECT_EQ(send.at("a"_ss), "b");
-    EXPECT_EQ(send.size(), 1);
-    EXPECT_EQ(s2.transferSend(false).size(), 0);
-    EXPECT_EQ(s2.transferSend(true).size(), 1);
+    EXPECT_EQ(send.size(), 1u);
+    EXPECT_EQ(s2.transferSend(false).size(), 0u);
+    EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
     s2.setSend("a"_ss, "b"); // 同じデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"_ss));
-    EXPECT_EQ(send.size(), 0);
-    EXPECT_EQ(s2.transferSend(true).size(), 1);
+    EXPECT_EQ(send.size(), 0u);
+    EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
     s2.setSend("a"_ss, "zzzzzz");
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "zzzzzz");
@@ -42,32 +42,32 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"_ss));
-    EXPECT_EQ(send.size(), 0);
-    EXPECT_EQ(s2.transferSend(true).size(), 1);
+    EXPECT_EQ(send.size(), 0u);
+    EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
     s2.setSend("a"_ss, "c"); // 違うデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "c");
     send = s2.transferSend(false);
     EXPECT_EQ(send.at("a"_ss), "c");
-    EXPECT_EQ(send.size(), 1);
-    EXPECT_EQ(s2.transferSend(true).size(), 1);
+    EXPECT_EQ(send.size(), 1u);
+    EXPECT_EQ(s2.transferSend(true).size(), 1u);
 }
 // TEST_F(SyncDataStore2Test, setRecv) {}
 TEST_F(SyncDataStore2Test, addReq) {
     auto reqi = s2.addReq(self_name, "b"_ss);
-    EXPECT_EQ(reqi, 0);
+    EXPECT_EQ(reqi, 0u);
     EXPECT_EQ(s2.getReq(1, ""_ss).first, ""_ss);
     EXPECT_EQ(s2.getReq(1, ""_ss).second, ""_ss);
-    EXPECT_EQ(s2.transferReq().size(), 0);
+    EXPECT_EQ(s2.transferReq().size(), 0u);
 
     reqi = s2.addReq("a"_ss, "b"_ss);
-    EXPECT_EQ(reqi, 1);
+    EXPECT_EQ(reqi, 1u);
     EXPECT_EQ(s2.getReq(1, ""_ss).first, "a"_ss);
     EXPECT_EQ(s2.getReq(1, ""_ss).second, "b"_ss);
     auto req = s2.transferReq();
-    EXPECT_EQ(req.size(), 1);
-    EXPECT_EQ(req.at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(s2.transferReq().size(), 1);
+    EXPECT_EQ(req.size(), 1u);
+    EXPECT_EQ(req.at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(s2.transferReq().size(), 1u);
 }
 TEST_F(SyncDataStore2Test, getRecv) {
     auto recv_empty = s2.getRecv(self_name, "b"_ss);
@@ -101,8 +101,8 @@ TEST_F(SyncDataStore2Test, clearRecv) {
 }
 TEST_F(SyncDataStore2Test, setEntry) {
     s2.setEntry("a"_ss, "b"_ss);
-    EXPECT_EQ(s2.getEntry("a"_ss).size(), 1);
-    EXPECT_EQ(s2.getEntry("a"_ss).count("b"_ss), 1);
+    EXPECT_EQ(s2.getEntry("a"_ss).size(), 1u);
+    EXPECT_EQ(s2.getEntry("a"_ss).count("b"_ss), 1u);
 }
 
 class SyncDataStore1Test : public ::testing::Test {
@@ -119,12 +119,12 @@ TEST_F(SyncDataStore1Test, self) {
 TEST_F(SyncDataStore1Test, addReq) {
     auto reqi = s1.addReq(self_name);
     EXPECT_FALSE(reqi);
-    EXPECT_EQ(s1.transferReq().size(), 0);
+    EXPECT_EQ(s1.transferReq().size(), 0u);
 
     reqi = s1.addReq("a"_ss);
     EXPECT_TRUE(reqi);
     auto req = s1.transferReq();
-    EXPECT_EQ(req.size(), 1);
+    EXPECT_EQ(req.size(), 1u);
     EXPECT_EQ(req.at("a"_ss), true);
 }
 TEST_F(SyncDataStore1Test, clearReq) {
@@ -135,7 +135,7 @@ TEST_F(SyncDataStore1Test, clearReq) {
     reqi = s1.clearReq("a"_ss);
     EXPECT_TRUE(reqi);
     auto req = s1.transferReq();
-    EXPECT_EQ(req.size(), 1);
+    EXPECT_EQ(req.size(), 1u);
     EXPECT_EQ(req.at("a"_ss), false);
 }
 TEST_F(SyncDataStore1Test, getRecv) {
@@ -169,7 +169,7 @@ TEST(ClientDataTest, memberIds) {
     EXPECT_EQ(data.getMemberNameFromId(1), "a"_ss);
     EXPECT_EQ(data.getMemberNameFromId(2), ""_ss);
     EXPECT_EQ(data.getMemberNameFromId(0), ""_ss);
-    EXPECT_EQ(data.getMemberIdFromName("a"_ss), 1);
-    EXPECT_EQ(data.getMemberIdFromName("b"_ss), 0);
-    EXPECT_EQ(data.getMemberIdFromName(""_ss), 0);
+    EXPECT_EQ(data.getMemberIdFromName("a"_ss), 1u);
+    EXPECT_EQ(data.getMemberIdFromName("b"_ss), 0u);
+    EXPECT_EQ(data.getMemberIdFromName(""_ss), 0u);
 }

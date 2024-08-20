@@ -158,7 +158,7 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
-        EXPECT_EQ(obj.data->size(), 1);
+        EXPECT_EQ(obj.data->size(), 1u);
         EXPECT_EQ(obj.data->at(0), 5);
     });
     dummy_s->recvClear();
@@ -168,7 +168,7 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.data->size(), 3);
+        EXPECT_EQ(obj.data->size(), 3u);
         EXPECT_EQ(obj.data->at(0), 1);
         EXPECT_EQ(obj.data->at(1), 1.5);
         EXPECT_EQ(obj.data->at(2), 2);
@@ -193,7 +193,7 @@ TEST_F(CClientTest, valueReq) {
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
@@ -251,7 +251,7 @@ TEST_F(CClientTest, textReq) {
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
@@ -330,9 +330,9 @@ TEST_F(CClientTest, funcRun) {
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.target_member_id, 0u);
             EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.args.size(), 3u);
             EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
             EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
             EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
@@ -347,9 +347,9 @@ TEST_F(CClientTest, funcRun) {
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.target_member_id, 0u);
             EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
@@ -363,9 +363,9 @@ TEST_F(CClientTest, funcRun) {
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
+            EXPECT_EQ(obj.target_member_id, 0u);
             EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
@@ -389,7 +389,7 @@ TEST_F(CClientTest, funcListen) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->size(), 3u);
         EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
         EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
         EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
@@ -403,8 +403,8 @@ TEST_F(CClientTest, funcListen) {
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->recvClear();
@@ -421,8 +421,8 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
     EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
@@ -461,7 +461,7 @@ TEST_F(CClientTest, funcSet) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->size(), 3u);
         EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
         EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
         EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
@@ -473,13 +473,13 @@ TEST_F(CClientTest, funcSet) {
     wcfWaitRecv(wcli_);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
@@ -512,7 +512,7 @@ TEST_F(CClientTest, funcSetAsync) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
+        EXPECT_EQ(obj.args->size(), 3u);
         EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
         EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
         EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
@@ -524,13 +524,13 @@ TEST_F(CClientTest, funcSetAsync) {
     wcfWaitRecv(wcli_);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
@@ -549,8 +549,8 @@ TEST_F(CClientTest, viewSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::View>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.length, 6);
-        EXPECT_EQ(obj.data_diff->size(), 6);
+        EXPECT_EQ(obj.length, 6u);
+        EXPECT_EQ(obj.data_diff->size(), 6u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
@@ -591,7 +591,7 @@ TEST_F(CClientTest, viewReq) {
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
 
     auto v = std::make_shared<

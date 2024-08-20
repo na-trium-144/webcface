@@ -11,7 +11,7 @@ TEST_F(ClientTest, valueSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
-        EXPECT_EQ(obj.data->size(), 1);
+        EXPECT_EQ(obj.data->size(), 1u);
         EXPECT_EQ(obj.data->at(0), 5);
     });
     dummy_s->recvClear();
@@ -30,7 +30,7 @@ TEST_F(ClientTest, valueSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
-        ASSERT_EQ(obj.data->size(), 2);
+        ASSERT_EQ(obj.data->size(), 2u);
         EXPECT_EQ(obj.data->at(0), 5);
         EXPECT_EQ(obj.data->at(1), 2);
     });
@@ -45,7 +45,7 @@ TEST_F(ClientTest, valueReq) {
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").value("b").onChange(callback<Value>());
     dummy_s->send(message::Res<message::Value>{
@@ -61,12 +61,12 @@ TEST_F(ClientTest, valueReq) {
     EXPECT_EQ(static_cast<std::vector<double>>(
                   *data_->value_store.getRecv("a"_ss, "b"_ss).value())
                   .size(),
-              3);
+              3u);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b.c"_ss).has_value());
     EXPECT_EQ(static_cast<std::vector<double>>(
                   *data_->value_store.getRecv("a"_ss, "b.c"_ss).value())
                   .size(),
-              3);
+              3u);
 }
 TEST_F(ClientTest, recvThread) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -187,7 +187,7 @@ TEST_F(ClientTest, textReq) {
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").text("b").onChange(callback<Text>());
     dummy_s->send(message::Res<message::Text>{
@@ -223,8 +223,8 @@ TEST_F(ClientTest, viewSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
-        EXPECT_EQ(obj.length, 3);
-        EXPECT_EQ(obj.data_diff->size(), 3);
+        EXPECT_EQ(obj.length, 3u);
+        EXPECT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ((*obj.data_diff)["0"].text, "a"_ss);
@@ -257,8 +257,8 @@ TEST_F(ClientTest, viewSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](const auto &obj) {
         EXPECT_EQ(obj.field, "a"_ss);
-        EXPECT_EQ(obj.length, 3);
-        EXPECT_EQ(obj.data_diff->size(), 1);
+        EXPECT_EQ(obj.length, 3u);
+        EXPECT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ((*obj.data_diff)["0"].text, "b"_ss);
@@ -278,7 +278,7 @@ TEST_F(ClientTest, viewReq) {
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member, "a"_ss);
         EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").view("b").onChange(callback<View>());
 
@@ -303,7 +303,7 @@ TEST_F(ClientTest, viewReq) {
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0).type(),
               ViewComponentType::text);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0).text(),
@@ -332,7 +332,7 @@ TEST_F(ClientTest, viewReq) {
     dummy_s->send(message::Res<message::View>{1, ""_ss, v2, 3});
     wcli_->waitRecv();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0).type(),
               ViewComponentType::text);
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0).text(),
