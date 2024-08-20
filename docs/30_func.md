@@ -34,7 +34,7 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
     ~~set() の代わりに代入演算子(Value::operator=)でも同様のことができます~~
 
     <span class="since-c">2.0</span>
-    set()で登録した関数はrecv()時に同じスレッドで実行されます。
+    set()で登録した関数はsync()時に同じスレッドで実行されます。
     そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。  
     関数を非同期(別スレッド)で実行したい場合は Func::setAsync() を使用してください。
     ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。
@@ -45,6 +45,7 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
         return "hello";
     });
     ```
+    <!--
     <span class="since-c">2.0</span>
     戻り値にstd::futureまたはstd::shared_futureを返す関数も登録可能です。
     その場合戻り値のfutureの結果を待機する(get() を呼び出す)のは別スレッドで行われます。
@@ -60,6 +61,7 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
         });
     });
     ```
+    -->
 
     \warning
     <span class="since-c">2.0</span>
@@ -68,7 +70,6 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
     ```cpp
     wcli.func("hoge").set([&](){
         return wcli.member("foo").func("piyo").run(); // deadlock
-        return wcli.member("foo").func("piyo").runAsync().result; // ok (std::shared_future型)
         return std::async([&]{
             wcli.member("foo").func("piyo").run(); // ok (非同期実行)
         });
@@ -116,7 +117,7 @@ Client::func からFuncオブジェクトを作り、 Func::set() で関数を�
     respondもrejectもせずにreturnした場合は自動的に空の値でrespondします。
 
     <span class="since-c">2.0</span>
-    wcfFuncSet(), wcfFuncSetW() で登録した関数はwcfRecv()時に同じスレッドで実行されます。
+    wcfFuncSet(), wcfFuncSetW() で登録した関数はwcfSync()時に同じスレッドで実行されます。
     そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。  
     関数を非同期(別スレッド)で実行したい場合は wcfFuncSetAsync(), wcfFuncSetAsyncW() を使用してください。
     ver1.11以前ではwcfFuncSet()で登録した関数はすべて非同期実行されていたので、こちらが従来のwcfFuncSet()と同じ挙動になります。
@@ -305,7 +306,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
     その後、任意のタイミングで
     ```cpp
-    std::optional<webcface::FuncCallHandle> handle = wcli.funcListener("hoge").fetchCall();
+    std::optional<webcface::CallHandle> handle = wcli.funcListener("hoge").fetchCall();
     ```
     とすることで関数が呼び出されたかどうかを調べることができます。
     listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます(呼び出されていないのと同じことになります)
@@ -314,7 +315,8 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     関数が呼び出された場合、`handle.args()`で引数を調べ、`handle.respond()`で関数のreturnと同様に関数の終了を示したり値を返してください。
     また`handle.reject()`でエラーメッセージを返すことができます(呼び出し元にはruntime_errorを投げたものとして返ります)
 
-    詳細は webcface::FuncCallHandle
+    詳細は webcface::CallHandle
+    (ver2.0で FuncCallHandle から CallHandle に名前変更)
 
 - <b class="tab-title">C</b>
     ```c
@@ -368,22 +370,182 @@ Member::funcEntries() に変更
 
 ## 関数の実行
 
-Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。
-他クライアントの関数も同様にrun()で実行させることができます。
+他クライアントにsetされた関数を呼び出すことができます。
+(自分でsetした関数を自分で実行することも一応可能です)
 
-実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。
-
-対象のクライアントと通信できない場合、また指定した関数が存在しない場合は webcface::FuncNotFoundError を投げます。
-
-\note
-* 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
-* (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)
-* 変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します
-* c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更
+引数を渡したり、戻り値またはエラーメッセージを取得することができます。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    Func::runAsync() で関数を呼び出し、完了を待たずに続行します。
+    戻り値として <del>AsyncFuncResult</del> <span class="since-c">2.0</span> Promise クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
+
+    \deprecated
+    <del>AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。</del>
+    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+        * <span class="since-c">2.0</span>
+        runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
+    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
+        * 実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。
+    * <span class="since-c">2.0</span>
+    Promise::started, Promise::result として今までどおり使用可能ですがdeprecatedです。
+        * started.get() や result.get() はver2.0以降デッドロックする可能性があります。
+        詳細は後述の waitReach(), waitFinish() を参照してください
+    
+    <span class="since-c">2.0</span>
+    Promiseでは以下のメソッドが使用可能です。
+    * reached(): 関数呼び出しのメッセージが相手のクライアントに到達したらtrue、それまでの間はfalseです。
+        * waitReach(), waitReachFor(), waitReachUntil(): reach()がtrueになるまで待機します。
+        For, Until の場合はタイムアウトを指定します。
+    * found(): reached()がtrueになった後、相手のクライアントが関数の実行を開始したらtrue、指定したクライアントまたは関数が存在しなかった場合falseです。
+        * reach()がfalseの間はfalseです。
+        * runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
+    * finished(): 関数の実行が完了し戻り値かエラーメッセージを受け取ったらtrue、それまでの間はfalseです。
+        * waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。
+        For, Until の場合はタイムアウトを指定します。
+    * response(): 関数の戻り値です。
+    webcface::ValAdaptor 型で返り、
+    `asStringRef()`, `asString()`, `asWStringRef()`, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()`
+    またはstatic_castにより型変換できます。
+    * rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。
+    またその場合 isError() がtrueになります。
+
+    \warning
+    <span class="since-c">2.0</span>
+    waitReach(), waitFinish() などで結果が返ってくるまで待機することができますが、
+    これらが結果を受信するためには Client::sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。
+
+    * `onReach()`, `onFinish()` で値が返ってきたときに実行されるコールバックを設定することができます。
+        * 引数にはそのPromise自身が渡されますが、(キャプチャするなどして)必要なければ引数なしの関数も設定可能です
+    ```cpp
+    Promise res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.onReach([](Promise res){
+        std::cout << "func hoge() " << res.found() ? "started" : "not started" << std::endl;
+    });
+    res.onFinish([](Promise res){
+        if(!res.isError()){
+            double ans = res.response();
+        }else{
+            std::cout << "Error: " << res.rejection() << std::endl;
+        }
+    });
+    ```
+
+    \note
+    onReach, onFinish を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。
+    したがってコールバックはどの状況で設定したとしても必ず1回呼ばれます。
+    (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)
+
+- <b class="tab-title">C</b>
+    ```c
+    wcfMultiVal args[3] = {
+        wcfValI(42),
+        wcfValD(1.5),
+        wcfValS("aaa"),
+    };
+    wcfPromise *async_res;
+    wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
+
+    wcfMultiVal *ans;
+    int ret = wcfFuncGetResult(async_res, &ans);
+    // int ret = wcfFuncWaitResult(async_res, &ans);
+    // ex.) ret = WCF_OK, ans->as_double = 123.45
+
+    wcfDestroy(ans);
+    ```
+    * (ver1.11まで wcfAsyncFuncResult 型でしたが ver2.0で wcfPromise に名前変更しました)
+    * 関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
+    * wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
+    
+    \warning
+    <span class="since-c">2.0</span>
+    wcfFuncWaitResult() が結果を受信するためには wcfSync() が必要なため、別スレッドでwcfSync()が呼ばれていなければデッドロックします。
+
+    * <span class="since-c">1.7</span>
+    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。  
+        * wcfPromiseについては結果をansに渡した時点で破棄され使えなくなるためwcfDestroyの呼び出しは不要です。
+    * <span class="since-c">2.0</span>
+    戻り値を取得する必要がない場合は、 wcfDestroy(async_res); でwcfPromiseも破棄することができます。
+
+- <b class="tab-title">JavaScript</b>
+    Func.runAsync() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
+
+    AsyncFuncResultからは started と result が取得できます。
+    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
+
+    startedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。
+    詳細は [AsyncFuncResult](https://na-trium-144.github.io/webcface-js/classes/AsyncFuncResult.html) を参照してください
+
+    ```ts
+    import { AsyncFuncResult } from "webcface";
+    const res: AsyncFuncResult = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.result.then((ret: number | boolean | string) => {
+        // ...
+    }).catch((e) => {
+        // ...
+    });
+    ```
+
+- <b class="tab-title">Python</b>
+    Func.run() は関数を呼び出し、結果が返ってくるまで待機します。
+    ```py
+    ans = wcli.member("foo").func("hoge").run(1, "aa")
+    ```
+    Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
+    (`Func::__call__`)
+
+    Func.run_async() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
+
+    AsyncFuncResultからは started と result が取得できます。
+    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
+
+    startedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。
+    また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。
+    詳細は [webcface.AsyncFuncResult](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult) を参照
+
+    ```python
+    res = wcli.member("foo").func("hoge").run_async(1, "aa")
+    ans = res.result
+    ```
+
+</div>
+
+<details><summary>CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
+
+<span class="since-c">1.11</span>
+`onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
+([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)の参照で返ります)  
+```cpp
+AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+res.onStarted().append([](bool started){
+    std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
+});
+res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
+    try{
+        double ans = result.get();
+    }catch(const std::exception &e){
+        std::cout << e.what() << std::endl;
+    }
+});
+```
+
+</details>
+
+<details><summary>C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    Func::run() で関数を実行できます。引数を渡すこともでき、戻り値もそのまま返ってきます。
+    他クライアントの関数も同様にrun()で実行させることができます。
+
+    実行した関数が例外を投げた場合、また引数の個数が一致しない場合などはrun()が例外を投げます。
+
+    対象のクライアントと通信できない場合、また指定した関数が存在しない場合は webcface::FuncNotFoundError を投げます。
+
     ```cpp
     double ans = wcli.member("foo").func("hoge").run(1, "aa");
     ```
@@ -420,142 +582,16 @@ Func::run() で関数を実行できます。引数を渡すこともでき、�
     \warning
     wcfStart()を呼んで通信を開始する前にwcfFuncRun()を呼び出してしまうとデッドロックします。
 
-
-- <b class="tab-title">Python</b>
-    ```py
-    ans = wcli.member("foo").func("hoge").run(1, "aa")
-    ```
-    Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
-    (`Func::__call__`)
-
 </div>
-
-### runAsync
-
-Func::runAsync() は関数の実行を開始し、終了を待たずに続行します。
-戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
-
-AsyncFuncResultからは started と result が取得できます。
-* started は対象の関数が存在して実行が開始したときにtrueになり、存在しなければ即座にfalseとなります。
-どちらも返ってこない場合は通信に失敗しています。
-* result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    startedとresultはstd::shared_futureであり、
-    <del>取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。</del>
-
-    \warning
-    <span class="since-c">2.0</span>
-    以下のように get() などで結果が返ってくるまで待機することができますが、
-    結果を受信するために Client::recv() が必要になったためデッドロックする危険性があります。
-    ```cpp
-    AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
-    double ans = res.result.get();
-    ```
-    Client::autoRecv() を有効にしておくか、recv()を呼び出すのとは別のスレッドで
-    get() で待機する分には問題ありません。
-    
-    * 実行した関数が例外を投げた場合はresult.get()が投げます。
-
-    <span class="since-c">2.0</span>
-    `onStarted()`, `onResult()` で値が返ってきたときに実行されるコールバックを設定することができます。
-    ```cpp
-    AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
-    res.onStarted([](bool started){
-        std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
-    });
-    res.onResult([](const std::shared_future<webcface::ValAdaptor> &result){
-        try{
-            double ans = result.get();
-        }catch(const std::exception &e){
-            std::cout << e.what() << std::endl;
-        }
-    });
-    ```
-    onStarted, onResult を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。
-    コールバックはどの状況で設定したとしても必ず1回呼ばれます。
-    (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)
-
-    \warning
-    onStarted ではコールバックの引数は`bool`ですが、
-    onResult ではコールバックの引数は`std::shared_future<webcface::ValAdaptor>`です。
-    関数の呼び出しに失敗した場合や呼び出した関数の結果がエラーだった場合resultのshared_futureは例外を投げるので、上の例のように必ずtry〜catchを使用してください。
-    (例外がcatchされなかった場合terminateしてしまいます)
-
-- <b class="tab-title">C</b>
-    ```c
-    wcfMultiVal args[3] = {
-        wcfValI(42),
-        wcfValD(1.5),
-        wcfValS("aaa"),
-    };
-    wcfAsyncFuncResult *async_res;
-    wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
-
-    wcfMultiVal *ans;
-    int ret = wcfFuncGetResult(async_res, &ans);
-    // int ret = wcfFuncWaitResult(async_res, &ans);
-    // ex.) ret = WCF_OK, ans->as_double = 123.45
-
-    wcfDestroy(ans);
-    ```
-    関数の実行がまだ完了していなければwcfFuncGetResultは`WCF_NOT_RETURNED`を返します。
-
-    wcfFuncWaitResult は関数の実行が完了し結果が返ってくるまで待機します。
-
-    <span class="since-c">1.7</span>
-    結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。  
-    (wcfAsyncFuncResultについては結果をansに渡した時点で破棄され使えなくなるためwcfDestroyの呼び出しは不要です。)
-
-- <b class="tab-title">JavaScript</b>
-    \note
-    JavaScriptではrun()はなく、runAsync()のみ使えます。
-
-    ```ts
-    import { AsyncFuncResult } from "webcface";
-    const res: AsyncFuncResult = wcli.member("foo").func("hoge").runAsync(1, "aa");
-    res.result.then((ret: number | boolean | string) => {
-        // ...
-    }).catch((e) => {
-        // ...
-    });
-    ```
-    startedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。
-    詳細は [AsyncFuncResult](https://na-trium-144.github.io/webcface-js/classes/AsyncFuncResult.html) を参照してください
-
-- <b class="tab-title">Python</b>
-    ```python
-    res = wcli.member("foo").func("hoge").runAsync(1, "aa")
-    ans = res.result
-    ```
-    startedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。
-    また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。
-    詳細は [webcface.AsyncFuncResult](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult) を参照
-
-</div>
-
-<details><summary>CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
-
-<span class="since-c">1.11</span>
-`onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。
-([eventpp::CallbackList 型](https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md)の参照で返ります)  
-```cpp
-AsyncFuncResult res = wcli.member("foo").func("hoge").runAsync(1, "aa");
-res.onStarted().append([](bool started){
-    std::cout << "func hoge() " << started ? "started" : "not started" << std::endl;
-});
-res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
-    try{
-        double ans = result.get();
-    }catch(const std::exception &e){
-        std::cout << e.what() << std::endl;
-    }
-});
-```
 
 </details>
+
+### 型変換
+
+* 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
+* (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)
+* 変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します
+* c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更
 
 <div class="section_buttons">
 

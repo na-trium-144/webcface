@@ -35,8 +35,10 @@ int main() {
         return "1";
     });
 
-    wcli.sync();
-    while (true) {
-        wcli.waitRecv();
-    }
+    // 引数型が非対応の場合:
+    // ↓ error: no type named ArgTypesSupportedByWebCFaceFunc
+    //           in webcface::FuncArgTypesTrait<std::nullptr_t, int>
+    // wcli.func("nyan").set([](std::nullptr_t, int) {});
+
+    wcli.loopSync();
 }

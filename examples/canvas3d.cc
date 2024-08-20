@@ -1,10 +1,6 @@
-#ifdef _MSC_VER
-#define _USE_MATH_DEFINES
-#endif
+#define _USE_MATH_DEFINES // NOLINT
 #include <webcface/client.h>
 #include <webcface/canvas3d.h>
-#include <thread>
-#include <iostream>
 #include <chrono>
 #include <cmath>
 
@@ -100,7 +96,6 @@ int main() {
         }
         i += 0.5;
 
-        wcli.sync();
-        wcli.waitRecvFor(std::chrono::milliseconds(100));
+        wcli.loopSyncFor(std::chrono::milliseconds(100));
     }
 }

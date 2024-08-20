@@ -16,7 +16,7 @@ TEST_F(ServerTest, value) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data->size(), 3u);
         EXPECT_EQ(obj.data->at(0), 3);
     });
@@ -31,7 +31,7 @@ TEST_F(ServerTest, value) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data->size(), 4u);
         EXPECT_EQ(obj.data->at(0), 6);
     });
@@ -50,7 +50,7 @@ TEST_F(ServerTest, text) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(*obj.data, "zzz");
     });
     dummy_c2->recvClear();
@@ -62,7 +62,7 @@ TEST_F(ServerTest, text) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(*obj.data, "zzzzz");
     });
 }
@@ -83,7 +83,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data->size(), 1u);
     });
     dummy_c2->recvClear();
@@ -107,7 +107,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         ASSERT_EQ(obj.data->size(), 3u);
         EXPECT_EQ(obj.data->at(0).joint_parent, -1);
         EXPECT_EQ(obj.data->at(1).joint_parent, -1);
@@ -143,7 +143,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ(obj.data_diff->at("0").type,
                   static_cast<int>(ViewComponentType::text));
@@ -167,7 +167,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ(obj.data_diff->at("0").type,
                   static_cast<int>(ViewComponentType::text));
@@ -193,7 +193,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ(obj.length, 3u);
     });
@@ -212,7 +212,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ(obj.length, 3u);
     });
@@ -236,7 +236,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ(obj.length, 3u);
     });
@@ -255,7 +255,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ(obj.length, 3u);
     });
@@ -279,7 +279,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
@@ -292,7 +292,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_EQ(obj.width_, 15);
@@ -311,7 +311,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
@@ -326,7 +326,7 @@ TEST_F(ServerTest, image) {
         [] {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
@@ -342,7 +342,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field, ""_ss);
+        EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_GT(obj.data_->size(), 0u);
@@ -371,7 +371,7 @@ TEST_F(ServerTest, image) {
             dummy_c2->waitRecv<message::Res<message::Image>>(
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1u);
-                    EXPECT_EQ(obj.sub_field, ""_ss);
+                    EXPECT_EQ(obj.sub_field.u8String(), "");
                     EXPECT_EQ(obj.height_, 10);
                     EXPECT_EQ(obj.width_, 15);
                     EXPECT_EQ(obj.color_mode_,

@@ -1,4 +1,4 @@
-#include "webcface/func_info.h"
+#include "webcface/internal/func_internal.h"
 #include "webcface/message/message.h"
 
 WEBCFACE_NS_BEGIN
@@ -55,14 +55,14 @@ message::Arg Arg::toMessage() const {
     return message::Arg(name_, type_, init_, min_, max_, option_);
 }
 
-FuncInfo::FuncInfo(const message::FuncInfo &m)
+internal::FuncInfo::FuncInfo(const message::FuncInfo &m)
     : return_type(m.return_type), args(), func_impl(nullptr) {
     args.reserve(m.args->size());
     for (const auto &a : *m.args) {
         args.emplace_back(a);
     }
 }
-message::FuncInfo FuncInfo::toMessage(const SharedString &field) const {
+message::FuncInfo internal::FuncInfo::toMessage(const SharedString &field) const {
     message::FuncInfo m{0, field, return_type,
                         std::make_shared<std::vector<message::Arg>>()};
     m.args->reserve(args.size());

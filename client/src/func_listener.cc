@@ -5,20 +5,15 @@ WEBCFACE_NS_BEGIN
 FuncListener::FuncListener(const Field &base) : Func(base) {}
 
 FuncListener &FuncListener::listen() {
-    this->Func::setImpl(std::make_shared<FuncInfo>(
-        this->return_type_, this->args_, true,
-        [this_ = *this](const std::vector<ValAdaptor> &args_vec) {
-            if (this_.args_.size() != args_vec.size()) {
-                throw std::invalid_argument(
-                    "requires " + std::to_string(this_.args_.size()) +
-                    " arguments, got " + std::to_string(args_vec.size()));
+    this->Func::setImpl(
+        this->return_type_, std::vector(this->args_),
+        [this_ = static_cast<Field>(*this),
+         args_num = this->args_.size()](const CallHandle &handle) {
+            if (handle.assertArgsNum(args_num)) {
+                this_.dataLock()->func_listener_handlers[this_.field_].push(
+                    handle);
             }
-            std::promise<ValAdaptor> result;
-            std::future<ValAdaptor> result_f = result.get_future();
-            this_.dataLock()->func_listener_handlers[this_.field_].push(
-                FuncCallHandle{args_vec, std::move(result)});
-            return result_f;
-        }));
+        });
     return *this;
 }
 
