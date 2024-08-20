@@ -146,6 +146,7 @@ TEST_F(ClientTest, syncThread) {
     wcli_->loopSync();
 
     dummy_s = std::make_shared<DummyServer>(false);
+    wcli_->start();
     auto main_id = std::this_thread::get_id();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
