@@ -423,7 +423,7 @@ struct Canvas2DComponent {
     double origin_rot;
     int color = 0, fill = 0;
     double stroke_width;
-    int geometry_type = 0;
+    std::optional<int> geometry_type;
     std::vector<double> properties;
     std::optional<SharedString> on_click_member, on_click_field;
     SharedString text;

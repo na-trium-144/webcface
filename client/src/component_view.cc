@@ -32,33 +32,6 @@ std::string ViewComponent::id() const {
 
 ViewComponent::ViewComponent() = default;
 
-/*ViewComponent::ViewComponent(ViewComponentType type, const SharedString &text,
-                             std::optional<FieldBase> &&on_click_func,
-                             std::optional<FieldBase> &&text_ref,
-                             ViewColor text_color, ViewColor bg_color,
-                             std::optional<double> min,
-                             std::optional<double> max,
-                             std::optional<double> step,
-                             std::vector<ValAdaptor> &&option)
-    : data(std::make_unique<internal::ViewComponentData>(
-          internal::ViewComponentData{std::weak_ptr<internal::ClientData>(),
-                                      0,
-                                      type,
-                                      text,
-                                      std::move(on_click_func),
-                                      std::move(text_ref),
-                                      text_color,
-                                      bg_color,
-                                      min,
-                                      max,
-                                      step,
-                                      std::move(option),
-                                      nullptr,
-                                      std::nullopt,
-                                      std::nullopt,
-                                      {},
-                                      {}})) {}
-*/
 ViewComponent::ViewComponent(
     const std::shared_ptr<internal::ViewComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w,
@@ -194,41 +167,6 @@ wcfViewComponentW ViewComponent::cDataW() const {
     return msg_data->cDataT<wcfViewComponentW, wcfMultiValW, 1>();
 }
 
-/*message::ViewComponent ViewComponent::toMessage() const {
-    checkData();
-    message::ViewComponent vc;
-    vc.type = static_cast<int>(this->data->type_);
-    vc.text = this->data->text_;
-    if (this->data->on_click_func_) {
-        vc.on_click_member = this->data->on_click_func_->member_;
-        vc.on_click_field = this->data->on_click_func_->field_;
-    }
-    if (this->data->text_ref_) {
-        vc.text_ref_member = this->data->text_ref_->member_;
-        vc.text_ref_field = this->data->text_ref_->field_;
-    }
-    vc.text_color = static_cast<int>(this->data->text_color_);
-    vc.bg_color = static_cast<int>(this->data->bg_color_);
-    vc.min_ = this->data->min_;
-    vc.max_ = this->data->max_;
-    vc.step_ = this->data->step_;
-    vc.option_ = this->data->option_;
-    return vc;
-}
-ViewComponent::ViewComponent(const message::ViewComponent &vc)
-    : ViewComponent(static_cast<ViewComponentType>(vc.type), vc.text,
-                    (vc.on_click_member && vc.on_click_field
-                         ? std::make_optional<FieldBase>(*vc.on_click_member,
-                                                         *vc.on_click_field)
-                         : std::nullopt),
-                    (vc.text_ref_member && vc.text_ref_field
-                         ? std::make_optional<FieldBase>(*vc.text_ref_member,
-                                                         *vc.text_ref_field)
-                         : std::nullopt),
-                    static_cast<ViewColor>(vc.text_color),
-                    static_cast<ViewColor>(vc.bg_color), vc.min_, vc.max_,
-                    vc.step_, std::vector(vc.option_)) {}
-*/
 
 bool ViewComponent::operator==(const ViewComponent &other) const {
     return msg_data && other.msg_data && id() == other.id() &&

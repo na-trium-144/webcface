@@ -33,7 +33,7 @@ class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
         : RobotModel(Field{base, field}) {}
 
     friend class Canvas3D;
-    friend class Canvas3DComponent;
+    friend class TemporalCanvas3DComponent;
     friend internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;

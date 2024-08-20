@@ -8,7 +8,6 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "webcface/encoding/val_adaptor.h"
-#include "component_id.h"
 #include "webcface/func.h"
 #include "webcface/text.h"
 
@@ -51,6 +50,18 @@ enum class ViewColor {
     // fuchsia = 22,
     pink = 23,
     // rose = 24,
+};
+enum class ViewComponentType {
+    text = 0,
+    new_line = 1,
+    button = 2,
+    text_input = 3,
+    decimal_input = 4,
+    number_input = 5,
+    toggle_input = 6,
+    select_input = 7,
+    slider_input = 8,
+    check_input = 9,
 };
 
 /*!
@@ -209,7 +220,6 @@ class WEBCFACE_DLL ViewComponent {
 /*!
  * \brief Viewを構築するときに使う一時的なViewComponent
  * \since ver2.0
- *
  *
  */
 class WEBCFACE_DLL TemporalViewComponent {

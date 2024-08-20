@@ -196,6 +196,17 @@ class SyncDataStore2 {
     }
 };
 
+struct Canvas2DDataBase {
+    double width = 0, height = 0;
+    std::vector<Canvas2DComponent> components;
+    Canvas2DDataBase() = default;
+    Canvas2DDataBase(double width, double height)
+        : width(width), height(height), components() {}
+    Canvas2DDataBase(double width, double height,
+                     std::vector<Canvas2DComponent> &&components)
+        : width(width), height(height), components(std::move(components)) {}
+};
+
 using ValueData = std::shared_ptr<std::vector<double>>;
 using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
