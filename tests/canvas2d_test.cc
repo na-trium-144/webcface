@@ -87,7 +87,7 @@ TEST_F(Canvas2DTest, set) {
     auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(canvas2d_data.width, 100);
     EXPECT_EQ(canvas2d_data.height, 150);
-    ASSERT_EQ(canvas2d_data.components.size(), 2);
+    ASSERT_EQ(canvas2d_data.components.size(), 2u);
     EXPECT_EQ(canvas2d_data.components[0].type(),
               Canvas2DComponentType::geometry);
     EXPECT_EQ(canvas2d_data.components[0].color(), ViewColor::red);
@@ -118,7 +118,7 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(
         (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
-        0);
+        0u);
 
     {
         auto v2 = canvas(self_name, "b");
@@ -128,7 +128,7 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
         (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
-        1);
+        1u);
 
     {
         Canvas2D v3;
@@ -156,16 +156,16 @@ TEST_F(Canvas2DTest, get) {
     auto vd = std::make_shared<Canvas2DDataBase>();
     vd->components.resize(1);
     data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
-    EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
-    EXPECT_EQ(canvas("a", "b").get().size(), 1);
+    EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);
+    EXPECT_EQ(canvas("a", "b").get().size(), 1u);
     EXPECT_EQ(canvas("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(canvas("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(canvas("a", "c").get().size(), 0u);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(canvas(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->canvas2d_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().count(self_name), 0u);
     canvas("a", "d").onChange(callback<Canvas2D>());
-    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->canvas2d_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 
 // todo: hidden, free

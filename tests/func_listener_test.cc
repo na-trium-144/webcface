@@ -63,16 +63,16 @@ TEST_F(FuncListenerTest, listen) {
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0);
-    EXPECT_EQ(f.args().size(), 0);
-    EXPECT_EQ(func(self_name, "a").args().size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0u);
+    EXPECT_EQ(f.args().size(), 0u);
+    EXPECT_EQ(func(self_name, "a").args().size(), 0u);
 
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
     fl = funcListener(self_name, "b");
     fl.listen(4, ValType::int_);
     EXPECT_EQ(f.returnType(), ValType::int_);
-    EXPECT_EQ(f.args().size(), 4);
+    EXPECT_EQ(f.args().size(), 4u);
     EXPECT_EQ(f.args(0).type(), ValType::none_);
     EXPECT_EQ(f.args(1).type(), ValType::none_);
     EXPECT_EQ(f.args(2).type(), ValType::none_);
@@ -94,7 +94,7 @@ TEST_F(FuncListenerTest, listen) {
     EXPECT_EQ(f.args(1).init(), std::nullopt);
     EXPECT_EQ(f.args(1).min(), std::nullopt);
     EXPECT_EQ(f.args(1).max(), std::nullopt);
-    EXPECT_EQ(f.args(3).option().size(), 3);
+    EXPECT_EQ(f.args(3).option().size(), 3u);
 
     EXPECT_THROW(funcListener("a", "b").listen(), std::invalid_argument);
 }

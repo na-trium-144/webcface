@@ -35,7 +35,7 @@ TEST_F(LoggerTest, loggerBuf) {
     std::cerr.rdbuf(&b);
     std::cerr << "c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 3);
+    ASSERT_EQ((*ls)->size(), 3u);
     EXPECT_EQ((**ls)[0].level_, 2);
     EXPECT_EQ((**ls)[0].message_.u8String(), "a");
     EXPECT_EQ((**ls)[1].level_, 2);
@@ -52,7 +52,7 @@ TEST_F(LoggerTest, loggerBufW) {
     std::wcerr.rdbuf(&b);
     std::wcerr << L"c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 3);
+    ASSERT_EQ((*ls)->size(), 3u);
     EXPECT_EQ((**ls)[0].level_, 2);
     EXPECT_EQ((**ls)[0].message_.u8String(), "a");
     EXPECT_EQ((**ls)[1].level_, 2);

@@ -264,10 +264,10 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(wcli_->members().size(), 1);
+    EXPECT_EQ(wcli_->members().size(), 1u);
     EXPECT_EQ(wcli_->members()[0].name(), "a");
     EXPECT_EQ(wcli_->members()[0].nameW(), L"a");
-    EXPECT_EQ(data_->member_ids["a"_ss], 10);
+    EXPECT_EQ(data_->member_ids["a"_ss], 10u);
 
     auto m = wcli_->member("a");
     EXPECT_EQ(m.libName(), "b");
@@ -279,7 +279,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.valueEntries().size(), 1);
+    ASSERT_EQ(m.valueEntries().size(), 1u);
     EXPECT_EQ(m.valueEntries()[0].name(), "b");
     EXPECT_EQ(m.valueEntries()[0].nameW(), L"b");
 
@@ -288,7 +288,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.textEntries().size(), 1);
+    ASSERT_EQ(m.textEntries().size(), 1u);
     EXPECT_EQ(m.textEntries()[0].name(), "c");
     EXPECT_EQ(m.textEntries()[0].nameW(), L"c");
 
@@ -297,7 +297,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.viewEntries().size(), 1);
+    ASSERT_EQ(m.viewEntries().size(), 1u);
     EXPECT_EQ(m.viewEntries()[0].name(), "d");
     EXPECT_EQ(m.viewEntries()[0].nameW(), L"d");
 
@@ -306,7 +306,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.canvas2DEntries().size(), 1);
+    ASSERT_EQ(m.canvas2DEntries().size(), 1u);
     EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
     EXPECT_EQ(m.canvas2DEntries()[0].nameW(), L"d");
 
@@ -315,7 +315,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.canvas3DEntries().size(), 1);
+    ASSERT_EQ(m.canvas3DEntries().size(), 1u);
     EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
     EXPECT_EQ(m.canvas3DEntries()[0].nameW(), L"d");
 
@@ -324,7 +324,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.robotModelEntries().size(), 1);
+    ASSERT_EQ(m.robotModelEntries().size(), 1u);
     EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
     EXPECT_EQ(m.robotModelEntries()[0].nameW(), L"d");
 
@@ -333,7 +333,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    ASSERT_EQ(m.imageEntries().size(), 1);
+    ASSERT_EQ(m.imageEntries().size(), 1u);
     EXPECT_EQ(m.imageEntries()[0].name(), "d");
     EXPECT_EQ(m.imageEntries()[0].nameW(), L"d");
 
@@ -344,7 +344,7 @@ TEST_F(ClientTest, entry) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    EXPECT_EQ(m.funcEntries().size(), 1);
+    EXPECT_EQ(m.funcEntries().size(), 1u);
     EXPECT_EQ(m.funcEntries()[0].name(), "a");
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
 
@@ -369,9 +369,9 @@ TEST_F(ClientTest, logSend) {
     data_->log_store.setRecv(self_name, ls);
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
-        EXPECT_EQ(obj.log->size(), 2);
+        EXPECT_EQ(obj.log->size(), 2u);
         EXPECT_EQ(obj.log->at(0).level_, 0);
-        EXPECT_EQ(obj.log->at(0).message_.decode().size(), 100000);
+        EXPECT_EQ(obj.log->at(0).message_.decode().size(), 100000u);
         EXPECT_EQ(obj.log->at(1).level_, 1);
         EXPECT_EQ(obj.log->at(1).message_, "b"_ss);
     });
@@ -380,7 +380,7 @@ TEST_F(ClientTest, logSend) {
     ls->push_back(LogLineData{2, std::chrono::system_clock::now(), "c"_ss});
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
-        EXPECT_EQ(obj.log->size(), 1);
+        EXPECT_EQ(obj.log->size(), 1u);
         EXPECT_EQ(obj.log->at(0).level_, 2);
         EXPECT_EQ(obj.log->at(0).message_, "c"_ss);
     });
@@ -411,14 +411,14 @@ TEST_F(ClientTest, logReq) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 0);
     EXPECT_EQ(data_->log_store.getRecv("a"_ss)
                   .value()
                   ->at(0)
                   .message_.u8String()
                   .size(),
-              100000);
+              100000u);
 
     dummy_s->send(message::Log{
         10, std::make_shared<std::deque<message::LogLine>>(
@@ -429,5 +429,5 @@ TEST_F(ClientTest, logReq) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3u);
 }

@@ -35,8 +35,8 @@ TEST_F(ClientTest, canvas2DSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas2D>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3);
-        ASSERT_EQ(obj.data_diff->size(), 3);
+        EXPECT_EQ(obj.length, 3u);
+        ASSERT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ(obj.width, 100);
         EXPECT_EQ(obj.height, 100);
         EXPECT_EQ((*obj.data_diff)["0"].type,
@@ -87,8 +87,8 @@ TEST_F(ClientTest, canvas2DSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas2D>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3);
-        ASSERT_EQ(obj.data_diff->size(), 1);
+        EXPECT_EQ(obj.length, 3u);
+        ASSERT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(Canvas2DComponentType::geometry));
         EXPECT_EQ((*obj.data_diff)["0"].color,
@@ -109,7 +109,7 @@ TEST_F(ClientTest, canvas2DReq) {
     dummy_s->waitRecv<message::Req<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member.u8String(), "a");
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").canvas2D("b").onChange(callback<Canvas2D>());
 
@@ -154,7 +154,7 @@ TEST_F(ClientTest, canvas2DReq) {
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.size(),
-              3);
+              3u);
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.at(0)
@@ -227,7 +227,7 @@ TEST_F(ClientTest, canvas2DReq) {
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.size(),
-              3);
+              3u);
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.at(0)
@@ -301,8 +301,8 @@ TEST_F(ClientTest, canvas3DSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas3D>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3);
-        ASSERT_EQ(obj.data_diff->size(), 3);
+        EXPECT_EQ(obj.length, 3u);
+        ASSERT_EQ(obj.data_diff->size(), 3u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(Canvas3DComponentType::geometry));
         EXPECT_EQ((*obj.data_diff)["0"].color,
@@ -346,8 +346,8 @@ TEST_F(ClientTest, canvas3DSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Canvas3D>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3);
-        ASSERT_EQ(obj.data_diff->size(), 1);
+        EXPECT_EQ(obj.length, 3u);
+        ASSERT_EQ(obj.data_diff->size(), 1u);
         EXPECT_EQ((*obj.data_diff)["0"].type,
                   static_cast<int>(Canvas3DComponentType::geometry));
         EXPECT_EQ((*obj.data_diff)["0"].color,
@@ -368,7 +368,7 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->waitRecv<message::Req<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member.u8String(), "a");
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").canvas3D("b").onChange(callback<Canvas3D>());
 
@@ -407,7 +407,7 @@ TEST_F(ClientTest, canvas3DReq) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
     EXPECT_EQ(
         data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->at(0).type(),
         Canvas3DComponentType::geometry);
@@ -454,7 +454,7 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
     EXPECT_EQ(
         data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->at(0).type(),
         Canvas3DComponentType::geometry);
@@ -495,7 +495,7 @@ TEST_F(ClientTest, robotModelSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::RobotModel>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.data->size(), 1);
+        EXPECT_EQ(obj.data->size(), 1u);
     });
 }
 TEST_F(ClientTest, robotModelReq) {
@@ -508,7 +508,7 @@ TEST_F(ClientTest, robotModelReq) {
     dummy_s->waitRecv<message::Req<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.member.u8String(), "a");
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").robotModel("b").onChange(callback<RobotModel>());
     dummy_s->send(message::Res<message::RobotModel>(
@@ -526,10 +526,10 @@ TEST_F(ClientTest, robotModelReq) {
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss).has_value());
     EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b"_ss).value()->size(),
-              1);
+              1u);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b.c"_ss).has_value());
     EXPECT_EQ(
-        data_->robot_model_store.getRecv("a"_ss, "b.c"_ss).value()->size(), 1);
+        data_->robot_model_store.getRecv("a"_ss, "b.c"_ss).value()->size(), 1u);
 }
 TEST_F(ClientTest, imageSend) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -545,7 +545,7 @@ TEST_F(ClientTest, imageSend) {
     wcli_->sync();
     dummy_s->waitRecv<message::Image>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.data_->size(), 100 * 100 * 3);
+        EXPECT_EQ(obj.data_->size(), 100u * 100u * 3u);
     });
 }
 TEST_F(ClientTest, imageReq) {
@@ -558,7 +558,7 @@ TEST_F(ClientTest, imageReq) {
     dummy_s->waitRecv<message::Req<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.member.u8String(), "a");
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj,
                   (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
                                      ImageCompressMode::raw, 0, std::nullopt}));

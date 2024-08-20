@@ -112,9 +112,38 @@ else
   webcface_lib_name = webcface_lib_name_release
 endif
 
-if (cxx.get_id() == 'gcc' or cxx.get_id() == 'clang') and cxx.get_argument_syntax() != 'msvc'
+if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
+  args = [
+    '-Wno-inline',
+    '-Wno-error=psabi', # refer to PR#9
+    # crow
+    '-Wno-error=type-limits',
+    # inside fmt (fmtlib/fmt#3354)
+    '-Wno-error=array-bounds',
+    '-Wno-error=stringop-overflow',
+    # inside magick
+    '-Wno-error=ignored-qualifiers',
+  ]
+  # inside opencv
+  if cxx.has_argument('-Wno-error=deprecated-enum-enum-conversion')
+    args += '-Wno-error=deprecated-enum-enum-conversion'
+  endif
+  # (fmtlib/fmt#3415)
+  if cxx.has_argument('-Wno-error=dangling-reference')
+    args += '-Wno-error=dangling-reference'
+  endif
+  warning_options = declare_dependency(compile_args: args)
+elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
     '-Wno-inline',
+    '--system-header-prefix=msgpack.hpp',
+    '--system-header-prefix=spdlog/',
+    '--system-header-prefix=curl/',
+    '--system-header-prefix=crow.h',
+    '--system-header-prefix=Magick++.h',
+    '--system-header-prefix=opencv2/',
+    '--system-header-prefix=utf8.h',
+    '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
   warning_options = declare_dependency(compile_args: [
@@ -273,7 +302,7 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'tests=disabled',
     'std_variant=false', # msvcでなんかエラーになる
   ],
-).as_system('system')
+)
 spdlog_dep = dependency('spdlog',
   default_options: [
     'tests=disabled',
@@ -281,8 +310,8 @@ spdlog_dep = dependency('spdlog',
     'external_fmt=disabled',
     'std_format=disabled',
   ],
-).as_system('system')
-utf8cpp_dep = dependency('utf8cpp').as_system('system')
+)
+utf8cpp_dep = dependency('utf8cpp')
 
 if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
   curl_dep = dependency('libcurl', required: false)
@@ -361,10 +390,9 @@ else
     ],
   ).get_variable('curl_dep')
 endif
-curl_dep = curl_dep.as_system('system')
 
 if build_server
-  cli11_dep = dependency('cli11').as_system('system')
+  cli11_dep = dependency('cli11')
 
   if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
     crow_dep = dependency('Crow', required: false)
@@ -393,7 +421,6 @@ if build_server
   else
     crow_dep = subproject('crow').get_variable('crow_dep')
   endif
-  crow_dep = crow_dep.as_system('system')
 
   if magick_vs
     if debug_crt
@@ -566,17 +593,16 @@ if build_server
     dependencies: [magickpp_dep],
   )
   # endif
-  magickpp_dep = magickpp_dep.as_system('system')
 endif
 
 if build_examples
-  opencv_dep = dependency('OpenCV', required: false).as_system('system')
+  opencv_dep = dependency('OpenCV', required: false)
 endif
 
 if build_tests
   gtest_dep = dependency('gtest', main: true,
     fallback: ['gtest', 'gtest_main_dep'],
-  ).as_system('system')
+  )
 endif
 
 subdir('encoding')

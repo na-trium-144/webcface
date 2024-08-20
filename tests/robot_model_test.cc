@@ -62,7 +62,7 @@ TEST_F(RobotModelTest, set) {
         std::make_shared<std::function<void(RobotModel)>>(callback());
     model(self_name, "b").set({RobotLink{"a", Geometry{}, ViewColor::black}});
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
-              1);
+              1u);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(model("a", "b").set({}), std::invalid_argument);
 }
@@ -75,14 +75,14 @@ TEST_F(RobotModelTest, sync) {
     m << RobotLink{"3", Geometry{}, ViewColor::black};
     m.sync();
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
-              3);
+              3u);
     EXPECT_EQ(callback_called, 1);
 
     auto m3 = model(self_name, "b");
     m3.init();
     m3.sync();
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
-              0);
+              0u);
 
     {
         auto m2 = model(self_name, "b2");
@@ -91,7 +91,7 @@ TEST_F(RobotModelTest, sync) {
         m2 << RobotLink{"3", Geometry{}, ViewColor::black};
     }
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b2"_ss))->size(),
-              3);
+              3u);
 
     EXPECT_THROW(model("a", "b").init().sync(), std::invalid_argument);
 }
@@ -101,14 +101,14 @@ TEST_F(RobotModelTest, get) {
         "a"_ss, "b"_ss,
         std::make_shared<std::vector<RobotLink>>(
             std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
-    EXPECT_EQ(model("a", "b").tryGet()->size(), 1);
-    EXPECT_EQ(model("a", "b").get().size(), 1);
+    EXPECT_EQ(model("a", "b").tryGet()->size(), 1u);
+    EXPECT_EQ(model("a", "b").get().size(), 1u);
     EXPECT_EQ(model("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(model("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(model("a", "c").get().size(), 0u);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(model(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->robot_model_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->robot_model_store.transferReq().count(self_name), 0u);
     model("a", "d").onChange(callback<RobotModel>());
-    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->robot_model_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }

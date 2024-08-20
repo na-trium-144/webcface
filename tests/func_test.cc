@@ -129,15 +129,15 @@ TEST_F(FuncTest, funcSet) {
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0);
-    EXPECT_EQ(f.args().size(), 0);
-    EXPECT_EQ(func(self_name, "a").args().size(), 0);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0u);
+    EXPECT_EQ(f.args().size(), 0u);
+    EXPECT_EQ(func(self_name, "a").args().size(), 0u);
 
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
     f.set([](int, double, bool, const std::string &) { return 0; });
     EXPECT_EQ(f.returnType(), ValType::int_);
-    EXPECT_EQ(f.args().size(), 4);
+    EXPECT_EQ(f.args().size(), 4u);
     EXPECT_EQ(f.args(0).type(), ValType::int_);
     EXPECT_EQ(f.args(1).type(), ValType::double_);
     EXPECT_EQ(f.args(2).type(), ValType::bool_);
@@ -158,10 +158,10 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(1).init(), std::nullopt);
     EXPECT_EQ(f.args(1).min(), std::nullopt);
     EXPECT_EQ(f.args(1).max(), std::nullopt);
-    ASSERT_EQ(f.args(2).option().size(), 3);
+    ASSERT_EQ(f.args(2).option().size(), 3u);
     EXPECT_EQ(f.args(2).option()[2], "c");
     EXPECT_EQ(f.args(2).option()[2], L"c");
-    ASSERT_EQ(f.args(3).option().size(), 3);
+    ASSERT_EQ(f.args(3).option().size(), 3u);
     EXPECT_EQ(f.args(3).option()[2], "c");
     EXPECT_EQ(f.args(3).option()[2], L"c");
 
