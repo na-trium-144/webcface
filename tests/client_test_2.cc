@@ -278,7 +278,7 @@ TEST_F(ClientTest, funcInfo) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 1);
+        EXPECT_EQ(obj.args->size(), 1u);
         EXPECT_EQ(obj.args->at(0).name_, "a"_ss);
     });
 }
@@ -293,10 +293,10 @@ TEST_F(ClientTest, funcCall) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     auto r = wcli_->member("a").func("b").runAsync(1, true, "a");
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.target_member_id, 10);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.target_member_id, 10u);
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.args.size(), 3);
+        EXPECT_EQ(obj.args.size(), 3u);
         EXPECT_EQ(static_cast<int>(obj.args[0]), 1);
         EXPECT_EQ(obj.args[0].valType(), ValType::int_);
         EXPECT_EQ(static_cast<bool>(obj.args[1]), true);
@@ -319,8 +319,8 @@ TEST_F(ClientTest, funcCall) {
     // 2nd call id=1
     r = wcli_->member("a").func("b").runAsync(1, true, "a");
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 1);
-        EXPECT_EQ(obj.target_member_id, 10);
+        EXPECT_EQ(obj.caller_id, 1u);
+        EXPECT_EQ(obj.target_member_id, 10u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     ASSERT_FALSE(r.reached());
@@ -342,8 +342,8 @@ TEST_F(ClientTest, funcCall) {
     // 3rd call id=2
     r = wcli_->member("a").func("b").runAsync(1, true, "a");
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 2);
-        EXPECT_EQ(obj.target_member_id, 10);
+        EXPECT_EQ(obj.caller_id, 2u);
+        EXPECT_EQ(obj.target_member_id, 10u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     ASSERT_FALSE(r.reached());
@@ -378,8 +378,8 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->send(message::Call{7, 100, 0, "n"_ss, {}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 7);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 7u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.started, false);
     });
     dummy_s->recvClear();
@@ -389,13 +389,13 @@ TEST_F(ClientTest, funcResponse) {
         message::Call{8, 100, 0, "a"_ss, {ValAdaptor(1), ValAdaptor("zzz")}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 8);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 8u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.started, true);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 8);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 8u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.is_error, true);
         EXPECT_FALSE(obj.result.empty());
     });
@@ -405,13 +405,13 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->send(message::Call{9, 100, 0, "a"_ss, {ValAdaptor(0)}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 9);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 9u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.started, true);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 9);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 9u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.is_error, true);
         // 関数の中でthrowされた内容
         EXPECT_EQ(static_cast<std::string>(obj.result), "a==0");
@@ -422,13 +422,13 @@ TEST_F(ClientTest, funcResponse) {
     dummy_s->send(message::Call{19, 100, 0, "a"_ss, {ValAdaptor(123)}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 19);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 19u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.started, true);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 19);
-        EXPECT_EQ(obj.caller_member_id, 100);
+        EXPECT_EQ(obj.caller_id, 19u);
+        EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.is_error, false);
         // 関数の中でthrowされた内容
         EXPECT_EQ(static_cast<int>(obj.result), 123);
