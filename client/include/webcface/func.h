@@ -18,7 +18,7 @@ WEBCFACE_NS_BEGIN
 class WEBCFACE_DLL Func : protected Field {
   public:
     friend class AnonymousFunc;
-    friend class ViewComponent;
+    friend class TemporalViewComponent;
     friend class Canvas2DComponent;
 
     Func() = default;

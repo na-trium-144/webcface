@@ -29,7 +29,7 @@ class WEBCFACE_DLL Text : protected Field {
 
     friend class InputRef;
     friend struct InputRefState;
-    friend class ViewComponent;
+    friend class TemporalViewComponent;
     using Field::lastName;
     using Field::member;
     using Field::name;
