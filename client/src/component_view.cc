@@ -31,8 +31,12 @@ TemporalViewComponent::TemporalViewComponent(ViewComponentType type)
     : msg_data(std::make_unique<internal::ViewComponentData>()) {
     this->msg_data->type = static_cast<int>(type);
 }
-TemporalViewComponent::TemporalViewComponent(const TemporalViewComponent &other)
-    : msg_data(std::make_unique<internal::ViewComponentData>(*other.msg_data)) {
+TemporalViewComponent::TemporalViewComponent(
+    const TemporalViewComponent &other) {
+    if (other.msg_data) {
+        msg_data =
+            std::make_unique<internal::ViewComponentData>(*other.msg_data);
+    }
 }
 TemporalViewComponent &
 TemporalViewComponent::operator=(const TemporalViewComponent &other) {

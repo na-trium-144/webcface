@@ -4,7 +4,6 @@
 #include <webcface/canvas2d.h>
 #include <webcface/func.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -88,30 +87,29 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data.width, 100);
     EXPECT_EQ(canvas2d_data.height, 150);
     ASSERT_EQ(canvas2d_data.components.size(), 2);
-    EXPECT_EQ(canvas2d_data.components[0].type(),
-              Canvas2DComponentType::geometry);
-    EXPECT_EQ(canvas2d_data.components[0].color(), ViewColor::red);
-    ASSERT_NE(canvas2d_data.components[0].geometry(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].geometry()->type, GeometryType::line);
-    EXPECT_EQ(canvas2d_data.components[0].geometry()->properties,
+    EXPECT_EQ(canvas2d_data.components[0]->type,
+              static_cast<int>(Canvas2DComponentType::geometry));
+    EXPECT_EQ(canvas2d_data.components[0]->color,
+              static_cast<int>(ViewColor::red));
+    EXPECT_EQ(canvas2d_data.components[0]->geometry_type,
+              static_cast<int>(GeometryType::line));
+    EXPECT_EQ(canvas2d_data.components[0]->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
-    ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(),
+    EXPECT_EQ(canvas2d_data.components[0]->on_click_member->u8String(),
               self_name.decode());
-    EXPECT_EQ(canvas2d_data.components[0].onClick()->name(), "f");
+    EXPECT_EQ(canvas2d_data.components[0]->on_click_field->u8String(), "f");
 
-    EXPECT_EQ(canvas2d_data.components[1].type(),
-              Canvas2DComponentType::geometry);
-    EXPECT_EQ(canvas2d_data.components[1].color(), ViewColor::yellow);
-    ASSERT_NE(canvas2d_data.components[1].geometry(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[1].geometry()->type,
-              GeometryType::plane);
-    EXPECT_EQ(canvas2d_data.components[1].geometry()->properties,
+    EXPECT_EQ(canvas2d_data.components[1]->type,
+              static_cast<int>(Canvas2DComponentType::geometry));
+    EXPECT_EQ(canvas2d_data.components[1]->color,
+              static_cast<int>(ViewColor::yellow));
+    EXPECT_EQ(canvas2d_data.components[1]->geometry_type,
+              static_cast<int>(GeometryType::plane));
+    EXPECT_EQ(canvas2d_data.components[1]->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
-    ASSERT_NE(canvas2d_data.components[0].onClick(), std::nullopt);
-    EXPECT_EQ(canvas2d_data.components[0].onClick()->member().name(),
+    EXPECT_EQ(canvas2d_data.components[0]->on_click_member->u8String(),
               self_name.decode());
-    EXPECT_NE(canvas2d_data.components[0].onClick()->name(), "");
+    EXPECT_NE(canvas2d_data.components[0]->on_click_field->u8String(), "");
 
     v.init(1, 1);
     v.sync();
@@ -123,7 +121,7 @@ TEST_F(Canvas2DTest, set) {
     {
         auto v2 = canvas(self_name, "b");
         v2.init(1, 1);
-        v2.add(Canvas2DComponent{});
+        v2.add(TemporalCanvas2DComponent{Canvas2DComponentType::geometry});
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
@@ -135,7 +133,7 @@ TEST_F(Canvas2DTest, set) {
         {
             Canvas2D v4 = canvas(self_name, "b");
             v4.init(1, 1);
-            v4.add(Canvas2DComponent{});
+            v4.add(TemporalCanvas2DComponent{Canvas2DComponentType::geometry});
             v3 = v4;
         } // v3にコピーされてるのでまだsyncされない
         EXPECT_EQ(callback_called, 3);
@@ -146,15 +144,17 @@ TEST_F(Canvas2DTest, set) {
 
     Canvas2D v6{};
     v6.init(1, 1);
-    v6.add(Canvas2DComponent{});
+    v6.add(TemporalCanvas2DComponent{Canvas2DComponentType::geometry});
     EXPECT_THROW(v6.sync(), std::runtime_error);
 
     Canvas2D v7{};
-    EXPECT_THROW(v7.add(Canvas2DComponent{}), std::invalid_argument);
+    EXPECT_THROW(
+        v7.add(TemporalCanvas2DComponent{Canvas2DComponentType::geometry}),
+        std::invalid_argument);
 }
 TEST_F(Canvas2DTest, get) {
-    auto vd = std::make_shared<Canvas2DDataBase>();
-    vd->components.resize(1);
+    auto vd = std::make_shared<webcface::internal::Canvas2DDataBase>();
+    vd->components = {std::make_shared<internal::Canvas2DComponentData>()};
     data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
     EXPECT_EQ(canvas("a", "b").get().size(), 1);

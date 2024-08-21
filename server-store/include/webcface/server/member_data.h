@@ -54,8 +54,8 @@ struct MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<std::vector<message::ViewComponent>> view;
-    StrMap1<std::vector<message::Canvas3DComponent>> canvas3d;
+    StrMap1<std::vector<std::shared_ptr<message::ViewComponent>>> view;
+    StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
 
     StrMap1<message::ImageFrame> image;

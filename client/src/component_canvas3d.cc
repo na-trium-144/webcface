@@ -33,9 +33,12 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
 }
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(
-    const TemporalCanvas3DComponent &other)
-    : msg_data(
-          std::make_unique<internal::Canvas3DComponentData>(*other.msg_data)) {}
+    const TemporalCanvas3DComponent &other) {
+    if (other.msg_data) {
+        msg_data =
+            std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+    }
+}
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
     msg_data =

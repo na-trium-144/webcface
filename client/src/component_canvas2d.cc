@@ -30,9 +30,12 @@ TemporalCanvas2DComponent::TemporalCanvas2DComponent(Canvas2DComponentType type)
     this->msg_data->type = static_cast<int>(type);
 }
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(
-    const TemporalCanvas2DComponent &other)
-    : msg_data(
-          std::make_unique<internal::Canvas2DComponentData>(*other.msg_data)) {}
+    const TemporalCanvas2DComponent &other) {
+    if (other.msg_data) {
+        msg_data =
+            std::make_unique<internal::Canvas2DComponentData>(*other.msg_data);
+    }
+}
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::operator=(const TemporalCanvas2DComponent &other) {
     msg_data =

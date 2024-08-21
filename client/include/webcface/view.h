@@ -33,7 +33,7 @@ class WEBCFACE_DLL View : protected Field {
         decltype(std::declval<std::ostream>() << std::declval<T>(), TraitOk);
     template <typename T>
     using EnableIfInvocable =
-        decltype(std::declval<T>()(std::declval<View>()), TraitOk);
+        decltype(std::declval<T>()(std::declval<View &>()), TraitOk);
 
   public:
     View();

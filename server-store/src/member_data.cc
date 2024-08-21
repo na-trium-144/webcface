@@ -459,7 +459,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::view: {
             auto v = std::any_cast<webcface::message::View>(obj);
             logger->debug("view {} diff={}, length={}", v.field.decode(),
-                          v.data_diff->size(), v.length);
+                          v.data_diff.size(), v.length);
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
@@ -473,7 +473,7 @@ void MemberData::onRecv(const std::string &message) {
                 });
             }
             this->view[v.field].resize(v.length);
-            for (auto &d : *v.data_diff) {
+            for (auto &d : v.data_diff) {
                 this->view[v.field][std::stoi(d.first)] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -494,7 +494,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas3d: {
             auto v = std::any_cast<webcface::message::Canvas3D>(obj);
             logger->debug("canvas3d {} diff={}, length={}", v.field.decode(),
-                          v.data_diff->size(), v.length);
+                          v.data_diff.size(), v.length);
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
@@ -508,7 +508,7 @@ void MemberData::onRecv(const std::string &message) {
                 });
             }
             this->canvas3d[v.field].resize(v.length);
-            for (const auto &d : *v.data_diff) {
+            for (const auto &d : v.data_diff) {
                 this->canvas3d[v.field][std::stoi(d.first)] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -530,7 +530,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas2d: {
             auto v = std::any_cast<webcface::message::Canvas2D>(obj);
             logger->debug("canvas2d {} diff={}, length={}", v.field.decode(),
-                          v.data_diff->size(), v.length);
+                          v.data_diff.size(), v.length);
             if (!this->canvas2d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
@@ -546,7 +546,7 @@ void MemberData::onRecv(const std::string &message) {
             this->canvas2d[v.field].width = v.width;
             this->canvas2d[v.field].height = v.height;
             this->canvas2d[v.field].components.resize(v.length);
-            for (auto &d : *v.data_diff) {
+            for (auto &d : v.data_diff) {
                 this->canvas2d[v.field].components[std::stoi(d.first)] =
                     d.second;
             }
@@ -770,10 +770,12 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        auto diff = std::make_shared<std::unordered_map<
-                            std::string, webcface::message::ViewComponent>>();
+                        std::unordered_map<
+                            std::string,
+                            std::shared_ptr<message::ViewComponent>>
+                            diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i), it.second[i]);
+                            diff.emplace(std::to_string(i), it.second[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -809,11 +811,12 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        auto diff = std::make_shared<std::unordered_map<
+                        std::unordered_map<
                             std::string,
-                            webcface::message::Canvas3DComponent>>();
+                            std::shared_ptr<message::Canvas3DComponent>>
+                            diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff->emplace(std::to_string(i), it.second[i]);
+                            diff.emplace(std::to_string(i), it.second[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {
@@ -849,13 +852,14 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        auto diff = std::make_shared<std::unordered_map<
+                        std::unordered_map<
                             std::string,
-                            webcface::message::Canvas2DComponent>>();
+                            std::shared_ptr<message::Canvas2DComponent>>
+                            diff;
                         for (std::size_t i = 0; i < it.second.components.size();
                              i++) {
-                            diff->emplace(std::to_string(i),
-                                          it.second.components[i]);
+                            diff.emplace(std::to_string(i),
+                                         it.second.components[i]);
                         }
                         SharedString sub_field;
                         if (it.first == s.field) {

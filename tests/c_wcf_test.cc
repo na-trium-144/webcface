@@ -547,36 +547,36 @@ TEST_F(CClientTest, viewSend) {
 
     EXPECT_EQ(wcfViewSet(wcli_, "b", vc, 4), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    dummy_s->waitRecv<message::View>([&](const auto &obj) {
+    dummy_s->waitRecv<message::View>([&](auto obj) {
         EXPECT_EQ(obj.field, "b"_ss);
         EXPECT_EQ(obj.length, 6);
-        EXPECT_EQ(obj.data_diff->size(), 6);
-        EXPECT_EQ((*obj.data_diff)["0"].type,
+        EXPECT_EQ(obj.data_diff.size(), 6);
+        EXPECT_EQ(obj.data_diff["0"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
-        EXPECT_EQ((*obj.data_diff)["1"].type,
+        EXPECT_EQ(obj.data_diff["0"]->text, "abc"_ss);
+        EXPECT_EQ(obj.data_diff["1"]->type,
                   static_cast<int>(ViewComponentType::new_line));
-        EXPECT_EQ((*obj.data_diff)["2"].type,
+        EXPECT_EQ(obj.data_diff["2"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
+        EXPECT_EQ(obj.data_diff["2"]->text, "123"_ss);
 
-        EXPECT_EQ((*obj.data_diff)["3"].type,
+        EXPECT_EQ(obj.data_diff["3"]->type,
                   static_cast<int>(ViewComponentType::new_line));
 
-        EXPECT_EQ((*obj.data_diff)["4"].type,
+        EXPECT_EQ(obj.data_diff["4"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
-        EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
-        EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
+        EXPECT_EQ(obj.data_diff["4"]->text, "a"_ss);
+        EXPECT_EQ(obj.data_diff["4"]->on_click_member, self_name);
+        EXPECT_EQ(obj.data_diff["4"]->on_click_field, "c"_ss);
 
-        EXPECT_EQ((*obj.data_diff)["5"].type,
+        EXPECT_EQ(obj.data_diff["5"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].text_color,
+        EXPECT_EQ(obj.data_diff["5"]->text, "a"_ss);
+        EXPECT_EQ(obj.data_diff["5"]->on_click_member, "b"_ss);
+        EXPECT_EQ(obj.data_diff["5"]->on_click_field, "c"_ss);
+        EXPECT_EQ(obj.data_diff["5"]->text_color,
                   static_cast<int>(ViewColor::red));
-        EXPECT_EQ((*obj.data_diff)["5"].bg_color,
+        EXPECT_EQ(obj.data_diff["5"]->bg_color,
                   static_cast<int>(ViewColor::green));
     });
     dummy_s->recvClear();
@@ -594,20 +594,16 @@ TEST_F(CClientTest, viewReq) {
         EXPECT_EQ(obj.req_id, 1);
     });
 
-    auto v = std::make_shared<
-        std::unordered_map<std::string, message::ViewComponent>>(
-        std::unordered_map<std::string, message::ViewComponent>{
+        std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v{
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
-                      .toV()
-                      .lockTmp({}, ""_ss)
-                      .toMessage()},
-            {"1", ViewComponents::newLine().lockTmp({}, ""_ss).toMessage()},
+                      .component_v
+                      .lockTmp({}, ""_ss)},
+            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
             {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
-                      .lockTmp({}, ""_ss)
-                      .toMessage()},
-        });
+                      .lockTmp({}, ""_ss)},
+        };
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
     EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});

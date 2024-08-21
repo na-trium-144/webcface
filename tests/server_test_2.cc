@@ -121,20 +121,14 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::ViewComponent>>(
-            std::unordered_map<std::string, message::ViewComponent>{
-                {"0", ViewComponents::text("a")
-                          .toV()
-                          .lockTmp(data_, ""_ss)
-                          .toMessage()},
-                {"1",
-                 ViewComponents::newLine().lockTmp(data_, ""_ss).toMessage()},
-                {"2", ViewComponents::button(
-                          "f", Func{Field{std::weak_ptr<internal::ClientData>(),
-                                          "p"_ss, "q"_ss}})
-                          .lockTmp(data_, ""_ss)
-                          .toMessage()}}),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>{
+            {"0", ViewComponents::text("a").component_v.lockTmp(data_, ""_ss)},
+            {"1", ViewComponents::newLine().lockTmp(data_, ""_ss)},
+            {"2", ViewComponents::button(
+                      "f", Func{Field{std::weak_ptr<internal::ClientData>(),
+                                      "p"_ss, "q"_ss}})
+                      .lockTmp(data_, ""_ss)}},
         3});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -144,8 +138,8 @@ TEST_F(ServerTest, view) {
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 3);
-        EXPECT_EQ(obj.data_diff->at("0").type,
+        EXPECT_EQ(obj.data_diff.size(), 3);
+        EXPECT_EQ(obj.data_diff.at("0")->type,
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ(obj.length, 3);
     });
@@ -155,21 +149,17 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::ViewComponent>>(
-            std::unordered_map<std::string, message::ViewComponent>{
-                {"0", ViewComponents::text("b")
-                          .toV()
-                          .lockTmp(data_, ""_ss)
-                          .toMessage()},
-            }),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>{
+            {"0", ViewComponents::text("b").component_v.lockTmp(data_, ""_ss)},
+        },
         3});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 1);
-        EXPECT_EQ(obj.data_diff->at("0").type,
+        EXPECT_EQ(obj.data_diff.size(), 1);
+        EXPECT_EQ(obj.data_diff.at("0")->type,
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ(obj.length, 3);
     });
@@ -181,10 +171,9 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas3DComponent>>(
-            std::unordered_map<std::string, message::Canvas3DComponent>{
-                {"0", {}}, {"1", {}}, {"2", {}}}),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas3DComponent>>{
+            {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -194,7 +183,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 3);
+        EXPECT_EQ(obj.data_diff.size(), 3);
         EXPECT_EQ(obj.length, 3);
     });
     dummy_c2->recvClear();
@@ -203,17 +192,16 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas3DComponent>>(
-            std::unordered_map<std::string, message::Canvas3DComponent>{
-                {"0", {}},
-            }),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas3DComponent>>{
+            {"0", {}},
+        },
         3});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 1);
+        EXPECT_EQ(obj.data_diff.size(), 1);
         EXPECT_EQ(obj.length, 3);
     });
 }
@@ -224,10 +212,9 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas2DComponent>>(
-            std::unordered_map<std::string, message::Canvas2DComponent>{
-                {"0", {}}, {"1", {}}, {"2", {}}}),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas2DComponent>>{
+            {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -237,7 +224,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 3);
+        EXPECT_EQ(obj.data_diff.size(), 3);
         EXPECT_EQ(obj.length, 3);
     });
     dummy_c2->recvClear();
@@ -246,17 +233,16 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas2DComponent>>(
-            std::unordered_map<std::string, message::Canvas2DComponent>{
-                {"0", {}},
-            }),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas2DComponent>>{
+            {"0", {}},
+        },
         3});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1);
         EXPECT_EQ(obj.sub_field, ""_ss);
-        EXPECT_EQ(obj.data_diff->size(), 1);
+        EXPECT_EQ(obj.data_diff.size(), 1);
         EXPECT_EQ(obj.length, 3);
     });
 }

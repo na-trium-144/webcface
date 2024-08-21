@@ -19,13 +19,11 @@ class ViewBuf;
  *
  */
 template <bool V, bool C2, bool C3>
-class TemporalComponent {
-  protected:
+struct TemporalComponent {
     TemporalViewComponent component_v;
     TemporalCanvas2DComponent component_2d;
     TemporalCanvas3DComponent component_3d;
 
-  public:
     TemporalComponent() = default;
     template <typename VT, typename C2T, typename C3T>
     TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
