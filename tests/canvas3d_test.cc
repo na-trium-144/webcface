@@ -88,7 +88,7 @@ TEST_F(Canvas3DTest, set) {
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b"_ss);
-    ASSERT_EQ(canvas3d_data.size(), 3);
+    ASSERT_EQ(canvas3d_data.size(), 3u);
     EXPECT_EQ(canvas3d_data[0]->type,
               static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(canvas3d_data[0]->origin_pos, (std::array<double, 3>{1, 1, 1}));
@@ -130,14 +130,14 @@ TEST_F(Canvas3DTest, set) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 0);
+    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 0u);
 
     {
         auto v2 = canvas(self_name, "b");
         v2.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 1);
+    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 1u);
 
     {
         Canvas3D v3;
@@ -163,16 +163,16 @@ TEST_F(Canvas3DTest, get) {
             std::make_shared<internal::Canvas3DComponentData>(),
         });
     data_->canvas3d_store.setRecv("a"_ss, "b"_ss, vd);
-    EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1);
-    EXPECT_EQ(canvas("a", "b").get().size(), 1);
+    EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);
+    EXPECT_EQ(canvas("a", "b").get().size(), 1u);
     EXPECT_EQ(canvas("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(canvas("a", "c").get().size(), 0);
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(canvas("a", "c").get().size(), 0u);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(canvas(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->canvas3d_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().count(self_name), 0u);
     canvas("a", "d").onChange(callback<Canvas3D>());
-    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->canvas3d_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 
 // todo: hidden, free

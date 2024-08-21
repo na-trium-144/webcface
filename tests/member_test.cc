@@ -64,16 +64,16 @@ TEST_F(MemberTest, field) {
 
 TEST_F(MemberTest, getEntry) {
     data_->value_store.setEntry("a"_ss, "a"_ss);
-    EXPECT_EQ(member("a").valueEntries().size(), 1);
+    EXPECT_EQ(member("a").valueEntries().size(), 1u);
     EXPECT_EQ(member("a").valueEntries()[0].name(), "a");
     data_->text_store.setEntry("a"_ss, "a"_ss);
-    EXPECT_EQ(member("a").textEntries().size(), 1);
+    EXPECT_EQ(member("a").textEntries().size(), 1u);
     EXPECT_EQ(member("a").textEntries()[0].name(), "a");
     data_->func_store.setEntry("a"_ss, "a"_ss);
-    EXPECT_EQ(member("a").funcEntries().size(), 1);
+    EXPECT_EQ(member("a").funcEntries().size(), 1u);
     EXPECT_EQ(member("a").funcEntries()[0].name(), "a");
     data_->view_store.setEntry("a"_ss, "a"_ss);
-    EXPECT_EQ(member("a").viewEntries().size(), 1);
+    EXPECT_EQ(member("a").viewEntries().size(), 1u);
     EXPECT_EQ(member("a").viewEntries()[0].name(), "a");
 }
 TEST_F(MemberTest, eventTarget) {

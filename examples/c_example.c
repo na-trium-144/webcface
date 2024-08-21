@@ -20,8 +20,7 @@ int main(void) {
             wcfFuncRespond(handle, &res);
         }
         // ...
-        wcfSync(wcli);
-        wcfWaitRecvFor(wcli, 100000);
+        wcfLoopSyncFor(wcli, 100000);
     }
     return 0;
 }

@@ -24,11 +24,11 @@ TEST_F(ImageFrameTest, baseDefaultCtor) {
     EXPECT_EQ(img.rows(), 0);
     EXPECT_EQ(img.cols(), 0);
     ASSERT_NE(img.dataPtr(), nullptr);
-    EXPECT_EQ(img.dataPtr()->size(), 0);
+    EXPECT_EQ(img.dataPtr()->size(), 0u);
     EXPECT_EQ(img.channels(), 1);
     EXPECT_EQ(img.color_mode(), ImageColorMode::gray);
     EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
-    EXPECT_EQ(img.data().size(), 0);
+    EXPECT_EQ(img.data().size(), 0u);
 }
 TEST_F(ImageFrameTest, baseRawPtrCtor) {
     ImageFrame img(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
@@ -37,7 +37,7 @@ TEST_F(ImageFrameTest, baseRawPtrCtor) {
     EXPECT_EQ(img.cols(), 100);
     ASSERT_NE(img.dataPtr(), nullptr);
     EXPECT_NE(img.dataPtr()->data(), dp->data());
-    EXPECT_EQ(img.dataPtr()->size(), 100 * 100 * 3);
+    EXPECT_EQ(img.dataPtr()->size(), 100u * 100u * 3u);
     EXPECT_EQ(img.channels(), 3);
     EXPECT_EQ(img.color_mode(), ImageColorMode::bgr);
     EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
@@ -138,18 +138,18 @@ TEST_F(ImageTest, imageGet) {
     EXPECT_EQ(image("a", "b").get().dataPtr(), dp);
     EXPECT_EQ(image("a", "c").tryGet(), std::nullopt);
     EXPECT_TRUE(image("a", "c").get().empty());
-    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1);
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1u);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "b"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
                                  ImageCompressMode::raw, 0, std::nullopt}));
-    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "c"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
                                  ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0u);
     image("a", "d").onChange(callback<Image>());
-    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3u);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
               (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
                                  ImageCompressMode::raw, 0, std::nullopt}));

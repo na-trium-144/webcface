@@ -103,11 +103,15 @@ class WEBCFACE_DLL View : protected Field {
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback View型の引数(thisが渡される)を1つ取る関数
+     *
      */
     View &onChange(std::function<void WEBCFACE_CALL_FP(View)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback 引数をとらない関数
+     *
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>

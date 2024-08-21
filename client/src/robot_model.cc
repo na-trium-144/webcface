@@ -58,7 +58,7 @@ void RobotModel::request() const {
     auto data = dataLock();
     auto req = data->robot_model_store.addReq(member_, field_);
     if (req) {
-        data->message_push(message::packSingle(
+        data->messagePushOnline(message::packSingle(
             message::Req<message::RobotModel>{{}, member_, field_, req}));
     }
 }

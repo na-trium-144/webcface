@@ -87,7 +87,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::ping: {
-            this->message_push(
+            this->messagePushOnline(
                 webcface::message::packSingle(webcface::message::Ping{}));
             break;
         }
@@ -297,12 +297,12 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto func_info =
                 this->func_store.getRecv(this->self_member_name, r.field);
             if (func_info) {
-                this->message_push(webcface::message::packSingle(
+                this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, true}));
-                (*func_info)->run(std::move(r), shared_from_this());
+                (*func_info)->run(std::move(r));
             } else {
-                this->message_push(webcface::message::packSingle(
+                this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, false}));
             }
@@ -312,11 +312,12 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto r = std::any_cast<webcface::message::CallResponse>(obj);
             try {
                 this->func_result_store.getResult(r.caller_id)
-                    ->setStarted(r.started);
+                    ->setter()
+                    .reach(r.started);
                 if (!r.started) {
                     this->func_result_store.removeResult(r.caller_id);
                 }
-            } catch (const std::future_error &e) {
+            } catch (const std::runtime_error &e) {
                 this->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
@@ -331,19 +332,17 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto r = std::any_cast<webcface::message::CallResult>(obj);
             try {
                 if (r.is_error) {
-                    try {
-                        throw std::runtime_error(r.result.asStringRef());
-                    } catch (...) {
-                        this->func_result_store.getResult(r.caller_id)
-                            ->setResultException(std::current_exception());
-                    }
+                    this->func_result_store.getResult(r.caller_id)
+                        ->setter()
+                        .reject(r.result);
                 } else {
                     this->func_result_store.getResult(r.caller_id)
-                        ->setResult(r.result);
+                        ->setter()
+                        .respond(r.result);
                     // todo: 戻り値の型?
                 }
                 this->func_result_store.removeResult(r.caller_id);
-            } catch (const std::future_error &e) {
+            } catch (const std::runtime_error &e) {
                 this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,
                     e.what());

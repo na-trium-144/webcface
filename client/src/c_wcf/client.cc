@@ -69,38 +69,6 @@ wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {
     wcli_->autoReconnect(enabled);
     return WCF_OK;
 }
-wcfStatus wcfRecv(wcfClient *wcli) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return WCF_BAD_WCLI;
-    }
-    wcli_->recv();
-    return WCF_OK;
-}
-wcfStatus wcfWaitRecvFor(wcfClient *wcli, int timeout) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return WCF_BAD_WCLI;
-    }
-    wcli_->waitRecvFor(std::chrono::microseconds(timeout));
-    return WCF_OK;
-}
-wcfStatus wcfWaitRecv(wcfClient *wcli) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return WCF_BAD_WCLI;
-    }
-    wcli_->waitRecv();
-    return WCF_OK;
-}
-wcfStatus wcfAutoRecv(wcfClient *wcli) {
-    auto wcli_ = getWcli(wcli);
-    if (!wcli_) {
-        return WCF_BAD_WCLI;
-    }
-    wcli_->autoRecv(true);
-    return WCF_OK;
-}
 wcfStatus wcfSync(wcfClient *wcli) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
@@ -109,8 +77,32 @@ wcfStatus wcfSync(wcfClient *wcli) {
     wcli_->sync();
     return WCF_OK;
 }
+wcfStatus wcfLoopSyncFor(wcfClient *wcli, int timeout) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    wcli_->loopSyncFor(std::chrono::microseconds(timeout));
+    return WCF_OK;
+}
+wcfStatus wcfLoopSync(wcfClient *wcli) {
+    auto wcli_ = getWcli(wcli);
+    if (!wcli_) {
+        return WCF_BAD_WCLI;
+    }
+    wcli_->loopSync();
+    return WCF_OK;
+}
+// wcfStatus wcfAutoSync(wcfClient *wcli, int enabled) {
+//     auto wcli_ = getWcli(wcli);
+//     if (!wcli_) {
+//         return WCF_BAD_WCLI;
+//     }
+//     wcli_->autoSync(enabled);
+//     return WCF_OK;
+// }
 
-wcfStatus wcfDestroy(const void *ptr) {
+wcfStatus wcfDestroy(void *ptr) {
     {
         auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
         auto f_it = func_val_list.find(f_ptr);
@@ -144,6 +136,16 @@ wcfStatus wcfDestroy(const void *ptr) {
         if (vw_it != view_list_w.end()) {
             view_list_w.erase(vw_it);
             delete[] vw_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto res = static_cast<Promise *>(ptr);
+        auto res_it =
+            std::find(func_result_list.begin(), func_result_list.end(), res);
+        if (res_it != func_result_list.end()) {
+            func_result_list.erase(res_it);
+            delete res;
             return WCF_OK;
         }
     }

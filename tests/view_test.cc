@@ -5,7 +5,6 @@
 #include <webcface/func.h>
 #include <webcface/text.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -114,7 +113,7 @@ TEST_F(ViewTest, viewSet) {
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b"_ss);
-    EXPECT_EQ(view_data.size(), 11);
+    EXPECT_EQ(view_data.size(), 11u);
     EXPECT_EQ(view_data[0]->type, static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(view_data[0]->text.u8String(), "a");
     EXPECT_EQ(view_data[1]->type,
@@ -158,7 +157,7 @@ TEST_F(ViewTest, viewSet) {
     //         text(self_name,
     //         view_data[8].text_ref_->field_).tryGetV().value()),
     //     123);
-    func(self_name, *view_data[8]->on_click_field).run(10);
+    func(self_name, *view_data[8]->on_click_field).runAsync(10);
     EXPECT_EQ(static_cast<int>(ref1.get()), 10);
     // EXPECT_EQ(text(self_name, view_data[8].text_ref_->field_).get(), "10");
     // EXPECT_EQ(
@@ -176,8 +175,8 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_FALSE(view_data[9]->on_click_field->empty());
     // EXPECT_EQ(view_data[9].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
-    EXPECT_EQ(view_data[9]->option_.size(), 3);
-    func(self_name, *view_data[9]->on_click_field).run("a");
+    EXPECT_EQ(view_data[9]->option_.size(), 3u);
+    func(self_name, *view_data[9]->on_click_field).runAsync("a");
     EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
     // EXPECT_EQ(static_cast<std::string>(
     //               text(self_name, view_data[9].text_ref_->field_).get()),
@@ -189,7 +188,7 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_FALSE(view_data[10]->on_click_field->empty());
     // EXPECT_EQ(view_data[10].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
-    func(self_name, *view_data[10]->on_click_field).run("aaa");
+    func(self_name, *view_data[10]->on_click_field).runAsync("aaa");
     EXPECT_EQ(called_ref3, 1);
     // EXPECT_EQ(static_cast<std::string>(
     //               text(self_name, view_data[10].text_ref_->field_).get()),
@@ -198,14 +197,14 @@ TEST_F(ViewTest, viewSet) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 0);
+    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 0u);
 
     {
         auto v2 = view(self_name, "b");
         v2 << "a";
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 1);
+    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 1u);
 
     {
         View v3;
@@ -234,8 +233,8 @@ TEST_F(ViewTest, viewGet) {
             components::text("a").component_v.lockTmp(data_, "b"_ss, &idx_next),
         });
     data_->view_store.setRecv("a"_ss, "b"_ss, vd);
-    EXPECT_EQ(view("a", "b").tryGet().value().size(), 3);
-    EXPECT_EQ(view("a", "b").get().size(), 3);
+    EXPECT_EQ(view("a", "b").tryGet().value().size(), 3u);
+    EXPECT_EQ(view("a", "b").get().size(), 3u);
     auto components = view("a", "b").get();
     EXPECT_EQ(components.at(0).type(), ViewComponentType::text);
     EXPECT_EQ(components.at(0).text(), "a");
@@ -251,14 +250,14 @@ TEST_F(ViewTest, viewGet) {
     EXPECT_EQ(components.at(2).id(), "..0.1"); // type0, idx1
 
     EXPECT_EQ(view("a", "c").tryGet(), std::nullopt);
-    EXPECT_EQ(view("a", "c").get().size(), 0);
+    EXPECT_EQ(view("a", "c").get().size(), 0u);
 
-    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(view(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->view_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->view_store.transferReq().count(self_name), 0u);
     view("a", "d").onChange(callback<View>());
-    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->view_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 
 // todo: hidden, free
