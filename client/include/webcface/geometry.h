@@ -41,7 +41,5 @@ struct Geometry {
     }
     bool operator!=(const Geometry &other) const { return !(*this == other); }
 };
-struct Geometry3D {};
-struct Geometry2D {};
 
 WEBCFACE_NS_END
