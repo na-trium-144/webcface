@@ -26,7 +26,7 @@ class DataSetBuffer;
  *
  */
 class WEBCFACE_DLL Canvas3D : protected Field {
-    std::shared_ptr<internal::DataSetBuffer<Canvas3DComponent>> sb;
+    std::shared_ptr<internal::DataSetBuffer<TemporalCanvas3DComponent>> sb;
 
   public:
     Canvas3D();
@@ -158,12 +158,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \brief Componentを追加
      * \since ver1.9
      */
-    Canvas3D &operator<<(const Canvas3DComponent &cc);
-    /*!
-     * \brief Componentを追加
-     * \since ver1.9
-     */
-    Canvas3D &operator<<(Canvas3DComponent &&cc);
+    Canvas3D &operator<<(TemporalCanvas3DComponent cc);
 
     /*!
      * \brief コンポーネントなどを追加
@@ -184,84 +179,8 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \since ver1.9
      */
     template <bool V, bool C2>
-    Canvas3D &operator<<(TemporalComponent<V, C2, true> &&cc) {
-        *this << std::move(cc.to3());
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     * \since ver1.9
-     */
-    template <bool V, bool C2>
-    Canvas3D &operator<<(TemporalComponent<V, C2, true> &cc) {
-        *this << cc.to3();
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     * \param geometry 表示する図形
-     * \param origin geometryを移動する
-     * \param color 表示色 (省略時のinheritはWebUI上ではgrayと同じ)
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas3D &add(const Geometry &geometry,
-                                 const Transform &origin,
-                                 const ViewColor &color = ViewColor::inherit) {
-        add(Canvas3DComponent{Canvas3DComponentType::geometry,
-                              origin,
-                              color,
-                              geometry,
-                              std::nullopt,
-                              {}});
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     *
-     * originを省略した場合 identity() になる
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas3D &add(const Geometry &geometry,
-                                 const ViewColor &color = ViewColor::inherit) {
-        add(Canvas3DComponent{Canvas3DComponentType::geometry,
-                              identity(),
-                              color,
-                              geometry,
-                              std::nullopt,
-                              {}});
-        return *this;
-    }
-    /*!
-     * \brief RobotModelを追加
-     *
-     * jointのangleを変更できる。
-     * それ以外のパラメータは元のモデルのまま。
-     * \deprecated 1.9〜
-     * RobotModel に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas3D &
-    add(const RobotModel &model_field, const Transform &origin,
-        std::unordered_map<std::string, double> angles) {
-        std::unordered_map<std::size_t, double> angles_i;
-        auto model = model_field.get();
-        for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (angles.count(j.name.decode())) {
-                angles_i[ji] = angles[j.name.decode()];
-            }
-        }
-        add(Canvas3DComponent{Canvas3DComponentType::robot_model, origin,
-                              ViewColor::inherit, std::nullopt,
-                              static_cast<FieldBase>(model_field),
-                              std::move(angles_i)});
+    Canvas3D &operator<<(TemporalComponent<V, C2, true> cc) {
+        *this << std::move(cc.component_3d);
         return *this;
     }
 

@@ -18,17 +18,13 @@ Canvas2D &Canvas2D::sync() {
     sb->sync();
     return *this;
 }
-Canvas2D &Canvas2D::operator<<(const Canvas2DComponent &cc) {
-    sb->add(cc);
-    return *this;
-}
-Canvas2D &Canvas2D::operator<<(Canvas2DComponent &&cc) {
+Canvas2D &Canvas2D::operator<<(TemporalCanvas2DComponent cc) {
     sb->add(std::move(cc));
     return *this;
 }
 
 template <>
-void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
+void internal::DataSetBuffer<TemporalCanvas2DComponent>::onSync() {
     auto c2buf = dynamic_cast<Canvas2DDataBuf *>(this);
     if (!c2buf) {
         throw std::runtime_error("Failed to access Canvas2DDataBuf");
@@ -36,12 +32,13 @@ void internal::DataSetBuffer<Canvas2DComponent>::onSync() {
     c2buf->checkSize();
 
     auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
-    std::unordered_map<int, int> idx_next;
+    std::unordered_map<Canvas2DComponentType, int> idx_next;
     auto data = target_.setCheck();
+    cb->components.reserve(this->components_.size());
     for (std::size_t i = 0; i < this->components_.size(); i++) {
-        this->components_[i].lockTmp(data, target_.field_, &idx_next);
+        cb->components.push_back(
+            this->components_[i].lockTmp(data, target_.field_, &idx_next));
     }
-    cb->components = std::move(this->components_);
     data->canvas2d_store.setSend(target_, cb);
     std::shared_ptr<std::function<void(Canvas2D)>> change_event;
     {
@@ -75,7 +72,7 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     auto vb = dataLock()->canvas2d_store.getRecv(*this);
     if (vb) {
         std::vector<Canvas2DComponent> v((*vb)->components.size());
-        std::unordered_map<int, int> idx_next;
+        std::unordered_map<Canvas2DComponentType, int> idx_next;
         for (std::size_t i = 0; i < (*vb)->components.size(); i++) {
             v[i] = Canvas2DComponent{(*vb)->components[i], this->data_w,
                                      &idx_next};

@@ -139,7 +139,7 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * msg_dataを初期化する
      *
      */
-    explicit TemporalCanvas2DComponent(ViewComponentType type);
+    explicit TemporalCanvas2DComponent(Canvas2DComponentType type);
     TemporalCanvas2DComponent(const TemporalCanvas2DComponent &other);
     TemporalCanvas2DComponent &
     operator=(const TemporalCanvas2DComponent &other);
@@ -153,7 +153,7 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * Funcの名前に使うidを決定するのに使う
      *
      */
-    TemporalCanvas2DComponent &
+    std::unique_ptr<internal::Canvas2DComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<Canvas2DComponentType, int> *idx_next = nullptr);

@@ -22,7 +22,8 @@
 WEBCFACE_NS_BEGIN
 namespace internal {
 struct ViewComponentData;
-}
+class ViewBuf;
+} // namespace internal
 
 enum class ViewColor {
     inherit = 0,
@@ -240,6 +241,9 @@ class WEBCFACE_DLL TemporalViewComponent {
     TemporalViewComponent &operator=(const TemporalViewComponent &other);
     ~TemporalViewComponent() noexcept;
 
+    friend class View;
+    friend class internal::ViewBuf;
+
     /*!
      * \brief AnonymousFuncとInputRefの名前を確定
      * \param data
@@ -248,7 +252,7 @@ class WEBCFACE_DLL TemporalViewComponent {
      * InputRefの名前に使うidを決定するのに使う
      *
      */
-    TemporalViewComponent &
+    std::unique_ptr<internal::ViewComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<ViewComponentType, int> *idx_next = nullptr);

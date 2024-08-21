@@ -352,23 +352,20 @@ struct ViewComponent {
 };
 struct View : public MessageBase<MessageKind::view> {
     SharedString field;
-    std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
+    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
     View() = default;
     View(const SharedString &field,
-         const std::shared_ptr<std::unordered_map<int, ViewComponent>>
+         const std::unordered_map<int, std::shared_ptr<ViewComponent>>
              &data_diff,
          std::size_t length)
-        : field(field),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, ViewComponent>>()),
-          length(length) {
-        for (auto &&vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        : field(field), data_diff(), length(length) {
+        for (auto &&vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     View(const SharedString &field,
-         const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
+         const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
              &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
@@ -393,25 +390,22 @@ struct Canvas3DComponent {
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Canvas3D() = default;
     Canvas3D(const SharedString &field,
-             const std::shared_ptr<std::unordered_map<int, Canvas3DComponent>>
+             const std::unordered_map<int, std::shared_ptr<Canvas3DComponent>>
                  &data_diff,
              std::size_t length)
-        : field(field),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, Canvas3DComponent>>()),
-          length(length) {
-        for (const auto &vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        : field(field), data_diff(), length(length) {
+        for (const auto &vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     Canvas3D(const SharedString &field,
-             const std::shared_ptr<
-                 std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
+             const std::unordered_map<
+                 std::string, std::shared_ptr<Canvas3DComponent>> &data_diff,
              std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -443,25 +437,23 @@ struct Canvas2DData {
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Canvas2D() = default;
     Canvas2D(const SharedString &field, double width, double height,
-             const std::shared_ptr<std::unordered_map<int, Canvas2DComponent>>
+             const std::unordered_map<int, std::shared_ptr<Canvas2DComponent>>
                  &data_diff,
              std::size_t length)
-        : field(field), width(width), height(height),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, Canvas2DComponent>>()),
+        : field(field), width(width), height(height), data_diff(),
           length(length) {
-        for (const auto &vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        for (const auto &vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     Canvas2D(const SharedString &field, double width, double height,
-             const std::shared_ptr<
-                 std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
+             const std::unordered_map<
+                 std::string, std::shared_ptr<Canvas2DComponent>> &data_diff,
              std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
           length(length) {}

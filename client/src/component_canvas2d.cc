@@ -3,18 +3,11 @@
 #include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
-namespace internal {
-struct Canvas2DComponentData : message::Canvas2DComponent {
-    Canvas2DComponentData() = default;
-
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-};
-} // namespace internal
 
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string ViewComponent::id() const {
+std::string Canvas2DComponent::id() const {
     return internalCanvas2DId(static_cast<int>(type()), idx_for_type);
 }
 
@@ -54,7 +47,8 @@ void Canvas2DComponent::checkData() const {
     }
 }
 
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::lockTmp(
+std::unique_ptr<internal::Canvas2DComponentData>
+TemporalCanvas2DComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> &data,
     const SharedString &view_name,
     std::unordered_map<Canvas2DComponentType, int> *idx_next) {
@@ -71,28 +65,28 @@ TemporalCanvas2DComponent &TemporalCanvas2DComponent::lockTmp(
         msg_data->on_click_func_tmp->lockTo(on_click);
         this->onClick(on_click);
     }
-    return *this;
+    return std::move(msg_data);
 }
 
 
 bool Canvas2DComponent::operator==(const Canvas2DComponent &other) const {
     return msg_data && other.msg_data && id() == other.id() &&
-           msg_data->type == other.msg_data->type &&
-           msg_data->origin_pos == other.msg_data->origin_pos &&
-           msg_data->origin_rot == other.msg_data->origin_rot &&
-           msg_data->color == other.msg_data->color &&
-           msg_data->fill == other.msg_data->fill &&
-           msg_data->stroke_width == other.msg_data->stroke_width &&
-           msg_data->geometry_type == other.msg_data->geometry_type &&
-           msg_data->properties == other.msg_data->properties &&
-           msg_data->on_click_member == other.msg_data->on_click_member &&
-           msg_data->on_click_field == other.msg_data->on_click_field &&
-           msg_data->text == other.msg_data->text;
+           *msg_data == *other.msg_data;
+}
+bool internal::Canvas2DComponentData::operator==(
+    const Canvas2DComponentData &other) const {
+    return type == other.type && origin_pos == other.origin_pos &&
+           origin_rot == other.origin_rot && color == other.color &&
+           fill == other.fill && stroke_width == other.stroke_width &&
+           geometry_type == other.geometry_type &&
+           properties == other.properties &&
+           on_click_member == other.on_click_member &&
+           on_click_field == other.on_click_field && text == other.text;
 }
 
 Canvas2DComponentType Canvas2DComponent::type() const {
     checkData();
-    return static_cast<Canvas2DComponentType>(msg_data->type_);
+    return static_cast<Canvas2DComponentType>(msg_data->type);
 }
 Transform Canvas2DComponent::origin() const {
     checkData();
@@ -105,62 +99,88 @@ TemporalCanvas2DComponent::origin(const Transform &origin) {
     msg_data->origin_rot = origin.rot(0);
     return *this;
 }
-    ViewColor Canvas2DComponent::color() const { checkData(); return static_cast<ViewColor>(msg_data->color); }
-        TemporalCanvas2DComponent &TemporalCanvas2DComponent::color(const ViewColor &color) {
-        msg_data->color = static_cast<int>(color);
-        return *this;
-    }
-    ViewColor Canvas2DComponent::fillColor() const { checkData(); return static_cast<ViewColor>(msg_data->fill); }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent::fillColor(const ViewColor &color) {
-        msg_data->fill = static_cast<int>(color);
-        return *this;
-    }
-    double Canvas2DComponent::strokeWidth() const { checkData(); return msg_data->stroke_width; }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) {
-        msg_data->stroke_width = s;
-        return *this;
-    }
-    std::string Canvas2DComponent::text() const { checkData(); return msg_data->text.decode(); }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(std::string_view text) {
-        msg_data->text = SharedString::encode(text);
-        return *this;
-    }
-    std::wstring Canvas2DComponent::textW() const { checkData(); return msg_data->text.decodeW(); }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(std::wstring_view text) {
-        msg_data->text = SharedString::encode(text);
-        return *this;
-    }
-    std::optional<Geometry> Canvas2DComponent::geometry() const { checkData(); 
-    if(msg_data->geometry_type == static_cast<int>(GeometryType::none)){
+ViewColor Canvas2DComponent::color() const {
+    checkData();
+    return static_cast<ViewColor>(msg_data->color);
+}
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::color(const ViewColor &color) {
+    msg_data->color = static_cast<int>(color);
+    return *this;
+}
+ViewColor Canvas2DComponent::fillColor() const {
+    checkData();
+    return static_cast<ViewColor>(msg_data->fill);
+}
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::fillColor(const ViewColor &color) {
+    msg_data->fill = static_cast<int>(color);
+    return *this;
+}
+double Canvas2DComponent::strokeWidth() const {
+    checkData();
+    return msg_data->stroke_width;
+}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) {
+    msg_data->stroke_width = s;
+    return *this;
+}
+std::string Canvas2DComponent::text() const {
+    checkData();
+    return msg_data->text.decode();
+}
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::text(std::string_view text) {
+    msg_data->text = SharedString::encode(text);
+    return *this;
+}
+std::wstring Canvas2DComponent::textW() const {
+    checkData();
+    return msg_data->text.decodeW();
+}
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::text(std::wstring_view text) {
+    msg_data->text = SharedString::encode(text);
+    return *this;
+}
+std::optional<Geometry> Canvas2DComponent::geometry() const {
+    checkData();
+    if (!msg_data->geometry_type ||
+        *msg_data->geometry_type == static_cast<int>(GeometryType::none)) {
         return std::nullopt;
-    }else{
-        return Geometry(static_cast<GeometryType>(msg_data->geometry_type), msg_data->properties);
+    } else {
+        return Geometry(static_cast<GeometryType>(*msg_data->geometry_type),
+                        msg_data->properties);
     }
 }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent::geometry(const Geometry &g) {
-        msg_data->geometry_type = static_cast<int>(g.type);
-        msg_data->properties = g.properties;
-        return *this;
-    };
-
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::geometry(const Geometry &g) {
+    msg_data->geometry_type = static_cast<int>(g.type);
+    msg_data->properties = g.properties;
+    return *this;
+};
 
 
 std::optional<Func> Canvas2DComponent::onClick() const {
     checkData();
     if (msg_data->on_click_member && msg_data->on_click_field) {
-        return Field{data_w, *msg_data->on_click_member, *msg_data->on_click_field};
+        return Field{data_w, *msg_data->on_click_member,
+                     *msg_data->on_click_field};
     } else {
         return std::nullopt;
     }
 }
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::onClick(const Func &func) {
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::onClick(const Func &func) {
     msg_data->on_click_member = static_cast<FieldBase>(func).member_;
     msg_data->on_click_field = static_cast<FieldBase>(func).field_;
     return *this;
 }
-    TemporalCanvas2DComponent &TemporalCanvas2DComponent   ::onClick(const std::shared_ptr<AnonymousFunc> &func){
-        msg_data->on_click_func_tmp = func;
-    }
+TemporalCanvas2DComponent &TemporalCanvas2DComponent ::onClick(
+    const std::shared_ptr<AnonymousFunc> &func) {
+    msg_data->on_click_func_tmp = func;
+    return *this;
+}
 
 
 WEBCFACE_NS_END

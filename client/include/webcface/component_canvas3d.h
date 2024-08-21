@@ -133,7 +133,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * InputRefの名前に使うidを決定するのに使う
      *
      */
-    TemporalCanvas3DComponent &
+    std::unique_ptr<internal::Canvas3DComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<Canvas3DComponentType, int> *idx_next = nullptr);

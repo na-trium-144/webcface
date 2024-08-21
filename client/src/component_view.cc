@@ -2,26 +2,9 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/field.h"
 #include "webcface/encoding/encoding.h"
-#include "webcface/message/message.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
-
-namespace internal {
-struct ViewComponentData : message::ViewComponent {
-    ViewComponentData() = default;
-
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-    std::optional<InputRef> text_ref_tmp;
-    std::optional<ValAdaptor> init_;
-
-    // for cData()
-    mutable std::vector<wcfMultiVal> options_s;
-    mutable std::vector<wcfMultiValW> options_sw;
-
-    template <typename CComponent, typename CVal, std::size_t v_index>
-    CComponent cDataT() const;
-};
-} // namespace internal
 
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
@@ -64,7 +47,7 @@ void ViewComponent::checkData() const {
     }
 }
 
-TemporalViewComponent &TemporalViewComponent::lockTmp(
+std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> &data,
     const SharedString &view_name,
     std::unordered_map<ViewComponentType, int> *idx_next) {
@@ -97,7 +80,7 @@ TemporalViewComponent &TemporalViewComponent::lockTmp(
         msg_data->text_ref_field.emplace(
             static_cast<FieldBase>(text_ref).field_);
     }
-    return *this;
+    return std::move(msg_data);
 }
 
 template <typename CComponent, typename CVal, std::size_t v_index>
@@ -170,19 +153,20 @@ wcfViewComponentW ViewComponent::cDataW() const {
 
 bool ViewComponent::operator==(const ViewComponent &other) const {
     return msg_data && other.msg_data && id() == other.id() &&
-           msg_data->type == other.msg_data->type &&
-           msg_data->text == other.msg_data->text &&
-           msg_data->on_click_member == other.msg_data->on_click_member &&
-           msg_data->on_click_field == other.msg_data->on_click_field &&
-           msg_data->text_ref_member == other.msg_data->text_ref_member &&
-           msg_data->text_ref_field == other.msg_data->text_ref_field &&
-           msg_data->text_color == other.msg_data->text_color &&
-           msg_data->bg_color == other.msg_data->bg_color &&
-           msg_data->min_ == other.msg_data->min_ &&
-           msg_data->max_ == other.msg_data->max_ &&
-           msg_data->step_ == other.msg_data->step_ &&
-           msg_data->option_ == other.msg_data->option_;
+           *msg_data == *other.msg_data;
 }
+bool internal::ViewComponentData::operator==(
+    const ViewComponentData &other) const {
+    return type == other.type && text == other.text &&
+           on_click_member == other.on_click_member &&
+           on_click_field == other.on_click_field &&
+           text_ref_member == other.text_ref_member &&
+           text_ref_field == other.text_ref_field &&
+           text_color == other.text_color && bg_color == other.bg_color &&
+           min_ == other.min_ && max_ == other.max_ && step_ == other.step_ &&
+           option_ == other.option_;
+}
+
 ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);

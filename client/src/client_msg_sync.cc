@@ -136,10 +136,14 @@ std::string internal::ClientData::syncData(bool is_first,
     auto view_prev = view_store.getSendPrev(is_first);
     for (const auto &p : view_store.transferSend(is_first)) {
         auto v_prev = view_prev.find(p.first);
-        auto v_diff = view_store.getDiff(
-            p.second.get(),
-            v_prev == view_prev.end() ? nullptr : v_prev->second.get());
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::ViewComponent>> v_diff;
+        for (std::size_t i = 0; i < p.second->size(); i++) {
+            if (v_prev == view_prev.end() || v_prev->second->size() <= i ||
+                *(*v_prev->second)[i] != *(*p.second)[i]) {
+                v_diff.emplace(static_cast<int>(i), (*p.second)[i]);
+            }
+        }
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::View{p.first, v_diff, p.second->size()});
         }
@@ -147,10 +151,16 @@ std::string internal::ClientData::syncData(bool is_first,
     auto canvas3d_prev = canvas3d_store.getSendPrev(is_first);
     for (const auto &p : canvas3d_store.transferSend(is_first)) {
         auto v_prev = canvas3d_prev.find(p.first);
-        auto v_diff = canvas3d_store.getDiff(
-            p.second.get(),
-            v_prev == canvas3d_prev.end() ? nullptr : v_prev->second.get());
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::Canvas3DComponent>>
+            v_diff;
+        for (std::size_t i = 0; i < p.second->size(); i++) {
+            if (v_prev == canvas3d_prev.end() || v_prev->second->size() <= i ||
+                *(*v_prev->second)[i] != *(*p.second)[i]) {
+                v_diff.emplace(static_cast<int>(i), (*p.second)[i]);
+            }
+        }
+
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::Canvas3D{p.first, v_diff, p.second->size()});
         }
@@ -158,11 +168,16 @@ std::string internal::ClientData::syncData(bool is_first,
     auto canvas2d_prev = canvas2d_store.getSendPrev(is_first);
     for (const auto &p : canvas2d_store.transferSend(is_first)) {
         auto v_prev = canvas2d_prev.find(p.first);
-        auto v_diff = view_store.getDiff(&p.second->components,
-                                         v_prev == canvas2d_prev.end()
-                                             ? nullptr
-                                             : &v_prev->second->components);
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::Canvas2DComponent>>
+            v_diff;
+        for (std::size_t i = 0; i < p.second->components.size(); i++) {
+            if (v_prev == canvas2d_prev.end() ||
+                v_prev->second->components.size() <= i ||
+                *v_prev->second->components[i] != *p.second->components[i]) {
+                v_diff.emplace(static_cast<int>(i), p.second->components[i]);
+            }
+        }
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::Canvas2D{p.first, p.second->width,
                                             p.second->height, v_diff,

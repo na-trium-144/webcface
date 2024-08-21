@@ -6,14 +6,15 @@
 WEBCFACE_NS_BEGIN
 
 RobotModel::RobotModel()
-    : Field(), Canvas3DComponent(Canvas3DComponentType::robot_model),
-      sb(std::make_shared<internal::DataSetBuffer<RobotLink>>()) {}
+    : Field(), sb(std::make_shared<internal::DataSetBuffer<RobotLink>>()) {}
 
 RobotModel::RobotModel(const Field &base)
     : Field(base),
-      Canvas3DComponent(Canvas3DComponentType::robot_model, this->dataLock()),
-      sb(std::make_shared<internal::DataSetBuffer<RobotLink>>(base)) {
-    this->Canvas3DComponent::robotModel(*this);
+      sb(std::make_shared<internal::DataSetBuffer<RobotLink>>(base)) {}
+
+TemporalCanvas3DComponent RobotModel::toComponent3D() const {
+    return TemporalCanvas3DComponent{Canvas3DComponentType::robot_model}
+        .robotModel(*this);
 }
 
 RobotModel &RobotModel::init() {
@@ -48,11 +49,7 @@ RobotModel &RobotModel::onChange(std::function<void(RobotModel)> callback) {
     return *this;
 }
 
-RobotModel &RobotModel::operator<<(const RobotLink &vc) {
-    sb->add(vc);
-    return *this;
-}
-RobotModel &RobotModel::operator<<(RobotLink &&vc) {
+RobotModel &RobotModel::operator<<(RobotLink vc) {
     sb->add(std::move(vc));
     return *this;
 }

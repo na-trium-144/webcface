@@ -5,11 +5,15 @@
 
 // 変更するとABI互換性がなくなる
 #if WEBCFACE_PTR_SIZE == 4
-static_assert(sizeof(wcfViewComponent) == 4L * 24, "sizeof wcfViewCompoenent mismatch");
-static_assert(sizeof(wcfViewComponentW) == 4L * 24, "sizeof wcfViewCompoenentW mismatch");
+static_assert(sizeof(wcfViewComponent) == 4L * 24,
+              "sizeof wcfViewCompoenent mismatch");
+static_assert(sizeof(wcfViewComponentW) == 4L * 24,
+              "sizeof wcfViewCompoenentW mismatch");
 #elif WEBCFACE_PTR_SIZE == 8
-static_assert(sizeof(wcfViewComponent) == 4L * 36, "sizeof wcfViewCompoenent mismatch");
-static_assert(sizeof(wcfViewComponentW) == 4L * 36, "sizeof wcfViewCompoenentW mismatch");
+static_assert(sizeof(wcfViewComponent) == 4L * 36,
+              "sizeof wcfViewCompoenent mismatch");
+static_assert(sizeof(wcfViewComponentW) == 4L * 36,
+              "sizeof wcfViewCompoenentW mismatch");
 #else
 #pragma message("warning: sizeof void* is neither 4 or 8")
 #endif
@@ -82,28 +86,30 @@ wcfViewSetT(wcfClient *wcli, const CharT *field,
     auto v = wcli_->view(field);
     v.init();
     for (auto p = components; p < components + size; p++) {
-        v.add(ViewComponent{
-            static_cast<ViewComponentType>(p->type),
-            SharedString::encode(strOrEmpty(p->text)),
-            p->on_click_field
-                ? std::make_optional<FieldBase>(
-                      wcli_->member(strOrEmpty(p->on_click_member))
-                          .child(strOrEmpty(p->on_click_field)))
-                : std::nullopt,
-            p->text_ref_field
-                ? std::make_optional<FieldBase>(
-                      wcli_->member(strOrEmpty(p->text_ref_member))
-                          .child(strOrEmpty(p->text_ref_field)))
-                : std::nullopt,
-            static_cast<ViewColor>(p->text_color),
-            static_cast<ViewColor>(p->bg_color),
-            p->min != -DBL_MAX ? std::make_optional<double>(p->min)
-                               : std::nullopt,
-            p->max != DBL_MAX ? std::make_optional<double>(p->max)
-                              : std::nullopt,
-            p->step != 0 ? std::make_optional<double>(p->step) : std::nullopt,
-            argsFromCVal<CharT>(p->option, p->option_num),
-        });
+        TemporalViewComponent cp{static_cast<ViewComponentType>(p->type)};
+        cp.text(strOrEmpty(p->text));
+        if (p->on_click_field) {
+            cp.onClick(wcli_->member(strOrEmpty(p->on_click_member))
+                           .child(strOrEmpty(p->on_click_field))
+                           .func());
+        }
+        /*if(p->text_ref_field){
+            cp.bind(wcli_->member(strOrEmpty(p->text_ref_member))
+                          .child(strOrEmpty(p->text_ref_field)));
+        }*/
+        cp.textColor(static_cast<ViewColor>(p->text_color));
+        cp.bgColor(static_cast<ViewColor>(p->bg_color));
+        if (p->min != -DBL_MAX) {
+            cp.min(p->min);
+        }
+        if (p->max != DBL_MAX) {
+            cp.max(p->max);
+        }
+        if (p->step != 0) {
+            cp.step(p->step);
+        }
+        cp.option(argsFromCVal<CharT>(p->option, p->option_num));
+        v.add(std::move(cp));
     }
     v.sync();
     return WCF_OK;

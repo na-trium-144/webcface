@@ -4,15 +4,17 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/encoding/encoding.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 
 Canvas3D::Canvas3D()
-    : Field(),
-      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>()) {}
+    : Field(), sb(std::make_shared<
+                   internal::DataSetBuffer<TemporalCanvas3DComponent>>()) {}
 Canvas3D::Canvas3D(const Field &base)
     : Field(base),
-      sb(std::make_shared<internal::DataSetBuffer<Canvas3DComponent>>(base)) {}
+      sb(std::make_shared<internal::DataSetBuffer<TemporalCanvas3DComponent>>(
+          base)) {}
 Canvas3D &Canvas3D::init() {
     sb->init();
     return *this;
@@ -21,27 +23,23 @@ Canvas3D &Canvas3D::sync() {
     sb->sync();
     return *this;
 }
-Canvas3D &Canvas3D::operator<<(const Canvas3DComponent &cc) {
-    sb->add(cc);
-    return *this;
-}
-Canvas3D &Canvas3D::operator<<(Canvas3DComponent &&cc) {
+Canvas3D &Canvas3D::operator<<(TemporalCanvas3DComponent cc) {
     sb->add(std::move(cc));
     return *this;
 }
 
 template <>
-void internal::DataSetBuffer<Canvas3DComponent>::onSync() {
-    for (std::size_t i = 0; i < components_.size(); i++) {
-        components_.at(i).lockTmp(
-            target_.data_w,
-            SharedString::fromU8String(target_.field_.u8String() + "_" +
-                                       std::to_string(i)));
-    }
+void internal::DataSetBuffer<TemporalCanvas3DComponent>::onSync() {
+    std::unordered_map<Canvas3DComponentType, int> idx_next;
     auto data = target_.setCheck();
-    data->canvas3d_store.setSend(
-        target_, std::make_shared<std::vector<Canvas3DComponent>>(
-                     std::move(components_)));
+    auto components_p = std::make_shared<
+        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>();
+    components_p->reserve(components_.size());
+    for (std::size_t i = 0; i < components_.size(); i++) {
+        components_p->push_back(
+            components_[i].lockTmp(data, target_.field_, &idx_next));
+    }
+    data->canvas3d_store.setSend(target_, components_p);
     std::shared_ptr<std::function<void(Canvas3D)>> change_event;
     {
         std::lock_guard lock(data->event_m);
@@ -74,8 +72,9 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     request();
     if (vb) {
         std::vector<Canvas3DComponent> v((*vb)->size());
+        std::unordered_map<Canvas3DComponentType, int> idx_next;
         for (std::size_t i = 0; i < (*vb)->size(); i++) {
-            v[i] = Canvas3DComponent{(**vb)[i], this->data_w};
+            v[i] = Canvas3DComponent{(**vb)[i], this->data_w, &idx_next};
         }
         return v;
     } else {

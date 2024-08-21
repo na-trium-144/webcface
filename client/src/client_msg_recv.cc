@@ -164,18 +164,22 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<std::vector<ViewComponent>> vv_prev;
+            std::shared_ptr<
+                std::vector<std::shared_ptr<internal::ViewComponentData>>>
+                vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev =
-                    std::make_shared<std::vector<ViewComponent>>(r.length);
+                vv_prev = std::make_shared<
+                    std::vector<std::shared_ptr<internal::ViewComponentData>>>(
+                    r.length);
                 v_prev.emplace(vv_prev);
                 this->view_store.setRecv(member, field, vv_prev);
             }
             vv_prev->resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (*vv_prev)[std::stoi(d.first)] = d.second;
+                (*vv_prev)[std::stoi(d.first)] =
+                    std::make_shared<internal::ViewComponentData>(d.second);
             }
             std::shared_ptr<std::function<void(View)>> cl;
             {
@@ -195,18 +199,22 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            std::shared_ptr<std::vector<Canvas3DComponent>> vv_prev;
+            std::shared_ptr<
+                std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>
+                vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev =
-                    std::make_shared<std::vector<Canvas3DComponent>>(r.length);
+                vv_prev = std::make_shared<std::vector<
+                    std::shared_ptr<internal::Canvas3DComponentData>>>(
+                    r.length);
                 v_prev.emplace(vv_prev);
                 this->canvas3d_store.setRecv(member, field, vv_prev);
             }
             vv_prev->resize(r.length);
             for (const auto &d : *r.data_diff) {
-                (*vv_prev)[std::stoi(d.first)] = d.second;
+                (*vv_prev)[std::stoi(d.first)] =
+                    std::make_shared<internal::Canvas3DComponentData>(d.second);
             }
             std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
@@ -238,7 +246,8 @@ void internal::ClientData::onRecv(const std::string &message) {
             vv_prev->height = r.height;
             vv_prev->components.resize(r.length);
             for (const auto &d : *r.data_diff) {
-                vv_prev->components[std::stoi(d.first)] = d.second;
+                vv_prev->components[std::stoi(d.first)] =
+                    std::make_shared<internal::Canvas2DComponentData>(d.second);
             }
             std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {

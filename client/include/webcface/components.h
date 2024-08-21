@@ -5,6 +5,10 @@
 
 WEBCFACE_NS_BEGIN
 
+namespace internal{
+class ViewBuf;
+}
+
 /*!
  * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
  *
@@ -32,6 +36,13 @@ class TemporalComponent {
         static_assert(C2 == !std::is_same_v<C2T, std::nullptr_t>);
         static_assert(C3 == !std::is_same_v<C3T, std::nullptr_t>);
     }
+
+    friend class Func;
+    friend class Canvas2D;
+    friend class Canvas3D;
+    friend class View;
+    friend class internal::ViewBuf;
+
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
@@ -183,7 +194,7 @@ class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {
   public:
     TemporalGeometry(GeometryType type, std::vector<double> &&properties)
-        : TemporalComponent(0, Canvas2DComponentType::geometry,
+        : TemporalComponent(nullptr, Canvas2DComponentType::geometry,
                             Canvas3DComponentType::geometry),
           Geometry(type, std::move(properties)) {
         this->component_2d.geometry(static_cast<Geometry &>(*this));

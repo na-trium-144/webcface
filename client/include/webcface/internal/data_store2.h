@@ -12,6 +12,7 @@
 #include "webcface/component_view.h"
 #include "webcface/robot_link.h"
 #include "webcface/message/message.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -181,38 +182,28 @@ class SyncDataStore2 {
      *
      */
     StrMap2<unsigned int> transferReq();
-
-    template <typename ElemT>
-    auto getDiff(std::vector<ElemT> *current,
-                 std::vector<ElemT> *prev = nullptr) {
-        auto v_diff = std::make_shared<
-            std::unordered_map<int, decltype(ElemT().toMessage())>>();
-        for (std::size_t i = 0; i < current->size(); i++) {
-            if (!prev || prev->size() <= i || (*prev)[i] != (*current)[i]) {
-                v_diff->emplace(static_cast<int>(i), (*current)[i].toMessage());
-            }
-        }
-        return v_diff;
-    }
 };
 
 struct Canvas2DDataBase {
     double width = 0, height = 0;
-    std::vector<Canvas2DComponent> components;
+    std::vector<std::shared_ptr<Canvas2DComponentData>> components;
     Canvas2DDataBase() = default;
     Canvas2DDataBase(double width, double height)
         : width(width), height(height), components() {}
-    Canvas2DDataBase(double width, double height,
-                     std::vector<Canvas2DComponent> &&components)
+    Canvas2DDataBase(
+        double width, double height,
+        std::vector<std::shared_ptr<Canvas2DComponentData>> &&components)
         : width(width), height(height), components(std::move(components)) {}
 };
 
 using ValueData = std::shared_ptr<std::vector<double>>;
 using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
-using ViewData = std::shared_ptr<std::vector<ViewComponent>>;
+using ViewData =
+    std::shared_ptr<std::vector<std::shared_ptr<internal::ViewComponentData>>>;
 using RobotModelData = std::shared_ptr<std::vector<RobotLink>>;
-using Canvas3DData = std::shared_ptr<std::vector<Canvas3DComponent>>;
+using Canvas3DData = std::shared_ptr<
+    std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>;
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = ImageFrame;
 

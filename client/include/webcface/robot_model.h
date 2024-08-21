@@ -23,7 +23,7 @@ class DataSetBuffer;
  * などを指定してCanvas3Dに追加することができる
  *
  */
-class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
+class WEBCFACE_DLL RobotModel : protected Field {
     std::shared_ptr<internal::DataSetBuffer<RobotLink>> sb;
 
   public:
@@ -127,12 +127,7 @@ class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
      * \brief モデルにlinkを追加
      * \since ver1.9
      */
-    RobotModel &operator<<(const RobotLink &rl);
-    /*!
-     * \brief モデルにlinkを追加
-     * \since ver1.9
-     */
-    RobotModel &operator<<(RobotLink &&rl);
+    RobotModel &operator<<(RobotLink rl);
     /*!
      * \brief モデルにlinkを追加
      * \since ver1.9
@@ -191,6 +186,34 @@ class WEBCFACE_DLL RobotModel : protected Field, public Canvas3DComponent {
      *
      */
     RobotModel &free();
+
+    /*!
+     * \brief これをCanvas3DComponentに変換
+     * \since ver2.0
+     */
+    TemporalCanvas3DComponent toComponent3D() const;
+    /*!
+     * \brief Canvas3DComponentに変換 + 要素の移動
+     *
+     */
+    TemporalCanvas3DComponent origin(const Transform &origin) const {
+        return toComponent3D().origin(origin);
+    }
+    /*!
+     * \brief Canvas3DComponentに変換 + 色の指定
+     *
+     */
+    TemporalCanvas3DComponent color(ViewColor color) const {
+        return toComponent3D().color(color);
+    }
+    /*!
+     * \brief Canvas3DComponentに変換 + RobotModelの関節を設定
+     * \sa TemporalCanvas3DComponent::angles
+     */
+    template <typename... Args>
+    TemporalCanvas3DComponent angles(Args &&...args) const {
+        return toComponent3D().angles(std::forward<Args>(args)...);
+    }
 
     /*!
      * \brief RobotModelの参照先を比較
