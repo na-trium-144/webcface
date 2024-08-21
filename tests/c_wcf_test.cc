@@ -8,6 +8,7 @@
 #include <webcface/func.h>
 #include <webcface/wcf.h>
 #include "webcface/message/message.h"
+#include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>
 #include "dummy_server.h"
@@ -558,13 +559,13 @@ TEST_F(CClientTest, viewSend) {
                   static_cast<int>(ViewComponentType::button));
         EXPECT_EQ(obj.data_diff["4"]->text.u8String(), "a");
         EXPECT_EQ(obj.data_diff["4"]->on_click_member, self_name);
-        EXPECT_EQ(obj.data_diff["4"]->on_click_field.u8String(), "c");
+        EXPECT_EQ(obj.data_diff["4"]->on_click_field->u8String(), "c");
 
         EXPECT_EQ(obj.data_diff["5"]->type,
                   static_cast<int>(ViewComponentType::button));
         EXPECT_EQ(obj.data_diff["5"]->text.u8String(), "a");
-        EXPECT_EQ(obj.data_diff["5"]->on_click_member.u8String(), "b");
-        EXPECT_EQ(obj.data_diff["5"]->on_click_field.u8String(), "c");
+        EXPECT_EQ(obj.data_diff["5"]->on_click_member->u8String(), "b");
+        EXPECT_EQ(obj.data_diff["5"]->on_click_field->u8String(), "c");
         EXPECT_EQ(obj.data_diff["5"]->text_color,
                   static_cast<int>(ViewColor::red));
         EXPECT_EQ(obj.data_diff["5"]->bg_color,
@@ -572,7 +573,6 @@ TEST_F(CClientTest, viewSend) {
     });
     dummy_s->recvClear();
 }
-TEST_F(CClientTest, viewReq) {
 TEST_F(CClientTest, viewReq) {
     using namespace std::string_literals;
     wcfViewComponent *vc;
