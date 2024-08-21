@@ -462,7 +462,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("l", length))
 };
 struct ImageFrame {
-    int width_, height_;
+    int width_ = 0, height_= 0;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;

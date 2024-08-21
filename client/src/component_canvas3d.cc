@@ -118,7 +118,7 @@ TemporalCanvas3DComponent::geometry(const Geometry &g) {
     msg_data->geometry_type = static_cast<int>(g.type);
     msg_data->geometry_properties = g.properties;
     return *this;
-};
+}
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     checkData();
     if (msg_data->field_member && msg_data->field_field &&

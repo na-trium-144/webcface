@@ -541,7 +541,7 @@ TEST_F(CClientTest, viewSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::View>([&](auto obj) {
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.length, 6);
+        EXPECT_EQ(obj.length, 6u);
         EXPECT_EQ(obj.data_diff.size(), 6u);
         EXPECT_EQ(obj.data_diff["0"]->type,
                   static_cast<int>(ViewComponentType::text));

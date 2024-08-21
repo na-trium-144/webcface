@@ -161,7 +161,7 @@ TemporalCanvas2DComponent::geometry(const Geometry &g) {
     msg_data->geometry_type = static_cast<int>(g.type);
     msg_data->properties = g.properties;
     return *this;
-};
+}
 
 
 std::optional<Func> Canvas2DComponent::onClick() const {
