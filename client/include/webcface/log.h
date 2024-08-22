@@ -39,14 +39,14 @@ struct WEBCFACE_DLL LogLineData {
     message::LogLine toMessage() const;
 };
 
-class WEBCFACE_DLL LogLine : private LogLineData {
+class LogLine : private LogLineData {
   public:
     LogLine(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }
     const std::string &message() const { return message_.decode(); };
 };
-class WEBCFACE_DLL LogLineW : private LogLineData {
+class LogLineW : private LogLineData {
   public:
     LogLineW(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }

@@ -16,6 +16,9 @@ WEBCFACE_NS_BEGIN
 namespace message {
 struct Arg;
 }
+namespace internal{
+struct FuncInfo;
+}
 
 /*!
  * \brief 引数の情報を表す。
@@ -25,74 +28,93 @@ struct Arg;
  *
  */
 class WEBCFACE_DLL Arg {
-  protected:
-    SharedString name_;
+    std::shared_ptr<message::Arg> msg_data;
+
+    /*!
+     * Funcの初期状態などtype以外不要な場合があるので、typeだけpimplとは別にしている
+     *
+     */
     ValType type_ = ValType::none_;
-    std::optional<ValAdaptor> init_ = std::nullopt;
-    std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
-    std::vector<ValAdaptor> option_;
+
+    /*!
+     * msg_dataが空なら初期化して返す
+     *
+     */
+    std::shared_ptr<message::Arg> initMsg();
 
   public:
+    friend struct internal::FuncInfo;
     /*!
      * \brief 引数のargが持っている情報でthisを上書きする。
      *
      */
-    void mergeConfig(const Arg &rhs);
-    explicit Arg(ValType type) : type_(type) {}
-    Arg() = default;
+    void mergeConfig(const Arg &other);
+    /*!
+     * msg_dataはnullになる
+     *
+     */
+    explicit Arg(ValType type = ValType::none_);
+    /*!
+     * msg_dataとtypeを初期化
+     *
+     */
+    explicit Arg(const std::shared_ptr<message::Arg> &msg_data);
 
-    message::Arg toMessage() const;
-    Arg(const message::Arg &a);
-
+    /*!
+     * \since ver2.0
+     *
+     */
+    explicit Arg(const SharedString &name);
     /*!
      * \brief 引数名を設定する。
      *
      */
-    Arg(std::string_view name) : name_(SharedString::encode(name)) {}
-    Arg(std::wstring_view name) : name_(SharedString::encode(name)) {}
+    Arg(std::string_view name) : Arg(SharedString::encode(name)) {}
+    /*!
+     * \brief 引数名を設定する。(wstring)
+     * \since ver2.0
+     */
+    Arg(std::wstring_view name) : Arg(SharedString::encode(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
      *
      */
-    std::string name() const { return name_.decode(); }
+    const std::string &name() const;
     /*!
      * \brief 引数の名前を取得する。(wstring)
      * \since ver2.0
      */
-    std::wstring nameW() const { return name_.decodeW(); }
+    const std::wstring &nameW() const;
     /*!
      * \brief 引数の型を取得する。
      *
      */
-    ValType type() const { return type_; }
+    ValType type() const;
     /*!
      * \brief 引数の型を設定する。
      *
      */
-    Arg &type(ValType type) {
-        type_ = type;
-        return *this;
-    }
+    Arg &type(ValType type);
     /*!
      * \brief デフォルト値を取得する。
      *
      */
-    std::optional<ValAdaptor> init() const { return init_; }
+    std::optional<ValAdaptor> init() const;
     /*!
      * \brief デフォルト値を設定する。
      *
      */
     template <typename T>
     Arg &init(const T &init) {
-        init_ = ValAdaptor(init);
-        return *this;
+        return this->init(ValAdaptor(init));
     }
+    Arg &init(const ValAdaptor &init);
     /*!
      * \brief 最小値を取得する。
      *
      */
-    std::optional<double> min() const { return min_; }
+    std::optional<double> min() const;
     /*!
      * \brief 最小値を設定する。
      *
@@ -101,16 +123,12 @@ class WEBCFACE_DLL Arg {
      * * option() はクリアされる。
      *
      */
-    Arg &min(double min) {
-        min_ = min;
-        option_.clear();
-        return *this;
-    }
+    Arg &min(double min);
     /*!
      * \brief 最大値を取得する。
      *
      */
-    std::optional<double> max() const { return max_; }
+    std::optional<double> max() const;
     /*!
      * \brief 最大値を設定する。
      *
@@ -119,21 +137,13 @@ class WEBCFACE_DLL Arg {
      * * option() はクリアされる。
      *
      */
-    Arg &max(double max) {
-        max_ = max;
-        option_.clear();
-        return *this;
-    }
+    Arg &max(double max);
     /*!
      * \brief 引数の選択肢を取得する。
      *
      */
-    const std::vector<ValAdaptor> &option() const { return option_; }
-    Arg &option(std::vector<ValAdaptor> option) {
-        option_ = std::move(option);
-        min_ = max_ = std::nullopt;
-        return *this;
-    }
+    const std::vector<ValAdaptor> &option() const;
+    Arg &option(std::vector<ValAdaptor> option);
     /*!
      * \brief 引数の選択肢を設定する。
      *

@@ -91,8 +91,8 @@ using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
 class WEBCFACE_DLL Func : protected Field {
   public:
     friend class AnonymousFunc;
-    friend class ViewComponent;
-    friend class Canvas2DComponent;
+    friend class TemporalViewComponent;
+    friend class TemporalCanvas2DComponent;
 
     Func() = default;
     Func(const Field &base);

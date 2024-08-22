@@ -5,6 +5,10 @@
 
 WEBCFACE_NS_BEGIN
 
+namespace internal{
+class ViewBuf;
+}
+
 /*!
  * \brief Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース
  *
@@ -15,45 +19,28 @@ WEBCFACE_NS_BEGIN
  *
  */
 template <bool V, bool C2, bool C3>
-class TemporalComponent {
-  protected:
-    std::conditional_t<V, ViewComponent, int> component_v;
-    std::conditional_t<C2, Canvas2DComponent, int> component_2d;
-    std::conditional_t<C3, Canvas3DComponent, int> component_3d;
+struct TemporalComponent {
+    TemporalViewComponent component_v;
+    TemporalCanvas2DComponent component_2d;
+    TemporalCanvas3DComponent component_3d;
 
-  public:
     TemporalComponent() = default;
     template <typename VT, typename C2T, typename C3T>
     TemporalComponent(VT v_type, C2T c2_type, C3T c3_type)
-        : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {}
-    explicit TemporalComponent(std::string_view text)
-        : TemporalComponent(ViewComponentType::text,
-                            Canvas2DComponentType::text, 0) {
-        static_assert(V && C2 && !C3);
-        component_v.text(text);
-        component_2d.text(text);
+        : component_v(v_type), component_2d(c2_type), component_3d(c3_type) {
+        // V, C2, C3 がtrue <=> VT, C2T, C3T にnullptrでない値を渡して初期化する
+        // V, C2, C3 がfalse <=> VT, C2T, C3T にnullptrを渡す
+        static_assert(V == !std::is_same_v<VT, std::nullptr_t>);
+        static_assert(C2 == !std::is_same_v<C2T, std::nullptr_t>);
+        static_assert(C3 == !std::is_same_v<C3T, std::nullptr_t>);
     }
-    explicit TemporalComponent(std::wstring_view text)
-        : TemporalComponent(ViewComponentType::text,
-                            Canvas2DComponentType::text, 0) {
-        static_assert(V && C2 && !C3);
-        component_v.text(text);
-        component_2d.text(text);
-    }
-    ViewComponent &toV() {
-        static_assert(V);
-        return component_v;
-    }
-    Canvas2DComponent &to2() {
-        static_assert(C2);
-        // component_2d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return component_2d;
-    }
-    Canvas3DComponent &to3() {
-        static_assert(C3);
-        // component_3d->geometry(std::move(static_cast<Geometry &>(*this)));
-        return component_3d;
-    }
+
+    friend class Func;
+    friend class Canvas2D;
+    friend class Canvas3D;
+    friend class View;
+    friend class internal::ViewBuf;
+
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
@@ -63,7 +50,8 @@ class TemporalComponent {
      */
     template <typename T>
     TemporalComponent &onClick(T &&func) {
-        static_assert(V || C2);
+        static_assert(V || C2,
+                      "onClick can be set only for View, Canvas2D components");
         if constexpr (V) {
             component_v.onClick(std::forward<T>(func));
         }
@@ -77,7 +65,9 @@ class TemporalComponent {
      *
      */
     TemporalComponent &origin(const Transform &origin) {
-        static_assert(C2 || C3);
+        static_assert(
+            C2 || C3,
+            "origin can be set only for Canvas2D, Canvas3D components");
         if constexpr (C2) {
             component_2d.origin(origin);
         }
@@ -92,7 +82,6 @@ class TemporalComponent {
      * Viewの要素では textColor として設定される
      */
     TemporalComponent &color(ViewColor c) {
-        static_assert(V || C2 || C3);
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -105,12 +94,43 @@ class TemporalComponent {
         return *this;
     }
     /*!
+     * \brief 表示する文字列 (View, Canvas2D)
+     * \since ver2.0
+     */
+    TemporalComponent &text(std::string_view str) {
+        static_assert(V || C2,
+                      "text can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.text(str);
+        }
+        if constexpr (C2) {
+            component_2d.text(str);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 表示する文字列(wstring) (View, Canvas2D)
+     * \since ver2.0
+     */
+    TemporalComponent &text(std::wstring_view str) {
+        static_assert(V || C2,
+                      "text can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.text(str);
+        }
+        if constexpr (C2) {
+            component_2d.text(str);
+        }
+        return *this;
+    }
+    /*!
      * \brief 文字色 (Viewまたは2D)
      *
      * Canvas2DのTextでは fillColor が文字色の代わりに使われている
      */
     TemporalComponent &textColor(ViewColor c) {
-        static_assert(V || C2);
+        static_assert(
+            V || C2, "textColor can be set only for View, Canvas2D components");
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -124,7 +144,8 @@ class TemporalComponent {
      *
      */
     TemporalComponent &fillColor(ViewColor c) {
-        static_assert(V || C2);
+        static_assert(
+            V || C2, "fillColor can be set only for View, Canvas2D components");
         if constexpr (V) {
             component_v.bgColor(c);
         }
@@ -138,7 +159,8 @@ class TemporalComponent {
      *
      */
     TemporalComponent &bgColor(ViewColor c) {
-        static_assert(V || C2);
+        static_assert(V || C2,
+                      "bgColor can be set only for View, Canvas2D components");
         return fillColor(c);
     }
     /*!
@@ -147,7 +169,8 @@ class TemporalComponent {
      * 文字の太さではない
      */
     TemporalComponent &strokeWidth(double s) {
-        static_assert(C2);
+        static_assert(C2,
+                      "strokeWidth can be set only for Canvas2D components");
         if constexpr (C2) {
             component_2d.strokeWidth(s);
         }
@@ -158,7 +181,7 @@ class TemporalComponent {
      *
      */
     TemporalComponent &textSize(double s) {
-        static_assert(C2);
+        static_assert(C2, "textSize can be set only for Canvas2D components");
         if constexpr (C2) {
             component_2d.textSize(s);
         }
@@ -169,7 +192,7 @@ class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {
   public:
     TemporalGeometry(GeometryType type, std::vector<double> &&properties)
-        : TemporalComponent(0, Canvas2DComponentType::geometry,
+        : TemporalComponent(nullptr, Canvas2DComponentType::geometry,
                             Canvas3DComponentType::geometry),
           Geometry(type, std::move(properties)) {
         this->component_2d.geometry(static_cast<Geometry &>(*this));
@@ -383,21 +406,25 @@ namespace Geometries = geometries; // 〜ver1.11
  *
  */
 inline TemporalComponent<true, true, false> text(std::string_view text) {
-    return TemporalComponent<true, true, false>(text);
+    return TemporalComponent<true, true, false>(
+               ViewComponentType::text, Canvas2DComponentType::text, nullptr)
+        .text(text);
 }
 /*!
  * \brief textコンポーネント (wstring)
  * \since ver2.0
  */
 inline TemporalComponent<true, true, false> text(std::wstring_view text) {
-    return TemporalComponent<true, true, false>(text);
+    return TemporalComponent<true, true, false>(
+               ViewComponentType::text, Canvas2DComponentType::text, nullptr)
+        .text(text);
 }
 /*!
  * \brief newLineコンポーネント
  *
  */
-inline ViewComponent newLine() {
-    return ViewComponent(ViewComponentType::new_line);
+inline TemporalViewComponent newLine() {
+    return TemporalViewComponent(ViewComponentType::new_line);
 }
 
 /*!
@@ -405,8 +432,8 @@ inline ViewComponent newLine() {
  *
  */
 template <typename T>
-inline ViewComponent button(std::string_view text, T &&func) {
-    return ViewComponent(ViewComponentType::button)
+inline TemporalViewComponent button(std::string_view text, T &&func) {
+    return TemporalViewComponent(ViewComponentType::button)
         .text(text)
         .onClick(std::forward<T>(func));
 }
@@ -415,53 +442,69 @@ inline ViewComponent button(std::string_view text, T &&func) {
  * \since ver2.0
  */
 template <typename T>
-inline ViewComponent button(std::wstring_view text, T &&func) {
-    return ViewComponent(ViewComponentType::button)
+inline TemporalViewComponent button(std::wstring_view text, T &&func) {
+    return TemporalViewComponent(ViewComponentType::button)
         .text(text)
         .onClick(std::forward<T>(func));
 }
 
-inline ViewComponent textInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::text_input).text(text);
+inline TemporalViewComponent textInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::text_input).text(text);
 }
-inline ViewComponent textInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::text_input).text(text);
+inline TemporalViewComponent textInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::text_input).text(text);
 }
-inline ViewComponent decimalInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
+inline TemporalViewComponent decimalInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::decimal_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent decimalInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::decimal_input).text(text).init(0);
+inline TemporalViewComponent decimalInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::decimal_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent numberInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
+inline TemporalViewComponent numberInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::number_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent numberInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::number_input).text(text).init(0);
+inline TemporalViewComponent numberInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::number_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent toggleInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::toggle_input).text(text);
+inline TemporalViewComponent toggleInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::toggle_input).text(text);
 }
-inline ViewComponent toggleInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::toggle_input).text(text);
+inline TemporalViewComponent toggleInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::toggle_input).text(text);
 }
-inline ViewComponent selectInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::select_input).text(text);
+inline TemporalViewComponent selectInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::select_input).text(text);
 }
-inline ViewComponent selectInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::select_input).text(text);
+inline TemporalViewComponent selectInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::select_input).text(text);
 }
-inline ViewComponent sliderInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+inline TemporalViewComponent sliderInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::slider_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent sliderInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::slider_input).text(text).init(0);
+inline TemporalViewComponent sliderInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::slider_input)
+        .text(text)
+        .init(0);
 }
-inline ViewComponent checkInput(std::string_view text = "") {
-    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+inline TemporalViewComponent checkInput(std::string_view text = "") {
+    return TemporalViewComponent(ViewComponentType::check_input)
+        .text(text)
+        .init(false);
 }
-inline ViewComponent checkInput(std::wstring_view text) {
-    return ViewComponent(ViewComponentType::check_input).text(text).init(false);
+inline TemporalViewComponent checkInput(std::wstring_view text) {
+    return TemporalViewComponent(ViewComponentType::check_input)
+        .text(text)
+        .init(false);
 }
 } // namespace components
 

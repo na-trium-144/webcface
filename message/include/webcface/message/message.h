@@ -324,10 +324,10 @@ struct RobotLink {
 };
 struct RobotModel : public MessageBase<MessageKind::robot_model> {
     SharedString field;
-    std::shared_ptr<std::vector<RobotLink>> data;
+    std::vector<std::shared_ptr<RobotLink>> data;
     RobotModel() = default;
     RobotModel(const SharedString &field,
-               const std::shared_ptr<std::vector<RobotLink>> &data)
+               const std::vector<std::shared_ptr<RobotLink>> &data)
         : field(field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
@@ -352,23 +352,20 @@ struct ViewComponent {
 };
 struct View : public MessageBase<MessageKind::view> {
     SharedString field;
-    std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
+    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
     View() = default;
     View(const SharedString &field,
-         const std::shared_ptr<std::unordered_map<int, ViewComponent>>
+         const std::unordered_map<int, std::shared_ptr<ViewComponent>>
              &data_diff,
          std::size_t length)
-        : field(field),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, ViewComponent>>()),
-          length(length) {
-        for (auto &&vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        : field(field), data_diff(), length(length) {
+        for (auto &&vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     View(const SharedString &field,
-         const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
+         const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
              &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
@@ -393,25 +390,22 @@ struct Canvas3DComponent {
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Canvas3D() = default;
     Canvas3D(const SharedString &field,
-             const std::shared_ptr<std::unordered_map<int, Canvas3DComponent>>
+             const std::unordered_map<int, std::shared_ptr<Canvas3DComponent>>
                  &data_diff,
              std::size_t length)
-        : field(field),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, Canvas3DComponent>>()),
-          length(length) {
-        for (const auto &vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        : field(field), data_diff(), length(length) {
+        for (const auto &vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     Canvas3D(const SharedString &field,
-             const std::shared_ptr<
-                 std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
+             const std::unordered_map<
+                 std::string, std::shared_ptr<Canvas3DComponent>> &data_diff,
              std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -423,7 +417,7 @@ struct Canvas2DComponent {
     double origin_rot;
     int color = 0, fill = 0;
     double stroke_width;
-    int geometry_type = 0;
+    std::optional<int> geometry_type;
     std::vector<double> properties;
     std::optional<SharedString> on_click_member, on_click_field;
     SharedString text;
@@ -438,30 +432,28 @@ struct Canvas2DComponent {
 };
 struct Canvas2DData {
     double width = 0, height = 0;
-    std::vector<Canvas2DComponent> components;
+    std::vector<std::shared_ptr<Canvas2DComponent>> components;
 };
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Canvas2D() = default;
     Canvas2D(const SharedString &field, double width, double height,
-             const std::shared_ptr<std::unordered_map<int, Canvas2DComponent>>
+             const std::unordered_map<int, std::shared_ptr<Canvas2DComponent>>
                  &data_diff,
              std::size_t length)
-        : field(field), width(width), height(height),
-          data_diff(std::make_shared<
-                    std::unordered_map<std::string, Canvas2DComponent>>()),
+        : field(field), width(width), height(height), data_diff(),
           length(length) {
-        for (const auto &vc : *data_diff) {
-            this->data_diff->emplace(std::to_string(vc.first), vc.second);
+        for (const auto &vc : data_diff) {
+            this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
     Canvas2D(const SharedString &field, double width, double height,
-             const std::shared_ptr<
-                 std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
+             const std::unordered_map<
+                 std::string, std::shared_ptr<Canvas2DComponent>> &data_diff,
              std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
           length(length) {}
@@ -470,7 +462,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("l", length))
 };
 struct ImageFrame {
-    int width_, height_;
+    int width_ = 0, height_ = 0;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
@@ -561,10 +553,10 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     SharedString field;
     ValType return_type;
-    std::shared_ptr<std::vector<Arg>> args;
+    std::vector<std::shared_ptr<Arg>> args;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
-             ValType return_type, const std::shared_ptr<std::vector<Arg>> &args)
+             ValType return_type, const std::vector<std::shared_ptr<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
@@ -683,10 +675,10 @@ struct Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::vector<RobotLink>> data;
+    std::vector<std::shared_ptr<RobotLink>> data;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<std::vector<RobotLink>> &data)
+        const std::vector<std::shared_ptr<RobotLink>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))
@@ -695,11 +687,11 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::unordered_map<std::string, ViewComponent>> data_diff;
+    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<std::unordered_map<std::string, ViewComponent>>
+        const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
             &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
@@ -712,13 +704,13 @@ struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::unordered_map<std::string, Canvas3DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<
-            std::unordered_map<std::string, Canvas3DComponent>> &data_diff,
+        const std::unordered_map<std::string,
+                                 std::shared_ptr<Canvas3DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
@@ -731,14 +723,14 @@ struct Res<Canvas2D>
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
-    std::shared_ptr<std::unordered_map<std::string, Canvas2DComponent>>
+    std::unordered_map<std::string, std::shared_ptr<Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field, double width,
         double height,
-        const std::shared_ptr<
-            std::unordered_map<std::string, Canvas2DComponent>> &data_diff,
+        const std::unordered_map<std::string,
+                                 std::shared_ptr<Canvas2DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), length(length) {}

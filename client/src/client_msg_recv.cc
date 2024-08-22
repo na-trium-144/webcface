@@ -8,6 +8,7 @@
 #include "webcface/canvas2d.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -144,15 +145,14 @@ void internal::ClientData::onRecv(const std::string &message) {
         }
         case MessageKind::robot_model + MessageKind::res: {
             auto r = std::any_cast<message::Res<message::RobotModel>>(obj);
-            auto common_links = std::make_shared<std::vector<RobotLink>>();
-            common_links->reserve(r.data->size());
-            std::vector<SharedString> link_names;
-            link_names.reserve(r.data->size());
-            for (std::size_t i = 0; i < r.data->size(); i++) {
-                common_links->emplace_back((*r.data)[i], link_names);
-                link_names.push_back((*r.data)[i].name);
+            auto links_data = std::make_shared<
+                std::vector<std::shared_ptr<internal::RobotLinkData>>>();
+            links_data->reserve(r.data.size());
+            for (std::size_t i = 0; i < r.data.size(); i++) {
+                links_data->push_back(std::make_shared<internal::RobotLinkData>(
+                    *r.data[i], *links_data));
             }
-            onRecvRes(this, r, common_links, this->robot_model_store,
+            onRecvRes(this, r, links_data, this->robot_model_store,
                       this->robot_model_change_event);
             break;
         }
@@ -164,18 +164,22 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<std::vector<ViewComponent>> vv_prev;
+            std::shared_ptr<
+                std::vector<std::shared_ptr<internal::ViewComponentData>>>
+                vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev =
-                    std::make_shared<std::vector<ViewComponent>>(r.length);
+                vv_prev = std::make_shared<
+                    std::vector<std::shared_ptr<internal::ViewComponentData>>>(
+                    r.length);
                 v_prev.emplace(vv_prev);
                 this->view_store.setRecv(member, field, vv_prev);
             }
             vv_prev->resize(r.length);
-            for (const auto &d : *r.data_diff) {
-                (*vv_prev)[std::stoi(d.first)] = d.second;
+            for (const auto &d : r.data_diff) {
+                (*vv_prev)[std::stoi(d.first)] =
+                    std::make_shared<internal::ViewComponentData>(*d.second);
             }
             std::shared_ptr<std::function<void(View)>> cl;
             {
@@ -195,18 +199,23 @@ void internal::ClientData::onRecv(const std::string &message) {
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            std::shared_ptr<std::vector<Canvas3DComponent>> vv_prev;
+            std::shared_ptr<
+                std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>
+                vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev =
-                    std::make_shared<std::vector<Canvas3DComponent>>(r.length);
+                vv_prev = std::make_shared<std::vector<
+                    std::shared_ptr<internal::Canvas3DComponentData>>>(
+                    r.length);
                 v_prev.emplace(vv_prev);
                 this->canvas3d_store.setRecv(member, field, vv_prev);
             }
             vv_prev->resize(r.length);
-            for (const auto &d : *r.data_diff) {
-                (*vv_prev)[std::stoi(d.first)] = d.second;
+            for (const auto &d : r.data_diff) {
+                (*vv_prev)[std::stoi(d.first)] =
+                    std::make_shared<internal::Canvas3DComponentData>(
+                        *d.second);
             }
             std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
@@ -237,8 +246,10 @@ void internal::ClientData::onRecv(const std::string &message) {
             vv_prev->width = r.width;
             vv_prev->height = r.height;
             vv_prev->components.resize(r.length);
-            for (const auto &d : *r.data_diff) {
-                vv_prev->components[std::stoi(d.first)] = d.second;
+            for (const auto &d : r.data_diff) {
+                vv_prev->components[std::stoi(d.first)] =
+                    std::make_shared<internal::Canvas2DComponentData>(
+                        *d.second);
             }
             std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {

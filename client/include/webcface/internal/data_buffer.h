@@ -65,11 +65,6 @@ class DataSetBuffer {
      *
      */
     virtual void onAdd() {}
-    void add(const Component &cp) {
-        onAdd();
-        components_.push_back(cp);
-        modified_ = true;
-    }
     void add(Component &&cp) {
         onAdd();
         components_.push_back(std::move(cp));
@@ -97,20 +92,20 @@ class DataSetBuffer {
 };
 
 template <>
-void DataSetBuffer<ViewComponent>::onSync();
+void DataSetBuffer<TemporalViewComponent>::onSync();
 template <>
 void DataSetBuffer<RobotLink>::onSync();
 template <>
-void DataSetBuffer<Canvas2DComponent>::onSync();
+void DataSetBuffer<TemporalCanvas2DComponent>::onSync();
 template <>
-void DataSetBuffer<Canvas3DComponent>::onSync();
+void DataSetBuffer<TemporalCanvas3DComponent>::onSync();
 
 /*!
  * \brief Viewの送信用データを保持する
  *
  */
 class ViewBuf final : public std::stringbuf,
-                      public DataSetBuffer<ViewComponent> {
+                      public DataSetBuffer<TemporalViewComponent> {
     /*!
      * こっちはstreambufのsync
      *
@@ -124,24 +119,23 @@ class ViewBuf final : public std::stringbuf,
      * textは改行で分割する
      *
      */
-    void addVC(const ViewComponent &vc);
-    void addVC(ViewComponent &&vc);
-    void addText(const ViewComponent &vc);
-    void syncSetBuf() { this->DataSetBuffer<ViewComponent>::sync(); }
+    void addVC(TemporalViewComponent &&vc);
+    void addText(std::string_view text, const TemporalViewComponent *vc = nullptr);
+    void syncSetBuf() { this->DataSetBuffer<TemporalViewComponent>::sync(); }
 
     explicit ViewBuf();
     explicit ViewBuf(const Field &base);
     ~ViewBuf() override;
 };
 
-class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
+class Canvas2DDataBuf final : public DataSetBuffer<TemporalCanvas2DComponent> {
     double width_ = 0, height_ = 0;
 
   public:
-    friend DataSetBuffer<Canvas2DComponent>;
+    friend DataSetBuffer<TemporalCanvas2DComponent>;
     Canvas2DDataBuf() = default;
     Canvas2DDataBuf(const Field &base)
-        : DataSetBuffer<Canvas2DComponent>(base) {}
+        : DataSetBuffer<TemporalCanvas2DComponent>(base) {}
     void onAdd() override { checkSize(); }
     void checkSize() const {
         if (width_ <= 0 && height_ <= 0) {
@@ -153,7 +147,7 @@ class Canvas2DDataBuf final : public DataSetBuffer<Canvas2DComponent> {
     void init(double width, double height) {
         width_ = width;
         height_ = height;
-        this->DataSetBuffer<Canvas2DComponent>::init();
+        this->DataSetBuffer<TemporalCanvas2DComponent>::init();
     }
     /*!
      * ~DataSetBuffer() の時点ではすでにCanvas2DDataBufが破棄されているので、

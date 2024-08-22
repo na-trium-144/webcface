@@ -164,14 +164,10 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \brief Componentを追加
      * \since ver1.9
      *
+     * * ver2.0〜: move専用
+     * 
      */
-    Canvas2D &operator<<(const Canvas2DComponent &cc);
-    /*!
-     * \brief Componentを追加
-     * \since ver1.9
-     *
-     */
-    Canvas2D &operator<<(Canvas2DComponent &&cc);
+    Canvas2D &operator<<(TemporalCanvas2DComponent cc);
 
     /*!
      * \brief コンポーネントなどを追加
@@ -189,98 +185,11 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     /*!
      * \brief Geometryを追加
      * \since ver1.9
+     * 
      */
     template <bool V, bool C3>
-    Canvas2D &operator<<(TemporalComponent<V, true, C3> &&cc) {
-        *this << std::move(cc.to2());
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     * \since ver1.9
-     */
-    template <bool V, bool C3>
-    Canvas2D &operator<<(TemporalComponent<V, true, C3> &cc) {
-        *this << cc.to2();
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     *
-     * 事前に init() かコンストラクタでCanvasのサイズを指定しないと
-     * std::invalid_argument を投げます
-     * \param geometry 表示したい図形
-     * \param origin geometryを移動する
-     * \param color 図形の枠線の色 (省略時のinheritはWebUI上ではblackと同じ)
-     * \param fill 塗りつぶしの色 (省略時のinheritはWebUI上では透明)
-     * \param stroke_width 枠線の太さ
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas2D &add(const Geometry &geometry,
-                                 const Transform &origin,
-                                 const ViewColor &color = ViewColor::inherit,
-                                 const ViewColor &fill = ViewColor::inherit,
-                                 double stroke_width = 1) {
-        add(Canvas2DComponent{Canvas2DComponentType::geometry, origin, color,
-                              fill, stroke_width, geometry, std::nullopt,
-                              nullptr});
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     *
-     * origin を省略した場合identity()になる
-     *
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas2D &add(const Geometry &geometry,
-                                 const ViewColor &color = ViewColor::inherit,
-                                 const ViewColor &fill = ViewColor::inherit,
-                                 double stroke_width = 1) {
-        add(Canvas2DComponent{Canvas2DComponentType::geometry, identity(),
-                              color, fill, stroke_width, geometry, std::nullopt,
-                              nullptr});
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     *
-     * fillを省略
-     *
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas2D &add(const Geometry &geometry,
-                                 const Transform &origin,
-                                 const ViewColor &color, double stroke_width) {
-        add(Canvas2DComponent{Canvas2DComponentType::geometry, origin, color,
-                              ViewColor::inherit, stroke_width, geometry,
-                              std::nullopt, nullptr});
-        return *this;
-    }
-    /*!
-     * \brief Geometryを追加
-     *
-     * originとfillを省略
-     *
-     * \deprecated 1.9〜
-     * TemporalComponent に直接プロパティを設定できるようにしたため、
-     * add時の引数での設定は不要
-     *
-     */
-    [[deprecated]] Canvas2D &add(const Geometry &geometry,
-                                 const ViewColor &color, double stroke_width) {
-        add(Canvas2DComponent{Canvas2DComponentType::geometry, identity(),
-                              color, ViewColor::inherit, stroke_width, geometry,
-                              std::nullopt, nullptr});
+    Canvas2D &operator<<(TemporalComponent<V, true, C3> cc) {
+        *this << std::move(cc.component_2d);
         return *this;
     }
     /*!

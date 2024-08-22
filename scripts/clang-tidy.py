@@ -27,7 +27,13 @@ for s_dir in os.listdir(base_dir):
         print(os.path.join(s_dir, src))
         jobs.append(
             subprocess.Popen(
-                ["clang-tidy", "-p", os.path.join(base_dir, "build"), src],
+                [
+                    "clang-tidy",
+                    "-p",
+                    os.path.join(base_dir, "build"),
+                    src,
+                    "--extra-arg=-Wno-unknown-warning-option",
+                ],
             ),
         )
 

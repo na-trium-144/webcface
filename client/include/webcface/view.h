@@ -23,8 +23,17 @@ class ViewBuf;
  * コンストラクタではなく Member::view() を使って取得してください
  *
  */
-class WEBCFACE_DLL View : protected Field, private std::ostream {
+class WEBCFACE_DLL View : protected Field {
     std::shared_ptr<internal::ViewBuf> sb;
+    std::ostream os;
+
+    static constexpr std::nullptr_t TraitOk = nullptr;
+    template <typename T>
+    using EnableIfFormattable =
+        decltype(std::declval<std::ostream>() << std::declval<T>(), TraitOk);
+    template <typename T>
+    using EnableIfInvocable =
+        decltype(std::declval<T>()(std::declval<View &>()), TraitOk);
 
   public:
     View();
@@ -35,7 +44,7 @@ class WEBCFACE_DLL View : protected Field, private std::ostream {
     View(View &&rhs) noexcept : View() { *this = std::move(rhs); }
     View &operator=(const View &rhs);
     View &operator=(View &&rhs) noexcept;
-    ~View() override;
+    ~View();
 
     friend internal::DataSetBuffer<ViewComponent>;
 
@@ -172,29 +181,13 @@ class WEBCFACE_DLL View : protected Field, private std::ostream {
      * ver1.9〜 const参照ではなく&&型にしてforwardするようにした
      *
      */
-    template <typename T>
-    auto operator<<(T &&rhs)
-        -> decltype((std::ostream(nullptr) << std::forward<T>(rhs), *this)) {
-        static_cast<std::ostream &>(*this) << std::forward<T>(rhs);
+    template <typename T, EnableIfFormattable<T> = TraitOk>
+    View &operator<<(T &&rhs) {
+        os << std::forward<T>(rhs);
         return *this;
     }
     View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
-        os_manip(*this);
-        return *this;
-    }
-    template <bool C2, bool C3>
-    View &operator<<(TemporalComponent<true, C2, C3> &vc) {
-        *this << vc.toV();
-        return *this;
-    }
-    template <bool C2, bool C3>
-    View &operator<<(const TemporalComponent<true, C2, C3> &vc) {
-        *this << vc.toV();
-        return *this;
-    }
-    template <bool C2, bool C3>
-    View &operator<<(TemporalComponent<true, C2, C3> &&vc) {
-        *this << std::move(vc.toV());
+        os_manip(os);
         return *this;
     }
     /*!
@@ -203,19 +196,18 @@ class WEBCFACE_DLL View : protected Field, private std::ostream {
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      *
      */
-    View &operator<<(const ViewComponent &vc);
-    View &operator<<(ViewComponent &vc) {
-        *this << static_cast<const ViewComponent &>(vc);
+    template <bool C2, bool C3>
+    View &operator<<(TemporalComponent<true, C2, C3> vc) {
+        *this << std::move(vc.component_v);
         return *this;
     }
     /*!
      * \brief コンポーネントを追加
      *
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
-     * \since ver1.9
      *
      */
-    View &operator<<(ViewComponent &&vc);
+    View &operator<<(TemporalViewComponent vc);
     /*!
      * \brief コンポーネントを追加
      * \since ver1.11
@@ -223,9 +215,7 @@ class WEBCFACE_DLL View : protected Field, private std::ostream {
      * カスタムコンポーネントとして引数にViewをとる関数を渡すことができる
      *
      */
-    template <typename F,
-              typename std::enable_if_t<std::is_invocable_v<F, View &>,
-                                        std::nullptr_t> = nullptr>
+    template <typename F, EnableIfInvocable<F> = TraitOk>
     View &operator<<(const F &manip) {
         manip(*this);
         return *this;

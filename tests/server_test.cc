@@ -126,21 +126,21 @@ TEST_F(ServerTest, entry) {
         message::Value{{}, "a"_ss, std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c1->send(message::RobotModel{
-        "a"_ss, std::make_shared<std::vector<message::RobotLink>>()});
+        "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas3DComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas2DComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::ViewComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>(),
         0});
     dummy_c1->send(message::Image{
         "a"_ss,
@@ -148,9 +148,7 @@ TEST_F(ServerTest, entry) {
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr}
             .toMessage()});
-    dummy_c1->send(
-        message::FuncInfo{0, "a"_ss, ValType::none_,
-                          std::make_shared<std::vector<message::Arg>>()});
+    dummy_c1->send(message::FuncInfo{0, "a"_ss, ValType::none_, {}});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -191,7 +189,7 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::none_);
-        EXPECT_EQ(obj.args->size(), 0u);
+        EXPECT_EQ(obj.args.size(), 0u);
     });
     dummy_c2->recvClear();
 
@@ -208,7 +206,7 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::RobotModel{
-        "b"_ss, std::make_shared<std::vector<message::RobotLink>>()});
+        "b"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c2->waitRecv<message::Entry<message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1u);
@@ -216,8 +214,8 @@ TEST_F(ServerTest, entry) {
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::ViewComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -225,8 +223,8 @@ TEST_F(ServerTest, entry) {
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas3DComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -234,8 +232,8 @@ TEST_F(ServerTest, entry) {
     });
     dummy_c1->send(message::Canvas2D{
         "b"_ss, 0, 0,
-        std::make_shared<
-            std::unordered_map<std::string, message::Canvas2DComponent>>(),
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -251,14 +249,12 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
-    dummy_c1->send(
-        message::FuncInfo{0, "b"_ss, ValType::none_,
-                          std::make_shared<std::vector<message::Arg>>()});
+    dummy_c1->send(message::FuncInfo{0, "b"_ss, ValType::none_, {}});
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.return_type, ValType::none_);
-        EXPECT_EQ(obj.args->size(), 0u);
+        EXPECT_EQ(obj.args.size(), 0u);
     });
 }
 TEST_F(ServerTest, log) {
