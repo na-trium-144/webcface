@@ -166,7 +166,7 @@ struct FuncInfo : public Field {
         : Field(base), return_type(return_type), args(std::move(args)),
           func_impl(std::move(func_impl)) {}
     FuncInfo(const message::FuncInfo &m);
-    message::FuncInfo toMessage(const SharedString &field) const;
+    message::FuncInfo toMessage(const SharedString &field);
 };
 
 } // namespace internal

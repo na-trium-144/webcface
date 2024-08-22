@@ -338,9 +338,8 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.imageEntries()[0].nameW(), L"d");
 
     m.onFuncEntry(callback<Func>());
-    dummy_s->send(
-        message::FuncInfo{10, "a"_ss, ValType::int_,
-                          std::make_shared<std::vector<message::Arg>>(1)});
+    dummy_s->send(message::FuncInfo{
+        10, "a"_ss, ValType::int_, {std::make_shared<message::Arg>()}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;

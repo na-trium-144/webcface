@@ -462,7 +462,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
                        MSGPACK_NVP("l", length))
 };
 struct ImageFrame {
-    int width_ = 0, height_= 0;
+    int width_ = 0, height_ = 0;
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
@@ -553,10 +553,10 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     unsigned int member_id = 0;
     SharedString field;
     ValType return_type;
-    std::shared_ptr<std::vector<Arg>> args;
+    std::vector<std::shared_ptr<Arg>> args;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
-             ValType return_type, const std::shared_ptr<std::vector<Arg>> &args)
+             ValType return_type, const std::vector<std::shared_ptr<Arg>> &args)
         : member_id(member_id), field(field), return_type(return_type),
           args(args) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),

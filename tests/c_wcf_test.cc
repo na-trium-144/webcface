@@ -380,10 +380,10 @@ TEST_F(CClientTest, funcListen) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3u);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 
@@ -453,10 +453,10 @@ TEST_F(CClientTest, funcSet) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3u);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 
@@ -504,10 +504,10 @@ TEST_F(CClientTest, funcSetAsync) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3u);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 

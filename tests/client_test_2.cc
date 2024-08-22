@@ -275,8 +275,8 @@ TEST_F(ClientTest, funcInfo) {
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 1u);
-        EXPECT_EQ(obj.args->at(0).name_, "a"_ss);
+        EXPECT_EQ(obj.args.size(), 1u);
+        EXPECT_EQ(obj.args.at(0)->name_, "a"_ss);
     });
 }
 TEST_F(ClientTest, funcCall) {
