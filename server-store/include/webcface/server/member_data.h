@@ -95,7 +95,7 @@ struct MemberData {
     StrMap2<std::optional<std::thread>> image_convert_thread;
     void imageConvertThreadMain(const SharedString &member,
                                 const SharedString &field);
-    StrMap1<std::shared_ptr<std::vector<message::RobotLink>>> robot_model;
+    StrMap1<std::vector<std::shared_ptr<message::RobotLink>>> robot_model;
 
     StrSet1 log_req;
     bool hasReq(const SharedString &member);

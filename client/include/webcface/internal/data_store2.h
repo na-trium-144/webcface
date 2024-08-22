@@ -13,6 +13,7 @@
 #include "webcface/robot_link.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/component_internal.h"
+#include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -201,7 +202,8 @@ using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
 using ViewData =
     std::shared_ptr<std::vector<std::shared_ptr<internal::ViewComponentData>>>;
-using RobotModelData = std::shared_ptr<std::vector<RobotLink>>;
+using RobotModelData =
+    std::shared_ptr<std::vector<std::shared_ptr<internal::RobotLinkData>>>;
 using Canvas3DData = std::shared_ptr<
     std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>;
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;

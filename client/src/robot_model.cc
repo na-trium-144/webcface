@@ -3,6 +3,8 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
+#include "webcface/internal/robot_link_internal.h"
+
 WEBCFACE_NS_BEGIN
 
 RobotModel::RobotModel()
@@ -27,7 +29,15 @@ RobotModel &RobotModel::sync() {
 }
 template <>
 void internal::DataSetBuffer<RobotLink>::onSync() {
-    auto ls = std::make_shared<std::vector<RobotLink>>(std::move(components_));
+    auto ls = std::make_shared<
+        std::vector<std::shared_ptr<internal::RobotLinkData>>>();
+    std::vector<SharedString> link_names;
+    link_names.reserve(components_.size());
+    for (const auto &ln : components_) {
+        auto ln_msg = ln.lockJoints(link_names);
+        link_names.push_back(ln_msg->name);
+        ls->push_back(ln_msg);
+    }
     auto data = target_.setCheck();
     data->robot_model_store.setSend(target_, ls);
     std::shared_ptr<std::function<void(RobotModel)>> change_event;
@@ -72,7 +82,11 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     request();
     auto v = dataLock()->robot_model_store.getRecv(*this);
     if (v) {
-        return **v;
+        std::vector<RobotLink> links;
+        for (const auto &ln_msg : **v) {
+            links.emplace_back(ln_msg);
+        }
+        return links;
     } else {
         return std::nullopt;
     }

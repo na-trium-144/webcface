@@ -86,6 +86,9 @@ class WEBCFACE_DLL SharedString {
     const std::string &decode() const;
     const std::wstring &decodeW() const;
 
+    static const std::string &emptyStr();
+    static const std::wstring &emptyStrW();
+
     bool empty() const;
     bool startsWith(std::string_view str) const;
     bool startsWith(char str) const;

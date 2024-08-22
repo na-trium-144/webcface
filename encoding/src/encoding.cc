@@ -35,6 +35,15 @@ static bool using_utf8 = true;
 void usingUTF8(bool flag) { using_utf8 = flag; }
 bool usingUTF8() { return using_utf8; }
 
+const std::string &SharedString::emptyStr() {
+    static std::string empty;
+    return empty;
+}
+const std::wstring &SharedString::emptyStrW() {
+    static std::wstring empty;
+    return empty;
+}
+
 SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
     : data(std::move(data)) {}
 bool SharedString::operator==(const SharedString &other) const {
@@ -99,8 +108,7 @@ SharedString SharedString::encode(std::wstring_view name, std::string_view s) {
 
 const std::string &SharedString::u8String() const {
     if (!data) {
-        static std::string empty;
-        return empty;
+        return emptyStr();
     } else {
         return data->u8s;
     }
@@ -142,8 +150,7 @@ std::string toNarrow(std::wstring_view name) {
 
 const std::wstring &SharedString::decodeW() const {
     if (!data || data->u8s.empty()) {
-        static std::wstring empty;
-        return empty;
+        return emptyStrW();
     } else {
         std::lock_guard lock(data->m);
         if (!data->ws.empty()) {
@@ -196,8 +203,7 @@ std::wstring toWide(std::string_view name_ref) {
 
 const std::string &SharedString::decode() const {
     if (!data || data->u8s.empty()) {
-        static std::string empty;
-        return empty;
+        return emptyStr();
     } else {
         std::lock_guard lock(data->m);
         if (!data->s.empty()) {

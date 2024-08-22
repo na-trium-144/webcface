@@ -47,12 +47,10 @@ void Arg::mergeConfig(const Arg &other) {
 }
 
 const std::string &Arg::name() const {
-    static std::string empty;
-    return this->msg_data ? this->msg_data->name_.decode() : empty;
+    return this->msg_data ? this->msg_data->name_.decode() : SharedString::emptyStr();
 }
 const std::wstring &Arg::nameW() const {
-    static std::wstring empty;
-    return this->msg_data ? this->msg_data->name_.decodeW() : empty;
+    return this->msg_data ? this->msg_data->name_.decodeW() : SharedString::emptyStrW();
 }
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {

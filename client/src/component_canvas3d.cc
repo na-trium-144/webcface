@@ -147,9 +147,9 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         msg_data->angles.clear();
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (angles.count(j.name.decode())) {
-                msg_data->anglesAt(ji) = angles.at(j.name.decode());
+            auto j = model[ji].joint();
+            if (angles.count(j.name())) {
+                msg_data->anglesAt(ji) = angles.at(j.name());
             }
         }
         return *this;
@@ -169,9 +169,9 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         msg_data->angles.clear();
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (angles.count(j.name.decodeW())) {
-                msg_data->anglesAt(ji) = angles.at(j.name.decodeW());
+            auto j = model[ji].joint();
+            if (angles.count(j.nameW())) {
+                msg_data->anglesAt(ji) = angles.at(j.nameW());
             }
         }
         return *this;
@@ -190,8 +190,8 @@ TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
                             *msg_data->field_field}};
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (joint_name == j.name.decode()) {
+            auto j = model[ji].joint();
+            if (joint_name == j.name()) {
                 msg_data->anglesAt(ji) = angle;
             }
         }
@@ -211,8 +211,8 @@ TemporalCanvas3DComponent::angle(const std::wstring &joint_name, double angle) {
                             *msg_data->field_field}};
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (joint_name == j.name.decodeW()) {
+            auto j = model[ji].joint();
+            if (joint_name == j.nameW()) {
                 msg_data->anglesAt(ji) = angle;
             }
         }

@@ -324,10 +324,10 @@ struct RobotLink {
 };
 struct RobotModel : public MessageBase<MessageKind::robot_model> {
     SharedString field;
-    std::shared_ptr<std::vector<RobotLink>> data;
+    std::vector<std::shared_ptr<RobotLink>> data;
     RobotModel() = default;
     RobotModel(const SharedString &field,
-               const std::shared_ptr<std::vector<RobotLink>> &data)
+               const std::vector<std::shared_ptr<RobotLink>> &data)
         : field(field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
 };
@@ -675,10 +675,10 @@ struct Res<RobotModel>
     : public MessageBase<MessageKind::robot_model + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::shared_ptr<std::vector<RobotLink>> data;
+    std::vector<std::shared_ptr<RobotLink>> data;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::shared_ptr<std::vector<RobotLink>> &data)
+        const std::vector<std::shared_ptr<RobotLink>> &data)
         : req_id(req_id), sub_field(sub_field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data))

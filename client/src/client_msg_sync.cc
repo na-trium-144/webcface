@@ -1,6 +1,7 @@
 #include "webcface/client.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -123,13 +124,10 @@ std::string internal::ClientData::syncData(bool is_first,
         message::pack(buffer, len, message::Text{{}, v.first, v.second});
     }
     for (const auto &v : robot_model_store.transferSend(is_first)) {
-        auto data = std::make_shared<std::vector<message::RobotLink>>();
-        data->reserve(v.second->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(v.second->size());
+        std::vector<std::shared_ptr<message::RobotLink>> data;
+        data.reserve(v.second->size());
         for (std::size_t i = 0; i < v.second->size(); i++) {
-            data->emplace_back(v.second->at(i).toMessage(link_names));
-            link_names.push_back((*data)[i].name);
+            data.emplace_back(v.second->at(i));
         }
         message::pack(buffer, len, message::RobotModel{v.first, data});
     }
