@@ -5,6 +5,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include <vector>
+#include <type_traits>
 
 WEBCFACE_NS_BEGIN
 /*!
@@ -31,7 +32,17 @@ struct Geometry {
     Geometry(GeometryType type, std::vector<double> &&properties)
         : type(type), properties(std::move(properties)) {}
 
-    template <typename GeometryDerived>
+    /*!
+     * \brief 各種Geometry型に変換
+     *
+     * as<Line>(), as<Plane>()
+     * などとしてそれぞれのgeometry型のプロパティを取得する。
+     *
+     */
+    template <
+        typename GeometryDerived,
+        std::enable_if_t<std::is_constructible_v<GeometryDerived, Geometry &>,
+                         std::nullptr_t> = nullptr>
     GeometryDerived as() const {
         return GeometryDerived{*this};
     }
