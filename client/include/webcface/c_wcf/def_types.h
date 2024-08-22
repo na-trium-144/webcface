@@ -12,7 +12,8 @@ extern "C" {
 #endif
 
 typedef void wcfClient;
-typedef void wcfAsyncFuncResult;
+typedef void wcfPromise;
+typedef wcfPromise wcfAsyncFuncResult;
 
 typedef enum wcfStatus {
     WCF_OK = 0,
@@ -48,11 +49,6 @@ typedef enum wcfValType {
  */
 typedef struct wcfMultiVal {
     /*!
-     * \brief int型でのアクセス
-     * \sa wcfValI
-     */
-    int as_int;
-    /*!
      * \brief double型でのアクセス
      * \sa wcfValD
      */
@@ -67,6 +63,11 @@ typedef struct wcfMultiVal {
      * \sa wcfValS
      */
     const char *as_str;
+    /*!
+     * \brief int型でのアクセス
+     * \sa wcfValI
+     */
+    int as_int;
 } wcfMultiVal;
 /*!
  * \brief 数値と文字列をまとめて扱うためのstruct (wstring)
@@ -82,11 +83,6 @@ typedef struct wcfMultiVal {
  */
 typedef struct wcfMultiValW {
     /*!
-     * \brief int型でのアクセス
-     * \sa wcfValWI
-     */
-    int as_int;
-    /*!
      * \brief double型でのアクセス
      * \sa wcfValWD
      */
@@ -101,6 +97,11 @@ typedef struct wcfMultiValW {
      * \sa wcfValWS
      */
     const wchar_t *as_str;
+    /*!
+     * \brief int型でのアクセス
+     * \sa wcfValWI
+     */
+    int as_int;
 } wcfMultiValW;
 
 /*!
@@ -210,7 +211,9 @@ typedef enum wcfColor {
 
 /*!
  * \brief Viewの要素を表すstruct
- *
+ * 
+ * structのメンバーの順番はWebCFaceのバージョンによって変更する可能性があります
+ * 
  */
 typedef struct wcfViewComponent {
     /*!
@@ -218,6 +221,11 @@ typedef struct wcfViewComponent {
      *
      */
     wcfViewComponentType type;
+    /*!
+     * \brief inputの選択肢の数 (optionの指す配列の要素数)
+     * \since ver2.0
+     */
+    int option_num;
     /*!
      * \brief 表示する文字列 (空の場合nullptr)
      *
@@ -233,6 +241,11 @@ typedef struct wcfViewComponent {
      *
      */
     const char *text_ref_member, *text_ref_field;
+    /*!
+     * \brief inputの選択肢
+     * \since ver2.0
+     */
+    const wcfMultiVal *option;
     /*!
      * \brief テキストの色
      *
@@ -258,16 +271,14 @@ typedef struct wcfViewComponent {
      * \since ver2.0
      */
     double step;
-    /*!
-     * \brief inputの選択肢
-     * \since ver2.0
-     */
-    const wcfMultiVal *option;
-    /*!
-     * \brief inputの選択肢の数 (optionの指す配列の要素数)
-     * \since ver2.0
-     */
-    int option_num;
+
+#if WEBCFACE_PTR_SIZE == 4
+    // currently 4 * 16
+    int reserved[8];
+#elif WEBCFACE_PTR_SIZE == 8
+    // currently 4 * 22
+    int reserved[14];
+#endif
 } wcfViewComponent;
 
 /*!
@@ -277,16 +288,21 @@ typedef struct wcfViewComponent {
  */
 typedef struct wcfViewComponentW {
     wcfViewComponentType type;
+    int option_num;
     const wchar_t *text;
     const wchar_t *on_click_member, *on_click_field;
     const wchar_t *text_ref_member, *text_ref_field;
+    const wcfMultiValW *option;
     wcfColor text_color;
     wcfColor bg_color;
     double min;
     double max;
     double step;
-    const wcfMultiValW *option;
-    int option_num;
+#if WEBCFACE_PTR_SIZE == 4
+    int reserved[8];
+#elif WEBCFACE_PTR_SIZE == 8
+    int reserved[14];
+#endif
 } wcfViewComponentW;
 
 #ifdef __cplusplus

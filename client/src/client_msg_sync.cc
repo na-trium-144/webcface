@@ -1,6 +1,7 @@
 #include "webcface/client.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -123,23 +124,24 @@ std::string internal::ClientData::syncData(bool is_first,
         message::pack(buffer, len, message::Text{{}, v.first, v.second});
     }
     for (const auto &v : robot_model_store.transferSend(is_first)) {
-        auto data = std::make_shared<std::vector<message::RobotLink>>();
-        data->reserve(v.second->size());
-        std::vector<SharedString> link_names;
-        link_names.reserve(v.second->size());
+        std::vector<std::shared_ptr<message::RobotLink>> data;
+        data.reserve(v.second->size());
         for (std::size_t i = 0; i < v.second->size(); i++) {
-            data->emplace_back(v.second->at(i).toMessage(link_names));
-            link_names.push_back((*data)[i].name);
+            data.emplace_back(v.second->at(i));
         }
         message::pack(buffer, len, message::RobotModel{v.first, data});
     }
     auto view_prev = view_store.getSendPrev(is_first);
     for (const auto &p : view_store.transferSend(is_first)) {
         auto v_prev = view_prev.find(p.first);
-        auto v_diff = view_store.getDiff(
-            p.second.get(),
-            v_prev == view_prev.end() ? nullptr : v_prev->second.get());
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::ViewComponent>> v_diff;
+        for (std::size_t i = 0; i < p.second->size(); i++) {
+            if (v_prev == view_prev.end() || v_prev->second->size() <= i ||
+                *(*v_prev->second)[i] != *(*p.second)[i]) {
+                v_diff.emplace(static_cast<int>(i), (*p.second)[i]);
+            }
+        }
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::View{p.first, v_diff, p.second->size()});
         }
@@ -147,10 +149,16 @@ std::string internal::ClientData::syncData(bool is_first,
     auto canvas3d_prev = canvas3d_store.getSendPrev(is_first);
     for (const auto &p : canvas3d_store.transferSend(is_first)) {
         auto v_prev = canvas3d_prev.find(p.first);
-        auto v_diff = canvas3d_store.getDiff(
-            p.second.get(),
-            v_prev == canvas3d_prev.end() ? nullptr : v_prev->second.get());
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::Canvas3DComponent>>
+            v_diff;
+        for (std::size_t i = 0; i < p.second->size(); i++) {
+            if (v_prev == canvas3d_prev.end() || v_prev->second->size() <= i ||
+                *(*v_prev->second)[i] != *(*p.second)[i]) {
+                v_diff.emplace(static_cast<int>(i), (*p.second)[i]);
+            }
+        }
+
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::Canvas3D{p.first, v_diff, p.second->size()});
         }
@@ -158,11 +166,16 @@ std::string internal::ClientData::syncData(bool is_first,
     auto canvas2d_prev = canvas2d_store.getSendPrev(is_first);
     for (const auto &p : canvas2d_store.transferSend(is_first)) {
         auto v_prev = canvas2d_prev.find(p.first);
-        auto v_diff = view_store.getDiff(&p.second->components,
-                                         v_prev == canvas2d_prev.end()
-                                             ? nullptr
-                                             : &v_prev->second->components);
-        if (!v_diff->empty()) {
+        std::unordered_map<int, std::shared_ptr<message::Canvas2DComponent>>
+            v_diff;
+        for (std::size_t i = 0; i < p.second->components.size(); i++) {
+            if (v_prev == canvas2d_prev.end() ||
+                v_prev->second->components.size() <= i ||
+                *v_prev->second->components[i] != *p.second->components[i]) {
+                v_diff.emplace(static_cast<int>(i), p.second->components[i]);
+            }
+        }
+        if (!v_diff.empty()) {
             message::pack(buffer, len,
                           message::Canvas2D{p.first, p.second->width,
                                             p.second->height, v_diff,
@@ -196,10 +209,6 @@ std::string internal::ClientData::syncData(bool is_first,
     }
 
     return message::packDone(buffer, len);
-}
-void Client::sync() {
-    start();
-    data->message_push(data->syncData(false));
 }
 
 std::vector<Member> Client::members() {

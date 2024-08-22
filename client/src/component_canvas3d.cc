@@ -1,123 +1,226 @@
 #include "webcface/robot_model.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/message/message.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 
-message::Canvas3DComponent Canvas3DComponent::toMessage() const {
-    message::Canvas3DComponent cc;
-    cc.type = static_cast<int>(this->type_);
-    cc.origin_pos = this->origin_.pos();
-    cc.origin_rot = this->origin_.rot();
-    cc.color = static_cast<int>(this->color_);
-    if (this->geometry_) {
-        cc.geometry_type = static_cast<int>(this->geometry_->type);
-        cc.geometry_properties = this->geometry_->properties;
-    }
-    if (this->field_base_) {
-        cc.field_member = this->field_base_->member_;
-        cc.field_field = this->field_base_->field_;
-    }
-    for (const auto &a : this->angles_) {
-        cc.angles.emplace(std::to_string(a.first), a.second);
-    }
-    return cc;
+static inline std::string internalCanvas3DId(int type, int idx) {
+    return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-Canvas3DComponent::Canvas3DComponent(const message::Canvas3DComponent &cc)
-    : type_(static_cast<Canvas3DComponentType>(cc.type)),
-      origin_(cc.origin_pos, cc.origin_rot),
-      color_(static_cast<ViewColor>(cc.color)),
-      geometry_(cc.geometry_type
-                    ? std::make_optional<Geometry>(
-                          static_cast<GeometryType>(*cc.geometry_type),
-                          cc.geometry_properties)
-                    : std::nullopt) {
-    for (const auto &a : cc.angles) {
-        this->angles_.emplace(std::stoi(a.first), a.second);
+std::string Canvas3DComponent::id() const {
+    return internalCanvas3DId(static_cast<int>(type()), idx_for_type);
+}
+
+Canvas3DComponent::Canvas3DComponent() = default;
+
+Canvas3DComponent::Canvas3DComponent(
+    const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
+    const std::weak_ptr<internal::ClientData> &data_w,
+    std::unordered_map<Canvas3DComponentType, int> *idx_next)
+    : msg_data(msg_data), data_w(data_w) {
+    if (idx_next) {
+        idx_for_type =
+            (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
     }
 }
 
+TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
+    : msg_data() {}
+TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
+    : msg_data(std::make_unique<internal::Canvas3DComponentData>()) {
+    this->msg_data->type = static_cast<int>(type);
+}
+
+TemporalCanvas3DComponent::TemporalCanvas3DComponent(
+    const TemporalCanvas3DComponent &other) {
+    if (other.msg_data) {
+        msg_data =
+            std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+    }
+}
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
+    msg_data =
+        std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+    return *this;
+}
+TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}
+
+void Canvas3DComponent::checkData() const {
+    if (!this->msg_data) {
+        throw std::runtime_error("Accessed empty Canvas3DComponent");
+    }
+}
+
+std::unique_ptr<internal::Canvas3DComponentData>
+TemporalCanvas3DComponent::lockTmp(
+    const std::shared_ptr<internal::ClientData> & /*data*/,
+    const SharedString & /*view_name*/,
+    std::unordered_map<Canvas3DComponentType, int> * /*idx_next*/) {
+    /*
+    int idx_for_type = 0;
+    if (idx_next) {
+        idx_for_type =
+            (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
+    }
+    */
+    return std::move(msg_data);
+}
+bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
+    return msg_data && other.msg_data && /*id() == other.id() && */
+           *msg_data == *other.msg_data;
+}
+bool internal::Canvas3DComponentData::operator==(
+    const Canvas3DComponentData &other) const {
+    return type == other.type && origin_pos == other.origin_pos &&
+           origin_rot == other.origin_rot && color == other.color &&
+           geometry_type == other.geometry_type &&
+           geometry_properties == other.geometry_properties &&
+           field_member == other.field_member &&
+           field_field == other.field_field && angles == other.angles;
+}
+
+Canvas3DComponentType Canvas3DComponent::type() const {
+    checkData();
+    return static_cast<Canvas3DComponentType>(msg_data->type);
+}
+Transform Canvas3DComponent::origin() const {
+    checkData();
+    return Transform(msg_data->origin_pos, msg_data->origin_rot);
+}
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::origin(const Transform &origin) {
+    msg_data->origin_pos = origin.pos();
+    msg_data->origin_rot = origin.rot();
+    return *this;
+}
+ViewColor Canvas3DComponent::color() const {
+    checkData();
+    return static_cast<ViewColor>(msg_data->color);
+}
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::color(ViewColor color) {
+    msg_data->color = static_cast<int>(color);
+    return *this;
+}
+std::optional<Geometry> Canvas3DComponent::geometry() const {
+    checkData();
+    if (!msg_data->geometry_type ||
+        msg_data->geometry_type == static_cast<int>(GeometryType::none)) {
+        return std::nullopt;
+    } else {
+        return Geometry(static_cast<GeometryType>(*msg_data->geometry_type),
+                        msg_data->geometry_properties);
+    }
+}
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::geometry(const Geometry &g) {
+    msg_data->geometry_type = static_cast<int>(g.type);
+    msg_data->geometry_properties = g.properties;
+    return *this;
+}
 std::optional<RobotModel> Canvas3DComponent::robotModel() const {
-    if (field_base_ && type_ == Canvas3DComponentType::robot_model) {
-        return Field{data_w, field_base_->member_, field_base_->field_};
+    checkData();
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type ==
+            static_cast<int>(Canvas3DComponentType::robot_model)) {
+        return Field{data_w, *msg_data->field_member, *msg_data->field_field};
     } else {
         return std::nullopt;
     }
 }
-Canvas3DComponent &Canvas3DComponent::robotModel(const RobotModel &field) {
-    field_base_.emplace(static_cast<FieldBase>(field));
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::robotModel(const RobotModel &field) {
+    msg_data->data_w = static_cast<Field>(field).data_w;
+    msg_data->field_member = static_cast<FieldBase>(field).member_;
+    msg_data->field_field = static_cast<FieldBase>(field).field_;
     return *this;
 }
 
-
-Canvas3DComponent &Canvas3DComponent::angles(
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     const std::unordered_map<std::string, double> &angles) {
-    auto rm = robotModel();
-    if (rm) {
-        angles_.clear();
-        auto model = rm->get();
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type ==
+            static_cast<int>(Canvas3DComponentType::robot_model)) {
+        RobotModel rm{Field{msg_data->data_w, *msg_data->field_member,
+                            *msg_data->field_field}};
+        msg_data->angles.clear();
+        auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (angles.count(j.name.decode())) {
-                angles_[ji] = angles.at(j.name.decode());
+            auto j = model[ji].joint();
+            if (angles.count(j.name())) {
+                msg_data->anglesAt(ji) = angles.at(j.name());
             }
         }
         return *this;
     } else {
-        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
-                                    "but robotModel not defined");
+        throw std::invalid_argument(
+            "Tried to set TemporalCanvas3DComponent::angles "
+            "but robotModel not defined");
     }
 }
-Canvas3DComponent &Canvas3DComponent::angles(
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     const std::unordered_map<std::wstring, double> &angles) {
-    auto rm = robotModel();
-    if (rm) {
-        angles_.clear();
-        auto model = rm->get();
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type ==
+            static_cast<int>(Canvas3DComponentType::robot_model)) {
+        RobotModel rm{Field{msg_data->data_w, *msg_data->field_member,
+                            *msg_data->field_field}};
+        msg_data->angles.clear();
+        auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (angles.count(j.name.decodeW())) {
-                angles_[ji] = angles.at(j.name.decodeW());
+            auto j = model[ji].joint();
+            if (angles.count(j.nameW())) {
+                msg_data->anglesAt(ji) = angles.at(j.nameW());
             }
         }
         return *this;
     } else {
-        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
-                                    "but robotModel not defined");
+        throw std::invalid_argument(
+            "Tried to set TemporalCanvas3DComponent::angles "
+            "but robotModel not defined");
     }
 }
-Canvas3DComponent &Canvas3DComponent::angle(const std::string &joint_name,
-                                            double angle) {
-    auto rm = robotModel();
-    if (rm) {
-        auto model = rm->get();
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type ==
+            static_cast<int>(Canvas3DComponentType::robot_model)) {
+        RobotModel rm{Field{msg_data->data_w, *msg_data->field_member,
+                            *msg_data->field_field}};
+        auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (joint_name == j.name.decode()) {
-                angles_[ji] = angle;
+            auto j = model[ji].joint();
+            if (joint_name == j.name()) {
+                msg_data->anglesAt(ji) = angle;
             }
         }
         return *this;
     } else {
-        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
-                                    "but robotModel not defined");
+        throw std::invalid_argument(
+            "Tried to set TemporalCanvas3DComponent::angles "
+            "but robotModel not defined");
     }
 }
-Canvas3DComponent &Canvas3DComponent::angle(const std::wstring &joint_name,
-                                            double angle) {
-    auto rm = robotModel();
-    if (rm) {
-        auto model = rm->get();
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::angle(const std::wstring &joint_name, double angle) {
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type ==
+            static_cast<int>(Canvas3DComponentType::robot_model)) {
+        RobotModel rm{Field{msg_data->data_w, *msg_data->field_member,
+                            *msg_data->field_field}};
+        auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
-            const auto &j = model[ji].joint;
-            if (joint_name == j.name.decodeW()) {
-                angles_[ji] = angle;
+            auto j = model[ji].joint();
+            if (joint_name == j.nameW()) {
+                msg_data->anglesAt(ji) = angle;
             }
         }
         return *this;
     } else {
-        throw std::invalid_argument("Tried to set Canvas3DComponent::angles "
-                                    "but robotModel not defined");
+        throw std::invalid_argument(
+            "Tried to set TemporalCanvas3DComponent::angles "
+            "but robotModel not defined");
     }
 }
 

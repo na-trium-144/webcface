@@ -74,7 +74,6 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         auto ret = curl_easy_perform(handle);
         if (ret == CURLE_OK) {
-            send(data, data->syncDataFirst());
             data->logger_internal->debug("connected to {}",
                                          data->current_curl_path);
             data->current_curl_connected = true;

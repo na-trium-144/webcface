@@ -29,7 +29,7 @@ class WEBCFACE_DLL Text : protected Field {
 
     friend class InputRef;
     friend struct InputRefState;
-    friend class ViewComponent;
+    friend class TemporalViewComponent;
     using Field::lastName;
     using Field::member;
     using Field::name;
@@ -85,11 +85,15 @@ class WEBCFACE_DLL Text : protected Field {
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback Text型の引数(thisが渡される)を1つ取る関数
+     * 
      */
     Text &onChange(std::function<void WEBCFACE_CALL_FP(Text)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback 引数をとらない関数
+     * 
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
@@ -235,7 +239,7 @@ class WEBCFACE_DLL Text : protected Field {
 WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
                                                     const Text &data);
 
-struct WEBCFACE_DLL InputRefState {
+struct InputRefState {
     Text field;
     ValAdaptor val;
     InputRefState() = default;
@@ -254,7 +258,7 @@ struct WEBCFACE_DLL InputRefState {
  * sync()時にその新しいInputRefには前のInputRefと同じ名前が割り当てられることで同じ値になる
  *
  */
-class WEBCFACE_DLL InputRef {
+class InputRef {
     std::shared_ptr<InputRefState> state;
 
   public:

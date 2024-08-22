@@ -125,23 +125,23 @@ TEST_F(DataTest, valueSetVec) {
     value(self_name, "d7").resize(5);
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).size(), 5u);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).at(0), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d3"_ss)).size(), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d4"_ss)).size(), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d5"_ss)).size(), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d3"_ss)).size(), 5u);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d4"_ss)).size(), 5u);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d5"_ss)).size(), 5u);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).size(), 5u);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(0), 1);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(1), 2);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(2), 3);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(3), 4);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
+    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
 }
 TEST_F(DataTest, textSet) {
     data_->text_change_event[self_name]["b"_ss] =
@@ -182,12 +182,12 @@ TEST_F(DataTest, valueGet) {
     EXPECT_EQ(value("a", "b").get(), 123);
     EXPECT_EQ(value("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(value("a", "c").get(), 0);
-    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(value(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->value_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->value_store.transferReq().count(self_name), 0u);
     value("a", "d").onChange(callback<Value>());
-    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 TEST_F(DataTest, textGet) {
     data_->text_store.setRecv("a"_ss, "b"_ss,
@@ -203,12 +203,12 @@ TEST_F(DataTest, textGet) {
     EXPECT_EQ(text("a", "c").tryGetV(), std::nullopt);
     EXPECT_EQ(text("a", "c").get(), "");
     EXPECT_EQ(text("a", "c").getW(), L"");
-    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("b"_ss), 1);
-    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("c"_ss), 2);
+    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);
-    EXPECT_EQ(data_->text_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(data_->text_store.transferReq().count(self_name), 0u);
     text("a", "d").onChange(callback<Text>());
-    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("d"_ss), 3);
+    EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
@@ -219,25 +219,25 @@ TEST_F(DataTest, logGet) {
             {3, system_clock::now(), "c"_ss},
         });
     data_->log_store.setRecv("a"_ss, logs);
-    EXPECT_EQ(log("a").tryGet().value().size(), 3);
-    EXPECT_EQ(log("a").tryGetW().value().size(), 3);
-    ASSERT_EQ(log("a").get().size(), 3);
-    ASSERT_EQ(log("a").getW().size(), 3);
+    EXPECT_EQ(log("a").tryGet().value().size(), 3u);
+    EXPECT_EQ(log("a").tryGetW().value().size(), 3u);
+    ASSERT_EQ(log("a").get().size(), 3u);
+    ASSERT_EQ(log("a").getW().size(), 3u);
     EXPECT_EQ(log("a").get()[2].level(), 3);
     EXPECT_EQ(log("a").getW()[2].level(), 3);
     EXPECT_EQ(log("a").get()[2].message(), "c");
     EXPECT_EQ(log("a").getW()[2].message(), L"c");
     EXPECT_EQ(log("b").tryGet(), std::nullopt);
     EXPECT_EQ(log("b").tryGetW(), std::nullopt);
-    EXPECT_EQ(log("b").get().size(), 0);
-    EXPECT_EQ(log("b").getW().size(), 0);
+    EXPECT_EQ(log("b").get().size(), 0u);
+    EXPECT_EQ(log("b").getW().size(), 0u);
     EXPECT_EQ(data_->log_store.transferReq().at("a"_ss), true);
     EXPECT_EQ(data_->log_store.transferReq().at("b"_ss), true);
     ASSERT_TRUE(log(self_name).tryGet().has_value());
     ASSERT_TRUE(log(self_name).tryGetW().has_value());
-    EXPECT_EQ(log(self_name).tryGet()->size(), 0);
-    EXPECT_EQ(log(self_name).tryGetW()->size(), 0);
-    EXPECT_EQ(data_->log_store.transferReq().count(self_name), 0);
+    EXPECT_EQ(log(self_name).tryGet()->size(), 0u);
+    EXPECT_EQ(log(self_name).tryGetW()->size(), 0u);
+    EXPECT_EQ(data_->log_store.transferReq().count(self_name), 0u);
     log("d").onChange(callback<Log>());
     EXPECT_EQ(data_->log_store.transferReq().at("d"_ss), true);
 }
@@ -251,7 +251,7 @@ TEST_F(DataTest, logClear) {
         });
     data_->log_store.setRecv("a"_ss, logs);
     log("a").clear();
-    EXPECT_EQ(log("a").tryGet().value().size(), 0);
-    EXPECT_EQ(log("a").tryGetW().value().size(), 0);
+    EXPECT_EQ(log("a").tryGet().value().size(), 0u);
+    EXPECT_EQ(log("a").tryGetW().value().size(), 0u);
 }
 // todo: hidden, free

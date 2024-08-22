@@ -3,25 +3,23 @@
 #include "webcface/member.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 
 View::View()
-    : Field(), std::ostream(nullptr),
-      sb(std::make_shared<internal::ViewBuf>()) {
-    this->std::ostream::init(sb.get());
-}
+    : Field(), sb(std::make_shared<internal::ViewBuf>()), os(sb.get()) {}
 View::View(const Field &base)
-    : Field(base), std::ostream(nullptr),
-      sb(std::make_shared<internal::ViewBuf>(base)) {
-    this->std::ostream::init(sb.get());
+    : Field(base), sb(std::make_shared<internal::ViewBuf>(base)), os(sb.get()) {
 }
-View::~View() { this->rdbuf(nullptr); }
+View::~View() { os.rdbuf(nullptr); }
 
 internal::ViewBuf::ViewBuf()
-    : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>() {}
+    : std::stringbuf(std::ios_base::out),
+      DataSetBuffer<TemporalViewComponent>() {}
 internal::ViewBuf::ViewBuf(const Field &base)
-    : std::stringbuf(std::ios_base::out), DataSetBuffer<ViewComponent>(base) {}
+    : std::stringbuf(std::ios_base::out),
+      DataSetBuffer<TemporalViewComponent>(base) {}
 internal::ViewBuf::~ViewBuf() { sync(); }
 
 View &View::init() {
@@ -29,20 +27,23 @@ View &View::init() {
     return *this;
 }
 View &View::sync() {
-    std::flush(*this);
+    std::flush(os);
     sb->syncSetBuf();
     return *this;
 }
 template <>
-void internal::DataSetBuffer<ViewComponent>::onSync() {
-    std::unordered_map<int, int> idx_next;
+void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
+    std::unordered_map<ViewComponentType, int> idx_next;
     auto data = target_.setCheck();
+    auto components_p = std::make_shared<
+        std::vector<std::shared_ptr<internal::ViewComponentData>>>();
+    components_p->reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        components_[i].lockTmp(data, target_.field_, &idx_next);
+        components_p->push_back(
+            components_[i].lockTmp(data, target_.field_, &idx_next));
     }
-    data->view_store.setSend(
-        target_,
-        std::make_shared<std::vector<ViewComponent>>(std::move(components_)));
+    data->view_store.setSend(target_, components_p);
+
     std::shared_ptr<std::function<void(View)>> change_event;
     {
         std::lock_guard lock(data->event_m);
@@ -61,55 +62,52 @@ View &View::onChange(std::function<void(View)> callback) {
     return *this;
 }
 
-View &View::operator<<(const ViewComponent &vc) {
-    std::flush(*this);
-    sb->addVC(vc);
-    return *this;
-}
-View &View::operator<<(ViewComponent &&vc) {
-    std::flush(*this);
+View &View::operator<<(TemporalViewComponent vc) {
+    std::flush(os);
     sb->addVC(std::move(vc));
     return *this;
 }
-void internal::ViewBuf::addText(const ViewComponent &vc) {
-    std::string s = vc.text();
+void internal::ViewBuf::addText(std::string_view text,
+                                const TemporalViewComponent *vc) {
+    std::string_view sv = text;
     while (true) {
-        auto p = s.find('\n');
+        auto p = sv.find('\n');
         if (p == std::string::npos) {
             break;
         }
-        std::string c1 = s.substr(0, p);
+        std::string_view c1 = sv.substr(0, p);
         if (!c1.empty()) {
-            ViewComponent vc_new = vc;
-            vc_new.text(c1);
-            add(std::move(vc_new));
+            if (vc) {
+                TemporalViewComponent tx = *vc;
+                tx.text(c1);
+                add(std::move(tx));
+            } else {
+                add(std::move(components::text(c1).component_v));
+            }
         }
-        add(ViewComponents::newLine());
-        s = s.substr(p + 1);
+        add(components::newLine());
+        sv = sv.substr(p + 1);
     }
-    if (!s.empty()) {
-        ViewComponent vc_new = vc;
-        vc_new.text(s);
-        add(std::move(vc_new));
-    }
-}
-void internal::ViewBuf::addVC(const ViewComponent &vc) {
-    if (vc.type() == ViewComponentType::text) {
-        addText(vc);
-    } else {
-        add(vc);
+    if (!sv.empty()) {
+        if (vc) {
+            TemporalViewComponent tx = *vc;
+            tx.text(sv);
+            add(std::move(tx));
+        } else {
+            add(std::move(components::text(sv).component_v));
+        }
     }
 }
-void internal::ViewBuf::addVC(ViewComponent &&vc) {
-    if (vc.type() == ViewComponentType::text) {
-        addText(vc);
+void internal::ViewBuf::addVC(TemporalViewComponent &&vc) {
+    if (vc.msg_data->type == static_cast<int>(ViewComponentType::text)) {
+        addText(vc.msg_data->text.u8StringView(), &vc);
     } else {
         add(std::move(vc));
     }
 }
 int internal::ViewBuf::sync() {
     if (!this->str().empty()) {
-        this->addText(ViewComponents::text(this->str()).toV());
+        this->addText(this->str(), nullptr);
         this->str("");
     }
     return 0;
@@ -121,7 +119,7 @@ View &View::operator=(const View &rhs) {
     }
     this->Field::operator=(rhs);
     this->sb = rhs.sb;
-    this->rdbuf(sb.get());
+    os.rdbuf(sb.get());
     return *this;
 }
 View &View::operator=(View &&rhs) noexcept {
@@ -130,7 +128,7 @@ View &View::operator=(View &&rhs) noexcept {
     }
     this->Field::operator=(std::move(static_cast<Field &>(rhs)));
     this->sb = std::move(rhs.sb);
-    this->rdbuf(sb.get());
+    os.rdbuf(sb.get());
     return *this;
 }
 
@@ -138,7 +136,7 @@ void View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
-        data->message_push(message::packSingle(
+        data->messagePushOnline(message::packSingle(
             message::Req<message::View>{{}, member_, field_, req}));
     }
 }
@@ -147,7 +145,7 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     auto vb = dataLock()->view_store.getRecv(*this);
     if (vb) {
         std::vector<ViewComponent> v((*vb)->size());
-        std::unordered_map<int, int> idx_next;
+        std::unordered_map<ViewComponentType, int> idx_next;
         for (std::size_t i = 0; i < (*vb)->size(); i++) {
             v[i] = ViewComponent{(**vb)[i], this->data_w, &idx_next};
         }

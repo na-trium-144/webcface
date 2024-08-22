@@ -39,14 +39,14 @@ struct WEBCFACE_DLL LogLineData {
     message::LogLine toMessage() const;
 };
 
-class WEBCFACE_DLL LogLine : private LogLineData {
+class LogLine : private LogLineData {
   public:
     LogLine(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }
     const std::string &message() const { return message_.decode(); };
 };
-class WEBCFACE_DLL LogLineW : private LogLineData {
+class LogLineW : private LogLineData {
   public:
     LogLineW(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }
@@ -70,11 +70,15 @@ class WEBCFACE_DLL Log : protected Field {
     /*!
      * \brief ログが追加されたときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback Log型の引数(thisが渡される)を1つ取る関数
+     *
      */
     Log &onChange(std::function<void WEBCFACE_CALL_FP(Log)> callback);
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
+     * \param callback 引数をとらない関数
+     *
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>

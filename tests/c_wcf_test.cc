@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/client.h>
 #include <webcface/value.h>
@@ -9,9 +8,9 @@
 #include <webcface/func.h>
 #include <webcface/wcf.h>
 #include "webcface/message/message.h"
+#include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>
-#include <iostream>
 #include "dummy_server.h"
 
 using namespace webcface;
@@ -93,16 +92,6 @@ TEST_F(CClientTest, connectionByWait) {
 
     EXPECT_EQ(wcfWaitConnection(nullptr), WCF_BAD_WCLI);
 }
-TEST_F(CClientTest, noConnectionByRecv) {
-    EXPECT_FALSE(dummy_s->connected());
-    EXPECT_FALSE(wcfIsConnected(wcli_));
-    EXPECT_EQ(wcfRecv(wcli_), WCF_OK);
-    wait();
-    EXPECT_FALSE(dummy_s->connected());
-    EXPECT_FALSE(wcfIsConnected(wcli_));
-
-    EXPECT_EQ(wcfRecv(nullptr), WCF_BAD_WCLI);
-}
 
 std::function<void(const char *, void *)> callback1_obj;
 void callback1(const char *m, void *u) { callback1_obj(m, u); }
@@ -121,7 +110,7 @@ TEST_F(CClientTest, MemberList) {
     };
     EXPECT_EQ(wcfMemberEntryEvent(wcli_, callback1, &u_obj), WCF_OK);
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(called, 1);
     const char *members[3] = {};
     int member_num = 0;
@@ -147,7 +136,7 @@ TEST_F(CClientTest, serverVersion) {
     wait();
     using namespace std::string_literals;
     EXPECT_EQ(wcfServerName(wcli_), ""s);
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfServerName(wcli_), "a"s);
     EXPECT_EQ(wcfServerVersion(wcli_), "1"s);
     EXPECT_EQ(wcfServerHostName(wcli_), "b"s);
@@ -157,8 +146,8 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfValueSet(wcli_, "a", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
-        EXPECT_EQ(obj.data->size(), 1);
+        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.data->size(), 1u);
         EXPECT_EQ(obj.data->at(0), 5);
     });
     dummy_s->recvClear();
@@ -167,8 +156,8 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfValueSetVecD(wcli_, "b", b, 3), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.data->size(), 3);
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.data->size(), 3u);
         EXPECT_EQ(obj.data->at(0), 1);
         EXPECT_EQ(obj.data->at(1), 1.5);
         EXPECT_EQ(obj.data->at(2), 2);
@@ -191,18 +180,18 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.req_id, 1u);
     });
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);
     EXPECT_EQ(value[0], 1);
@@ -227,7 +216,7 @@ TEST_F(CClientTest, textSend) {
     EXPECT_EQ(wcfTextSet(wcli_, "a", "hello"), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(*obj.data, "hello");
     });
     dummy_s->recvClear();
@@ -235,7 +224,7 @@ TEST_F(CClientTest, textSend) {
     EXPECT_EQ(wcfTextSetN(wcli_, "b", "hellohello", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "b"_ss);
+        EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(*obj.data, "hello");
     });
     dummy_s->recvClear();
@@ -249,16 +238,16 @@ TEST_F(CClientTest, textReq) {
     EXPECT_EQ(text[0], 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.req_id, 1u);
     });
     dummy_s->send(message::Res<message::Text>{
         1, ""_ss, std::make_shared<ValAdaptor>("hello")});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::Text>{
         1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
     EXPECT_EQ(size, 5);
     EXPECT_EQ(text[0], 'h');
@@ -274,8 +263,8 @@ TEST_F(CClientTest, textReq) {
 
 TEST_F(CClientTest, funcRun) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
+    wait();
 
     wcfMultiVal args[3] = {
         wcfValI(42),
@@ -283,7 +272,7 @@ TEST_F(CClientTest, funcRun) {
         wcfValS("aaa"),
     };
     wcfMultiVal *ret, *async_ret;
-    wcfAsyncFuncResult *async_res;
+    wcfPromise *async_res;
     EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, -1, &ret),
               WCF_INVALID_ARGUMENT);
     EXPECT_EQ(wcfFuncRunAsync(wcli_, "a", "b", args, -1, &async_res),
@@ -330,49 +319,52 @@ TEST_F(CClientTest, funcRun) {
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.target_member_id, 0u);
+            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.args.size(), 3u);
             EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
             EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
             EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
+        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
     }
 
     // 2
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.target_member_id, 0u);
+            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
         dummy_s->send(
             message::CallResult{{}, caller_id, 1, false, ValAdaptor("123.45")});
+        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
     }
 
     // 3
     for (int i = 0; i < 2; i++) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0);
-            EXPECT_EQ(obj.field, "b"_ss);
-            EXPECT_EQ(obj.args.size(), 3);
+            EXPECT_EQ(obj.target_member_id, 0u);
+            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
         dummy_s->send(
             message::CallResult{{}, caller_id, 1, true, ValAdaptor("error")});
+        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
         caller_id++;
-        // wcfWaitRecv(wcli_);
+        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
     }
 
     t.join();
@@ -380,19 +372,18 @@ TEST_F(CClientTest, funcRun) {
 
 TEST_F(CClientTest, funcListen) {
     using namespace std::string_literals;
-    EXPECT_EQ(wcfAutoRecv(wcli_), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
 
     wcfValType arg_types[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
     wcfFuncListen(wcli_, "a", arg_types, 3, WCF_VAL_INT);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 
@@ -401,10 +392,11 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncFetchCall(wcli_, "b", &h), WCF_NOT_CALLED);
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->recvClear();
@@ -421,8 +413,8 @@ TEST_F(CClientTest, funcListen) {
     EXPECT_EQ(wcfFuncRespond(h, &ans), WCF_BAD_HANDLE);
     EXPECT_EQ(wcfFuncRespond(nullptr, &ans), WCF_BAD_HANDLE);
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
@@ -435,7 +427,7 @@ std::function<void(wcfFuncCallHandle *h, void *u)> callback_obj = nullptr;
 void callbackFunc(wcfFuncCallHandle *h, void *u) { callback_obj(h, u); }
 TEST_F(CClientTest, funcSet) {
     using namespace std::string_literals;
-    // EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    // EXPECT_EQ(wcfAutoSync(wcli_, 100), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     auto main_id = std::this_thread::get_id();
     int u = 9999;
@@ -459,34 +451,34 @@ TEST_F(CClientTest, funcSet) {
     wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
-    wcfWaitRecv(wcli_);
+    wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
 }
 TEST_F(CClientTest, funcSetAsync) {
     using namespace std::string_literals;
-    // EXPECT_EQ(wcfAutoRecv(wcli_, 100), WCF_OK);
+    // EXPECT_EQ(wcfAutoSync(wcli_, 100), WCF_OK);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     auto main_id = std::this_thread::get_id();
     int u = 9999;
@@ -510,27 +502,27 @@ TEST_F(CClientTest, funcSetAsync) {
     wcfFuncSetAsync(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "a"_ss);
+        EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
-        EXPECT_EQ(obj.args->size(), 3);
-        EXPECT_EQ(obj.args->at(0).type_, ValType::int_);
-        EXPECT_EQ(obj.args->at(1).type_, ValType::double_);
-        EXPECT_EQ(obj.args->at(2).type_, ValType::string_);
+        ASSERT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
+        EXPECT_EQ(obj.args.at(1)->type_, ValType::double_);
+        EXPECT_EQ(obj.args.at(2)->type_, ValType::string_);
     });
     dummy_s->recvClear();
 
     dummy_s->send(message::Call{
         0, 1, 1, "a"_ss, {ValAdaptor(42), ValAdaptor(1.5), ValAdaptor("aaa")}});
-    wcfWaitRecv(wcli_);
+    wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
 
     dummy_s->waitRecv<message::CallResponse>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_TRUE(obj.started);
     });
     dummy_s->waitRecv<message::CallResult>([&](const auto &obj) {
-        EXPECT_EQ(obj.caller_id, 0);
-        EXPECT_EQ(obj.caller_member_id, 1);
+        EXPECT_EQ(obj.caller_id, 0u);
+        EXPECT_EQ(obj.caller_member_id, 1u);
         EXPECT_FALSE(obj.is_error);
         EXPECT_EQ(static_cast<double>(obj.result), 123.45);
     });
@@ -547,36 +539,36 @@ TEST_F(CClientTest, viewSend) {
 
     EXPECT_EQ(wcfViewSet(wcli_, "b", vc, 4), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
-    dummy_s->waitRecv<message::View>([&](const auto &obj) {
-        EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.length, 6);
-        EXPECT_EQ(obj.data_diff->size(), 6);
-        EXPECT_EQ((*obj.data_diff)["0"].type,
+    dummy_s->waitRecv<message::View>([&](auto obj) {
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.length, 6u);
+        EXPECT_EQ(obj.data_diff.size(), 6u);
+        EXPECT_EQ(obj.data_diff["0"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ((*obj.data_diff)["0"].text, "abc"_ss);
-        EXPECT_EQ((*obj.data_diff)["1"].type,
+        EXPECT_EQ(obj.data_diff["0"]->text.u8String(), "abc");
+        EXPECT_EQ(obj.data_diff["1"]->type,
                   static_cast<int>(ViewComponentType::new_line));
-        EXPECT_EQ((*obj.data_diff)["2"].type,
+        EXPECT_EQ(obj.data_diff["2"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ((*obj.data_diff)["2"].text, "123"_ss);
+        EXPECT_EQ(obj.data_diff["2"]->text.u8String(), "123");
 
-        EXPECT_EQ((*obj.data_diff)["3"].type,
+        EXPECT_EQ(obj.data_diff["3"]->type,
                   static_cast<int>(ViewComponentType::new_line));
 
-        EXPECT_EQ((*obj.data_diff)["4"].type,
+        EXPECT_EQ(obj.data_diff["4"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ((*obj.data_diff)["4"].text, "a"_ss);
-        EXPECT_EQ((*obj.data_diff)["4"].on_click_member, self_name);
-        EXPECT_EQ((*obj.data_diff)["4"].on_click_field, "c"_ss);
+        EXPECT_EQ(obj.data_diff["4"]->text.u8String(), "a");
+        EXPECT_EQ(obj.data_diff["4"]->on_click_member, self_name);
+        EXPECT_EQ(obj.data_diff["4"]->on_click_field->u8String(), "c");
 
-        EXPECT_EQ((*obj.data_diff)["5"].type,
+        EXPECT_EQ(obj.data_diff["5"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ((*obj.data_diff)["5"].text, "a"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].on_click_member, "b"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].on_click_field, "c"_ss);
-        EXPECT_EQ((*obj.data_diff)["5"].text_color,
+        EXPECT_EQ(obj.data_diff["5"]->text.u8String(), "a");
+        EXPECT_EQ(obj.data_diff["5"]->on_click_member->u8String(), "b");
+        EXPECT_EQ(obj.data_diff["5"]->on_click_field->u8String(), "c");
+        EXPECT_EQ(obj.data_diff["5"]->text_color,
                   static_cast<int>(ViewColor::red));
-        EXPECT_EQ((*obj.data_diff)["5"].bg_color,
+        EXPECT_EQ(obj.data_diff["5"]->bg_color,
                   static_cast<int>(ViewColor::green));
     });
     dummy_s->recvClear();
@@ -589,29 +581,25 @@ TEST_F(CClientTest, viewReq) {
     EXPECT_EQ(size, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member, "a"_ss);
-        EXPECT_EQ(obj.field, "b"_ss);
-        EXPECT_EQ(obj.req_id, 1);
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.req_id, 1u);
     });
 
-    auto v = std::make_shared<
-        std::unordered_map<std::string, message::ViewComponent>>(
-        std::unordered_map<std::string, message::ViewComponent>{
+        std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v{
             {"0", ViewComponents::text("a")
                       .textColor(ViewColor::yellow)
                       .bgColor(ViewColor::green)
-                      .toV()
-                      .lockTmp({}, ""_ss)
-                      .toMessage()},
-            {"1", ViewComponents::newLine().lockTmp({}, ""_ss).toMessage()},
+                      .component_v
+                      .lockTmp({}, ""_ss)},
+            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
             {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
-                      .lockTmp({}, ""_ss)
-                      .toMessage()},
-        });
+                      .lockTmp({}, ""_ss)},
+        };
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
-    EXPECT_EQ(wcfWaitRecv(wcli_), WCF_OK);
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfViewGet(wcli_, "a", "b", &vc, &size), WCF_OK);
     EXPECT_EQ(size, 3);
     EXPECT_EQ(vc[0].type, WCF_VIEW_TEXT);

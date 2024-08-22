@@ -84,12 +84,12 @@ struct CharType<wchar_t> {
 inline std::vector<wcfClient *> wcli_list;
 
 /*!
- * \brief wcfFuncRunAsyncで取得されたwcfAsyncFuncResultのリスト
+ * \brief wcfFuncRunAsyncで取得されたwcfPromiseのリスト
  *
  * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
  *
  */
-inline std::vector<AsyncFuncResult *> func_result_list;
+inline std::vector<Promise *> func_result_list;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元
@@ -106,12 +106,12 @@ inline Client *getWcli(wcfClient *wcli) {
     return static_cast<Client *>(wcli);
 }
 
-inline AsyncFuncResult *getAsyncFuncResult(wcfAsyncFuncResult *res) {
+inline Promise *getPromise(wcfPromise *res) {
     if (std::find(func_result_list.begin(), func_result_list.end(), res) ==
         func_result_list.end()) {
         return nullptr;
     }
-    return static_cast<AsyncFuncResult *>(res);
+    return static_cast<Promise *>(res);
 }
 
 template <typename MultiVal>

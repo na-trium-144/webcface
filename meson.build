@@ -9,16 +9,15 @@ project('webcface', 'c', 'cpp',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'wrap_mode=forcefallback',
-    'pkgconfig.relocatable=true',
   ],
 )
 fs = import('fs')
 cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
-cmake_cmd = find_program('cmake')
 
-webcface_soversion = '20'
+webcface_abi_major = '20' # ABIの破壊的変更で1増やす
+webcface_abi_minor = '0' # ABIの追加で1増やす
 webcface_webui_version = '1.7.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
@@ -40,7 +39,7 @@ elif get_option('version_suffix') != ''
   webcface_version_str = meson.project_version() + '-' + get_option('version_suffix')
 endif
 summary('Version', webcface_version_str)
-summary('ABI Version', webcface_soversion)
+summary('ABI Version', webcface_abi_major + '.' + webcface_abi_minor)
 
 assert(
   get_option('default_library') == 'shared' or get_option('default_library') == 'static',
@@ -52,6 +51,8 @@ conf_data = configuration_data({
   'WEBCFACE_VERSION_MINOR': meson.project_version().split('.')[1],
   'WEBCFACE_VERSION_REVISION': meson.project_version().split('.')[2],
   'WEBCFACE_VERSION': '"' + webcface_version_str + '"',
+  'WEBCFACE_ABI_MAJOR': webcface_abi_major,
+  'WEBCFACE_PTR_SIZE': cxx.sizeof('void*'),
 })
 conf_data.set10('WEBCFACE_SHARED', get_option('default_library') == 'shared')
 
@@ -111,19 +112,48 @@ else
   webcface_lib_name = webcface_lib_name_release
 endif
 
-if (cxx.get_id() == 'gcc' or cxx.get_id() == 'clang') and cxx.get_argument_syntax() != 'msvc'
+if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
+  args = [
+    '-Wno-inline',
+    '-Wno-error=psabi', # refer to PR#9
+    # crow
+    '-Wno-error=type-limits',
+    # inside fmt (fmtlib/fmt#3354)
+    '-Wno-error=array-bounds',
+    '-Wno-error=stringop-overflow',
+    # inside magick
+    '-Wno-error=ignored-qualifiers',
+  ]
+  # inside opencv
+  if cxx.has_argument('-Wno-error=deprecated-enum-enum-conversion')
+    args += '-Wno-error=deprecated-enum-enum-conversion'
+  endif
+  # (fmtlib/fmt#3415)
+  if cxx.has_argument('-Wno-error=dangling-reference')
+    args += '-Wno-error=dangling-reference'
+  endif
+  warning_options = declare_dependency(compile_args: args)
+elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
     '-Wno-inline',
+    '--system-header-prefix=msgpack.hpp',
+    '--system-header-prefix=spdlog/',
+    '--system-header-prefix=curl/',
+    '--system-header-prefix=crow.h',
+    '--system-header-prefix=Magick++.h',
+    '--system-header-prefix=opencv2/',
+    '--system-header-prefix=utf8.h',
+    '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
   warning_options = declare_dependency(compile_args: [
     '/wd4251',
     '/wd4275',
     '/wd4661',
-    '/wd4996',
     '/external:anglebrackets',
     '/external:W0',
     '/utf-8',
+    '/D_CRT_SECURE_NO_WARNINGS',
   ])
 else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
@@ -272,7 +302,7 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'tests=disabled',
     'std_variant=false', # msvcでなんかエラーになる
   ],
-).as_system('system')
+)
 spdlog_dep = dependency('spdlog',
   default_options: [
     'tests=disabled',
@@ -280,8 +310,8 @@ spdlog_dep = dependency('spdlog',
     'external_fmt=disabled',
     'std_format=disabled',
   ],
-).as_system('system')
-utf8cpp_dep = dependency('utf8cpp').as_system('system')
+)
+utf8cpp_dep = dependency('utf8cpp')
 
 if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
   curl_dep = dependency('libcurl', required: false)
@@ -323,6 +353,7 @@ else
       'form-api=disabled',
       'getoptions=disabled',
       'gsasl=disabled',
+      'http2=disabled',
       'ipv6=disabled',
       'libcurl-option=disabled',
       'libz=disabled',
@@ -359,10 +390,9 @@ else
     ],
   ).get_variable('curl_dep')
 endif
-curl_dep = curl_dep.as_system('system')
 
 if build_server
-  cli11_dep = dependency('cli11').as_system('system')
+  cli11_dep = dependency('cli11')
 
   if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
     crow_dep = dependency('Crow', required: false)
@@ -391,7 +421,6 @@ if build_server
   else
     crow_dep = subproject('crow').get_variable('crow_dep')
   endif
-  crow_dep = crow_dep.as_system('system')
 
   if magick_vs
     if debug_crt
@@ -564,17 +593,16 @@ if build_server
     dependencies: [magickpp_dep],
   )
   # endif
-  magickpp_dep = magickpp_dep.as_system('system')
 endif
 
 if build_examples
-  opencv_dep = dependency('OpenCV', required: false).as_system('system')
+  opencv_dep = dependency('OpenCV', required: false)
 endif
 
 if build_tests
   gtest_dep = dependency('gtest', main: true,
     fallback: ['gtest', 'gtest_main_dep'],
-  ).as_system('system')
+  )
 endif
 
 subdir('encoding')
@@ -621,7 +649,11 @@ webcface_lib = library(webcface_lib_name,
     curl_dep,
   ],
   version: meson.project_version(),
-  soversion: webcface_soversion,
+  soversion: webcface_abi_major,
+  darwin_versions: [
+    webcface_abi_major + '.' + webcface_abi_minor,
+    meson.project_version(),
+  ],
   install: true,
 )
 webcface_dep = declare_dependency(
@@ -678,29 +710,21 @@ install_data(['README.md', 'LICENSE'],
   install_dir: get_option('datadir') / 'doc' / 'webcface',
 )
 if get_option('default_library') == 'shared'
-  run_command(cmake_cmd,
-    '-Dsizeof_void_p=' + (host_machine.cpu_family().endswith('64') ? '8' : '4'),
-    '-Dbuild_dir=' + meson.current_build_dir(),
-    '-Dversion=' + meson.project_version(),
-    '-P', meson.project_source_root() / 'scripts' / 'configure-version.cmake',
-    check: true,
-  )
-  cmake_dir = get_option('libdir') / 'cmake' / 'webcface'
-  install_data(meson.current_build_dir() / 'webcface-config-version.cmake',
-    install_dir: cmake_dir,
+  cmake.write_basic_package_version_file(
+    name: 'webcface',
+    version: meson.project_version(),
+    compatibility: 'SameMajorVersion',
+    arch_independent: false,
   )
   conf_data = configuration_data({
     'libdir': get_option('libdir'),
     'includedir': get_option('includedir'),
-    'cmakedir': cmake_dir,
     'webcface_lib_debug': webcface_lib_name_debug,
     'webcface_lib_release': webcface_lib_name_release,
   })
-  configure_file(
+  cmake.configure_package_config_file(
+    name: 'webcface',
     input: 'scripts' / 'webcface-config.cmake.in',
-    output: 'webcface-config.cmake',
-    configuration: conf_data,
-    install: true,
-    install_dir: cmake_dir,
+    configuration: conf_data
   )
 endif

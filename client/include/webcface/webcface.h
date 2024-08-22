@@ -1,9 +1,4 @@
 #pragma once
-#ifdef WEBCFACE_STATIC_DIR
-// clang-format off
-#error "This header file is for WebCFace ver.2 but is used with WebCFace ver.0.x CMake files"
-// clang-format on
-#endif
 
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"

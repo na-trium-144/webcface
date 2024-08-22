@@ -25,7 +25,6 @@ webcface_client_src = [
   'src/image.cc',
   'src/image_frame.cc',
   'src/version.cc',
-  'src/component_id.cc',
   'src/component_canvas3d.cc',
   'src/component_canvas2d.cc',
   'src/component_view.cc',

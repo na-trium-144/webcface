@@ -93,7 +93,7 @@ void Log::request() const {
     auto data = dataLock();
     auto req = data->log_store.addReq(member_);
     if (req) {
-        data->message_push(message::packSingle(message::LogReq{{}, member_}));
+        data->messagePushOnline(message::packSingle(message::LogReq{{}, member_}));
     }
 }
 

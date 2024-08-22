@@ -9,8 +9,8 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message {
-struct Canvas3DComponent;
+namespace internal {
+struct Canvas3DComponentData;
 }
 
 enum class Canvas3DComponentType {
@@ -22,64 +22,48 @@ enum class Canvas3DComponentType {
 /*!
  * \brief Canvas3Dに表示する要素
  *
+ * * ver2.0〜:
+ * get専用(Canvas3DComponent)とset用(TemporalComponent)で分けている。
+ *
  */
 class WEBCFACE_DLL Canvas3DComponent {
+    std::shared_ptr<internal::Canvas3DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
+    int idx_for_type = 0;
 
-    Canvas3DComponentType type_ = Canvas3DComponentType::geometry;
-    Transform origin_;
-    ViewColor color_ = ViewColor::inherit;
-    std::optional<Geometry> geometry_;
-    std::optional<FieldBase> field_base_;
-    std::unordered_map<std::size_t, double> angles_;
+    void checkData() const;
 
   public:
-    Canvas3DComponent() = default;
-    Canvas3DComponent(Canvas3DComponentType type, const Transform &origin,
-                      ViewColor color, std::optional<Geometry> &&geometry,
-                      std::optional<FieldBase> &&field_base,
-                      std::unordered_map<std::size_t, double> &&angles)
-        : type_(type), origin_(origin), color_(color),
-          geometry_(std::move(geometry)), field_base_(std::move(field_base)),
-          angles_(std::move(angles)) {}
-    Canvas3DComponent(const Canvas3DComponent &vc,
-                      const std::weak_ptr<internal::ClientData> &data_w)
-        : Canvas3DComponent(vc) {
-        this->data_w = data_w;
-    }
-    // explicit Canvas3DComponent(const Common::Canvas3DComponentBase &vc)
-    //     : Common::Canvas3DComponentBase(vc), data_w() {}
-    Canvas3DComponent(Canvas3DComponentType type,
-                      const std::weak_ptr<internal::ClientData> &data_w)
-        : data_w(data_w), type_(type) {}
-    explicit Canvas3DComponent(Canvas3DComponentType type)
-        : data_w(), type_(type) {}
-
     /*!
-     * \brief AnonymousFuncをFuncオブジェクトにlock
-     *
-     * 現状Funcをセットする要素無いのでなにもしない
+     * msg_dataはnullptrになり、内容にアクセスしようとするとruntime_errorを投げる
      *
      */
-    Canvas3DComponent &
-    lockTmp(const std::weak_ptr<internal::ClientData> & /*data_w*/,
-            const SharedString & /*view_name*/,
-            std::unordered_map<int, int> * /*idx_next*/ = nullptr) {
-        return *this;
-    }
+    Canvas3DComponent();
+    /*!
+     * \param msg_data
+     * \param data_w
+     * \param idx_next 種類ごとの要素数のmap
+     * InputRefの名前に使うidを決定するのに使う
+     *
+     */
+    Canvas3DComponent(
+        const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
+        const std::weak_ptr<internal::ClientData> &data_w,
+        std::unordered_map<Canvas3DComponentType, int> *idx_next);
 
-    message::Canvas3DComponent toMessage() const;
-    Canvas3DComponent(const message::Canvas3DComponent &cc);
-
+    /*!
+     * \brief そのcanvas3d内で一意のid
+     * \since ver2.0
+     *
+     * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     *
+     */
+    std::string id() const;
     /*!
      * \since ver1.11
      */
-    bool operator==(const Canvas3DComponent &other) const {
-        return /*id() == other.id() && */ type_ == other.type_ &&
-               origin_ == other.origin_ && color_ == other.color_ &&
-               geometry_ == other.geometry_ &&
-               field_base_ == other.field_base_ && angles_ == other.angles_;
-    }
+    bool operator==(const Canvas3DComponent &other) const;
     /*!
      * \since ver1.11
      */
@@ -91,58 +75,91 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \brief 要素の種類
      *
      */
-    Canvas3DComponentType type() const { return type_; }
+    Canvas3DComponentType type() const;
     /*!
      * \brief 要素の移動
      *
      */
-    Transform origin() const { return origin_; }
-    /*!
-     * \brief 要素の移動
-     *
-     */
-    Canvas3DComponent &origin(const Transform &origin) {
-        origin_ = origin;
-        return *this;
-    }
+    Transform origin() const;
     /*!
      * \brief 色
      *
      */
-    ViewColor color() const { return color_; }
-    /*!
-     * \brief 色
-     *
-     */
-    Canvas3DComponent &color(ViewColor color) {
-        color_ = color;
-        return *this;
-    }
+    ViewColor color() const;
     /*!
      * \brief geometryを取得
      *
      */
-    const std::optional<Geometry> &geometry() const { return geometry_; };
-    /*!
-     * \brief geometryをセット
-     *
-     */
-    Canvas3DComponent &geometry(const Geometry &g) {
-        geometry_.emplace(g);
-        return *this;
-    };
+    std::optional<Geometry> geometry() const;
     /*!
      * \brief RobotModelを取得
      *
      */
     std::optional<RobotModel> robotModel() const;
-    Canvas3DComponent &robotModel(const RobotModel &field);
+};
+
+/*!
+ * \brief Canvas3Dを構築するときに使う一時的なCanvas3DComponent
+ * \since ver2.0
+ *
+ */
+class WEBCFACE_DLL TemporalCanvas3DComponent {
+    std::unique_ptr<internal::Canvas3DComponentData> msg_data;
+
+  public:
+    /*!
+     * msg_dataはnullptrになる
+     *
+     */
+    explicit TemporalCanvas3DComponent(std::nullptr_t = nullptr);
+    /*!
+     * msg_dataを初期化する
+     *
+     */
+    explicit TemporalCanvas3DComponent(Canvas3DComponentType type);
+    TemporalCanvas3DComponent(const TemporalCanvas3DComponent &other);
+    TemporalCanvas3DComponent &
+    operator=(const TemporalCanvas3DComponent &other);
+    ~TemporalCanvas3DComponent() noexcept;
+
+    /*!
+     * \brief AnonymousFuncの名前を確定
+     *
+     * 現状Canvas3DにFuncを使う要素はないのでなにもしない
+     *
+     * \param data
+     * \param view_name viewの名前
+     * \param idx_next 種類ごとの要素数のmap
+     * InputRefの名前に使うidを決定するのに使う
+     *
+     */
+    std::unique_ptr<internal::Canvas3DComponentData>
+    lockTmp(const std::shared_ptr<internal::ClientData> &data,
+            const SharedString &view_name,
+            std::unordered_map<Canvas3DComponentType, int> *idx_next = nullptr);
+
+    /*!
+     * \brief 要素の移動
+     *
+     */
+    TemporalCanvas3DComponent &origin(const Transform &origin);
+    /*!
+     * \brief 色
+     *
+     */
+    TemporalCanvas3DComponent &color(ViewColor color);
+    /*!
+     * \brief geometryをセット
+     *
+     */
+    TemporalCanvas3DComponent &geometry(const Geometry &g);
+    TemporalCanvas3DComponent &robotModel(const RobotModel &field);
     /*!
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
      */
-    Canvas3DComponent &
+    TemporalCanvas3DComponent &
     angles(const std::unordered_map<std::string, double> &angles);
     /*!
      * \brief RobotModelの関節をまとめて設定 (wstring)
@@ -150,7 +167,7 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \param angles RobotJointの名前と角度のリスト
      *
      */
-    Canvas3DComponent &
+    TemporalCanvas3DComponent &
     angles(const std::unordered_map<std::wstring, double> &angles);
     /*!
      * \brief RobotModelの関節を設定
@@ -158,7 +175,8 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \param angle 角度
      *
      */
-    Canvas3DComponent &angle(const std::string &joint_name, double angle);
+    TemporalCanvas3DComponent &angle(const std::string &joint_name,
+                                     double angle);
     /*!
      * \brief RobotModelの関節を設定 (wstring)
      * \since ver2.0
@@ -166,8 +184,8 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \param angle 角度
      *
      */
-    Canvas3DComponent &angle(const std::wstring &joint_name, double angle);
+    TemporalCanvas3DComponent &angle(const std::wstring &joint_name,
+                                     double angle);
 };
-
 
 WEBCFACE_NS_END

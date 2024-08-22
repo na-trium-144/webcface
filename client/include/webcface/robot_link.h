@@ -10,9 +10,10 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message {
-struct RobotLink;
-}
+namespace internal {
+struct TemporalRobotJointData;
+struct RobotLinkData;
+} // namespace internal
 
 enum class RobotJointType {
     fixed_absolute = 0,
@@ -20,13 +21,70 @@ enum class RobotJointType {
     rotational = 2,
     prismatic = 3,
 };
-struct RobotJoint {
-    SharedString name;
-    SharedString parent_name;
-    RobotJointType type;
-    Transform origin;
-    double angle = 0;
+class RobotLink;
+/*!
+ * \brief modelの関節1つを表すクラス
+ *
+ * ver2.0からメンバ変数ではなくgetter関数に変更
+ * 取得時にはjointの情報をshared_ptrで持っているので、
+ * コピーしても同じjointを指す
+ */
+class WEBCFACE_DLL RobotJoint {
+    /*!
+     * Jointを構築するときの一時データ
+     *
+     */
+    std::unique_ptr<internal::TemporalRobotJointData> temp_data;
+    /*!
+     * modelからjointのデータを読むときの参照
+     *
+     */
+    std::shared_ptr<internal::RobotLinkData> msg_data;
+
+  public:
+    friend class RobotLink;
+
+    RobotJoint();
+    explicit RobotJoint(
+        const std::shared_ptr<internal::RobotLinkData> &msg_data);
+    RobotJoint(const SharedString &name, const SharedString &parent_name,
+               RobotJointType type, const Transform &origin, double angle);
+    ~RobotJoint();
+    RobotJoint(const RobotJoint &other);
+    RobotJoint &operator=(const RobotJoint &other);
+
+    /*!
+     * \brief jointの名前を取得
+     *
+     */
+    const std::string &name() const;
+    /*!
+     * \brief jointの名前を取得 (wstring)
+     * \since ver2.0
+     */
+    const std::wstring &nameW() const;
+    /*!
+     * \brief 親リンクを取得
+     * \since ver2.0
+     */
+    std::optional<RobotLink> parent() const;
+    /*!
+     * \brief jointの種類
+     *
+     */
+    RobotJointType type() const;
+    /*!
+     * \brief 親リンクの座標系で子リンクの原点
+     *
+     */
+    Transform origin() const;
+    /*!
+     * \brief 初期状態の回転角
+     *
+     */
+    double angle() const;
 };
+
 inline namespace robot_joints {
 /*!
  * \brief 親リンクをもたず座標を定義する
@@ -165,22 +223,33 @@ inline RobotJoint prismaticJoint(std::wstring_view name,
 
 namespace RobotJoints = robot_joints; // 〜ver1.11
 
-struct WEBCFACE_DLL RobotLink {
-    SharedString name;
-    RobotJoint joint;
-    Geometry geometry;
-    ViewColor color;
-    RobotLink() = default;
-    RobotLink(const message::RobotLink &m,
-              const std::vector<SharedString> &link_names);
-    message::RobotLink
-    toMessage(const std::vector<SharedString> &link_names) const;
-    /*!
-     * \since ver2.0
-     */
+/*!
+ * \brief リンク1つを表すクラス
+ *
+ * ver2.0〜 メンバ変数ではなくgetter関数に変更
+ * リンクの情報をshared_ptrで持っているので、
+ * コピーしても同じリンクを指す
+ *
+ */
+class WEBCFACE_DLL RobotLink {
+    std::shared_ptr<internal::RobotLinkData> msg_data;
+
+  public:
+    RobotLink();
+    explicit RobotLink(
+        const std::shared_ptr<internal::RobotLinkData> &msg_data);
+    ~RobotLink();
     RobotLink(const SharedString &name, const RobotJoint &joint,
-              const Geometry &geometry, ViewColor color)
-        : name(name), joint(joint), geometry(geometry), color(color) {}
+              const Geometry &geometry, ViewColor color);
+
+    /*!
+     * jointのparentを名前指定からid指定に変換
+     * (message送信用)
+     *
+     */
+    std::shared_ptr<internal::RobotLinkData>
+    lockJoints(const std::vector<SharedString> &link_names) const;
+
     /*!
      * \param name リンクの名前
      * \param joint 親リンクとの接続方法
@@ -191,6 +260,7 @@ struct WEBCFACE_DLL RobotLink {
     RobotLink(std::string_view name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
         : RobotLink(SharedString::encode(name), joint, geometry, color) {}
+
     /*!
      * \since ver2.0
      * \param name リンクの名前
@@ -225,5 +295,31 @@ struct WEBCFACE_DLL RobotLink {
     RobotLink(std::wstring_view name, const Geometry &geometry,
               ViewColor color = ViewColor::inherit)
         : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
+
+    /*!
+     * \brief 名前を取得
+     *
+     */
+    const std::string &name() const;
+    /*!
+     * \brief 名前を取得 (wstring)
+     * \since ver2.0
+     */
+    const std::wstring &nameW() const;
+    /*!
+     * \brief jointを取得
+     *
+     */
+    RobotJoint joint() const;
+    /*!
+     * \brief geometryを取得
+     *
+     */
+    std::optional<Geometry> geometry() const;
+    /*!
+     * \brief 色を取得
+     *
+     */
+    ViewColor color() const;
 };
 WEBCFACE_NS_END
