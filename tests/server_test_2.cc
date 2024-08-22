@@ -73,9 +73,8 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::RobotModel{
         "a"_ss,
-        std::make_shared<std::vector<message::RobotLink>>(
-            std::vector<message::RobotLink>{
-                RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})});
+        std::vector<std::shared_ptr<message::RobotLink>>{
+            RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({})}});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::RobotModel>{{}, "c1"_ss, "a"_ss, 1});
@@ -84,7 +83,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
-        EXPECT_EQ(obj.data->size(), 1u);
+        EXPECT_EQ(obj.data.size(), 1u);
     });
     dummy_c2->recvClear();
 
@@ -92,26 +91,25 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::RobotModel{
         "a"_ss,
-        std::make_shared<std::vector<message::RobotLink>>(
-            std::vector<message::RobotLink>{
-                RobotLink{"a", {}, Geometry{}, ViewColor::black}.toMessage({}),
-                RobotLink{"b", {}, Geometry{}, ViewColor::black}.toMessage(
-                    {SharedString::fromU8String("a")}),
-                RobotLink{"c",
-                          {"j"_ss, "a"_ss, RobotJointType::fixed, {}, 0},
-                          Geometry{},
-                          ViewColor::black}
-                    .toMessage({SharedString::fromU8String("a"),
-                                SharedString::fromU8String("b")}),
-            })});
+        std::vector<std::shared_ptr<message::RobotLink>>{
+            RobotLink{"a", {}, Geometry{}, ViewColor::black}.lockJoints({}),
+            RobotLink{"b", {}, Geometry{}, ViewColor::black}.lockJoints(
+                {SharedString::fromU8String("a")}),
+            RobotLink{"c",
+                      {"j"_ss, "a"_ss, RobotJointType::fixed, {}, 0},
+                      Geometry{},
+                      ViewColor::black}
+                .lockJoints({SharedString::fromU8String("a"),
+                             SharedString::fromU8String("b")}),
+        }});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
-        ASSERT_EQ(obj.data->size(), 3u);
-        EXPECT_EQ(obj.data->at(0).joint_parent, -1);
-        EXPECT_EQ(obj.data->at(1).joint_parent, -1);
-        EXPECT_EQ(obj.data->at(2).joint_parent, 0); // a
+        ASSERT_EQ(obj.data.size(), 3u);
+        EXPECT_EQ(obj.data.at(0)->joint_parent, -1);
+        EXPECT_EQ(obj.data.at(1)->joint_parent, -1);
+        EXPECT_EQ(obj.data.at(2)->joint_parent, 0); // a
     });
 }
 TEST_F(ServerTest, view) {

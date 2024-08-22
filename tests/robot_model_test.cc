@@ -97,10 +97,12 @@ TEST_F(RobotModelTest, sync) {
 }
 
 TEST_F(RobotModelTest, get) {
+    auto ln = std::make_shared<internal::RobotLinkData>();
+    ln->name = SharedString::fromU8String("a");
     data_->robot_model_store.setRecv(
         "a"_ss, "b"_ss,
-        std::make_shared<std::vector<RobotLink>>(
-            std::vector<RobotLink>{{"a", Geometry{}, ViewColor::black}}));
+        std::make_shared<std::vector<std::shared_ptr<internal::RobotLinkData>>>(
+            std::vector<std::shared_ptr<internal::RobotLinkData>>{ln}));
     EXPECT_EQ(model("a", "b").tryGet()->size(), 1u);
     EXPECT_EQ(model("a", "b").get().size(), 1u);
     EXPECT_EQ(model("a", "c").tryGet(), std::nullopt);

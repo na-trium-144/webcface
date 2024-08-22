@@ -352,7 +352,8 @@ TEST_F(ClientTest, canvas3DReq) {
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(),
+              3u);
     EXPECT_EQ(
         data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->at(0)->type,
         static_cast<int>(Canvas3DComponentType::geometry));
@@ -393,7 +394,8 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->size(),
+              3u);
     EXPECT_EQ(
         data_->canvas3d_store.getRecv("a"_ss, "b"_ss).value()->at(0)->type,
         static_cast<int>(Canvas3DComponentType::geometry));
@@ -425,13 +427,16 @@ TEST_F(ClientTest, robotModelSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
+    auto ln = std::make_shared<internal::RobotLinkData>();
+    ln->name = SharedString::fromU8String("a");
     data_->robot_model_store.setSend(
-        "a"_ss, std::make_shared<std::vector<RobotLink>>(std::vector<RobotLink>{
-                    {"a", Geometry{}, ViewColor::black}}));
+        "a"_ss,
+        std::make_shared<std::vector<std::shared_ptr<internal::RobotLinkData>>>(
+            std::vector<std::shared_ptr<internal::RobotLinkData>>{ln}));
     wcli_->sync();
     dummy_s->waitRecv<message::RobotModel>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.data->size(), 1u);
+        EXPECT_EQ(obj.data.size(), 1u);
     });
 }
 TEST_F(ClientTest, robotModelReq) {
@@ -449,15 +454,13 @@ TEST_F(ClientTest, robotModelReq) {
     wcli_->member("a").robotModel("b").onChange(callback<RobotModel>());
     dummy_s->send(message::Res<message::RobotModel>(
         1, ""_ss,
-        std::make_shared<std::vector<message::RobotLink>>(
-            std::vector<message::RobotLink>{
-                RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
+        std::vector<std::shared_ptr<message::RobotLink>>{
+            RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({})}));
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::RobotModel>(
         1, "c"_ss,
-        std::make_shared<std::vector<message::RobotLink>>(
-            std::vector<message::RobotLink>{
-                RobotLink{"a", Geometry{}, ViewColor::black}.toMessage({})})));
+        std::vector<std::shared_ptr<message::RobotLink>>{
+            RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({})}));
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss).has_value());

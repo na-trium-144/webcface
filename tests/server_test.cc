@@ -126,7 +126,7 @@ TEST_F(ServerTest, entry) {
         message::Value{{}, "a"_ss, std::make_shared<std::vector<double>>(1)});
     dummy_c1->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c1->send(message::RobotModel{
-        "a"_ss, std::make_shared<std::vector<message::RobotLink>>()});
+        "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
         std::unordered_map<std::string,
@@ -206,7 +206,7 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::RobotModel{
-        "b"_ss, std::make_shared<std::vector<message::RobotLink>>()});
+        "b"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c2->waitRecv<message::Entry<message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1u);
