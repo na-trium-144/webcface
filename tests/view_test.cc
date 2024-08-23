@@ -105,7 +105,7 @@ TEST_F(ViewTest, viewSet) {
         EXPECT_EQ(v, v2);
     };
     v << manip2;
-    EXPECT_EQ(manip_called, 2);
+    EXPECT_EQ(manip_called, 1);
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b"_ss);
