@@ -8,11 +8,11 @@
 
 webcface::Client wcli;
 
-void img_update1(webcface::Image img);
-void img_update2(webcface::Image img);
-void img_update3(webcface::Image img);
-void img_update4(webcface::Image img);
-void img_update5(webcface::Image img);
+void img_update1(const webcface::Image &img);
+void img_update2(const webcface::Image &img);
+void img_update3(const webcface::Image &img);
+void img_update4(const webcface::Image &img);
+void img_update5(const webcface::Image &img);
 
 int main() {
     Magick::InitializeMagick(nullptr);
@@ -26,7 +26,7 @@ int main() {
     wcli.loopSync();
 }
 
-void img_update1(webcface::Image img) {
+void img_update1(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         std::cout << "1. Normal" << std::endl;
@@ -41,7 +41,7 @@ void img_update1(webcface::Image img) {
         img.onChange(img_update2);
     }
 }
-void img_update2(webcface::Image img) {
+void img_update2(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         std::cout << "2. Resized to 300x300" << std::endl;
@@ -59,7 +59,7 @@ void img_update2(webcface::Image img) {
     }
 }
 
-void img_update3(webcface::Image img) {
+void img_update3(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         std::cout << "3. Grayscale" << std::endl;
@@ -76,7 +76,7 @@ void img_update3(webcface::Image img) {
         img.onChange(img_update4);
     }
 }
-void img_update4(webcface::Image img) {
+void img_update4(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         std::cout << "4. JPEG" << std::endl;
@@ -92,7 +92,7 @@ void img_update4(webcface::Image img) {
         img.onChange(img_update5);
     }
 }
-void img_update5(webcface::Image img) {
+void img_update5(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         std::cout << "5. PNG" << std::endl;

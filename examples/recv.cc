@@ -9,7 +9,7 @@
 int main() {
     // webcface::logger_internal_level = spdlog::level::trace;
     webcface::Client c("example_recv");
-    c.onMemberEntry([](webcface::Member m) {
+    c.onMemberEntry([](const webcface::Member &m) {
         std::cout << "member entry " << m.name() << std::endl;
         m.onValueEntry([](const webcface::Value &v) {
             std::cout << "value entry " << v.name() << std::endl;
@@ -28,7 +28,7 @@ int main() {
             }
             std::cout << " ret: " << f.returnType() << std::endl;
         });
-        m.log().onChange([](webcface::Log l) {
+        m.log().onChange([](const webcface::Log &l) {
             for (const auto &ll : l.get()) {
                 std::cout << "log [" << ll.level() << "] " << ll.message()
                           << std::endl;

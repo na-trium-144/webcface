@@ -43,8 +43,12 @@ class CustomLogger : public crow::ILogHandler {
 };
 
 DummyServer::~DummyServer() {
-    static_cast<crow::SimpleApp *>(server_)->stop();
-    t.join();
+    try {
+        static_cast<crow::SimpleApp *>(server_)->stop();
+        t.join();
+    } catch (...) {
+        // ignore exception
+    }
 }
 DummyServer::DummyServer(bool use_unix)
     : t([this, use_unix] {
