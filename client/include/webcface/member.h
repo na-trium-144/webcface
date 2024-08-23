@@ -110,68 +110,89 @@ class WEBCFACE_DLL Member : protected Field {
 
     /*!
      * \brief valueが追加された時のイベント
-     *
-     * コールバックの型は void(Value)
+     * \since ver2.0
+     * \param callback Value型の引数をとる関数
      *
      */
-    Member &onValueEntry(std::function<void WEBCFACE_CALL_FP(Value)> callback);
+    const Member &
+    onValueEntry(std::function<void WEBCFACE_CALL_FP(Value)> callback) const;
     /*!
      * \brief textが追加された時のイベント
-     *
-     * コールバックの型は void(Text)
+     *\since ver2.0
+     * \param callback Text型の引数をとる関数
      *
      */
-    Member &onTextEntry(std::function<void WEBCFACE_CALL_FP(Text)> callback);
+    const Member &
+    onTextEntry(std::function<void WEBCFACE_CALL_FP(Text)> callback) const;
     /*!
      * \brief robotModelが追加された時のイベント
-     *
-     * コールバックの型は void(RobotModel)
+     *\since ver2.0
+     * \param callback RobotModel型の引数をとる関数
      *
      */
-    Member &onRobotModelEntry(
-        std::function<void WEBCFACE_CALL_FP(RobotModel)> callback);
+    const Member &onRobotModelEntry(
+        std::function<void WEBCFACE_CALL_FP(RobotModel)> callback) const;
     /*!
      * \brief funcが追加された時のイベント
-     *
-     * コールバックの型は void(Func)
+     *\since ver2.0
+     * \param callback Func型の引数をとる関数
      *
      */
-    Member &onFuncEntry(std::function<void WEBCFACE_CALL_FP(Func)> callback);
+    const Member &
+    onFuncEntry(std::function<void WEBCFACE_CALL_FP(Func)> callback) const;
     /*!
      * \brief imageが追加されたときのイベント
-     *
-     * コールバックの型は void(Image)
+     *\since ver2.0
+     * \param callback Image型の引数をとる関数
      *
      */
-    Member &onImageEntry(std::function<void WEBCFACE_CALL_FP(Image)> callback);
+    const Member &
+    onImageEntry(std::function<void WEBCFACE_CALL_FP(Image)> callback) const;
     /*!
      * \brief viewが追加されたときのイベント
-     *
-     * コールバックの型は void(View)
+     *\since ver2.0
+     * \param callback View型の引数をとる関数
      *
      */
-    Member &onViewEntry(std::function<void WEBCFACE_CALL_FP(View)> callback);
+    const Member &
+    onViewEntry(std::function<void WEBCFACE_CALL_FP(View)> callback) const;
     /*!
      * \brief canvas3dが追加されたときのイベント
-     *
-     * コールバックの型は void(Canvas3D)
+     *\since ver2.0
+     * \param callback Canvas3D型の引数をとる関数
      *
      */
-    Member &
-    onCanvas3DEntry(std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback);
+    const Member &onCanvas3DEntry(
+        std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback) const;
     /*!
      * \brief canvas2dが追加されたときのイベント
-     *
-     * コールバックの型は void(Canvas2D)
+     *\since ver2.0
+     * \param callback Canvas2D型の引数をとる関数
      *
      */
-    Member &
-    onCanvas2DEntry(std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback);
+    const Member &onCanvas2DEntry(
+        std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback) const;
+
     /*!
      * \brief Memberがsync()したときのイベント
-     * コールバックの型は void(Member)
+     * \since ver2.0
+     * \param callback Member型の引数をとる関数
+     *
      */
-    Member &onSync(std::function<void WEBCFACE_CALL_FP(Member)> callback);
+    const Member &
+    onSync(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
+    /*!
+     * \brief Memberがsync()したときのイベント
+     * \since ver2.0
+     * \param callback 引数をとらない関数
+     *
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Member &onSync(F callback) const {
+        return onSync(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
 
     /*!
      * \brief 最後のsync()の時刻を返す
@@ -212,15 +233,29 @@ class WEBCFACE_DLL Member : protected Field {
     std::optional<int> pingStatus() const;
     /*!
      * \brief 通信速度が更新された時のイベント
+     * \since ver2.0
      *
-     * * コールバックの型は void(Member)
      * * 通常は約5秒に1回更新される。
      * * pingStatus() と同様、通信速度データのリクエストも行う。
      * * ver2.0〜 Client自身に対しても使用可能
      *
+     * \param callback Member型の引数を取る関数
      * \sa pingStatus()
      */
-    Member &onPing(std::function<void WEBCFACE_CALL_FP(Member)> callback);
+    const Member &
+    onPing(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
+    /*!
+     * \brief 通信速度が更新された時のイベント
+     * \since ver2.0
+     * \param callback 引数をとらない関数
+     *
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Member &onPing(F callback) const {
+        return onPing(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
 
     /*!
      * \brief Memberを比較

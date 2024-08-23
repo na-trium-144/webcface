@@ -93,7 +93,8 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \param callback Canvas3D型の引数(thisが渡される)を1つ取る関数
      *
      */
-    Canvas3D &onChange(std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback);
+    const Canvas3D &
+    onChange(std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -102,7 +103,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Canvas3D &onChange(F callback) {
+    const Canvas3D &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -114,7 +115,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -123,7 +124,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const Canvas3D &request() const;
     /*!
      * \brief Canvasの内容を取得する
      *
@@ -146,7 +147,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    Canvas3D &free();
+    const Canvas3D &free() const;
 
     /*!
      * \brief このCanvas3Dに追加した内容を初期化する
@@ -156,13 +157,13 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * (init() 後に sync() をすると空のCanvas3Dが送信される)
      *
      */
-    Canvas3D &init();
+    const Canvas3D &init() const;
 
     /*!
      * \brief Componentを追加
      * \since ver1.9
      */
-    Canvas3D &operator<<(TemporalCanvas3DComponent cc);
+    const Canvas3D &operator<<(TemporalCanvas3DComponent cc) const;
 
     /*!
      * \brief コンポーネントなどを追加
@@ -173,7 +174,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      *
      */
     template <typename T>
-    Canvas3D &add(T &&cc) {
+    const Canvas3D &add(T &&cc) const {
         *this << std::forward<T>(cc);
         return *this;
     }
@@ -183,7 +184,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * \since ver1.9
      */
     template <bool V, bool C2>
-    Canvas3D &operator<<(TemporalComponent<V, C2, true> cc) {
+    const Canvas3D &operator<<(TemporalComponent<V, C2, true> cc) const {
         *this << std::move(cc.component_3d);
         return *this;
     }
@@ -195,7 +196,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    Canvas3D &sync();
+    const Canvas3D &sync() const;
 
     /*!
      * \brief Canvas3Dの参照先を比較

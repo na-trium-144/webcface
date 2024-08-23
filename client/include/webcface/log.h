@@ -73,7 +73,8 @@ class WEBCFACE_DLL Log : protected Field {
      * \param callback Log型の引数(thisが渡される)を1つ取る関数
      *
      */
-    Log &onChange(std::function<void WEBCFACE_CALL_FP(Log)> callback);
+    const Log &
+    onChange(std::function<void WEBCFACE_CALL_FP(Log)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -82,7 +83,7 @@ class WEBCFACE_DLL Log : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Log &onChange(F callback) {
+    const Log &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -94,7 +95,7 @@ class WEBCFACE_DLL Log : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -103,7 +104,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const Log &request() const;
     /*!
      * \brief ログを取得する
      *
@@ -135,10 +136,10 @@ class WEBCFACE_DLL Log : protected Field {
      *
      * リクエスト状態は解除しない
      */
-    Log &clear();
+    const Log &clear() const;
 
   private:
-    Log &append(LogLineData &&ll);
+    const Log &append(LogLineData &&ll) const;
 
   public:
     /*!
@@ -148,7 +149,7 @@ class WEBCFACE_DLL Log : protected Field {
      * sync()時にサーバーに送られる。コンソールへの出力などはされない
      *
      */
-    Log &append(int level, std::string_view message) {
+    const Log &append(int level, std::string_view message) const {
         return append({level, std::chrono::system_clock::now(),
                        SharedString::encode(message)});
     }
@@ -159,8 +160,8 @@ class WEBCFACE_DLL Log : protected Field {
      * sync()時にサーバーに送られる。コンソールへの出力などはされない
      *
      */
-    Log &append(int level, std::chrono::system_clock::time_point time,
-                std::string_view message) {
+    const Log &append(int level, std::chrono::system_clock::time_point time,
+                      std::string_view message) const {
         return append({level, time, SharedString::encode(message)});
     }
     /*!
@@ -170,7 +171,7 @@ class WEBCFACE_DLL Log : protected Field {
      * sync()時にサーバーに送られる。コンソールへの出力などはされない
      *
      */
-    Log &append(int level, std::wstring_view message) {
+    const Log &append(int level, std::wstring_view message) const {
         return append({level, std::chrono::system_clock::now(),
                        SharedString::encode(message)});
     }
@@ -181,8 +182,8 @@ class WEBCFACE_DLL Log : protected Field {
      * sync()時にサーバーに送られる。コンソールへの出力などはされない
      *
      */
-    Log &append(int level, std::chrono::system_clock::time_point time,
-                std::wstring_view message) {
+    const Log &append(int level, std::chrono::system_clock::time_point time,
+                      std::wstring_view message) const {
         return append({level, time, SharedString::encode(message)});
     }
 

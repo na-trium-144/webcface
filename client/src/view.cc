@@ -22,11 +22,11 @@ internal::ViewBuf::ViewBuf(const Field &base)
       DataSetBuffer<TemporalViewComponent>(base) {}
 internal::ViewBuf::~ViewBuf() { sync(); }
 
-View &View::init() {
+const View &View::init() const {
     sb->init();
     return *this;
 }
-View &View::sync() {
+const View &View::sync() const {
     std::flush(os);
     sb->syncSetBuf();
     return *this;
@@ -53,7 +53,7 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
         change_event->operator()(target_);
     }
 }
-View &View::onChange(std::function<void(View)> callback) {
+const View &View::onChange(std::function<void(View)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -62,7 +62,7 @@ View &View::onChange(std::function<void(View)> callback) {
     return *this;
 }
 
-View &View::operator<<(TemporalViewComponent vc) {
+const View &View::operator<<(TemporalViewComponent vc) const {
     std::flush(os);
     sb->addVC(std::move(vc));
     return *this;
@@ -132,13 +132,14 @@ View &View::operator=(View &&rhs) noexcept {
     return *this;
 }
 
-void View::request() const {
+const View &View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::View>{{}, member_, field_, req}));
     }
+    return *this;
 }
 std::optional<std::vector<ViewComponent>> View::tryGet() const {
     request();
@@ -157,7 +158,7 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
 std::chrono::system_clock::time_point View::time() const {
     return member().syncTime();
 }
-View &View::free() {
+const View &View::free() const {
     auto req = dataLock()->view_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

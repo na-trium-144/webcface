@@ -144,11 +144,11 @@ Viewに追加する各種要素をViewComponentといいます。
     `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
 
     <span class="since-c">1.11</span>
-    引数にViewを取る関数オブジェクトをViewに渡すと、その場でその関数が呼び出されます。
+    引数にView(コピーまたはconst参照)を取る関数オブジェクトをViewに渡すと、その場でその関数が呼び出されます。
     複数のViewComponentを出力する処理をまとめて使いまわしたい場合に便利です。
     ```cpp
     auto showNameAndValue(const std::string &name, int value) {
-        return [=](webcface::View &view) {
+        return [=](const webcface::View &view) {
             view << name << " = " << value;
         };
     }

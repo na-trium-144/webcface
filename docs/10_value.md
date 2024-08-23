@@ -517,12 +517,11 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
     <span class="since-c">1.7</span>
     引数を持たない関数もイベントのコールバックに設定可能です。
     ```cpp
-    wcli.member("foo").value("hoge").onChange([]() {
-        std::cout << "foo.hoge changed" << std::endl;
-    });
+    wcli.member("foo").value("hoge").onChange([](){ /* ... */ });
+    wcli.member("foo").onSync([](){ /* ... */ });
     ```
 
-    ver1.11以前は `value("hoge").appendListener(...)` です
+    ver1.11以前は `value("hoge").appendListener(...)`, `member("foo").onSync().appendListener(...)` です
 
 - <b class="tab-title">JavaScript</b>
     ```ts

@@ -13,17 +13,17 @@
 WEBCFACE_NS_BEGIN
 
 Func::Func(const Field &base) : Field(base) {}
-Func &Func::setImpl(ValType return_type, std::vector<Arg> &&args,
-                    std::function<FuncType> &&func_impl) {
+const Func &Func::setImpl(ValType return_type, std::vector<Arg> &&args,
+                          std::function<FuncType> &&func_impl) const {
     return setImpl(std::make_shared<internal::FuncInfo>(
         static_cast<Field>(*this), return_type, std::move(args),
         std::move(func_impl)));
 }
-Func &Func::setImpl(const std::shared_ptr<internal::FuncInfo> &v) {
+const Func &Func::setImpl(const std::shared_ptr<internal::FuncInfo> &v) const {
     setCheck()->func_store.setSend(*this, v);
     return *this;
 }
-Func &Func::free() {
+const Func &Func::free() const {
     dataLock()->func_store.unsetRecv(*this);
     return *this;
 }
@@ -73,9 +73,9 @@ AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         auto state = data->func_result_store.addResult(*this);
-        if(!data->messagePushOnline(message::packSingle(message::Call{
-            state->callerId(), 0, data->getMemberIdFromName(member_), field_,
-            args_vec}))){
+        if (!data->messagePushOnline(message::packSingle(message::Call{
+                state->callerId(), 0, data->getMemberIdFromName(member_),
+                field_, args_vec}))) {
             state->setter().reach(false);
         }
         // resultはcli.onRecv内でセットされる。
@@ -98,7 +98,7 @@ std::vector<Arg> Func::args() const {
     return std::vector<Arg>{};
 }
 
-Func &Func::setArgs(const std::vector<Arg> &args) {
+const Func &Func::setArgs(const std::vector<Arg> &args) const {
     auto func_info = setCheck()->func_store.getRecv(*this);
     if (!func_info) {
         throw std::invalid_argument("setArgs failed: Func not set");

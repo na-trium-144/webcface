@@ -19,11 +19,11 @@ TemporalCanvas3DComponent RobotModel::toComponent3D() const {
         .robotModel(*this);
 }
 
-RobotModel &RobotModel::init() {
+const RobotModel &RobotModel::init() const {
     sb->init();
     return *this;
 }
-RobotModel &RobotModel::sync() {
+const RobotModel &RobotModel::sync() const {
     sb->sync();
     return *this;
 }
@@ -50,7 +50,8 @@ void internal::DataSetBuffer<RobotLink>::onSync() {
         change_event->operator()(target_);
     }
 }
-RobotModel &RobotModel::onChange(std::function<void(RobotModel)> callback) {
+const RobotModel &
+RobotModel::onChange(std::function<void(RobotModel)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -59,21 +60,22 @@ RobotModel &RobotModel::onChange(std::function<void(RobotModel)> callback) {
     return *this;
 }
 
-RobotModel &RobotModel::operator<<(RobotLink vc) {
+const RobotModel &RobotModel::operator<<(RobotLink vc) const {
     sb->add(std::move(vc));
     return *this;
 }
 
-void RobotModel::request() const {
+const RobotModel &RobotModel::request() const {
     auto data = dataLock();
     auto req = data->robot_model_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::RobotModel>{{}, member_, field_, req}));
     }
+    return *this;
 }
 
-RobotModel &RobotModel::set(const std::vector<RobotLink> &v) {
+const RobotModel &RobotModel::set(const std::vector<RobotLink> &v) const {
     sb->set(v); // set()のなかでchange_eventは呼ばれる
     return *this;
 }
@@ -94,7 +96,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
 std::chrono::system_clock::time_point RobotModel::time() const {
     return member().syncTime();
 }
-RobotModel &RobotModel::free() {
+const RobotModel &RobotModel::free() const {
     auto req = dataLock()->robot_model_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

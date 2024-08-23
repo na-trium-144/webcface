@@ -96,8 +96,8 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \param callback RobotModel型の引数(thisが渡される)を1つ取る関数
      *
      */
-    RobotModel &
-    onChange(std::function<void WEBCFACE_CALL_FP(RobotModel)> callback);
+    const RobotModel &
+    onChange(std::function<void WEBCFACE_CALL_FP(RobotModel)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -106,7 +106,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    RobotModel &onChange(F callback) {
+    const RobotModel &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -118,7 +118,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -126,18 +126,18 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \brief モデルを初期化
      * \since ver1.9
      */
-    RobotModel &init();
+    const RobotModel &init() const;
     /*!
      * \brief モデルにlinkを追加
      * \since ver1.9
      */
-    RobotModel &operator<<(RobotLink rl);
+    const RobotModel &operator<<(RobotLink rl) const;
     /*!
      * \brief モデルにlinkを追加
      * \since ver1.9
      */
     template <typename T>
-    RobotModel &add(T &&rl) {
+    const RobotModel &add(T &&rl) const {
         *this << std::forward<T>(rl);
         return *this;
     }
@@ -145,18 +145,18 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \brief addで追加したモデルをセットする
      * \since ver1.9
      */
-    RobotModel &sync();
+    const RobotModel &sync() const;
 
     /*!
      * \brief モデルをセットする
      *
      */
-    RobotModel &set(const std::vector<RobotLink> &v);
+    const RobotModel &set(const std::vector<RobotLink> &v) const;
     /*!
      * \brief モデルをセットする
      *
      */
-    RobotModel &operator=(const std::vector<RobotLink> &v) {
+    const RobotModel &operator=(const std::vector<RobotLink> &v) const {
         this->set(v);
         return *this;
     }
@@ -165,7 +165,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const RobotModel &request() const;
     /*!
      * \brief モデルを返す
      *
@@ -189,7 +189,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    RobotModel &free();
+    const RobotModel &free() const;
 
     /*!
      * \brief これをCanvas3DComponentに変換

@@ -15,15 +15,15 @@ Canvas3D::Canvas3D(const Field &base)
     : Field(base),
       sb(std::make_shared<internal::DataSetBuffer<TemporalCanvas3DComponent>>(
           base)) {}
-Canvas3D &Canvas3D::init() {
+const Canvas3D &Canvas3D::init() const {
     sb->init();
     return *this;
 }
-Canvas3D &Canvas3D::sync() {
+const Canvas3D &Canvas3D::sync() const {
     sb->sync();
     return *this;
 }
-Canvas3D &Canvas3D::operator<<(TemporalCanvas3DComponent cc) {
+const Canvas3D &Canvas3D::operator<<(TemporalCanvas3DComponent cc) const {
     sb->add(std::move(cc));
     return *this;
 }
@@ -50,7 +50,8 @@ void internal::DataSetBuffer<TemporalCanvas3DComponent>::onSync() {
         change_event->operator()(target_);
     }
 }
-Canvas3D &Canvas3D::onChange(std::function<void(Canvas3D)> callback) {
+const Canvas3D &
+Canvas3D::onChange(std::function<void(Canvas3D)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -59,13 +60,14 @@ Canvas3D &Canvas3D::onChange(std::function<void(Canvas3D)> callback) {
     return *this;
 }
 
-void Canvas3D::request() const {
+const Canvas3D &Canvas3D::request() const {
     auto data = dataLock();
     auto req = data->canvas3d_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::Canvas3D>{{}, member_, field_, req}));
     }
+    return *this;
 }
 std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     auto vb = dataLock()->canvas3d_store.getRecv(*this);
@@ -84,7 +86,7 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
 std::chrono::system_clock::time_point Canvas3D::time() const {
     return member().syncTime();
 }
-Canvas3D &Canvas3D::free() {
+const Canvas3D &Canvas3D::free() const {
     auto req = dataLock()->canvas3d_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

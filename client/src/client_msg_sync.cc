@@ -220,16 +220,23 @@ std::vector<Member> Client::members() {
     }
     return ret;
 }
-Client &Client::onMemberEntry(std::function<void(Member)> callback) {
+const Client &
+Client::onMemberEntry(std::function<void(Member)> callback) const {
     std::lock_guard lock(data->event_m);
     data->member_entry_event =
         std::make_shared<std::function<void(Member)>>(std::move(callback));
     return *this;
 }
-std::streambuf *Client::loggerStreamBuf() { return data->logger_buf.get(); }
-std::ostream &Client::loggerOStream() { return *data->logger_os.get(); }
-std::wstreambuf *Client::loggerWStreamBuf() { return data->logger_buf_w.get(); }
-std::wostream &Client::loggerWOStream() { return *data->logger_os_w.get(); }
+std::streambuf *Client::loggerStreamBuf() const {
+    return data->logger_buf.get();
+}
+std::ostream &Client::loggerOStream() const { return *data->logger_os.get(); }
+std::wstreambuf *Client::loggerWStreamBuf() const {
+    return data->logger_buf_w.get();
+}
+std::wostream &Client::loggerWOStream() const {
+    return *data->logger_os_w.get();
+}
 const std::string &Client::serverVersion() const { return data->svr_version; }
 const std::string &Client::serverName() const { return data->svr_name; }
 const std::string &Client::serverHostName() const { return data->svr_hostname; }

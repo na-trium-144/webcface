@@ -93,11 +93,13 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     ```cpp
     wcli.onMemberEntry([](webcface::Member m){/* ... */});
     ```
-
-    <span class="since-c">2.0</span>
+    * <span class="since-c">2.0</span>
     Client::waitConnection()はこのクライアントが接続する前から存在したメンバーすべてについてコールバックを呼んでからreturnします。
 
-    \note webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
+    \note
+    onMemberEntryに限らず、
+    * <span class="since-c">2.0</span> webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
+    * <span class="since-c">2.0</span> nullptrを渡すとイベントのコールバックを解除します。
 
 - <b class="tab-title">JavaScript</b>
     ```ts

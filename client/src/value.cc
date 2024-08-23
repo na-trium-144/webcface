@@ -9,16 +9,17 @@ WEBCFACE_NS_BEGIN
 
 Value::Value(const Field &base) : Field(base) {}
 
-void Value::request() const {
+const Value &Value::request() const {
     auto data = dataLock();
     auto req = data->value_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::Value>{{}, member_, field_, req}));
     }
+    return *this;
 }
 
-Value &Value::set(double v) {
+const Value &Value::set(double v) const {
     auto last_name = this->lastName();
     auto parent = this->parent();
     if (std::all_of(last_name.cbegin(), last_name.cend(),
@@ -38,7 +39,7 @@ Value &Value::set(double v) {
     return *this;
 }
 
-Value &Value::set(std::vector<double> v) {
+const Value &Value::set(std::vector<double> v) const {
     auto data = setCheck();
     data->value_store.setSend(
         *this, std::make_shared<std::vector<double>>(std::move(v)));
@@ -52,7 +53,7 @@ Value &Value::set(std::vector<double> v) {
     }
     return *this;
 }
-Value &Value::onChange(std::function<void(Value)> callback) {
+const Value &Value::onChange(std::function<void(Value)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -61,7 +62,7 @@ Value &Value::onChange(std::function<void(Value)> callback) {
     return *this;
 }
 
-Value &Value::resize(std::size_t size) {
+const Value &Value::resize(std::size_t size) const {
     auto pv = this->tryGetVec();
     if (pv) {
         pv->resize(size);
@@ -71,7 +72,7 @@ Value &Value::resize(std::size_t size) {
     this->set(*pv);
     return *this;
 }
-Value &Value::push_back(double v) {
+const Value &Value::push_back(double v) const {
     auto pv = this->tryGetVec();
     if (pv) {
         pv->push_back(v);
@@ -111,7 +112,7 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();
 }
-Value &Value::free() {
+const Value &Value::free() const {
     auto req = dataLock()->value_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除
