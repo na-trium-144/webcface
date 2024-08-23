@@ -8,24 +8,24 @@
 
 webcface::Client wcli;
 
-void img_update1(webcface::Image img);
-void img_update2(webcface::Image img);
-void img_update3(webcface::Image img);
-void img_update4(webcface::Image img);
-void img_update5(webcface::Image img);
+void img_update1(const webcface::Image &img);
+void img_update2(const webcface::Image &img);
+void img_update3(const webcface::Image &img);
+void img_update4(const webcface::Image &img);
+void img_update5(const webcface::Image &img);
 
 int main() {
     wcli.waitConnection();
 
     // image_sendを5回起動して終了すると5通りのリクエストをして表示するサンプル
 
-    webcface::Image img = wcli.member("example_image_send").image("sample");
+    const webcface::Image &img = wcli.member("example_image_send").image("sample");
     img.request();
     img.onChange(img_update1);
     wcli.loopSync();
 }
 
-void img_update1(webcface::Image img) {
+void img_update1(const webcface::Image &img) {
     std::cout << "image updated" << std::endl;
     auto img_frame = img.get();
     if (!img_frame.empty()) {
@@ -41,7 +41,7 @@ void img_update1(webcface::Image img) {
         img.onChange(img_update2);
     }
 }
-void img_update2(webcface::Image img) {
+void img_update2(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         cv::Mat mat2(img_frame.rows(), img_frame.cols(), CV_8UC3,
@@ -57,7 +57,7 @@ void img_update2(webcface::Image img) {
         img.onChange(img_update3);
     }
 }
-void img_update3(webcface::Image img) {
+void img_update3(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         assert(img_frame.channels() == 1);
@@ -71,7 +71,7 @@ void img_update3(webcface::Image img) {
         img.onChange(img_update4);
     }
 }
-void img_update4(webcface::Image img) {
+void img_update4(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         cv::Mat mat2 = cv::imdecode(img_frame.data(), cv::IMREAD_COLOR);
@@ -82,7 +82,7 @@ void img_update4(webcface::Image img) {
         img.onChange(img_update5);
     }
 }
-void img_update5(webcface::Image img) {
+void img_update5(const webcface::Image &img) {
     auto img_frame = img.get();
     if (!img_frame.empty()) {
         cv::Mat mat2 = cv::imdecode(img_frame.data(), cv::IMREAD_COLOR);

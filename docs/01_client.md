@@ -308,13 +308,25 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```cpp
     wcli.close();
     ```
-    \note
-    C++ではClientのデストラクタでも自動的に切断します。
+    また、Clientのデストラクタでも自動的にclose()が呼ばれます。
 
+    \note
+    * <span class="since-c">2.0</span>
+    close()を呼んだ時点でサーバーに接続できていた場合は、sync()でキューに入れたメッセージがすべて送信したあとに切断されます。
+        * waitConnection() → sync() → close() とすれば確実にデータを送信することができます。
+        * start()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でclose()が呼ばれたときはメッセージを送信することなく終了してしまいます。
+    * Clientのデストラクタは通信を切断するまで待機します。
+    
 - <b class="tab-title">C</b>
     ```c
     wcfClose(wcli);
     ```
+    \note
+    * <span class="since-c">2.0</span>
+    wcfClose()を呼んだ時点でサーバーに接続できていた場合は、wcfSync()でキューに入れたメッセージがすべて送信したあとに切断されます。
+        * wcfWaitConnection() → wcfSync() → wcfClose() とすれば確実にデータを送信することができます。
+        * wcfStart()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でwcfClose()が呼ばれたときはメッセージを送信することなく終了してしまいます。
+    * wcfClose()は通信を切断するまで待機します。
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -383,6 +395,11 @@ closeしたあと再度start()を呼んで再接続することはできませ�
 
 - <b class="tab-title">C++</b>
     `wcli.serverVersion()`, `wcli.serverName()` で取得できます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfServerVersion(wcli)`, `wcfServerName(wcli)` で取得できます。
+
 - <b class="tab-title">JavaScript</b>
     `wcli.serverVersion`, `wcli.serverName` で取得できます。
 - <b class="tab-title">Python</b>
@@ -400,6 +417,9 @@ WebUI ver1.7 以降ではWebUIのページタイトルにも表示されてい�
 - <b class="tab-title">C++</b>
     \since <span class="since-c">2.0</span>
     `wcli.serverHostName()` で取得できます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+    `wcfServerHostName(wcli)` で取得できます。
 - <b class="tab-title">JavaScript</b>
     \since <span class="since-js">1.7</span>
     `wcli.serverHostName` で取得できます。

@@ -25,7 +25,7 @@ class ViewBuf;
  */
 class WEBCFACE_DLL View : protected Field {
     std::shared_ptr<internal::ViewBuf> sb;
-    std::ostream os;
+    mutable std::ostream os;
 
     static constexpr std::nullptr_t TraitOk = nullptr;
     template <typename T>
@@ -33,7 +33,7 @@ class WEBCFACE_DLL View : protected Field {
         decltype(std::declval<std::ostream>() << std::declval<T>(), TraitOk);
     template <typename T>
     using EnableIfInvocable =
-        decltype(std::declval<T>()(std::declval<View &>()), TraitOk);
+        decltype(std::declval<T>()(std::declval<View>()), TraitOk);
 
   public:
     View();
@@ -106,7 +106,8 @@ class WEBCFACE_DLL View : protected Field {
      * \param callback View型の引数(thisが渡される)を1つ取る関数
      *
      */
-    View &onChange(std::function<void WEBCFACE_CALL_FP(View)> callback);
+    const View &
+    onChange(std::function<void WEBCFACE_CALL_FP(View)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -115,7 +116,7 @@ class WEBCFACE_DLL View : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    View &onChange(F callback) {
+    const View &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -127,7 +128,7 @@ class WEBCFACE_DLL View : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -136,7 +137,7 @@ class WEBCFACE_DLL View : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const View &request() const;
     /*!
      * \brief Viewを取得する
      *
@@ -160,7 +161,7 @@ class WEBCFACE_DLL View : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    View &free();
+    const View &free() const;
 
     /*!
      * \brief このViewのViewBufの内容を初期化する
@@ -171,7 +172,7 @@ class WEBCFACE_DLL View : protected Field {
      * (init() 後に sync() をするとViewの内容が空になる)
      *
      */
-    View &init();
+    const View &init() const;
     /*!
      * \brief 文字列にフォーマットし、textコンポーネントとして追加
      *
@@ -182,11 +183,11 @@ class WEBCFACE_DLL View : protected Field {
      *
      */
     template <typename T, EnableIfFormattable<T> = TraitOk>
-    View &operator<<(T &&rhs) {
+    const View &operator<<(T &&rhs) const {
         os << std::forward<T>(rhs);
         return *this;
     }
-    View &operator<<(std::ostream &(*os_manip)(std::ostream &)) {
+    const View &operator<<(std::ostream &(*os_manip)(std::ostream &)) const {
         os_manip(os);
         return *this;
     }
@@ -197,7 +198,7 @@ class WEBCFACE_DLL View : protected Field {
      *
      */
     template <bool C2, bool C3>
-    View &operator<<(TemporalComponent<true, C2, C3> vc) {
+    const View &operator<<(TemporalComponent<true, C2, C3> vc) const {
         *this << std::move(vc.component_v);
         return *this;
     }
@@ -207,7 +208,7 @@ class WEBCFACE_DLL View : protected Field {
      * std::flushも呼び出すことで直前に追加した未flashの文字列なども確実に追加する
      *
      */
-    View &operator<<(TemporalViewComponent vc);
+    const View &operator<<(TemporalViewComponent vc) const;
     /*!
      * \brief コンポーネントを追加
      * \since ver1.11
@@ -216,7 +217,7 @@ class WEBCFACE_DLL View : protected Field {
      *
      */
     template <typename F, EnableIfInvocable<F> = TraitOk>
-    View &operator<<(const F &manip) {
+    const View &operator<<(const F &manip) const {
         manip(*this);
         return *this;
     }
@@ -230,7 +231,7 @@ class WEBCFACE_DLL View : protected Field {
      *
      */
     template <typename T>
-    View &add(T &&rhs) {
+    const View &add(T &&rhs) const {
         *this << std::forward<T>(rhs);
         return *this;
     }
@@ -242,7 +243,7 @@ class WEBCFACE_DLL View : protected Field {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    View &sync();
+    const View &sync() const;
 
     /*!
      * \brief Viewの参照先を比較

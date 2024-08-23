@@ -74,11 +74,11 @@ Client::image からImageオブジェクトを作り、 Image::set() で画像�
 
 </div>
 
-### OpenCV
+### 外部ライブラリの利用
 
 <div class="tabbed">
 
-- <b class="tab-title">C++</b>
+- <b class="tab-title">OpenCV (C++)</b>
     ImageFrame → cv::Mat
     ```cpp
     cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());

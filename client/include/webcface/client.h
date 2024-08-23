@@ -80,7 +80,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 接続を切り、今後再接続しない
      *
      */
-    void close();
+    const Client &close() const;
 
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
@@ -90,7 +90,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa start(), waitConnection()
      */
-    void autoReconnect(bool enabled);
+    const Client &autoReconnect(bool enabled) const;
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを取得する。
      * \since ver1.11.1
@@ -102,7 +102,7 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver1.2
      * \sa waitConnection(), autoReconnect()
      */
-    void start();
+    const Client &start() const;
     /*!
      * \brief サーバーへの接続を別スレッドで開始し、成功するまで待機する。
      * \since ver1.2
@@ -115,10 +115,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa start(), autoReconnect()
      */
-    void waitConnection();
+    const Client &waitConnection() const;
 
   private:
-    void syncImpl(std::optional<std::chrono::microseconds> timeout);
+    const Client &
+    syncImpl(std::optional<std::chrono::microseconds> timeout) const;
 
   public:
     /*!
@@ -135,7 +136,9 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa start(), loopSyncFor(), loopSyncUntil(), loopSync()
      */
-    void sync() { syncImpl(std::chrono::microseconds(0)); }
+    const Client &sync() const {
+        return syncImpl(std::chrono::microseconds(0));
+    }
     /*!
      * \brief
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
@@ -149,7 +152,9 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa sync(), loopSyncUntil(), loopSync()
      */
-    void loopSyncFor(std::chrono::microseconds timeout) { syncImpl(timeout); }
+    const Client &loopSyncFor(std::chrono::microseconds timeout) const {
+        return syncImpl(timeout);
+    }
     /*!
      * \brief
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
@@ -160,8 +165,9 @@ class WEBCFACE_DLL Client : public Member {
      * \sa sync(), loopSyncFor(), loopSync()
      */
     template <typename Clock, typename Duration>
-    void loopSyncUntil(std::chrono::time_point<Clock, Duration> timeout) {
-        syncImpl(std::chrono::duration_cast<std::chrono::microseconds>(
+    const Client &
+    loopSyncUntil(std::chrono::time_point<Clock, Duration> timeout) const {
+        return syncImpl(std::chrono::duration_cast<std::chrono::microseconds>(
             timeout - Clock::now()));
     }
     /*!
@@ -175,14 +181,15 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa sync(), loopSyncFor(), loopSyncUntil()
      */
-    void loopSync() { syncImpl(std::nullopt); }
+    const Client &loopSync() const { return syncImpl(std::nullopt); }
 
     // /*!
     //  * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
     //  * \since ver2.0
     //  *
     //  * * start() や waitConnection() より前に設定する必要がある。
-    //  * * autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
+    //  * *
+    //  autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
     //  * 各種コールバック (onEntry, onChange, Func::run()など)
     //  * も別のスレッドで呼ばれることになる
     //  * (そのためmutexなどを適切に設定すること)
@@ -238,8 +245,8 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa member(), members()
      */
-    Client &
-    onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback);
+    const Client &
+    onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
 
     /*!
      * \brief webcfaceに出力するstreambuf
@@ -256,7 +263,7 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa loggerOStream()
      */
-    std::streambuf *loggerStreamBuf();
+    std::streambuf *loggerStreamBuf() const;
     /*!
      * \brief webcfaceに出力するostream
      *
@@ -269,19 +276,19 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa loggerStreamBuf()
      */
-    std::ostream &loggerOStream();
+    std::ostream &loggerOStream() const;
     /*!
      * \brief webcfaceに出力するwstreambuf
      * \since ver2.0
      * \sa loggerStreamBuf
      */
-    std::wstreambuf *loggerWStreamBuf();
+    std::wstreambuf *loggerWStreamBuf() const;
     /*!
      * \brief webcfaceに出力するwostream
      * \since ver2.0
      * \sa loggerOStream
      */
-    std::wostream &loggerWOStream();
+    std::wostream &loggerWOStream() const;
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

@@ -7,16 +7,17 @@ WEBCFACE_NS_BEGIN
 
 Text::Text(const Field &base) : Field(base) {}
 
-void Text::request() const {
+const Text &Text::request() const {
     auto data = dataLock();
     auto req = data->text_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::Text>{{}, member_, field_, req}));
     }
+    return *this;
 }
 
-Text &Text::set(const ValAdaptor &v) {
+const Text &Text::set(const ValAdaptor &v) const {
     auto data = setCheck();
     data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
     std::shared_ptr<std::function<void(Text)>> change_event;
@@ -29,7 +30,7 @@ Text &Text::set(const ValAdaptor &v) {
     }
     return *this;
 }
-Text &Text::onChange(std::function<void(Text)> callback) {
+const Text &Text::onChange(std::function<void(Text)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -75,7 +76,7 @@ std::optional<std::wstring> Text::tryGetW() const {
 std::chrono::system_clock::time_point Text::time() const {
     return member().syncTime();
 }
-Text &Text::free() {
+const Text &Text::free() const {
     auto req = dataLock()->text_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

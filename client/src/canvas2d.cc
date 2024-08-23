@@ -10,15 +10,15 @@ Canvas2D::Canvas2D()
     : Field(), sb(std::make_shared<internal::Canvas2DDataBuf>()) {}
 Canvas2D::Canvas2D(const Field &base)
     : Field(base), sb(std::make_shared<internal::Canvas2DDataBuf>(base)) {}
-Canvas2D &Canvas2D::init(double width, double height) {
+const Canvas2D &Canvas2D::init(double width, double height) const {
     sb->init(width, height);
     return *this;
 }
-Canvas2D &Canvas2D::sync() {
+const Canvas2D &Canvas2D::sync() const {
     sb->sync();
     return *this;
 }
-Canvas2D &Canvas2D::operator<<(TemporalCanvas2DComponent cc) {
+const Canvas2D &Canvas2D::operator<<(TemporalCanvas2DComponent cc) const {
     sb->add(std::move(cc));
     return *this;
 }
@@ -50,7 +50,8 @@ void internal::DataSetBuffer<TemporalCanvas2DComponent>::onSync() {
         change_event->operator()(target_);
     }
 }
-Canvas2D &Canvas2D::onChange(std::function<void(Canvas2D)> callback) {
+const Canvas2D &
+Canvas2D::onChange(std::function<void(Canvas2D)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -59,13 +60,14 @@ Canvas2D &Canvas2D::onChange(std::function<void(Canvas2D)> callback) {
     return *this;
 }
 
-void Canvas2D::request() const {
+const Canvas2D &Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
         data->messagePushOnline(message::packSingle(
             message::Req<message::Canvas2D>{{}, member_, field_, req}));
     }
+    return *this;
 }
 std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     request();
@@ -85,7 +87,7 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
 std::chrono::system_clock::time_point Canvas2D::time() const {
     return member().syncTime();
 }
-Canvas2D &Canvas2D::free() {
+const Canvas2D &Canvas2D::free() const {
     auto req = dataLock()->canvas2d_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

@@ -38,7 +38,7 @@ webcface-send -t log
     wcli.log().append(webcface::level::error, "this is error");
     ```
 
-    ostream, (<span class="since-c">2.0</span>wostream) を使いたい場合は
+    std::ostreamを使いたい場合は
     ```cpp
     wcli.loggerOStream() << "hello" << std::endl;
     ```
@@ -49,7 +49,7 @@ webcface-send -t log
     ```
     のようにcoutやcerrの出力先を置き換えることができます。
     これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。
-    (ver1.11以前はspdlogのstderr_sink、 ver2.0以降はfputs,fputcを使って直接stderrに出力されます)
+    (<del>spdlogのstderr_sinkを使って</del> <span class="since-c">2.0</span>fputs,fputcを使って 直接stderrに出力されます)
     またこの場合はログレベルが設定できず、常にinfoになります。
     
     <span class="since-c">2.0</span>
@@ -92,7 +92,7 @@ webcface-send -t log
   spdlog→webcfaceにログを送信するsinkの例(ver1.11までwebcfaceに含まれていた実装):
   ```cpp
   class LoggerSink final : public spdlog::sinks::base_sink<std::mutex> {
-      webcface::Log *wcli_log;
+      webcface::Log wcli_log;
 
     protected:
       void sink_it_(const spdlog::details::log_msg &msg) override {
@@ -104,14 +104,14 @@ webcface-send -t log
               if (log_text.size() > 0 && log_text.back() == '\r') {
                   log_text.pop_back();
               }
-              wcli_log->append(msg.level, msg.time, log_text);
+              wcli_log.append(msg.level, msg.time, log_text);
           }
       }
       void flush_() override {}
 
     public:
       explicit LoggerSink(webcface::Client &wcli)
-      : spdlog::sinks::base_sink<std::mutex>(), wcli_log(wcli.log()) {}
+          : spdlog::sinks::base_sink<std::mutex>(), wcli_log(wcli.log()) {}
       void set_pattern_(const std::string &) override {}
       void set_formatter_(std::unique_ptr<spdlog::formatter>) override {}
   };

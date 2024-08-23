@@ -8,10 +8,10 @@ WEBCFACE_NS_BEGIN
 
 Image::Image(const Field &base) : Field(base) {}
 
-Image &Image::request(std::optional<int> rows, std::optional<int> cols,
-                      ImageCompressMode cmp_mode, int quality,
-                      std::optional<ImageColorMode> color_mode,
-                      std::optional<double> frame_rate) {
+const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
+                            ImageCompressMode cmp_mode, int quality,
+                            std::optional<ImageColorMode> color_mode,
+                            std::optional<double> frame_rate) const {
     message::ImageReq req{
         rows,
         cols,
@@ -38,7 +38,7 @@ inline void addImageReq(const std::shared_ptr<internal::ClientData> &data,
     }
 }
 
-Image &Image::set(const ImageFrame &img) {
+const Image &Image::set(const ImageFrame &img) const {
     auto data = setCheck();
     data->image_store.setSend(*this, img);
     std::shared_ptr<std::function<void(Image)>> change_event;
@@ -51,7 +51,7 @@ Image &Image::set(const ImageFrame &img) {
     }
     return *this;
 }
-Image &Image::onChange(std::function<void(Image)> callback) {
+const Image &Image::onChange(std::function<void(Image)> callback) const {
     this->request();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
@@ -60,7 +60,7 @@ Image &Image::onChange(std::function<void(Image)> callback) {
     return *this;
 }
 
-std::optional<ImageFrame> Image::tryGet() {
+std::optional<ImageFrame> Image::tryGet() const {
     addImageReq(dataLock(), member_, field_);
     return dataLock()->image_store.getRecv(*this);
 }
@@ -68,11 +68,11 @@ std::optional<ImageFrame> Image::tryGet() {
 std::chrono::system_clock::time_point Image::time() const {
     return member().syncTime();
 }
-Image &Image::clear() {
+const Image &Image::clear() const {
     dataLock()->image_store.clearRecv(*this);
     return *this;
 }
-Image &Image::free() {
+const Image &Image::free() const {
     auto req = dataLock()->image_store.unsetRecv(*this);
     if (req) {
         // todo: リクエスト解除

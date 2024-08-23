@@ -81,7 +81,7 @@ template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
 
 Log::Log(const Field &base) : Field(base) {}
 
-Log &Log::onChange(std::function<void(Log)> callback) {
+const Log &Log::onChange(std::function<void(Log)> callback) const {
     this->request();
     std::lock_guard lock(this->dataLock()->event_m);
     this->dataLock()->log_append_event[this->member_] =
@@ -89,12 +89,14 @@ Log &Log::onChange(std::function<void(Log)> callback) {
     return *this;
 }
 
-void Log::request() const {
+const Log &Log::request() const {
     auto data = dataLock();
     auto req = data->log_store.addReq(member_);
     if (req) {
-        data->messagePushOnline(message::packSingle(message::LogReq{{}, member_}));
+        data->messagePushOnline(
+            message::packSingle(message::LogReq{{}, member_}));
     }
+    return *this;
 }
 
 std::optional<std::vector<LogLine>> Log::tryGet() const {
@@ -126,13 +128,13 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     }
 }
 
-Log &Log::clear() {
+const Log &Log::clear() const {
     dataLock()->log_store.setRecv(member_,
                                   std::make_shared<std::vector<LogLineData>>());
     return *this;
 }
 
-Log &Log::append(LogLineData &&ll) {
+const Log &Log::append(LogLineData &&ll) const {
     writeLog(setCheck().get(), std::move(ll));
     return *this;
 }

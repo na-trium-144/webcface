@@ -95,7 +95,8 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \param callback Canvas2D型の引数(thisが渡される)を1つ取る関数
      *
      */
-    Canvas2D &onChange(std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback);
+    const Canvas2D &
+    onChange(std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -104,7 +105,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Canvas2D &onChange(F callback) {
+    const Canvas2D &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -116,7 +117,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -125,7 +126,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const Canvas2D &request() const;
     /*!
      * \brief Canvasの内容を取得する
      *
@@ -148,7 +149,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    Canvas2D &free();
+    const Canvas2D &free() const;
 
     /*!
      * \brief Canvasのサイズを指定 & このCanvas2Dに追加した内容を初期化する
@@ -158,16 +159,16 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * (init() 後に sync() をすると空のCanvas2Dが送信される)
      *
      */
-    Canvas2D &init(double width, double height);
+    const Canvas2D &init(double width, double height) const;
 
     /*!
      * \brief Componentを追加
      * \since ver1.9
      *
      * * ver2.0〜: move専用
-     * 
+     *
      */
-    Canvas2D &operator<<(TemporalCanvas2DComponent cc);
+    const Canvas2D &operator<<(TemporalCanvas2DComponent cc) const;
 
     /*!
      * \brief コンポーネントなどを追加
@@ -178,17 +179,17 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      *
      */
     template <typename T>
-    Canvas2D &add(T &&cc) {
+    const Canvas2D &add(T &&cc) const {
         *this << std::forward<T>(cc);
         return *this;
     }
     /*!
      * \brief Geometryを追加
      * \since ver1.9
-     * 
+     *
      */
     template <bool V, bool C3>
-    Canvas2D &operator<<(TemporalComponent<V, true, C3> cc) {
+    const Canvas2D &operator<<(TemporalComponent<V, true, C3> cc) const {
         *this << std::move(cc.component_2d);
         return *this;
     }
@@ -199,7 +200,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      * (init()も追加もされていなければ) 何もしない。
      *
      */
-    Canvas2D &sync();
+    const Canvas2D &sync() const;
 
     /*!
      * \brief Canvas2Dの参照先を比較

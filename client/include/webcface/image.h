@@ -18,10 +18,10 @@ WEBCFACE_NS_BEGIN
  * コンストラクタではなく Member::image() を使って取得してください
  */
 class WEBCFACE_DLL Image : protected Field {
-    Image &request(std::optional<int> rows, std::optional<int> cols,
-                   ImageCompressMode cmp_mode, int quality,
-                   std::optional<ImageColorMode> color_mode,
-                   std::optional<double> frame_rate);
+    const Image &request(std::optional<int> rows, std::optional<int> cols,
+                         ImageCompressMode cmp_mode, int quality,
+                         std::optional<ImageColorMode> color_mode,
+                         std::optional<double> frame_rate) const;
 
   public:
     Image() = default;
@@ -87,7 +87,8 @@ class WEBCFACE_DLL Image : protected Field {
      * \param callback Image型の引数(thisが渡される)を1つ取る関数
      *
      */
-    Image &onChange(std::function<void WEBCFACE_CALL_FP(Image)> callback);
+    const Image &
+    onChange(std::function<void WEBCFACE_CALL_FP(Image)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -96,7 +97,7 @@ class WEBCFACE_DLL Image : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Image &onChange(F callback) {
+    const Image &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -108,7 +109,7 @@ class WEBCFACE_DLL Image : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -116,12 +117,12 @@ class WEBCFACE_DLL Image : protected Field {
      * \brief 画像をセットする
      *
      */
-    Image &set(const ImageFrame &img);
+    const Image &set(const ImageFrame &img) const;
     /*!
      * \brief 画像をセットする
      *
      */
-    Image &operator=(const ImageFrame &img) {
+    const Image &operator=(const ImageFrame &img) const {
         this->set(img);
         return *this;
     }
@@ -139,10 +140,11 @@ class WEBCFACE_DLL Image : protected Field {
      * を使ってサイズ指定
      *
      */
-    [[deprecated("Ambiguous image size")]] Image &
+    [[deprecated("Ambiguous image size")]]
+    const Image &
     request(std::optional<int> rows, std::optional<int> cols = std::nullopt,
             std::optional<ImageColorMode> color_mode = std::nullopt,
-            std::optional<double> frame_rate = std::nullopt) {
+            std::optional<double> frame_rate = std::nullopt) const {
         return request(rows, cols, ImageCompressMode::raw, 0, color_mode,
                        frame_rate);
     }
@@ -157,9 +159,10 @@ class WEBCFACE_DLL Image : protected Field {
      * (指定しない場合元画像が更新されるたびに受信する)
      *
      */
-    Image &request(std::optional<SizeOption> size = std::nullopt,
-                   std::optional<ImageColorMode> color_mode = std::nullopt,
-                   std::optional<double> frame_rate = std::nullopt) {
+    const Image &
+    request(std::optional<SizeOption> size = std::nullopt,
+            std::optional<ImageColorMode> color_mode = std::nullopt,
+            std::optional<double> frame_rate = std::nullopt) const {
         return request(size.value_or(SizeOption{}).rows(),
                        size.value_or(SizeOption{}).cols(),
                        ImageCompressMode::raw, 0, color_mode, frame_rate);
@@ -180,10 +183,11 @@ class WEBCFACE_DLL Image : protected Field {
      * を使ってサイズ指定
      *
      */
-    [[deprecated("Ambiguous image size")]] Image &
+    [[deprecated("Ambiguous image size")]]
+    const Image &
     request(std::optional<int> rows, std::optional<int> cols,
             ImageCompressMode cmp_mode, int quality,
-            std::optional<double> frame_rate = std::nullopt) {
+            std::optional<double> frame_rate = std::nullopt) const {
         return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
     }
     /*!
@@ -200,9 +204,10 @@ class WEBCFACE_DLL Image : protected Field {
      * (指定しない場合元画像が更新されるたびに受信する)
      *
      */
-    Image &request(std::optional<SizeOption> size, ImageCompressMode cmp_mode,
-                   int quality,
-                   std::optional<double> frame_rate = std::nullopt) {
+    const Image &
+    request(std::optional<SizeOption> size, ImageCompressMode cmp_mode,
+            int quality,
+            std::optional<double> frame_rate = std::nullopt) const {
         return request(size.value_or(SizeOption{}).rows(),
                        size.value_or(SizeOption{}).cols(), cmp_mode, quality,
                        std::nullopt, frame_rate);
@@ -213,16 +218,16 @@ class WEBCFACE_DLL Image : protected Field {
      * リクエストしていない場合すべてデフォルトで(元画像のフォーマットで)リクエストする
      *
      */
-    std::optional<ImageFrame> tryGet();
+    std::optional<ImageFrame> tryGet() const;
     /*!
      * \brief 画像を返す (データがない場合0x0の画像が返る)
      *
      * リクエストしていない場合すべてデフォルトで(元画像のフォーマットで)リクエストする
      *
      */
-    ImageFrame get() { return tryGet().value_or(ImageFrame{}); }
+    ImageFrame get() const { return tryGet().value_or(ImageFrame{}); }
 
-    operator ImageFrame() { return get(); }
+    // operator ImageFrame() const { return get(); }
 
     /*!
      * \brief syncの時刻を返す
@@ -232,10 +237,10 @@ class WEBCFACE_DLL Image : protected Field {
     [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
-    Image &free();
+    const Image &free() const;
 
     //! 画像をクリア (リクエスト状態は解除しない)
-    Image &clear();
+    const Image &clear() const;
 
     /*!
      * \brief Imageの参照先を比較

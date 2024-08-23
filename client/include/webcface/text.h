@@ -86,18 +86,19 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      * \param callback Text型の引数(thisが渡される)を1つ取る関数
-     * 
+     *
      */
-    Text &onChange(std::function<void WEBCFACE_CALL_FP(Text)> callback);
+    const Text &
+    onChange(std::function<void WEBCFACE_CALL_FP(Text)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
      * \param callback 引数をとらない関数
-     * 
+     *
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Text &onChange(F callback) {
+    const Text &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -109,7 +110,7 @@ class WEBCFACE_DLL Text : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -119,23 +120,23 @@ class WEBCFACE_DLL Text : protected Field {
      * (ver2.0からstd::stringをstd::string_viewに変更)
      *
      */
-    Text &set(std::string_view v) { return set(ValAdaptor{v}); }
+    const Text &set(std::string_view v) const { return set(ValAdaptor{v}); }
     /*!
      * \brief 文字列をセットする (wstring)
      * \since ver2.0
      */
-    Text &set(std::wstring_view v) { return set(ValAdaptor{v}); }
+    const Text &set(std::wstring_view v) const { return set(ValAdaptor{v}); }
     /*!
      * \brief 文字列以外の型の値もセットする
      * \since ver1.10
      */
-    Text &set(const ValAdaptor &v);
+    const Text &set(const ValAdaptor &v) const;
 
     /*!
      * \brief 文字列をセットする
      *
      */
-    Text &operator=(std::string_view v) {
+    const Text &operator=(std::string_view v) const {
         this->set(v);
         return *this;
     }
@@ -143,7 +144,7 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 文字列をセットする (wstring)
      * \since ver2.0
      */
-    Text &operator=(std::wstring_view v) {
+    const Text &operator=(std::wstring_view v) const {
         this->set(v);
         return *this;
     }
@@ -153,7 +154,7 @@ class WEBCFACE_DLL Text : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const Text &request() const;
     /*!
      * \brief 文字列を返す
      *
@@ -201,7 +202,7 @@ class WEBCFACE_DLL Text : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    Text &free();
+    const Text &free() const;
 
     bool operator==(std::string_view rhs) const { return this->get() == rhs; }
     bool operator!=(std::string_view rhs) const { return this->get() != rhs; }
@@ -365,8 +366,8 @@ class InputRef {
      *
      */
     template <typename T>
-    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double
-    as() const {
+    [[deprecated("use asDouble(), asInt() or asLLong() instead")]]
+    double as() const {
         return get().as<T>();
     }
 

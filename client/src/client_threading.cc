@@ -68,7 +68,10 @@ void internal::ClientData::start() {
     //     shared_from_this());
     // }
 }
-void Client::close() { data->close(); }
+const Client &Client::close() const {
+    data->close();
+    return *this;
+}
 void internal::ClientData::close() {
     std::lock_guard lock(this->ws_m);
     this->closing.store(true);
@@ -109,10 +112,10 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
             data->ws_cond.notify_all();
-            if(data->connected){
+            if (data->connected) {
                 ScopedUnlock un(lock);
                 std::lock_guard lock_s(data->sync_m);
-                if(data->sync_first.empty()){
+                if (data->sync_first.empty()) {
                     data->sync_first = data->syncDataFirst();
                 }
                 internal::WebSocket::send(data, data->sync_first);
@@ -178,9 +181,11 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
         }
     }
 }
-void Client::syncImpl(std::optional<std::chrono::microseconds> timeout) {
+const Client &
+Client::syncImpl(std::optional<std::chrono::microseconds> timeout) const {
     start();
     data->syncImpl(true, true, timeout);
+    return *this;
 }
 void internal::ClientData::syncImpl(
     bool sync, bool forever, std::optional<std::chrono::microseconds> timeout) {
@@ -206,9 +211,9 @@ void internal::ClientData::syncImpl(
             std::unique_lock lock(this->ws_m);
             connected2 = this->connected;
         }
-        if(!connected2 && this->sync_first.empty()){
+        if (!connected2 && this->sync_first.empty()) {
             this->sync_first = this->syncDataFirst();
-        }else{
+        } else {
             this->messagePushAlways(this->syncData(false));
         }
     }
@@ -269,8 +274,11 @@ void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
 }
 */
 
-void Client::start() { data->start(); }
-void Client::waitConnection() {
+const Client &Client::start() const {
+    data->start();
+    return *this;
+}
+const Client &Client::waitConnection() const {
     data->start();
     bool first_loop = true;
     while (!data->closing.load()) {
@@ -285,11 +293,11 @@ void Client::waitConnection() {
                            !data->do_ws_init;
                 });
             } else {
-                return;
+                return *this;
             }
         } else {
             if (data->sync_init_end) {
-                return;
+                return *this;
             } else {
                 // autoRecvならsyncInit完了まで待機
                 // そうでなければrecvを呼ぶ
@@ -306,6 +314,7 @@ void Client::waitConnection() {
         }
         first_loop = false;
     }
+    return *this;
 }
 // void Client::autoSync(bool enabled) {
 //     if (enabled /* && interval.count() > 0 */) {
@@ -315,8 +324,9 @@ void Client::waitConnection() {
 //     }
 // }
 
-void Client::autoReconnect(bool enabled) {
+const Client &Client::autoReconnect(bool enabled) const {
     data->auto_reconnect.store(enabled);
+    return *this;
 }
 bool Client::autoReconnect() const { return data->auto_reconnect.load(); }
 

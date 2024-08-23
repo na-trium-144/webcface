@@ -100,16 +100,12 @@ TEST_F(ViewTest, viewSet) {
         EXPECT_EQ(val, "aaa");
     });
     int manip_called = 0;
-    auto manip = [&](webcface::View &v2) {
-        manip_called++;
-        EXPECT_EQ(&v, &v2);
-    };
     auto manip2 = [&](const webcface::View &v2) {
         manip_called++;
         EXPECT_EQ(v, v2);
     };
-    v << manip << manip2;
-    EXPECT_EQ(manip_called, 2);
+    v << manip2;
+    EXPECT_EQ(manip_called, 1);
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data = **data_->view_store.getRecv(self_name, "b"_ss);

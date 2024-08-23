@@ -84,7 +84,8 @@ class WEBCFACE_DLL Value : protected Field {
      * \param callback Value型の引数(thisが渡される)を1つ取る関数
      *
      */
-    Value &onChange(std::function<void WEBCFACE_CALL_FP(Value)> callback);
+    const Value &
+    onChange(std::function<void WEBCFACE_CALL_FP(Value)> callback) const;
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -93,7 +94,7 @@ class WEBCFACE_DLL Value : protected Field {
      */
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
-    Value &onChange(F callback) {
+    const Value &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
@@ -105,7 +106,7 @@ class WEBCFACE_DLL Value : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) {
+    [[deprecated]] void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -116,13 +117,13 @@ class WEBCFACE_DLL Value : protected Field {
      * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
      *
      */
-    Value &set(double v);
+    const Value &set(double v) const;
     /*!
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
      *
      */
-    Value &set(std::vector<double> v);
+    const Value &set(std::vector<double> v) const;
     /*!
      * \brief 配列型の値をセットする
      * \since ver1.7 (VectorOpt(std::vector<T>) を置き換え)
@@ -134,7 +135,7 @@ class WEBCFACE_DLL Value : protected Field {
               typename std::enable_if_t<
                   std::is_convertible_v<typename R::value_type, double>,
                   std::nullptr_t> = nullptr>
-    Value &set(const R &range) {
+    const Value &set(const R &range) const {
         std::vector<double> vec;
         vec.reserve(std::size(range));
         for (const auto &v : range) {
@@ -150,7 +151,7 @@ class WEBCFACE_DLL Value : protected Field {
     template <typename V, std::size_t N,
               typename std::enable_if_t<std::is_convertible_v<V, double>,
                                         std::nullptr_t> = nullptr>
-    Value &set(const V (&range)[N]) {
+    const Value &set(const V (&range)[N]) const {
         std::vector<double> vec;
         vec.reserve(N);
         for (const auto &v : range) {
@@ -162,18 +163,18 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 配列をセット、またはすでにsetされていればリサイズする
      * \since ver1.11
      */
-    Value &resize(std::size_t size);
+    const Value &resize(std::size_t size) const;
     /*!
      * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
      */
-    Value &push_back(double v);
+    const Value &push_back(double v) const;
 
     /*!
      * \brief 数値または配列をセットする
      *
      */
     template <typename T>
-    Value &operator=(T &&v) {
+    const Value &operator=(T &&v) const {
         this->set(std::forward<T>(v));
         return *this;
     }
@@ -182,7 +183,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver1.7
      *
      */
-    void request() const;
+    const Value &request() const;
     /*!
      * \brief 値を返す
      *
@@ -219,46 +220,46 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 値やリクエスト状態をクリア
      *
      */
-    Value &free();
+    const Value &free() const;
 
-    Value &operator+=(double rhs) {
+    const Value &operator+=(double rhs) const {
         this->set(this->get() + rhs);
         return *this;
     }
-    Value &operator-=(double rhs) {
+    const Value &operator-=(double rhs) const {
         this->set(this->get() - rhs);
         return *this;
     }
-    Value &operator*=(double rhs) {
+    const Value &operator*=(double rhs) const {
         this->set(this->get() * rhs);
         return *this;
     }
-    Value &operator/=(double rhs) {
+    const Value &operator/=(double rhs) const {
         this->set(this->get() / rhs);
         return *this;
     }
-    Value &operator%=(std::int32_t rhs) {
+    const Value &operator%=(std::int32_t rhs) const {
         this->set(static_cast<std::int32_t>(this->get()) % rhs);
         return *this;
     }
-    Value &operator<<=(std::int32_t rhs) {
+    const Value &operator<<=(std::int32_t rhs) const {
         // todo: int64_tかuint64_tにしたほうがいいかもしれない
         this->set(static_cast<std::int32_t>(this->get()) << rhs);
         return *this;
     }
-    Value &operator>>=(std::int32_t rhs) {
+    const Value &operator>>=(std::int32_t rhs) const {
         this->set(static_cast<std::int32_t>(this->get()) >> rhs);
         return *this;
     }
-    Value &operator&=(std::int32_t rhs) {
+    const Value &operator&=(std::int32_t rhs) const {
         this->set(static_cast<std::int32_t>(this->get()) & rhs);
         return *this;
     }
-    Value &operator|=(std::int32_t rhs) {
+    const Value &operator|=(std::int32_t rhs) const {
         this->set(static_cast<std::int32_t>(this->get()) | rhs);
         return *this;
     }
-    Value &operator^=(std::int32_t rhs) {
+    const Value &operator^=(std::int32_t rhs) const {
         this->set(static_cast<std::int32_t>(this->get()) ^ rhs);
         return *this;
     }
@@ -266,7 +267,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 1足したものをsetした後自身を返す
      *
      */
-    Value &operator++() { // ++s
+    const Value &operator++() const { // ++s
         this->set(this->get() + 1);
         return *this;
     }
@@ -274,7 +275,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 1足したものをsetし、足す前の値を返す
      *
      */
-    double operator++(int) { // s++
+    double operator++(int) const { // s++
         auto v = this->get();
         this->set(v + 1);
         return v;
@@ -283,7 +284,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 1引いたものをsetした後自身を返す
      *
      */
-    Value &operator--() { // --s
+    const Value &operator--() const { // --const s
         this->set(this->get() - 1);
         return *this;
     }
@@ -291,7 +292,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 1引いたものをsetし、足す前の値を返す
      *
      */
-    double operator--(int) { // s--
+    double operator--(int) const { // s--
         auto v = this->get();
         this->set(v - 1);
         return v;

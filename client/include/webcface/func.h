@@ -158,35 +158,11 @@ class WEBCFACE_DLL Func : protected Field {
      * set2()で構築された関数の情報(FuncInfo)をclientにセット
      *
      */
-    Func &setImpl(ValType return_type, std::vector<Arg> &&args,
-                  std::function<FuncType> &&func_impl);
-    Func &setImpl(const std::shared_ptr<internal::FuncInfo> &func_info);
+    const Func &setImpl(ValType return_type, std::vector<Arg> &&args,
+                        std::function<FuncType> &&func_impl) const;
+    const Func &
+    setImpl(const std::shared_ptr<internal::FuncInfo> &func_info) const;
 
-    /*!
-     * f_run()を実行し結果をf_ok()に渡すか、例外が発生した場合はf_fail()にエラーを渡す
-     *
-     */
-    template <typename F1, typename F2, typename F3>
-    static void tryRun(F1 &&f_run, F2 &&f_ok, F3 &&f_fail) {
-        ValAdaptor error;
-        try {
-            f_ok(f_run());
-            return;
-        } catch (const std::exception &e) {
-            error = e.what();
-        } catch (const std::string &e) {
-            error = e;
-        } catch (const char *e) {
-            error = e;
-        } catch (const std::wstring &e) {
-            error = e;
-        } catch (const wchar_t *e) {
-            error = e;
-        } catch (...) {
-            error = "unknown exception";
-        }
-        f_fail(error);
-    }
     /*!
      * f_run()を実行し結果をCallHandleに渡す
      *
@@ -234,7 +210,7 @@ class WEBCFACE_DLL Func : protected Field {
                   ReturnTypeSupportedByWebCFaceFunc = TraitOk,
               typename FuncObjTrait<
                   T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    Func &set(T func) {
+    const Func &set(T func) const {
         return setImpl(
             valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
             FuncObjTrait<T>::argsInfo(),
@@ -274,7 +250,7 @@ class WEBCFACE_DLL Func : protected Field {
                   ReturnTypeSupportedByWebCFaceFunc = TraitOk,
               typename FuncObjTrait<
                   T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    Func &setAsync(T func) {
+    const Func &setAsync(T func) const {
         return setImpl(
             valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
             FuncObjTrait<T>::argsInfo(),
@@ -315,7 +291,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-    [[deprecated("use set() or setAsync()")]] Func &operator=(T func) {
+    [[deprecated("use set() or setAsync()")]] const Func &
+    operator=(T func) const {
         this->set(std::move(func));
         return *this;
     }
@@ -342,7 +319,8 @@ class WEBCFACE_DLL Func : protected Field {
               typename std::enable_if_t<
                   std::is_same_v<std::invoke_result_t<T, CallHandle>, void>,
                   std::nullptr_t> = nullptr>
-    Func &set(std::vector<Arg> args, ValType return_type, T callback) {
+    const Func &set(std::vector<Arg> args, ValType return_type,
+                    T callback) const {
         auto args_size = args.size();
         return setImpl(return_type, std::move(args),
                        [args_size, callback = std::move(callback)](
@@ -372,7 +350,8 @@ class WEBCFACE_DLL Func : protected Field {
               typename std::enable_if_t<
                   std::is_same_v<std::invoke_result_t<T, CallHandle>, void>,
                   std::nullptr_t> = nullptr>
-    Func &setAsync(std::vector<Arg> args, ValType return_type, T callback) {
+    const Func &setAsync(std::vector<Arg> args, ValType return_type,
+                         T callback) const {
         auto args_size = args.size();
         return setImpl(
             return_type, std::move(args),
@@ -396,7 +375,7 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     [[deprecated("Func::hidden() does nothing since ver1.10")]]
-    Func &hidden(bool) {
+    const Func &hidden(bool) const {
         return *this;
     }
 
@@ -404,7 +383,7 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 関数の設定を削除
      *
      */
-    Func &free();
+    const Func &free() const;
 
     /*!
      * \brief 関数を実行する (同期)
@@ -494,7 +473,7 @@ class WEBCFACE_DLL Func : protected Field {
      * (一致していない場合 std::invalid_argument )
      *
      */
-    Func &setArgs(const std::vector<Arg> &args);
+    const Func &setArgs(const std::vector<Arg> &args) const;
 
     /*!
      * \brief Funcの参照先を比較
