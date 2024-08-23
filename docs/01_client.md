@@ -383,6 +383,11 @@ closeしたあと再度start()を呼んで再接続することはできませ�
 
 - <b class="tab-title">C++</b>
     `wcli.serverVersion()`, `wcli.serverName()` で取得できます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfServerVersion(wcli)`, `wcfServerName(wcli)` で取得できます。
+
 - <b class="tab-title">JavaScript</b>
     `wcli.serverVersion`, `wcli.serverName` で取得できます。
 - <b class="tab-title">Python</b>
@@ -400,6 +405,9 @@ WebUI ver1.7 以降ではWebUIのページタイトルにも表示されてい�
 - <b class="tab-title">C++</b>
     \since <span class="since-c">2.0</span>
     `wcli.serverHostName()` で取得できます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+    `wcfServerHostName(wcli)` で取得できます。
 - <b class="tab-title">JavaScript</b>
     \since <span class="since-js">1.7</span>
     `wcli.serverHostName` で取得できます。

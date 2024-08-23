@@ -56,6 +56,17 @@ Client::members() で現在接続されているメンバーのリストが得�
         // ...
     }
     ```
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfMemberList`, `wcfMemberListW` にchar\*の配列とサイズを渡すと、メンバーの一覧を取得できます。
+    ```c
+    const char *member_list[10];
+    int actual_member_num;
+    wcfMemberList(wcli, member_list, 10, &actual_member_num);
+    ```
+    それぞれのメンバー名の文字列は、 wcfClose() するまではfreeされません。
+
 - <b class="tab-title">JavaScript</b>
     ```js
     for(const m of wcli.members()){
@@ -97,9 +108,22 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     Client::waitConnection()はこのクライアントが接続する前から存在したメンバーすべてについてコールバックを呼んでからreturnします。
 
     \note
-    onMemberEntryに限らず、
-    * <span class="since-c">2.0</span> webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
-    * <span class="since-c">2.0</span> nullptrを渡すとイベントのコールバックを解除します。
+    <span class="since-c">2.0</span>
+    onMemberEntryに限らず、webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfMemberEntryEvent`, `wcfMemberEntryEventW` で引数に const char \* と void \* をとる関数ポインタをコールバックとして設定できます。
+    void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback_member_entry(const char *name, void *user_data_p) {
+        struct UserData *user_data = (struct UserData *)user_data_p;
+        // ...
+    }
+    struct UserData user_data = {...};
+    wcfMemberEntryEvent(wcli, callback_member_entry, &user_data);
+    ```
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -176,17 +200,22 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    `wcli.libVersion()`, `wcli.libName()`, `wcli.remoteAddr()` で取得できます。
+    `member.libVersion()`, `member.libName()`, `member.remoteAddr()` で取得できます。
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfMemberLibVersion(wcli, name)`, `wcfMemberLibName(wcli, name)`, `wcfMemberRemoteAddr(wcli, name)` で取得できます。
+
 - <b class="tab-title">JavaScript</b>
-    `wcli.libVersion`, `wcli.libName`, `wcli.remoteAddr` で取得できます。
+    `member.libVersion`, `member.libName`, `member.remoteAddr` で取得できます。
 - <b class="tab-title">Python</b>
-    `wcli.lib_version`, `wcli.lib_name`, `wcli.remote_addr` で取得できます。
+    `member.lib_version`, `member.lib_name`, `member.remote_addr` で取得できます。
     
 </div>
 
 ## ping
 
-Member::pingStatus() でそのクライアントの通信速度を取得できます。(int型で、単位はms)
+クライアントの通信速度を取得できます。(単位はms)
 ここでは通信速度とはサーバーとクライアントの間で1往復データを送受信するのにかかる遅延です。
 
 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します
@@ -196,6 +225,9 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    Member::pingStatus() でmemberの通信速度(int型)を取得できます。
+    また、 Member::onPing() でpingの情報が更新された時に実行するコールバックを設定できます。
+
     <span class="since-c">2.0</span>
     ```cpp
     wcli.member("foo").onPing([](webcface::Member m){
@@ -209,6 +241,26 @@ Member::pingStatus() でそのクライアントの通信速度を取得でき�
     <del>onMemberEntry() と同様、 callbackList() でCallbackListにアクセスできます。</del>
     * <span class="since-c">2.0</span>
     自分自身のping値も取得できるようになりました。(`wcli.pingStatus()`, `wcli.onPing(...)`)
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfMemberPingStatus`, `wcfMemberPingStatusW` でmemberの通信速度を取得できます。
+    ```c
+    int ping_status;
+    wcfMemberPingStatus(wcli, name, &ping_status);
+    ```
+
+    また、 `wcfMemberPingEvent`, `wcfMemberPingEventW` で引数に const char \* と void \* をとる関数ポインタをコールバックとして設定できます。
+    void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback_ping(const char *name, void *user_data_p) {
+        struct UserData *user_data = (struct UserData *)user_data_p;
+        // ...
+    }
+    struct UserData user_data = {...};
+    wcfMemberPingEvent(wcli, callback_ping, &user_data);
+    ```
 
 - <b class="tab-title">JavaScript</b>
     ```ts

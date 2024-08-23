@@ -436,6 +436,17 @@ Member::valueEntries() に変更
     // pos.x, pos.y などのvalueが得られる
     ```
 
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfValueEntryList`, `wcfValueEntryListW` にchar\*の配列とサイズを渡すと、valueの一覧を取得できます。
+    ```c
+    const char *value_list[10];
+    int actual_value_num;
+    wcfMemberList(wcli, "foo", value_list, 10, &actual_value_num);
+    ```
+    それぞれのvalue名の文字列は、 wcfClose() するまではfreeされません。
+
 - <b class="tab-title">JavaScript</b>
     ```js
     for(const v of wcli.member("foo").values()){
@@ -471,6 +482,23 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
 
     <span class="since-c">2.0</span>
     Client::waitConnection()はこのクライアントが接続する前から存在したデータすべてについてコールバックを呼んでからreturnします。
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfValueEntryEvent`, `wcfValueEntryEventW` で引数に const char \* 2つと void \* をとる関数ポインタをコールバックとして設定できます。
+    void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback_value_entry(const char *member_name, const char *value_name, void *user_data_p) {
+        // member_name is "foo"
+
+        struct UserData *user_data = (struct UserData *)user_data_p;
+        // ...
+    }
+    struct UserData user_data = {...};
+    wcfValueEntryEvent(wcli, "foo", callback_value_entry, &user_data);
+    ```
+
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -522,6 +550,27 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
     ```
 
     ver1.11以前は `value("hoge").appendListener(...)`, `member("foo").onSync().appendListener(...)` です
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    `wcfValueChangeEvent`, `wcfValueChangeEventW` で引数に const char \* 2つと void \* をとる関数ポインタをコールバックとして設定できます。
+    void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback_value_change(const char *member_name, const char *value_name, void *user_data_p) {
+        // member_name is "foo", value_name is "hoge"
+        
+        // struct UserData *user_data = (struct UserData *)user_data_p;
+        // ...
+
+        double value[5];
+        int size;
+        wcfValueGetVecD(wcli, member_name, value_name, value, 5, &size);
+
+    }
+    struct UserData user_data = {...};
+    wcfValueChangeEvent(wcli, "foo", "hoge", callback_value_change, &user_data);
+    ```
 
 - <b class="tab-title">JavaScript</b>
     ```ts
