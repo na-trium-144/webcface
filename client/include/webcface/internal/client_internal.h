@@ -286,7 +286,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::shared_ptr<std::function<void(Member)>> member_entry_event;
 
     StrMap2<std::shared_ptr<std::function<void(Value)>>> value_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Text)>>> text_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Variant)>>> text_change_event;
     StrMap2<std::shared_ptr<std::function<void(Image)>>> image_change_event;
     StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>
         robot_model_change_event;

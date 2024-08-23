@@ -420,10 +420,11 @@ viewに入力欄を表示します。
 - sliderInput: 数値を指定するスライダー
 - checkInput: チェックボックス
 
+#### InputRef
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    InputRef  
     入力された値にアクセスするため webcface::InputRef オブジェクトを作成し、inputにbindします。
     そのInputRefオブジェクトをコピーまたは参照で別の関数などに渡すと、あとから値を取得することができます。
     ```cpp
@@ -434,9 +435,9 @@ viewに入力欄を表示します。
       << std::endl;
     ```
 
-    \warning
+    \note
     上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、
-    次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。
+    staticにできない場合(複数のviewで使い回す場合など)は次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。
     ```cpp
     while (true){
         auto v = wcli.view("a");
@@ -453,38 +454,18 @@ viewに入力欄を表示します。
     この場合はv.sync()の時に前周期のinput_valの内容が復元されるという挙動になります。
     (したがってv.sync()より前では値が未初期化になります)
 
-    InputRefの値は`get()`で webcface::ValAdaptor 型として取得できます。
-    また std::string, double, bool などの型にキャストすることでも値を得られます。  
     <span class="since-c">1.11</span>
-    `asStringRef()`, `asString()`, `asBool()`, <del>`as<double>()`</del> でも型変換ができます。  
-    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。
+    InputRefの値は
+    `asStringRef()`, `asString()`, `asBool()`, <del>`as<double>()`</del> で型を指定して取得できます。  
+    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。  
+    (std::string, double, bool などの型にキャストすることでも値を得られます。)  
+    (任意の型に対応したい場合は `get()` で webcface::ValAdaptor 型として取得できます。)
 
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
-    また、InputRefの値は[Text](./11_text.md)の1つとしてviewを表示しているクライアントに送信されます。
-
-    onChange  
-    onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
-    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
-    ```cpp
-    v << webcface::textInput("表示する文字列").onChange([](std::string val) {
-        std::cout << "input changed: " << val << std::endl;
-    });
-    ```
-
-    \note bindとonChangeを両方設定することはできません。
-
-    その他各種inputに指定できるオプションには以下のものがあります。
-    ([Func](./30_func.md)のArgオプションと同様です。)
-
-    `.init(初期値)`  
-    `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
-    `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
-    `.step(刻み幅)`: numberInput, sliderInputのみ  
-    `.option({ 選択肢, ... })`: selectInput, toggleInput  
+    また、InputRefの値は[Text](./11_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
 - <b class="tab-title">JavaScript</b>
-    InputRef  
     入力された値にアクセスするため [InputRef](https://na-trium-144.github.io/webcface-js/classes/InputRef.html) オブジェクトを作成し、inputにbindします。
     そのInputRefオブジェクトを別の関数などに渡すと、あとから値を取得することができます。
     ```ts
@@ -518,9 +499,26 @@ viewに入力欄を表示します。
 
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
-    また、InputRefの値は[Text](./11_text.md)の1つとしてviewを表示しているクライアントに送信されます。
+    また、InputRefの値は[Text](./11_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
-    onChange  
+</div>
+
+#### onChange
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
+    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
+    ```cpp
+    v << webcface::textInput("表示する文字列").onChange([](std::string val) {
+        std::cout << "input changed: " << val << std::endl;
+    });
+    ```
+
+    \note bindとonChangeを両方設定することはできません。
+
+- <b class="tab-title">JavaScript</b>
     onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
     buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
     ```ts
@@ -529,6 +527,23 @@ viewに入力欄を表示します。
     })
     ```
 
+</div>
+
+#### options
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    その他各種inputに指定できるオプションには以下のものがあります。
+    ([Func](./30_func.md)のArgオプションと同様です。)
+
+    `.init(初期値)`  
+    `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
+    `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
+    `.step(刻み幅)`: numberInput, sliderInputのみ  
+    `.option({ 選択肢, ... })`: selectInput, toggleInput  
+
+- <b class="tab-title">JavaScript</b>
     その他各種inputに指定できるオプションには以下のものがあります。
     ([Func](./30_func.md)のArgオプションと同様です。)
 
@@ -537,7 +552,6 @@ viewに入力欄を表示します。
     `min: 最小文字数, max: 最大文字数`: textInputのみ  
     `step: 刻み幅`: numberInput, sliderInputのみ  
     `option: [選択肢, ... ]`: selectInput, toggleInput  
-
 
 </div>
 
@@ -567,9 +581,15 @@ ViewComponent::onClick() でボタン要素のクリック時に実行するべ�
 <span class="since-c">1.10</span>
 <span class="since-js">1.6</span>
 
-各種Input要素の現在の値は ViewComponent::bind() で[Text](./11_text.md)オブジェクトとして取得できます。
+各種Input要素の現在の値は ViewComponent::bind() で
+<del>[Text](./11_text.md)オブジェクトとして</del>
+<span class="since-c">2.0</span> webcface::Variant オブジェクトとして取得できます。
 したがって`bind()`の値をInputの初期値として使用すればよいです。
-bind().get()で得られる webcface::ValAdaptor の値を整数、実数、bool、stringにキャストすることができます。
+
+<span class="since-c">2.0</span> Variant の値は
+`asStringRef()`, `asWStringRef()`, `asString()`, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()` で型を指定して取得できます。  
+(std::string, double, bool などの型にキャストすることでも値を得られます。)  
+(bind().get() で webcface::ValAdaptor 型としても取得できます。)
 
 Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず)
 ViewComponent::onChange() を使います。

@@ -47,17 +47,16 @@ static wcfStatus wcfTextGetT(wcfClient *wcli, const CharT *member,
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    auto str = wcli_->member(strOrEmpty(member)).text(field).tryGetV();
+    auto str = wcli_->member(strOrEmpty(member)).text(field).tryGet();
     if (str) {
-        const std::basic_string<CharT> &str2 = *str;
         if (size > 0) {
-            int copy_size = (size - 1) < static_cast<int>(str2.size())
+            int copy_size = (size - 1) < static_cast<int>(str->size())
                                 ? (size - 1)
-                                : static_cast<int>(str2.size());
-            std::memcpy(text, str2.c_str(), copy_size * sizeof(CharT));
+                                : static_cast<int>(str->size());
+            std::memcpy(text, str->c_str(), copy_size * sizeof(CharT));
             text[copy_size] = 0;
         }
-        *recv_size = static_cast<int>(str2.size());
+        *recv_size = static_cast<int>(str->size());
         return WCF_OK;
     } else {
         return WCF_NO_DATA;
