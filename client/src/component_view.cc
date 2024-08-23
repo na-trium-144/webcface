@@ -218,7 +218,7 @@ TemporalViewComponent &TemporalViewComponent::bind(const InputRef &ref) {
     msg_data->text_ref_tmp = ref;
     return *this;
 }
-std::optional<Text> ViewComponent::bind() const {
+std::optional<Variant> ViewComponent::bind() const {
     checkData();
     if (msg_data->text_ref_member && msg_data->text_ref_field) {
         return Field{data_w, *msg_data->text_ref_member,
