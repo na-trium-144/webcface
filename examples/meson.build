@@ -46,6 +46,7 @@ foreach e: example_src
       sources: sources,
       dependencies: dependencies,
       install: true,
+      install_rpath: relative_rpath,
     )
   endif
 endforeach
