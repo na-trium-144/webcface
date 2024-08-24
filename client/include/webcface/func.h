@@ -222,7 +222,7 @@ class WEBCFACE_DLL Func : protected Field {
                         [&] {
                             if constexpr (FuncObjTrait<T>::return_void) {
                                 std::apply(func, args_tuple);
-                                return ValAdaptor{};
+                                return ValAdaptor::emptyVal();
                             } else {
                                 auto ret = std::apply(func, args_tuple);
                                 return ret;
@@ -266,7 +266,7 @@ class WEBCFACE_DLL Func : protected Field {
                                     if constexpr (FuncObjTrait<
                                                       T>::return_void) {
                                         std::apply(*func_p, args_tuple);
-                                        return ValAdaptor{};
+                                        return ValAdaptor::emptyVal();
                                     } else {
                                         auto ret =
                                             std::apply(*func_p, args_tuple);

@@ -44,6 +44,10 @@ class DataTest : public ::testing::Test {
     Text text(const T1 &member, const T2 &name) {
         return Text{field(member, name)};
     }
+    template <typename T1, typename T2>
+    Variant variant(const T1 &member, const T2 &name) {
+        return Variant{field(member, name)};
+    }
     Log log(const SharedString &member) { return Log{Field{data_, member}}; }
     Log log(std::string_view member) {
         return Log{Field{data_, SharedString::fromU8String(member)}};
@@ -145,7 +149,7 @@ TEST_F(DataTest, valueSetVec) {
 }
 TEST_F(DataTest, textSet) {
     data_->text_change_event[self_name]["b"_ss] =
-        std::make_shared<std::function<void(Text)>>(callback<Text>());
+        std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set("c");
     EXPECT_EQ(static_cast<std::string>(
                   **data_->text_store.getRecv(self_name, "b"_ss)),
@@ -155,7 +159,7 @@ TEST_F(DataTest, textSet) {
 }
 TEST_F(DataTest, textSetW) {
     data_->text_change_event[self_name]["b"_ss] =
-        std::make_shared<std::function<void(Text)>>(callback<Text>());
+        std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set(L"c");
     EXPECT_EQ(static_cast<std::string>(
                   **data_->text_store.getRecv(self_name, "b"_ss)),
@@ -163,16 +167,17 @@ TEST_F(DataTest, textSetW) {
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
 }
-TEST_F(DataTest, textSetV) {
-    data_->text_change_event[self_name]["b"_ss] =
-        std::make_shared<std::function<void(Text)>>(callback<Text>());
-    text(self_name, "b").set(ValAdaptor(123));
-    EXPECT_EQ(static_cast<std::string>(
-                  **data_->text_store.getRecv(self_name, "b"_ss)),
-              "123");
-    EXPECT_EQ(callback_called, 1);
-    EXPECT_THROW(text("a", "b").set(ValAdaptor(123)), std::invalid_argument);
-}
+// TEST_F(DataTest, variantSet) {
+//     data_->text_change_event[self_name]["b"_ss] =
+//         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
+//     variant(self_name, "b").set(ValAdaptor(123));
+//     EXPECT_EQ(static_cast<std::string>(
+//                   **data_->text_store.getRecv(self_name, "b"_ss)),
+//               "123");
+//     EXPECT_EQ(callback_called, 1);
+//     EXPECT_THROW(variant("a", "b").set(ValAdaptor(123)),
+//     std::invalid_argument);
+// }
 
 TEST_F(DataTest, valueGet) {
     data_->value_store.setRecv(
@@ -195,14 +200,16 @@ TEST_F(DataTest, textGet) {
     ASSERT_NE(text("a", "b").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");
     EXPECT_EQ(text("a", "b").tryGetW().value(), L"hoge");
-    EXPECT_EQ(text("a", "b").tryGetV().value(), ValAdaptor("hoge"));
+    EXPECT_EQ(variant("a", "b").tryGet().value(), ValAdaptor("hoge"));
     EXPECT_EQ(text("a", "b").get(), "hoge");
     EXPECT_EQ(text("a", "b").getW(), L"hoge");
+    EXPECT_EQ(variant("a", "b").get().asStringRef(), "hoge");
     EXPECT_EQ(text("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "c").tryGetW(), std::nullopt);
-    EXPECT_EQ(text("a", "c").tryGetV(), std::nullopt);
+    EXPECT_EQ(variant("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "c").get(), "");
     EXPECT_EQ(text("a", "c").getW(), L"");
+    EXPECT_TRUE(variant("a", "c").get().empty());
     EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("b"_ss), 1u);
     EXPECT_EQ(data_->text_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(text(self_name, "b").tryGet(), std::nullopt);

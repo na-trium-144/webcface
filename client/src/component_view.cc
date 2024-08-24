@@ -70,10 +70,10 @@ std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
     }
     if (msg_data->text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
-        Text text_ref{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..ir" + view_name.u8String() + "/" +
-                          internalViewId(msg_data->type, idx_for_type))};
+        Variant text_ref{Field{data, data->self_member_name},
+                         SharedString::fromU8String(
+                             "..ir" + view_name.u8String() + "/" +
+                             internalViewId(msg_data->type, idx_for_type))};
         msg_data->text_ref_tmp->lockTo(text_ref);
         if (msg_data->init_ && !text_ref.tryGet()) {
             text_ref.set(*msg_data->init_);
@@ -218,7 +218,7 @@ TemporalViewComponent &TemporalViewComponent::bind(const InputRef &ref) {
     msg_data->text_ref_tmp = ref;
     return *this;
 }
-std::optional<Text> ViewComponent::bind() const {
+std::optional<Variant> ViewComponent::bind() const {
     checkData();
     if (msg_data->text_ref_member && msg_data->text_ref_field) {
         return Field{data_w, *msg_data->text_ref_member,

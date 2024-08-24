@@ -175,11 +175,12 @@ class WEBCFACE_DLL ViewComponent {
      * \brief inputの現在の値を取得
      * \since ver1.10
      *
-     *     * 値の変更はonChange()に新しい値を渡して呼び出す
+     * * 値の変更はonChange()に新しい値を渡して呼び出す
      * (onChange()->runAsync(value) など)
+     * * ver2.0〜 戻り値をText型からVariant型に変更
      *
      */
-    std::optional<Text> bind() const;
+    std::optional<Variant> bind() const;
 
     /*!
      * \brief 文字色を取得

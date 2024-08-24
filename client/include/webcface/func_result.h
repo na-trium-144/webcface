@@ -399,7 +399,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
-    void respond() const { respond(ValAdaptor()); }
+    void respond() const { respond(ValAdaptor::emptyVal()); }
 
     /*!
      * \brief 関数の結果を例外として送信する

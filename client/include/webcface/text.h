@@ -15,21 +15,178 @@
 WEBCFACE_NS_BEGIN
 
 /*!
+ * \brief 文字列、数値などの型を送受信するクラス
+ * \since ver2.0
+ *
+ * * ver1.11までTextにあった機能をVariantとTextに分離し、TextとInputRefのベースになるクラス
+ * * Textと同じメッセージで送受信するが、数値型も受け付ける
+ *
+ */
+class WEBCFACE_DLL Variant : protected Field {
+  public:
+    Variant() = default;
+    Variant(const Field &base);
+    Variant(const Field &base, const SharedString &field)
+        : Variant(Field{base, field}) {}
+
+    friend class InputRef;
+    friend struct InputRefState;
+    friend class TemporalViewComponent;
+
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \param callback Variant型の引数(thisが渡される)を1つ取る関数
+     *
+     */
+    const Variant &
+    onChange(std::function<void WEBCFACE_CALL_FP(Variant)> callback) const;
+    /*!
+     * \brief 値が変化したときに呼び出されるコールバックを設定
+     * \param callback 引数をとらない関数
+     *
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Variant &onChange(F callback) const {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \deprecated
+     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
+     * ver2.0からコールバックは1個のみになった。
+     * 互換性のため残しているがonChange()と同じ
+     *
+     */
+    template <typename T>
+    [[deprecated]] void appendListener(T &&callback) const {
+        onChange(std::forward<T>(callback));
+    }
+
+  protected:
+    /*!
+     * \brief 値をセットする
+     * \since ver1.10
+     */
+    const Variant &set(const ValAdaptor &v) const;
+
+  public:
+    /*!
+     * \brief 値をリクエストする
+     *
+     */
+    const Variant &request() const;
+    /*!
+     * \brief 値を取得する
+     *
+     */
+    std::optional<ValAdaptor> tryGet() const;
+    /*!
+     * \brief 値を取得する
+     *
+     * 参照は少なくとも次のClient::sync()までは有効
+     *
+     */
+    const ValAdaptor &get() const;
+
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    operator T() const {
+        return static_cast<T>(get());
+    }
+    /*!
+     * \brief 値が空かどうか調べる
+     *
+     */
+    bool empty() const { return get().empty(); }
+    /*!
+     * \brief 文字列として返す
+     *
+     * std::stringのconst参照を返す。
+     * 参照は少なくとも次のClient::sync()までは有効
+     *
+     */
+    const std::string &asStringRef() const { return get().asStringRef(); }
+    /*!
+     * \brief 文字列として返す (wstring)
+     * \sa asStringRef()
+     */
+    const std::wstring &asWStringRef() const { return get().asWStringRef(); }
+    /*!
+     * \brief 文字列として返す(コピー)
+     *
+     */
+    std::string asString() const { return get().asString(); }
+    /*!
+     * \brief 文字列として返す(コピー) (wstring)
+     *
+     */
+    std::wstring asWString() const { return get().asWString(); }
+    /*!
+     * \brief 実数として返す
+     *
+     */
+    double asDouble() const { return get().asDouble(); }
+    /*!
+     * \brief int型の整数として返す
+     *
+     */
+    int asInt() const { return get().asInt(); }
+    /*!
+     * \brief long long型の整数として返す
+     *
+     */
+    long long asLLong() const { return get().asLLong(); }
+    /*!
+     * \brief bool値を返す
+     *
+     */
+    bool asBool() const { return get().asBool(); }
+
+    template <typename T,
+              typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return get() == other;
+    }
+    template <typename T,
+              typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return get() != other;
+    }
+
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Variant>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T, typename std::enable_if_t<std::is_same_v<T, Variant>,
+                                                    std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) != static_cast<Field>(other);
+    }
+    bool operator<(const Variant &) const = delete;
+    bool operator<=(const Variant &) const = delete;
+    bool operator>(const Variant &) const = delete;
+    bool operator>=(const Variant &) const = delete;
+};
+
+
+/*!
  * \brief 文字列の送受信データを表すクラス
  *
  * コンストラクタではなく Member::text() を使って取得してください
  *
  */
-class WEBCFACE_DLL Text : protected Field {
+class WEBCFACE_DLL Text : protected Variant {
   public:
     Text() = default;
-    Text(const Field &base);
+    Text(const Field &base) : Variant(base) {}
     Text(const Field &base, const SharedString &field)
         : Text(Field{base, field}) {}
 
-    friend class InputRef;
-    friend struct InputRefState;
-    friend class TemporalViewComponent;
     using Field::lastName;
     using Field::member;
     using Field::name;
@@ -88,8 +245,16 @@ class WEBCFACE_DLL Text : protected Field {
      * \param callback Text型の引数(thisが渡される)を1つ取る関数
      *
      */
-    const Text &
-    onChange(std::function<void WEBCFACE_CALL_FP(Text)> callback) const;
+    template <typename F,
+              typename std::enable_if_t<std::is_invocable_v<F, Text>,
+                                        std::nullptr_t> = nullptr>
+    const Text &onChange(F callback) const {
+        this->Variant::onChange(
+            [callback = std::move(callback)](const Variant &base) {
+                callback(Text(base));
+            });
+        return *this;
+    }
     /*!
      * \brief 値が変化したときに呼び出されるコールバックを設定
      * \since ver2.0
@@ -99,8 +264,9 @@ class WEBCFACE_DLL Text : protected Field {
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
     const Text &onChange(F callback) const {
-        return onChange(
+        this->Variant::onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
+        return *this;
     }
     /*!
      * \deprecated
@@ -120,17 +286,18 @@ class WEBCFACE_DLL Text : protected Field {
      * (ver2.0からstd::stringをstd::string_viewに変更)
      *
      */
-    const Text &set(std::string_view v) const { return set(ValAdaptor{v}); }
+    const Text &set(std::string_view v) const {
+        this->Variant::set(ValAdaptor{v});
+        return *this;
+    }
     /*!
      * \brief 文字列をセットする (wstring)
      * \since ver2.0
      */
-    const Text &set(std::wstring_view v) const { return set(ValAdaptor{v}); }
-    /*!
-     * \brief 文字列以外の型の値もセットする
-     * \since ver1.10
-     */
-    const Text &set(const ValAdaptor &v) const;
+    const Text &set(std::wstring_view v) const {
+        this->Variant::set(ValAdaptor{v});
+        return *this;
+    }
 
     /*!
      * \brief 文字列をセットする
@@ -154,7 +321,10 @@ class WEBCFACE_DLL Text : protected Field {
      * \since ver1.7
      *
      */
-    const Text &request() const;
+    const Text &request() const {
+        this->Variant::request();
+        return *this;
+    }
     /*!
      * \brief 文字列を返す
      *
@@ -169,28 +339,26 @@ class WEBCFACE_DLL Text : protected Field {
      */
     std::optional<std::wstring> tryGetW() const;
     /*!
-     * \since ver2.0
-     *
-     * 文字列以外の型のデータが必要な場合
-     *
-     */
-    std::optional<ValAdaptor> tryGetV() const;
-    /*!
-     * \brief 文字列を返す
+     * \brief 文字列を返す (const参照)
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
      * * ver2.0〜 stringに戻した
+     * * ver2.0〜 const参照に変更
+     * 参照は少なくとも次のClient::sync()までは有効
      *
      */
-    std::string get() const { return tryGet().value_or(""); }
+    const std::string &get() const;
     /*!
-     * \brief 文字列を返す (wstring)
+     * \brief 文字列を返す (wstring const参照)
      * \since ver2.0
+     *
+     * 参照は少なくとも次のClient::sync()までは有効
+     *
      */
-    std::wstring getW() const { return tryGetW().value_or(L""); }
+    const std::wstring &getW() const;
 
-    operator std::string() const { return get(); }
-    operator std::wstring() const { return getW(); }
+    operator const std::string &() const { return get(); }
+    operator const std::wstring &() const { return getW(); }
 
     /*!
      * \brief syncの時刻を返す
@@ -240,11 +408,10 @@ class WEBCFACE_DLL Text : protected Field {
 WEBCFACE_DLL std::ostream &WEBCFACE_CALL operator<<(std::ostream &os,
                                                     const Text &data);
 
-struct InputRefState {
-    Text field;
-    ValAdaptor val;
-    InputRefState() = default;
-};
+namespace internal {
+struct InputRefState;
+}
+
 /*!
  * \brief 名前を指定しないText
  *
@@ -259,44 +426,35 @@ struct InputRefState {
  * sync()時にその新しいInputRefには前のInputRefと同じ名前が割り当てられることで同じ値になる
  *
  */
-class InputRef {
-    std::shared_ptr<InputRefState> state;
+class WEBCFACE_DLL InputRef {
+    std::shared_ptr<internal::InputRefState> state;
+
+    void lockTo(const Variant &target);
+    Variant &lockedField() const;
 
   public:
-    InputRef() : state(std::make_shared<InputRefState>()) {}
+    friend class TemporalViewComponent;
+
+    InputRef();
     InputRef(const InputRef &) = default;
     InputRef &operator=(const InputRef &) = default;
     /*!
-     * moveするとfieldがnullptrになってしまうがそれはまずいのでコピーをしろ。
+     * moveするとfieldがnullptrになってしまうがそれはまずいのでムーブ禁止
      *
      */
     InputRef(InputRef &&) = delete;
     InputRef &operator=(InputRef &&) = delete;
     ~InputRef() = default;
 
-    void lockTo(const Text &target) { state->field = target; }
-    bool expired() const { return state->field.expired(); }
-    Text &lockedField() const { return state->field; }
-
     /*!
      * \brief 値を返す
      *
-     * ver1.11からconst参照 (次に値を取得して別の値が返ったときまで有効)
+     * * ver1.11からconst参照
+     *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
+     *   * ver2.0〜: 参照は少なくとも次のClient::sync()までは有効
      *
      */
-    const ValAdaptor &get() const {
-        if (expired()) {
-            if (!state->val.empty()) {
-                state->val = ValAdaptor();
-            }
-        } else {
-            auto new_val = state->field.tryGetV().value_or(ValAdaptor());
-            if (state->val != new_val) {
-                state->val = new_val;
-            }
-        }
-        return state->val;
-    }
+    const ValAdaptor &get() const;
 
     /*!
      * \brief 値を返す
@@ -319,8 +477,9 @@ class InputRef {
      * \brief 文字列として返す
      * \since ver1.11
      *
-     * std::stringのconst参照を返す。
-     * 参照は次に値を取得して別の値が返ったときまで有効
+     * * std::stringのconst参照を返す。
+     *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
+     *   * ver2.0〜: 参照は少なくとも次のClient::sync()までは有効
      *
      */
     const std::string &asStringRef() const { return get().asStringRef(); }
