@@ -110,7 +110,7 @@ jobs:
           mkdir -p .debpkg/usr/$libdir/pkgconfig
           echo $absprefix/$libdir/pkgconfig/webcface.pc
           ln -s $absprefix/$libdir/pkgconfig/webcface.pc .debpkg/usr/$libdir/pkgconfig/webcface.pc
-          for file in $prefix/$libdir/*; do
+          for file in $prefix/$libdir/*.so*; do
             echo $absprefix/$libdir/$(basename $file)
             ln -s $absprefix/$libdir/$(basename $file) .debpkg/usr/$libdir/$(basename $file)
           done
