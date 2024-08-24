@@ -205,14 +205,14 @@ jobs:
   build-msvc:
     strategy:
       matrix:
-        arch: ["x86", "x64", "arm64"]
+        arch: ["x86", "x64"]
         include:
         - arch: x86
           devcmd: amd64_x86
         - arch: x64
           devcmd: amd64
-        - arch: arm64
-          devcmd: amd64_arm64
+        # - arch: arm64
+        #   devcmd: amd64_arm64
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v4
@@ -278,10 +278,11 @@ jobs:
         with:
           name: msvc-x64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
-        with:
-          name: msvc-arm64
-          path: ${{github.workspace}}/artifact
+      # - uses: actions/download-artifact@v3
+      #   with:
+      #     name: msvc-arm64
+      #     path: ${{github.workspace}}/artifact
+      
       # - name: Release
       #   uses: docker://antonyurchenko/git-release:v5
       #   env:
