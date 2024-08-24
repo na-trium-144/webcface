@@ -172,6 +172,7 @@ conf_data.set10('WEBCFACE_SYSTEM_WIN32SOCKET', webcface_system_win32socket)
 conf_data.set10('WEBCFACE_SYSTEM_PATH_WINDOWS', webcface_system_path_windows)
 conf_data.set10('WEBCFACE_SYSTEM_ADD_DEBUG', webcface_system_add_debug)
 
+filesystem_dep = disabler()
 webcface_exp_filesystem = false
 filesystem_check_src = '''
 #if defined(CXX17_FILESYSTEM)
@@ -185,47 +186,87 @@ int main(void) {
     return std_fs::exists(std_fs::path("/")), 0;
 }
 '''
-libfs = cxx.find_library('stdc++fs', required: false)
-cxx17_filesystem_ret = cxx.run(filesystem_check_src,
-  args: ['-DCXX17_FILESYSTEM'],
-  name: 'cxx17_filesystem'
-)
-if cxx17_filesystem_ret.compiled() and cxx17_filesystem_ret.returncode() == 0
-  filesystem_dep = declare_dependency()
-else
-  if libfs.found()
-    cxx17_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-      args: ['-DCXX17_FILESYSTEM'],
-      dependencies: [libfs],
-      name: 'cxx17_filesystem_libfs'
-    )
+if not meson.can_run_host_binaries()
+  cxx17_filesystem_compiles = cxx.compiles(filesystem_check_src,
+    args: ['-DCXX17_FILESYSTEM'],
+    name: 'cxx17_filesystem',
+  )
+  if cxx17_filesystem_compiles
+    filesystem_dep = declare_dependency()
+    summary('filesystem', 'C++17')
+    summary('libstdc++fs', 'skipped while cross compiling')
   endif
-  if libfs.found() and cxx17_filesystem_libfs_ret.compiled() and cxx17_filesystem_libfs_ret.returncode() == 0
-    filesystem_dep = libfs
-  else
-    cxx11_exp_filesystem_ret = cxx.run(filesystem_check_src,
-      args: ['-DCXX11_EXP_FILESYSTEM'],
-      name: 'cxx11_exp_filesystem'
-    )
-    if cxx11_exp_filesystem_ret.compiled() and cxx11_exp_filesystem_ret.returncode() == 0
+else
+  cxx17_filesystem_ret = cxx.run(filesystem_check_src,
+    args: ['-DCXX17_FILESYSTEM'],
+    name: 'cxx17_filesystem',
+  )
+  if cxx17_filesystem_ret.compiled()
+    if cxx17_filesystem_ret.returncode() == 0
       filesystem_dep = declare_dependency()
-      webcface_exp_filesystem = true
+      summary('filesystem', 'C++17')
+      summary('libstdc++fs', false, bool_yn: true)
     else
+      libfs = cxx.find_library('stdc++fs', required: false)
       if libfs.found()
-        cxx11_exp_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-          args: ['-DCXX11_EXP_FILESYSTEM'],
+        cxx17_filesystem_libfs_ret = cxx.run(filesystem_check_src,
+          args: ['-DCXX17_FILESYSTEM'],
+          name: 'cxx17_filesystem_libfs',
           dependencies: [libfs],
-          name: 'cxx11_exp_filesystem_libfs'
         )
-      endif
-      if libfs.found() and cxx11_exp_filesystem_libfs_ret.compiled() and cxx11_exp_filesystem_libfs_ret.returncode() == 0
-        filesystem_dep = libfs
-        webcface_exp_filesystem = true
-      else
-        error('std::filesystem not available')
+        if cxx17_filesystem_libfs_ret.compiled() and cxx17_filesystem_libfs_ret.returncode() == 0
+          filesystem_dep = libfs
+          summary('filesystem', 'C++17')
+          summary('libstdc++fs', true, bool_yn: true)
+        endif
       endif
     endif
   endif
+endif
+if is_disabler(filesystem_dep)
+  if not meson.can_run_host_binaries()
+    cxx11_exp_filesystem_compiles = cxx.compiles(filesystem_check_src,
+      args: ['-DCXX11_EXP_FILESYSTEM'],
+      name: 'cxx11_exp_filesystem',
+    )
+    if cxx11_exp_filesystem_compiles
+      filesystem_dep = declare_dependency()
+      webcface_exp_filesystem = true
+      summary('filesystem', 'experimental')
+      summary('libstdc++fs', 'skipped while cross compiling')
+    endif
+  else
+    cxx11_exp_filesystem_ret = cxx.run(filesystem_check_src,
+      args: ['-DCXX11_EXP_FILESYSTEM'],
+      name: 'cxx11_exp_filesystem',
+    )
+    if cxx11_exp_filesystem_ret.compiled()
+      if cxx11_exp_filesystem_ret.returncode() == 0
+        filesystem_dep = declare_dependency()
+        webcface_exp_filesystem = true
+        summary('filesystem', 'experimental')
+        summary('libstdc++fs', false, bool_yn: true)
+      else
+        libfs = cxx.find_library('stdc++fs', required: false)
+        if libfs.found()
+          cxx11_exp_filesystem_libfs_ret = cxx.run(filesystem_check_src,
+            args: ['-DCXX11_EXP_FILESYSTEM'],
+            name: 'cxx11_exp_filesystem_libfs',
+            dependencies: [libfs],
+          )
+          if cxx11_exp_filesystem_libfs_ret.compiled() and cxx11_exp_filesystem_libfs_ret.returncode() == 0
+            filesystem_dep = libfs
+            webcface_exp_filesystem = true
+            summary('filesystem', 'experimental')
+            summary('libstdc++fs', true, bool_yn: true)
+          endif
+        endif
+      endif
+    endif
+  endif
+endif
+if is_disabler(filesystem_dep)
+  error('Neither std::filesystem or std::experimental::filesystem available')
 endif
 conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
 
