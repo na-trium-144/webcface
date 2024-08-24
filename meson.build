@@ -66,14 +66,17 @@ webcface_system_path_windows = false
 webcface_system_add_debug = false
 webcface_system_version_rc = false
 magick_vs = false
+relative_rpath = ''
 if host_machine.system() == 'linux'
   summary('System', 'linux')
   webcface_system_visibility = true
   webcface_system_exclude_libs = true
+  relative_rpath = '$ORIGIN' / '..' / get_option('libdir')
 elif host_machine.system() == 'darwin'
   summary('System', 'darwin')
   webcface_system_visibility = true
   webcface_system_hidden_l = true
+  relative_rpath = '@loader_path' / '..' / get_option('libdir')
 elif host_machine.system() == 'windows'
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
@@ -676,6 +679,12 @@ import('pkgconfig').generate(
   libraries: [webcface_lib],
 )
 meson.override_dependency('webcface', webcface_dep)
+if get_option('default_library') == 'shared'
+  # sharedライブラリの場合のみ、webcface.pc から Requires.private の行を削除
+  meson.add_install_script(py,
+    meson.project_source_root() / 'scripts' / 'remove_private_requires.py',
+  )
+endif
 
 if build_server
   subdir('server-store')

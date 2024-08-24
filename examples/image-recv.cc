@@ -43,12 +43,11 @@ void img_update1(const webcface::Image &img) {
 }
 void img_update2(const webcface::Image &img) {
     auto img_frame = img.get();
-    if (!img_frame.empty()) {
+    if (!img_frame.empty() && img_frame.rows() == 300 &&
+        img_frame.cols() == 300) {
         std::cout << "2. Resized to 300x300" << std::endl;
         assert(img_frame.channels() == 3);
         assert(img_frame.color_mode() == webcface::ImageColorMode::rgb);
-        assert(img_frame.rows() == 300);
-        assert(img_frame.cols() == 300);
         Magick::Image m(img_frame.rows(), img_frame.cols(), "RGB",
                         Magick::CharPixel, img_frame.data().data());
         // m.display();
@@ -61,7 +60,7 @@ void img_update2(const webcface::Image &img) {
 
 void img_update3(const webcface::Image &img) {
     auto img_frame = img.get();
-    if (!img_frame.empty()) {
+    if (!img_frame.empty() && img_frame.channels() == 1) {
         std::cout << "3. Grayscale" << std::endl;
         assert(img_frame.channels() == 1);
         assert(img_frame.color_mode() == webcface::ImageColorMode::gray);
@@ -78,7 +77,8 @@ void img_update3(const webcface::Image &img) {
 }
 void img_update4(const webcface::Image &img) {
     auto img_frame = img.get();
-    if (!img_frame.empty()) {
+    if (!img_frame.empty() &&
+        img_frame.compress_mode() == webcface::ImageCompressMode::jpeg) {
         std::cout << "4. JPEG" << std::endl;
         // Magick::Blob blob(img_frame.data().data(),
         // img_frame.data().size()); Magick::Image img(blob,
@@ -94,7 +94,8 @@ void img_update4(const webcface::Image &img) {
 }
 void img_update5(const webcface::Image &img) {
     auto img_frame = img.get();
-    if (!img_frame.empty()) {
+    if (!img_frame.empty() &&
+        img_frame.compress_mode() == webcface::ImageCompressMode::png) {
         std::cout << "5. PNG" << std::endl;
         // Magick::Blob blob(img_frame.data().data(),
         // img_frame.data().size()); Magick::Image img(blob,

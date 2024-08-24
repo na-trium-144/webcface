@@ -8,6 +8,15 @@ WEBCFACE_NS_BEGIN
 
 Image::Image(const Field &base) : Field(base) {}
 
+const Image &Image::tryRequest() const {
+    auto req_id = dataLock()->image_store.addReq(member_, field_);
+    if (req_id) {
+        dataLock()->messagePushOnline(
+            message::packSingle(message::Req<message::Image>{
+                member_, field_, req_id, message::ImageReq{}}));
+    }
+    return *this;
+}
 const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
                             ImageCompressMode cmp_mode, int quality,
                             std::optional<ImageColorMode> color_mode,
@@ -28,16 +37,6 @@ const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
     return *this;
 }
 
-inline void addImageReq(const std::shared_ptr<internal::ClientData> &data,
-                        const SharedString &member_,
-                        const SharedString &field_) {
-    auto req = data->image_store.addReq(member_, field_);
-    if (req) {
-        data->messagePushOnline(message::packSingle(
-            message::Req<message::Image>{member_, field_, req, {}}));
-    }
-}
-
 const Image &Image::set(const ImageFrame &img) const {
     auto data = setCheck();
     data->image_store.setSend(*this, img);
@@ -52,7 +51,7 @@ const Image &Image::set(const ImageFrame &img) const {
     return *this;
 }
 const Image &Image::onChange(std::function<void(Image)> callback) const {
-    this->request();
+    this->tryRequest();
     auto data = dataLock();
     std::lock_guard lock(data->event_m);
     data->image_change_event[this->member_][this->field_] =
@@ -61,7 +60,7 @@ const Image &Image::onChange(std::function<void(Image)> callback) const {
 }
 
 std::optional<ImageFrame> Image::tryGet() const {
-    addImageReq(dataLock(), member_, field_);
+    this->tryRequest();
     return dataLock()->image_store.getRecv(*this);
 }
 

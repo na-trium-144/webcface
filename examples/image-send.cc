@@ -8,11 +8,11 @@ int main() {
     Magick::InitializeMagick(nullptr);
     webcface::Client wcli("example_image_send");
 
-    Magick::Image image("100x100", "white");
+    Magick::Image image("100x100", {255, 255, 255});
     for (int x = -10; x < 10; x++) {
         for (int y = -10; y < 10; y++) {
             if (x * x + y * y < 100) {
-                image.pixelColor(50 + x, 50 + y, "red");
+                image.pixelColor(50 + x, 50 + y, {255, 0, 0});
             }
         }
     }
@@ -25,5 +25,5 @@ int main() {
     wcli.sync();
     std::cout << "Press Enter to Exit" << std::endl;
     std::string wait;
-    std::cin >> wait;
+    std::getline(std::cin, wait);
 }
