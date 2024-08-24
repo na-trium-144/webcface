@@ -3,6 +3,8 @@ import glob
 
 prefix = os.environ["MESON_INSTALL_PREFIX"]
 if "DESTDIR" in os.environ and os.environ["DESTDIR"]:
+    if prefix.startswith("/"):
+        prefix = prefix.lstrip("/")
     prefix = os.path.join(os.environ["DESTDIR"], prefix)
 
 pc = glob.glob(os.path.join(prefix, "**", "webcface.pc"), recursive=True)

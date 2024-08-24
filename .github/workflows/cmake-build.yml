@@ -4,15 +4,12 @@ name: CMake Build and Release
 
 on:
   push:
+    branches: [ "v2_release" ]
     tags:
     - "v[0-9]+.[0-9]+.[0-9]+"
 
-env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE: Release
-
 jobs:
-  build-multiarch:
+  build-linux:
     # The host should always be linux
     runs-on: ubuntu-22.04
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
@@ -21,7 +18,7 @@ jobs:
     strategy:
       matrix:
         arch: [amd64, aarch64, armv7]
-        distro: ["24.04", "22.04", "20.04"]
+        distro: ["20.04"]
         include:
           - arch: amd64
             base: ubuntu
@@ -55,8 +52,6 @@ jobs:
           #   artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
           env: |
             distro: ${{matrix.distro}}
-            CC: gcc-10
-            CXX: g++-10
 
           # The shell to run commands with in the container
           shell: /bin/sh
@@ -69,113 +64,226 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -q -y
-            apt-get install -q -y ca-certificates gpg wget lsb-release
-            if [ ${{matrix.distro}} = 20.04 ]; then
-            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-            echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
-            apt-get update -q -y
-            fi
-            apt-get install -q -y build-essential cmake file gcc-10 g++-10 git
+            apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config ca-certificates
+            pip install meson
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
-            apt-get update -q -y
-            apt-get install -q -y libopencv-dev libspdlog-dev
-            cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DWEBCFACE_VERSION_SUFFIX=ubuntu${distro} -DWEBCFACE_DOWNLOAD_WEBUI=off -DWEBCFACE_INSTALL_SERVICE=on
-            cmake --build build --config ${{env.BUILD_TYPE}}
-            cd build
-            cpack -G DEB
-            
+            meson setup build --buildtype=release --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true
+            meson compile -C build || meson compile -C build
+            DESTDIR=/workspace/dist meson install -C build --skip-subprojects
+
+      - name: Create zip archive
+        run: |
+          cd ${{github.workspace}}/dist/opt/webcface/
+          zip --symlinks -r ${{github.workspace}}/libwebcface-linux-${{matrix.arch}}.zip *
+      - name: Prepare deb package files
+        run: |
+          mkdir .debpkg
+          cp -r dist/opt .debpkg/
+          prefix=.debpkg/opt/webcface
+          absprefix=/opt/webcface
+
+          mkdir -p .debpkg/usr/bin
+          for file in $prefix/bin/*; do
+            echo $absprefix/bin/$(basename $file)
+            ln -s $absprefix/bin/$(basename $file) .debpkg/usr/bin/
+          done
+
+          mkdir -p .debpkg/usr/include
+          echo $absprefix/include/webcface
+          ln -s $absprefix/include/webcface .debpkg/usr/include/
+
+          mkdir -p .debpkg/usr/share/doc
+          echo $absprefix/share/webcface
+          ln -s $absprefix/share/webcface .debpkg/usr/share/
+          echo $absprefix/share/doc/webcface
+          ln -s $absprefix/share/doc/webcface .debpkg/usr/share/doc/
+
+          libdir=lib/$(basename $prefix/lib/*-linux-*)
+          mkdir -p .debpkg/usr/$libdir/cmake
+          echo $absprefix/$libdir/cmake/webcface
+          ln -s $absprefix/$libdir/cmake/webcface .debpkg/usr/$libdir/cmake/
+          mkdir -p .debpkg/usr/$libdir/pkgconfig
+          echo $absprefix/$libdir/pkgconfig/webcface.pc
+          ln -s $absprefix/$libdir/pkgconfig/webcface.pc .debpkg/usr/$libdir/pkgconfig/webcface.pc
+          for file in $prefix/$libdir/*; do
+            echo $absprefix/$libdir/$(basename $file)
+            ln -s $absprefix/$libdir/$(basename $file) .debpkg/usr/$libdir/$(basename $file)
+          done
+
+      - name: Create dist deb package
+        uses: jiro4989/build-deb-action@v3
+        with:
+          package: webcface
+          package_root: .debpkg
+          maintainer: "na-trium-144 <na-trium-144@users.noreply.github.com>"
+          version: ${{ github.ref }} # refs/tags/v*.*.*
+          arch: ${{matrix.arch}}
+          desc: 'Web-based IPC & Dashboard-like UI'
       - uses: actions/upload-artifact@v3
         with:
-          name: deb-ubuntu${{matrix.distro}}-${{ matrix.arch }}
-          path: ${{github.workspace}}/build/*.deb
+          name: linux-${{ matrix.arch }}
+          path: ${{github.workspace}}/*.zip,${{github.workspace}}/*.deb
 
   build-macos:
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
     runs-on: macos-12
-    name: Build Framework on macos-12
+    name: Build on macos-12 ${{matrix.arch}}
     steps:
     - uses: actions/checkout@v4
-    - name: Install Nasm
+    - name: Install dependencies
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
         brew update --preinstall
-        brew install nasm
+        brew install meson nasm
 
-    - name: Configure CMake
+    - name: Setup Meson
       run: >
-        cmake -B build
-        -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-        -DWEBCFACE_TEST=0
-        -DWEBCFACE_EXAMPLE=0
-        -DWEBCFACE_SHARED=1
-        -DCMAKE_INSTALL_PREFIX=${{github.workspace}}/build/install
-        -DWEBCFACE_FRAMEWORK=1
-        -DWEBCFACE_FIND_LIBS=0
-        "-DCMAKE_OSX_ARCHITECTURES=arm64;x86_64"
-
-    - name: Build
-      run: cmake --build build -t install
-
-    - run: zip --symlinks -r webcface_macos.zip ${{github.workspace}}/build/install
+        meson setup build
+        --buildtype=release
+        --prefix=/opt/webcface
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        -Dpkgconfig.relocatable=true
+        $([[ ${{matrix.arch}} = arm64 ]] && echo --cross-file scripts/cross/macos_arm64)
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
+    - name: install
+      run: DESTDIR=${{github.workspace}}/dist meson install -C build --skip-subprojects
+    - name: Create zip archive
+      run: |
+        cd ${{github.workspace}}/dist/opt/webcface/
+        zip --symlinks -r ${{github.workspace}}/libwebcface-macos-${{matrix.arch}}.zip *
     - uses: actions/upload-artifact@v3
       with:
-        name: macos-framework
-        path: ${{github.workspace}}/webcface_macos.zip
+        name: macos-${{matrix.arch}}
+        path: ${{github.workspace}}/*.zip
 
+  lipo-macos:
+    runs-on: macos-12
+    name: Create universal binary
+    needs: [build-macos]
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-x86_64
+          path: ${{github.workspace}}/
+      - uses: actions/download-artifact@v3
+        with:
+          name: macos-arm64
+          path: ${{github.workspace}}/
+      - name: lipo
+        run: |
+          unzip libwebcface-macos-x86_64.zip -d x86_64
+          unzip libwebcface-macos-arm64.zip -d arm64
+          cp -R x86_64 universal
+          for file in x86_64/bin/*; do
+            rm universal/bin/$(basename $file)
+            echo lipo x86_64/bin/$(basename $file) arm64/bin/$(basename $file) -create -output universal/bin/$(basename $file)
+                 lipo x86_64/bin/$(basename $file) arm64/bin/$(basename $file) -create -output universal/bin/$(basename $file)
+          done
+          file=x86_64/lib/libwebcface.*.dylib
+          rm universal/lib/$(basename $file)
+          echo lipo x86_64/lib/$(basename $file) arm64/lib/$(basename $file) -create -output universal/lib/$(basename $file)
+               lipo x86_64/lib/$(basename $file) arm64/lib/$(basename $file) -create -output universal/lib/$(basename $file)
+      - name: Create zip archive
+        run: |
+          cd ${{github.workspace}}/universal
+          zip --symlinks -r ${{github.workspace}}/libwebcface-macos-universal.zip *
+      - uses: actions/upload-artifact@v3
+        with:
+          name: macos-universal
+          path: ${{github.workspace}}/libwebcface-macos-universal.zip
+
+  build-msvc:
+    strategy:
+      matrix:
+        arch: ["x86", "x64", "arm64"]
+        include:
+        - arch: x86
+          devcmd: amd64_x86
+        - arch: x64
+          devcmd: amd64
+        - arch: arm64
+          devcmd: amd64_arm64
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Meson
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install -y meson
+    - name: Add meson to path
+      run: echo "c:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{matrix.devcmd}}
+    - name: Setup Meson
+      run: >
+        meson setup build
+        --buildtype=release
+        "--prefix=C:\Program Files\webcface"
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        "-Dpkgconfig.relocatable=true"
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
+    - name: Compile
+      run: |
+        meson compile -C build
+    - name: install
+      env:
+        DESTDIR: ${{github.workspace}}\dist
+      run: meson install -C build --skip-subprojects
+
+    - name: Create zip archive
+      run: Compress-Archive dist\* libwebcface-windows-${{matrix.arch}}.zip
+    - uses: actions/upload-artifact@v3
+      with:
+        name: msvc-${{matrix.arch}}
+        path: ${{github.workspace}}/*.zip
 
   release:
     runs-on: ubuntu-latest
-    needs: [build-multiarch, build-macos]
+    needs: [build-linux, lipo-macos, build-msvc]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu24.04-amd64
+          name: linux-amd64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu24.04-aarch64
+          name: linux-aarch64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu24.04-armv7
+          name: linux-armv7
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu22.04-amd64
+          name: macos-universal
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu22.04-aarch64
+          name: msvc-x86
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu22.04-armv7
+          name: msvc-x64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: deb-ubuntu20.04-amd64
+          name: msvc-arm64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
-        with:
-          name: deb-ubuntu20.04-aarch64
-          path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
-        with:
-          name: deb-ubuntu20.04-armv7
-          path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
-        with:
-          name: macos-framework
-          path: ${{github.workspace}}/artifact
-      - name: Release
-        uses: docker://antonyurchenko/git-release:v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ALLOW_EMPTY_CHANGELOG: true
-        with:
-          args: artifact/*
-
+      # - name: Release
+      #   uses: docker://antonyurchenko/git-release:v5
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     ALLOW_EMPTY_CHANGELOG: true
+      #   with:
+      #     args: artifact/*
