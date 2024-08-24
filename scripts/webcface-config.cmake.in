@@ -1,13 +1,14 @@
 @PACKAGE_INIT@
 
+find_library(WEBCFACE_DEBUG_LIB @webcface_lib_debug@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
+find_library(WEBCFACE_RELEASE_LIB @webcface_lib_release@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
+
 # Create imported target webcface::webcface
 foreach(target webcface wcf)
     add_library(webcface::${target} INTERFACE IMPORTED)
     target_include_directories(webcface::${target} INTERFACE "${PACKAGE_PREFIX_DIR}/@includedir@")
-    target_link_directories(webcface::${target} INTERFACE "${PACKAGE_PREFIX_DIR}/@libdir@")
     target_link_libraries(webcface::${target} INTERFACE
-        debug @webcface_lib_debug@
-        optimized @webcface_lib_release@
+        $<IF:$<CONFIG:Debug>,${WEBCFACE_DEBUG_LIB},${WEBCFACE_RELEASE_LIB}>
     )
 endforeach()
 target_compile_features(webcface::webcface INTERFACE cxx_std_17)
