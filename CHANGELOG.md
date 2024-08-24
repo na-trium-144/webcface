@@ -1,3 +1,94 @@
+## [2.0.0] - 2024-08-24
+### Changed
+* ABIバージョン: 20
+* ビルドシステムをMesonに移行 (#361)
+	* FetchContentからwrapに移行
+	* インストール済みの外部ライブラリも使用可能になった
+	* warning_levelをデフォルトで3に設定
+	* webcface-server が実行時にwebcfaceライブラリに依存しないようにした (#358)
+	* MinGWでDebugビルドがリンクエラーにならないようになった
+	* windowsでdllのバージョン番号は `webcface-20.dll` のようになり、libにはバージョン番号がつかないようになった
+	* MinGWではDebugビルドにpostfixをつけない (#301)
+	* Cygwinでビルド可能になった(クライアントのみ)
+	* ver0のCMakeファイルが読み込まれているときのエラーメッセージ削除 (#368)
+	* staticビルドができるようになった (#274)
+* webcface/common/ ディレクトリの削除, ディレクトリ構造の見直し (#283)
+* clang-tidyの導入、warning修正 (#256)
+* C++17に移行 (#329)
+* eventpp依存を削除 (#311)
+* API, ABIのインタフェースでのspdlog依存を削除 (#316)
+* 画像処理周りをOpenCVからImageMagickに移行 (#270, #301)
+	* ImageFrameとcv::Matの相互変換機能削除
+	* ImageBaseをdeprecatedにした
+	* ImageBaseWithCV 削除
+	* Image::mat() 削除
+* 受信処理をClient::sync()を呼んだスレッドで行うようにした (#310, #357, #367)
+	* Func::set()でセットした関数はrecv()と同じスレッドでそのまま呼ばれるように仕様変更
+		* Func::runCond... 系の機能を削除
+		* その代わりとして Func::setAsync() 追加
+	* Client::loopSync(), loopSyncFor(), loopSyncUntil() 追加
+	* wcfWaitConnection, wcfAutoConnection, wcfLoopSync, wcfLoopSyncFor, wcfLoopSyncUntil, wcfFuncSetAsync, wcfFuncSetAsyncW 追加
+	* クライアントが内部で建てるスレッドを1つのみにした
+	* Client::close() がsync()で送信したデータの送信完了を待機するようにした
+	* AsyncFuncResult → Promise
+		* Promise::started, result をdeprecatedにした
+		* Promise::reached, found, onReach, waitReach, waitReachFor, waitReachUntil, finished, response, rejection, rejectionW, onFinish, waitFinish, waitFinishFor, waitFinishUntil 追加
+	* FuncCallHandle → CallHandle
+	* wcfAsyncFuncResult → wcfPromise
+		* wcfDestroy が wcfPromise ポインタを受け付けるようにした
+	* Func::run と operator(), wcfFuncRun, wcfFuncRunW をdeprecatedにした
+	* wcfFuncSetで登録した関数がrespondせずにreturnした場合に自動でrespondしないようにした
+	* サーバーに接続していない間各種リクエストや関数呼び出しを送らないようにした
+		* Func::runAsync()時に未接続なら即座に呼び出しは失敗するようになった
+* messageのSvrVersionをSyncInitEndに改名、member id と hostname のフィールドを追加 (#325, #349)
+	* SyncInitEndはEntryがすべて終わってから送られてくるようにした
+	* Client::onPing(), pingStatus() がClient自身にも使えるようになった
+	* Client::waitConnection() はSyncInitEndが完了するまで待機するようにした
+	* Client::serverHostName() 追加
+* ABI
+	* Linux,Macで -fvisibility=hidden を指定し、webcface以外のライブラリのシンボルを隠す (#274)
+		* 実行時に依存ライブラリが一切不要になった
+	* MinGWでdllexport, dllimportを使うようにした (#274)
+	* すべての関数に `__cdecl` 指定を追加 (#333)
+	* MacOSでdylibのcompatibility_versionを設定 (#368)
+	* namespaceにabiバージョンを含める (#368)
+	* ほとんどのクラスのPimpl化 (#373)
+* その他のAPI変更
+	* namespaceをsnake_caseに統一 (#312, #317)
+	* ValAdaptor::asDouble, asInt, asLLong関数を追加し、テンプレートのas()をdeprecatedにした (#283)
+	* ViewComponentBase → ViewComponent, TemporalViewComponent (#283, #373)
+	* Canvas2DComponentBase → Canvas2DComponent, TemporalCanvas2DComponent
+	* Canvas3DComponentBase → Canvas3DComponent, TemporalCanvas3DComponent
+	* Dict, VectorOpt 削除
+	* RobotJoint, RobotLink のメンバー変数削除、getter関数にした (#373)
+	* Canvas2D, Canvas3D のdeprecatedだったadd関数を削除 (#373)
+	* Text をTextとVariantに分離(#375)
+		* ViewComponent::bind() の戻り値をVariant型に変更
+	* InputRef::get() の仕様変更
+	* LogLineData<> のメンバーアクセスをgetter関数に変更 (#279)
+	* Func::set() などで渡した関数オブジェクトはコピーではなく常にムーブするようにした (#310)
+	* wcfTextGet, wcfValueGet が配列の代わりにNULLを受け付けられるようにした (#346)
+	* wcfValueGetが値の受信してない場合返す例外をwcfNotFound→wcfNoDataに変更
+	* 大半のメンバ関数にconst追加 (#374)
+	* View << callback のときcallbackの引数にView&が使えなくなった
+### Added
+* utf-8とstring, wstringの相互変換機能 (#264, #279, #370)
+	* 各種クラスの関数でstringを扱うものについてwstringバージョンを追加
+	* Text::tryGet() の戻り値をstd::stringに変更
+	* Text::get() の戻り値をstd::stringのconst参照に変更 (#375)
+	* Text::tryGetW(), getW() 追加
+	* usingUTF8(), wcfUsingUTF8() を追加
+	* メンバー名、フィールド名が無効なutf-8の場合サーバー側で置き換えるようにした
+* CのAPI強化 (#346)
+	* wcfMemberList/W, wcfMemberEntryEvent/W, wcfServerVersion, wcfServerName, wcf\*EntryList/W, wcf\*EntryEvent/W, wcfMemberSyncEvent/W, wcfMemberLibName, wcfMemberLibVersion, wcfRemoteAddr, wcfValueChangeEvent/W 追加
+	* enum wcfStatus, enum wcfValType, enum wcfViewComponentType, enum wcfColor 追加、define定数削除
+* Examples
+	* ImageMagickを使った画像送受信 example-image-send, example-image-recv (#270)
+	* OpenCVを使った画像送受信 example-cv-send, example-cv-recv
+### Fixed
+* Transformのデフォルトコンストラクタのバグを修正 (#283)
+* クライアントがサーバーに接続直後同じデータが2重で送信されるバグを修正 (#367)
+
 ## [1.11.4] - 2024-06-12
 ### Changed
 * CMakeListsでfetchするcrowのタグを固定 (#277)
