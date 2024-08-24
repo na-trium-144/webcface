@@ -88,3 +88,30 @@ jobs:
     #   run: |
     #     clang++ -std=c++17 test.cc -F${{github.workspace}}/build/install/Frameworks -framework webcface
     #     clang -std=c99 test.c -F${{github.workspace}}/build/install/Frameworks -framework webcface
+  test-macos-cross-clang:
+    strategy:
+      matrix:
+        dep: ["source"]
+    runs-on: macos-12
+    steps:
+    - uses: actions/checkout@v4
+    # - run: git submodule update --init
+    #   if: matrix.dep == 'submodule'
+
+    - name: Install Homebrew dependencies
+      env:
+        HOMEBREW_NO_AUTO_UPDATE: 1
+      run: |
+        brew update --preinstall
+        brew install meson
+
+    - name: Setup Meson
+      run: >
+        meson setup build
+        --buildtype=debug
+        -Dtest_wait=1000
+        --prefix=${{github.workspace}}/build/install
+        --cross-file scripts/cross/macos_arm64
+
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
