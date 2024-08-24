@@ -50,8 +50,10 @@ jobs:
           # Pass some environment variables to the container
           # env: | # YAML, but pipe character is necessary
           #   artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # armv7のubuntu20.04でなぜかSSL周りがエラーになり、これでなぜか直る
           env: |
-            distro: ${{matrix.distro}}
+            SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
 
           # The shell to run commands with in the container
           shell: /bin/sh
@@ -64,7 +66,7 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -q -y
-            apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config ca-certificates
+            apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config
             pip install meson
 
           # Produce a binary artifact and place it in the mounted volume
