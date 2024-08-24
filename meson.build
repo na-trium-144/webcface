@@ -116,26 +116,23 @@ else
 endif
 
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
-  args = [
-    '-Wno-inline',
-    '-Wno-error=psabi', # refer to PR#9
-    # crow
-    '-Wno-error=type-limits',
-    # inside fmt (fmtlib/fmt#3354)
-    '-Wno-error=array-bounds',
-    '-Wno-error=stringop-overflow',
-    # inside magick
-    '-Wno-error=ignored-qualifiers',
-  ]
-  # inside opencv
-  if cxx.has_argument('-Wno-error=deprecated-enum-enum-conversion')
-    args += '-Wno-error=deprecated-enum-enum-conversion'
-  endif
-  # (fmtlib/fmt#3415)
-  if cxx.has_argument('-Wno-error=dangling-reference')
-    args += '-Wno-error=dangling-reference'
-  endif
-  warning_options = declare_dependency(compile_args: args)
+  warning_options = declare_dependency(
+    compile_args: cxx.get_supported_arguments(
+      '-Wno-inline',
+      '-Wno-error=psabi', # refer to PR#9
+      # crow
+      '-Wno-error=type-limits',
+      # inside fmt (fmtlib/fmt#3354)
+      '-Wno-error=array-bounds',
+      '-Wno-error=stringop-overflow',
+      # (fmtlib/fmt#3415)
+      '-Wno-error=dangling-reference',
+      # inside opencv
+      '-Wno-error=deprecated-enum-enum-conversion',
+      # inside magick
+      '-Wno-error=ignored-qualifiers',
+    )
+  )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
     '-Wno-inline',
@@ -201,24 +198,22 @@ else
     args: ['-DCXX17_FILESYSTEM'],
     name: 'cxx17_filesystem',
   )
-  if cxx17_filesystem_ret.compiled()
-    if cxx17_filesystem_ret.returncode() == 0
-      filesystem_dep = declare_dependency()
-      summary('filesystem', 'C++17')
-      summary('libstdc++fs', false, bool_yn: true)
-    else
-      libfs = cxx.find_library('stdc++fs', required: false)
-      if libfs.found()
-        cxx17_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-          args: ['-DCXX17_FILESYSTEM'],
-          name: 'cxx17_filesystem_libfs',
-          dependencies: [libfs],
-        )
-        if cxx17_filesystem_libfs_ret.compiled() and cxx17_filesystem_libfs_ret.returncode() == 0
-          filesystem_dep = libfs
-          summary('filesystem', 'C++17')
-          summary('libstdc++fs', true, bool_yn: true)
-        endif
+  if cxx17_filesystem_ret.compiled() and cxx17_filesystem_ret.returncode() == 0
+    filesystem_dep = declare_dependency()
+    summary('filesystem', 'C++17')
+    summary('libstdc++fs', false, bool_yn: true)
+  else
+    libfs = cxx.find_library('stdc++fs', required: false)
+    if libfs.found()
+      cxx17_filesystem_libfs_ret = cxx.run(filesystem_check_src,
+        args: ['-DCXX17_FILESYSTEM'],
+        name: 'cxx17_filesystem_libfs',
+        dependencies: [libfs],
+      )
+      if cxx17_filesystem_libfs_ret.compiled() and cxx17_filesystem_libfs_ret.returncode() == 0
+        filesystem_dep = libfs
+        summary('filesystem', 'C++17')
+        summary('libstdc++fs', true, bool_yn: true)
       endif
     endif
   endif
@@ -240,26 +235,24 @@ if is_disabler(filesystem_dep)
       args: ['-DCXX11_EXP_FILESYSTEM'],
       name: 'cxx11_exp_filesystem',
     )
-    if cxx11_exp_filesystem_ret.compiled()
-      if cxx11_exp_filesystem_ret.returncode() == 0
-        filesystem_dep = declare_dependency()
-        webcface_exp_filesystem = true
-        summary('filesystem', 'experimental')
-        summary('libstdc++fs', false, bool_yn: true)
-      else
-        libfs = cxx.find_library('stdc++fs', required: false)
-        if libfs.found()
-          cxx11_exp_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-            args: ['-DCXX11_EXP_FILESYSTEM'],
-            name: 'cxx11_exp_filesystem_libfs',
-            dependencies: [libfs],
-          )
-          if cxx11_exp_filesystem_libfs_ret.compiled() and cxx11_exp_filesystem_libfs_ret.returncode() == 0
-            filesystem_dep = libfs
-            webcface_exp_filesystem = true
-            summary('filesystem', 'experimental')
-            summary('libstdc++fs', true, bool_yn: true)
-          endif
+    if cxx11_exp_filesystem_ret.compiled() and cxx11_exp_filesystem_ret.returncode() == 0
+      filesystem_dep = declare_dependency()
+      webcface_exp_filesystem = true
+      summary('filesystem', 'experimental')
+      summary('libstdc++fs', false, bool_yn: true)
+    else
+      libfs = cxx.find_library('stdc++fs', required: false)
+      if libfs.found()
+        cxx11_exp_filesystem_libfs_ret = cxx.run(filesystem_check_src,
+          args: ['-DCXX11_EXP_FILESYSTEM'],
+          name: 'cxx11_exp_filesystem_libfs',
+          dependencies: [libfs],
+        )
+        if cxx11_exp_filesystem_libfs_ret.compiled() and cxx11_exp_filesystem_libfs_ret.returncode() == 0
+          filesystem_dep = libfs
+          webcface_exp_filesystem = true
+          summary('filesystem', 'experimental')
+          summary('libstdc++fs', true, bool_yn: true)
         endif
       endif
     endif
