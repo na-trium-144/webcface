@@ -127,6 +127,10 @@ class WEBCFACE_DLL Image : protected Field {
         return *this;
     }
 
+  protected:
+    const Image &tryRequest() const;
+
+  public:
     /*!
      * \brief 画像を生画像のフォーマットでリクエストする
      * \param rows 画像の高さ
