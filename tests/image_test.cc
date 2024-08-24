@@ -134,6 +134,7 @@ TEST_F(ImageTest, imageGet) {
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     data_->image_store.setRecv(
         "a"_ss, "b"_ss, ImageFrame{sizeHW(100, 100), dp, ImageColorMode::bgr});
+    ASSERT_TRUE(image("a", "b").tryGet().has_value());
     EXPECT_EQ(image("a", "b").tryGet()->dataPtr(), dp);
     EXPECT_EQ(image("a", "b").get().dataPtr(), dp);
     EXPECT_EQ(image("a", "c").tryGet(), std::nullopt);

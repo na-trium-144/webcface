@@ -14,7 +14,6 @@ const Image &Image::tryRequest() const {
         dataLock()->messagePushOnline(
             message::packSingle(message::Req<message::Image>{
                 member_, field_, req_id, message::ImageReq{}}));
-        this->clear();
     }
     return *this;
 }
