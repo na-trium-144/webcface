@@ -177,11 +177,11 @@ void MemberData::onRecv(const std::string &message) {
                 logger->debug("sync_init (no name)");
             } else {
                 this->logger = std::make_shared<spdlog::logger>(
-                    std::to_string(this->member_id) + "_" + this->name_s,
+                    std::to_string(this->member_id) + "_" + this->name.decode(),
                     this->sink);
                 this->logger->set_level(this->logger_level);
                 this->logger->debug(
-                    "sync_init name={}, member_id={} (before {})", this->name_s,
+                    "sync_init name={}, member_id={} (before {})", this->name.decode(),
                     this->member_id, member_id_before);
                 this->logger->info("successfully connected and initialized.");
                 // 全クライアントに新しいMemberを通知
@@ -189,7 +189,7 @@ void MemberData::onRecv(const std::string &message) {
                     if (cd->member_id != this->member_id) {
                         cd->pack(v);
                         cd->logger->trace("send sync_init {} ({})",
-                                          this->name_s, this->member_id);
+                                          this->name.decode(), this->member_id);
                     }
                 });
             }
@@ -197,7 +197,7 @@ void MemberData::onRecv(const std::string &message) {
             store->forEachWithName([&](auto cd) {
                 if (cd->member_id != this->member_id) {
                     this->pack(cd->init_data);
-                    logger->trace("send sync_init {} ({})", cd->name_s,
+                    logger->trace("send sync_init {} ({})", cd->name.decode(),
                                   cd->member_id);
 
                     for (const auto &f : cd->value) {

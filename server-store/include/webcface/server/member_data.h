@@ -42,7 +42,6 @@ struct MemberData {
     bool sync_init = false;
 
     SharedString name;
-    std::string name_s; // decoded
     unsigned int member_id;
     message::SyncInit init_data;
     /*!
