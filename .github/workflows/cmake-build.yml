@@ -1,10 +1,9 @@
 # This starter workflow is for a CMake project running on a single platform. There is a different starter workflow if you need cross-platform coverage.
 # See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
-name: CMake Build and Release
+name: Meson Build and Release
 
 on:
   push:
-    branches: [ "v2_release" ]
     tags:
     - "v[0-9]+.[0-9]+.[0-9]+"
 
@@ -17,14 +16,14 @@ jobs:
     # Run steps on a matrix of 4 arch/distro combinations
     strategy:
       matrix:
-        arch: [amd64, aarch64, armv7]
+        arch: [amd64, arm64, armhf]
         distro: ["20.04"]
         include:
           - arch: amd64
             base: ubuntu
-          - arch: aarch64
+          - arch: arm64
             base: arm64v8/ubuntu
-          - arch: armv7
+          - arch: armhf
             base: arm32v7/ubuntu
     steps:
       - uses: actions/checkout@v4
@@ -66,8 +65,12 @@ jobs:
           # no secrets are present in the container state or logs.
           install: |
             apt-get update -q -y
+            apt-get install -q -y ca-certificates gpg wget lsb-release
+            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+            echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+            apt-get update -q -y
             apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config
-            pip install meson
+            pip3 install meson
 
           # Produce a binary artifact and place it in the mounted volume
           run: |
@@ -80,6 +83,10 @@ jobs:
         run: |
           cd ${{github.workspace}}/dist/opt/webcface/
           zip --symlinks -r ${{github.workspace}}/libwebcface-linux-${{matrix.arch}}.zip *
+      - uses: actions/upload-artifact@v3
+        with:
+          name: linux-${{ matrix.arch }}
+          path: ${{github.workspace}}/*.zip
       - name: Prepare deb package files
         run: |
           mkdir .debpkg
@@ -98,10 +105,12 @@ jobs:
           ln -s $absprefix/include/webcface .debpkg/usr/include/
 
           mkdir -p .debpkg/usr/share/doc
-          echo $absprefix/share/webcface
-          ln -s $absprefix/share/webcface .debpkg/usr/share/
           echo $absprefix/share/doc/webcface
           ln -s $absprefix/share/doc/webcface .debpkg/usr/share/doc/
+
+          mkdir -p .debpkg/usr/lib/systemd/system
+          echo $absprefix/lib/systemd/system/webcface-server.service
+          ln -s $absprefix/lib/systemd/system/webcface-server.service .debpkg/usr/lib/systemd/system/
 
           libdir=lib/$(basename $prefix/lib/*-linux-*)
           mkdir -p .debpkg/usr/$libdir/cmake
@@ -114,7 +123,6 @@ jobs:
             echo $absprefix/$libdir/$(basename $file)
             ln -s $absprefix/$libdir/$(basename $file) .debpkg/usr/$libdir/$(basename $file)
           done
-
       - name: Create dist deb package
         uses: jiro4989/build-deb-action@v3
         with:
@@ -126,8 +134,8 @@ jobs:
           desc: 'Web-based IPC & Dashboard-like UI'
       - uses: actions/upload-artifact@v3
         with:
-          name: linux-${{ matrix.arch }}
-          path: ${{github.workspace}}/*.zip,${{github.workspace}}/*.deb
+          name: linux-deb-${{ matrix.arch }}
+          path: ${{github.workspace}}/*.deb
 
   build-macos:
     strategy:
@@ -206,6 +214,7 @@ jobs:
     strategy:
       matrix:
         arch: ["x86", "x64"]
+        buildtype: ["debug", "release"]
         include:
         - arch: x86
           devcmd: amd64_x86
@@ -214,6 +223,7 @@ jobs:
         # - arch: arm64
         #   devcmd: amd64_arm64
     runs-on: windows-2019
+    name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
     steps:
     - uses: actions/checkout@v4
     - name: Install Meson
@@ -225,13 +235,28 @@ jobs:
     - uses: ilammy/msvc-dev-cmd@v1
       with:
         arch: ${{matrix.devcmd}}
-    - name: Setup Meson
+    - name: Setup Meson debug
+      if: matrix.buildtype == 'debug'
       run: >
         meson setup build
-        --buildtype=release
+        --buildtype=${{matrix.buildtype}}
         "--prefix=C:\Program Files\webcface"
         -Dversion_suffix=
         -Ddownload_webui=disabled
+        -Dtests=disabled
+        -Dexamples=disabled
+        -Dserver=disabled
+        "-Dpkgconfig.relocatable=true"
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
+    - name: Setup Meson release
+      if: matrix.buildtype == 'release'
+      run: >
+        meson setup build
+        --buildtype=${{matrix.buildtype}}
+        "--prefix=C:\Program Files\webcface"
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        -Dtests=disabled
         "-Dpkgconfig.relocatable=true"
         --cross-file scripts/cross/msvc_${{matrix.arch}}
     - name: Compile
@@ -243,10 +268,11 @@ jobs:
       run: meson install -C build --skip-subprojects
 
     - name: Create zip archive
-      run: Compress-Archive dist\* libwebcface-windows-${{matrix.arch}}.zip
+      working-directory: '${{github.workspace}}\dist\Program Files\webcface'
+      run: Compress-Archive * ${{github.workspace}}\libwebcface-windows-${{matrix.arch}}-${{matrix.buildtype}}.zip
     - uses: actions/upload-artifact@v3
       with:
-        name: msvc-${{matrix.arch}}
+        name: msvc-${{matrix.arch}}-${{matrix.buildtype}}
         path: ${{github.workspace}}/*.zip
 
   release:
@@ -260,11 +286,23 @@ jobs:
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: linux-aarch64
+          name: linux-deb-amd64
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: linux-armv7
+          name: linux-arm64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-deb-arm64
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-armhf
+          path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v3
+        with:
+          name: linux-deb-armhf
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
@@ -272,21 +310,39 @@ jobs:
           path: ${{github.workspace}}/artifact
       - uses: actions/download-artifact@v3
         with:
-          name: msvc-x86
-          path: ${{github.workspace}}/artifact
+          name: msvc-x86-debug
+          path: ${{github.workspace}}
       - uses: actions/download-artifact@v3
         with:
-          name: msvc-x64
-          path: ${{github.workspace}}/artifact
+          name: msvc-x86-release
+          path: ${{github.workspace}}
+      - uses: actions/download-artifact@v3
+        with:
+          name: msvc-x64-debug
+          path: ${{github.workspace}}
+      - uses: actions/download-artifact@v3
+        with:
+          name: msvc-x64-release
+          path: ${{github.workspace}}
       # - uses: actions/download-artifact@v3
       #   with:
       #     name: msvc-arm64
       #     path: ${{github.workspace}}/artifact
-      
-      # - name: Release
-      #   uses: docker://antonyurchenko/git-release:v5
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #     ALLOW_EMPTY_CHANGELOG: true
-      #   with:
-      #     args: artifact/*
+      - name: zip debug and release
+        run: |
+          unzip libwebcface-windows-x86-debug.zip -d x86
+          unzip -o libwebcface-windows-x86-release.zip -d x86
+          unzip libwebcface-windows-x64-debug.zip -d x64
+          unzip -o libwebcface-windows-x64-release.zip -d x64
+          cd ${{github.workspace}}/x86
+          zip -r ${{github.workspace}}/artifact/libwebcface-windows-x86.zip *
+          cd ${{github.workspace}}/x64
+          zip -r ${{github.workspace}}/artifact/libwebcface-windows-x64.zip *
+
+      - name: Release
+        uses: docker://antonyurchenko/git-release:v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ALLOW_EMPTY_CHANGELOG: true
+        with:
+          args: artifact/*
