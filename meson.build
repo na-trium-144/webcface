@@ -429,7 +429,7 @@ else
 endif
 
 if build_server
-  cli11_dep = dependency('cli11')
+  cli11_dep = dependency('cli11', 'CLI11')
 
   if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
     crow_dep = dependency('Crow', required: false)
