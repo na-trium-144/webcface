@@ -760,10 +760,12 @@ if get_option('default_library') == 'shared'
     arch_independent: false,
   )
   conf_data = configuration_data({
+    'prefix': get_option('prefix'),
     'libdir': get_option('libdir'),
     'includedir': get_option('includedir'),
     'webcface_lib_debug': webcface_lib_name_debug,
     'webcface_lib_release': webcface_lib_name_release,
+    'webcface_abi_major': webcface_abi_major,
   })
   cmake.configure_package_config_file(
     name: 'webcface',

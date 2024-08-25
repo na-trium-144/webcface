@@ -4,12 +4,43 @@ find_library(WEBCFACE_DEBUG_LIB @webcface_lib_debug@ PATHS "${PACKAGE_PREFIX_DIR
 find_library(WEBCFACE_RELEASE_LIB @webcface_lib_release@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
 
 # Create imported target webcface::webcface
+# target_link_libraries とか使ってかんたんに書くこともできるが、
+# Mesonのパーサーが認識できるようにするためにCMakeが生成するwebcface-targets.cmakeを真似てプロパティを書いている
 foreach(target webcface wcf)
-    add_library(webcface::${target} INTERFACE IMPORTED)
-    target_include_directories(webcface::${target} INTERFACE "${PACKAGE_PREFIX_DIR}/@includedir@")
-    target_link_libraries(webcface::${target} INTERFACE
-        $<IF:$<CONFIG:Debug>,${WEBCFACE_DEBUG_LIB},${WEBCFACE_RELEASE_LIB}>
+  add_library(webcface::${target} SHARED IMPORTED)
+  set_target_properties(webcface::${target} PROPERTIES
+    INTERFACE_INCLUDE_DIRECTORIES "${PACKAGE_PREFIX_DIR}/@includedir@"
+  )
+  if(WIN32 OR CYGWIN OR MSYS)
+    set_target_properties(webcface::${target} PROPERTIES
+      IMPORTED_IMPLIB_DEBUG "${WEBCFACE_DEBUG_LIB}"
+      IMPORTED_IMPLIB_RELEASE "${WEBCFACE_RELEASE_LIB}"
+      # dllはoptionalらしい
+      # IMPORTED_LOCATION_DEBUG "${_IMPORT_PREFIX}/bin/webcface11d.dll"
+      # IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/webcface11.dll"
+      IMPORTED_CONFIGURATIONS "DEBUG;RELEASE"
+      # WindowsでCMAKE_BUILD_TYPEがMinSizeRel,RelWithDebInfoの場合Releaseにリンクするようにする
+      MAP_IMPORTED_CONFIG_MINSIZEREL Release
+      MAP_IMPORTED_CONFIG_RELWITHDEBINFO Release
     )
+  elseif(APPLE)
+    set_target_properties(webcface::${target} PROPERTIES
+      IMPORTED_LOCATION "${WEBCFACE_RELEASE_LIB}"
+      # MacではMesonがinstall_nameにprefixを絶対パスで入れるらしい (meson.build内で変更するオプション無い)
+      IMPORTED_SONAME "@prefix@/@libdir@/lib@webcface_lib_release@.@webcface_abi_major@.dylib"
+    )
+  elseif(UNIX)
+    set_target_properties(webcface::${target} PROPERTIES
+      IMPORTED_LOCATION "${WEBCFACE_RELEASE_LIB}"
+      IMPORTED_SONAME "lib@webcface_lib_release@.so.@webcface_abi_major@"
+    )
+  else()
+    message(FATAL_ERROR "Unsupported system?")
+  endif()
 endforeach()
-target_compile_features(webcface::webcface INTERFACE cxx_std_17)
-target_compile_features(webcface::wcf INTERFACE c_std_99)
+set_target_properties(webcface::webcface PROPERTIES
+  INTERFACE_COMPILE_FEATURES "cxx_std_17"
+)
+set_target_properties(webcface::wcf PROPERTIES
+  INTERFACE_COMPILE_FEATURES "c_std_99"
+)
