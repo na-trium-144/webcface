@@ -88,3 +88,22 @@ jobs:
         g++-${{matrix.gcc_ver}} -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
         gcc-${{matrix.gcc_ver}} -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
 
+    - name: Test building with Meson using pkg-config
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        CC: gcc-${{matrix.gcc_ver}}
+        CXX: g++-${{matrix.gcc_ver}}
+        PKG_CONFIG_PATH: ${{github.workspace}}/build/install/lib/x86_64-linux-gnu/pkgconfig
+      run: |
+        meson setup buildm
+        meson compile -Cbuildm
+    - name: Test building with Meson using CMake
+      if: matrix.dep != 'static'
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        CC: gcc-${{matrix.gcc_ver}}
+        CXX: g++-${{matrix.gcc_ver}}
+      run: |
+        meson setup buildmc -Dcmake_prefix_path=${{github.workspace}}/build/install
+        meson compile -Cbuildmc
+

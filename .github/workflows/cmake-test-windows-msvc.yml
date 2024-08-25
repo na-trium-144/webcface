@@ -131,3 +131,9 @@ jobs:
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -DCMAKE_GENERATOR_PLATFORM=WIN32
         cmake --build build --config Debug
+    - name: Test building with Meson using CMake
+      if: matrix.dep != 'static'
+      working-directory: ${{github.workspace}}/.github/test
+      run: |
+        meson setup buildmc --buildtype=debug -Dcmake_prefix_path=${{github.workspace}}/build/install
+        meson compile -Cbuildmc
