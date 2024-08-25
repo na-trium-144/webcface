@@ -314,21 +314,28 @@ build_server = get_option('server').enabled() \
     and host_machine.system() != 'cygwin' \
   )
 summary('Build server',
-  [build_server, get_option('server').auto().to_string('(auto)', '')],
+  [build_server, get_option('server').auto() ? '(auto)' : ''],
   bool_yn: true,
   list_sep: ' ',
 )
 build_examples = get_option('examples').enabled() \
   or (get_option('examples').allowed() and not meson.is_subproject())
 summary('Build examples',
-  [build_examples, get_option('examples').auto().to_string('(auto)', '')],
+  [build_examples, get_option('examples').auto() ? '(auto)' : ''],
+  bool_yn: true,
+  list_sep: ' ',
+)
+build_cv_examples = get_option('cv_examples').enabled() \
+  or (get_option('cv_examples').allowed() and not meson.is_subproject())
+summary('Build examples with OpenCV',
+  [build_cv_examples, get_option('cv_examples').auto() ? '(auto)' : ''],
   bool_yn: true,
   list_sep: ' ',
 )
 build_tests = get_option('tests').enabled() \
   or (get_option('tests').allowed() and not meson.is_subproject())
 summary('Build tests',
-  [build_tests, get_option('tests').auto().to_string('(auto)', '')],
+  [build_tests, get_option('tests').auto() ? '(auto)' : ''],
   bool_yn: true,
   list_sep: ' ',
 )
@@ -630,10 +637,30 @@ if build_server
     dependencies: [magickpp_dep],
   )
   # endif
+else
+  magickpp_dep = disabler()
 endif
 
-if build_examples
-  opencv_dep = dependency('OpenCV', required: false)
+if build_examples and build_cv_examples
+  opencv_core_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_core'],
+    required: false,
+  )
+  opencv_imgproc_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_imgproc'],
+    required: false,
+  )
+  opencv_highgui_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_highgui'],
+    required: false,
+  )
+else
+  opencv_core_dep = disabler()
+  opencv_imgproc_dep = disabler()
+  opencv_highgui_dep = disabler()
 endif
 
 if build_tests
