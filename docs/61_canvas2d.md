@@ -1,4 +1,4 @@
-# Canvas2D
+# 6-1. Canvas2D
 
 \tableofcontents
 \since
@@ -10,6 +10,7 @@
 * JavaScript [Canvas2D](https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html)
 * Python [webcface.Canvas2D](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D)
 
+2Dの図形の描画データを送受信する型です。
 
 ## Point, Transform
 

@@ -1,4 +1,4 @@
-# Value
+# 5-1. Value
 
 \tableofcontents
 \since
@@ -12,6 +12,7 @@
 * Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 
 数値データ、または1次元数値配列を送受信する型です。
+double型で送受信されます。
 
 ## コマンドライン
 

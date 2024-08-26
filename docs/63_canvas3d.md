@@ -1,4 +1,4 @@
-# Canvas3D
+# 6-3. Canvas3D
 
 \tableofcontents
 \since
@@ -10,7 +10,7 @@
 * JavaScript [Canvas3D](https://na-trium-144.github.io/webcface-js/classes/Canvas3D.html)
 * Python [webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)
 
-3D空間上のオブジェクト配置データを送受信し、WebUI上に表示できます。
+3D空間上のオブジェクト配置データを送受信する型です。
 
 ## Point, Transform
 

@@ -1,4 +1,4 @@
-# Client
+# 4-1. Client
 
 \tableofcontents
 \sa
@@ -33,6 +33,11 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    C++のソースコードでは`<webcface/webcface.h>`をincludeするとwebcfaceのすべての機能が使用できます。
+
+    <span class="since-c">1.10</span>
+    `<webcface/client.h>`, `<webcface/value.h>`など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。
+
     ```cpp
     #include <webcface/client.h>
     // または #include <webcface/webcface.h> (すべての機能をinclude)

@@ -1,4 +1,4 @@
-# Image
+# 6-2. Image
 
 \tableofcontents
 \since
@@ -10,6 +10,7 @@
 * Python 未実装 <!--[webcface.Image](https://na-trium-144.github.io/webcface-python/webcface.image.html#webcface.image.Image)-->
 
 画像データを送受信します。
+画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。
 
 ## コマンドライン
 
