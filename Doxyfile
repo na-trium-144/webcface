@@ -61,7 +61,7 @@ PROJECT_BRIEF          = "Web-based IPC & Dashboard-like UI"
 # pixels and the maximum width should not exceed 200 pixels. Doxygen will copy
 # the logo to the output directory.
 
-PROJECT_LOGO           =
+PROJECT_LOGO           = docs/images/icon.svg
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute) path
 # into which the generated documentation will be written. If a relative path is
@@ -193,7 +193,7 @@ STRIP_FROM_PATH        =
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = build/include/ client/include/ encoding/include/ message/include/ server-internal/include/ server-store/include/
+STRIP_FROM_INC_PATH    = build/include/ client/include/ encoding/include/ message/include/ server-store/include/
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -1059,7 +1059,7 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */docs/*/* */test/* */example/* */build*/_deps/* */build*/CMakeFiles/* */build*/doxygen/* */out/* */external/*
+EXCLUDE_PATTERNS       = */docs/*/* */tests/* */examples/* */build*/*/* */out/* */subprojects/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the

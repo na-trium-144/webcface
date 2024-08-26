@@ -1,4 +1,4 @@
-# webcface-send
+# 7-2. webcface-send
 
 \tableofcontents
 \since tools ver1.1
@@ -45,3 +45,10 @@ webcface-send -t log
 ログレベルはすべて2(Info)になります。
 
 
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [7-1. webcface-launcher](71_launcher.md) | [8-1. Message](81_message.md) |
+
+</div>

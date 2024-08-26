@@ -1,4 +1,4 @@
-# Image
+# 6-2. Image
 
 \tableofcontents
 \since
@@ -10,7 +10,9 @@
 * Python 未実装 <!--[webcface.Image](https://na-trium-144.github.io/webcface-python/webcface.image.html#webcface.image.Image)-->
 
 画像データを送受信します。
+画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。
 
+<!--
 ## コマンドライン
 
 ```sh
@@ -19,6 +21,7 @@ webcface-cv-capture 0
 などとするとOpenCVのVideoCaptureでキャプチャできるWebカメラなどの画像をwebcfaceに送信することができます。
 
 詳細は [webcface-cv-capture](./72_cv_capture.md) のページを参照
+-->
 
 ## 送信
 
@@ -228,7 +231,7 @@ Member::imageEntries() に変更
 
 また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -237,13 +240,13 @@ Member::imageEntries() に変更
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Canvas2D](14_canvas2d.md) | [Canvas3D](20_canvas3d.md) |
+| [6-1. Canvas2D](61_canvas2d.md) | [6-3. Canvas3D](63_canvas3d.md) |
 
 </div>

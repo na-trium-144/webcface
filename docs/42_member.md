@@ -1,4 +1,4 @@
-# Member
+# 4-2. Member
 
 \tableofcontents
 \sa
@@ -291,6 +291,6 @@ recv() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表
 
 | Previous |     Next |
 |:---------|---------:|
-| [Client](01_client.md) | [Value](10_value.md) |
+| [4-1. Client](41_client.md) | [5-1. Value](51_value.md) |
 
 </div>

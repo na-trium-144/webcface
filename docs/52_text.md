@@ -1,4 +1,4 @@
-# Text
+# 5-2. Text
 
 \tableofcontents
 \since
@@ -13,7 +13,7 @@
 
 文字列データを送受信します。
 
-使い方は[Value](./10_value.md)とほぼ同じです。
+使い方は[Value](./51_value.md)とほぼ同じです。
 
 ## コマンドライン
 
@@ -22,7 +22,7 @@ webcface-send -t text
 ```
 を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)
 
-詳細は [webcface-send](./71_send.md) のページを参照
+詳細は [webcface-send](./72_send.md) のページを参照
 
 ## 送信
 
@@ -67,7 +67,7 @@ Client::text からTextオブジェクトを作り、 Text::set() でデータ�
 <span class="since-c">1.10</span>
 <span class="since-js">1.6</span>
 Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。
-([View](./13_view.md)のInputRefで内部的に使用するため)  
+([View](./54_view.md)のInputRefで内部的に使用するため)  
 C++はset,getで文字列と同様に送信、受信できます。  
 JavaScriptではsetAny, getAny関数を使うと文字列以外のデータを処理できます。
 
@@ -209,7 +209,7 @@ Member::textEntries() に変更
 
 また、Member::onTextEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -218,12 +218,12 @@ Member::textEntries() に変更
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Value](10_value.md) | [View](13_view.md) |
+| [5-1. Value](51_value.md) | [5-3. Func](53_func.md) |
 
 </div>

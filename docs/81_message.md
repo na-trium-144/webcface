@@ -1,4 +1,4 @@
-# Message
+# 8-1. Message
 
 \tableofcontents
 
@@ -480,3 +480,10 @@ data = {
 ```
 * logの受信をリクエストします
 
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [7-2. webcface-send](72_send.md) | [8-2. ]() |
+
+</div>

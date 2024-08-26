@@ -1,4 +1,4 @@
-# View
+# 5-4. View
 
 \tableofcontents
 \since
@@ -288,7 +288,7 @@ Viewに追加する各種要素をViewComponentといいます。
 ### button
 ボタンを表示します。
 
-クリック時の動作は、関数を登録済みの[Funcオブジェクト](./30_func.md)、または関数を直接設定できます。
+クリック時の動作は、関数を登録済みの[Funcオブジェクト](./53_func.md)、または関数を直接設定できます。
 
 \note 別のMemberのFuncオブジェクトを渡すこともできます
 (ボタンを押すと別のMemberに登録されている関数が実行される)
@@ -326,7 +326,7 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">C</b>
-    関数の登録方法は [Func](./30_func.md) を参照してください。
+    関数の登録方法は [Func](./53_func.md) を参照してください。
     表示する文字列に加え登録したFuncのmember名と名前を
     wcfButton, (<span class="since-c">2.0</span> wcfButtonW) に指定します。
     member名をNULLまたは空文字列にすると自分自身が登録した関数を指します。
@@ -463,7 +463,7 @@ viewに入力欄を表示します。
 
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
-    また、InputRefの値は[Text](./11_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
+    また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
 - <b class="tab-title">JavaScript</b>
     入力された値にアクセスするため [InputRef](https://na-trium-144.github.io/webcface-js/classes/InputRef.html) オブジェクトを作成し、inputにbindします。
@@ -499,7 +499,7 @@ viewに入力欄を表示します。
 
     \note
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
-    また、InputRefの値は[Text](./11_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
+    また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
 </div>
 
@@ -535,7 +535,7 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">C++</b>
     その他各種inputに指定できるオプションには以下のものがあります。
-    ([Func](./30_func.md)のArgオプションと同様です。)
+    ([Func](./53_func.md)のArgオプションと同様です。)
 
     `.init(初期値)`  
     `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
@@ -545,7 +545,7 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">JavaScript</b>
     その他各種inputに指定できるオプションには以下のものがあります。
-    ([Func](./30_func.md)のArgオプションと同様です。)
+    ([Func](./53_func.md)のArgオプションと同様です。)
 
     `init: 初期値`  
     `min: 最小値, max: 最大値`: decimalInput, numberInput, sliderInputのみ  
@@ -574,7 +574,7 @@ Cの場合は wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で wcf
 
 ### onClick
 
-ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が[Func](./30_func.md)オブジェクトとして取得できます。
+ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が[Func](./53_func.md)オブジェクトとして取得できます。
 したがって、ボタンを表示し、クリックされたときに`onClick().runAsync()`などとすることでそのボタンを動作させられます。
 
 ### onChangeとbind
@@ -582,7 +582,7 @@ ViewComponent::onClick() でボタン要素のクリック時に実行するべ�
 <span class="since-js">1.6</span>
 
 各種Input要素の現在の値は ViewComponent::bind() で
-<del>[Text](./11_text.md)オブジェクトとして</del>
+<del>[Text](./52_text.md)オブジェクトとして</del>
 <span class="since-c">2.0</span> webcface::Variant オブジェクトとして取得できます。
 したがって`bind()`の値をInputの初期値として使用すればよいです。
 
@@ -622,7 +622,7 @@ Member::viewEntries() に変更
 
 また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -631,12 +631,12 @@ Member::viewEntries() に変更
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Text](11_text.md) | [Canvas2D](14_canvas2d.md) |
+| [5-3. Func](53_func.md) | [5-5. Log](55_log.md) |
 
 </div>

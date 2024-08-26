@@ -1,4 +1,4 @@
-# Canvas2D
+# 6-1. Canvas2D
 
 \tableofcontents
 \since
@@ -10,6 +10,7 @@
 * JavaScript [Canvas2D](https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html)
 * Python [webcface.Canvas2D](https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D)
 
+2Dの図形の描画データを送受信する型です。
 
 ## Point, Transform
 
@@ -62,14 +63,14 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 
 ## 送信
 
-使い方は[View](13_view.md)とだいたい同じになっています。
+使い方は[View](54_view.md)とだいたい同じになっています。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     Client::canvas2d からCanvas2Dオブジェクトを作り、
     Canvas2D::init() でCanvasのサイズを指定し、
-    [View](./13_view.md)と同様に Canvas2D::add() または operator<< で要素を追加し、
+    [View](./54_view.md)と同様に Canvas2D::add() または operator<< で要素を追加し、
     最後にCanvas2D::sync()をしてからClient::sync()をすることで送信されます。
 
     \note <span class="since-c">1.9</span> add関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
@@ -196,7 +197,7 @@ Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では�
 
     色、線の太さ、クリック時に実行する関数などを設定できます。
     使用可能なオプションは webcface::Canvas2DComponent のそれぞれのメソッドの説明を参照してください。
-    関数の実行については[Func](./30_func.md)も参照してください
+    関数の実行については[Func](./53_func.md)も参照してください
 
 - <b class="tab-title">JavaScript</b>
     JavaScriptでは [`geometries`](https://na-trium-144.github.io/webcface-js/variables/geometries.html) オブジェクト内にそれぞれの要素を表す関数があります
@@ -316,7 +317,7 @@ Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリス�
 
 また、Member::onCanvas2DEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -325,12 +326,12 @@ Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリス�
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [View](13_view.md) | [Image](15_image.md) |
+| [5-5. Log](55_log.md) | [6-2. Image](62_image.md) |
 
 </div>

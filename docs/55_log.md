@@ -1,4 +1,4 @@
-# Log
+# 5-5. Log
 
 \tableofcontents
 \since
@@ -22,7 +22,7 @@ webcface-send -t log
 を実行し、文字列を入力すると送信されます。
 
 他のコマンドからpipeしてWebCFaceに送信するという使い方ができます。
-詳細は [webcface-send](./71_send.md) のページを参照
+詳細は [webcface-send](./72_send.md) のページを参照
 
 ## 送信
 
@@ -193,12 +193,12 @@ serverの起動時のオプションでこの行数は変更できます。(`web
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Func](30_func.md) | |
+| [5-4. View](54_view.md) | [6-1. Canvas2D](61_canvas2d.md) |
 
 </div>

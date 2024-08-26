@@ -1,4 +1,4 @@
-# Canvas3D
+# 6-3. Canvas3D
 
 \tableofcontents
 \since
@@ -10,11 +10,11 @@
 * JavaScript [Canvas3D](https://na-trium-144.github.io/webcface-js/classes/Canvas3D.html)
 * Python [webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)
 
-3D空間上のオブジェクト配置データを送受信し、WebUI上に表示できます。
+3D空間上のオブジェクト配置データを送受信する型です。
 
 ## Point, Transform
 
-WebCFaceでは3次元の座標を webcface::Point, 座標変換(平行移動してから回転)を webcface::Transform で表せます([Canvas2D](./14_canvas2d.md)での2次元の座標を表すクラスと共通です)。
+WebCFaceでは3次元の座標を webcface::Point, 座標変換(平行移動してから回転)を webcface::Transform で表せます([Canvas2D](./61_canvas2d.md)での2次元の座標を表すクラスと共通です)。
 
 Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回りの回転角を指定します。
 (WebCFaceでは3次元の回転はz-y-xの順で回転するオイラー角で表現します。)
@@ -65,13 +65,13 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
 
 ## 送信
 
-使い方は[View](13_view.md)とだいたい同じになっています。
+使い方は[View](54_view.md)とだいたい同じになっています。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     Client::canvas3d からCanvas3Dオブジェクトを作り、
-    [View](./13_view.md)と同様に Canvas3D::add() または operator<< で要素を追加し、
+    [View](./54_view.md)と同様に Canvas3D::add() または operator<< で要素を追加し、
     最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。
 
     \note <span class="since-c">1.9</span> add関数の仕様を変更し << 演算子も実装して、Viewと同じ使い方になりました
@@ -125,7 +125,7 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
 \note
 Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます
 
-Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21_robot_model.md) があります。
+Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./64_robot_model.md) があります。
 
 ### Geometry (3次元)
 
@@ -149,7 +149,7 @@ Canvas3Dに追加できる要素として、Geometry(後述)、[RobotModel](./21
 
     色、表示位置<!-- 、クリック時に実行する関数 -->などを設定できます。
     使用可能なオプションは webcface::Canvas3DComponent のそれぞれのメソッドの説明を参照してください。
-    <!-- 関数の実行については[Func](./30_func.md)も参照してください -->
+    <!-- 関数の実行については[Func](./53_func.md)も参照してください -->
 
 
 - <b class="tab-title">JavaScript</b>
@@ -233,7 +233,7 @@ Member::canvas3DEntries() でそのMemberが送信しているCanvas3Dのリス�
 
 また、Member::onCanvas3DEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -242,12 +242,12 @@ Member::canvas3DEntries() でそのMemberが送信しているCanvas3Dのリス�
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Image](15_image.md) | [RobotModel](21_robot_model.md) |
+| [6-2. Image](62_image.md) | [6-4. RobotModel](64_robot_model.md) |
 
 </div>
