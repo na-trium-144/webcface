@@ -1,4 +1,7 @@
-# WebCFace
+<sub><img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" height="40" /></sub>
+WebCFace
+--
+<!-- ↑ Doxygenで見出しが崩れないように、かつGitHubではちゃんと見出しになるようにでっちあげたやつ -->
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
 [![release](https://img.shields.io/github/v/release/na-trium-144/webcface)](https://github.com/na-trium-144/webcface/releases)
