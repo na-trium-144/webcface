@@ -223,10 +223,15 @@ mesonの引数`-Dcmake_prefix_path`にwebcfaceのパスを追加するなどす�
 webcface-toolsは外部ライブラリとして
 [spdlog](https://github.com/gabime/spdlog),
 [cli11](https://github.com/CLIUtils/CLI11.git),
-[OpenCV](https://opencv.org/),
 [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library),
 [toml++](https://github.com/marzer/tomlplusplus)
 を使用します。
-システムにインストールされてなければOpenCV以外は自動的にソースからビルドします。  
-OpenCVがインストールされていない場合は webcface-cv-capture がビルドされません。
+システムにインストールされてなければ自動的にソースからビルドします。  
 
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [3-1. Setup WebCFace Library](31_setup.md) | [4-1. Client](41_client.md) |
+
+</div>

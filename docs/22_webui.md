@@ -2,14 +2,19 @@
 
 \tableofcontents
 
-serverは起動したまま、起動時に表示されるurl (http://IPアドレス:7530/index.html) をブラウザで開きましょう。
+WebCFaceはWebCFaceの通信データにアクセスできるGUIです。
 
-WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。
+## Serverから
+
+webcface-server を起動し、コンソールに表示されるurl (http://127.0.0.1:7530/index.html など) をブラウザで開きましょう。
+
+WebUI右上のMenuにWebCFaceに接続しているクライアントの一覧が表示されます。
 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。
 
+\note
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-### WebUI Desktop
+## WebUI Desktop
 
 ver2は準備中
 
@@ -49,13 +54,29 @@ WebUIの画面を閉じるとserverも終了します。
 
 -->
 
+## 各種データ型へのアクセス
+
 ### Value
+
 数値データ、または1次元数値配列を送受信する型です。
 
 WebUI では受信したデータがグラフとして表示されます。
-(グラフの画面を表示するより前のデータにはアクセスできません)
+(グラフの画面を表示させた時点より前のデータにはアクセスできません)
 
-マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。
+<del>マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。</del>  
+(ver1.7から)右下の手のアイコンをクリックすると、移動・ズームができる状態になり、
+
+* (マウス)ドラッグ / (タッチ)スライド で移動
+* (マウス)スクロール で Y 方向拡大縮小
+* Ctrl(Command⌘)+スクロール で X 方向拡大縮小
+* (タッチ)2本指操作 で拡大縮小
+
+ができます。
+右下の ? アイコンからも操作説明が見れます。
+
+また、下のスライダーでも時間をスクロールできます。
+
+(↓スクショは過去のバージョン)
 
 ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
@@ -121,3 +142,10 @@ WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも
 
 ![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
 
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [2-1. Server](21_server.md) | [3-1. Setup WebCFace Library](31_setup.md) |
+
+</div>

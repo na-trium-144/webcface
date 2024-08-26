@@ -2,10 +2,10 @@
 
 \tableofcontents
 
-このドキュメントでは仕様変更された機能は
-C,C++のwebcface <span class="since-c"></span>,
-webcface-js <span class="since-js"></span>,
-webcface-python <span class="since-py"></span>
+以降、このドキュメントではクライアントの仕様変更された機能は  
+C,C++のwebcface: <span class="since-c"></span>  
+webcface-js: <span class="since-js"></span>  
+webcface-python: <span class="since-py"></span>  
 の画像で示します。
 
 ## C/C++
@@ -159,6 +159,6 @@ CommonJSで`requires("webcface")`のように使うこともできると思い�
 
 | Previous |     Next |
 |:---------|---------:|
-|  | [Client](01_client.md) |
+| [2-2. WebUI](22_webui.md) | [3-2. Building from Source](32_building.md) |
 
 </div>
