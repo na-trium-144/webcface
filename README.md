@@ -10,9 +10,6 @@
 
 Web-based IPC &amp; Dashboard-like UI
 
-> * mainブランチはver2.0.0としてリリース予定の現在開発中のブランチです。
-> ver1は [v1](https://github.com/na-trium-144/webcface/tree/v1) ブランチにあります
-
 ROS1のようなプロセス間通信と、GUIによるデータの可視化や関数呼び出しができるシステムです。
 
 C++ (C++17以上), C, Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
@@ -136,7 +133,7 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 
 ## Installation
 
-> 以下のインストール手順は WebCFace ver1 をインストールします。ver2はまだリリースしていません。
+<details><summary>以下のインストール手順は WebCFace ver1 をインストールします。ver2はまだリリースしていません。</summary>
 
 以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
 
@@ -267,8 +264,17 @@ zipファイルは任意の場所に展開して使用してください。
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
+</details>
+
 ## Documentation
-* まずはここから→ [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html)
+
+DoxygenでAPIリファレンスとともにチュートリアル、ドキュメントを公開しています。
+
+* 1 チュートリアル: 準備中
+* 2 [Server](https://na-trium-144.github.io/webcface/md_docs_221__server.html)
+/ [WebUI](https://na-trium-144.github.io/webcface/md_docs_222__webui.html)
+* 3 [クライアントライブラリのセットアップ](https://na-trium-144.github.io/webcface/md_docs_231__setup.html)
+/ [WebCFaceのソースからのビルド](https://na-trium-144.github.io/webcface/md_docs_232__building.html)
 * [APIリファレンス](https://na-trium-144.github.io/webcface/namespaces.html)
 * [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
 * [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
