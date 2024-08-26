@@ -1,7 +1,7 @@
-# 7-3. webcface-cv-capture
+# 7-3. webcface-cv-capture (deleted)
 
 \tableofcontents
-\since tools ver1.3
+\since tools ver1.3 → ver2.0で削除
 
 Webカメラなどの画像をキャプチャーしてWebCFaceに送信します。
 

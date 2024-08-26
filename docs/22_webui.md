@@ -33,7 +33,7 @@ WebUIをブラウザーからではなくアプリとして開くと、バック
 * Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。
 * Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。
 * Logs: サーバーの出力するログが見れます。
-* Launcher Config: [webcface-launcher](./70_launcher.md) の設定を編集できます。
+* Launcher Config: [webcface-launcher](./71_launcher.md) の設定を編集できます。
 
 ![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
 

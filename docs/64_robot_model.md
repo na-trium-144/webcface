@@ -11,7 +11,7 @@
 * Python 未実装 <!--[webcface.Canvas3D](https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D)-->
 
 RobotModelはリンク(link)と関節(joint)の構造を定義します。
-[Canvas3D](20_canvas3d.md) 上に表示して関節を動かすことができます。
+[Canvas3D](63_canvas3d.md) 上に表示して関節を動かすことができます。
 
 ## 送信
 
@@ -66,7 +66,7 @@ Client::robotModel からRobotModelオブジェクトを作り、 RobotModel::se
 
 を指定する必要があります。
 
-Geometryについては[Canvas3D](20_canvas3d.md)、ViewColorについては[View](13_view.md)のページを参照してください。
+Geometryについては[Canvas3D](63_canvas3d.md)、ViewColorについては[View](54_view.md)のページを参照してください。
 
 ## RobotJoint
 RobotJointには以下の4種類があります。
@@ -151,7 +151,7 @@ Member::robotModelEntries() に変更
 
 また、Member::onRobotModelEntry() で新しくデータが追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 
@@ -160,13 +160,13 @@ Member::robotModelEntries() に変更
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
 
-使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 
 <div class="section_buttons">
 
 | Previous |     Next |
 |:---------|---------:|
-| [Canvas3D](20_canvas3d.md) | [Func](30_func.md) |
+| [6-3. Canvas3D](63_canvas3d.md) | [7-1. webcface-launcher](71_launcher.md) |
 
 </div>

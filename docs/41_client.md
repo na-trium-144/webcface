@@ -452,6 +452,6 @@ Clientの接続が完了し受信するまでは取得できません(空文字�
 
 | Previous |     Next |
 |:---------|---------:|
-| [Overview](00_overview.md) | [Member](02_member.md) |
+| [3-2. Building from Source](32_building.md) | [4-2. Member](42_member.md) |
 
 </div>

@@ -126,3 +126,11 @@ WebUI Server Mode ではGUIから設定ファイルを記述することがで�
 ![webui-server_launcher-setting](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server_launcher-setting.png)
 
 \note Launcherの起動・停止はメニューの「Server Status」からできます
+
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| [6-4. RobotModel](64_robot_model.md) | [7-2. webcface-send](72_send.md) |
+
+</div>

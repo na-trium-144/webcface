@@ -22,7 +22,7 @@ webcface-send
 を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)
 
 オプションでclientやデータの名前を変更できます。
-詳細は [webcface-send](./71_send.md) のページを参照
+詳細は [webcface-send](./72_send.md) のページを参照
 
 ## 送信
 
@@ -116,7 +116,7 @@ webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だっ�
 
 Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
-Valueに限らず他のデータ型 ([View](./13_view.md), [Canvas2D](./14_canvas2d.md), [Image](./15_image.md), [Canvas3D](./20_canvas3d.md), [RobotModel](./21_robot_model.md)) でも同様です。
+Valueに限らず他のデータ型 ([View](./54_view.md), [Canvas2D](./61_canvas2d.md), [Image](./62_image.md), [Canvas3D](./63_canvas3d.md), [RobotModel](./64_robot_model.md)) でも同様です。
 
 <div class="tabbed">
 
@@ -469,7 +469,7 @@ Member::onValueEntry() で新しくデータが追加されたときのコール
 Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() 前に、
 そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
 
-イベントの詳細な使い方はonMemberEntryと同様です([Member](./02_member.md) のページを参照してください)。
+イベントの詳細な使い方はonMemberEntryと同様です([Member](./42_member.md) のページを参照してください)。
 
 <div class="tabbed">
 
@@ -522,7 +522,7 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
 
 また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。
 
-イベントの詳細な使い方はonMemberEntryと同様です([Member](./02_member.md) のページを参照してください)。
+イベントの詳細な使い方はonMemberEntryと同様です([Member](./42_member.md) のページを参照してください)。
 
 <div class="tabbed">
 
@@ -607,6 +607,6 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
 
 | Previous |     Next |
 |:---------|---------:|
-| [Member](02_member.md) | [Text](11_text.md) |
+| [4-2. Member](42_member.md) | [5-2. Text](52_text.md) |
 
 </div>

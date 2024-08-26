@@ -366,7 +366,7 @@ Member::funcEntries() に変更
 
 また、Member::onFuncEntry() で新しく関数が追加されたときのコールバックを設定できます
 
-いずれも使い方は [Value](./10_value.md) と同様なのでそちらを参照してください
+いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ## 関数の実行
 
@@ -597,6 +597,6 @@ res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
 
 | Previous |     Next |
 |:---------|---------:|
-| [RobotModel](21_robot_model.md) | [Log](40_log.md) |
+| [5-2. Text](52_text.md) | [5-4. View](54_view.md) |
 
 </div>
