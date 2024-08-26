@@ -1,6 +1,9 @@
 option('examples', type: 'feature', value: 'auto',
   description: 'Build examples. (auto = enabled when WebCFace is top-level.)',
 )
+option('cv_examples', type: 'feature', value: 'auto',
+  description: 'Build examples using OpenCV. (auto = enabled when WebCFace is top-level.)',
+)
 option('tests', type: 'feature', value: 'auto',
   description: 'Build tests. (auto = enabled when WebCFace is top-level.)',
 )

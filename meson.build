@@ -313,25 +313,12 @@ build_server = get_option('server').enabled() \
     and not meson.is_subproject() \
     and host_machine.system() != 'cygwin' \
   )
-summary('Build server',
-  [build_server, get_option('server').auto().to_string('(auto)', '')],
-  bool_yn: true,
-  list_sep: ' ',
-)
 build_examples = get_option('examples').enabled() \
   or (get_option('examples').allowed() and not meson.is_subproject())
-summary('Build examples',
-  [build_examples, get_option('examples').auto().to_string('(auto)', '')],
-  bool_yn: true,
-  list_sep: ' ',
-)
+build_cv_examples = get_option('cv_examples').enabled() \
+  or (get_option('cv_examples').allowed() and not meson.is_subproject())
 build_tests = get_option('tests').enabled() \
   or (get_option('tests').allowed() and not meson.is_subproject())
-summary('Build tests',
-  [build_tests, get_option('tests').auto().to_string('(auto)', '')],
-  bool_yn: true,
-  list_sep: ' ',
-)
 
 msgpack_cxx_dep = dependency('msgpack-cxx',
   default_options: [
@@ -429,7 +416,7 @@ else
 endif
 
 if build_server
-  cli11_dep = dependency('cli11')
+  cli11_dep = dependency('cli11', 'CLI11')
 
   if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
     crow_dep = dependency('Crow', required: false)
@@ -630,10 +617,33 @@ if build_server
     dependencies: [magickpp_dep],
   )
   # endif
+else
+  magickpp_dep = disabler()
 endif
 
-if build_examples
-  opencv_dep = dependency('OpenCV', required: false)
+if build_examples and build_cv_examples
+  opencv_core_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_core'],
+    required: false,
+    disabler: true,
+  )
+  opencv_imgproc_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_imgproc'],
+    required: false,
+    disabler: true,
+  )
+  opencv_highgui_dep = dependency('OpenCV',
+    method: 'cmake',
+    modules: ['opencv_highgui'],
+    required: false,
+    disabler: true,
+  )
+else
+  opencv_core_dep = disabler()
+  opencv_imgproc_dep = disabler()
+  opencv_highgui_dep = disabler()
 endif
 
 if build_tests
@@ -641,6 +651,34 @@ if build_tests
     fallback: ['gtest', 'gtest_main_dep'],
   )
 endif
+
+summary('Build server',
+  [build_server, get_option('server').auto() ? '(auto)' : ''],
+  bool_yn: true,
+  list_sep: ' ',
+)
+summary('Build examples',
+  [build_examples, get_option('examples').auto() ? '(auto)' : ''],
+  bool_yn: true,
+  list_sep: ' ',
+)
+summary('Build examples with OpenCV',
+  [
+    build_examples and \
+      build_cv_examples and \
+      not is_disabler(opencv_core_dep) and \
+      not is_disabler(opencv_imgproc_dep) and \
+      not is_disabler(opencv_highgui_dep),
+    get_option('cv_examples').auto() ? '(auto)' : '',
+  ],
+  bool_yn: true,
+  list_sep: ' ',
+)
+summary('Build tests',
+  [build_tests, get_option('tests').auto() ? '(auto)' : ''],
+  bool_yn: true,
+  list_sep: ' ',
+)
 
 subdir('encoding')
 subdir('message')

@@ -413,6 +413,7 @@ meson setup build
 (デフォルト(auto)はWebCFaceがsubprojectでない and cygwinでない 場合のみenabledになります)
 * `-Dexamples=disabled` でexampleのビルドをオフ、 `enabled` でオンにできます
 (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)
+	* `-Dcv_examples=disabled` にするとexamplesのうちOpenCVを使うもののみをオフにすることもできます
 * `-Dtests=disabled` でexampleのビルドをオフ、 `enabled` でオンにできます
 (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)
 	* テストが通らない場合テスト中の通信の待機時間を `-Dtest_wait=100`などと伸ばすとうまく行く場合があります(デフォルト=10(ms))

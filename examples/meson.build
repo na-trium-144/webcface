@@ -15,38 +15,40 @@ example_src = [
 ]
 
 foreach e: example_src
-  if (build_server or not e['magick']) and (opencv_dep.found() or not e['cv'])
-    target = fs.replace_suffix(e['src'], '')
-    sources = [e['src']]
-    dependencies = [
-      warning_options,
-      webcface_dep,
+  target = fs.replace_suffix(e['src'], '')
+  sources = [e['src']]
+  dependencies = [
+    warning_options,
+    webcface_dep,
+  ]
+  if e['magick']
+    dependencies += magickpp_dep
+  endif
+  if e['cv']
+    dependencies += [
+      opencv_core_dep,
+      opencv_imgproc_dep,
+      opencv_highgui_dep,
     ]
-    if e['magick']
-      dependencies += magickpp_dep
-    endif
-    if e['cv']
-      dependencies += opencv_dep
-    endif
-    if webcface_system_version_rc
-      sources += import('windows').compile_resources(
-        configure_file(
-          input: version_rc_in,
-          output: target + '_version.rc',
-          configuration: configuration_data({
-            'company_name': webcface_contact,
-            'file_description': 'WebCFace Example ' + target,
-            'filetype_app': 1,
-          }),
-        ),
-        include_directories: [webcface_config_inc],
-      )
-    endif
-    executable('webcface-example-' + target,
-      sources: sources,
-      dependencies: dependencies,
-      install: true,
-      install_rpath: relative_rpath,
+  endif
+  if webcface_system_version_rc
+    sources += import('windows').compile_resources(
+      configure_file(
+        input: version_rc_in,
+        output: target + '_version.rc',
+        configuration: configuration_data({
+          'company_name': webcface_contact,
+          'file_description': 'WebCFace Example ' + target,
+          'filetype_app': 1,
+        }),
+      ),
+      include_directories: [webcface_config_inc],
     )
   endif
+  executable('webcface-example-' + target,
+    sources: sources,
+    dependencies: dependencies,
+    install: true,
+    install_rpath: relative_rpath,
+  )
 endforeach
