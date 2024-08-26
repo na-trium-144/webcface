@@ -1,3 +1,9 @@
+## [2.0.1] - 2024-08-26
+### Fixed
+* webcfaceConfig.cmakeをMesonで読めるよう修正 (#381)
+* cli11のパスを通していてもnot foundになっていたのを修正 (#382)
+* OpenCVの依存を細分化、ビルドオプションcv_examples追加
+
 ## [2.0.0] - 2024-08-24
 ### Changed
 * ABIバージョン: 20
