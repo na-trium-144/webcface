@@ -1,4 +1,4 @@
-name: CMake Test (MacOS Clang)
+name: Meson Test (MacOS Clang)
 
 on:
   push:

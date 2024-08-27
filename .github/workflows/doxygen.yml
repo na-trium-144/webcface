@@ -16,12 +16,12 @@ jobs:
     - uses: ssciwr/doxygen-install@v1
       with:
         version: "1.9.8"
-    - name: Install dependencies
-      run: sudo apt-get update && sudo apt-get install -y libspdlog-dev libmagick++-dev
-    - name: Configure CMake
-      run: >
-        cmake -B ${{github.workspace}}/build
-        -DWEBCFACE_DOWNLOAD_WEBUI=off
+    - name: Install ninja
+      run: sudo apt-get update && sudo apt-get install -y ninja-build
+    - name: Install meson
+      run: pip install meson || pip install --break-system-packages meson
+    - name: Setup Meson
+      run: meson setup build
     - name: Generate Documentation
       run: |
         mkdir -p build/doxygen
@@ -29,4 +29,3 @@ jobs:
     - uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: build/doxygen/html
-
