@@ -1,4 +1,4 @@
-name: CMake Test (Windows Cygwin64)
+name: Meson Test (Windows Cygwin64)
 
 on:
   push:

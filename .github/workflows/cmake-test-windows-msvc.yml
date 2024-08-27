@@ -1,4 +1,4 @@
-name: CMake Test (Windows MSVC)
+name: Meson Test (Windows MSVC)
 
 on:
   push:

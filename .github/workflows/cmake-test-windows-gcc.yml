@@ -1,4 +1,4 @@
-name: CMake Test (Windows MinGW64 GCC)
+name: Meson Test (Windows MinGW64 GCC)
 
 on:
   push:
