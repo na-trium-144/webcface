@@ -1,0 +1,319 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 6-3. Canvas3D</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_263__canvas3d.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">6-3. Canvas3D</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md119">Point, Transform</a></li>
+<li class="level1"><a href="#autotoc_md120">送信</a><ul><li class="level2"><a href="#autotoc_md121">Geometry (3次元)</a></li>
+<li class="level2"><a href="#autotoc_md122">Line</a></li>
+<li class="level2"><a href="#autotoc_md123">Plane</a></li>
+<li class="level2"><a href="#autotoc_md124">Box</a></li>
+<li class="level2"><a href="#autotoc_md125">Circle</a></li>
+<li class="level2"><a href="#autotoc_md126">Cylinder</a></li>
+<li class="level2"><a href="#autotoc_md127">Sphere</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md128">受信</a><ul><li class="level2"><a href="#autotoc_md129">時刻</a></li>
+<li class="level2"><a href="#autotoc_md130">Entry</a></li>
+<li class="level2"><a href="#autotoc_md131">Event</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md118"></a></p>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.4</a></span> <span class="since-js"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.3</a></span> <span class="since-py"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.1</a></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ webcface::Canvas3D (<code><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/canvas3d.h</a></code>)</li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3D.html">Canvas3D</a></li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.canvas3d.html#webcface.canvas3d.Canvas3D">webcface.Canvas3D</a></li>
+</ul>
+</dd></dl>
+<p>3D空間上のオブジェクト配置データを送受信する型です。</p>
+<h1><a class="anchor" id="autotoc_md119"></a>
+Point, Transform</h1>
+<p>WebCFaceでは3次元の座標を webcface::Point, 座標変換(平行移動してから回転)を webcface::Transform で表せます(<a class="el" href="md_docs_261__canvas2d.html">Canvas2D</a>での2次元の座標を表すクラスと共通です)。</p>
+<p>Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回りの回転角を指定します。 (WebCFaceでは3次元の回転はz-y-xの順で回転するオイラー角で表現します。)</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <a class="el" href="classPoint.html" title="3次元 or 2次元の座標を表すクラス。">Point</a>, Transformオブジェクトからは<code>pos()</code>, <code>rot()</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line"><a class="code hl_class" href="classPoint.html">Point</a> <a class="code hl_struct" href="structTemporalComponent.html">p</a>{1, 2, 3};</div>
+<div class="line">std::cout &lt;&lt; <a class="code hl_struct" href="structTemporalComponent.html">p</a>.pos(0); <span class="comment">// 1 (x座標)</span></div>
+<div class="line"><a class="code hl_class" href="classTransform.html">Transform</a> <a class="code hl_struct" href="structTemporalComponent.html">r</a>{1, 2, 3, std::numbers::pi / 2, 0, 0};</div>
+<div class="line">std::cout &lt;&lt; <a class="code hl_struct" href="structTemporalComponent.html">r</a>.pos(0); <span class="comment">// 1 (x座標)</span></div>
+<div class="line">std::cout &lt;&lt; <a class="code hl_struct" href="structTemporalComponent.html">r</a>.rot(0); <span class="comment">// pi / 2 (z軸回り)</span></div>
+<div class="ttc" id="aclassPoint_html"><div class="ttname"><a href="classPoint.html">Point</a></div><div class="ttdoc">3次元 or 2次元の座標を表すクラス。</div><div class="ttdef"><b>Definition</b> transform.h:17</div></div>
+<div class="ttc" id="aclassTransform_html"><div class="ttname"><a href="classTransform.html">Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:72</div></div>
+<div class="ttc" id="astructTemporalComponent_html"><div class="ttname"><a href="structTemporalComponent.html">TemporalComponent</a></div><div class="ttdoc">Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース</div><div class="ttdef"><b>Definition</b> components.h:22</div></div>
+</div><!-- fragment --> webcface::identity() は原点、回転なしのTransformを返します。</li>
+<li><b class="tab-title">JavaScript</b> <a href="https://na-trium-144.github.io/webcface-js/classes/Point.html">Point</a>, <a href="https://na-trium-144.github.io/webcface-js/classes/Transform.html">Transform</a> オブジェクトからは<code>pos</code>, <code>rot</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line">import { Point, Transform } from &quot;webcface&quot;;</div>
+<div class="line">const p = new Point([1, 2, 3]);</div>
+<div class="line">console.log(p.pos[0]); // 1 (x座標)</div>
+<div class="line">const r = new Transform([1, 2, 3], [Math.PI / 2, 0, 0]);</div>
+<div class="line">console.log(r.pos[0]); // 1 (x座標)</div>
+<div class="line">console.log(r.rot[0]); // pi / 2 (z軸回り)</div>
+</div><!-- fragment --> <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">また、Transform.rotMatrix</a> <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">で3x3の回転行列、Transform.tfMatrix</a> で4x4の同次変換行列が得られます。</li>
+<li><p class="startli"><b class="tab-title">Python</b> <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point">webcface.Point</a>, <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform">webcface.Transform</a> オブジェクトからは<code>pos</code>, <code>rot</code>で座標と回転角を取得できます。 </p><div class="fragment"><div class="line">p = webcface.Point([1, 2, 3])</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">print</a>(p.pos[0]) <span class="comment"># 1 (x座標)</span></div>
+<div class="line">r = webcface.Transform([1, 2, 3], [math.pi / 2, 0, 0])</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">print</a>(r.pos[0]) <span class="comment"># 1 (x座標)</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">print</a>(r.rot[0]) <span class="comment"># pi / 2 (z軸回り)</span></div>
+</div><!-- fragment --><p> webcface.identity() は原点、回転なしのTransformを返します。</p>
+<p class="startli">Point同士は加算、減算、<code>==</code>, <code>!=</code>での比較ができます。 また、int,floatと乗算、除算ができます。</p>
+<p class="startli">引数にPointやTransformをとる関数では、webcface.Point に変換することなく <code>[1, 2, 3]</code>のようなリストのままでも使えるものもあります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md120"></a>
+送信</h1>
+<p>使い方は<a class="el" href="md_docs_254__view.html">View</a>とだいたい同じになっています。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> Client::canvas3d からCanvas3Dオブジェクトを作り、 <a class="el" href="md_docs_254__view.html">View</a>と同様に <a class="el" href="classCanvas3D.html#a6e083eb389d7e2b44c59115f163b8839" title="コンポーネントなどを追加">Canvas3D::add()</a> または operator&lt;&lt; で要素を追加し、 最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。</p>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.9</a></span> add関数の仕様を変更し &lt;&lt; 演算子も実装して、Viewと同じ使い方になりました</dd></dl>
+<p>例 </p><div class="fragment"><div class="line">webcface::Canvas3D <a class="code hl_struct" href="structTemporalComponent.html">world</a> = <a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.canvas3D(<span class="stringliteral">&quot;omniwheel_world&quot;</span>);</div>
+<div class="line"><span class="comment">// world.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; webcface::plane(webcface::identity(), 3, 3)</div>
+<div class="line">            .<a class="code hl_function" href="structTemporalComponent.html#a04ab5b4d45d8ea6c48a72730f78fc5aa">color</a>(webcface::ViewColor::white);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; webcface::box({-1.5, -1.5, 0}, {1.5, -1.5, 0.1})</div>
+<div class="line">            .color(webcface::ViewColor::gray);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; webcface::box({-1.5, 1.5, 0}, {1.5, 1.5, 0.1})</div>
+<div class="line">            .color(webcface::ViewColor::gray);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; webcface::box({-1.5, -1.5, 0}, {-1.5, 1.5, 0.1})</div>
+<div class="line">            .color(webcface::ViewColor::gray);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1})</div>
+<div class="line">            .color(webcface::ViewColor::gray);</div>
+<div class="line"><span class="comment">// RobotModel のドキュメントを参照</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a> &lt;&lt; <a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.robotModel(<span class="stringliteral">&quot;omniwheel&quot;</span>)</div>
+<div class="line">            .<a class="code hl_function" href="structTemporalComponent.html#a58665e322f191127540732c6823dacf6">origin</a>(...)</div>
+<div class="line">            .angle(<span class="stringliteral">&quot;line_rotation&quot;</span>, -<a class="code hl_struct" href="structTemporalComponent.html">i</a>);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">world</a>.sync(); <span class="comment">// ここまでにcanvasに追加したものをクライアントに反映</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.sync();</div>
+<div class="ttc" id="astructTemporalComponent_html_a04ab5b4d45d8ea6c48a72730f78fc5aa"><div class="ttname"><a href="structTemporalComponent.html#a04ab5b4d45d8ea6c48a72730f78fc5aa">TemporalComponent::color</a></div><div class="ttdeci">TemporalComponent &amp; color(ViewColor c)</div><div class="ttdoc">色</div><div class="ttdef"><b>Definition</b> components.h:84</div></div>
+<div class="ttc" id="astructTemporalComponent_html_a58665e322f191127540732c6823dacf6"><div class="ttname"><a href="structTemporalComponent.html#a58665e322f191127540732c6823dacf6">TemporalComponent::origin</a></div><div class="ttdeci">TemporalComponent &amp; origin(const Transform &amp;origin)</div><div class="ttdoc">要素の移動 (2Dまたは3D)</div><div class="ttdef"><b>Definition</b> components.h:67</div></div>
+</div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png" alt="tutorial_wheel.png" class="inline"/></p>
+<p class="startli">C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。</p>
+<dl class="section note"><dt>Note</dt><dd>Canvas3Dオブジェクトをコピーした場合、Canvas3Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。</dd></dl>
+</li>
+<li><b class="tab-title">JavaScript</b> <a class="el" href="structField.html#a5cafb1e36981dec5ffd26873b1b0fa2e">Client::canvas3D</a> からCanvas3Dオブジェクトを作り、 set()の引数に要素をまとめてセットして使います。 <div class="fragment"><div class="line">wcli.canvas3D(&quot;hoge&quot;).set([</div>
+<div class="line">    ...</div>
+<div class="line">]);</div>
+</div><!-- fragment --></li>
+<li><p class="startli"><b class="tab-title">Python</b> Client.canvas3d からCanvas3Dオブジェクトを作り、 <a class="el" href="classCanvas3D.html#a6e083eb389d7e2b44c59115f163b8839" title="コンポーネントなどを追加">Canvas3D.add()</a> で要素を追加し、 最後にCanvas3D.sync()をしてからClient.sync()をすることで送信されます。</p>
+<p class="startli">with構文を使って <code>with wcli.canvas3d("hoge") as canvas:</code> などとするとwithを抜けるときに自動でcanvas.sync()がされます。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます</dd></dl>
+<p>Canvas3Dに追加できる要素として、Geometry(後述)、<a class="el" href="md_docs_264__robot__model.html">RobotModel</a> があります。</p>
+<h2><a class="anchor" id="autotoc_md121"></a>
+Geometry (3次元)</h2>
+<p>3次元の図形を表示するにはGeometryを指定します。 一部の図形は2次元のGeometryと共通のインタフェースになっています。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.9</a></span></dd></dl>
+<p><code>webcface::Geometries</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Geometries;</div>
+</div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
+<p>各要素はそれぞれの関数から webcface::Canvas3DComponent または webcface::TemporalComponent のオブジェクトとして得られます。 <code><a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">box(...)</a>.color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
+<p class="startli">色、表示位置などを設定できます。 使用可能なオプションは webcface::Canvas3DComponent のそれぞれのメソッドの説明を参照してください。</p>
+</li>
+<li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
+</div><!-- fragment --> オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。</li>
+<li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface.geometries <span class="keyword">import</span> *</div>
+</div><!-- fragment --> とすることもできます</li>
+</ul>
+</div><div class="tabbed"></div><p>Geometryは以下のものが用意されています。</p>
+<h2><a class="anchor" id="autotoc_md122"></a>
+Line</h2>
+<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474">line</a>(<a class="code hl_class" href="classPoint.html">Point</a> begin, <a class="code hl_class" href="classPoint.html">Point</a> end)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474">GeometryType::line</a></div><div class="ttdeci">@ line</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md123"></a>
+Plane</h2>
+<p>originのxy平面上に、originを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">plane</a>(<a class="code hl_class" href="classTransform.html">Transform</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">GeometryType::plane</a></div><div class="ttdeci">@ plane</div></div>
+</div><!-- fragment --><p> webcface内部では2次元の Rect と同じ扱いです</p>
+<h2><a class="anchor" id="autotoc_md124"></a>
+Box</h2>
+<p>指定した2点を頂点とし、各辺がx, y, z軸に平行な直方体を描画します </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">box</a>(<a class="code hl_class" href="classPoint.html">Point</a> vertex1, <a class="code hl_class" href="classPoint.html">Point</a> vertex2)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">GeometryType::box</a></div><div class="ttdeci">@ box</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md125"></a>
+Circle</h2>
+<p>originのxy平面上に、originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072">circle</a>(<a class="code hl_class" href="classTransform.html">Transform</a> origin, <span class="keywordtype">double</span> radius)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072">GeometryType::circle</a></div><div class="ttdeci">@ circle</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md126"></a>
+Cylinder</h2>
+<p>originのyz平面上にoriginを中心として半径radiusの円を描画し、 それをx軸方向にlength押し出した円柱を描画します </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36">cylinder</a>(<a class="code hl_class" href="classTransform.html">Transform</a> origin, <span class="keywordtype">double</span> radius, <span class="keywordtype">double</span> length)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36">GeometryType::cylinder</a></div><div class="ttdeci">@ cylinder</div></div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md127"></a>
+Sphere</h2>
+<p>originを中心とし半径radiusの球を描画します </p><div class="fragment"><div class="line"><a class="code hl_enumvalue" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963">sphere</a>(<a class="code hl_class" href="classPoint.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
+<div class="ttc" id="ageometry_8h_html_a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963"><div class="ttname"><a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963">GeometryType::sphere</a></div><div class="ttdeci">@ sphere</div></div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md128"></a>
+受信</h1>
+<p>Viewなどと同様、Member::canvas3D() でCanvas3Dクラスのオブジェクトが得られ、 <a class="el" href="classCanvas3D.html#a4baaa00e672007edaf63f2faa62bd8fb" title="Canvasの内容を取得する">Canvas3D::tryGet()</a> で値のリクエストをするとともに受信した値を取得できます。</p>
+<p>Canvas3Dデータは webcface::Canvas3DComponent (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html">Canvas3DComponent</a>)</p>
+<p>のリストとして得られ、 Canvas3DComponentオブジェクトから各種プロパティを取得できます。</p>
+<h2><a class="anchor" id="autotoc_md129"></a>
+時刻</h2>
+<p><strike><a class="el" href="classCanvas3D.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Canvas3D::time()</a></strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.7</a></span> <span class="since-js"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.6</a></span> <span class="since-py"></span> <a class="el" href="classMember.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更</p>
+<h2><a class="anchor" id="autotoc_md130"></a>
+Entry</h2>
+<p><a class="el" href="classMember.html#a485655bf8c0e1066c3ea1c4f3220940d">Member::canvas3DEntries()</a> でそのMemberが送信しているCanvas3Dのリストが得られます</p>
+<p>また、Member::onCanvas3DEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
+<p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md131"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は <a class="el" href="classMember.html#afef273e6b9a30d11fc8de7e704cc67ce" title="Memberがsync()したときのイベント">Member::onSync()</a> が使えます</p>
+<p>使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_262__image.html">6-2. Image</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_264__robot__model.html">6-4. RobotModel</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

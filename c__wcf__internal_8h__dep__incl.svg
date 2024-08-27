@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="c__wcf_2client_8cc.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="client_8cc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="135,-19 0,-19 0,0 135,0 135,-19"/>
 <text text-anchor="middle" x="67.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">client/src/c_wcf/client.cc</text>
 </a>
@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="client_2src_2c__wcf_2func_8cc.html" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="c__wcf_2func_8cc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="282,-19 153,-19 153,0 282,0 282,-19"/>
 <text text-anchor="middle" x="217.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">client/src/c_wcf/func.cc</text>
 </a>
@@ -93,7 +93,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="client_2src_2c__wcf_2value_8cc.html" target="_top" xlink:title=" ">
+<g id="a_Node000006"><a xlink:href="c__wcf_2value_8cc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="749,-19 614,-19 614,0 749,0 749,-19"/>
 <text text-anchor="middle" x="681.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">client/src/c_wcf/value.cc</text>
 </a>
@@ -111,7 +111,7 @@
 <!-- Node7 -->
 <g id="Node000007" class="node">
 <title>Node7</title>
-<g id="a_Node000007"><a xlink:href="client_2src_2c__wcf_2view_8cc.html" target="_top" xlink:title=" ">
+<g id="a_Node000007"><a xlink:href="c__wcf_2view_8cc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="898,-19 767,-19 767,0 898,0 898,-19"/>
 <text text-anchor="middle" x="832.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">client/src/c_wcf/view.cc</text>
 </a>

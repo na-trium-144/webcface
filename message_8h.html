@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -155,185 +156,182 @@ $(document).ready(function(){initNavTree('message_8h.html',''); initResizable();
 <code>#include &lt;any&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;spdlog/logger.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="u8string_8h_source.html">webcface/message/u8string.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="message_2include_2webcface_2message_2val__adaptor_8h_source.html">webcface/message/val_adaptor.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="image__mode_8h_source.html">webcface/encoding/image_mode.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for message.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="1732" height="374"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="1636" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__dep__incl.svg" width="5860" height="403"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__dep__incl.svg" width="3819" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="message_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1MessageBase.html">MessageBase&lt; k &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型からkindを取得するためだけのベースクラス  <a href="structwebcface_1_1message_1_1MessageBase.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1MessageBase.html">MessageBase&lt; k &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">型からkindを取得するためだけのベースクラス  <a href="structmessage_1_1MessageBase.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1SyncInit.html">SyncInit</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client初期化(client-&gt;server-&gt;client)  <a href="structwebcface_1_1message_1_1SyncInit.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1SyncInit.html">SyncInit</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client初期化(client-&gt;server-&gt;client)  <a href="structmessage_1_1SyncInit.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1SyncInitEnd.html">SyncInitEnd</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">serverのバージョン情報(server-&gt;client)  <a href="structwebcface_1_1message_1_1SyncInitEnd.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1SyncInitEnd.html">SyncInitEnd</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">serverのバージョン情報(server-&gt;client)  <a href="structmessage_1_1SyncInitEnd.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Ping.html">Ping</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ping(server-&gt;client-&gt;server)  <a href="structwebcface_1_1message_1_1Ping.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Ping.html">Ping</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ping(server-&gt;client-&gt;server)  <a href="structmessage_1_1Ping.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1PingStatus.html">PingStatus</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">各クライアントのping状況 (server-&gt;client)  <a href="structwebcface_1_1message_1_1PingStatus.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1PingStatus.html">PingStatus</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">各クライアントのping状況 (server-&gt;client)  <a href="structmessage_1_1PingStatus.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1PingStatusReq.html">PingStatusReq</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ping状況のリクエスト (client-&gt;server)  <a href="structwebcface_1_1message_1_1PingStatusReq.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1PingStatusReq.html">PingStatusReq</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ping状況のリクエスト (client-&gt;server)  <a href="structmessage_1_1PingStatusReq.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Sync.html">Sync</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻(client-&gt;server-&gt;client)  <a href="structwebcface_1_1message_1_1Sync.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Sync.html">Sync</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻(client-&gt;server-&gt;client)  <a href="structmessage_1_1Sync.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html">Call</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出し (client(caller)-&gt;server-&gt;client(receiver))  <a href="structwebcface_1_1message_1_1Call.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Call.html">Call</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出し (client(caller)-&gt;server-&gt;client(receiver))  <a href="structmessage_1_1Call.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1CallResponse.html">CallResponse</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの応答1 (client(receiver)-&gt;server-&gt;client(caller))  <a href="structwebcface_1_1message_1_1CallResponse.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1CallResponse.html">CallResponse</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの応答1 (client(receiver)-&gt;server-&gt;client(caller))  <a href="structmessage_1_1CallResponse.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1CallResult.html">CallResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの応答2 (client(receiver)-&gt;server-&gt;client(caller))  <a href="structwebcface_1_1message_1_1CallResult.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1CallResult.html">CallResult</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの応答2 (client(receiver)-&gt;server-&gt;client(caller))  <a href="structmessage_1_1CallResult.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Value.html">Value</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Value.html">Value</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Text.html">Text</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Text.html">Text</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1RobotLink.html">RobotLink</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html">RobotLink</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1RobotModel.html">RobotModel</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotModel.html">RobotModel</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1ViewComponent.html">ViewComponent</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html">ViewComponent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1View.html">View</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1View.html">View</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas3DComponent.html">Canvas3DComponent</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Canvas3DComponent.html">Canvas3DComponent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas3D.html">Canvas3D</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Canvas3D.html">Canvas3D</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DComponent.html">Canvas2DComponent</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Canvas2DComponent.html">Canvas2DComponent</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html">Canvas2DData</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Canvas2DData.html">Canvas2DData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2D.html">Canvas2D</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Canvas2D.html">Canvas2D</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">ImageFrame</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ImageFrame.html">ImageFrame</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Image.html">Image</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Image.html">Image</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogLine.html">LogLine</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1LogLine.html">LogLine</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Log.html">Log</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client logを追加  <a href="structwebcface_1_1message_1_1Log.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Log.html">Log</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client logを追加  <a href="structmessage_1_1Log.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogReq.html">LogReq</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1LogReq.html">LogReq</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Arg.html">Arg</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client func登録  <a href="structwebcface_1_1message_1_1Arg.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Arg.html">Arg</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client func登録  <a href="structmessage_1_1Arg.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1FuncInfo.html">FuncInfo</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1FuncInfo.html">FuncInfo</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Req.html">Req&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client-&gt;server 以降Recvを送るようリクエスト  <a href="structwebcface_1_1message_1_1Req.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Req.html">Req&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client-&gt;server 以降Recvを送るようリクエスト  <a href="structmessage_1_1Req.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1ImageReq.html">ImageReq</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ImageReq.html">ImageReq</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Req_3_01Image_01_4.html">Req&lt; Image &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Req_3_01Image_01_4.html">Req&lt; Image &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Entry.html">Entry&lt; T &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">server-&gt;client 新しいvalueなどの報告  <a href="structwebcface_1_1message_1_1Entry.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Entry.html">Entry&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">server-&gt;client 新しいvalueなどの報告  <a href="structmessage_1_1Entry.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res.html">Res&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res.html">Res&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Value_01_4.html">Res&lt; Value &gt;</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">server-&gt;client <a class="el" href="structwebcface_1_1message_1_1Value.html">Value</a>,Textなどのfieldをreqidに変えただけのもの  <a href="structwebcface_1_1message_1_1Res_3_01Value_01_4.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01Value_01_4.html">Res&lt; Value &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">server-&gt;client <a class="el" href="structmessage_1_1Value.html">Value</a>,Textなどのfieldをreqidに変えただけのもの  <a href="structmessage_1_1Res_3_01Value_01_4.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Text_01_4.html">Res&lt; Text &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01Text_01_4.html">Res&lt; Text &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01RobotModel_01_4.html">Res&lt; RobotModel &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01RobotModel_01_4.html">Res&lt; RobotModel &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01View_01_4.html">Res&lt; View &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01View_01_4.html">Res&lt; View &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Canvas3D_01_4.html">Res&lt; Canvas3D &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01Canvas3D_01_4.html">Res&lt; Canvas3D &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html">Res&lt; Canvas2D &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01Canvas2D_01_4.html">Res&lt; Canvas2D &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Image_01_4.html">Res&lt; Image &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1Res_3_01Image_01_4.html">Res&lt; Image &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
+<tr class="memitem:namespacemessage" id="r_namespacemessage"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html">message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1message" id="r_namespacewebcface_1_1message"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html">webcface::message</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1message_1_1MessageKind" id="r_namespacewebcface_1_1message_1_1MessageKind"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html">webcface::message::MessageKind</a></td></tr>
+<tr class="memitem:namespacemessage_1_1MessageKind" id="r_namespacemessage_1_1MessageKind"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage_1_1MessageKind.html">message::MessageKind</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
 Macros</h2></td></tr>
-<tr class="memitem:a9f918755b601cf4bffca775992e6fb90" id="r_a9f918755b601cf4bffca775992e6fb90"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8h.html#a9f918755b601cf4bffca775992e6fb90">NOMINMAX</a></td></tr>
+<tr class="memitem:a9f918755b601cf4bffca775992e6fb90" id="r_a9f918755b601cf4bffca775992e6fb90"><td class="memItemLeft" align="right" valign="top">#<a class="el" href="structTemporalComponent.html">define</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="message_8h.html#a9f918755b601cf4bffca775992e6fb90">NOMINMAX</a></td></tr>
 <tr class="separator:a9f918755b601cf4bffca775992e6fb90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1432d06fc2e2d1f6da93d1c04dec4484" id="r_a1432d06fc2e2d1f6da93d1c04dec4484"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484">MessageKindEnum</a> { <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe">unknown</a> = -1
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a97de9ab6885342a574053b8f64a563a9">value</a> = 0
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0e17259309839615d215adfe7a44fb50">text</a> = 1
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a4c41ae0ac8cc59e0caeaa4984dd5d469">binary</a> = 2
+<tr class="memitem:a1432d06fc2e2d1f6da93d1c04dec4484" id="r_a1432d06fc2e2d1f6da93d1c04dec4484"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484">MessageKindEnum</a> { <br />
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe">unknown</a> = -1
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a97de9ab6885342a574053b8f64a563a9">value</a> = 0
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0e17259309839615d215adfe7a44fb50">text</a> = 1
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a4c41ae0ac8cc59e0caeaa4984dd5d469">binary</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ac29e396d151e12a0e2f8ffa62decd2b2">view</a> = 3
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a45d34fe96ef84cda03d680c845767f11">canvas2d</a> = 4
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a8a5db7fcf7037d194c940c851e01ffa0">image</a> = 5
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1f82b99b22bbc3a04f791f54c6cce572">robot_model</a> = 6
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ac29e396d151e12a0e2f8ffa62decd2b2">view</a> = 3
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a45d34fe96ef84cda03d680c845767f11">canvas2d</a> = 4
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a8a5db7fcf7037d194c940c851e01ffa0">image</a> = 5
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1f82b99b22bbc3a04f791f54c6cce572">robot_model</a> = 6
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80">canvas3d</a> = 7
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5">entry</a> = 20
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c">req</a> = 40
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a> = 60
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80">canvas3d</a> = 7
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5">entry</a> = 20
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c">req</a> = 40
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a> = 60
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f">call</a> = 81
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38">call_response</a> = 82
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d">call_result</a> = 83
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f">call</a> = 81
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38">call_response</a> = 82
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d">call_result</a> = 83
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">log</a> = 85
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5">log_req</a> = 86
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887">sync</a> = 87
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">log</a> = 85
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5">log_req</a> = 86
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887">sync</a> = 87
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd">sync_init_end</a> = 88
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f">ping</a> = 89
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a> = 90
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd">ping_status_req</a> = 91
+&#160;&#160;<a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd">sync_init_end</a> = 88
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f">ping</a> = 89
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a> = 90
+, <a class="el" href="namespacemessage_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd">ping_status_req</a> = 91
 <br />
  }</td></tr>
 <tr class="separator:a1432d06fc2e2d1f6da93d1c04dec4484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af4c21164f578c30ba84af08bd406b981" id="r_af4c21164f578c30ba84af08bd406b981"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">int</a>, std::any &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#af4c21164f578c30ba84af08bd406b981">unpack</a> (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::string &amp;message, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
-<tr class="memdesc:af4c21164f578c30ba84af08bd406b981"><td class="mdescLeft">&#160;</td><td class="mdescRight">msgpackのメッセージをパースしstd::anyで返す  <br /></td></tr>
+<tr class="memitem:af4c21164f578c30ba84af08bd406b981" id="r_af4c21164f578c30ba84af08bd406b981"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; <a class="el" href="structTemporalComponent.html">int</a>, std::any &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#af4c21164f578c30ba84af08bd406b981">unpack</a> (<a class="el" href="structTemporalComponent.html">const</a> std::string &amp;message, <a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memdesc:af4c21164f578c30ba84af08bd406b981"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">msgpackのメッセージをパースしstd::anyで返す</a>  <br /></td></tr>
 <tr class="separator:af4c21164f578c30ba84af08bd406b981"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a965c311b611151d72a5129362ea11618" id="r_a965c311b611151d72a5129362ea11618"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">typename</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">T</a> &gt; </td></tr>
-<tr class="memitem:a965c311b611151d72a5129362ea11618"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">packSingle</a> (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">T</a> &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">obj</a>)</td></tr>
+<tr class="memitem:a965c311b611151d72a5129362ea11618" id="r_a965c311b611151d72a5129362ea11618"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </td></tr>
+<tr class="memitem:a965c311b611151d72a5129362ea11618"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a965c311b611151d72a5129362ea11618">packSingle</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">T</a> &amp;<a class="el" href="structTemporalComponent.html">obj</a>)</td></tr>
 <tr class="memdesc:a965c311b611151d72a5129362ea11618"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージ1つを要素数2の配列としてシリアル化  <br /></td></tr>
 <tr class="separator:a965c311b611151d72a5129362ea11618"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36879effdf16e6acdd563b41fb630f35" id="r_a36879effdf16e6acdd563b41fb630f35"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">typename</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">T</a> &gt; </td></tr>
-<tr class="memitem:a36879effdf16e6acdd563b41fb630f35"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a> (std::stringstream &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">buffer</a>, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">int</a> &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">len</a>, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">T</a> &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">obj</a>)</td></tr>
+<tr class="memitem:a36879effdf16e6acdd563b41fb630f35" id="r_a36879effdf16e6acdd563b41fb630f35"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </td></tr>
+<tr class="memitem:a36879effdf16e6acdd563b41fb630f35"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">void</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a36879effdf16e6acdd563b41fb630f35">pack</a> (std::stringstream &amp;<a class="el" href="structTemporalComponent.html">buffer</a>, <a class="el" href="structTemporalComponent.html">int</a> &amp;<a class="el" href="structTemporalComponent.html">len</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">T</a> &amp;<a class="el" href="structTemporalComponent.html">obj</a>)</td></tr>
 <tr class="memdesc:a36879effdf16e6acdd563b41fb630f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージをシリアル化しbufferに追加  <br /></td></tr>
 <tr class="separator:a36879effdf16e6acdd563b41fb630f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0368ef47eb403e45018a73ef46c90c62" id="r_a0368ef47eb403e45018a73ef46c90c62"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">packDone</a> (std::stringstream &amp;<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">buffer</a>, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">int</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">len</a>)</td></tr>
+<tr class="memitem:a0368ef47eb403e45018a73ef46c90c62" id="r_a0368ef47eb403e45018a73ef46c90c62"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a0368ef47eb403e45018a73ef46c90c62">packDone</a> (std::stringstream &amp;<a class="el" href="structTemporalComponent.html">buffer</a>, <a class="el" href="structTemporalComponent.html">int</a> <a class="el" href="structTemporalComponent.html">len</a>)</td></tr>
 <tr class="separator:a0368ef47eb403e45018a73ef46c90c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
@@ -344,7 +342,7 @@ Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">#define NOMINMAX</td>
+          <td class="memname">#<a class="el" href="structTemporalComponent.html">define</a> NOMINMAX</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -357,7 +355,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_a6076a770b2fcf500b134dd4b5eda5a3.html">include</a></li><li class="navelem"><a class="el" href="dir_f6f3eb0f33fd584af7d3535993a573c2.html">webcface</a></li><li class="navelem"><a class="el" href="dir_b22d29bd644537694a773143f981a332.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

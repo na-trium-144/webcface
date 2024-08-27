@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -148,27 +149,31 @@ $(document).ready(function(){initNavTree('version_8h_source.html',''); initResiz
 <div class="contents">
 <a href="version_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;array&gt;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">webcface/common/def.h</a>&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> <span class="keyword">const</span> std::array&lt;int, 3&gt; <a class="code hl_variable" href="namespacewebcface.html#a342b6f41244b8f7bce0c63b449f20dc1">version</a>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><a class="code hl_define" href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="namespacewebcface.html#ac908c368a4d24ffe7c3b3906522e0fc8">version_s</a>;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="def_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> def.h:64</div></div>
-<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:116</div></div>
-<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:115</div></div>
-<div class="ttc" id="anamespacewebcface_html_a342b6f41244b8f7bce0c63b449f20dc1"><div class="ttname"><a href="namespacewebcface.html#a342b6f41244b8f7bce0c63b449f20dc1">webcface::version</a></div><div class="ttdeci">const std::array&lt; int, 3 &gt; version</div><div class="ttdoc">クライアントのバージョン</div><div class="ttdef"><b>Definition</b> version.cc:6</div></div>
-<div class="ttc" id="anamespacewebcface_html_ac908c368a4d24ffe7c3b3906522e0fc8"><div class="ttname"><a href="namespacewebcface.html#ac908c368a4d24ffe7c3b3906522e0fc8">webcface::version_s</a></div><div class="ttdeci">const char * version_s</div><div class="ttdoc">クライアントのバージョン(文字列)</div><div class="ttdef"><b>Definition</b> version.cc:8</div></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#ifdef WEBCFACE_MESON</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;<a class="code" href="webcface-config_8h.html">webcface-config.h</a>&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;webcface/common/webcface-config.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><a class="code hl_define" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><a class="code hl_define" href="webcface-config_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> <span class="keyword">const</span> std::array&lt;int, 3&gt; <a class="code hl_variable" href="version_8h.html#a4d9e1ba68a557b1c06d326fd2ebee095">version</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><a class="code hl_define" href="webcface-config_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a> <span class="keyword">extern</span> <span class="keyword">const</span> <span class="keywordtype">char</span> *<a class="code hl_variable" href="version_8h.html#a813fa14a3cb868ea9d45c5cddc2b702f">version_s</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="ttc" id="aversion_8h_html_a4d9e1ba68a557b1c06d326fd2ebee095"><div class="ttname"><a href="version_8h.html#a4d9e1ba68a557b1c06d326fd2ebee095">version</a></div><div class="ttdeci">WEBCFACE_NS_BEGIN WEBCFACE_DLL const std::array&lt; int, 3 &gt; version</div><div class="ttdoc">クライアントのバージョン</div><div class="ttdef"><b>Definition</b> version.cc:10</div></div>
+<div class="ttc" id="aversion_8h_html_a813fa14a3cb868ea9d45c5cddc2b702f"><div class="ttname"><a href="version_8h.html#a813fa14a3cb868ea9d45c5cddc2b702f">version_s</a></div><div class="ttdeci">WEBCFACE_DLL const char * version_s</div><div class="ttdoc">クライアントのバージョン(文字列)</div><div class="ttdef"><b>Definition</b> version.cc:12</div></div>
+<div class="ttc" id="awebcface-config_8h_html"><div class="ttname"><a href="webcface-config_8h.html">webcface-config.h</a></div></div>
+<div class="ttc" id="awebcface-config_8h_html_a47af057bda855b54c212e97ffccdca01"><div class="ttname"><a href="webcface-config_8h.html#a47af057bda855b54c212e97ffccdca01">WEBCFACE_DLL</a></div><div class="ttdeci">#define WEBCFACE_DLL</div><div class="ttdef"><b>Definition</b> webcface-config.h:60</div></div>
+<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:115</div></div>
+<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:112</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="version_8h.html">version.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

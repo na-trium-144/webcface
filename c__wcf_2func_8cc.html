@@ -1,0 +1,1341 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: client/src/c_wcf/func.cc File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('c__wcf_2func_8cc.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">func.cc File Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="c__wcf__internal_8h_source.html">c_wcf_internal.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="func_8h_source.html">webcface/func.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for func.cc:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf_2func_8cc__incl.svg" width="2978" height="726"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a230d8418054a01df864652b6f6bdde02" id="r_a230d8418054a01df864652b6f6bdde02"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">CharT</a> &gt; </td></tr>
+<tr class="memitem:a230d8418054a01df864652b6f6bdde02"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a230d8418054a01df864652b6f6bdde02">wcfFuncRespondT</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structc__wcf_1_1CharType.html">CharType</a>&lt; <a class="el" href="structTemporalComponent.html">CharT</a> &gt;::CHandle *<a class="el" href="structTemporalComponent.html">handle</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structc__wcf_1_1CharType.html">CharType</a>&lt; <a class="el" href="structTemporalComponent.html">CharT</a> &gt;::CVal *value)</td></tr>
+<tr class="separator:a230d8418054a01df864652b6f6bdde02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa371cd469c55d58b0332f2261a120533" id="r_aa371cd469c55d58b0332f2261a120533"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a> (<a class="el" href="structTemporalComponent.html">int</a> value)</td></tr>
+<tr class="memdesc:aa371cd469c55d58b0332f2261a120533"><td class="mdescLeft">&#160;</td><td class="mdescRight">int型のwcfMultiValを構築  <br /></td></tr>
+<tr class="separator:aa371cd469c55d58b0332f2261a120533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee7f0f53dcb913e408f3032f7c9f796b" id="r_aee7f0f53dcb913e408f3032f7c9f796b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#aee7f0f53dcb913e408f3032f7c9f796b">wcfValD</a> (<a class="el" href="structTemporalComponent.html">double</a> value)</td></tr>
+<tr class="memdesc:aee7f0f53dcb913e408f3032f7c9f796b"><td class="mdescLeft">&#160;</td><td class="mdescRight">double型のwcfMultiValを構築  <br /></td></tr>
+<tr class="separator:aee7f0f53dcb913e408f3032f7c9f796b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef51e8d5db05da0a19a3c4f58a4c5193" id="r_aef51e8d5db05da0a19a3c4f58a4c5193"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *value)</td></tr>
+<tr class="memdesc:aef51e8d5db05da0a19a3c4f58a4c5193"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列型のwcfMultiValを構築  <br /></td></tr>
+<tr class="separator:aef51e8d5db05da0a19a3c4f58a4c5193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad61db2dfc28c8bc8515643c8e873680" id="r_aad61db2dfc28c8bc8515643c8e873680"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#aad61db2dfc28c8bc8515643c8e873680">wcfValWI</a> (<a class="el" href="structTemporalComponent.html">int</a> value)</td></tr>
+<tr class="memdesc:aad61db2dfc28c8bc8515643c8e873680"><td class="mdescLeft">&#160;</td><td class="mdescRight">int型のwcfMultiValWを構築  <br /></td></tr>
+<tr class="separator:aad61db2dfc28c8bc8515643c8e873680"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af334d74b01206c3b3afdc000824e2158" id="r_af334d74b01206c3b3afdc000824e2158"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#af334d74b01206c3b3afdc000824e2158">wcfValWD</a> (<a class="el" href="structTemporalComponent.html">double</a> value)</td></tr>
+<tr class="memdesc:af334d74b01206c3b3afdc000824e2158"><td class="mdescLeft">&#160;</td><td class="mdescRight">double型のwcfMultiValWを構築  <br /></td></tr>
+<tr class="separator:af334d74b01206c3b3afdc000824e2158"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e31693b733089f66ea7567bb73029a" id="r_a35e31693b733089f66ea7567bb73029a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a35e31693b733089f66ea7567bb73029a">wcfValWS</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *value)</td></tr>
+<tr class="memdesc:a35e31693b733089f66ea7567bb73029a"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列型のwcfMultiValWを構築 (wstring)  <br /></td></tr>
+<tr class="separator:a35e31693b733089f66ea7567bb73029a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66bdb804a3f7e0b7ef620180fbab9dfe" id="r_a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *member, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *args, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **result)</td></tr>
+<tr class="memdesc:a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を呼び出す  <br /></td></tr>
+<tr class="separator:a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f3e54495fa9d7ee3faf4eb303833b79" id="r_a8f3e54495fa9d7ee3faf4eb303833b79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a8f3e54495fa9d7ee3faf4eb303833b79">wcfFuncRunW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *member, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *args, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> **result)</td></tr>
+<tr class="memdesc:a8f3e54495fa9d7ee3faf4eb303833b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を呼び出す (wstring)  <br /></td></tr>
+<tr class="separator:a8f3e54495fa9d7ee3faf4eb303833b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59cdc2f8704281f326fa90f81cd05163" id="r_a59cdc2f8704281f326fa90f81cd05163"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a59cdc2f8704281f326fa90f81cd05163">wcfFuncRunAsync</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *member, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *args, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> **<a class="el" href="structTemporalComponent.html">async_res</a>)</td></tr>
+<tr class="memdesc:a59cdc2f8704281f326fa90f81cd05163"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を非同期で呼び出す  <br /></td></tr>
+<tr class="separator:a59cdc2f8704281f326fa90f81cd05163"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad91ac58855dbb8746fa10f5c2287e9e4" id="r_ad91ac58855dbb8746fa10f5c2287e9e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#ad91ac58855dbb8746fa10f5c2287e9e4">wcfFuncRunAsyncW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *member, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *args, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> **<a class="el" href="structTemporalComponent.html">async_res</a>)</td></tr>
+<tr class="memdesc:ad91ac58855dbb8746fa10f5c2287e9e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を非同期で呼び出す (wstring)  <br /></td></tr>
+<tr class="separator:ad91ac58855dbb8746fa10f5c2287e9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab1e9e6ba63f30591b9eec815b03dfc" id="r_a0ab1e9e6ba63f30591b9eec815b03dfc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a0ab1e9e6ba63f30591b9eec815b03dfc">wcfFuncGetResult</a> (<a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> *<a class="el" href="structTemporalComponent.html">async_res</a>, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **result)</td></tr>
+<tr class="memdesc:a0ab1e9e6ba63f30591b9eec815b03dfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期で呼び出した関数の実行結果を取得  <br /></td></tr>
+<tr class="separator:a0ab1e9e6ba63f30591b9eec815b03dfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a29429472d65e1d80e3d2c119d80bc3" id="r_a1a29429472d65e1d80e3d2c119d80bc3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a1a29429472d65e1d80e3d2c119d80bc3">wcfFuncWaitResult</a> (<a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> *<a class="el" href="structTemporalComponent.html">async_res</a>, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **result)</td></tr>
+<tr class="memdesc:a1a29429472d65e1d80e3d2c119d80bc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期で呼び出した関数の実行完了まで待機し、結果を取得  <br /></td></tr>
+<tr class="separator:a1a29429472d65e1d80e3d2c119d80bc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed93a65ce0737907e6bde0ab93aa92b7" id="r_aed93a65ce0737907e6bde0ab93aa92b7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#aed93a65ce0737907e6bde0ab93aa92b7">wcfFuncSet</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type, <a class="el" href="def__types_8h.html#afa655b2711556e79a3a054c0c032f556">wcfFuncCallback</a> callback, <a class="el" href="structTemporalComponent.html">void</a> *<a class="el" href="structTemporalComponent.html">user_data</a>)</td></tr>
+<tr class="memdesc:aed93a65ce0737907e6bde0ab93aa92b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を登録する  <br /></td></tr>
+<tr class="separator:aed93a65ce0737907e6bde0ab93aa92b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc4c8a1710cbecc2520c5c4adfcd5b57" id="r_acc4c8a1710cbecc2520c5c4adfcd5b57"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#acc4c8a1710cbecc2520c5c4adfcd5b57">wcfFuncSetW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type, <a class="el" href="def__types_8h.html#a7826bc1861041210bc786d43aa7bc0ab">wcfFuncCallbackW</a> callback, <a class="el" href="structTemporalComponent.html">void</a> *<a class="el" href="structTemporalComponent.html">user_data</a>)</td></tr>
+<tr class="memdesc:acc4c8a1710cbecc2520c5c4adfcd5b57"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を登録する (wstring)  <br /></td></tr>
+<tr class="separator:acc4c8a1710cbecc2520c5c4adfcd5b57"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26ab51787ecffa7a0afe8974215185e3" id="r_a26ab51787ecffa7a0afe8974215185e3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a26ab51787ecffa7a0afe8974215185e3">wcfFuncSetAsync</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type, <a class="el" href="def__types_8h.html#afa655b2711556e79a3a054c0c032f556">wcfFuncCallback</a> callback, <a class="el" href="structTemporalComponent.html">void</a> *<a class="el" href="structTemporalComponent.html">user_data</a>)</td></tr>
+<tr class="memdesc:a26ab51787ecffa7a0afe8974215185e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期に実行される関数を登録する  <br /></td></tr>
+<tr class="separator:a26ab51787ecffa7a0afe8974215185e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a895caec91c72ce1b496a65d5ad8883c6" id="r_a895caec91c72ce1b496a65d5ad8883c6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a895caec91c72ce1b496a65d5ad8883c6">wcfFuncSetAsyncW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type, <a class="el" href="def__types_8h.html#a7826bc1861041210bc786d43aa7bc0ab">wcfFuncCallbackW</a> callback, <a class="el" href="structTemporalComponent.html">void</a> *<a class="el" href="structTemporalComponent.html">user_data</a>)</td></tr>
+<tr class="memdesc:a895caec91c72ce1b496a65d5ad8883c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期に実行される関数を登録する (wstring)  <br /></td></tr>
+<tr class="separator:a895caec91c72ce1b496a65d5ad8883c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34feb8c3abc607d947e2a433781a51e9" id="r_a34feb8c3abc607d947e2a433781a51e9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a34feb8c3abc607d947e2a433781a51e9">wcfFuncListen</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type)</td></tr>
+<tr class="memdesc:a34feb8c3abc607d947e2a433781a51e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの待受を開始する  <br /></td></tr>
+<tr class="separator:a34feb8c3abc607d947e2a433781a51e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d46a577464d48b4ebf1949fc7f2f197" id="r_a5d46a577464d48b4ebf1949fc7f2f197"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a5d46a577464d48b4ebf1949fc7f2f197">wcfFuncListenW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *<a class="el" href="structTemporalComponent.html">arg_types</a>, <a class="el" href="structTemporalComponent.html">int</a> arg_size, <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> return_type)</td></tr>
+<tr class="memdesc:a5d46a577464d48b4ebf1949fc7f2f197"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しの待受を開始する (wstring)  <br /></td></tr>
+<tr class="separator:a5d46a577464d48b4ebf1949fc7f2f197"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5e31cd0b36abb92a6a6ae74202b1415" id="r_ab5e31cd0b36abb92a6a6ae74202b1415"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#ab5e31cd0b36abb92a6a6ae74202b1415">wcfFuncFetchCall</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *field, <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> **<a class="el" href="structTemporalComponent.html">handle</a>)</td></tr>
+<tr class="memdesc:ab5e31cd0b36abb92a6a6ae74202b1415"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数が呼び出されたかどうかを確認  <br /></td></tr>
+<tr class="separator:ab5e31cd0b36abb92a6a6ae74202b1415"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a737ad898eaf3daafbe81ff9b67a2975d" id="r_a737ad898eaf3daafbe81ff9b67a2975d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a737ad898eaf3daafbe81ff9b67a2975d">wcfFuncFetchCallW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *<a class="el" href="structTemporalComponent.html">wcli</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *field, <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> **<a class="el" href="structTemporalComponent.html">handle</a>)</td></tr>
+<tr class="memdesc:a737ad898eaf3daafbe81ff9b67a2975d"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数が呼び出されたかどうかを確認 (wstring)  <br /></td></tr>
+<tr class="separator:a737ad898eaf3daafbe81ff9b67a2975d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0cde58bb43011b9e54fc80881cd19c30" id="r_a0cde58bb43011b9e54fc80881cd19c30"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a0cde58bb43011b9e54fc80881cd19c30">wcfFuncRespond</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *<a class="el" href="structTemporalComponent.html">handle</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *value)</td></tr>
+<tr class="memdesc:a0cde58bb43011b9e54fc80881cd19c30"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しに対して値を返す  <br /></td></tr>
+<tr class="separator:a0cde58bb43011b9e54fc80881cd19c30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5257be59fa90f92d2126a73bf1a94364" id="r_a5257be59fa90f92d2126a73bf1a94364"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a5257be59fa90f92d2126a73bf1a94364">wcfFuncRespondW</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *<a class="el" href="structTemporalComponent.html">handle</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *value)</td></tr>
+<tr class="memdesc:a5257be59fa90f92d2126a73bf1a94364"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しに対して値を返す (wstring)  <br /></td></tr>
+<tr class="separator:a5257be59fa90f92d2126a73bf1a94364"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31bfc6b700cc627887821b6e7bfb9a81" id="r_a31bfc6b700cc627887821b6e7bfb9a81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a31bfc6b700cc627887821b6e7bfb9a81">wcfFuncReject</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *<a class="el" href="structTemporalComponent.html">handle</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *message)</td></tr>
+<tr class="memdesc:a31bfc6b700cc627887821b6e7bfb9a81"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しに対してエラーメッセージを返す  <br /></td></tr>
+<tr class="separator:a31bfc6b700cc627887821b6e7bfb9a81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a030bb0be3722519b52a753545d531ec6" id="r_a030bb0be3722519b52a753545d531ec6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a030bb0be3722519b52a753545d531ec6">wcfFuncRejectW</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *<a class="el" href="structTemporalComponent.html">handle</a>, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *message)</td></tr>
+<tr class="memdesc:a030bb0be3722519b52a753545d531ec6"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数呼び出しに対してエラーメッセージを返す (wstring)  <br /></td></tr>
+<tr class="separator:a030bb0be3722519b52a753545d531ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Function Documentation</h2>
+<a id="ab5e31cd0b36abb92a6a6ae74202b1415" name="ab5e31cd0b36abb92a6a6ae74202b1415"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5e31cd0b36abb92a6a6ae74202b1415">&#9670;&#160;</a></span>wcfFuncFetchCall()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncFetchCall </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> **&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数が呼び出されたかどうかを確認 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a></dd></dl>
+<p>1回の関数呼び出しに対してfetchCallは1回だけhandlerを返す</p>
+<p>呼び出されたらその引数と、値を返す用の関数が入ったhandlerを返す。 まだ呼び出されてなければnulloptを返す。</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
+    <tr><td class="paramname">field</td><td>関数名 </td></tr>
+    <tr><td class="paramname">handle</td><td>handleポインタを受け取る変数 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI, まだ関数が呼び出されていない or ListenしていないならWCF_NOT_CALLED </dd></dl>
+
+</div>
+</div>
+<a id="a737ad898eaf3daafbe81ff9b67a2975d" name="a737ad898eaf3daafbe81ff9b67a2975d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a737ad898eaf3daafbe81ff9b67a2975d">&#9670;&#160;</a></span>wcfFuncFetchCallW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncFetchCallW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> **&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数が呼び出されたかどうかを確認 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#ad88363f7608f8b71bf3b22e7f7865a30" title="関数が呼び出されたかどうかを確認">wcfFuncFetchCall</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0ab1e9e6ba63f30591b9eec815b03dfc" name="a0ab1e9e6ba63f30591b9eec815b03dfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ab1e9e6ba63f30591b9eec815b03dfc">&#9670;&#160;</a></span>wcfFuncGetResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncGetResult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> *&#160;</td>
+          <td class="paramname"><em>async_res</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>非同期で呼び出した関数の実行結果を取得 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">async_res</td><td>関数呼び出しに対応するPromise </td></tr>
+    <tr><td class="paramname">result</td><td>結果を格納する変数(wcfMultiVal*)へのポインタ (破棄するときには <a class="el" href="c__wcf_2client_8h.html#a12789c14a2b8f9b72242ace3de35d9ca" title="wcfの関数から取得したポインタのデータを破棄">wcfDestroy()</a> を使ってください) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>async_resが無効な場合 WCF_BAD_HANDLE, 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND, 関数で例外が発生した場合 WCF_EXCEPTION (エラーメッセージがresultに入る), まだ結果が返ってきていない場合 WCF_NOT_RETURNED </dd></dl>
+
+</div>
+</div>
+<a id="a34feb8c3abc607d947e2a433781a51e9" name="a34feb8c3abc607d947e2a433781a51e9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34feb8c3abc607d947e2a433781a51e9">&#9670;&#160;</a></span>wcfFuncListen()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncListen </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しの待受を開始する </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
+    <tr><td class="paramname">field</td><td>関数名 </td></tr>
+    <tr><td class="paramname">arg_types</td><td>受け取る引数の型をwcfValTypeの配列で指定 </td></tr>
+    <tr><td class="paramname">arg_size</td><td>受け取る引数の個数 </td></tr>
+    <tr><td class="paramname">return_type</td><td>戻り値の型を指定 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
+
+</div>
+</div>
+<a id="a5d46a577464d48b4ebf1949fc7f2f197" name="a5d46a577464d48b4ebf1949fc7f2f197"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5d46a577464d48b4ebf1949fc7f2f197">&#9670;&#160;</a></span>wcfFuncListenW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncListenW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しの待受を開始する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a0afee7b58d11a3e8d01693113ed2a8ef" title="関数呼び出しの待受を開始する">wcfFuncListen</a> </dd></dl>
+
+</div>
+</div>
+<a id="a31bfc6b700cc627887821b6e7bfb9a81" name="a31bfc6b700cc627887821b6e7bfb9a81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31bfc6b700cc627887821b6e7bfb9a81">&#9670;&#160;</a></span>wcfFuncReject()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncReject </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しに対してエラーメッセージを返す </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a></dd></dl>
+<p>エラーメッセージを返すとhandleはdeleteされ使えなくなる </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>関数呼び出しに対応するhandle </td></tr>
+    <tr><td class="paramname">message</td><td>返すメッセージ (空文字列の代わりにNULLも可) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>handleが無効ならWCF_BAD_HANDLE </dd></dl>
+
+</div>
+</div>
+<a id="a030bb0be3722519b52a753545d531ec6" name="a030bb0be3722519b52a753545d531ec6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a030bb0be3722519b52a753545d531ec6">&#9670;&#160;</a></span>wcfFuncRejectW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRejectW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>message</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しに対してエラーメッセージを返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#ad7e9c69438ac4dbe8bf95fe89af33456" title="関数呼び出しに対してエラーメッセージを返す">wcfFuncReject</a> </dd></dl>
+
+</div>
+</div>
+<a id="a0cde58bb43011b9e54fc80881cd19c30" name="a0cde58bb43011b9e54fc80881cd19c30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cde58bb43011b9e54fc80881cd19c30">&#9670;&#160;</a></span>wcfFuncRespond()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRespond </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しに対して値を返す </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a></dd></dl>
+<p>値を返すとhandleはdeleteされ使えなくなる </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">handle</td><td>関数呼び出しに対応するhandle </td></tr>
+    <tr><td class="paramname">value</td><td>返す値 (<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.9</a>〜 NULLも可) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>handleが無効ならWCF_BAD_HANDLE </dd></dl>
+
+</div>
+</div>
+<a id="a230d8418054a01df864652b6f6bdde02" name="a230d8418054a01df864652b6f6bdde02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a230d8418054a01df864652b6f6bdde02">&#9670;&#160;</a></span>wcfFuncRespondT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">CharT</a> &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRespondT </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structc__wcf_1_1CharType.html">CharType</a>&lt; <a class="el" href="structTemporalComponent.html">CharT</a> &gt;::CHandle *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structc__wcf_1_1CharType.html">CharType</a>&lt; <a class="el" href="structTemporalComponent.html">CharT</a> &gt;::CVal *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5257be59fa90f92d2126a73bf1a94364" name="a5257be59fa90f92d2126a73bf1a94364"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5257be59fa90f92d2126a73bf1a94364">&#9670;&#160;</a></span>wcfFuncRespondW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRespondW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *&#160;</td>
+          <td class="paramname"><em>handle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数呼び出しに対して値を返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#aeb1c4420e0a20e6e861164d096c4ac87" title="関数呼び出しに対して値を返す">wcfFuncRespond</a> </dd></dl>
+
+</div>
+</div>
+<a id="a66bdb804a3f7e0b7ef620180fbab9dfe" name="a66bdb804a3f7e0b7ef620180fbab9dfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a66bdb804a3f7e0b7ef620180fbab9dfe">&#9670;&#160;</a></span>wcfFuncRun()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRun </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を呼び出す </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
+    <tr><td class="paramname">member</td><td>memberの名前 (<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.7</a>〜:NULLまたは空文字列で自分自身を指す) </td></tr>
+    <tr><td class="paramname">field</td><td>funcの名前 </td></tr>
+    <tr><td class="paramname">args</td><td>引数の配列 </td></tr>
+    <tr><td class="paramname">arg_size</td><td>引数の個数 </td></tr>
+    <tr><td class="paramname">result</td><td>結果を格納する変数(wcfMultiVal*)へのポインタ (破棄するときには <a class="el" href="c__wcf_2client_8h.html#a12789c14a2b8f9b72242ace3de35d9ca" title="wcfの関数から取得したポインタのデータを破棄">wcfDestroy()</a> を使ってください) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI, 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND, 関数で例外が発生した場合 WCF_EXCEPTION </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜 <a class="el" href="c__wcf_2func_8h.html#a87d2fb342f1953c0d7afc71ad69efe6d" title="関数を非同期で呼び出す">wcfFuncRunAsync()</a>を推奨。 <a class="el" href="c__wcf_2func_8h.html#a029b16ffc3480a5932b025dbefba26b9" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得">wcfFuncWaitResult()</a> で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。</dd></dl>
+
+</div>
+</div>
+<a id="a59cdc2f8704281f326fa90f81cd05163" name="a59cdc2f8704281f326fa90f81cd05163"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59cdc2f8704281f326fa90f81cd05163">&#9670;&#160;</a></span>wcfFuncRunAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRunAsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> **&#160;</td>
+          <td class="paramname"><em>async_res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を非同期で呼び出す </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a></dd></dl>
+<ul>
+<li>戻り値やエラーは wcfFuncGetResult, wcfFuncWaitResult などを使って取得する</li>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜: 戻り値が不要な場合は wcfDestroy で破棄してください。</li>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>～: wcfFuncRunAsyncを呼んだ時点でclientがサーバーに接続していない場合、 関数呼び出しメッセージは送信されず呼び出しは失敗する (funcGetResult() でWCF_NOT_FOUNDになる)</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
+    <tr><td class="paramname">member</td><td>memberの名前 (<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.7</a>〜:NULLまたは空文字列で自分自身を指す) </td></tr>
+    <tr><td class="paramname">field</td><td>funcの名前 </td></tr>
+    <tr><td class="paramname">args</td><td>引数の配列 </td></tr>
+    <tr><td class="paramname">arg_size</td><td>引数の個数 </td></tr>
+    <tr><td class="paramname">async_res</td><td>結果を格納する変数(wcfPromise*)へのポインタ (破棄するときには wcfWaitResult() または <a class="el" href="c__wcf_2client_8h.html#a12789c14a2b8f9b72242ace3de35d9ca" title="wcfの関数から取得したポインタのデータを破棄">wcfDestroy()</a> を使ってください) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
+
+</div>
+</div>
+<a id="ad91ac58855dbb8746fa10f5c2287e9e4" name="ad91ac58855dbb8746fa10f5c2287e9e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad91ac58855dbb8746fa10f5c2287e9e4">&#9670;&#160;</a></span>wcfFuncRunAsyncW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRunAsyncW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> **&#160;</td>
+          <td class="paramname"><em>async_res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を非同期で呼び出す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a87d2fb342f1953c0d7afc71ad69efe6d" title="関数を非同期で呼び出す">wcfFuncRunAsync</a> </dd></dl>
+
+</div>
+</div>
+<a id="a8f3e54495fa9d7ee3faf4eb303833b79" name="a8f3e54495fa9d7ee3faf4eb303833b79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f3e54495fa9d7ee3faf4eb303833b79">&#9670;&#160;</a></span>wcfFuncRunW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncRunW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>member</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *&#160;</td>
+          <td class="paramname"><em>args</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> **&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を呼び出す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜 <a class="el" href="c__wcf_2func_8h.html#a4dd41b400b5cf3097718a3afa2f45cda" title="関数を非同期で呼び出す (wstring)">wcfFuncRunAsyncW()</a>を推奨。 <a class="el" href="c__wcf_2func_8h.html#a7c9f2d255710c2ee68feb22b4a31b3b1" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得 (wstring)">wcfFuncWaitResultW()</a> で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#afe7ce679facc9d5696052abf830666a9" title="関数を呼び出す">wcfFuncRun</a> </dd></dl>
+
+</div>
+</div>
+<a id="aed93a65ce0737907e6bde0ab93aa92b7" name="aed93a65ce0737907e6bde0ab93aa92b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed93a65ce0737907e6bde0ab93aa92b7">&#9670;&#160;</a></span>wcfFuncSet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncSet </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#afa655b2711556e79a3a054c0c032f556">wcfFuncCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">void</a> *&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を登録する </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.9</a></dd></dl>
+<ul>
+<li>登録した関数は引数でcallhandleを受け取り、 wcfFuncRespond または wcfFuncReject を使って結果を返す。</li>
+<li><del><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.11</a>まで: 関数がrespondもrejectもせず終了した場合自動でrespondする。</del></li>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜: 自動でrespondされることはないので、 関数が受け取ったhandleを別スレッドに渡すなどして、 ここでセットした関数の終了後にrespond()やreject()することも可能。</li>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜: <a class="el" href="c__wcf_2func_8h.html#a4bed5f0fed032c334186154233d74c5b" title="関数を登録する">wcfFuncSet()</a>でセットした場合、他クライアントから呼び出されたとき wcfRecv() (または autoRecv) のスレッドでそのまま実行され、 この関数が完了するまで他のデータの受信はブロックされる。 また、 <a class="el" href="c__wcf_2func_8h.html#a87d2fb342f1953c0d7afc71ad69efe6d" title="関数を非同期で呼び出す">wcfFuncRunAsync()</a> で呼び出したとしても同じスレッドで同期実行される。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
+    <tr><td class="paramname">field</td><td>関数名 </td></tr>
+    <tr><td class="paramname">arg_types</td><td>受け取る引数の型をwcfValTypeの配列で指定 </td></tr>
+    <tr><td class="paramname">arg_size</td><td>受け取る引数の個数 </td></tr>
+    <tr><td class="paramname">return_type</td><td>戻り値の型を指定 </td></tr>
+    <tr><td class="paramname">callback</td><td>実行する関数: wcfFuncCallhandle* 型と void* 型の引数を1つずつ取り、何もreturnしない。 </td></tr>
+    <tr><td class="paramname">user_data</td><td>関数に引数として渡す追加のデータ callbackが呼び出されるときに第2引数にそのまま渡される。 </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI </dd></dl>
+
+</div>
+</div>
+<a id="a26ab51787ecffa7a0afe8974215185e3" name="a26ab51787ecffa7a0afe8974215185e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a26ab51787ecffa7a0afe8974215185e3">&#9670;&#160;</a></span>wcfFuncSetAsync()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncSetAsync </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#afa655b2711556e79a3a054c0c032f556">wcfFuncCallback</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">void</a> *&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>非同期に実行される関数を登録する </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a></dd></dl>
+<ul>
+<li>登録した関数は他クライアントから呼び出されたとき新しいスレッドを建てて実行される。 <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.11</a>以前のwcfFuncSet()と同じ。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a4bed5f0fed032c334186154233d74c5b" title="関数を登録する">wcfFuncSet</a> </dd></dl>
+
+</div>
+</div>
+<a id="a895caec91c72ce1b496a65d5ad8883c6" name="a895caec91c72ce1b496a65d5ad8883c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a895caec91c72ce1b496a65d5ad8883c6">&#9670;&#160;</a></span>wcfFuncSetAsyncW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncSetAsyncW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a7826bc1861041210bc786d43aa7bc0ab">wcfFuncCallbackW</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">void</a> *&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>非同期に実行される関数を登録する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a78bcca0b5792f8a7f8663394f0356048" title="関数を登録する (wstring)">wcfFuncSetW</a>, <a class="el" href="c__wcf_2func_8h.html#a04c70d3d30df77fce5cf5618ec5732f6" title="非同期に実行される関数を登録する">wcfFuncSetAsync</a> </dd></dl>
+
+</div>
+</div>
+<a id="acc4c8a1710cbecc2520c5c4adfcd5b57" name="acc4c8a1710cbecc2520c5c4adfcd5b57"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc4c8a1710cbecc2520c5c4adfcd5b57">&#9670;&#160;</a></span>wcfFuncSetW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncSetW </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *&#160;</td>
+          <td class="paramname"><em>wcli</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>field</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a> *&#160;</td>
+          <td class="paramname"><em>arg_types</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>arg_size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95">wcfValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#a7826bc1861041210bc786d43aa7bc0ab">wcfFuncCallbackW</a>&#160;</td>
+          <td class="paramname"><em>callback</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">void</a> *&#160;</td>
+          <td class="paramname"><em>user_data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数を登録する (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a4bed5f0fed032c334186154233d74c5b" title="関数を登録する">wcfFuncSet</a> </dd></dl>
+
+</div>
+</div>
+<a id="a1a29429472d65e1d80e3d2c119d80bc3" name="a1a29429472d65e1d80e3d2c119d80bc3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a29429472d65e1d80e3d2c119d80bc3">&#9670;&#160;</a></span>wcfFuncWaitResult()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a> wcfFuncWaitResult </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> *&#160;</td>
+          <td class="paramname"><em>async_res</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>非同期で呼び出した関数の実行完了まで待機し、結果を取得 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a></dd></dl>
+<ul>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a>〜: <a class="el" href="c__wcf_2client_8h.html#a7d5f51c9f81459406901fc019d86ae33" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> を呼ぶのとは別のスレッドで使用することを想定している。 関数実行が完了したかどうかの情報の受信は <a class="el" href="c__wcf_2client_8h.html#a7d5f51c9f81459406901fc019d86ae33" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> で行われるため、 この関数を使用して待機している間に <a class="el" href="c__wcf_2client_8h.html#a7d5f51c9f81459406901fc019d86ae33" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> が呼ばれていないとデッドロックしてしまうので注意。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">async_res</td><td>関数呼び出しに対応するPromise </td></tr>
+    <tr><td class="paramname">result</td><td>結果を格納する変数(wcfMultiVal*)へのポインタ (破棄するときには <a class="el" href="c__wcf_2client_8h.html#a12789c14a2b8f9b72242ace3de35d9ca" title="wcfの関数から取得したポインタのデータを破棄">wcfDestroy()</a> を使ってください) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>async_resが無効な場合 WCF_BAD_HANDLE, 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND, 関数で例外が発生した場合 WCF_EXCEPTION (エラーメッセージがresultに入る) </dd></dl>
+
+</div>
+</div>
+<a id="aee7f0f53dcb913e408f3032f7c9f796b" name="aee7f0f53dcb913e408f3032f7c9f796b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aee7f0f53dcb913e408f3032f7c9f796b">&#9670;&#160;</a></span>wcfValD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> wcfValD </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>double型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+
+</div>
+</div>
+<a id="aa371cd469c55d58b0332f2261a120533" name="aa371cd469c55d58b0332f2261a120533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa371cd469c55d58b0332f2261a120533">&#9670;&#160;</a></span>wcfValI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> wcfValI </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>int型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+
+</div>
+</div>
+<a id="aef51e8d5db05da0a19a3c4f58a4c5193" name="aef51e8d5db05da0a19a3c4f58a4c5193"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef51e8d5db05da0a19a3c4f58a4c5193">&#9670;&#160;</a></span>wcfValS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> wcfValS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>文字列型のwcfMultiValを構築 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.5</a> </dd></dl>
+
+</div>
+</div>
+<a id="af334d74b01206c3b3afdc000824e2158" name="af334d74b01206c3b3afdc000824e2158"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af334d74b01206c3b3afdc000824e2158">&#9670;&#160;</a></span>wcfValWD()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> wcfValWD </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>double型のwcfMultiValWを構築 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+<a id="aad61db2dfc28c8bc8515643c8e873680" name="aad61db2dfc28c8bc8515643c8e873680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aad61db2dfc28c8bc8515643c8e873680">&#9670;&#160;</a></span>wcfValWI()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> wcfValWI </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>int型のwcfMultiValWを構築 </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+<a id="a35e31693b733089f66ea7567bb73029a" name="a35e31693b733089f66ea7567bb73029a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35e31693b733089f66ea7567bb73029a">&#9670;&#160;</a></span>wcfValWS()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> wcfValWS </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">wchar_t</a> *&#160;</td>
+          <td class="paramname"><em>value</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>文字列型のwcfMultiValWを構築 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="dir_81dc01503b4758498154e925b296735c.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2func_8cc.html">func.cc</a></li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

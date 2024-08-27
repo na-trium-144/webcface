@@ -1,9 +1,0 @@
-<map id="View" name="View">
-<area shape="rect" id="Node000001" title="Viewの送受信データを表すクラス" alt="" coords="65,152,119,177"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="21,79,75,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="65,114,87,150,83,153,60,117"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="5,5,91,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="51,44,51,79,45,79,45,44"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="99,79,175,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="125,117,102,153,97,150,120,114"/>
-</map>

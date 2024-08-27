@@ -1,7 +1,0 @@
-<map id="CallResult" name="CallResult">
-<area shape="rect" id="Node000001" title="関数呼び出しの応答2 (client(receiver)&#45;&gt;server&#45;&gt;client(caller))" alt="" coords="69,197,157,223"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,108,220,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="115,162,115,197,110,197,110,162"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,45,115,108,110,108,110,45"/>
-</map>

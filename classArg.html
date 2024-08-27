@@ -1,0 +1,723 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: Arg Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classArg.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
+<a href="classArg-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">Arg Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>引数の情報を表す。  
+ <a href="classArg.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="arg_8h_source.html">webcface/arg.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aa50ac6c4ffe7f1eb892c776234eef2f0" id="r_aa50ac6c4ffe7f1eb892c776234eef2f0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#aa50ac6c4ffe7f1eb892c776234eef2f0">mergeConfig</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classArg.html">Arg</a> &amp;<a class="el" href="structTemporalComponent.html">other</a>)</td></tr>
+<tr class="memdesc:aa50ac6c4ffe7f1eb892c776234eef2f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数のargが持っている情報でthisを上書きする。  <br /></td></tr>
+<tr class="separator:aa50ac6c4ffe7f1eb892c776234eef2f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebc8c67413f23dcd3c3c6cff32b7a122" id="r_aebc8c67413f23dcd3c3c6cff32b7a122"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#aebc8c67413f23dcd3c3c6cff32b7a122">Arg</a> (<a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> <a class="el" href="classArg.html#a21eb97b014d270b80f9423022f86d322">type</a>=ValType::none_)</td></tr>
+<tr class="separator:aebc8c67413f23dcd3c3c6cff32b7a122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2da049a756807480d5c11901dc4aae5" id="r_ab2da049a756807480d5c11901dc4aae5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#ab2da049a756807480d5c11901dc4aae5">Arg</a> (<a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; <a class="el" href="structmessage_1_1Arg.html">message::Arg</a> &gt; &amp;msg_data)</td></tr>
+<tr class="separator:ab2da049a756807480d5c11901dc4aae5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a087a128a8ea56ee2d143cdc6958ef0" id="r_a8a087a128a8ea56ee2d143cdc6958ef0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a8a087a128a8ea56ee2d143cdc6958ef0">Arg</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &amp;<a class="el" href="classArg.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a>)</td></tr>
+<tr class="separator:a8a087a128a8ea56ee2d143cdc6958ef0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69a4107e9824adb02732eed46c01cf4d" id="r_a69a4107e9824adb02732eed46c01cf4d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a69a4107e9824adb02732eed46c01cf4d">Arg</a> (std::string_view <a class="el" href="classArg.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a>)</td></tr>
+<tr class="memdesc:a69a4107e9824adb02732eed46c01cf4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数名を設定する。  <br /></td></tr>
+<tr class="separator:a69a4107e9824adb02732eed46c01cf4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95cf18ac36a85b8ed45e989946d25f25" id="r_a95cf18ac36a85b8ed45e989946d25f25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a95cf18ac36a85b8ed45e989946d25f25">Arg</a> (std::wstring_view <a class="el" href="classArg.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a>)</td></tr>
+<tr class="memdesc:a95cf18ac36a85b8ed45e989946d25f25"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数名を設定する。(wstring)  <br /></td></tr>
+<tr class="separator:a95cf18ac36a85b8ed45e989946d25f25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b" id="r_a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の名前を取得する。  <br /></td></tr>
+<tr class="separator:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c997fd30e7178c869b823143102d682" id="r_a8c997fd30e7178c869b823143102d682"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> std::wstring &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a8c997fd30e7178c869b823143102d682">nameW</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a8c997fd30e7178c869b823143102d682"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の名前を取得する。(wstring)  <br /></td></tr>
+<tr class="separator:a8c997fd30e7178c869b823143102d682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21eb97b014d270b80f9423022f86d322" id="r_a21eb97b014d270b80f9423022f86d322"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a21eb97b014d270b80f9423022f86d322">type</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a21eb97b014d270b80f9423022f86d322"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の型を取得する。  <br /></td></tr>
+<tr class="separator:a21eb97b014d270b80f9423022f86d322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae244be41ed6a5e3dea4aa18ad6eadf65" id="r_ae244be41ed6a5e3dea4aa18ad6eadf65"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#ae244be41ed6a5e3dea4aa18ad6eadf65">type</a> (<a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> type)</td></tr>
+<tr class="memdesc:ae244be41ed6a5e3dea4aa18ad6eadf65"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の型を設定する。  <br /></td></tr>
+<tr class="separator:ae244be41ed6a5e3dea4aa18ad6eadf65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e31ddffe3f62572d218e8e028423cfa" id="r_a2e31ddffe3f62572d218e8e028423cfa"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a2e31ddffe3f62572d218e8e028423cfa">init</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a2e31ddffe3f62572d218e8e028423cfa"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルト値を取得する。  <br /></td></tr>
+<tr class="separator:a2e31ddffe3f62572d218e8e028423cfa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af229b885662863b6775dd006ac3ba7b1" id="r_af229b885662863b6775dd006ac3ba7b1"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </td></tr>
+<tr class="memitem:af229b885662863b6775dd006ac3ba7b1"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classArg.html#af229b885662863b6775dd006ac3ba7b1">init</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">T</a> &amp;init)</td></tr>
+<tr class="memdesc:af229b885662863b6775dd006ac3ba7b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">デフォルト値を設定する。  <br /></td></tr>
+<tr class="separator:af229b885662863b6775dd006ac3ba7b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85edec45eb5f1f6d6d39ebc104fff34a" id="r_a85edec45eb5f1f6d6d39ebc104fff34a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a85edec45eb5f1f6d6d39ebc104fff34a">init</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;init)</td></tr>
+<tr class="separator:a85edec45eb5f1f6d6d39ebc104fff34a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9fa0cb3de8ee6996e9806a4787e237b" id="r_ab9fa0cb3de8ee6996e9806a4787e237b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#ab9fa0cb3de8ee6996e9806a4787e237b">min</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:ab9fa0cb3de8ee6996e9806a4787e237b"><td class="mdescLeft">&#160;</td><td class="mdescRight">最小値を取得する。  <br /></td></tr>
+<tr class="separator:ab9fa0cb3de8ee6996e9806a4787e237b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adac3ba80e06615821db3c82d7c00bd81" id="r_adac3ba80e06615821db3c82d7c00bd81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#adac3ba80e06615821db3c82d7c00bd81">min</a> (<a class="el" href="structTemporalComponent.html">double</a> min)</td></tr>
+<tr class="memdesc:adac3ba80e06615821db3c82d7c00bd81"><td class="mdescLeft">&#160;</td><td class="mdescRight">最小値を設定する。  <br /></td></tr>
+<tr class="separator:adac3ba80e06615821db3c82d7c00bd81"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0aed672f8abc2efb3dff9708f52896a3" id="r_a0aed672f8abc2efb3dff9708f52896a3"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a0aed672f8abc2efb3dff9708f52896a3">max</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a0aed672f8abc2efb3dff9708f52896a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">最大値を取得する。  <br /></td></tr>
+<tr class="separator:a0aed672f8abc2efb3dff9708f52896a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0466a52a01e71146cab0a104f143c851" id="r_a0466a52a01e71146cab0a104f143c851"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a0466a52a01e71146cab0a104f143c851">max</a> (<a class="el" href="structTemporalComponent.html">double</a> max)</td></tr>
+<tr class="memdesc:a0466a52a01e71146cab0a104f143c851"><td class="mdescLeft">&#160;</td><td class="mdescRight">最大値を設定する。  <br /></td></tr>
+<tr class="separator:a0466a52a01e71146cab0a104f143c851"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae07e02a3a02b4bd39dd61b3b7387a863" id="r_ae07e02a3a02b4bd39dd61b3b7387a863"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#ae07e02a3a02b4bd39dd61b3b7387a863">option</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:ae07e02a3a02b4bd39dd61b3b7387a863"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の選択肢を取得する。  <br /></td></tr>
+<tr class="separator:ae07e02a3a02b4bd39dd61b3b7387a863"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a223b0ddd1d80c6798fcc499f501c13ba" id="r_a223b0ddd1d80c6798fcc499f501c13ba"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a223b0ddd1d80c6798fcc499f501c13ba">option</a> (std::vector&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; option)</td></tr>
+<tr class="separator:a223b0ddd1d80c6798fcc499f501c13ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e130c8a45bdeff444f24705e173ac47" id="r_a9e130c8a45bdeff444f24705e173ac47"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </td></tr>
+<tr class="memitem:a9e130c8a45bdeff444f24705e173ac47"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classArg.html">Arg</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classArg.html#a9e130c8a45bdeff444f24705e173ac47">option</a> (std::initializer_list&lt; <a class="el" href="structTemporalComponent.html">T</a> &gt; option)</td></tr>
+<tr class="memdesc:a9e130c8a45bdeff444f24705e173ac47"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の選択肢を設定する。  <br /></td></tr>
+<tr class="separator:a9e130c8a45bdeff444f24705e173ac47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:a60709d4bddb0b432effa0ebb4f5ac98a" id="r_a60709d4bddb0b432effa0ebb4f5ac98a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">struct</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArg.html#a60709d4bddb0b432effa0ebb4f5ac98a">internal::FuncInfo</a></td></tr>
+<tr class="separator:a60709d4bddb0b432effa0ebb4f5ac98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>引数の情報を表す。 </p>
+<p>func.setArg({ <a class="el" href="classArg.html" title="引数の情報を表す。">Arg</a>(引数名).init(初期値).min(最小値).max(最大値), ... }); のように使う </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="aebc8c67413f23dcd3c3c6cff32b7a122" name="aebc8c67413f23dcd3c3c6cff32b7a122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebc8c67413f23dcd3c3c6cff32b7a122">&#9670;&#160;</a></span>Arg() <span class="overload">[1/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a> <a class="el" href="classArg.html">Arg</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>type</em> = <code>ValType::none_</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>msg_dataはnullになる </p>
+
+</div>
+</div>
+<a id="ab2da049a756807480d5c11901dc4aae5" name="ab2da049a756807480d5c11901dc4aae5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2da049a756807480d5c11901dc4aae5">&#9670;&#160;</a></span>Arg() <span class="overload">[2/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; <a class="el" href="structmessage_1_1Arg.html">message::Arg</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>msg_data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>msg_dataとtypeを初期化 </p>
+
+</div>
+</div>
+<a id="a8a087a128a8ea56ee2d143cdc6958ef0" name="a8a087a128a8ea56ee2d143cdc6958ef0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a087a128a8ea56ee2d143cdc6958ef0">&#9670;&#160;</a></span>Arg() <span class="overload">[3/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+<a id="a69a4107e9824adb02732eed46c01cf4d" name="a69a4107e9824adb02732eed46c01cf4d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69a4107e9824adb02732eed46c01cf4d">&#9670;&#160;</a></span>Arg() <span class="overload">[4/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数名を設定する。 </p>
+
+</div>
+</div>
+<a id="a95cf18ac36a85b8ed45e989946d25f25" name="a95cf18ac36a85b8ed45e989946d25f25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95cf18ac36a85b8ed45e989946d25f25">&#9670;&#160;</a></span>Arg() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数名を設定する。(wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2e31ddffe3f62572d218e8e028423cfa" name="a2e31ddffe3f62572d218e8e028423cfa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2e31ddffe3f62572d218e8e028423cfa">&#9670;&#160;</a></span>init() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; init </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>デフォルト値を取得する。 </p>
+
+</div>
+</div>
+<a id="af229b885662863b6775dd006ac3ba7b1" name="af229b885662863b6775dd006ac3ba7b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af229b885662863b6775dd006ac3ba7b1">&#9670;&#160;</a></span>init() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">T</a> &amp;&#160;</td>
+          <td class="paramname"><em>init</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>デフォルト値を設定する。 </p>
+
+</div>
+</div>
+<a id="a85edec45eb5f1f6d6d39ebc104fff34a" name="a85edec45eb5f1f6d6d39ebc104fff34a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85edec45eb5f1f6d6d39ebc104fff34a">&#9670;&#160;</a></span>init() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td>
+          <td class="paramname"><em>init</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0aed672f8abc2efb3dff9708f52896a3" name="a0aed672f8abc2efb3dff9708f52896a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0aed672f8abc2efb3dff9708f52896a3">&#9670;&#160;</a></span>max() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt; max </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>最大値を取得する。 </p>
+
+</div>
+</div>
+<a id="a0466a52a01e71146cab0a104f143c851" name="a0466a52a01e71146cab0a104f143c851"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0466a52a01e71146cab0a104f143c851">&#9670;&#160;</a></span>max() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; max </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td>
+          <td class="paramname"><em>max</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>最大値を設定する。 </p>
+<ul>
+<li>string型引数の場合最大の文字数を表す。</li>
+<li>bool型引数の場合効果がない。</li>
+<li><a class="el" href="classArg.html#ae07e02a3a02b4bd39dd61b3b7387a863" title="引数の選択肢を取得する。">option()</a> はクリアされる。 </li>
+</ul>
+
+</div>
+</div>
+<a id="aa50ac6c4ffe7f1eb892c776234eef2f0" name="aa50ac6c4ffe7f1eb892c776234eef2f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa50ac6c4ffe7f1eb892c776234eef2f0">&#9670;&#160;</a></span>mergeConfig()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">void</a> mergeConfig </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classArg.html">Arg</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数のargが持っている情報でthisを上書きする。 </p>
+
+</div>
+</div>
+<a id="ab9fa0cb3de8ee6996e9806a4787e237b" name="ab9fa0cb3de8ee6996e9806a4787e237b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9fa0cb3de8ee6996e9806a4787e237b">&#9670;&#160;</a></span>min() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt; min </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>最小値を取得する。 </p>
+
+</div>
+</div>
+<a id="adac3ba80e06615821db3c82d7c00bd81" name="adac3ba80e06615821db3c82d7c00bd81"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adac3ba80e06615821db3c82d7c00bd81">&#9670;&#160;</a></span>min() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; min </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td>
+          <td class="paramname"><em>min</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>最小値を設定する。 </p>
+<ul>
+<li>string型引数の場合最小の文字数を表す。</li>
+<li>bool型引数の場合効果がない。</li>
+<li><a class="el" href="classArg.html#ae07e02a3a02b4bd39dd61b3b7387a863" title="引数の選択肢を取得する。">option()</a> はクリアされる。 </li>
+</ul>
+
+</div>
+</div>
+<a id="a24dcbf29c0d6cd766009a182a6484e3b" name="a24dcbf29c0d6cd766009a182a6484e3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24dcbf29c0d6cd766009a182a6484e3b">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">const</a> std::string &amp; name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数の名前を取得する。 </p>
+
+</div>
+</div>
+<a id="a8c997fd30e7178c869b823143102d682" name="a8c997fd30e7178c869b823143102d682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c997fd30e7178c869b823143102d682">&#9670;&#160;</a></span>nameW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">const</a> std::wstring &amp; nameW </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数の名前を取得する。(wstring) </p>
+<dl class="section since"><dt>Since</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver2.0</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae07e02a3a02b4bd39dd61b3b7387a863" name="ae07e02a3a02b4bd39dd61b3b7387a863"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae07e02a3a02b4bd39dd61b3b7387a863">&#9670;&#160;</a></span>option() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp; option </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数の選択肢を取得する。 </p>
+
+</div>
+</div>
+<a id="a9e130c8a45bdeff444f24705e173ac47" name="a9e130c8a45bdeff444f24705e173ac47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e130c8a45bdeff444f24705e173ac47">&#9670;&#160;</a></span>option() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; option </td>
+          <td>(</td>
+          <td class="paramtype">std::initializer_list&lt; <a class="el" href="structTemporalComponent.html">T</a> &gt;&#160;</td>
+          <td class="paramname"><em>option</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数の選択肢を設定する。 </p>
+<ul>
+<li><a class="el" href="classArg.html#ab9fa0cb3de8ee6996e9806a4787e237b" title="最小値を取得する。">min()</a>, <a class="el" href="classArg.html#a0aed672f8abc2efb3dff9708f52896a3" title="最大値を取得する。">max()</a> はクリアされる。 </li>
+</ul>
+
+</div>
+</div>
+<a id="a223b0ddd1d80c6798fcc499f501c13ba" name="a223b0ddd1d80c6798fcc499f501c13ba"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a223b0ddd1d80c6798fcc499f501c13ba">&#9670;&#160;</a></span>option() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; option </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td>
+          <td class="paramname"><em>option</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a21eb97b014d270b80f9423022f86d322" name="a21eb97b014d270b80f9423022f86d322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a21eb97b014d270b80f9423022f86d322">&#9670;&#160;</a></span>type() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> type </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数の型を取得する。 </p>
+
+</div>
+</div>
+<a id="ae244be41ed6a5e3dea4aa18ad6eadf65" name="ae244be41ed6a5e3dea4aa18ad6eadf65"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae244be41ed6a5e3dea4aa18ad6eadf65">&#9670;&#160;</a></span>type() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classArg.html">Arg</a> &amp; type </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespaceencoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>引数の型を設定する。 </p>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="a60709d4bddb0b432effa0ebb4f5ac98a" name="a60709d4bddb0b432effa0ebb4f5ac98a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60709d4bddb0b432effa0ebb4f5ac98a">&#9670;&#160;</a></span>internal::FuncInfo</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">friend</a> <a class="el" href="structTemporalComponent.html">struct</a> <a class="el" href="structinternal_1_1FuncInfo.html">internal::FuncInfo</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>client/include/webcface/<a class="el" href="arg_8h_source.html">arg.h</a></li>
+<li>client/src/<a class="el" href="func__info_8cc.html">func_info.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classArg.html">Arg</a></li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

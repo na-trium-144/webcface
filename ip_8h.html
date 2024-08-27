@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -144,7 +145,7 @@ $(document).ready(function(){initNavTree('ip_8h.html',''); initResizable(); });
   <div class="headertitle"><div class="title">ip.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;webcface/common/webcface-config.h&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
@@ -152,7 +153,7 @@ $(document).ready(function(){initNavTree('ip_8h.html',''); initResizable(); });
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for ip.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="ip_8h__incl.svg" width="611" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="ip_8h__incl.svg" width="639" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -164,16 +165,14 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1server" id="r_namespacewebcface_1_1server"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html">webcface::server</a></td></tr>
+<tr class="memitem:namespaceserver" id="r_namespaceserver"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html">server</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a5de683dfd44e54076715d47c2bcaa851" id="r_a5de683dfd44e54076715d47c2bcaa851"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a5de683dfd44e54076715d47c2bcaa851">getIpAddresses</a> (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memitem:a5de683dfd44e54076715d47c2bcaa851" id="r_a5de683dfd44e54076715d47c2bcaa851"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#a5de683dfd44e54076715d47c2bcaa851">getIpAddresses</a> (<a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
 <tr class="separator:a5de683dfd44e54076715d47c2bcaa851"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab052d93bb7568174c380132b046aa463" id="r_ab052d93bb7568174c380132b046aa463"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#ab052d93bb7568174c380132b046aa463">getHostName</a> (<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memitem:ab052d93bb7568174c380132b046aa463" id="r_ab052d93bb7568174c380132b046aa463"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#ab052d93bb7568174c380132b046aa463">getHostName</a> (<a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
 <tr class="separator:ab052d93bb7568174c380132b046aa463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -182,7 +181,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="ip_8h.html">ip.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

@@ -1,0 +1,9 @@
+<map id="Res&lt; RobotModel &gt;" name="Res&lt; RobotModel &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="156,211,311,236"/>
+<area shape="rect" id="Node000002" href="$structmessage_1_1MessageBase.html" title=" " alt="" coords="5,108,259,148"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="165,155,222,208,219,212,161,159"/>
+<area shape="rect" id="Node000003" href="$structmessage_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="57,5,207,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="135,45,135,108,129,108,129,45"/>
+<area shape="rect" id="Node000004" href="$classencoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="283,115,389,141"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="315,152,248,213,244,209,311,148"/>
+</map>

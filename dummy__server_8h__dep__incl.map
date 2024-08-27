@@ -1,9 +1,0 @@
-<map id="tests/dummy_server.h" name="tests/dummy_server.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="164,5,331,31"/>
-<area shape="rect" id="Node000002" href="$c__wcf__test_8cc.html" title=" " alt="" coords="5,79,151,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,38,107,81,105,76,206,34"/>
-<area shape="rect" id="Node000003" href="$client__test_8cc.html" title=" " alt="" coords="175,79,319,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="250,44,250,79,245,79,245,44"/>
-<area shape="rect" id="Node000004" href="$dummy__server_8cc.html" title=" " alt="" coords="343,79,517,104"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="290,33,401,76,399,81,288,38"/>
-</map>

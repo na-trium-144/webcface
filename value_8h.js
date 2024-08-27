@@ -1,5 +1,5 @@
 var value_8h =
 [
-    [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
-    [ "operator<<", "value_8h.html#adee3d68a70be59fb6cfc97480b935199", null ]
+    [ "Value", "classValue.html", "classValue" ],
+    [ "operator<<", "value_8h.html#a82de4aa8153fc0b9683fdc0dea351c42", null ]
 ];

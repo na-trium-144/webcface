@@ -1,18 +1,7 @@
 var searchData=
 [
-  ['idx_5ffor_5ftype_5f_0',['idx_for_type_',['../classwebcface_1_1IdBase.html#a6a68e323e2b6113a0da24c1b667999ad',1,'webcface::IdBase']]],
-  ['image_1',['image',['../structwebcface_1_1server_1_1MemberData.html#a0def83d3edbdb9857716384b049d828e',1,'webcface::server::MemberData']]],
-  ['image_5fchange_5fevent_2',['image_change_event',['../structwebcface_1_1internal_1_1ClientData.html#ab31e2b7c2362fd16d24fbadd5cc90319',1,'webcface::internal::ClientData']]],
-  ['image_5fchanged_3',['image_changed',['../structwebcface_1_1server_1_1MemberData.html#a1b12505186d272b06539e587d68ac25c',1,'webcface::server::MemberData']]],
-  ['image_5fconvert_5fthread_4',['image_convert_thread',['../structwebcface_1_1server_1_1MemberData.html#ade329de965f64b06a211147bd15bb6cd',1,'webcface::server::MemberData']]],
-  ['image_5fcv_5',['image_cv',['../structwebcface_1_1server_1_1MemberData.html#a743aa291510ef3b798aa1b7cff6eb5c3',1,'webcface::server::MemberData']]],
-  ['image_5fentry_5fevent_6',['image_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#af3e95897a25b4be9f1b13cc0c19c8789',1,'webcface::internal::ClientData']]],
-  ['image_5fm_7',['image_m',['../structwebcface_1_1server_1_1MemberData.html#a0d6dce092921d8dcd3a2e09b7290caf3',1,'webcface::server::MemberData']]],
-  ['image_5freq_8',['image_req',['../structwebcface_1_1server_1_1MemberData.html#a61bb77413124896eea3752b36100f2b7',1,'webcface::server::MemberData']]],
-  ['image_5freq_5fchanged_9',['image_req_changed',['../structwebcface_1_1server_1_1MemberData.html#ad8a836eca03fcc6afc918322f4be004c',1,'webcface::server::MemberData']]],
-  ['image_5freq_5finfo_10',['image_req_info',['../structwebcface_1_1server_1_1MemberData.html#a119c8d308758e3978903a6d62061fb96',1,'webcface::server::MemberData']]],
-  ['image_5fstore_11',['image_store',['../structwebcface_1_1internal_1_1ClientData.html#a77143c5fd86ccc7b60cf91604c206e3d',1,'webcface::internal::ClientData']]],
-  ['init_5f_12',['init_',['../classwebcface_1_1Arg.html#ad96e625f32b799716f14170bc855e1fc',1,'webcface::Arg::init_'],['../structwebcface_1_1message_1_1Arg.html#ad96e625f32b799716f14170bc855e1fc',1,'webcface::message::Arg::init_']]],
-  ['init_5fdata_13',['init_data',['../structwebcface_1_1server_1_1MemberData.html#a9c5aa99774e09a37c67e8d98198a856b',1,'webcface::server::MemberData']]],
-  ['is_5ferror_14',['is_error',['../structwebcface_1_1message_1_1CallResult.html#acd18c0daa978bc72c767aadc56717bfe',1,'webcface::message::CallResult']]]
+  ['height_0',['height',['../structinternal_1_1Canvas2DDataBase.html#a89f6abd564014faeff7cd20c340a9c7d',1,'internal::Canvas2DDataBase::height'],['../structmessage_1_1Canvas2DData.html#a89f6abd564014faeff7cd20c340a9c7d',1,'message::Canvas2DData::height'],['../structmessage_1_1Canvas2D.html#a89f6abd564014faeff7cd20c340a9c7d',1,'message::Canvas2D::height'],['../structmessage_1_1Res_3_01Canvas2D_01_4.html#a89f6abd564014faeff7cd20c340a9c7d',1,'message::Res&lt; Canvas2D &gt;::height']]],
+  ['height_5f_1',['height_',['../structmessage_1_1ImageFrame.html#a45a159d389017b03a58e3508186fb445',1,'message::ImageFrame']]],
+  ['host_2',['host',['../structinternal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b',1,'internal::ClientData']]],
+  ['hostname_3',['hostname',['../structmessage_1_1SyncInitEnd.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'message::SyncInitEnd::hostname'],['../structserver_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'server::ServerStorage::hostname']]]
 ];

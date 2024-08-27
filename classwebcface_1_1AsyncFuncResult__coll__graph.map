@@ -1,9 +1,0 @@
-<map id="AsyncFuncResult" name="AsyncFuncResult">
-<area shape="rect" id="Node000001" title="非同期で実行した関数の実行結果を表す。" alt="" coords="5,257,137,283"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="45,183,98,208"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="74,222,74,257,69,257,69,222"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="29,108,114,133"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="74,148,74,182,69,182,69,148"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="19,5,124,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="74,45,74,108,69,108,69,45"/>
-</map>

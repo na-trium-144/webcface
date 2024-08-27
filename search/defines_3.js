@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['nominmax_0',['NOMINMAX',['../message_8h.html#a9f918755b601cf4bffca775992e6fb90',1,'message.h']]]
+  ['path_5fmax_0',['PATH_MAX',['../dir_8cc.html#ae688d728e1acdfe5988c7db45d6f0166',1,'dir.cc']]]
 ];

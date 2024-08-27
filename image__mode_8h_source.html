@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -147,43 +148,56 @@ $(document).ready(function(){initNavTree('image__mode_8h_source.html',''); initR
 </div><!--header-->
 <div class="contents">
 <a href="image__mode_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">webcface/common/def.h</a>&quot;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">inline</span> <span class="keyword">namespace </span>encoding {</div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">    6</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">gray</a> = 0,</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    bgr = 1,</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    bgra = 2,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    rgb = 3,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    rgba = 4,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifdef WEBCFACE_MESON</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="webcface-config_8h.html">webcface-config.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;webcface/common/webcface-config.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_define" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">inline</span> <span class="keyword">namespace </span><a class="code hl_namespace" href="namespaceencoding.html">encoding</a> {</div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31e">   10</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">gray</a> = 0,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">bgr</a> = 1,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d">bgra</a> = 2,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">rgb</a> = 3,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa">rgba</a> = 4,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>};</div>
 </div>
-<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">   13</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> {</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    raw = 0,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    jpeg = 1,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    webp = 2,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    png = 3,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
+<div class="foldopen" id="foldopen00017" data-start="{" data-end="};">
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84ded">   17</a></span><span class="keyword">enum class</span> <a class="code hl_enumeration" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb">raw</a> = 0,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">jpeg</a> = 1,</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720">webp</a> = 2,</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <a class="code hl_enumvalue" href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0">png</a> = 3,</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>};</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>} <span class="comment">// namespace encoding</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:116</div></div>
-<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:115</div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_ab72e620a597e5f750b2c9b3391e84ded"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">webcface::encoding::ImageCompressMode</a></div><div class="ttdeci">ImageCompressMode</div><div class="ttdef"><b>Definition</b> image_mode.h:13</div></div>
-<div class="ttc" id="anamespacewebcface_1_1encoding_html_abcfd96b0be942012c2f4641b4741a31e"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">webcface::encoding::ImageColorMode</a></div><div class="ttdeci">ImageColorMode</div><div class="ttdef"><b>Definition</b> image_mode.h:6</div></div>
-<div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a></div><div class="ttdeci">@ gray</div></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>} <span class="comment">// namespace encoding</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="ttc" id="anamespaceencoding_html"><div class="ttname"><a href="namespaceencoding.html">encoding</a></div><div class="ttdef"><b>Definition</b> encoding.h:19</div></div>
+<div class="ttc" id="anamespaceencoding_html_ab72e620a597e5f750b2c9b3391e84ded"><div class="ttname"><a href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84ded">encoding::ImageCompressMode</a></div><div class="ttdeci">ImageCompressMode</div><div class="ttdef"><b>Definition</b> image_mode.h:17</div></div>
+<div class="ttc" id="anamespaceencoding_html_ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720"><div class="ttname"><a href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720">encoding::ImageCompressMode::webp</a></div><div class="ttdeci">@ webp</div></div>
+<div class="ttc" id="anamespaceencoding_html_ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1"><div class="ttname"><a href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">encoding::ImageCompressMode::jpeg</a></div><div class="ttdeci">@ jpeg</div></div>
+<div class="ttc" id="anamespaceencoding_html_ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb"><div class="ttname"><a href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb">encoding::ImageCompressMode::raw</a></div><div class="ttdeci">@ raw</div></div>
+<div class="ttc" id="anamespaceencoding_html_ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0"><div class="ttname"><a href="namespaceencoding.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0">encoding::ImageCompressMode::png</a></div><div class="ttdeci">@ png</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31e"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31e">encoding::ImageColorMode</a></div><div class="ttdeci">ImageColorMode</div><div class="ttdef"><b>Definition</b> image_mode.h:10</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea657c0fdc8e544dcb7153dcf613e04e2d">encoding::ImageColorMode::bgra</a></div><div class="ttdeci">@ bgra</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea7082a31b8759c9d59795876351ec63aa">encoding::ImageColorMode::rgba</a></div><div class="ttdeci">@ rgba</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">encoding::ImageColorMode::bgr</a></div><div class="ttdeci">@ bgr</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">encoding::ImageColorMode::gray</a></div><div class="ttdeci">@ gray</div></div>
+<div class="ttc" id="anamespaceencoding_html_abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e"><div class="ttname"><a href="namespaceencoding.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">encoding::ImageColorMode::rgb</a></div><div class="ttdeci">@ rgb</div></div>
+<div class="ttc" id="awebcface-config_8h_html"><div class="ttname"><a href="webcface-config_8h.html">webcface-config.h</a></div></div>
+<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:115</div></div>
+<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:112</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_7f2982da9d43e0d7c25a6e4522b21798.html">encoding</a></li><li class="navelem"><a class="el" href="dir_4a757cb338406c147fe5e4abca3346bd.html">include</a></li><li class="navelem"><a class="el" href="dir_02b3c578c4e3d89ec52055310aacb197.html">webcface</a></li><li class="navelem"><a class="el" href="dir_8ab4b5c10979d3e3b82264bff7eef85b.html">encoding</a></li><li class="navelem"><a class="el" href="image__mode_8h.html">image_mode.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

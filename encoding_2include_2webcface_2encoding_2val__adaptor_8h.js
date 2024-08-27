@@ -1,6 +1,6 @@
 var encoding_2include_2webcface_2encoding_2val__adaptor_8h =
 [
-    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", "classwebcface_1_1encoding_1_1ValAdaptor" ],
+    [ "ValAdaptor", "classencoding_1_1ValAdaptor.html", "classencoding_1_1ValAdaptor" ],
     [ "ValType", "encoding_2include_2webcface_2encoding_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185", [
       [ "none_", "encoding_2include_2webcface_2encoding_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185a1e5a9491a4d910a08d95f675ca7226be", null ],
       [ "string_", "encoding_2include_2webcface_2encoding_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093", null ],

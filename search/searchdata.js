@@ -1,17 +1,17 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789_abcdefghijklmnopqrstuvwxy~そクグコサデバリロ切受外引接文時環複設送通関",
+  0: "0123456789:_abcdefghijklmnopqrstuvwxy~クグコサバリロ切受各型外引接文時複設送通関",
   1: "abcdefghilmpqrstvw",
-  2: "w",
-  3: "0123479bcdefgilmqrstuvw",
+  2: ":acefilmrs",
+  3: "2345678acdefgilmqrstuvw",
   4: "abcdefghijlmnoprstuvw~",
-  5: "abcdefghijklmnopqrstvw",
+  5: "_abcdefghijklmnopqrstuvw",
   6: "acfilmorstvw",
   7: "cgilmrvw",
   8: "bcdefgijlnoprstuvwy",
-  9: "acisv",
-  10: "_cmnpw",
-  11: "cdfilmorstvw"
+  9: "acfirstv",
+  10: "cmnpw",
+  11: "12345678bcdfilmrstvw"
 };
 
 var indexSectionNames =

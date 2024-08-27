@@ -1,7 +1,7 @@
 var encoding_8h =
 [
-    [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", "classwebcface_1_1encoding_1_1SharedString" ],
-    [ "Hash", "structwebcface_1_1encoding_1_1SharedString_1_1Hash.html", "structwebcface_1_1encoding_1_1SharedString_1_1Hash" ],
+    [ "SharedString", "classencoding_1_1SharedString.html", "classencoding_1_1SharedString" ],
+    [ "Hash", "structencoding_1_1SharedString_1_1Hash.html", "structencoding_1_1SharedString_1_1Hash" ],
     [ "StrMap1", "encoding_8h.html#a56d3269e324a6f481ed288a48e48c759", null ],
     [ "StrMap2", "encoding_8h.html#abd5eab460a31c187724b48a8773dbb40", null ],
     [ "StrSet1", "encoding_8h.html#a2cce793d23704d7099f3befdd5203f2e", null ],

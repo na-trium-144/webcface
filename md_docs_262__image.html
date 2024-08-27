@@ -1,0 +1,309 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 6-2. Image</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">6-2. Image</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md112">送信</a><ul><li class="level2"><a href="#autotoc_md113">外部ライブラリの利用</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md114">受信</a><ul><li class="level2"><a href="#autotoc_md115">時刻</a></li>
+<li class="level2"><a href="#autotoc_md116">Entry</a></li>
+<li class="level2"><a href="#autotoc_md117">Event</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md110"></a></p>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.3</a></span> <span class="since-js"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.2</a></span> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><ul>
+<li>C++ webcface::Image (<code><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/image.h</a></code>)</li>
+<li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Image.html">Image</a></li>
+<li>Python 未実装</li>
+</ul>
+</dd></dl>
+<p>画像データを送受信します。 画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。</p>
+<h1><a class="anchor" id="autotoc_md112"></a>
+送信</h1>
+<p><a class="el" href="structField.html#ac43a5d0cff75fa531889289e62c023ca">Client::image</a> からImageオブジェクトを作り、 <a class="el" href="classImage.html#af924914edae4b13a8fe3054167436455" title="画像をセットする">Image::set()</a> で画像データを代入し、Client::sync()することで送信されます</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として webcface::ImageFrame があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// dataの中身がImageFrameにコピーされる</span></div>
+<div class="line"><span class="comment">// sizeWH で幅と高さを指定、または sizeHW で高さと幅を指定</span></div>
+<div class="line">webcface::ImageFrame <a class="code hl_struct" href="structTemporalComponent.html">frame</a>(webcface::sizeWH(640, 480), data, webcface::ImageColorMode::rgb);</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// ver1.11以前: サイズは高さ,幅の順で指定</span></div>
+<div class="line"><span class="comment">// webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);</span></div>
+<div class="ttc" id="astructTemporalComponent_html"><div class="ttname"><a href="structTemporalComponent.html">TemporalComponent</a></div><div class="ttdoc">Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース</div><div class="ttdef"><b>Definition</b> components.h:22</div></div>
+</div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。</p>
+<dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
+ ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
+ ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
+<p>ImageFrameをImageにsetして送信します。 set() の代わりに代入演算子(<a class="el" href="classImage.html#a095b118ee4acce5aca8a7459fea1f28f" title="画像をセットする">Image::operator=</a>)でも同様のことができます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(<a class="code hl_struct" href="structTemporalComponent.html">frame</a>);</div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.image(<span class="stringliteral">&quot;hoge&quot;</span>) = <a class="code hl_struct" href="structTemporalComponent.html">frame</a>;</div>
+</div><!-- fragment --><p class="startli">ImageFrameの中のデータには dataPtr() (<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>型)、 data() (<code>vector&lt;unsigned char&gt;&amp;</code> 型)、at(y, x, ch) (<code>unsigned char &amp;</code>型) でアクセスできます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
+<div class="line">const data: ArrayBuffer = /* ... */;</div>
+<div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb); // 画像サイズは 横, 縦 で指定</div>
+</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
+<p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(<a class="code hl_struct" href="structTemporalComponent.html">frame</a>);</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md113"></a>
+外部ライブラリの利用</h2>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">OpenCV (C++)</b> <a class="el" href="classImageFrame.html" title="(ver1.3から追加) 画像データ">ImageFrame</a> → <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat</a> <div class="fragment"><div class="line"><a class="code hl_function" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat</a> <a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>(<a class="code hl_struct" href="structTemporalComponent.html">img_frame</a>.rows(), <a class="code hl_struct" href="structTemporalComponent.html">img_frame</a>.cols(), <a class="code hl_struct" href="structTemporalComponent.html">CV_8UC3</a>, <a class="code hl_struct" href="structTemporalComponent.html">img_frame</a>.data().data());</div>
+<div class="ttc" id="astructTemporalComponent_html_a86ef0b383de91011a8a4ea466957d838"><div class="ttname"><a href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">TemporalComponent::TemporalComponent</a></div><div class="ttdeci">TemporalComponent()=default</div></div>
+</div><!-- fragment --> <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat</a> → <a class="el" href="classImageFrame.html" title="(ver1.3から追加) 画像データ">ImageFrame</a> <div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">assert</a>(<a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.depth() == <a class="code hl_struct" href="structTemporalComponent.html">CV_8U</a>);</div>
+<div class="line">webcface::ImageFrame <a class="code hl_struct" href="structTemporalComponent.html">img_frame</a>;</div>
+<div class="line"><span class="comment">// https://stackoverflow.com/questions/26681713/convert-mat-to-array-vector-in-opencv</span></div>
+<div class="line"><span class="keywordflow">if</span> (<a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.isContinuous()) {</div>
+<div class="line">    <a class="code hl_struct" href="structTemporalComponent.html">img_frame</a> = webcface::ImageFrame(webcface::sizeHW(<a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.rows, <a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.cols),</div>
+<div class="line">                                     <a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.data, webcface::ImageColorMode::bgr);</div>
+<div class="line">} <span class="keywordflow">else</span> {</div>
+<div class="line">    <a class="code hl_struct" href="structTemporalComponent.html">img_frame</a> = webcface::ImageFrame(webcface::sizeHW(<a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.rows, <a class="code hl_struct" href="structTemporalComponent.html">img_mat</a>.cols),</div>
+<div class="line">                                     webcface::ImageColorMode::bgr);</div>
+<div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> <a class="code hl_struct" href="structTemporalComponent.html">i</a> = 0; <a class="code hl_struct" href="structTemporalComponent.html">i</a> &lt; <a class="code hl_struct" href="structTemporalComponent.html">mat</a>.rows; ++<a class="code hl_struct" href="structTemporalComponent.html">i</a>) {</div>
+<div class="line">        std::memcpy(&amp;<a class="code hl_struct" href="structTemporalComponent.html">img_frame</a>.at(<a class="code hl_struct" href="structTemporalComponent.html">i</a>, 0, 0), <a class="code hl_struct" href="structTemporalComponent.html">mat</a>.ptr&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>&gt;(<a class="code hl_struct" href="structTemporalComponent.html">i</a>),</div>
+<div class="line">                    <a class="code hl_struct" href="structTemporalComponent.html">mat</a>.cols * <a class="code hl_struct" href="structTemporalComponent.html">mat</a>.channels());</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><details >
+<summary >
+C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
+<p></p>
+<p>画像データを表す型として webcface::ImageFrame があります。 <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat形式</a> (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><a class="code hl_function" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat</a> data;</div>
+<div class="line">webcface::ImageFrame <a class="code hl_struct" href="structTemporalComponent.html">frame</a>(data, webcface::ImageColorMode::rgb);</div>
+</div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) から元の画像データのフォーマットを指定してください。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
+ <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。</a> <br  />
+ ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
+<p>ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(<a class="code hl_struct" href="structTemporalComponent.html">frame</a>);</div>
+</div><!-- fragment --><p> (C++のみ) set() の代わりに代入演算子(<a class="el" href="classImage.html#a095b118ee4acce5aca8a7459fea1f28f" title="画像をセットする">Image::operator=</a>)でも同様のことができます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.image(<span class="stringliteral">&quot;hoge&quot;</span>) = <a class="code hl_struct" href="structTemporalComponent.html">frame</a>;</div>
+</div><!-- fragment --><p>ImageFrame::mat() でcv::Mat形式に変換できますが、その場合画像データ本体はImageFrameが保持しているためcv::Mat画像を使う間ImageFrameオブジェクトが破棄されないようにしてください。 (例えば <code>wcli.member("foo").image("hoge").get().mat()</code> はできません) <br  />
+ また、Imageを一度変数に入れて使うと、 Image::mat() <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">で直接cv::Matに変換することもできます</a> (この場合データ本体はImageが保持しています) </p><div class="fragment"><div class="line">webcface::Image image = <a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>);</div>
+<div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line">    <a class="code hl_function" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">cv::Mat</a> data = image.mat(); <span class="comment">// 内部で get() → mat() が呼ばれる</span></div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</a></dd></dl>
+</details>
+<h1><a class="anchor" id="autotoc_md114"></a>
+受信</h1>
+<p><a class="el" href="classMember.html#ac43a5d0cff75fa531889289e62c023ca">Member::image()</a> でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 <a class="el" href="classImage.html#a01b8f38e45d6ea414d3023ad6c0c4b55" title="画像を返す">Image::tryGet()</a> で受信した画像を取得できます。</p>
+<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
+<div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line">    std::optional&lt;webcface::ImageFrame&gt; <a class="code hl_struct" href="structTemporalComponent.html">frame</a> = <a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="line">    <span class="keywordflow">if</span>(<a class="code hl_struct" href="structTemporalComponent.html">frame</a>){</div>
+<div class="line">        <span class="comment">//...</span></div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p> request()で画像をリクエストし、画像を受信するまでの間tryGet()<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">はstd::nulloptを返します。</a> get() <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">を使うとstd::nulloptの代わりに空のImageFrameを返します。</a> (<a class="el" href="classImageFrame.html#a644718bb2fb240de962dc3c9a1fdf0dc" title="画像が空かどうかを返す">ImageFrame::empty()</a> で空かどうかを判別できます) <br  />
+ ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
+ request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
+<p class="startli">受信した画像は <a class="el" href="classImageFrame.html#aff80d67e46662b15cb76117a05b62976">ImageFrame::dataPtr()</a>, <a class="el" href="classImageFrame.html#a7fae30e58f639a6323e0d5048b3fe633" title="画像データ (非const)">ImageFrame::data()</a> から取得できます。また、 <code><a class="el" href="classImageFrame.html#a19370724be760dc6557ed348f522c0f5" title="画像の要素にアクセス">ImageFrame::at(y, x, channel)</a></code> で要素にアクセスすることもできます。</p>
+<p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
+ また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(<a class="code hl_function" href="image__frame_8h.html#a6127b9eaad8364e364b4626a0397f332">sizeWH</a>(64, 48),</div>
+<div class="line">                                         webcface::ImageColorMode::rgb, 5);</div>
+<div class="line"><span class="comment">// 幅が64になるようリサイズ(縦横比を維持)</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(<a class="code hl_function" href="image__frame_8h.html#a6127b9eaad8364e364b4626a0397f332">sizeWH</a>(64, std::nullopt),</div>
+<div class="line">                                         webcface::ImageColorMode::rgb);</div>
+<div class="line"><span class="comment">// サイズは元画像のままグレースケール</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(std::nullopt, webcface::ImageColorMode::gray);</div>
+<div class="ttc" id="aimage__frame_8h_html_a6127b9eaad8364e364b4626a0397f332"><div class="ttname"><a href="image__frame_8h.html#a6127b9eaad8364e364b4626a0397f332">sizeWH</a></div><div class="ttdeci">Size WEBCFACE_CALL sizeWH(int width, int height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:35</div></div>
+</div><!-- fragment --><p> また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 詳細は webcface::Image::request() を参照 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
+<div class="line"><a class="code hl_struct" href="structTemporalComponent.html">wcli</a>.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(<a class="code hl_function" href="image__frame_8h.html#a6127b9eaad8364e364b4626a0397f332">sizeWH</a>(64, 48),</div>
+<div class="line">                                         webcface::ImageCompressMode::jpeg, 50,</div>
+<div class="line">                                         5);</div>
+</div><!-- fragment --><p> 圧縮された画像の場合 tryGet() や get() で得られるImageFrameに対して dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。</p>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> C++の場合と同様、requestの引数で画像のサイズや色モード、圧縮モードなどを指定することができます。 詳細は <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> を参照 </p><div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
+<div class="line">while(true){</div>
+<div class="line">    const frame: ImageFrame | null = wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).tryGet();</div>
+<div class="line">    if(frame){</div>
+<div class="line">        //...</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p> <a class="el" href="classImage.html#aa0c69c273f1fa34fccceaac2ef4850cb" title="画像を返す (データがない場合0x0の画像が返る)">Image.get()</a> はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
+ request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
+<p class="startli">受信した画像は <a class="el" href="classImageFrame.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame.data</a> から取得できます。 圧縮された画像の場合も <a class="el" href="classImageFrame.html#a242f6b0ee066e79c281d265da33613bd" title="画像データ">ImageFrame.data</a> からバイナリデータとして取得できます。 <br  />
+ また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md115"></a>
+時刻</h2>
+<p><strike><a class="el" href="classImage.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Image::time()</a></strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.7</a></span> <span class="since-js"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.6</a></span> <span class="since-py"></span> <a class="el" href="classMember.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更</p>
+<h2><a class="anchor" id="autotoc_md116"></a>
+Entry</h2>
+<p><strike><a class="el" href="classMember.html#a45ca97bd85fbb26eefa7b5133f3287f4" title="このmemberが公開しているimageのリストを返す。">Member::images()</a> で</strike> そのMemberが送信しているimageのリストが得られます <br  />
+ <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.6</a></span> <a class="el" href="classMember.html#aa71834447f8b14aa597bf6add6a33749">Member::imageEntries()</a> に変更</p>
+<p>また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます</p>
+<p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md117"></a>
+Event</h2>
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は <a class="el" href="classMember.html#afef273e6b9a30d11fc8de7e704cc67ce" title="Memberがsync()したときのイベント">Member::onSync()</a> が使えます</p>
+<p>使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_261__canvas2d.html">6-1. Canvas2D</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_263__canvas3d.html">6-3. Canvas3D</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

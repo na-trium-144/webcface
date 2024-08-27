@@ -1,7 +1,8 @@
 var func__result_8h =
 [
-    [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", "structwebcface_1_1FuncNotFound" ],
-    [ "AsyncFuncResult", "classwebcface_1_1AsyncFuncResult.html", "classwebcface_1_1AsyncFuncResult" ],
-    [ "FuncCallHandle", "classwebcface_1_1FuncCallHandle.html", "classwebcface_1_1FuncCallHandle" ],
-    [ "operator<<", "func__result_8h.html#aaffe4f42d82179b10467f6841333ae7a", null ]
+    [ "FuncNotFound", "structFuncNotFound.html", "structFuncNotFound" ],
+    [ "Promise", "classPromise.html", "classPromise" ],
+    [ "CallHandle", "classCallHandle.html", "classCallHandle" ],
+    [ "AsyncFuncResult", "func__result_8h.html#a6f5942a3079ae6efe81ef8679c1f7450", null ],
+    [ "FuncCallHandle", "func__result_8h.html#aaf3113c437651b9a46ca13e759e1c25c", null ]
 ];

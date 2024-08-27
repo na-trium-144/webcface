@@ -1,9 +1,0 @@
-<map id="Res&lt; Image &gt;" name="Res&lt; Image &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="146,197,263,223"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,108,220,148"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,155,193,195,190,199,143,159"/>
-<area shape="rect" id="Node000003" href="$structwebcface_1_1message_1_1MessageBase.html" title="型からkindを取得するためだけのベースクラス" alt="" coords="37,5,188,31"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="115,45,115,108,110,108,110,45"/>
-<area shape="rect" id="Node000004" href="$structwebcface_1_1message_1_1ImageFrame.html" title=" " alt="" coords="245,115,349,141"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="275,152,220,199,216,195,271,148"/>
-</map>

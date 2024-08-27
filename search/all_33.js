@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['文字列の表示_0',['文字列の表示',['../md_docs_214__canvas2d.html#autotoc_md79',1,'']]]
+  ['接続_0',['接続',['../md_docs_241__client.html#autotoc_md32',1,'']]]
 ];

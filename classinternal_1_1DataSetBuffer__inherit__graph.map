@@ -1,0 +1,11 @@
+<map id="DataSetBuffer&lt; Component &gt;" name="DataSetBuffer&lt; Component &gt;">
+<area shape="rect" id="Node000001" title="View,Canvasなどで送信用にaddされたデータを管理する" alt="" coords="151,5,370,31"/>
+<area shape="rect" id="Node000002" href="$classinternal_1_1DataSetBuffer.html" title=" " alt="" coords="5,93,249,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,36,148,46,131,56,124,74,125,93,120,93,119,73,127,53,145,41,174,31"/>
+<area shape="rect" id="Node000004" href="$classinternal_1_1DataSetBuffer.html" title=" " alt="" coords="284,93,504,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="334,33,366,53,382,72,391,92,386,94,377,74,363,57,331,38"/>
+<area shape="rect" id="Node000003" href="$classinternal_1_1Canvas2DDataBuf.html" title=" " alt="" coords="57,183,198,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="130,147,130,182,125,182,125,147"/>
+<area shape="rect" id="Node000005" href="$classinternal_1_1ViewBuf.html" title="Viewの送信用データを保持する" alt="" coords="356,183,432,208"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="397,147,397,182,391,182,391,147"/>
+</map>

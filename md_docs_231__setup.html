@@ -1,0 +1,266 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 3-1. Setup WebCFace Library</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_231__setup.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">3-1. Setup WebCFace Library</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md20">C/C++</a><ul><li class="level2"><a href="#autotoc_md21">API</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md22">Python</a></li>
+<li class="level1"><a href="#autotoc_md23">JavaScript/TypeScript</a></li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md19"></a></p>
+<p>以降、このドキュメントではクライアントの仕様変更された機能は <br  />
+ C,C++のwebcface: <span class="since-c"></span> <br  />
+ webcface-js: <span class="since-js"></span> <br  />
+ webcface-python: <span class="since-py"></span> <br  />
+ の画像で示します。</p>
+<h1><a class="anchor" id="autotoc_md20"></a>
+C/C++</h1>
+<p>C/C++のライブラリはREADMEにしたがってwebcfaceをインストールすれば使うことができます。 MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWebCFaceを追加してソースからビルドすることもできます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">Meson</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span></dd></dl>
+<p>インストールしたWebCFaceを使用する場合の例 </p><div class="fragment"><div class="line">webcface_dep = dependency(&#39;webcface&#39;, version: &#39;&gt;=2.0.0&#39;)</div>
+</div><!-- fragment --><ul>
+<li>webcfaceはpkg-configのファイル(lib/pkgconfig/webcface.pc)とcmakeのファイル(<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">lib/cmake/webcfaceConfig.cmake</a>)の両方をインストールし、どちらもMesonから読み込むことができます。</li>
+<li>pkg-configで読み込む場合は環境変数<code>PKG_CONFIG_PATH</code>(またはmesonの引数<code>-Dpkg_config_path</code>)に (webcfaceのパス)/lib/pkgconfig を追加する必要があります。</li>
+<li>cmakeで読み込む場合は環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 mesonの引数<code>-Dcmake_prefix_path</code>にwebcfaceのパスを追加する必要があります。</li>
+<li>パッケージ名はどちらも小文字で<code>webcface</code>です。</li>
+</ul>
+<p class="startli">subprojectにする場合は以下のようなwrapを書き、 </p><div class="fragment"><div class="line">[wrap-git]</div>
+<div class="line">url = https://github.com/na-trium-144/webcface.git</div>
+<div class="line">revision = v2.0.1</div>
+<div class="line">depth = 1</div>
+<div class="line">[provide]</div>
+<div class="line">dependency_names = webcface</div>
+</div><!-- fragment --><p> インストールしたWebCFaceを使う場合と同様に<code>dependency()</code>で使用することができます。 またはwebcfaceのgitリポジトリ(<a href="https://github.com/na-trium-144/webcface.git">https://github.com/na-trium-144/webcface.git</a> )を直接subproject/ディレクトリに置いても使えると思います。</p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>C++でWebCFaceを使用するにはC++17が必要です。 mesonの引数で <code>-Dcpp_std=c++17</code> のように指定するか、 <code>project()</code> に &lsquo;default_options: ['cpp_std=c++17&rsquo;],` のように記述するとよいです。</li>
+<li>staticビルドにしたり、webcface-serverのビルドの有無を切り替えたりといったオプションについては <a class="el" href="md_docs_232__building.html">3-2. Building from source</a> を参照</li>
+</ul>
+</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">CMake</b> インストールしたWebCFaceを使用する場合の例 </p><div class="fragment"><div class="line">find_package(webcface 2.0 CONFIG REQUIRED)</div>
+<div class="line"> </div>
+<div class="line">target_link_libraries(your-target PRIVATE webcface::webcface) # C++の場合</div>
+<div class="line">target_link_libraries(your-target PRIVATE webcface::wcf) # Cの場合(ver1.5.1〜)</div>
+</div><!-- fragment --><ul>
+<li>find_packageでwebcfaceが見つからない場合は環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 webcfaceのインストール場所を<code>CMAKE_PREFIX_PATH</code>か<code>webcface_ROOT</code>, <code>webcface_DIR</code>などに設定してください。</li>
+<li>バージョン指定は同じメジャーバージョンで指定したマイナーバージョン以上のものが選ばれます (例えば2.0と書いて2.1が選ばれることはあるが、1.0と書いて2.0や2.1が選ばれることはない)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd>webcface::webcface ターゲットには cpp_std_17 が、 webcface::wcf ターゲットには c_std_99 の指定がそれぞれ含まれています。</dd></dl>
+<p>FetchContentを使う場合 </p><div class="fragment"><div class="line">FetchContent_Declare(webcface</div>
+<div class="line">  GIT_REPOSITORY https://github.com/na-trium-144/webcface.git</div>
+<div class="line">  GIT_TAG        v2.0.1</div>
+<div class="line">)</div>
+<div class="line">FetchContent_MakeAvailable(webcface)</div>
+</div><!-- fragment --><p> またはwebcfaceのgitリポジトリ(<a href="https://github.com/na-trium-144/webcface.git">https://github.com/na-trium-144/webcface.git</a> )を直接どこかのディレクトリに置いて<code>add_subdirectory()</code>でも使えると思います。</p>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span> <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">WebCFaceのリポジトリにはCMakeLists.txtがありますが、中身はcustom_targetでmesonを呼び出す仕様になっています。</a> そのためFetchContentやsubdirectoryとしてWebCFaceをソースからビルドする場合はMeson(<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.3</a>以上)のインストールが必要になります。<ul>
+<li>Linux: <code>sudo apt install meson</code>(<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ubuntu24.04</a>以降) または <code>pip install meson</code></li>
+<li>MacOS: <code>brew install meson</code> または <code>pip install meson</code></li>
+<li>Windows: <a href="https://github.com/mesonbuild/meson/releases">https://github.com/mesonbuild/meson/releases</a> からmsi形式でダウンロード、インストール</li>
+</ul>
+</dd></dl>
+</li>
+<li><p class="startli"><b class="tab-title">pkg-config</b> 環境変数<code>PKG_CONFIG_PATH</code>に (webcfaceのパス)/lib/pkgconfig を追加し、</p><ul>
+<li>コンパイル時の引数に <code>$(pkg-config --cflags webcface)</code></li>
+<li>リンク時に <code>$(pkg-config --libs webcface)</code></li>
+</ul>
+<p class="startli">を渡せばよいです</p>
+</li>
+<li><b class="tab-title">手動リンク</b><ul>
+<li>インクルードディレクトリ(-I など): <code>(webcfaceのパス)\include</code></li>
+<li>ライブラリディレクトリ(-L など): <code>(webcfaceのパス)\lib</code></li>
+<li>Linux, MacOS<ul>
+<li><code>-lwebcface</code> でリンクできるはずです。</li>
+</ul>
+</li>
+<li>Windows (MSVC)<ul>
+<li>リンクするライブラリは、 webcface.lib (Release) / <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcfaced.lib</a> (Debug)</li>
+<li>また、<code>(webcfaceのパス)\bin</code> を環境変数のPathに追加するか、 その中にある <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface-20.dll</a> / <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcfaced-20.dll</a> ファイルを実行ファイルのディレクトリにコピーして読み込ませてください</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md21"></a>
+API</h2>
+<p>C++のソースコードでは<code>&lt;<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/webcface.h</a>&gt;</code>をincludeするとwebcfaceのすべての機能が使用できます。</p>
+<p><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.10</a></span> <code>&lt;<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/client.h</a>&gt;</code>, <code>&lt;<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/value.h</a>&gt;</code>など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。</p>
+<p><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.5</a></span> C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)</p>
+<p><strike>&lt;<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/c_wcf.h</a>&gt; をincludeすることで使えます。</strike> <br  />
+ <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.7</a></span> &lt;<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">webcface/wcf.h</a>&gt; をincludeすることで使えます。(c_wcf.hも一応使えます) <br  />
+ ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span> enum wcfStatus 型で、 成功した場合 0 (= <del>WCF_OK</del> <span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span> WCF_OK)、例外が発生した場合正の値を返します。</p>
+<h1><a class="anchor" id="autotoc_md22"></a>
+Python</h1>
+<p>Pythonで利用したい場合は <code>pip install webcface</code> でライブラリをインストールしてください。 <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">Python3.8</a>以上で動作します。</p>
+<p>importは </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
+</div><!-- fragment --><p> で <code>webcface.Client</code> のように使うか、 </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+</div><!-- fragment --><p> のように使います。</p>
+<p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a> も参照してください</p>
+<h1><a class="anchor" id="autotoc_md23"></a>
+JavaScript/TypeScript</h1>
+<p><code>npm install webcface</code> でライブラリをインストールできます。 <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">Node.jsでもブラウザー</a>(webpackなど)でも動きます。</p>
+<p><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">Node.jsの場合、ESMで</a> </p><div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
+</div><!-- fragment --><p> のようにして使うことができます。 CommonJSで<code>requires("webcface")</code>のように使うこともできると思います。</p>
+<p><span class="since-js"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.7</a></span> ブラウザー上で使う場合はCDNも利用できます。 </p><div class="fragment"><div class="line">&lt;script src=&quot;https://cdn.jsdelivr.net/npm/webcface@1.7.0/dist/webcface.bundle.js&quot;&gt;&lt;/script&gt;</div>
+</div><!-- fragment --><p> で読み込むとグローバルに <code>webcface.Client</code> などが使用できるようになります。</p>
+<p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a> も参照してください。</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_222__webui.html">2-2. WebUI</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_232__building.html">3-2. Building from Source</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

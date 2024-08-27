@@ -1,0 +1,544 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: RobotLinkData Struct Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('structinternal_1_1RobotLinkData.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structinternal_1_1RobotLinkData-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">RobotLinkData Struct Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="robot__link__internal_8h_source.html">webcface/internal/robot_link_internal.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for RobotLinkData:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structinternal_1_1RobotLinkData__inherit__graph.svg" width="130" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for RobotLinkData:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structinternal_1_1RobotLinkData__coll__graph.svg" width="244" height="214"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a4981eccf80658b765e16403c36bb0083" id="r_a4981eccf80658b765e16403c36bb0083"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1RobotLinkData.html#a4981eccf80658b765e16403c36bb0083">RobotLinkData</a> ()=<a class="el" href="structTemporalComponent.html">default</a></td></tr>
+<tr class="separator:a4981eccf80658b765e16403c36bb0083"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a0fa2e083e0b69e710c280fe8a414f8" id="r_a9a0fa2e083e0b69e710c280fe8a414f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1RobotLinkData.html#a9a0fa2e083e0b69e710c280fe8a414f8">RobotLinkData</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structmessage_1_1RobotLink.html">message::RobotLink</a> &amp;data, <a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; std::shared_ptr&lt; <a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a> &gt; &gt; &amp;<a class="el" href="structTemporalComponent.html">links</a>)</td></tr>
+<tr class="separator:a9a0fa2e083e0b69e710c280fe8a414f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52b4e3201656bb42ff82b5b7336fad56" id="r_a52b4e3201656bb42ff82b5b7336fad56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">void</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1RobotLinkData.html#a52b4e3201656bb42ff82b5b7336fad56">lockJoints</a> (<a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt; &amp;<a class="el" href="structTemporalComponent.html">link_names</a>)</td></tr>
+<tr class="separator:a52b4e3201656bb42ff82b5b7336fad56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a51d2c9eecdb2800d0761c389ec058d1d" id="r_a51d2c9eecdb2800d0761c389ec058d1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1RobotLinkData.html#a51d2c9eecdb2800d0761c389ec058d1d">parent_name</a></td></tr>
+<tr class="separator:a51d2c9eecdb2800d0761c389ec058d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af84bddae23734917838a065b022911a7" id="r_af84bddae23734917838a065b022911a7"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1RobotLinkData.html#af84bddae23734917838a065b022911a7">parent_ptr</a></td></tr>
+<tr class="separator:af84bddae23734917838a065b022911a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20ffa1f6459f2af108b96d620e6392b4" id="r_a20ffa1f6459f2af108b96d620e6392b4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a20ffa1f6459f2af108b96d620e6392b4">name</a></td></tr>
+<tr class="separator:a20ffa1f6459f2af108b96d620e6392b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2a07f3de7a8c0501c9ddb51b9575c185" id="r_a2a07f3de7a8c0501c9ddb51b9575c185"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a2a07f3de7a8c0501c9ddb51b9575c185">joint_name</a></td></tr>
+<tr class="separator:a2a07f3de7a8c0501c9ddb51b9575c185"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9c30a42c75ffe4ccc9e9e715ef30eb73" id="r_a9c30a42c75ffe4ccc9e9e715ef30eb73"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a9c30a42c75ffe4ccc9e9e715ef30eb73">joint_parent</a></td></tr>
+<tr class="separator:a9c30a42c75ffe4ccc9e9e715ef30eb73"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0d6f32f93eff48961c273e59ee25d72" id="r_ad0d6f32f93eff48961c273e59ee25d72"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#ad0d6f32f93eff48961c273e59ee25d72">joint_type</a></td></tr>
+<tr class="separator:ad0d6f32f93eff48961c273e59ee25d72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80ab0c819a2221547fb01ed076b2367e" id="r_a80ab0c819a2221547fb01ed076b2367e"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structTemporalComponent.html">double</a>, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a80ab0c819a2221547fb01ed076b2367e">joint_origin_pos</a></td></tr>
+<tr class="separator:a80ab0c819a2221547fb01ed076b2367e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4295a535f555232b38ed3d8b268eca1c" id="r_a4295a535f555232b38ed3d8b268eca1c"><td class="memItemLeft" align="right" valign="top">std::array&lt; <a class="el" href="structTemporalComponent.html">double</a>, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a4295a535f555232b38ed3d8b268eca1c">joint_origin_rot</a></td></tr>
+<tr class="separator:a4295a535f555232b38ed3d8b268eca1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d1d3c258be36be01381b2ccf7b3cbe6" id="r_a0d1d3c258be36be01381b2ccf7b3cbe6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a0d1d3c258be36be01381b2ccf7b3cbe6">joint_angle</a> = 0</td></tr>
+<tr class="separator:a0d1d3c258be36be01381b2ccf7b3cbe6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9323fb54e511d60ce8cffc5afd207480" id="r_a9323fb54e511d60ce8cffc5afd207480"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a9323fb54e511d60ce8cffc5afd207480">geometry_type</a></td></tr>
+<tr class="separator:a9323fb54e511d60ce8cffc5afd207480"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd36e459252c2441c758f6545400282b" id="r_afd36e459252c2441c758f6545400282b"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#afd36e459252c2441c758f6545400282b">geometry_properties</a></td></tr>
+<tr class="separator:afd36e459252c2441c758f6545400282b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd02fb9277ffcb35a75066ffe95e8c7" id="r_a0fd02fb9277ffcb35a75066ffe95e8c7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1RobotLink.html#a0fd02fb9277ffcb35a75066ffe95e8c7">color</a></td></tr>
+<tr class="separator:a0fd02fb9277ffcb35a75066ffe95e8c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a4981eccf80658b765e16403c36bb0083" name="a4981eccf80658b765e16403c36bb0083"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4981eccf80658b765e16403c36bb0083">&#9670;&#160;</a></span>RobotLinkData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9a0fa2e083e0b69e710c280fe8a414f8" name="a9a0fa2e083e0b69e710c280fe8a414f8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a0fa2e083e0b69e710c280fe8a414f8">&#9670;&#160;</a></span>RobotLinkData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structmessage_1_1RobotLink.html">message::RobotLink</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; std::shared_ptr&lt; <a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>links</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>jointのparentをid指定から名前指定に変換 </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a52b4e3201656bb42ff82b5b7336fad56" name="a52b4e3201656bb42ff82b5b7336fad56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52b4e3201656bb42ff82b5b7336fad56">&#9670;&#160;</a></span>lockJoints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">void</a> lockJoints </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> std::vector&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>link_names</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>jointのparentを名前指定からid指定に変換 (message送信用) </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a0fd02fb9277ffcb35a75066ffe95e8c7" name="a0fd02fb9277ffcb35a75066ffe95e8c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fd02fb9277ffcb35a75066ffe95e8c7">&#9670;&#160;</a></span>color</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> color</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afd36e459252c2441c758f6545400282b" name="afd36e459252c2441c758f6545400282b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd36e459252c2441c758f6545400282b">&#9670;&#160;</a></span>geometry_properties</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structTemporalComponent.html">double</a>&gt; geometry_properties</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9323fb54e511d60ce8cffc5afd207480" name="a9323fb54e511d60ce8cffc5afd207480"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9323fb54e511d60ce8cffc5afd207480">&#9670;&#160;</a></span>geometry_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> geometry_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0d1d3c258be36be01381b2ccf7b3cbe6" name="a0d1d3c258be36be01381b2ccf7b3cbe6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d1d3c258be36be01381b2ccf7b3cbe6">&#9670;&#160;</a></span>joint_angle</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">double</a> joint_angle = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2a07f3de7a8c0501c9ddb51b9575c185" name="a2a07f3de7a8c0501c9ddb51b9575c185"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a07f3de7a8c0501c9ddb51b9575c185">&#9670;&#160;</a></span>joint_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a> joint_name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a80ab0c819a2221547fb01ed076b2367e" name="a80ab0c819a2221547fb01ed076b2367e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a80ab0c819a2221547fb01ed076b2367e">&#9670;&#160;</a></span>joint_origin_pos</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="structTemporalComponent.html">double</a>, 3&gt; joint_origin_pos</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4295a535f555232b38ed3d8b268eca1c" name="a4295a535f555232b38ed3d8b268eca1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4295a535f555232b38ed3d8b268eca1c">&#9670;&#160;</a></span>joint_origin_rot</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt;<a class="el" href="structTemporalComponent.html">double</a>, 3&gt; joint_origin_rot</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9c30a42c75ffe4ccc9e9e715ef30eb73" name="a9c30a42c75ffe4ccc9e9e715ef30eb73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c30a42c75ffe4ccc9e9e715ef30eb73">&#9670;&#160;</a></span>joint_parent</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> joint_parent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad0d6f32f93eff48961c273e59ee25d72" name="ad0d6f32f93eff48961c273e59ee25d72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0d6f32f93eff48961c273e59ee25d72">&#9670;&#160;</a></span>joint_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> joint_type</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a20ffa1f6459f2af108b96d620e6392b4" name="a20ffa1f6459f2af108b96d620e6392b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a20ffa1f6459f2af108b96d620e6392b4">&#9670;&#160;</a></span>name</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a> name</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a51d2c9eecdb2800d0761c389ec058d1d" name="a51d2c9eecdb2800d0761c389ec058d1d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51d2c9eecdb2800d0761c389ec058d1d">&#9670;&#160;</a></span>parent_name</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a> parent_name</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af84bddae23734917838a065b022911a7" name="af84bddae23734917838a065b022911a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af84bddae23734917838a065b022911a7">&#9670;&#160;</a></span>parent_ptr</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::weak_ptr&lt;<a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a>&gt; parent_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>client/include/webcface/internal/<a class="el" href="robot__link__internal_8h_source.html">robot_link_internal.h</a></li>
+<li>client/src/<a class="el" href="robot__link_8cc.html">robot_link.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceinternal.html">internal</a></li><li class="navelem"><a class="el" href="structinternal_1_1RobotLinkData.html">RobotLinkData</a></li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

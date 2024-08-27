@@ -1,0 +1,694 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: ViewComponentData Struct Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('structinternal_1_1ViewComponentData.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structinternal_1_1ViewComponentData-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ViewComponentData Struct Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="component__internal_8h_source.html">webcface/internal/component_internal.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ViewComponentData:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structinternal_1_1ViewComponentData__inherit__graph.svg" width="171" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for ViewComponentData:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="structinternal_1_1ViewComponentData__coll__graph.svg" width="171" height="199"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a764f585fc507b153927521a85d2a235f" id="r_a764f585fc507b153927521a85d2a235f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#a764f585fc507b153927521a85d2a235f">ViewComponentData</a> ()=<a class="el" href="structTemporalComponent.html">default</a></td></tr>
+<tr class="separator:a764f585fc507b153927521a85d2a235f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41977044dc8830e9737b262bc220345a" id="r_a41977044dc8830e9737b262bc220345a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#a41977044dc8830e9737b262bc220345a">ViewComponentData</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structmessage_1_1ViewComponent.html">message::ViewComponent</a> &amp;<a class="el" href="structTemporalComponent.html">vc</a>)</td></tr>
+<tr class="separator:a41977044dc8830e9737b262bc220345a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7de554e55fff75d84e0913a46f4e643c" id="r_a7de554e55fff75d84e0913a46f4e643c"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> CComponent , <a class="el" href="structTemporalComponent.html">typename</a> CVal , std::size_t v_index&gt; </td></tr>
+<tr class="memitem:a7de554e55fff75d84e0913a46f4e643c"><td class="memTemplItemLeft" align="right" valign="top">CComponent&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#a7de554e55fff75d84e0913a46f4e643c">cDataT</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="separator:a7de554e55fff75d84e0913a46f4e643c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9adf8542ac6429e89f43654ae7e6709f" id="r_a9adf8542ac6429e89f43654ae7e6709f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#a9adf8542ac6429e89f43654ae7e6709f">operator==</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> &amp;<a class="el" href="structTemporalComponent.html">other</a>) <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="separator:a9adf8542ac6429e89f43654ae7e6709f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac10040c7a1f007e1526ea0e01e8ccd25" id="r_ac10040c7a1f007e1526ea0e01e8ccd25"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">bool</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#ac10040c7a1f007e1526ea0e01e8ccd25">operator!=</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> &amp;<a class="el" href="structTemporalComponent.html">other</a>) <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="separator:ac10040c7a1f007e1526ea0e01e8ccd25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a7fe287aa5f80f8b41fe462137a324504" id="r_a7fe287aa5f80f8b41fe462137a324504"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classAnonymousFunc.html">AnonymousFunc</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#a7fe287aa5f80f8b41fe462137a324504">on_click_func_tmp</a></td></tr>
+<tr class="separator:a7fe287aa5f80f8b41fe462137a324504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaaeb00bd6a75e6cb914168978628ccd6" id="r_aaaeb00bd6a75e6cb914168978628ccd6"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classInputRef.html">InputRef</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#aaaeb00bd6a75e6cb914168978628ccd6">text_ref_tmp</a></td></tr>
+<tr class="separator:aaaeb00bd6a75e6cb914168978628ccd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad96e625f32b799716f14170bc855e1fc" id="r_ad96e625f32b799716f14170bc855e1fc"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#ad96e625f32b799716f14170bc855e1fc">init_</a></td></tr>
+<tr class="separator:ad96e625f32b799716f14170bc855e1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab301c15c622d7a0ab81b1ee3d3a6b9e8" id="r_ab301c15c622d7a0ab81b1ee3d3a6b9e8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#ab301c15c622d7a0ab81b1ee3d3a6b9e8">options_s</a></td></tr>
+<tr class="separator:ab301c15c622d7a0ab81b1ee3d3a6b9e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57cbcffe5cdaa3fa50e5e9285389d58" id="r_aa57cbcffe5cdaa3fa50e5e9285389d58"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structinternal_1_1ViewComponentData.html#aa57cbcffe5cdaa3fa50e5e9285389d58">options_sw</a></td></tr>
+<tr class="separator:aa57cbcffe5cdaa3fa50e5e9285389d58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac765329451135abec74c45e1897abf26" id="r_ac765329451135abec74c45e1897abf26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#ac765329451135abec74c45e1897abf26">type</a> = 0</td></tr>
+<tr class="separator:ac765329451135abec74c45e1897abf26"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3db9f4947bf62b69fb4c82568f1a3138" id="r_a3db9f4947bf62b69fb4c82568f1a3138"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a3db9f4947bf62b69fb4c82568f1a3138">text</a></td></tr>
+<tr class="separator:a3db9f4947bf62b69fb4c82568f1a3138"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52f29c2e6fef1d4bd37e494907742b44" id="r_a52f29c2e6fef1d4bd37e494907742b44"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a52f29c2e6fef1d4bd37e494907742b44">on_click_member</a></td></tr>
+<tr class="separator:a52f29c2e6fef1d4bd37e494907742b44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4bb0fbf3c84e7b8712b6f780952cec9" id="r_af4bb0fbf3c84e7b8712b6f780952cec9"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#af4bb0fbf3c84e7b8712b6f780952cec9">on_click_field</a></td></tr>
+<tr class="separator:af4bb0fbf3c84e7b8712b6f780952cec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a076620d6d2f6278c87db3df00629f636" id="r_a076620d6d2f6278c87db3df00629f636"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a076620d6d2f6278c87db3df00629f636">text_ref_member</a></td></tr>
+<tr class="separator:a076620d6d2f6278c87db3df00629f636"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a289833773670d957ade85e12de309dd1" id="r_a289833773670d957ade85e12de309dd1"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classencoding_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a289833773670d957ade85e12de309dd1">text_ref_field</a></td></tr>
+<tr class="separator:a289833773670d957ade85e12de309dd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d18f7f6a98a31dadb62c4227bb653d3" id="r_a0d18f7f6a98a31dadb62c4227bb653d3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a0d18f7f6a98a31dadb62c4227bb653d3">text_color</a> = 0</td></tr>
+<tr class="separator:a0d18f7f6a98a31dadb62c4227bb653d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c5b158ca5707a4329553b2d4218f7cf" id="r_a2c5b158ca5707a4329553b2d4218f7cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a2c5b158ca5707a4329553b2d4218f7cf">bg_color</a> = 0</td></tr>
+<tr class="separator:a2c5b158ca5707a4329553b2d4218f7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45fb6de0b5002feb0203ac9f32f536c2" id="r_a45fb6de0b5002feb0203ac9f32f536c2"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a45fb6de0b5002feb0203ac9f32f536c2">min_</a> = std::nullopt</td></tr>
+<tr class="separator:a45fb6de0b5002feb0203ac9f32f536c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b025581d8618b3f4a7524cde2c74ae" id="r_ae0b025581d8618b3f4a7524cde2c74ae"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#ae0b025581d8618b3f4a7524cde2c74ae">max_</a> = std::nullopt</td></tr>
+<tr class="separator:ae0b025581d8618b3f4a7524cde2c74ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d14883a3773331c69a13daba8f1483b" id="r_a2d14883a3773331c69a13daba8f1483b"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a2d14883a3773331c69a13daba8f1483b">step_</a> = std::nullopt</td></tr>
+<tr class="separator:a2d14883a3773331c69a13daba8f1483b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ba0818ceab914663aa4e326a10ad9f5" id="r_a9ba0818ceab914663aa4e326a10ad9f5"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structmessage_1_1ViewComponent.html#a9ba0818ceab914663aa4e326a10ad9f5">option_</a></td></tr>
+<tr class="separator:a9ba0818ceab914663aa4e326a10ad9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a764f585fc507b153927521a85d2a235f" name="a764f585fc507b153927521a85d2a235f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a764f585fc507b153927521a85d2a235f">&#9670;&#160;</a></span>ViewComponentData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a41977044dc8830e9737b262bc220345a" name="a41977044dc8830e9737b262bc220345a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41977044dc8830e9737b262bc220345a">&#9670;&#160;</a></span>ViewComponentData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structmessage_1_1ViewComponent.html">message::ViewComponent</a> &amp;&#160;</td>
+          <td class="paramname"><em>vc</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7de554e55fff75d84e0913a46f4e643c" name="a7de554e55fff75d84e0913a46f4e643c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7de554e55fff75d84e0913a46f4e643c">&#9670;&#160;</a></span>cDataT()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;<a class="el" href="structTemporalComponent.html">typename</a> CComponent , <a class="el" href="structTemporalComponent.html">typename</a> CVal , std::size_t v_index&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">CComponent cDataT </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac10040c7a1f007e1526ea0e01e8ccd25" name="ac10040c7a1f007e1526ea0e01e8ccd25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac10040c7a1f007e1526ea0e01e8ccd25">&#9670;&#160;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">bool</a> <a class="el" href="structTemporalComponent.html">operator!</a>= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9adf8542ac6429e89f43654ae7e6709f" name="a9adf8542ac6429e89f43654ae7e6709f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9adf8542ac6429e89f43654ae7e6709f">&#9670;&#160;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">bool</a> <a class="el" href="structTemporalComponent.html">operator</a>== </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a2c5b158ca5707a4329553b2d4218f7cf" name="a2c5b158ca5707a4329553b2d4218f7cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c5b158ca5707a4329553b2d4218f7cf">&#9670;&#160;</a></span>bg_color</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> bg_color = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad96e625f32b799716f14170bc855e1fc" name="ad96e625f32b799716f14170bc855e1fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad96e625f32b799716f14170bc855e1fc">&#9670;&#160;</a></span>init_</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a>&gt; init_</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae0b025581d8618b3f4a7524cde2c74ae" name="ae0b025581d8618b3f4a7524cde2c74ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0b025581d8618b3f4a7524cde2c74ae">&#9670;&#160;</a></span>max_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="structTemporalComponent.html">double</a>&gt; max_ = std::nullopt</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a45fb6de0b5002feb0203ac9f32f536c2" name="a45fb6de0b5002feb0203ac9f32f536c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45fb6de0b5002feb0203ac9f32f536c2">&#9670;&#160;</a></span>min_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="structTemporalComponent.html">double</a>&gt; min_ = std::nullopt</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4bb0fbf3c84e7b8712b6f780952cec9" name="af4bb0fbf3c84e7b8712b6f780952cec9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4bb0fbf3c84e7b8712b6f780952cec9">&#9670;&#160;</a></span>on_click_field</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&gt; on_click_field</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7fe287aa5f80f8b41fe462137a324504" name="a7fe287aa5f80f8b41fe462137a324504"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fe287aa5f80f8b41fe462137a324504">&#9670;&#160;</a></span>on_click_func_tmp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classAnonymousFunc.html">AnonymousFunc</a>&gt; on_click_func_tmp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a52f29c2e6fef1d4bd37e494907742b44" name="a52f29c2e6fef1d4bd37e494907742b44"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a52f29c2e6fef1d4bd37e494907742b44">&#9670;&#160;</a></span>on_click_member</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&gt; on_click_member</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ba0818ceab914663aa4e326a10ad9f5" name="a9ba0818ceab914663aa4e326a10ad9f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ba0818ceab914663aa4e326a10ad9f5">&#9670;&#160;</a></span>option_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classencoding_1_1ValAdaptor.html">ValAdaptor</a>&gt; option_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab301c15c622d7a0ab81b1ee3d3a6b9e8" name="ab301c15c622d7a0ab81b1ee3d3a6b9e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab301c15c622d7a0ab81b1ee3d3a6b9e8">&#9670;&#160;</a></span>options_s</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structwcfMultiVal.html">wcfMultiVal</a>&gt; options_s</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa57cbcffe5cdaa3fa50e5e9285389d58" name="aa57cbcffe5cdaa3fa50e5e9285389d58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa57cbcffe5cdaa3fa50e5e9285389d58">&#9670;&#160;</a></span>options_sw</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="structwcfMultiValW.html">wcfMultiValW</a>&gt; options_sw</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">mutable</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2d14883a3773331c69a13daba8f1483b" name="a2d14883a3773331c69a13daba8f1483b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d14883a3773331c69a13daba8f1483b">&#9670;&#160;</a></span>step_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="structTemporalComponent.html">double</a>&gt; step_ = std::nullopt</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3db9f4947bf62b69fb4c82568f1a3138" name="a3db9f4947bf62b69fb4c82568f1a3138"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db9f4947bf62b69fb4c82568f1a3138">&#9670;&#160;</a></span>text</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classencoding_1_1SharedString.html">SharedString</a> text</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0d18f7f6a98a31dadb62c4227bb653d3" name="a0d18f7f6a98a31dadb62c4227bb653d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d18f7f6a98a31dadb62c4227bb653d3">&#9670;&#160;</a></span>text_color</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> text_color = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a289833773670d957ade85e12de309dd1" name="a289833773670d957ade85e12de309dd1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a289833773670d957ade85e12de309dd1">&#9670;&#160;</a></span>text_ref_field</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&gt; text_ref_field</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a076620d6d2f6278c87db3df00629f636" name="a076620d6d2f6278c87db3df00629f636"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a076620d6d2f6278c87db3df00629f636">&#9670;&#160;</a></span>text_ref_member</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classencoding_1_1SharedString.html">SharedString</a>&gt; text_ref_member</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aaaeb00bd6a75e6cb914168978628ccd6" name="aaaeb00bd6a75e6cb914168978628ccd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaeb00bd6a75e6cb914168978628ccd6">&#9670;&#160;</a></span>text_ref_tmp</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt;<a class="el" href="classInputRef.html">InputRef</a>&gt; text_ref_tmp</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac765329451135abec74c45e1897abf26" name="ac765329451135abec74c45e1897abf26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac765329451135abec74c45e1897abf26">&#9670;&#160;</a></span>type</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> type = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>client/include/webcface/internal/<a class="el" href="component__internal_8h_source.html">component_internal.h</a></li>
+<li>client/src/<a class="el" href="component__view_8cc.html">component_view.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceinternal.html">internal</a></li><li class="navelem"><a class="el" href="structinternal_1_1ViewComponentData.html">ViewComponentData</a></li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

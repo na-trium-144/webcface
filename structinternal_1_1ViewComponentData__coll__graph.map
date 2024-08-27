@@ -1,0 +1,7 @@
+<map id="ViewComponentData" name="ViewComponentData">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,165,193"/>
+<area shape="rect" id="Node000002" href="$structmessage_1_1ViewComponent.html" title=" " alt="" coords="21,93,150,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,133,88,168,83,168,83,133"/>
+<area shape="rect" id="Node000003" href="$classencoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="33,5,138,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="88,45,88,93,83,93,83,45"/>
+</map>

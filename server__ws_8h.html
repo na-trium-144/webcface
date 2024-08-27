@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -145,14 +146,14 @@ $(document).ready(function(){initNavTree('server__ws_8h.html',''); initResizable
   <div class="headertitle"><div class="title">server_ws.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;webcface/common/webcface-config.h&quot;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;functional&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for server_ws.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="server__ws_8h__incl.svg" width="478" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="server__ws_8h__incl.svg" width="507" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -164,27 +165,25 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1server_1_1AppWrapper.html">AppWrapper</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classserver_1_1AppWrapper.html">AppWrapper</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1server" id="r_namespacewebcface_1_1server"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html">webcface::server</a></td></tr>
+<tr class="memitem:namespaceserver" id="r_namespaceserver"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html">server</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:aecae47e6f485b5e58b2ad68c6f817119" id="r_aecae47e6f485b5e58b2ad68c6f817119"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#aecae47e6f485b5e58b2ad68c6f817119">LoggerCallback</a> = std::function&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>(<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">char</a> *, std::size_t, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">int</a>)&gt;</td></tr>
+<tr class="memitem:aecae47e6f485b5e58b2ad68c6f817119" id="r_aecae47e6f485b5e58b2ad68c6f817119"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#aecae47e6f485b5e58b2ad68c6f817119">LoggerCallback</a> = std::function&lt; <a class="el" href="structTemporalComponent.html">void</a>(<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *, std::size_t, <a class="el" href="structTemporalComponent.html">int</a>)&gt;</td></tr>
 <tr class="separator:aecae47e6f485b5e58b2ad68c6f817119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf362a0e446342a3dab1292f40a8eef1" id="r_abf362a0e446342a3dab1292f40a8eef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#abf362a0e446342a3dab1292f40a8eef1">OpenCallback</a> = std::function&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>(<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> *, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">char</a> *)&gt;</td></tr>
+<tr class="memitem:abf362a0e446342a3dab1292f40a8eef1" id="r_abf362a0e446342a3dab1292f40a8eef1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#abf362a0e446342a3dab1292f40a8eef1">OpenCallback</a> = std::function&lt; <a class="el" href="structTemporalComponent.html">void</a>(<a class="el" href="structTemporalComponent.html">void</a> *, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *)&gt;</td></tr>
 <tr class="separator:abf362a0e446342a3dab1292f40a8eef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a2989f14df9001171964f8f44851ae8" id="r_a5a2989f14df9001171964f8f44851ae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a5a2989f14df9001171964f8f44851ae8">CloseCallback</a> = std::function&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>(<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> *, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">char</a> *)&gt;</td></tr>
+<tr class="memitem:a5a2989f14df9001171964f8f44851ae8" id="r_a5a2989f14df9001171964f8f44851ae8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#a5a2989f14df9001171964f8f44851ae8">CloseCallback</a> = std::function&lt; <a class="el" href="structTemporalComponent.html">void</a>(<a class="el" href="structTemporalComponent.html">void</a> *, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *)&gt;</td></tr>
 <tr class="separator:a5a2989f14df9001171964f8f44851ae8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22ebf9910fd529496227745a1636713f" id="r_a22ebf9910fd529496227745a1636713f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a22ebf9910fd529496227745a1636713f">MessageCallback</a> = std::function&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>(<a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a> *, <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">const</a> <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">char</a> *, std::size_t)&gt;</td></tr>
+<tr class="memitem:a22ebf9910fd529496227745a1636713f" id="r_a22ebf9910fd529496227745a1636713f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#a22ebf9910fd529496227745a1636713f">MessageCallback</a> = std::function&lt; <a class="el" href="structTemporalComponent.html">void</a>(<a class="el" href="structTemporalComponent.html">void</a> *, <a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *, std::size_t)&gt;</td></tr>
 <tr class="separator:a22ebf9910fd529496227745a1636713f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41cc1046f6fc2d4bff827b03826153ea" id="r_a41cc1046f6fc2d4bff827b03826153ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a41cc1046f6fc2d4bff827b03826153ea">StartCallback</a> = std::function&lt; <a class="el" href="namespacewebcface_1_1encoding.html#ae0e0d190aa5fc5710b43f55098ad9ecd">void</a>()&gt;</td></tr>
+<tr class="memitem:a41cc1046f6fc2d4bff827b03826153ea" id="r_a41cc1046f6fc2d4bff827b03826153ea"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">using</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceserver.html#a41cc1046f6fc2d4bff827b03826153ea">StartCallback</a> = std::function&lt; <a class="el" href="structTemporalComponent.html">void</a>()&gt;</td></tr>
 <tr class="separator:a41cc1046f6fc2d4bff827b03826153ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
@@ -193,7 +192,7 @@ Typedefs</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="server__ws_8h.html">server_ws.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

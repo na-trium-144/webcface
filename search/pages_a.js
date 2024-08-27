@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['value_0',['Value',['../md_docs_210__value.html',1,'']]],
-  ['view_1',['View',['../md_docs_213__view.html',1,'']]]
+  ['deleted_0',['7-3. webcface-cv-capture (deleted)',['../md_docs_273__cv__capture.html',1,'']]],
+  ['deprecated_20list_1',['Deprecated List',['../deprecated.html',1,'']]]
 ];

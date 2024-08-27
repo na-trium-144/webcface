@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['yellow_0',['yellow',['../namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351',1,'webcface']]]
+  ['x86_5f64_20arm64_20armhf_0',['Ubuntu (x86_64, arm64, armhf)',['../index.html#autotoc_md218',1,'']]]
 ];

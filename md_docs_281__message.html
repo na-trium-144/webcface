@@ -1,0 +1,731 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 8-1. Message</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_281__message.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">8-1. Message</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md159">Sync</a><ul><li class="level2"><a href="#autotoc_md160">sync init (kind = 80)</a></li>
+<li class="level2"><a href="#autotoc_md161">sync init end (kind = 88)</a></li>
+<li class="level2"><a href="#autotoc_md162">ping (kind = 89)</a></li>
+<li class="level2"><a href="#autotoc_md163">ping status (kind = 90)</a></li>
+<li class="level2"><a href="#autotoc_md164">ping status req (kind = 91)</a></li>
+<li class="level2"><a href="#autotoc_md165">sync (kind = 87)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md166">Func</a><ul><li class="level2"><a href="#autotoc_md167">func info (kind = 84)</a></li>
+<li class="level2"><a href="#autotoc_md168">call (kind = 81)</a></li>
+<li class="level2"><a href="#autotoc_md169">call response (kind = 82)</a></li>
+<li class="level2"><a href="#autotoc_md170">call result (kind = 83)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md171">Value</a><ul><li class="level2"><a href="#autotoc_md172">value (kind = 0)</a></li>
+<li class="level2"><a href="#autotoc_md173">value entry (kind = 20)</a></li>
+<li class="level2"><a href="#autotoc_md174">value req (kind = 40)</a></li>
+<li class="level2"><a href="#autotoc_md175">value res (kind = 60)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md176">Text</a><ul><li class="level2"><a href="#autotoc_md177">text (kind = 1)</a></li>
+<li class="level2"><a href="#autotoc_md178">text entry (kind = 21)</a></li>
+<li class="level2"><a href="#autotoc_md179">text req (kind = 41)</a></li>
+<li class="level2"><a href="#autotoc_md180">text res (kind = 61)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md181">View</a><ul><li class="level2"><a href="#autotoc_md182">view (kind = 3)</a></li>
+<li class="level2"><a href="#autotoc_md183">view entry (kind = 23)</a></li>
+<li class="level2"><a href="#autotoc_md184">view req (kind = 43)</a></li>
+<li class="level2"><a href="#autotoc_md185">view res (kind = 63)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md186">Image</a><ul><li class="level2"><a href="#autotoc_md187">image (kind = 5)</a></li>
+<li class="level2"><a href="#autotoc_md188">image entry (kind = 25)</a></li>
+<li class="level2"><a href="#autotoc_md189">image req (kind = 45)</a></li>
+<li class="level2"><a href="#autotoc_md190">image res (kind = 65)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md191">Canvas2D</a><ul><li class="level2"><a href="#autotoc_md192">canvas2d (kind = 4)</a></li>
+<li class="level2"><a href="#autotoc_md193">canvas2d entry (kind = 24)</a></li>
+<li class="level2"><a href="#autotoc_md194">canvas2d req (kind = 44)</a></li>
+<li class="level2"><a href="#autotoc_md195">canvas2d res (kind = 64)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md196">Canvas3D</a><ul><li class="level2"><a href="#autotoc_md197">canvas3d (kind = 7)</a></li>
+<li class="level2"><a href="#autotoc_md198">canvas3d entry (kind = 27)</a></li>
+<li class="level2"><a href="#autotoc_md199">canvas3d req (kind = 47)</a></li>
+<li class="level2"><a href="#autotoc_md200">canvas3d res (kind = 67)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md201">RobotModel</a><ul><li class="level2"><a href="#autotoc_md202">robotmodel (kind = 6)</a></li>
+<li class="level2"><a href="#autotoc_md203">robotmodel entry (kind = 26)</a></li>
+<li class="level2"><a href="#autotoc_md204">robotmodel req (kind = 46)</a></li>
+<li class="level2"><a href="#autotoc_md205">robotmodel res (kind = 66)</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md206">Log</a><ul><li class="level2"><a href="#autotoc_md207">log (kind = 85)</a></li>
+<li class="level2"><a href="#autotoc_md208">log req (kind = 86)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md158"></a></p>
+<p>送受信されるメッセージの仕様について</p>
+<p>MessagePackで送受信されます。 両方向の通信ともにn個のデータを長さ2nの配列で表現します。</p>
+<div class="fragment"><div class="line">[ kind1, data1, kind2, data2, ... ]</div>
+</div><!-- fragment --><p>see also <a class="el" href="message_8h.html">message.h</a></p>
+<h1><a class="anchor" id="autotoc_md159"></a>
+Sync</h1>
+<h2><a class="anchor" id="autotoc_md160"></a>
+sync init (kind = 80)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    M: string, // member name</div>
+<div class="line">    m: number, // member id</div>
+<div class="line">    l: string, // library name</div>
+<div class="line">    v: string, // library number</div>
+<div class="line">    a: string, // ip address</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアント初期化時にM,l,vのみ設定してサーバーに送信</li>
+<li>クライアントがsync initを送信するまで、サーバーは何も送信しません</li>
+<li>Mが空でない場合のみ、サーバーがm,aを設定し各クライアントに送信し、クライアントは新しいMemberのidを知ることができます<ul>
+<li>member idはクライアントごとにサーバーが一意に振る1以上の整数です</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md161"></a>
+sync init end (kind = 88)</h2>
+<p>(<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.11</a>まで: svr version)</p>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    n: string, // server name</div>
+<div class="line">    v: string, // server version</div>
+<div class="line">    m: number, // member id</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li><del>サーバーからクライアントに1回送られます</del></li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span> クライアントからサーバーに sync init が送られたあと、 サーバーはクライアントにすべてのentryを送り、最後に sync init end を送ります<ul>
+<li>クライアントはwaitConnection()でこれが送られてくるまで待機します</li>
+</ul>
+</li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a></span> member id 追加 (sync init をしたメンバーのid)</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md162"></a>
+ping (kind = 89)</h2>
+<div class="fragment"><div class="line">data = {}</div>
+</div><!-- fragment --><ul>
+<li>サーバーからクライアントに数秒に1回送られます。</li>
+<li>クライアントは即座にpingを送り返してください<ul>
+<li>送り返さなくても通信が切断されるなどの副作用はないです</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md163"></a>
+ping status (kind = 90)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    s: {member_id: status, member_id: status, ...},</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>サーバーからクライアントに各クライアントのping往復時間(ms)をまとめて送ります<ul>
+<li>member_idとstatusの型はnumberです</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md164"></a>
+ping status req (kind = 91)</h2>
+<div class="fragment"><div class="line">data = {}</div>
+</div><!-- fragment --><ul>
+<li>クライアントからサーバーにこれを送ると、以降数秒おきにping statusが送られてくるようになります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md165"></a>
+sync (kind = 87)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    m: number; // member id</div>
+<div class="line">    t: number; // time</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアントからサーバーに、sync()時に他のデータを送信する前にtのみをセットして1度送ります<ul>
+<li>syncと同じ配列に入れて送られたデータはすべて同時刻のデータとみなされます</li>
+</ul>
+</li>
+<li>サーバーはmをセットし全クライアントに送り返します</li>
+<li>timeは1970/1/1 0:00(utc) からの経過ミリ秒数で表します<ul>
+<li>これ以外にも時刻を送受信するときは同様です</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md166"></a>
+Func</h1>
+<h2><a class="anchor" id="autotoc_md167"></a>
+func info (kind = 84)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    m: number, // member id</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    r: number, // return type</div>
+<div class="line">    a: {</div>
+<div class="line">        n: string,</div>
+<div class="line">        t: number,</div>
+<div class="line">        i: any | null,</div>
+<div class="line">        m: any | null,</div>
+<div class="line">        x: any | null,</div>
+<div class="line">        o: any[],</div>
+<div class="line">    }[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアント→サーバーに送ると、サーバー→全クライアントに通知します<ul>
+<li>mはサーバーがセットします</li>
+</ul>
+</li>
+<li>func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md168"></a>
+call (kind = 81)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number; // caller id</div>
+<div class="line">    c: number; // member id of caller</div>
+<div class="line">    r: number; // member id of target</div>
+<div class="line">    f: string; // function name</div>
+<div class="line">    a: any[]; // arguments</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>関数を呼び出すときにクライアント(caller)が送信すると、そのままクライアント(target)に送られます<ul>
+<li>cはサーバーがセットします</li>
+</ul>
+</li>
+<li>iは実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値(0以上の整数)です</li>
+<li>関数の呼び出しはsyncと無関係なタイミングで構いません</li>
+<li>また、無名のクライアントからも送信することができます</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md169"></a>
+call response (kind = 82)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number; // caller id</div>
+<div class="line">    c: number; // member id of caller</div>
+<div class="line">    s: boolean; // if function is started</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>targetはiとcにCallと同じものを、関数の実行を開始した時sにtrueを、関数が存在しない場合にはsにfalseをセットし、サーバーに送るとクライアント(caller)に届きます</li>
+<li>targetがそもそも存在しない場合はサーバーがsにfalseをセットしてcallerに送ります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md170"></a>
+call result (kind = 83)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number; // caller id</div>
+<div class="line">    c: number; // member id of caller</div>
+<div class="line">    e: boolean; // error or not</div>
+<div class="line">    r: any; // result</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>targetが関数の実行結果をeとrにセットしてサーバーに送るとcallerに届きます<ul>
+<li>エラーの場合eをtrueにしてエラーの内容をrにセットします</li>
+</ul>
+</li>
+<li>callerはCallResponseでs=trueだった場合これが届くまで待機できます<ul>
+<li>s=falseだった場合CallResultは届きません</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md171"></a>
+Value</h1>
+<h2><a class="anchor" id="autotoc_md172"></a>
+value (kind = 0)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: number[], // data</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアント→サーバーに更新されたデータを送ります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md173"></a>
+value entry (kind = 20)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    m: number, // member id</div>
+<div class="line">    f: string, // name</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>新しいValueが送られてきた時、サーバーは全クライアントにValueEntryを送ります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md174"></a>
+value req (kind = 40)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    M: number, // member id</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>valueを受信したいときにこれを送ると以降value resがサーバーから送られてくるようになります</li>
+<li>iはクライアントが任意に決めて良い1以上の整数です<ul>
+<li><a class="el" href="classText.html" title="文字列の送受信データを表すクラス">Text</a>, Viewなど他の種類のReqとは数値がかぶっていても問題ありません</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md175"></a>
+value res (kind = 60)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: number[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>requestに対応するvalueを送り返します</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md176"></a>
+Text</h1>
+<h2><a class="anchor" id="autotoc_md177"></a>
+text (kind = 1)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: string | number | boolean, // data</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value と同様</li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.10</a></span> dのデータ型をstringのみからnumberとbooleanも含むように変更</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md178"></a>
+text entry (kind = 21)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md179"></a>
+text req (kind = 41)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md180"></a>
+text res (kind = 61)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: string,</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md181"></a>
+View</h1>
+<h2><a class="anchor" id="autotoc_md182"></a>
+view (kind = 3)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: {</div>
+<div class="line">        index: {</div>
+<div class="line">            t: number, // type</div>
+<div class="line">            x: string, // text</div>
+<div class="line">            L: string | null, // onClick Func.member</div>
+<div class="line">            l: string | null, // onClick Func.name</div>
+<div class="line">            c: number, // textColor</div>
+<div class="line">            b: number, // bgColor</div>
+<div class="line">            R?: string | null, // Bind Text.member</div>
+<div class="line">            r?: string | null, // Bind Text.name</div>
+<div class="line">            im?: number | null, // min</div>
+<div class="line">            ix?: number | null, // max</div>
+<div class="line">            is?: number | null, // step</div>
+<div class="line">            io?: string[] | number[], // option</div>
+<div class="line">        },</div>
+<div class="line">        index: {},</div>
+<div class="line">        ...</div>
+<div class="line">    },</div>
+<div class="line">    l: number, // data length</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value と同様</li>
+<li>データは前回のsyncから変更された要素のみを送ってください</li>
+<li>lは変更されていない分も含めたviewの全要素数です</li>
+<li>dのindexはstring型で、要素のindexを10進数で文字列にしたものです<ul>
+<li>例えば <code>[text("aaa"), text("bbb"), text("ccc")]</code> が <code>[text("aaa"), text("ccc"), text("bbb")]</code> に変更された場合のメッセージは <code>{"d": {"1": {"t": 0, "x": "ccc"}, "2": {"t": 0, "x": "bbb"}}}</code></li>
+</ul>
+</li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.1</a></span> dのindexをnumber型からstring型に変更</li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.10</a></span> data内の bind,min,max,step,option 追加</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md183"></a>
+view entry (kind = 23)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md184"></a>
+view req (kind = 43)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md185"></a>
+view res (kind = 63)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: {...},</div>
+<div class="line">    l: number,</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md186"></a>
+Image</h1>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.3</a></span></dd></dl>
+<h2><a class="anchor" id="autotoc_md187"></a>
+image (kind = 5)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: ArrayBuffer, // data (uchar[])</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    l: number, // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md188"></a>
+image entry (kind = 25)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md189"></a>
+image req (kind = 45)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    M: number, // member id</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    w: number | null, // width</div>
+<div class="line">    h: number | null, // height</div>
+<div class="line">    l: number | null,  // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">    q: number, // quality</div>
+<div class="line">    r: number, // frame rate</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md190"></a>
+image res (kind = 65)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: ArrayBuffer, // data (uchar[])</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    l: number, // color mode</div>
+<div class="line">    p: number, // compression mode</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md191"></a>
+Canvas2D</h1>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.6</a></span></dd></dl>
+<h2><a class="anchor" id="autotoc_md192"></a>
+canvas2d (kind = 4)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    d: {</div>
+<div class="line">        index: {</div>
+<div class="line">            t: number, // type</div>
+<div class="line">            op: number[2], // origin pos</div>
+<div class="line">            or: number, // origin rot</div>
+<div class="line">            c: number, // stroke color</div>
+<div class="line">            f: number, // fill color / text color</div>
+<div class="line">            s: number, // stroke width / font size</div>
+<div class="line">            gt: number | null, // geometry type</div>
+<div class="line">            gp: number[], // geometry properties</div>
+<div class="line">            L?: string | null, // onclick Func.member</div>
+<div class="line">            l?: string | null, // onclick Func.name</div>
+<div class="line">            x?: string, // text</div>
+<div class="line">        },</div>
+<div class="line">        index: {},</div>
+<div class="line">        ...</div>
+<div class="line">    },</div>
+<div class="line">    l: number, // data length</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>viewと同様、前回のsyncから変更された要素のみを送る</li>
+<li>lは変更されていない分も含めたcanvasの全要素数</li>
+<li>dのindexはstring型で、要素のindexを10進数で文字列にしたもの</li>
+<li>geometry propertiesの要素数と内容はgeometryの種類によって異なる</li>
+<li><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.9</a></span> onClickとtext追加</li>
+<li>textの色はfillの色、textのサイズはstrokeWidthのデータを流用</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md193"></a>
+canvas2d entry (kind = 24)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md194"></a>
+canvas2d req (kind = 44)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md195"></a>
+canvas2d res (kind = 64)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    w: number, // width</div>
+<div class="line">    h: number, // height</div>
+<div class="line">    d: {...},</div>
+<div class="line">    l: number,</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md196"></a>
+Canvas3D</h1>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.4</a></span></dd></dl>
+<h2><a class="anchor" id="autotoc_md197"></a>
+canvas3d (kind = 7)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: {</div>
+<div class="line">        index: {</div>
+<div class="line">            t: number, // type</div>
+<div class="line">            op: number[3], // origin pos</div>
+<div class="line">            or: number[3], // origin rot</div>
+<div class="line">            c: number, // color</div>
+<div class="line">            gt: number | null, // geometry type</div>
+<div class="line">            gp: number[], // geometry properties</div>
+<div class="line">            fm: string | null, // field member</div>
+<div class="line">            ff: string | null, // field name</div>
+<div class="line">            a: { name: angle, ... } // joint angles</div>
+<div class="line">        },</div>
+<div class="line">        index: {},</div>
+<div class="line">        ...</div>
+<div class="line">    },</div>
+<div class="line">    l: number, // data length</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>viewと同様、前回のsyncから変更された要素のみを送る</li>
+<li>lは変更されていない分も含めたcanvasの全要素数</li>
+<li>dのindexはstring型で、要素のindexを10進数で文字列にしたもの</li>
+<li>geometry propertiesの要素数と内容はgeometryの種類によって異なる</li>
+<li>robotmodelを参照する場合そのモデルのmemberとfield名をfmとffにセット</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md198"></a>
+canvas3d entry (kind = 27)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md199"></a>
+canvas3d req (kind = 47)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md200"></a>
+canvas3d res (kind = 67)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: {...},</div>
+<div class="line">    l: number,</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>value resと同様</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md201"></a>
+RobotModel</h1>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">1.4</a></span></dd></dl>
+<h2><a class="anchor" id="autotoc_md202"></a>
+robotmodel (kind = 6)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    d: { // links data</div>
+<div class="line">        n: string, // link name</div>
+<div class="line">        jn: string, // joint name</div>
+<div class="line">        jp: number, // parent link index</div>
+<div class="line">        jt: number, // joint type</div>
+<div class="line">        js: number[3], // joint origin pos</div>
+<div class="line">        jr: number[3], // joint origin rot</div>
+<div class="line">        ja: number, // joint angle</div>
+<div class="line">        gt: number, // geometry type</div>
+<div class="line">        gp: number[], // geometry properties</div>
+<div class="line">        c: number, // color</div>
+<div class="line">    }[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md203"></a>
+robotmodel entry (kind = 26)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md204"></a>
+robotmodel req (kind = 46)</h2>
+<ul>
+<li>value req と同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md205"></a>
+robotmodel res (kind = 66)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    d: {...}[], // data</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md206"></a>
+Log</h1>
+<h2><a class="anchor" id="autotoc_md207"></a>
+log (kind = 85)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    m: number, // member id</div>
+<div class="line">    l: {</div>
+<div class="line">        v: number, // level 0〜5</div>
+<div class="line">        t: number, // time</div>
+<div class="line">        m: string, // message</div>
+<div class="line">    }[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアント→サーバーに新しく追加されたログ差分のみ送ります</li>
+<li>リクエストがあればサーバー→各クライアントにそのまま送り返します</li>
+<li>リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md208"></a>
+log req (kind = 86)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    M: string // member name</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>logの受信をリクエストします</li>
+</ul>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_272__send.html">7-2. webcface-send</a>   </td><td class="markdownTableBodyRight">[8-2. ]()   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

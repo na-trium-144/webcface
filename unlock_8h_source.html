@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -147,34 +148,39 @@ $(document).ready(function(){initNavTree('unlock_8h_source.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <a href="unlock_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;<a class="code" href="def_8h.html">webcface/common/def.h</a>&quot;</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><a class="code hl_define" href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Mtx&gt;</div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="structwebcface_1_1ScopedUnlock.html">    7</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structwebcface_1_1ScopedUnlock.html">ScopedUnlock</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="structwebcface_1_1ScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">    8</a></span>    Mtx &amp;<a class="code hl_variable" href="structwebcface_1_1ScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="structwebcface_1_1ScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">    9</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="structwebcface_1_1ScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">ScopedUnlock</a>(Mtx &amp;m) : m(m) { m.unlock(); }</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="structwebcface_1_1ScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">   10</a></span>    <a class="code hl_function" href="structwebcface_1_1ScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">~ScopedUnlock</a>() { m.lock(); }</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>};</div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#ifdef WEBCFACE_MESON</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;<a class="code" href="webcface-config_8h.html">webcface-config.h</a>&quot;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;webcface/common/webcface-config.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><a class="code hl_define" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Mtx&gt;</div>
+<div class="foldopen" id="foldopen00011" data-start="{" data-end="};">
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="structScopedUnlock.html">   11</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structScopedUnlock.html">ScopedUnlock</a> {</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">   12</a></span>    <a class="code hl_struct" href="structTemporalComponent.html">Mtx</a> &amp;<a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="structScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">   13</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="structScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">ScopedUnlock</a>(<a class="code hl_struct" href="structTemporalComponent.html">Mtx</a> &amp;<a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>) : <a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>(<a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>) { <a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>.unlock(); }</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="structScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">   14</a></span>    <a class="code hl_function" href="structScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">~ScopedUnlock</a>() { <a class="code hl_variable" href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">m</a>.lock(); }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>};</div>
 </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><a class="code hl_define" href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="ttc" id="adef_8h_html"><div class="ttname"><a href="def_8h.html">def.h</a></div></div>
-<div class="ttc" id="adef_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="def_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> def.h:116</div></div>
-<div class="ttc" id="adef_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="def_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> def.h:115</div></div>
-<div class="ttc" id="astructwebcface_1_1ScopedUnlock_html"><div class="ttname"><a href="structwebcface_1_1ScopedUnlock.html">webcface::ScopedUnlock</a></div><div class="ttdef"><b>Definition</b> unlock.h:7</div></div>
-<div class="ttc" id="astructwebcface_1_1ScopedUnlock_html_a07994b29f1f81dbbed93ad5eb9f4cb3d"><div class="ttname"><a href="structwebcface_1_1ScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">webcface::ScopedUnlock::m</a></div><div class="ttdeci">Mtx &amp; m</div><div class="ttdef"><b>Definition</b> unlock.h:8</div></div>
-<div class="ttc" id="astructwebcface_1_1ScopedUnlock_html_a339e713f20211a616d865189c6cd6e33"><div class="ttname"><a href="structwebcface_1_1ScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">webcface::ScopedUnlock::~ScopedUnlock</a></div><div class="ttdeci">~ScopedUnlock()</div><div class="ttdef"><b>Definition</b> unlock.h:10</div></div>
-<div class="ttc" id="astructwebcface_1_1ScopedUnlock_html_a3cdb2b5c987656ef3336986fcb28c2ca"><div class="ttname"><a href="structwebcface_1_1ScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">webcface::ScopedUnlock::ScopedUnlock</a></div><div class="ttdeci">ScopedUnlock(Mtx &amp;m)</div><div class="ttdef"><b>Definition</b> unlock.h:9</div></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="ttc" id="astructScopedUnlock_html"><div class="ttname"><a href="structScopedUnlock.html">ScopedUnlock</a></div><div class="ttdef"><b>Definition</b> unlock.h:11</div></div>
+<div class="ttc" id="astructScopedUnlock_html_a07994b29f1f81dbbed93ad5eb9f4cb3d"><div class="ttname"><a href="structScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d">ScopedUnlock::m</a></div><div class="ttdeci">Mtx &amp; m</div><div class="ttdef"><b>Definition</b> unlock.h:12</div></div>
+<div class="ttc" id="astructScopedUnlock_html_a339e713f20211a616d865189c6cd6e33"><div class="ttname"><a href="structScopedUnlock.html#a339e713f20211a616d865189c6cd6e33">ScopedUnlock::~ScopedUnlock</a></div><div class="ttdeci">~ScopedUnlock()</div><div class="ttdef"><b>Definition</b> unlock.h:14</div></div>
+<div class="ttc" id="astructScopedUnlock_html_a3cdb2b5c987656ef3336986fcb28c2ca"><div class="ttname"><a href="structScopedUnlock.html#a3cdb2b5c987656ef3336986fcb28c2ca">ScopedUnlock::ScopedUnlock</a></div><div class="ttdeci">ScopedUnlock(Mtx &amp;m)</div><div class="ttdef"><b>Definition</b> unlock.h:13</div></div>
+<div class="ttc" id="astructTemporalComponent_html"><div class="ttname"><a href="structTemporalComponent.html">TemporalComponent</a></div><div class="ttdoc">Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース</div><div class="ttdef"><b>Definition</b> components.h:22</div></div>
+<div class="ttc" id="awebcface-config_8h_html"><div class="ttname"><a href="webcface-config_8h.html">webcface-config.h</a></div></div>
+<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:115</div></div>
+<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:112</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="dir_96b6547db6ac3cc6aa0de0b99fd274ad.html">internal</a></li><li class="navelem"><a class="el" href="unlock_8h.html">unlock.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

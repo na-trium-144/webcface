@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -148,84 +149,157 @@ $(document).ready(function(){initNavTree('component__view_8h.html',''); initResi
 <div class="textblock"><code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="field_8h_source.html">field.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="def_8h_source.html">webcface/common/def.h</a>&quot;</code><br />
+<code>#include &quot;webcface/common/webcface-config.h&quot;</code><br />
 <code>#include &quot;<a class="el" href="encoding_2include_2webcface_2encoding_2val__adaptor_8h_source.html">webcface/encoding/val_adaptor.h</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="component__id_8h_source.html">component_id.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="func_8h_source.html">webcface/func.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="text_8h_source.html">webcface/text.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for component_view.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="component__view_8h__incl.svg" width="2164" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="component__view_8h__incl.svg" width="1691" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="component__view_8h__dep__incl.svg" width="5526" height="491"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="component__view_8h__dep__incl.svg" width="3782" height="564"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="component__view_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewに表示する要素です  <a href="classwebcface_1_1ViewComponent.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classViewComponent.html">ViewComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewに表示する要素です  <a href="classViewComponent.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classTemporalViewComponent.html">TemporalViewComponent</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewを構築するときに使う一時的なViewComponent.  <a href="classTemporalViewComponent.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacewebcface" id="r_namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1message" id="r_namespacewebcface_1_1message"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html">webcface::message</a></td></tr>
+<tr class="memitem:namespaceinternal" id="r_namespaceinternal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceinternal.html">internal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a11040d82967b60182816ddc035d07c28" id="r_a11040d82967b60182816ddc035d07c28"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28">ViewComponentType</a> { <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1">text</a> = 0
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9">new_line</a> = 1
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">button</a> = 2
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a">text_input</a> = 3
+<tr class="memitem:a5dcc1f15d6a60ca34207565aeb74124a" id="r_a5dcc1f15d6a60ca34207565aeb74124a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> { <br />
+&#160;&#160;<a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">inherit</a> = 0
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89">black</a> = 1
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">white</a> = 2
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">gray</a> = 4
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759">decimal_input</a> = 4
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad">number_input</a> = 5
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d">toggle_input</a> = 6
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5">select_input</a> = 7
+&#160;&#160;<a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">red</a> = 8
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd">orange</a> = 9
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351">yellow</a> = 11
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8">green</a> = 13
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6">slider_input</a> = 8
-, <a class="el" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77">check_input</a> = 9
-<br />
- }</td></tr>
-<tr class="separator:a11040d82967b60182816ddc035d07c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5dcc1f15d6a60ca34207565aeb74124a" id="r_a5dcc1f15d6a60ca34207565aeb74124a"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> { <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">inherit</a> = 0
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89">black</a> = 1
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">white</a> = 2
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">gray</a> = 4
+&#160;&#160;<a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c">teal</a> = 15
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa6411532ba4971f378391776a9db629d3">cyan</a> = 16
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f">blue</a> = 18
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201">indigo</a> = 19
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">red</a> = 8
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd">orange</a> = 9
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351">yellow</a> = 11
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8">green</a> = 13
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c">teal</a> = 15
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6411532ba4971f378391776a9db629d3">cyan</a> = 16
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f">blue</a> = 18
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201">indigo</a> = 19
-, <br />
-&#160;&#160;<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3">purple</a> = 21
-, <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877">pink</a> = 23
+&#160;&#160;<a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3">purple</a> = 21
+, <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877">pink</a> = 23
 <br />
  }</td></tr>
 <tr class="separator:a5dcc1f15d6a60ca34207565aeb74124a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11040d82967b60182816ddc035d07c28" id="r_a11040d82967b60182816ddc035d07c28"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28">ViewComponentType</a> { <br />
+&#160;&#160;<a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1">text</a> = 0
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9">new_line</a> = 1
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">button</a> = 2
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a">text_input</a> = 3
+, <br />
+&#160;&#160;<a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759">decimal_input</a> = 4
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad">number_input</a> = 5
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d">toggle_input</a> = 6
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5">select_input</a> = 7
+, <br />
+&#160;&#160;<a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6">slider_input</a> = 8
+, <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77">check_input</a> = 9
+<br />
+ }</td></tr>
+<tr class="separator:a11040d82967b60182816ddc035d07c28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Enumeration Type Documentation</h2>
+<a id="a5dcc1f15d6a60ca34207565aeb74124a" name="a5dcc1f15d6a60ca34207565aeb74124a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5dcc1f15d6a60ca34207565aeb74124a">&#9670;&#160;</a></span>ViewColor</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">enum</a> <a class="el" href="structTemporalComponent.html">class</a> <a class="el" href="component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0" name="a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0"></a>inherit&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89" name="a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89"></a>black&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c" name="a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c"></a>white&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825" name="a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"></a>gray&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4" name="a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4"></a>red&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd" name="a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd"></a>orange&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351" name="a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351"></a>yellow&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8" name="a5dcc1f15d6a60ca34207565aeb74124aa9f27410725ab8cc8854a2769c7a516b8"></a>green&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c" name="a5dcc1f15d6a60ca34207565aeb74124aa3c4184e82bb3be8fa32669800fb7373c"></a>teal&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa6411532ba4971f378391776a9db629d3" name="a5dcc1f15d6a60ca34207565aeb74124aa6411532ba4971f378391776a9db629d3"></a>cyan&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f" name="a5dcc1f15d6a60ca34207565aeb74124aa48d6215903dff56238e52e8891380c8f"></a>blue&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201" name="a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201"></a>indigo&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3" name="a5dcc1f15d6a60ca34207565aeb74124aabb7aedfa61007447dd6efaf9f37641e3"></a>purple&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877" name="a5dcc1f15d6a60ca34207565aeb74124aa4a0b0dcedd48f780778d1cd1bb8f9877"></a>pink&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<a id="a11040d82967b60182816ddc035d07c28" name="a11040d82967b60182816ddc035d07c28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11040d82967b60182816ddc035d07c28">&#9670;&#160;</a></span>ViewComponentType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">enum</a> <a class="el" href="structTemporalComponent.html">class</a> <a class="el" href="component__view_8h.html#a11040d82967b60182816ddc035d07c28">ViewComponentType</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1" name="a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1"></a>text&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9" name="a11040d82967b60182816ddc035d07c28a620cf4c6d9756f9ce211c523f16c42a9"></a>new_line&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18" name="a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"></a>button&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a" name="a11040d82967b60182816ddc035d07c28ae1ba83437c55caa1b29b1d3228f2591a"></a>text_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759" name="a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759"></a>decimal_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad" name="a11040d82967b60182816ddc035d07c28a8070a95e1f8e0d271dfc7a06127d8bad"></a>number_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d" name="a11040d82967b60182816ddc035d07c28ac31df31a0eed8c8f9bf0c1b99ad1798d"></a>toggle_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5" name="a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5"></a>select_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6" name="a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6"></a>slider_input&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77" name="a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77"></a>check_input&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="component__view_8h.html">component_view.h</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

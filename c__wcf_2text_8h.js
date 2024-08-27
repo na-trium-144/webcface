@@ -1,11 +1,11 @@
 var c__wcf_2text_8h =
 [
-    [ "wcfTextChangeEvent", "c__wcf_2text_8h.html#aff896ee5d3af37fc36fd48d5d0ba1767", null ],
-    [ "wcfTextChangeEventW", "c__wcf_2text_8h.html#a237c3f19b698ecf1dd620aab06859e52", null ],
-    [ "wcfTextGet", "c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd", null ],
-    [ "wcfTextGetW", "c__wcf_2text_8h.html#af90b9c337add2b1fb76aa46c6b4e6fbe", null ],
-    [ "wcfTextSet", "c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9", null ],
-    [ "wcfTextSetN", "c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8", null ],
-    [ "wcfTextSetNW", "c__wcf_2text_8h.html#a4d3064523b17a938de05fe25773844ee", null ],
-    [ "wcfTextSetW", "c__wcf_2text_8h.html#a0d0f4b045581b1c2a0559195cb956d2f", null ]
+    [ "wcfTextChangeEvent", "c__wcf_2text_8h.html#a7a59152b942d46b7a3073e80de086b3b", null ],
+    [ "wcfTextChangeEventW", "c__wcf_2text_8h.html#a49d94e82a6b94bf9cde77a6074b2c4f8", null ],
+    [ "wcfTextGet", "c__wcf_2text_8h.html#a588f2b798fac80402d80d95fbc7ec67e", null ],
+    [ "wcfTextGetW", "c__wcf_2text_8h.html#a5bce928f804e64e92e99ceddd22874b4", null ],
+    [ "wcfTextSet", "c__wcf_2text_8h.html#af1e0ec9688c9532bc8408629adce9389", null ],
+    [ "wcfTextSetN", "c__wcf_2text_8h.html#aa8474a029dae1ac6ffb5943943dcf032", null ],
+    [ "wcfTextSetNW", "c__wcf_2text_8h.html#a17c000626748f18a181c765ea4ff4391", null ],
+    [ "wcfTextSetW", "c__wcf_2text_8h.html#a621dc9ebb9a88473b060d385d0ee848c", null ]
 ];

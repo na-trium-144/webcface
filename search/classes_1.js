@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['basicloggerbuf_0',['BasicLoggerBuf',['../classwebcface_1_1BasicLoggerBuf.html',1,'webcface']]],
-  ['box_1',['box',['../structwebcface_1_1components_1_1geometries_1_1Box.html',1,'Box'],['../structwebcface_1_1components_1_1geometries_1_1Box.html',1,'Box'],['../structwebcface_1_1components_1_1geometries_1_1Box.html',1,'Box']]]
+  ['basicloggerbuf_0',['BasicLoggerBuf',['../classBasicLoggerBuf.html',1,'']]],
+  ['box_1',['box',['../structcomponents_1_1geometries_1_1Box.html',1,'Box'],['../structcomponents_1_1geometries_1_1Box.html',1,'Box'],['../structcomponents_1_1geometries_1_1Box.html',1,'Box']]]
 ];

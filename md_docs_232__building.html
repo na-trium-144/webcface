@@ -1,0 +1,350 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 3-2. Building from Source</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.8 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_232__building.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">3-2. Building from Source</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md25">Server &amp; Library</a><ul><li class="level2"><a href="#autotoc_md26">Requirements</a></li>
+<li class="level2"><a href="#autotoc_md27">Dependencies</a></li>
+<li class="level2"><a href="#autotoc_md28">Build</a></li>
+</ul>
+</li>
+<li class="level1"><a href="#autotoc_md29">WebUI</a></li>
+<li class="level1"><a href="#autotoc_md30">tools</a></li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md24"></a></p>
+<p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
+<dl class="section note"><dt>Note</dt><dd>webcface ver1 をソースからビルドしたい場合は、<a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチのREADMEを参照してください。</dd></dl>
+<h1><a class="anchor" id="autotoc_md25"></a>
+Server &amp; Library</h1>
+<h2><a class="anchor" id="autotoc_md26"></a>
+Requirements</h2>
+<ul>
+<li>C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja が必要です<ul>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.11</a>まではC++20が必要でしたが、ver2からC++17に移行しました</li>
+<li>ビルドにはMesonを使用しますが、依存ライブラリにCMakeを使うものがあるのでそれもインストールする必要があります</li>
+<li>MSVC以外では make と pkg-config も必要です</li>
+</ul>
+</li>
+<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
+<li>MinGWでもビルドできます。MSYS2のUCRT64環境でテストしていますがMINGW64やCLANG64環境でもビルドできると思います。</li>
+<li>CygwinやMSYS2のMSYS環境ではasioがビルドできない(<a href="https://github.com/chriskohlhoff/asio/issues/518">chriskohlhoff/asio#518</a>)ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。<ul>
+<li>asioはCygwin32bitでビルドできると主張しているが、32bitでもなぜかビルドできない<del>がissueを建てるのはめんどくさい</del></li>
+<li>仮にビルドできたとしても、curlが使用するCygwinのsocketとasioが使用するWin32のsocketが干渉して動かない気もします</li>
+</ul>
+</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md27"></a>
+Dependencies</h2>
+<ul>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。</li>
+<li>デフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします。<ul>
+<li>依存ライブラリをソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、外部ライブラリのシンボルがWebCFace内部に隠されます。</li>
+<li>そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。</li>
+</ul>
+</li>
+<li>しかし、オプションでインストールされたものを探して使うようにすることもできます。<ul>
+<li>特にsharedまたはstaticライブラリとしてビルドできるspdlog,libcurl,Magick++は事前にインストールしておいたほうがビルドが高速になります。</li>
+<li>システムにインストールされているものを使用した場合、ビルドしたWebCFaceはそのライブラリに依存することになります。</li>
+</ul>
+</li>
+<li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlでwebsocketが使えない場合エラーになります。</li>
+<li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合エラーになります。</li>
+<li>Magick++はマルチスレッドで実行するためにOpenMPが無効になっている必要があるため、インストールされているMagick++がOpenMPを使用してビルドされていた場合エラーになります、</li>
+<li>OpenCVはソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。</li>
+</ul>
+<details >
+<summary >
+Ubuntu</summary>
+<p></p>
+<div class="fragment"><div class="line">sudo apt install build-essential git cmake pkg-config ninja-build</div>
+</div><!-- fragment --><ul>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ubuntu24.04</a> <div class="fragment"><div class="line">sudo apt install meson  # (only on 24.04)</div>
+</div><!-- fragment --></li>
+<li><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ubuntu22.04</a>またはそれ以前ではaptでインストールできるmesonは古いので <div class="fragment"><div class="line">sudo apt install python3-pip</div>
+<div class="line">pip install meson</div>
+</div><!-- fragment --></li>
+</ul>
+<div class="fragment"><div class="line"># optional:</div>
+<div class="line"># sudo apt install libspdlog-dev libasio-dev</div>
+<div class="line"># sudo apt install libcli11-dev        # (only on 22.04 or later)</div>
+<div class="line"># sudo apt install libmsgpack-cxx-dev  # (only on 24.04 or later)</div>
+</div><!-- fragment --><p></p>
+</details>
+<details >
+<summary >
+Homebrew (MacOS, Linux)</summary>
+<p></p>
+<div class="fragment"><div class="line">brew install cmake meson ninja</div>
+<div class="line"># optional:</div>
+<div class="line"># brew install msgpack-cxx spdlog asio cli11 utf8cpp</div>
+</div><!-- fragment --><p></p>
+</details>
+<details >
+<summary >
+Visual Studio</summary>
+<p></p>
+<ul>
+<li>Visual Studio 2019 または 2022 をインストールしてください。<ul>
+<li>ImageMagickをソースからビルドするために Visual C++ ATL と MFC のコンポーネントも必要になります。</li>
+<li>2017でもビルドできるかもしれません(未確認)</li>
+</ul>
+</li>
+<li>MesonとNinjaをインストールしてください。<ul>
+<li><a href="https://github.com/mesonbuild/meson/releases">https://github.com/mesonbuild/meson/releases</a> からmsi形式でダウンロード、インストールできます (see also <a href="https://mesonbuild.com/Getting-meson.html">https://mesonbuild.com/Getting-meson.html</a>)</li>
+<li>または <code>choco install meson</code></li>
+</ul>
+</li>
+<li>Visual Studio の Developer Command Prompt からmesonコマンドを起動してください。</li>
+</ul>
+<p>公式サイトからダウンロードできるImageMagickはOpenMPを使ってビルドされているため、インストールされていても使いません。 (またはImageMagickを別途 /noOpenMP オプション付きでビルドしたものを用意しPATHを通せばそれを使用することは可能です)</p>
+<p></p>
+</details>
+<details >
+<summary >
+MSYS2 MinGW</summary>
+<p></p>
+<div class="fragment"><div class="line">pacman -S pactoys</div>
+<div class="line">pacboy -S git make gcc:p cmake:p ninja:p meson:p</div>
+<div class="line"># optional:</div>
+<div class="line"># pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p</div>
+</div><!-- fragment --><p></p>
+</details>
+<details >
+<summary >
+MSYS2 MSYS</summary>
+<p></p>
+<div class="fragment"><div class="line">pacman -S git make gcc cmake ninja meson</div>
+</div><!-- fragment --><p></p>
+</details>
+<details >
+<summary >
+Cygwin</summary>
+<p></p>
+<p>gcc-core, gcc-g++, cmake, make, meson, pkg-config, ninja をインストールしてください</p>
+<p></p>
+</details>
+<h2><a class="anchor" id="autotoc_md28"></a>
+Build</h2>
+<div class="fragment"><div class="line">git clone https://github.com/na-trium-144/webcface.git</div>
+<div class="line">cd webcface</div>
+<div class="line">meson setup build</div>
+</div><!-- fragment --><ul>
+<li>Visual Studio の場合 <code>--backend vs</code> を指定すると Visual Studio のプロジェクトファイルを生成します</li>
+<li>buildtypeを変更するには <code>--buildtype=release</code> または <code>--buildtype-debug</code> を指定してください (WebCFaceがsubprojectでない場合デフォルトでrelease)</li>
+<li>staticライブラリをビルドするには <code>-Ddefault_library=static</code> を指定してください<ul>
+<li><code>default_library=both</code> は現在非対応です</li>
+</ul>
+</li>
+<li><code>cpp_std</code>はc++17以上が必要です。またcygwinではgnu++17が必要です。 (WebCFaceがsubprojectでない場合デフォルトはgnu++17,c++17)</li>
+<li><code>warning_level</code>は3以下であればビルドできるはずです (WebCFaceがsubprojectでない場合デフォルトで3)。<ul>
+<li>todo: <code>warning_level=everything</code> でビルドできるかは未確認です。</li>
+</ul>
+</li>
+<li><code>-Dserver=disabled</code> でserverのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない and cygwinでない 場合のみenabledになります)</li>
+<li><code>-Dexamples=disabled</code> でexampleのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)<ul>
+<li><code>-Dcv_examples=disabled</code> にするとexamplesのうちOpenCVを使うもののみをオフにすることもできます</li>
+</ul>
+</li>
+<li><code>-Dtests=disabled</code> でexampleのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)<ul>
+<li>テストが通らない場合テスト中の通信の待機時間を <code>-Dtest_wait=100</code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</li>
+</ul>
+</li>
+<li>インストール先はデフォルトで /usr/local ですが、 <code>--prefix=~/.webcface</code> などと指定すると変更することができます</li>
+<li><code>-Dversion_suffix</code>でバージョン表記を変更できます<ul>
+<li>例えばバージョンが1.<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">2.0</a>のとき</li>
+<li><code>-Dversion_suffix=git</code> なら <code>git describe --tags</code> コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)</li>
+<li><code>git</code>以外の任意の文字列の場合 <code>-Dversion_suffix=hoge</code> で 1.2.0-hoge になります</li>
+<li><code>-Dversion_suffix=</code> で 1.2.0 だけになります</li>
+</ul>
+</li>
+<li>デフォルトでは最新のWebUIがbuildディレクトリにダウンロードされます。 <code>-Ddownload_webui=enabled</code> とするとダウンロードできなかった場合エラーになり、 <code>disabled</code> にするとダウンロードしません。</li>
+<li>WebCFaceがsubprojectでない場合、依存ライブラリはデフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします(<code>wrap_mode=forcefallback</code>)。<ul>
+<li><code>-Dwrap_mode=default</code> とするとインストールされたものを探して使用します。<ul>
+<li>ただしlibcurl,Magick++,Crowはインストールされているものが使用できない場合エラーになるため、その場合は &lsquo;"-Dforce_fallback_for=['libcurl&amp;rsquo;,'Magick++','Crow']"` などとして除外するとよいです。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>setupが成功したら </p><div class="fragment"><div class="line">meson compile -C build</div>
+</div><!-- fragment --><p> でビルドします。</p><ul>
+<li>Magick++-7.Q8 が見つからない などというエラーになった場合、そのまま再度compileをやり直すと成功する場合があります (Mesonのバグ?)</li>
+</ul>
+<div class="fragment"><div class="line">meson test -C build</div>
+</div><!-- fragment --><p> でテストを実行できます。</p>
+<div class="fragment"><div class="line">meson install -C build --skip-subprojects</div>
+</div><!-- fragment --><p> でsetup時に指定したディレクトリにインストールできます。 (staticライブラリの場合は <code>--skip-subprojects</code> を使用せず、依存ライブラリもインストールした方がいいかも)</p>
+<h1><a class="anchor" id="autotoc_md29"></a>
+WebUI</h1>
+<p>デフォルトではビルド済みのものがCMake時にダウンロードされますが、 <code>-Ddownload_webui=OFF</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> <a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">からビルド済みのtar.gzのアーカイブをダウンロードしてください。</a></p>
+<p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 <br  />
+ installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
+<p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
+<p>または自分でビルドすることも可能です。(<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">node.jsが必要</a>) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
+<h1><a class="anchor" id="autotoc_md30"></a>
+tools</h1>
+<p><a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールします。 WebCFaceライブラリのビルドと同様、Mesonを使って </p><div class="fragment"><div class="line">meson setup build</div>
+<div class="line">meson compile -Cbuild</div>
+<div class="line">meson install -C build --skip-subprojects</div>
+</div><!-- fragment --><p> のようにビルド、インストールできます。</p>
+<p>toolsのビルド時にWebCFaceライブラリが見つからないとなる場合は 環境変数<code>PKG_CONFIG_PATH</code>(またはmesonの引数<code>-Dpkg_config_path</code>)に (webcfaceのパス)/lib/pkgconfig を追加するか、 環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 mesonの引数<code>-Dcmake_prefix_path</code>にwebcfaceのパスを追加するなどすればビルドできるはずです。</p>
+<p>webcface-toolsは外部ライブラリとして <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://gitlab.com/eidheim/tiny-process-library">tiny-process-library</a>, <a href="https://github.com/marzer/tomlplusplus">toml++</a> を使用します。 システムにインストールされてなければ自動的にソースからビルドします。 <br  />
+</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_231__setup.html">3-1. Setup WebCFace Library</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_241__client.html">4-1. Client</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+  </ul>
+</div>
+</body>
+</html>

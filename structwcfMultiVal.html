@@ -72,8 +72,9 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;1.11.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.1</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -152,19 +153,19 @@ $(document).ready(function(){initNavTree('structwcfMultiVal.html',''); initResiz
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ac3e90c63965e684981a9ca1ec8ab8e29" id="r_ac3e90c63965e684981a9ca1ec8ab8e29"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#ac3e90c63965e684981a9ca1ec8ab8e29">as_int</a></td></tr>
-<tr class="memdesc:ac3e90c63965e684981a9ca1ec8ab8e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">int型でのアクセス  <br /></td></tr>
-<tr class="separator:ac3e90c63965e684981a9ca1ec8ab8e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2cd60e83ec44e797cd2063a6b0b0316" id="r_ab2cd60e83ec44e797cd2063a6b0b0316"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#ab2cd60e83ec44e797cd2063a6b0b0316">as_double</a></td></tr>
+<tr class="memitem:ab2cd60e83ec44e797cd2063a6b0b0316" id="r_ab2cd60e83ec44e797cd2063a6b0b0316"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">double</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#ab2cd60e83ec44e797cd2063a6b0b0316">as_double</a></td></tr>
 <tr class="memdesc:ab2cd60e83ec44e797cd2063a6b0b0316"><td class="mdescLeft">&#160;</td><td class="mdescRight">double型でのアクセス  <br /></td></tr>
 <tr class="separator:ab2cd60e83ec44e797cd2063a6b0b0316"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4046ea58e0499a381d40ca485df5d218" id="r_a4046ea58e0499a381d40ca485df5d218"><td class="memItemLeft" align="right" valign="top">const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218">as_str</a></td></tr>
+<tr class="memitem:a4046ea58e0499a381d40ca485df5d218" id="r_a4046ea58e0499a381d40ca485df5d218"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218">as_str</a></td></tr>
 <tr class="memdesc:a4046ea58e0499a381d40ca485df5d218"><td class="mdescLeft">&#160;</td><td class="mdescRight">char*型でのアクセス  <br /></td></tr>
 <tr class="separator:a4046ea58e0499a381d40ca485df5d218"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3e90c63965e684981a9ca1ec8ab8e29" id="r_ac3e90c63965e684981a9ca1ec8ab8e29"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">int</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwcfMultiVal.html#ac3e90c63965e684981a9ca1ec8ab8e29">as_int</a></td></tr>
+<tr class="memdesc:ac3e90c63965e684981a9ca1ec8ab8e29"><td class="mdescLeft">&#160;</td><td class="mdescRight">int型でのアクセス  <br /></td></tr>
+<tr class="separator:ac3e90c63965e684981a9ca1ec8ab8e29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>数値と文字列をまとめて扱うためのstruct </p>
-<p>wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str のいずれか1つのみに値を入れて使う。 手動で初期化するのではなく、wcfValI(), <a class="el" href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b" title="double型のwcfMultiValを構築">wcfValD()</a>, <a class="el" href="c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193" title="文字列型のwcfMultiValを構築">wcfValS()</a> 関数を使うと値を適切にセットしたwcfMultiValを構築できる。</p>
+<p>wcfMultiValを引数に渡す場合は、 as_int, as_double, as_str のいずれか1つのみに値を入れて使う。 手動で初期化するのではなく、wcfValI(), <a class="el" href="c__wcf_2func_8h.html#ac9bbcaaa4d4fa3c5c57a215947111618" title="double型のwcfMultiValを構築">wcfValD()</a>, <a class="el" href="c__wcf_2func_8h.html#a917730bf665625f43381f1f3899558b1" title="文字列型のwcfMultiValを構築">wcfValS()</a> 関数を使うと値を適切にセットしたwcfMultiValを構築できる。</p>
 <p>wcfMultiValが関数から返ってくる場合は、as_int, as_double, as_strがすべて埋まった状態で返ってくる。 </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="ab2cd60e83ec44e797cd2063a6b0b0316" name="ab2cd60e83ec44e797cd2063a6b0b0316"></a>
@@ -174,13 +175,13 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">double as_double</td>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">double</a> as_double</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>double型でのアクセス </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#aee7f0f53dcb913e408f3032f7c9f796b" title="double型のwcfMultiValを構築">wcfValD</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#ac9bbcaaa4d4fa3c5c57a215947111618" title="double型のwcfMultiValを構築">wcfValD</a> </dd></dl>
 
 </div>
 </div>
@@ -191,13 +192,13 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int as_int</td>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">int</a> as_int</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>int型でのアクセス </p>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#aa371cd469c55d58b0332f2261a120533" title="int型のwcfMultiValを構築">wcfValI</a> </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a59b479c3e225d56791afebaa2f2a2d70" title="int型のwcfMultiValを構築">wcfValI</a> </dd></dl>
 
 </div>
 </div>
@@ -208,7 +209,7 @@ Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const char* as_str</td>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">char</a>* as_str</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -216,7 +217,7 @@ Public Attributes</h2></td></tr>
 <p>char*型でのアクセス </p>
 <ul>
 <li>as_int, as_double に値をセットして渡す場合は as_str はnullにすること。</li>
-<li>値が返ってくる場合はas_strがnullになっていることはない。 (何も返さない場合でも空文字列が入る) <dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193" title="文字列型のwcfMultiValを構築">wcfValS</a> </dd></dl>
+<li>値が返ってくる場合はas_strがnullになっていることはない。 (何も返さない場合でも空文字列が入る) <dl class="section see"><dt>See also</dt><dd><a class="el" href="c__wcf_2func_8h.html#a917730bf665625f43381f1f3899558b1" title="文字列型のwcfMultiValを構築">wcfValS</a> </dd></dl>
 </li>
 </ul>
 
@@ -231,7 +232,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="structwcfMultiVal.html">wcfMultiVal</a></li>
-    <li class="footer">Generated on Fri Jul 26 2024 18:19:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
