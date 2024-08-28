@@ -1,3 +1,13 @@
+## [2.0.2] - 2024-08-29
+### Added
+* Value::operator=(std::vector\<double\>) 追加 (#387)
+* Client::members() const 追加 (#387)
+### Changed
+* リリースしているdebパッケージで、
+	* リリースしているdebパッケージで /usr/include/webcface (と /usr/share/docs/webcface ) をインストールしないようにした (#388)
+	* webcface-config.cmake と webcface.pc がリンク先である /opt/webcface/include のほうも参照するようにした
+* webcface-config.cmake のインストール先を lib/cmake/webcface → lib/cmake/webcface2 に変更
+
 ## [2.0.1] - 2024-08-26
 ### Fixed
 * webcfaceConfig.cmakeをMesonで読めるよう修正 (#381)
