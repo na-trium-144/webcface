@@ -52,6 +52,7 @@ var classClient =
     [ "member", "classClient.html#ad3b7023861d7a2db41625c4702f55966", null ],
     [ "member", "classClient.html#ae0c465d91c1529aacb3af2f8868cab35", null ],
     [ "members", "classClient.html#a2bd9c445e89ab8b794a2430dfc9a2b69", null ],
+    [ "members", "classClient.html#a6b1bb6a3baa02f73f775248b889ada2f", null ],
     [ "name", "classClient.html#a24dcbf29c0d6cd766009a182a6484e3b", null ],
     [ "nameW", "classClient.html#a8c997fd30e7178c869b823143102d682", null ],
     [ "onCanvas2DEntry", "classClient.html#a677503b0a05a0e457649a68fa7d5c50a", null ],

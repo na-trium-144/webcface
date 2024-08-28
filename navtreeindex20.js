@@ -1,5 +1,7 @@
 var NAVTREEINDEX20 =
 {
+"structserver_1_1MemberData.html#a119c8d308758e3978903a6d62061fb96":[22,0,6,2,29],
+"structserver_1_1MemberData.html#a187907d26fccdc1656e3df113d5f4093":[22,0,6,2,6],
 "structserver_1_1MemberData.html#a187907d26fccdc1656e3df113d5f4093":[21,0,18,2,6],
 "structserver_1_1MemberData.html#a1b12505186d272b06539e587d68ac25c":[22,0,6,2,23],
 "structserver_1_1MemberData.html#a1b12505186d272b06539e587d68ac25c":[21,0,18,2,23],
@@ -247,7 +249,5 @@ var NAVTREEINDEX20 =
 "webcface-config_8h.html#a4d593597fdc5eac07589e21d19eace2a":[23,0,0,0,23],
 "webcface-config_8h.html#a542d6bb73934c3187781d0c89fa55766":[23,0,0,0,0],
 "webcface-config_8h.html#a55016271a7c4a6e4230246e6fa5f802e":[23,0,0,0,14],
-"webcface-config_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7":[23,0,0,0,17],
-"webcface-config_8h.html#a5bea7308de3e3af84394cf223c39ba50":[23,0,0,0,20],
-"webcface-config_8h.html#a5f06c4f7c40055dc1f43d82fb63598d1":[23,0,0,0,10]
+"webcface-config_8h.html#a5856f8c4dbb31d15a29a3abb4ebc01f7":[23,0,0,0,17]
 };

@@ -226,6 +226,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac05ded2ac098fc5442c2027fd94a3f1a"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classValue.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classValue.html#ac05ded2ac098fc5442c2027fd94a3f1a">operator=</a> (<a class="el" href="structTemporalComponent.html">T</a> &amp;&amp;<a class="el" href="structTemporalComponent.html">v</a>) <a class="el" href="structTemporalComponent.html">const</a></td></tr>
 <tr class="memdesc:ac05ded2ac098fc5442c2027fd94a3f1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値または配列をセットする  <br /></td></tr>
 <tr class="separator:ac05ded2ac098fc5442c2027fd94a3f1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad047e42ab1368f665564b8712e5ab04c" id="r_ad047e42ab1368f665564b8712e5ab04c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classValue.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classValue.html#ad047e42ab1368f665564b8712e5ab04c">operator=</a> (std::vector&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt; <a class="el" href="structTemporalComponent.html">v</a>) <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:ad047e42ab1368f665564b8712e5ab04c"><td class="mdescLeft">&#160;</td><td class="mdescRight">vector型配列をセットする  <br /></td></tr>
+<tr class="separator:ad047e42ab1368f665564b8712e5ab04c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73c7091e52ec1e707f2288e9bb933fc4" id="r_a73c7091e52ec1e707f2288e9bb933fc4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classValue.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classValue.html#a73c7091e52ec1e707f2288e9bb933fc4">request</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
 <tr class="memdesc:a73c7091e52ec1e707f2288e9bb933fc4"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をリクエストする  <br /></td></tr>
 <tr class="separator:a73c7091e52ec1e707f2288e9bb933fc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1833,8 +1836,38 @@ template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a cl
 
 </div>
 </div>
+<a id="ad047e42ab1368f665564b8712e5ab04c" name="ad047e42ab1368f665564b8712e5ab04c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad047e42ab1368f665564b8712e5ab04c">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classValue.html">Value</a> &amp; <a class="el" href="structTemporalComponent.html">operator</a>= </td>
+          <td>(</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="structTemporalComponent.html">double</a> &gt;&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>vector型配列をセットする </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0.2</dd></dl>
+<p>initializer_listを受け取るためのオーバーロード (<a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">ver1.11</a>まで VectorOpt&lt;double&gt; として受け取っていたもの) </p>
+
+</div>
+</div>
 <a id="ac05ded2ac098fc5442c2027fd94a3f1a" name="ac05ded2ac098fc5442c2027fd94a3f1a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac05ded2ac098fc5442c2027fd94a3f1a">&#9670;&#160;</a></span>operator=()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac05ded2ac098fc5442c2027fd94a3f1a">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2885,7 +2918,7 @@ template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classValue.html">Value</a></li>
-    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Aug 28 2024 15:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

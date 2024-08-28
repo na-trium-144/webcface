@@ -225,6 +225,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2bd9c445e89ab8b794a2430dfc9a2b69" id="r_a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMember.html">Member</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#a2bd9c445e89ab8b794a2430dfc9a2b69">members</a> ()</td></tr>
 <tr class="memdesc:a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続されている他のmemberのリストを得る。  <br /></td></tr>
 <tr class="separator:a2bd9c445e89ab8b794a2430dfc9a2b69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b1bb6a3baa02f73f775248b889ada2f" id="r_a6b1bb6a3baa02f73f775248b889ada2f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classMember.html">Member</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#a6b1bb6a3baa02f73f775248b889ada2f">members</a> () <a class="el" href="structTemporalComponent.html">const</a></td></tr>
+<tr class="memdesc:a6b1bb6a3baa02f73f775248b889ada2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">サーバーに接続されている他のmemberのリストを得る。  <br /></td></tr>
+<tr class="separator:a6b1bb6a3baa02f73f775248b889ada2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8dfb72764f004f754a8fd9d289e219dc" id="r_a8dfb72764f004f754a8fd9d289e219dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="classClient.html">Client</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classClient.html#a8dfb72764f004f754a8fd9d289e219dc">onMemberEntry</a> (std::function&lt; <a class="el" href="structTemporalComponent.html">void</a> <a class="el" href="webcface-config_8h.html#aedce4d32bf11cefb9b7c8067ca7db3c7">WEBCFACE_CALL_FP</a>(<a class="el" href="classMember.html">Member</a>)&gt; callback) <a class="el" href="structTemporalComponent.html">const</a></td></tr>
 <tr class="memdesc:a8dfb72764f004f754a8fd9d289e219dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが追加された時のイベント  <br /></td></tr>
 <tr class="separator:a8dfb72764f004f754a8fd9d289e219dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1896,7 +1899,7 @@ template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a cl
 </div>
 </div>
 <a id="a2bd9c445e89ab8b794a2430dfc9a2b69" name="a2bd9c445e89ab8b794a2430dfc9a2b69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bd9c445e89ab8b794a2430dfc9a2b69">&#9670;&#160;</a></span>members()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a2bd9c445e89ab8b794a2430dfc9a2b69">&#9670;&#160;</a></span>members() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1911,6 +1914,27 @@ template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a cl
 </div><div class="memdoc">
 
 <p>サーバーに接続されている他のmemberのリストを得る。 </p>
+<p>自分自身と、無名のmemberを除く。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classClient.html#ad3b7023861d7a2db41625c4702f55966" title="他のmemberにアクセスする">member()</a>, <a class="el" href="classClient.html#a8dfb72764f004f754a8fd9d289e219dc" title="Memberが追加された時のイベント">onMemberEntry()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6b1bb6a3baa02f73f775248b889ada2f" name="a6b1bb6a3baa02f73f775248b889ada2f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b1bb6a3baa02f73f775248b889ada2f">&#9670;&#160;</a></span>members() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classMember.html">Member</a> &gt; members </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>サーバーに接続されている他のmemberのリストを得る。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0.2 (constつけ忘れ)</dd></dl>
 <p>自分自身と、無名のmemberを除く。 </p><dl class="section see"><dt>See also</dt><dd><a class="el" href="classClient.html#ad3b7023861d7a2db41625c4702f55966" title="他のmemberにアクセスする">member()</a>, <a class="el" href="classClient.html#a8dfb72764f004f754a8fd9d289e219dc" title="Memberが追加された時のイベント">onMemberEntry()</a> </dd></dl>
 
 </div>
@@ -3489,7 +3513,7 @@ template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a cl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="classClient.html">Client</a></li>
-    <li class="footer">Generated on Tue Aug 27 2024 02:37:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Wed Aug 28 2024 15:42:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>

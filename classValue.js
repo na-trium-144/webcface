@@ -54,6 +54,7 @@ var classValue =
     [ "operator<", "classValue.html#ad8c2afd5235bf4e996363c6047b9cc26", null ],
     [ "operator<<=", "classValue.html#afb1774af4e65cdf5284ee4258005fbd4", null ],
     [ "operator<=", "classValue.html#a6b882884567932f4595bfc000db4814f", null ],
+    [ "operator=", "classValue.html#ad047e42ab1368f665564b8712e5ab04c", null ],
     [ "operator=", "classValue.html#ac05ded2ac098fc5442c2027fd94a3f1a", null ],
     [ "operator==", "classValue.html#ab2f63920a9d0c274c8627c54d7e00d0f", null ],
     [ "operator==", "classValue.html#a2c810e304a62d36f287f198498e5bfa9", null ],

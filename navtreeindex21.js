@@ -1,5 +1,7 @@
 var NAVTREEINDEX21 =
 {
+"webcface-config_8h.html#a5bea7308de3e3af84394cf223c39ba50":[23,0,0,0,20],
+"webcface-config_8h.html#a5f06c4f7c40055dc1f43d82fb63598d1":[23,0,0,0,10],
 "webcface-config_8h.html#a6812f9f22020506e226b2551baa430a9":[23,0,0,0,11],
 "webcface-config_8h.html#a6f463d979efae9d7bdd0b12aacc7b91f":[23,0,0,0,18],
 "webcface-config_8h.html#a7287772dfc2ba9afb052b0fa0c286b94":[23,0,0,0,8],
