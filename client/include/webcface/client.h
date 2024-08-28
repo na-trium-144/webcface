@@ -235,9 +235,16 @@ class WEBCFACE_DLL Client : public Member {
      *
      * 自分自身と、無名のmemberを除く。
      * \sa member(), onMemberEntry()
-     *
      */
     std::vector<Member> members();
+    /*!
+     * \brief サーバーに接続されている他のmemberのリストを得る。
+     * \since ver2.0.2 (constつけ忘れ)
+     * 
+     * 自分自身と、無名のmemberを除く。
+     * \sa member(), onMemberEntry()
+     */
+    std::vector<Member> members() const;
     /*!
      * \brief Memberが追加された時のイベント
      *
