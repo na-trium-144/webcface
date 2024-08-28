@@ -749,6 +749,11 @@ import('pkgconfig').generate(
   url: webcface_url,
   filebase: 'webcface',
   libraries: [webcface_lib],
+  version: webcface_version_str,
+  # インストール後に webcface.pc へのシンボリックリンクリンクを別の場所に貼った場合、
+  # もとのprefix (/opt/webcface など) も参照するようにする。
+  # (cmakeの場合はwebcface-config.cmake内にシンボリックリンクを展開するコード書いた)
+  extra_cflags: '-I' + (get_option('prefix') / get_option('includedir')),
 )
 meson.override_dependency('webcface', webcface_dep)
 if get_option('default_library') == 'shared'
@@ -796,6 +801,7 @@ if get_option('default_library') == 'shared'
     version: meson.project_version(),
     compatibility: 'SameMajorVersion',
     arch_independent: false,
+    install_dir: get_option('libdir') / 'cmake' / 'webcface' + meson.project_version().split('.')[0],
   )
   conf_data = configuration_data({
     'prefix': get_option('prefix'),
@@ -804,10 +810,12 @@ if get_option('default_library') == 'shared'
     'webcface_lib_debug': webcface_lib_name_debug,
     'webcface_lib_release': webcface_lib_name_release,
     'webcface_abi_major': webcface_abi_major,
+    'webcface_version_str': webcface_version_str,
   })
   cmake.configure_package_config_file(
     name: 'webcface',
     input: 'scripts' / 'webcface-config.cmake.in',
-    configuration: conf_data
+    configuration: conf_data,
+    install_dir: get_option('libdir') / 'cmake' / 'webcface' + meson.project_version().split('.')[0],
   )
 endif

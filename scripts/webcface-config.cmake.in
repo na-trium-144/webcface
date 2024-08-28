@@ -1,4 +1,16 @@
+# /usr/lib/cmake/webcface → /opt/webcface/lib/cmake/webcface
+while(IS_SYMLINK "${CMAKE_CURRENT_LIST_DIR}" AND CMAKE_VERSION VERSION_GREATER_EQUAL "3.14")
+  set(CMAKE_CURRENT_LIST_DIR_BEFORE "${CMAKE_CURRENT_LIST_DIR}")
+  file(READ_SYMLINK "${CMAKE_CURRENT_LIST_DIR}" CMAKE_CURRENT_LIST_DIR)
+  if(NOT IS_ABSOLUTE CMAKE_CURRENT_LIST_DIR)
+    get_filename_component(dir "${CMAKE_CURRENT_LIST_DIR_BEFORE}" DIRECTORY)
+    set(result "${dir}/${CMAKE_CURRENT_LIST_DIR}")
+  endif()
+endwhile()
+
 @PACKAGE_INIT@
+
+message(STATUS "WebCFace @webcface_version_str@: ${PACKAGE_PREFIX_DIR}")
 
 find_library(WEBCFACE_DEBUG_LIB @webcface_lib_debug@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
 find_library(WEBCFACE_RELEASE_LIB @webcface_lib_release@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
