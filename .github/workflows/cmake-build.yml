@@ -100,13 +100,14 @@ jobs:
             ln -s $absprefix/bin/$(basename $file) .debpkg/usr/bin/
           done
 
-          mkdir -p .debpkg/usr/include
-          echo $absprefix/include/webcface
-          ln -s $absprefix/include/webcface .debpkg/usr/include/
+          # v2.0.2以降include不要
+          # mkdir -p .debpkg/usr/include
+          # echo $absprefix/include/webcface
+          # ln -s $absprefix/include/webcface .debpkg/usr/include/
 
-          mkdir -p .debpkg/usr/share/doc
-          echo $absprefix/share/doc/webcface
-          ln -s $absprefix/share/doc/webcface .debpkg/usr/share/doc/
+          # mkdir -p .debpkg/usr/share/doc
+          # echo $absprefix/share/doc/webcface
+          # ln -s $absprefix/share/doc/webcface .debpkg/usr/share/doc/
 
           mkdir -p .debpkg/usr/lib/systemd/system
           echo $absprefix/lib/systemd/system/webcface-server.service
@@ -114,8 +115,8 @@ jobs:
 
           libdir=lib/$(basename $prefix/lib/*-linux-*)
           mkdir -p .debpkg/usr/$libdir/cmake
-          echo $absprefix/$libdir/cmake/webcface
-          ln -s $absprefix/$libdir/cmake/webcface .debpkg/usr/$libdir/cmake/
+          echo $absprefix/$libdir/cmake/webcface2
+          ln -s $absprefix/$libdir/cmake/webcface2 .debpkg/usr/$libdir/cmake/
           mkdir -p .debpkg/usr/$libdir/pkgconfig
           echo $absprefix/$libdir/pkgconfig/webcface.pc
           ln -s $absprefix/$libdir/pkgconfig/webcface.pc .debpkg/usr/$libdir/pkgconfig/webcface.pc
