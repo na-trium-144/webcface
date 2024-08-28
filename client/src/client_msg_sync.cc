@@ -212,6 +212,9 @@ std::string internal::ClientData::syncData(bool is_first,
 }
 
 std::vector<Member> Client::members() {
+    return static_cast<const Client *>(this)->members();
+}
+std::vector<Member> Client::members() const {
     std::lock_guard lock(data->entry_m);
     std::vector<Member> ret;
     ret.reserve(data->member_entry.size());

@@ -179,6 +179,19 @@ class WEBCFACE_DLL Value : protected Field {
         return *this;
     }
     /*!
+     * \brief vector型配列をセットする
+     * \since ver2.0.2
+     *
+     * initializer_listを受け取るためのオーバーロード
+     * (ver1.11まで VectorOpt<double> として受け取っていたもの)
+     *
+     */
+    const Value &operator=(std::vector<double> v) const {
+        this->set(std::move(v));
+        return *this;
+    }
+
+    /*!
      * \brief 値をリクエストする
      * \since ver1.7
      *
