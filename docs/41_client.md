@@ -54,15 +54,15 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     // または wcli.waitConnection();
     ```
 
-    * <del>`start()` の代わりに `waitConnection()` を使うと接続が完了するまで待機することができます。</del>
+    * `Client::start()` の代わりに `Client::waitConnection()` を使うと <del>接続が完了するまで待機することができます。</del>
     * <span class="since-c">2.0</span>
-    `start()` の代わりに `waitConnection(interval)` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
-        * waitConnectionは通信完了までの間interval間隔でrecv()を呼び出します。(デフォルト: 100μs) 詳細は後述の送受信の説明を参照
-    * 接続できているかどうかは `wcli.connected()` で取得できます。
+    `Client::start()` の代わりに `Client::waitConnection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
+        * waitConnectionは通信完了までの間loopSync()を呼び出します。 詳細は後述の送受信の説明を参照
+    * 接続できているかどうかは `Client::connected()` で取得できます。
     * 通信が切断された場合は自動で再接続します。
         * <span class="since-c">1.11.1</span>
-    `autoReconnect(false)`をすると自動で再接続しなくなります。
-    その場合`waitConnection()`は1度だけ接続を試行し失敗してもreturnするという挙動になります。
+    `Client::autoReconnect(false)`をすると自動で再接続しなくなります。
+    その場合`Client::waitConnection()`は1度だけ接続を試行し失敗してもreturnするという挙動になります。
 
     \note
     * <span class="since-c">1.11</span>
@@ -71,15 +71,15 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
         * WSL1上のクライアントは `/mnt/c/ProgramData/webcface/ポート番号.sock` への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。
     * <span class="since-c">1.11</span>
     WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが`127.0.0.1`の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。
-    * <del>Clientはstart()時に2つのスレッド(std::thread)を建てます。</del>
-    <del>1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。</del>
-    <del>もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。</del>
-        * <del>Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してrunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</div>
+    * <del>Clientはstart()時に2つのスレッド(std::thread)を建てます。1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。</del>
+        * <del>Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してrunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</del>
     * <span class="since-c">2.0</span> Clientはstart()時に1つのスレッド(std::thread)を建てます。
         * 送信用キューにデータが追加されたらそれを送信し、データを受信したら受信用キューに入れます。
         また通信が切断されたときに再接続を行います。
         * 受信したデータを処理してコールバックを呼ぶのは別スレッドではありません。
         (詳細はこのページの送受信の章を参照)
+
+    <span></span>
 
 - <b class="tab-title">C</b>
     ```c
@@ -103,11 +103,9 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     ワイド文字列を使用したい場合はそれぞれ `wcfInitDefaultW()`, `wcfInitW()`
     (詳細はこのページのEncodingの章を参照)
     * <span class="since-c">2.0</span>
-    `wcfStart()` の代わりに `wcfWaitConnection(interval)` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
-        * wcfWaitConnectionは通信完了までの間interval(μs)間隔でrecv()を呼び出します。
-        (C++側のデフォルトは100なので、理由がなければ100程度を指定しておけばよいです。
-        詳細は後述の送受信の説明を参照)
-    * 接続できているかどうかは `wcfIsConnected(wcli)` で取得できます。
+    `wcfStart()` の代わりに `wcfWaitConnection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
+        * wcfWaitConnectionは通信完了までの間wcfLoopSync()を呼び出します。
+    * 接続できているかどうかは `wcfIsConnected()` で取得できます。
     * 通信が切断された場合は自動で再接続します。
 
     \note
@@ -117,16 +115,18 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
         * WSL1上のクライアントは /mnt/c/ProgramData/webcface/ポート番号.sock への接続も試行します。これによりWSL1とWindowsの間ではどちらでサーバーを建ててもどちらのクライアントからも相互に接続できます。
     * <span class="since-c">1.11</span>
     WSL2ではUnixドメインソケットを使った相互接続はできませんが、WSL2のクライアントは接続先のアドレスが`127.0.0.1`の場合に限りホストのWindowsのIPアドレスのTCPポートへも接続を試行します。これによりWSL2とWindowsの間でも相互に通信が可能です。
-    * ~~ClientはwcfStart()時に2つのスレッド(std::thread)を建てます。~~
-    ~~1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。~~
-    ~~もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。~~
-        * ~~Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してwcfFuncRunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。~~
-    * <span class="since-c">2.0</span> Clientはstart()時に2〜3つのスレッド(std::thread)を建てます。
-        * 1つは接続処理用で、通信が切断されたときに再接続を行います。接続できている間は何もしません。
-        * 1つは送信用で、送信用キューにデータが追加されたらそれを送信します。
-        * もう1つは受信用で、autoRecv()を使用する場合このスレッドがデータを受信してコールバックを呼びます(詳細はこのページの送受信の章を参照)
+    * <del>ClientはwcfStart()時に2つのスレッド(std::thread)を建てます。1つはWebSocketの送受信処理用で、送信用キューにあるメッセージを送信し、受信したら受信用キューに入れます。もう1つは受信したメッセージをパースしてコールバックを呼んだりといった処理をします。</del>
+        * <del>Callメッセージ(Func呼び出しのメッセージ)を受信したときと、自分自身のFuncに対してwcfFuncRunAsync()を呼び出したときは、その呼び出し1回ごとに新しいスレッドを建てその中で関数を実行します。</del>
+    * <span class="since-c">2.0</span> Clientはstart()時に1つのスレッド(std::thread)を建てます。
+        * 送信用キューにデータが追加されたらそれを送信し、データを受信したら受信用キューに入れます。
+        また通信が切断されたときに再接続を行います。
+        * 受信したデータを処理してコールバックを呼ぶのは別スレッドではありません。
+        (詳細はこのページの送受信の章を参照)
+
+    <span></span>
 
 - <b class="tab-title">JavaScript</b>
+    * ESMの例
     ```ts
     import { Client } from "webcface";
 
@@ -136,14 +136,31 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
     wcli.start();
     ```
+    * <span class="since-js">1.7</span> htmlからCDNを利用する例
+    ```html
+    <scripts>
+        const wcli = webcface.Client("sample");
+        // アドレスを指定する場合
+        // const wcli = Client("sample", "192.168.1.1", 7530);
+
+        wcli.start();
+    </scripts>
+    ```
 
     \note
+    以降このドキュメントではESMのコード例のみを載せています。
+    CDNのWebCFaceを使う場合は上の例と同様に `webcface.クラス名` と読み替えてください。
+
+    <span></span>
+
     * 接続できているかどうかは `wcli.connected` で取得できます。
     * 通信が切断された場合は自動で再接続します。
 
     \warning
     * webブラウザ上でJavaScriptから接続しようとする場合、サーバー側からみたlocalhostではなくブラウザ側からみたlocalhostへ接続しようとするので注意してください ([location.host](https://developer.mozilla.org/ja/docs/Web/API/Location/host) などを接続先アドレスに指定する必要があります)
     
+    <span></span>
+
 - <b class="tab-title">Python</b>
     ```python
     import webcface
@@ -156,7 +173,6 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     # または wcli.wait_connection()
     ```
 
-    \note
     * 接続できているかどうかは `wcli.connected` で取得できます。
     * `start()` の代わりに `wait_connection()` を使うと接続が完了するまで待機することができます。
     * 通信が切断された場合は自動で再接続します。
@@ -198,36 +214,39 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    * sync() をすることでこれ以降の章で扱う各種データを送受信します。
+    ```cpp
+    wcli.sync();
+    ```
+
+    * Client::sync() をすることでこれ以降の章で扱う各種データを送受信します。
         * <del>sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</del>
-            * <span class="since-c">2.0</span>
+        * <span class="since-c">2.0</span>
         低レイヤーの送受信自体は別スレッドで行われますが、送信データをキューに入れる/受信したデータをキューから取り出して処理するのがsync()関数です。
-        * 送信したいデータがある場合は、メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
-        * <del>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</del>
-            * <span class="since-c">1.2</span>
-            <del>Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</del>
-            * <span class="since-c">2.0</span>
-            受信した各種データの処理がsync()で行われるため、データを受信するだけの使い方の場合でもsync()は必要です。
-    
+    * データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信/受信するようなプログラムの場合は、周期実行している場所があればそこで繰り返し呼ぶようにするとよいと思います。
     ```cpp
     while(true){
         // 繰り返し実行する処理...
-
         wcli.sync();
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
     ```
-
     * <span class="since-c">2.0</span>
-    loopSyncFor(timeout), loopSyncUntil(timeout) または loopSync() は指定した時間の間(または永遠に) sync() を繰り返します。
+    Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、
+    また Client::loopSync() は通信を切断するまでずっと sync() を繰り返します。
         * ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
     while(true){
         // 繰り返し実行する処理...
-
         wcli.loopSyncFor(std::chrono::milliseconds(100));
     }
     ```
+
+    \note
+    * <del>データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。</del>
+    * <span class="since-c">1.2</span>
+    <del>Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</del>
+    * <span class="since-c">2.0</span>
+    受信した各種データの処理がsync()で行われるため、データを受信するだけの使い方の場合でもsync()は必要です。
 
     \warning
     * <span class="since-c">2.0</span>
@@ -239,14 +258,15 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     それ以上短い周期で sync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)
 
 - <b class="tab-title">C</b>
+    ```cpp
+    wcfSync(wcli);
+    ```
+
     * wcfSync() をすることでこれ以降の章で扱う各種データを送信します。
         * <del>wcfSync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</del>
             * <span class="since-c">2.0</span>
             低レイヤーの送受信自体は別スレッドで行われますが、送信データをキューに入れる/受信したデータをキューから取り出して処理するのがwcfSync()関数です。
-        * 送信したいデータがある場合は、メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
-        * <del>Funcの呼び出しとデータ受信リクエストの送信は wcfSync() とは非同期に行われるので wcfSync() は不要です。</del>
-            * <span class="since-c">2.0</span>
-            受信した各種データの処理がwcfSync()で行われるため、データを受信するだけの使い方の場合でもwcfSync()は必要です。
+    * データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信/受信するようなプログラムの場合は、周期実行している場所があればそこで繰り返し呼ぶようにするとよいと思います。
     ```c
     while(1){
         // 繰り返し実行する処理...
@@ -255,7 +275,6 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         usleep(100000);
     }
     ```
-
     * <span class="since-c">2.0</span>
     wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または wcfLoopSync() は指定した時間の間(または永遠に) wcfSync() を繰り返します。
         * ただしサーバーに接続しておらず wcfAutoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
@@ -267,6 +286,11 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     }
     ```
 
+    \note
+    * <del>Funcの呼び出しとデータ受信リクエストの送信は wcfSync() とは非同期に行われるので wcfSync() は不要です。</del>
+    * <span class="since-c">2.0</span>
+    受信した各種データの処理がwcfSync()で行われるため、データを受信するだけの使い方の場合でもwcfSync()は必要です。
+
     \warning
     * <span class="since-c">2.0</span>
     これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはwcfSync()を呼んだスレッドで実行されます。
@@ -277,24 +301,32 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     それ以上短い周期で wcfSync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)
 
 - <b class="tab-title">JavaScript</b>
+    ```ts
+    wcli.sync();
+    ```
     * sync() をすることでこれ以降の章で扱う各種データを送信します。
         * メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
-        * ~~データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。~~
-        * <span class="since-js">1.1</span>
-        Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
-    * データの受信処理は非同期で行われます。
+    * データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信するようなプログラムの場合は、setIntervalなどを使って繰り返し呼ぶようにするとよいと思います。
     ```ts
     setInterval(() => {
         wcli.sync();
     }, 100);
     ```
 
+    * データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。
+
+    \note
+    * ~~データを受信するだけの場合もサーバーにデータのリクエストをするためsync()が必要になります。~~
+    * <span class="since-js">1.1</span>
+    Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
 
 - <b class="tab-title">Python</b>
+    ```python
+    wcli.sync();
+    ```
     * sync() をすることでこれ以降の章で扱う各種データを送信します。
         * sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。
-        メインプログラムの周期実行される場所などで繰り返し呼ぶようにしてください。
-        * Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
+    * データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信/受信するようなプログラムの場合は、周期実行している場所があればそこで繰り返し呼ぶようにするとよいと思います。
     ```python
     while True:
         # ...
@@ -302,6 +334,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         wcli.sync()
         time.sleep(0.1)
     ```
+
+    * データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。
 
 </div>
 
@@ -313,7 +347,10 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```cpp
     wcli.close();
     ```
-    また、Clientのデストラクタでも自動的にclose()が呼ばれます。
+    * Clientのデストラクタでも自動的に Client::close() が呼ばれます。
+    * <span class="since-c">2.0</span>
+    Client::loopSync() はclose()で停止します。
+    (別スレッドからでも、loopSync内から呼ばれたコールバックの中などでも可)
 
     \note
     * <span class="since-c">2.0</span>
@@ -326,6 +363,10 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```c
     wcfClose(wcli);
     ```
+    * <span class="since-c">2.0</span>
+    wcfLoopSync() はwcfClose()で停止します。
+    (別スレッドからでも、loopSync内から呼ばれたコールバックの中などでも可)
+
     \note
     * <span class="since-c">2.0</span>
     wcfClose()を呼んだ時点でサーバーに接続できていた場合は、wcfSync()でキューに入れたメッセージがすべて送信したあとに切断されます。
@@ -337,6 +378,7 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```ts
     wcli.close();
     ```
+
 
 - <b class="tab-title">Python</b>
     ```py
@@ -400,6 +442,7 @@ closeしたあと再度start()を呼んで再接続することはできませ�
 
 - <b class="tab-title">C++</b>
     `wcli.serverVersion()`, `wcli.serverName()` で取得できます。
+    
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
@@ -407,6 +450,7 @@ closeしたあと再度start()を呼んで再接続することはできませ�
 
 - <b class="tab-title">JavaScript</b>
     `wcli.serverVersion`, `wcli.serverName` で取得できます。
+
 - <b class="tab-title">Python</b>
     `wcli.server_version`, `wcli.server_name` で取得できます。
     
@@ -421,12 +465,17 @@ WebUI ver1.7 以降ではWebUIのページタイトルにも表示されてい�
 
 - <b class="tab-title">C++</b>
     \since <span class="since-c">2.0</span>
+    
     `wcli.serverHostName()` で取得できます。
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
+    
     `wcfServerHostName(wcli)` で取得できます。
+
 - <b class="tab-title">JavaScript</b>
     \since <span class="since-js">1.7</span>
+
     `wcli.serverHostName` で取得できます。
 
 </div>

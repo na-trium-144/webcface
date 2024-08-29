@@ -11,51 +11,65 @@ WebCFaceではサーバーに接続されたそれぞれのクライアントを
 
 データを受信する時など、Memberを指すために使用するのがMemberクラスです。
 Client::member() で取得できます。
+(C言語のAPIを除く)
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    `foo`という名前のMember (=Clientのコンストラクタに`foo`を入力したクライアント)
+    にアクセスするには、
     ```cpp
     webcface::Member member_foo = wcli.member("foo");
     ```
+
+    \note
+    * `member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。
+        * <span class="since-c">1.7</span>
+        引数に空文字列を入れても同様です。
+
 - <b class="tab-title">JavaScript</b>
+    `foo`という名前のMember (=Clientのコンストラクタに`foo`を入力したクライアント)
+    にアクセスするには、
     ```ts
     import { Member } from "webcface";
 
     const memberFoo: Member = wcli.member("foo");
     ```
+
+    \note
+    * `member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。
+        * <span class="since-js">1.7</span>
+        引数に空文字列を入れても同様です。
+
 - <b class="tab-title">Python</b>
+    `foo`という名前のMember (=Clientのコンストラクタに`foo`を入力したクライアント)
+    にアクセスするには、
     ```python
     member_foo = wcli.member("foo");
     ```
 
 </div>
 
-これは`foo`という名前のMember(=Clientのコンストラクタに`foo`を入力したクライアント)を指します。
-
 Memberクラスから実際にそれぞれのデータにアクセスする方法は次ページ以降で説明します。
 
 このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。
 
-\note
-`member()` の引数に自身の名前を入れると、Clientオブジェクトに直接アクセスする場合と同様そのクライアント自身を指します。  
-<span class="since-c">1.7</span>
-<span class="since-js">1.7</span>
-引数に空文字列を入れても同様です。
-
 ## members
 
-Client::members() で現在接続されているメンバーのリストが得られます
+現在サーバーに接続されているメンバーのリストが得られます
 (無名のものと、自分自身を除く)
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    Client::members() で取得できます。
+
     ```cpp
     for(const webcface::Member &m: wcli.members()){
         // ...
     }
     ```
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
@@ -64,16 +78,22 @@ Client::members() で現在接続されているメンバーのリストが得�
     const char *member_list[10];
     int actual_member_num;
     wcfMemberList(wcli, member_list, 10, &actual_member_num);
+    // member_list[0] から member_list[actual_member_num - 1] (10以上だった場合はmember_list[9]まで) にメンバー名の文字列が入っている
     ```
     それぞれのメンバー名の文字列は、 wcfClose() するまではfreeされません。
 
 - <b class="tab-title">JavaScript</b>
+    Client.members() で取得できます。
+
     ```js
     for(const m of wcli.members()){
         // ...
     }
     ```
+    
 - <b class="tab-title">Python</b>
+    Client.members() で取得できます
+
     ```python
     for m in wcli.members():
         # ...
@@ -91,21 +111,23 @@ Memberクラスおよびこれ以降説明する各種データ型のクラス (
 
 ## Event
 
-Client::onMemberEntry() で新しいメンバーが接続されたときのイベントにコールバックを設定できます
+新しいメンバーが接続されたときに呼び出されるコールバックを設定できます
 
-このクライアントが接続する前から存在したメンバーについては start() 後に一度に送られるので、
+このクライアントが接続する前から存在したメンバーについては start(), waitConnection() 時に一度に送られるので、
 コールバックの設定はstart()より前に行うと良いです。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     <span class="since-c">2.0</span>
-    引数にMemberを受け取る関数オブジェクトを設定することができます。
+    引数にMemberを受け取る関数オブジェクトを Client::onMemberEntry() に設定することができます。
+    新しく接続したMemberの情報が引数に渡されます。
     ```cpp
     wcli.onMemberEntry([](webcface::Member m){/* ... */});
     ```
     * <span class="since-c">2.0</span>
-    Client::waitConnection()はこのクライアントが接続する前から存在したメンバーすべてについてコールバックを呼んでからreturnします。
+    Client::waitConnection() を使う場合、
+    クライアントはサーバーに接続し、発見したすべてのメンバーについてonMemberEntryコールバックを呼んでからreturnします。
 
     \note
     <span class="since-c">2.0</span>
@@ -114,7 +136,8 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
-    `wcfMemberEntryEvent`, `wcfMemberEntryEventW` で引数に const char \* と void \* をとる関数ポインタをコールバックとして設定できます。
+    `wcfMemberEntryEvent`, `wcfMemberEntryEventW` で引数に const char \* と void \* をとる関数ポインタをコールバックとして設定できます。  
+    新しく接続したMemberの名前が引数に渡されます。
     void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
     ```c
     void callback_member_entry(const char *name, void *user_data_p) {
@@ -125,12 +148,18 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     wcfMemberEntryEvent(wcli, callback_member_entry, &user_data);
     ```
 
+    wcfWaitConnection() を使う場合、
+    クライアントはサーバーに接続し、発見したすべてのメンバーについてMemberEntryEventのコールバックを呼んでからreturnします。
+
 - <b class="tab-title">JavaScript</b>
+    引数にMemberを受け取る関数を Client.onMemberEntry() に設定することができます。
+    新しく接続したMemberの情報が引数に渡されます。
     ```ts
     import { Member } from "webcface";
 
     wcli.onMemberEntry.on((m: Member) => { /* ... */ });
     ```
+
     イベントの管理には [eventemitter3](https://www.npmjs.com/package/eventemitter3) ライブラリを使用しており、
     Client.onMemberEntry プロパティが返す [EventTarget](https://na-trium-144.github.io/webcface-js/classes/EventTarget.html) クラスのオブジェクトがEventEmitterのラッパーになっています。
 
@@ -139,6 +168,8 @@ Client::onMemberEntry() で新しいメンバーが接続されたときのイ�
     また `once(関数)` で1回だけ実行されるコールバックを設定できます。
     
 - <b class="tab-title">Python</b>
+    引数にMemberを受け取る関数を Client.on_member_entry() に設定することができます。
+    新しく接続したMemberの情報が引数に渡されます。
     ```python
     def member_entry(m: webcface.Member):
         pass
@@ -182,9 +213,9 @@ eventpp::counterRemover(wcli.onMemberEntry().callbackList())
 ver1.10以前は eventpp::EventDispatcher を使用していたため、
 EventTargetでの関数名(appendListenerなど)はCallbackListではなくEventDispatcherのものに従っている
 
-</details>
-
 これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。
+
+</details>
 
 ## クライアントの情報
 
@@ -201,6 +232,7 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 
 - <b class="tab-title">C++</b>
     `member.libVersion()`, `member.libName()`, `member.remoteAddr()` で取得できます。
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
@@ -208,6 +240,7 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 
 - <b class="tab-title">JavaScript</b>
     `member.libVersion`, `member.libName`, `member.remoteAddr` で取得できます。
+
 - <b class="tab-title">Python</b>
     `member.lib_version`, `member.lib_name`, `member.remote_addr` で取得できます。
     

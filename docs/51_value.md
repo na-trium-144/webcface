@@ -26,11 +26,11 @@ webcface-send
 
 ## 送信
 
-Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。
-
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。
+
     ```cpp
     wcli.value("hoge").set(5);
     wcli.value("fuga").set({1, 2, 3, 4, 5});
@@ -40,7 +40,7 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
     要素の型はdoubleに変換可能ならなんでもokです。
 
-     (C++のみ) set() の代わりに代入演算子(Value::operator=)でも同様のことができます。
+    set() の代わりに代入演算子(Value::operator=)でも同様のことができます。
     また、 operator+= など、doubleやintの変数で使える各種演算子も使えます
     ```cpp
     wcli.value("hoge") = 5;
@@ -71,12 +71,14 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
     で送信できます。
 
 - <b class="tab-title">JavaScript</b>
+    Client.value からValueオブジェクトを作り、 Value.set() でデータを代入し、Client.sync()することで送信されます。
     ```ts
     wcli.value("hoge").set(5);
     wcli.value("fuga").set([1, 2, 3, 4, 5]);
     ```
 
 - <b class="tab-title">Python</b>
+    Client.value からValueオブジェクトを作り、 Value.set() でデータを代入し、Client.sync()することで送信されます。
     ```python
     wcli.value("hoge").set(5)
     wcli.value("fuga").set([1, 2, 3, 4, 5])
@@ -84,7 +86,7 @@ Client::value からValueオブジェクトを作り、 Value::set() でデー�
 
 </div>
 
-\warning
+\note
 <span class="since-c">1.10</span>
 データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。
 (WebUI上に表示することなくデータを送ることができます)  
@@ -118,6 +120,12 @@ Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダ�
 
 Valueに限らず他のデータ型 ([View](./54_view.md), [Canvas2D](./61_canvas2d.md), [Image](./62_image.md), [Canvas3D](./63_canvas3d.md), [RobotModel](./64_robot_model.md)) でも同様です。
 
+![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
+
+\note
+ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
+WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -144,12 +152,11 @@ Valueに限らず他のデータ型 ([View](./54_view.md), [Canvas2D](./61_canva
     pos["y"].value() = 2;       // = "pos.y"
     pos.value("z") = 3;         // = "pos.z"
     ```
-    FieldとValue(とTextなどその他の型)は相互にキャストすることもできます。
 
     \note <span class="since-c">1.11</span>
     child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、
     グループ化ではなく配列としての値代入が優先されます。
-    (これはValue型のみの特別な処理です。)
+    (これはValue型のみの特別な処理です。)  
     ただし以下のような場合は通常の文字列と同様に処理します。
     ```cpp
     wcli.value("data")[0]["a"] = 1; // value("data.0.a") = 1
@@ -192,11 +199,6 @@ Valueに限らず他のデータ型 ([View](./54_view.md), [Canvas2D](./61_canva
 
 </div>
 
-![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
-
-ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
-WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
-
 ### 複数の値をまとめて送る
 
 \todo
@@ -227,7 +229,7 @@ Pythonの辞書型への対応は未実装
 
 </div>
 
-<details><summary>(deprecated, ver2.0で削除) C++でwebcface::Value::Dictを使った値のセット</summary>
+<details><summary>(ver1.11まで) C++でwebcface::Value::Dictを使った値のセット</summary>
 
 webcface::Value::Dict オブジェクトを使うと複数の値をまとめて送ることができます。
 これは構造体などのデータを送るときに使えます
@@ -263,21 +265,27 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
 ## 受信
 
-Member::value() でValueクラスのオブジェクトが得られ、
-Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
-
-例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
-
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    Member::value() でValueクラスのオブジェクトが得られ、
+    Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
     ```cpp
     std::optional<double> hoge = wcli.member("foo").value("hoge").tryGet();
     std::optional<std::vector<double>> hoge = wcli.member("foo").value("hoge").tryGetVec();
     ```
-    値を受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返します。  
-    get(), getVec() はstd::nulloptの代わりにデフォルト値を返します。  
-    また、doubleやstd::vector<double> などの型にキャストすることでも同様に値が得られます。
+    * 値をまだ受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient::sync()したときに</del>
+        <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Value::get(), Value::getVec() はstd::nulloptの代わりにデフォルト値を返します。
+    * また、doubleやstd::vector<double> などの型にキャストすることでも同様に値が得られます。
+
+    <span class="since-c">1.7</span>
+    Value::request() で明示的にリクエストを送信することもできます。
 
     <span class="since-c">1.8</span>
     std::ostreamにValueを直接渡して表示することもできます。
@@ -307,122 +315,117 @@ Value::tryGet(), Value::tryGetVec() などで値のリクエストをすると�
     ```
 
     \warning
-    <span class="since-c">1.11</span>
-    Valueオブジェクト同士を比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。)  
-    ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。
+    * <span class="since-c">1.11</span>
+    Valueオブジェクト同士を `==`, `!=` で比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。)  
+    * ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。
     値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
 
+    <span></span>
+
 - <b class="tab-title">C</b>
-    wcfValueGetVecD, (<span class="since-c">2.0</span> wcfValueGetVecDW) で受信できます
+    wcfValueGetVecD, (<span class="since-c">2.0</span> wcfValueGetVecDW) で受信できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
     ```c
     double value[5];
     int size;
-    int ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
+    int ret = wcfValueGetVecD(wcli, "foo", "hoge", value, 5, &size);
     // ex.) ret = WCF_NOT_FOUND
 
-    // few moments later,
-    ret = wcfValueGetVecD(wcli, "a", "hoge", value, 5, &size);
+    // after wcfSync(),
+    ret = wcfValueGetVecD(wcli, "foo", "hoge", value, 5, &size);
     // ex.) ret = WCF_OK, value = {123.45, 0, 0, 0, 0}, size = 1
     ```
-    sizeに受信した値の個数、valueに受信した値が入ります。
+    * sizeに受信した値の個数、valueに受信した値が入ります。
+    * 値をまだ受信していない場合 <del>`WCF_NOT_FOUND`</del>
+    <span class="since-c">2.0</span> `WCF_NO_DATA` を返し、そのデータのリクエストをサーバーに送ります。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度wcfValueGetVecD()することで値が得られます。
 
-    値を受信していない場合`WCF_NOT_FOUND`を返し、別スレッドでリクエストが送信されます。
-    
     <span class="since-c">1.7</span>
     1つの値のみを受信する場合は wcfValueGet, (<span class="since-c">2.0</span> wcfValueGetW) も使えます。
+    double型1つのみが受け取れる以外、動作はwcfValueGetVecDと同様です。
     ```c
     double value;
     ret = wcfValueGet(wcli, "a", "hoge", &value);
+    // ex.) value = 123.45
     ```
 
     \note <span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。
 
 - <b class="tab-title">JavaScript</b>
+    Member.value() でValueクラスのオブジェクトが得られ、
+    Value.tryGet(), Value.tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
     ```ts
     const hoge: double | null = wcli.member("foo").value("hoge").tryGet();
     const hoge: double[] | null = wcli.member("foo").value("hoge").tryGetVec();
     ```
-    値を受信していない場合 tryGet(), tryGetVec() はnullを返します。  
-    get(), getVec() はnullの代わりにデフォルト値を返します。
+    * 値を受信していない場合 tryGet(), tryGetVec() はnullを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient::sync()したときに</del>
+        <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * get(), getVec() はnullの代わりにデフォルト値を返します。
+
+    <span class="since-js">1.1</span>
+    Value.request()で明示的にリクエストを送信することもできます。
+
 - <b class="tab-title">Python</b>
+    Member.value() でValueクラスのオブジェクトが得られ、
+    Value.try_get(), Value.try_get_vec() などで値のリクエストをするとともに受信した値を取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
     ```python
     hoge = wcli.member("foo").value("hoge").try_get()
     hoge = wcli.member("foo").value("hoge").try_get_vec()
     ```
-    値を受信していない場合 try_get(), try_get_vec() はNoneを返します。  
-    get(), getVec() はNoneの代わりにデフォルト値を返します。
+    * 値を受信していない場合 try_get(), try_get_vec() はNoneを返し、そのデータのリクエストをサーバーに送ります。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度try_get()することで値が得られます。
+    * get(), getVec() はNoneの代わりにデフォルト値を返します。
+
+    Value.request()で明示的にリクエストを送信することもできます。
 
 </div>
-
-### リクエスト
-get()などの初回の呼び出しではまだ値を受信していないためnullなどを返しますが、  
-~~Client::sync()したときに実際にリクエストが送信され、~~  
-<span class="since-c">1.2</span>
-<span class="since-js">1.1</span>
-<span class="since-py"></span>
-自動的に別スレッドでリクエストが送信され、サーバーから値が返ってきたら値が得られるようになります。
-そのため、次の例のように繰り返し取得して使ってください。
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    ```cpp
-    while(true) {
-        std::optional<double> val = wcli.member("a").value("hoge").tryGet();
-        if(val) {
-            std::cout << "hoge = " << *val << std::endl;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
-    ```
-
-- <b class="tab-title">JavaScript</b>
-    ```ts
-    setInterval(() => {
-        const val = wcli.member("a").value("hoge").tryGet();
-        if(val !== null){
-            console.log(`hoge = ${val}`);
-        }
-    }, 100);
-    ```
-    
-- <b class="tab-title">Python</b>
-    ```python
-    while True:
-        val = wcli.member("foo").value("hoge").try_get()
-        if val is not None:
-            print(f"hoge = {val}")
-        time.sleep(0.1)
-    ```
-
-</div>
-
-
-\note
-<span class="since-c">1.7</span>
-<span class="since-js">1.1</span>
-<span class="since-py"></span>
-Value::request()で明示的にリクエストを送信することもできます。
 
 ### 時刻
 
-~~Value::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
-<span class="since-c">1.7</span>
-<span class="since-js">1.6</span>
-<span class="since-py"></span>
-Member::syncTime() に変更
-(Textなど他のデータの送信時刻と共通です)
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    <del>Value::time()</del> でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。  
+    <span class="since-c">1.7</span>
+    Member::syncTime() に変更
+    (Textなど他のデータの送信時刻と共通です)
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">2.0</span>
+
+    wcfMemberSyncTime() でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。
+    (Textなど他のデータの送信時刻と共通です)
+
+- <b class="tab-title">JavaScript</b>
+    <del>Value.time()</del> でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。  
+    <span class="since-js">1.6</span>
+    Member.syncTime() に変更
+    (Textなど他のデータの送信時刻と共通です)
+
+- <b class="tab-title">Python</b>
+    Member.sync_time() でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。
+    (Textなど他のデータの送信時刻と共通です)
+
+</div>
 
 ### Entry
-
-~~Member::values() で~~ そのMemberが送信しているvalueのリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::valueEntries() に変更
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    <del>Member::values() で</del> そのMemberが送信しているvalueのリストが得られます  
+    <span class="since-c">1.6</span>
+    Member::valueEntries() に変更
+
     ```cpp
     for(const webcface::Value &v: wcli.member("foo").valueEntries()){
         // ...
@@ -449,45 +452,61 @@ Member::valueEntries() に変更
     それぞれのvalue名の文字列は、 wcfClose() するまではfreeされません。
 
 - <b class="tab-title">JavaScript</b>
+    Member.values() でそのMemberが送信しているvalueのリストが得られます  
     ```js
     for(const v of wcli.member("foo").values()){
         // ...
     }
     ```
+
 - <b class="tab-title">Python</b>
+    <del>Member.values() で</del> そのMemberが送信しているvalueのリストが得られます  
+    <span class="since-py">1.1</span>
+    Member.value_entries() に変更
+
     ```python
-    for v in wcli.member("foo").values():
+    for v in wcli.member("foo").value_entries():
         # ...
     ```
 
 </div>
 
-Member::onValueEntry() で新しくデータが追加されたときのコールバックを設定できます。
+## ValueEntry イベント
 
-ただし、コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
-すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
-Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() 前に、
-そうでなければ Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
+他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。
 
-イベントの詳細な使い方はonMemberEntryと同様です([Member](./42_member.md) のページを参照してください)。
+イベントの詳細な使い方はMemberEntryと同様です([Member](./42_member.md) のページを参照してください)。
+このクライアントが接続する前から存在したデータについては start(), waitConnection() 時に一度に送られるので、
+コールバックの設定はstart()より前に行うと良いです。
+
+ValueEntryではデータの存在を知ることしかできません。
+データの内容を取得するにはコールバックの中で改めてget()やrequest()を呼ぶか、
+後述のValueChangeイベントを使ってください。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     <span class="since-c">2.0</span>
+    Member::onValueEntry() でコールバックを設定できます。
+    新しく追加されたValueの情報が引数に渡されます。
     ```cpp
     wcli.member("foo").onValueEntry([](webcface::Value v){ /* ... */ });
     ```
-
     ver1.11以前では `.onValueEntry().appendListener(...)`
 
-    <span class="since-c">2.0</span>
-    Client::waitConnection()はこのクライアントが接続する前から存在したデータすべてについてコールバックを呼んでからreturnします。
+    \note
+    * コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
+    * <span class="since-c">2.0</span>
+    Client::waitConnection()は接続時にサーバーに存在するデータすべてについてコールバックを呼んでからreturnします。
+    * すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
+    Member名がわかっていれば<del>初回の Client::sync()</del> Client::start() または waitConnection() 前に設定してください。
+    * すべてのメンバーのすべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Client::onMemberEntry() イベントのコールバックの中で各種イベントを設定すればよいです。
 
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
-    `wcfValueEntryEvent`, `wcfValueEntryEventW` で引数に const char \* 2つと void \* をとる関数ポインタをコールバックとして設定できます。
+    `wcfValueEntryEvent`, `wcfValueEntryEventW` で引数に const char \* 2つと void \* をとる関数ポインタをコールバックとして設定できます。  
+    新しく追加されたValueの名前が引数に渡されます。
     void\*引数には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
     ```c
     void callback_value_entry(const char *member_name, const char *value_name, void *user_data_p) {
@@ -500,13 +519,16 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
     wcfValueEntryEvent(wcli, "foo", callback_value_entry, &user_data);
     ```
 
-
 - <b class="tab-title">JavaScript</b>
+    Member.onValueEntry() でコールバックを設定できます。
+    新しく追加されたValueの情報が引数に渡されます。
     ```ts
     import { Value } from "webcface";
     wcli.member("foo").onValueEntry.on((v: Value) => { /* ... */ });
     ```
 - <b class="tab-title">Python</b>
+    Member.on_value_entry() でコールバックを設定できます。
+    新しく追加されたValueの情報が引数に渡されます。
     ```python
     def value_entry(v: webcface.Value):
         pass
@@ -515,23 +537,36 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
 
 </div>
 
-### Event
+### ValueChange イベント, onSync イベント
 
 受信したデータが変化したときにコールバックを呼び出すことができます。
-コールバックを設定することでもその値はリクエストされます。
+コールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。
 
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます。
+また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は onSync が使えます。
 
 イベントの詳細な使い方はonMemberEntryと同様です([Member](./42_member.md) のページを参照してください)。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
+    <span class="since-c">2.0</span>
+    Value::onValueChange(), Member::onSync() でコールバックを設定できます。  
+    引数にはそれぞれそのValue自身,Member自身が渡されます。
+    (キャプチャでも同じことができるのでなくてもよい)
     ```cpp
     wcli.member("foo").value("hoge").onChange([](webcface::Value v){ /* ... */ });
     wcli.member("foo").onSync([](webcface::Member m){ /* ... */ });
     ```
-    例えば全Memberの全Valueデータを受信するには
+    * ver1.11以前は `value("hoge").appendListener(...)`, `member("foo").onSync().appendListener(...)` です
+    * <span class="since-c">1.7</span>
+    引数を持たない関数もイベントのコールバックに設定可能です。
+    ```cpp
+    wcli.member("foo").value("hoge").onChange([](){ /* ... */ });
+    wcli.member("foo").onSync([](){ /* ... */ });
+    ```
+    (ver1.11以前は appendListener())
+
+    すべてのデータを受信したい場合は ValueEntry イベントの中でonChangeを設定すると可能です。
     ```cpp
     wcli.onMemberEntry([](webcface::Member m){
         m.onValueEntry([](webcface::Value v){
@@ -541,16 +576,7 @@ Member名がわかっていれば<del>初回の Client::sync()</del> Client::sta
         });
     });
     ```
-    のようにすると可能です。
 
-    <span class="since-c">1.7</span>
-    引数を持たない関数もイベントのコールバックに設定可能です。
-    ```cpp
-    wcli.member("foo").value("hoge").onChange([](){ /* ... */ });
-    wcli.member("foo").onSync([](){ /* ... */ });
-    ```
-
-    ver1.11以前は `value("hoge").appendListener(...)`, `member("foo").onSync().appendListener(...)` です
 
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
