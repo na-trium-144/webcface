@@ -1,3 +1,7 @@
+## [2.0.3] - 2024-08-29
+### Fixed
+* v2.0.2の変更でwebcface-config.cmakeのパスの展開にバグがあったのを修正 (#390)
+
 ## [2.0.2] - 2024-08-29
 ### Added
 * Value::operator=(std::vector\<double\>) 追加 (#387)
