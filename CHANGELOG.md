@@ -1,3 +1,7 @@
+## [2.0.4] - 2024-08-30
+### Fixed
+* macosのuniversalビルドでstd::bad_any_castになることがあるので、std::anyをやめてvariantに変更 (#392)
+
 ## [2.0.3] - 2024-08-29
 ### Fixed
 * v2.0.2の変更でwebcface-config.cmakeのパスの展開にバグがあったのを修正 (#390)
