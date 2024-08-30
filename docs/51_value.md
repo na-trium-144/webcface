@@ -281,8 +281,8 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
         * リクエストは <del>次にClient::sync()したときに</del>
         <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
-    * Value::get(), Value::getVec() はstd::nulloptの代わりにデフォルト値を返します。
-    * また、doubleやstd::vector<double> などの型にキャストすることでも同様に値が得られます。
+    * Value::get(), Value::getVec() はstd::nulloptの代わりに0を返します。
+    * また、doubleやstd::vector\<double\> などの型にキャストすることでも同様に値が得られます。
 
     <span class="since-c">1.7</span>
     Value::request() で明示的にリクエストを送信することもできます。
@@ -316,7 +316,8 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
     \warning
     * <span class="since-c">1.11</span>
-    Valueオブジェクト同士を `==`, `!=` で比較するとValueが参照するデータの名前が一致するかどうかで判定されます。(Textなど他のデータ型でも同様です。)  
+    Valueオブジェクト同士を `==`, `!=` で比較するとValueが参照するデータの名前が一致するかどうかで判定されます。
+    (Textなど他のデータ型でも同様です。)  
     * ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。
     値を比較したい場合は明示的にキャストするか`get()`などを呼んでください。
 
@@ -330,7 +331,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     double value[5];
     int size;
     int ret = wcfValueGetVecD(wcli, "foo", "hoge", value, 5, &size);
-    // ex.) ret = WCF_NOT_FOUND
+    // ex.) ret = WCF_NO_DATA
 
     // after wcfSync(),
     ret = wcfValueGetVecD(wcli, "foo", "hoge", value, 5, &size);
@@ -366,7 +367,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
         * リクエストは <del>次にClient::sync()したときに</del>
         <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
-    * get(), getVec() はnullの代わりにデフォルト値を返します。
+    * get(), getVec() はnullの代わりに0を返します。
 
     <span class="since-js">1.1</span>
     Value.request()で明示的にリクエストを送信することもできます。
@@ -383,7 +384,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     ```
     * 値を受信していない場合 try_get(), try_get_vec() はNoneを返し、そのデータのリクエストをサーバーに送ります。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度try_get()することで値が得られます。
-    * get(), getVec() はNoneの代わりにデフォルト値を返します。
+    * get(), getVec() はNoneの代わりに0を返します。
 
     Value.request()で明示的にリクエストを送信することもできます。
 
