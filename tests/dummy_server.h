@@ -6,7 +6,7 @@
 
 using namespace webcface;
 struct DummyServer {
-    std::vector<std::pair<int, message::MessageVariant>> recv_data;
+    std::vector<std::pair<int, std::shared_ptr<void>>> recv_data;
 
     // clientからT型のメッセージを受信していればf1, そうでなければf2を実行する
     template <typename T, typename F1, typename F2>
@@ -14,7 +14,7 @@ struct DummyServer {
         std::lock_guard lock(server_m);
         for (const auto &m : recv_data) {
             if (m.first == T::kind) {
-                on_ok(std::get<T>(m.second));
+                on_ok(*static_cast<T*>(m.second.get()));
                 return;
             }
         }
@@ -28,7 +28,7 @@ struct DummyServer {
                 std::lock_guard lock(server_m);
                 for (const auto &m : recv_data) {
                     if (m.first == T::kind) {
-                        on_ok(std::get<T>(m.second));
+                        on_ok(*static_cast<T*>(m.second.get()));
                         return;
                     }
                 }

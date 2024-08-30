@@ -16,11 +16,11 @@ static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
     // }
     // std::cerr << std::endl;
 }
-std::vector<std::pair<int, MessageVariant>>
+std::vector<std::pair<int, std::shared_ptr<void>>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger) {
     if (message.size() == 0) {
-        return std::vector<std::pair<int, MessageVariant>>{};
+        return std::vector<std::pair<int, std::shared_ptr<void>>>{};
     }
     try {
         msgpack::object_handle result;
@@ -30,18 +30,19 @@ unpack(const std::string &message,
 
         if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
             logger->error("unpack error: invalid array length");
-            return std::vector<std::pair<int, MessageVariant>>{};
+            return std::vector<std::pair<int, std::shared_ptr<void>>>{};
         }
-        std::vector<std::pair<int, MessageVariant>> ret;
+        std::vector<std::pair<int, std::shared_ptr<void>>> ret;
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
             auto kind = obj.via.array.ptr[i].as<int>();
-            MessageVariant obj_u;
+            std::shared_ptr<void> obj_u;
             switch (kind) {
 
 #define MSG_PARSE(type)                                                        \
     case type::kind:                                                           \
         try {                                                                  \
-            obj_u = obj.via.array.ptr[i + 1].as<type>();                       \
+            obj_u =                                                            \
+                std::make_shared<type>(obj.via.array.ptr[i + 1].as<type>());   \
         } catch (const std::exception &e) {                                    \
             logger->error("unpack error: {} at index={}, kind={}", e.what(),   \
                           i + 1, static_cast<int>(type::kind));                \
@@ -86,13 +87,13 @@ unpack(const std::string &message,
             }
 
             // printMsg(message);
-            ret.push_back(std::make_pair(kind, obj_u));
+            ret.push_back(std::make_pair(kind, std::move(obj_u)));
         }
         return ret;
     } catch (const std::exception &e) {
         logger->error("unpack error: {}", e.what());
         printMsg(logger, message);
-        return std::vector<std::pair<int, MessageVariant>>{};
+        return std::vector<std::pair<int, std::shared_ptr<void>>>{};
     }
 }
 } // namespace message

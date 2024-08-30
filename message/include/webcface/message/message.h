@@ -737,20 +737,11 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("p", cmp_mode_))
 };
 
-using MessageVariant =
-    std::variant<SyncInit, SyncInitEnd, Ping, PingStatus, PingStatusReq, Sync,
-                 Call, CallResponse, CallResult, Value, Text, RobotModel, View,
-                 Canvas3D, Canvas2D, Image, Log, LogReq, FuncInfo, Req<Value>,
-                 Req<Text>, Req<View>, Req<Canvas2D>, Req<Canvas3D>,
-                 Req<RobotModel>, Req<Image>, Entry<Value>, Entry<Text>,
-                 Entry<View>, Entry<Canvas2D>, Entry<Image>, Entry<Canvas3D>,
-                 Entry<RobotModel>, Res<Value>, Res<Text>, Res<RobotModel>,
-                 Res<View>, Res<Canvas3D>, Res<Canvas2D>, Res<Image>>;
 /*!
- * \brief msgpackのメッセージをパースしstd::anyで返す
+ * \brief msgpackのメッセージをパースし返す
  *
  */
-std::vector<std::pair<int, MessageVariant>>
+std::vector<std::pair<int, std::shared_ptr<void>>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger);
 
