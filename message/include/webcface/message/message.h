@@ -16,7 +16,6 @@
 #include <utility>
 #include <vector>
 #include <deque>
-#include <any>
 #include <cstdint>
 #include <spdlog/logger.h>
 #include "webcface/message/u8string.h"
@@ -576,14 +575,6 @@ struct Req : public MessageBase<T::kind + MessageKind::req> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
                        MSGPACK_NVP("f", field))
 };
-#if WEBCFACE_SYSTEM_DLLEXPORT
-extern template struct Req<Value>;
-extern template struct Req<Text>;
-extern template struct Req<View>;
-extern template struct Req<Canvas2D>;
-extern template struct Req<Canvas3D>;
-extern template struct Req<RobotModel>;
-#endif
 struct ImageReq {
     std::optional<int> rows = std::nullopt, cols = std::nullopt;
     std::optional<ImageColorMode> color_mode = std::nullopt;
@@ -628,15 +619,6 @@ struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     SharedString field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
-#if WEBCFACE_SYSTEM_DLLEXPORT
-extern template struct Entry<Value>;
-extern template struct Entry<Text>;
-extern template struct Entry<View>;
-extern template struct Entry<Canvas2D>;
-extern template struct Entry<Image>;
-extern template struct Entry<Canvas3D>;
-extern template struct Entry<RobotModel>;
-#endif
 template <typename T>
 struct Res {};
 /*!
@@ -754,11 +736,12 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
 };
+
 /*!
- * \brief msgpackのメッセージをパースしstd::anyで返す
+ * \brief msgpackのメッセージをパースし返す
  *
  */
-std::vector<std::pair<int, std::any>>
+std::vector<std::pair<int, std::shared_ptr<void>>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger);
 

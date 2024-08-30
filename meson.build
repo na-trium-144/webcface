@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.0.3',
+  version: '2.0.4',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -92,6 +92,9 @@ elif host_machine.system() == 'windows'
   endif
 elif host_machine.system() == 'cygwin'
   summary('System', 'cygwin')
+  if get_option('buildtype') == 'debug'
+    add_project_arguments('-Wa,-mbig-obj', language: ['cpp'])
+  endif
   webcface_system_dllexport = true
   webcface_system_wchar_windows = true
   webcface_system_version_rc = true

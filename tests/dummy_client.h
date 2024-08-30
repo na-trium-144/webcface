@@ -1,5 +1,4 @@
 #include "webcface/message/message.h"
-#include <any>
 #include <vector>
 #include <utility>
 #include <thread>
@@ -7,7 +6,7 @@
 
 using namespace webcface;
 struct DummyClient {
-    std::vector<std::pair<int, std::any>> recv_data;
+    std::vector<std::pair<int, std::shared_ptr<void>>> recv_data;
 
     // clientからT型のメッセージを受信していればf1, そうでなければf2を実行する
     template <typename T, typename F1, typename F2>
@@ -15,7 +14,7 @@ struct DummyClient {
         std::lock_guard lock(client_m);
         for (const auto &m : recv_data) {
             if (m.first == T::kind) {
-                on_ok(std::any_cast<T>(m.second));
+                on_ok(*static_cast<T*>(m.second.get()));
                 return;
             }
         }
@@ -29,7 +28,7 @@ struct DummyClient {
                 std::lock_guard lock(client_m);
                 for (const auto &m : recv_data) {
                     if (m.first == T::kind) {
-                        on_ok(std::any_cast<T>(m.second));
+                        on_ok(*static_cast<T*>(m.second.get()));
                         return;
                     }
                 }
