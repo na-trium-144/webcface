@@ -3,20 +3,6 @@
 
 WEBCFACE_NS_BEGIN
 namespace message {
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<Value>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<Text>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<View>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<Canvas2D>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<Canvas3D>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Req<RobotModel>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Value>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Text>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<View>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Canvas2D>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Image>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<Canvas3D>;
-template struct WEBCFACE_DLL_INSTANCE_DEF Entry<RobotModel>;
-
 static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
                      const std::string &message) {
     std::stringstream ss;
@@ -30,11 +16,11 @@ static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
     // }
     // std::cerr << std::endl;
 }
-std::vector<std::pair<int, std::any>>
+std::vector<std::pair<int, MessageVariant>>
 unpack(const std::string &message,
        const std::shared_ptr<spdlog::logger> &logger) {
     if (message.size() == 0) {
-        return std::vector<std::pair<int, std::any>>{};
+        return std::vector<std::pair<int, MessageVariant>>{};
     }
     try {
         msgpack::object_handle result;
@@ -44,12 +30,12 @@ unpack(const std::string &message,
 
         if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
             logger->error("unpack error: invalid array length");
-            return std::vector<std::pair<int, std::any>>{};
+            return std::vector<std::pair<int, MessageVariant>>{};
         }
-        std::vector<std::pair<int, std::any>> ret;
+        std::vector<std::pair<int, MessageVariant>> ret;
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
             auto kind = obj.via.array.ptr[i].as<int>();
-            std::any obj_u;
+            MessageVariant obj_u;
             switch (kind) {
 
 #define MSG_PARSE(type)                                                        \
@@ -106,7 +92,7 @@ unpack(const std::string &message,
     } catch (const std::exception &e) {
         logger->error("unpack error: {}", e.what());
         printMsg(logger, message);
-        return std::vector<std::pair<int, std::any>>{};
+        return std::vector<std::pair<int, MessageVariant>>{};
     }
 }
 } // namespace message

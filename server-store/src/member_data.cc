@@ -155,7 +155,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync_init: {
-            auto v = std::any_cast<webcface::message::SyncInit>(obj);
+            auto v = std::get<webcface::message::SyncInit>(obj);
             this->name = v.member_name;
             auto member_id_before = this->member_id;
             auto prev_cli_it = std::find_if(
@@ -181,8 +181,8 @@ void MemberData::onRecv(const std::string &message) {
                     this->sink);
                 this->logger->set_level(this->logger_level);
                 this->logger->debug(
-                    "sync_init name={}, member_id={} (before {})", this->name.decode(),
-                    this->member_id, member_id_before);
+                    "sync_init name={}, member_id={} (before {})",
+                    this->name.decode(), this->member_id, member_id_before);
                 this->logger->info("successfully connected and initialized.");
                 // 全クライアントに新しいMemberを通知
                 store->forEach([&](auto cd) {
@@ -283,7 +283,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::sync: {
-            auto v = std::any_cast<webcface::message::Sync>(obj);
+            auto v = std::get<webcface::message::Sync>(obj);
             v.member_id = this->member_id;
             logger->debug("sync");
             // 1つ以上リクエストしているクライアントにはsyncの情報を流す
@@ -296,7 +296,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call: {
-            auto v = std::any_cast<webcface::message::Call>(obj);
+            auto v = std::get<webcface::message::Call>(obj);
             v.caller_member_id = this->member_id;
             logger->debug(
                 "call caller_id={}, target_id={}, field={}, with {} args",
@@ -322,7 +322,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call_response: {
-            auto v = std::any_cast<webcface::message::CallResponse>(obj);
+            auto v = std::get<webcface::message::CallResponse>(obj);
             logger->debug("call_response to (member_id {}, caller_id {}), {}",
                           v.caller_member_id, v.caller_id, v.started);
             this->pending_calls[v.caller_member_id][v.caller_id] = 1;
@@ -336,7 +336,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::call_result: {
-            auto v = std::any_cast<webcface::message::CallResult>(obj);
+            auto v = std::get<webcface::message::CallResult>(obj);
             logger->debug(
                 "call_result to (member_id {}, caller_id {}), {} as {}",
                 v.caller_member_id, v.caller_id,
@@ -355,7 +355,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::value: {
-            auto v = std::any_cast<webcface::message::Value>(obj);
+            auto v = std::get<webcface::message::Value>(obj);
             if (v.data->size() == 1) {
                 logger->debug("value {} = {}", v.field.decode(), (*v.data)[0]);
             } else {
@@ -391,7 +391,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::text: {
-            auto v = std::any_cast<webcface::message::Text>(obj);
+            auto v = std::get<webcface::message::Text>(obj);
             logger->debug("text {} = {}", v.field.decode(),
                           static_cast<std::string>(*v.data));
             if (!this->text.count(v.field) &&
@@ -424,7 +424,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::robot_model: {
-            auto v = std::any_cast<webcface::message::RobotModel>(obj);
+            auto v = std::get<webcface::message::RobotModel>(obj);
             logger->debug("robot model {}", v.field.decode());
             if (!this->robot_model.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
@@ -457,7 +457,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::view: {
-            auto v = std::any_cast<webcface::message::View>(obj);
+            auto v = std::get<webcface::message::View>(obj);
             logger->debug("view {} diff={}, length={}", v.field.decode(),
                           v.data_diff.size(), v.length);
             if (!this->view.count(v.field) &&
@@ -492,7 +492,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::canvas3d: {
-            auto v = std::any_cast<webcface::message::Canvas3D>(obj);
+            auto v = std::get<webcface::message::Canvas3D>(obj);
             logger->debug("canvas3d {} diff={}, length={}", v.field.decode(),
                           v.data_diff.size(), v.length);
             if (!this->canvas3d.count(v.field) &&
@@ -528,7 +528,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::canvas2d: {
-            auto v = std::any_cast<webcface::message::Canvas2D>(obj);
+            auto v = std::get<webcface::message::Canvas2D>(obj);
             logger->debug("canvas2d {} diff={}, length={}", v.field.decode(),
                           v.data_diff.size(), v.length);
             if (!this->canvas2d.count(v.field) &&
@@ -568,7 +568,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::image: {
-            auto v = std::any_cast<webcface::message::Image>(obj);
+            auto v = std::get<webcface::message::Image>(obj);
             logger->debug("image {} ({} x {})", v.field.decode(), v.width_,
                           v.height_);
             if (!this->image.count(v.field) &&
@@ -602,7 +602,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::log: {
-            auto v = std::any_cast<webcface::message::Log>(obj);
+            auto v = std::get<webcface::message::Log>(obj);
             v.member_id = this->member_id;
             logger->debug("log {} lines", v.log->size());
             if (store->keep_log >= 0 &&
@@ -632,7 +632,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::func_info: {
-            auto v = std::any_cast<webcface::message::FuncInfo>(obj);
+            auto v = std::get<webcface::message::FuncInfo>(obj);
             v.member_id = this->member_id;
             logger->debug("func_info {}", v.field.decode());
             if (!this->func.count(v.field) &&
@@ -650,8 +650,7 @@ void MemberData::onRecv(const std::string &message) {
         }
         case MessageKind::req + MessageKind::value: {
             auto s =
-                std::any_cast<webcface::message::Req<webcface::message::Value>>(
-                    obj);
+                std::get<webcface::message::Req<webcface::message::Value>>(obj);
             logger->debug("request value ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -685,8 +684,7 @@ void MemberData::onRecv(const std::string &message) {
         }
         case MessageKind::req + MessageKind::text: {
             auto s =
-                std::any_cast<webcface::message::Req<webcface::message::Text>>(
-                    obj);
+                std::get<webcface::message::Req<webcface::message::Text>>(obj);
             logger->debug("request text ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -720,8 +718,9 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::robot_model: {
-            auto s = std::any_cast<
-                webcface::message::Req<webcface::message::RobotModel>>(obj);
+            auto s =
+                std::get<webcface::message::Req<webcface::message::RobotModel>>(
+                    obj);
             logger->debug("request robot_model ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -755,8 +754,7 @@ void MemberData::onRecv(const std::string &message) {
         }
         case MessageKind::req + MessageKind::view: {
             auto s =
-                std::any_cast<webcface::message::Req<webcface::message::View>>(
-                    obj);
+                std::get<webcface::message::Req<webcface::message::View>>(obj);
             logger->debug("request view ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -796,8 +794,9 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::canvas3d: {
-            auto s = std::any_cast<
-                webcface::message::Req<webcface::message::Canvas3D>>(obj);
+            auto s =
+                std::get<webcface::message::Req<webcface::message::Canvas3D>>(
+                    obj);
             logger->debug("request canvas3d ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -837,8 +836,9 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::req + MessageKind::canvas2d: {
-            auto s = std::any_cast<
-                webcface::message::Req<webcface::message::Canvas2D>>(obj);
+            auto s =
+                std::get<webcface::message::Req<webcface::message::Canvas2D>>(
+                    obj);
             logger->debug("request canvas2d ({}): {} from {}", s.req_id,
                           s.field.decode(), s.member.decode());
             // 指定した値を返す
@@ -883,8 +883,7 @@ void MemberData::onRecv(const std::string &message) {
         }
         case MessageKind::req + MessageKind::image: {
             auto s =
-                std::any_cast<webcface::message::Req<webcface::message::Image>>(
-                    obj);
+                std::get<webcface::message::Req<webcface::message::Image>>(obj);
             logger->debug("request image ({}): {} from {}, {} x {}, color={}, "
                           "mode={}, q={}, fps={}",
                           s.req_id, s.field.decode(), s.member.decode(),
@@ -909,7 +908,7 @@ void MemberData::onRecv(const std::string &message) {
             break;
         }
         case MessageKind::log_req: {
-            auto s = std::any_cast<webcface::message::LogReq>(obj);
+            auto s = std::get<webcface::message::LogReq>(obj);
             logger->debug("request log from {}", s.member.decode());
             log_req.insert(s.member);
             // 指定した値を返す
