@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.3</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -153,7 +153,6 @@ $(document).ready(function(){initNavTree('message_8h.html',''); initResizable();
 <code>#include &lt;utility&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;deque&gt;</code><br />
-<code>#include &lt;any&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;spdlog/logger.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="u8string_8h_source.html">webcface/message/u8string.h</a>&quot;</code><br />
@@ -162,7 +161,7 @@ $(document).ready(function(){initNavTree('message_8h.html',''); initResizable();
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for message.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="1636" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8h__incl.svg" width="1566" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -320,9 +319,9 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:af4c21164f578c30ba84af08bd406b981" id="r_af4c21164f578c30ba84af08bd406b981"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; <a class="el" href="structTemporalComponent.html">int</a>, std::any &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#af4c21164f578c30ba84af08bd406b981">unpack</a> (<a class="el" href="structTemporalComponent.html">const</a> std::string &amp;message, <a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
-<tr class="memdesc:af4c21164f578c30ba84af08bd406b981"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="structTemporalComponent.html#a86ef0b383de91011a8a4ea466957d838">msgpackのメッセージをパースしstd::anyで返す</a>  <br /></td></tr>
-<tr class="separator:af4c21164f578c30ba84af08bd406b981"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80e74661d4870765688ab1b4ffc0a496" id="r_a80e74661d4870765688ab1b4ffc0a496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; <a class="el" href="structTemporalComponent.html">int</a>, std::shared_ptr&lt; <a class="el" href="structTemporalComponent.html">void</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a> (<a class="el" href="structTemporalComponent.html">const</a> std::string &amp;message, <a class="el" href="structTemporalComponent.html">const</a> std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memdesc:a80e74661d4870765688ab1b4ffc0a496"><td class="mdescLeft">&#160;</td><td class="mdescRight">msgpackのメッセージをパースし返す  <br /></td></tr>
+<tr class="separator:a80e74661d4870765688ab1b4ffc0a496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a965c311b611151d72a5129362ea11618" id="r_a965c311b611151d72a5129362ea11618"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="structTemporalComponent.html">typename</a> <a class="el" href="structTemporalComponent.html">T</a> &gt; </td></tr>
 <tr class="memitem:a965c311b611151d72a5129362ea11618"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a965c311b611151d72a5129362ea11618">packSingle</a> (<a class="el" href="structTemporalComponent.html">const</a> <a class="el" href="structTemporalComponent.html">T</a> &amp;<a class="el" href="structTemporalComponent.html">obj</a>)</td></tr>
 <tr class="memdesc:a965c311b611151d72a5129362ea11618"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージ1つを要素数2の配列としてシリアル化  <br /></td></tr>
@@ -355,7 +354,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_a6076a770b2fcf500b134dd4b5eda5a3.html">include</a></li><li class="navelem"><a class="el" href="dir_f6f3eb0f33fd584af7d3535993a573c2.html">webcface</a></li><li class="navelem"><a class="el" href="dir_b22d29bd644537694a773143f981a332.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
-    <li class="footer">Generated on Thu Aug 29 2024 05:38:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
+    <li class="footer">Generated on Fri Aug 30 2024 11:00:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
 </body>
