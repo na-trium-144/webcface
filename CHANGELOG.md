@@ -1,6 +1,6 @@
 ## [2.0.4] - 2024-08-30
 ### Fixed
-* macosのuniversalビルドでstd::bad_any_castになることがあるので、std::anyをやめてvariantに変更 (#392)
+* macosのuniversalビルドでstd::bad_any_castになることがあるので、std::anyをやめてshared_ptr\<void\>に変更 (#392)
 
 ## [2.0.3] - 2024-08-29
 ### Fixed
