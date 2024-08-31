@@ -296,6 +296,10 @@ x86バージョンとx64バージョンがあります。
     * アンインストールはコントロールパネルや設定アプリから他のアプリと同様にできます。
 * zipファイルは任意の場所に展開して使用してください。
     * コマンドラインツールやライブラリを使う(Meson,CMakeでインポートする)には、展開したwebcfaceディレクトリの中の bin/ を手動で環境変数のPATHに追加する必要があります。
+* [最新の Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+がインストールされていない場合はインストールする必要があります。
+* 比較的新しいWindows10以上であれば動作するはずです。古いWindowsでは動作確認していません。
+* いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
