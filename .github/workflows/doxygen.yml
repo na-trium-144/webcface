@@ -13,9 +13,11 @@ jobs:
         submodules: "recursive"
     - name: install graphviz
       run: sudo apt-get update && sudo apt-get install -y graphviz
+    # 1.9.8で生成するとリンクがバグる。
+    # 1.10以上はまだ試していない
     - uses: ssciwr/doxygen-install@v1
       with:
-        version: "1.9.8"
+        version: "1.9.7"
     - name: Install ninja
       run: sudo apt-get update && sudo apt-get install -y ninja-build
     - name: Install meson

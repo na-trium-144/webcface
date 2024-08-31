@@ -89,6 +89,23 @@ WebブラウザーからWebCFaceで通信されているデータを可視化し
 なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
+### WebCFace-Tools
+
+コマンドラインからWebCFaceのデータにアクセスできるコマンドもいくつか用意しています。
+
+[webcface-launcher](https://na-trium-144.github.io/webcface/md_docs_271__launcher.html)
+は事前に登録しておいたコマンドの起動・停止をWebCFaceのViewから操作することができる機能です。
+serverとlauncherだけを常時起動しておき、WebUIを使ってプログラムをリモートに操作するという使い方ができます。
+
+![launcher.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png)
+
+[webcface-tui](https://na-trium-144.github.io/webcface/md_docs_275__tui.html)
+はターミナル上で操作できるTUIアプリで、Webブラウザを開かなくてもデータをリアルタイムで確認したり、Viewの操作もできます。
+
+![tui_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_value.gif)
+
+![tui_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_view.png)
+
 <!--
 ### PlotJuggler
 
@@ -136,138 +153,172 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 
 ## Installation
 
-<details><summary>以下のインストール手順は WebCFace ver1 をインストールします。ver2はまだリリースしていません。</summary>
+WebCFace ver1については [v1ブランチ](https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation) を参照してください。
 
-以下の手順で webcface, webcface-webui, webcface-tools をインストールできます。
+ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。
 
 ### Ubuntu (x86_64, arm64, armhf)
-[WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からそれぞれ最新のdebパッケージをダウンロードしてインストールできます。
 
-debパッケージはubuntu20.04,22.04,24.04でビルドしています。
-それぞれ依存するパッケージのバージョンが違います。
-Debianなど他のディストリビューションで動作するかはわかりません。
+[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+linux用のzipファイルをダウンロードし、任意の場所に展開してください。
+* sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。
+* また、展開したディレクトリ内の bin/ をPATHに、 lib/\*-linux-gnu\*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
+* さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。
 
-コマンドからダウンロードするなら以下のようにします。
+Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作しません(ソースからビルドする必要があります)。
+また、Ubuntu以外のディストリビューションで動作するかはわかりません。
 
-#### Ubuntu 24.04 Noble
+ダウンロードと展開をコマンドラインでやるなら以下のようにします。
+(/opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。)
+
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_amd64.zip
+sudo unzip webcface_2.0.4_linux_amd64.zip -d /opt/webcface
+rm webcface_2.0.4_linux_amd64.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 ```
 </details>
 
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_arm64.zip
+sudo unzip webcface_2.0.4_linux_arm64.zip -d /opt/webcface
+rm webcface_2.0.4_linux_arm64.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 ```
 </details>
 
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu24.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu24.04_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_armhf.zip
+sudo unzip webcface_2.0.4_linux_armhf.zip -d /opt/webcface
+rm webcface_2.0.4_linux_armhf.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 ```
 </details>
 
-#### Ubuntu 22.04 Jammy
+
+### Deb Package (Ubuntu x86_64, arm64, armhf)
+
+Debパッケージとしてビルドしたものを [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からダウンロードしてインストールできます。
+内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。
+
+Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作しません(ソースからビルドする必要があります)。
+また、Ubuntu以外のディストリビューションで動作するかはわかりません。
+
+ダウンロードと展開をコマンドラインでやるなら以下のようにします。
+
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_amd64.deb
-```
-</details>
-
-<details><summary>arm64</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_arm64.deb
-```
-</details>
-
-<details><summary>armhf</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu22.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu22.04_armhf.deb
-```
-</details>
-
-#### Ubuntu 20.04 Focal
-<details><summary>x86_64</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_amd64.deb
-```
-</details>
-
-<details><summary>arm64</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_arm64.deb
-```
-</details>
-
-<details><summary>armhf</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v1.11.4/webcface_1.11.4-ubuntu20.04_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.7.0/webcface-webui_1.7.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v1.4.5/webcface-tools_1.4.5-ubuntu20.04_armhf.deb
-```
-</details>
-
-ダウンロードできたら
-```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
-でインストールできます
+</details>
+
+<details><summary>arm64</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_arm64.deb
+sudo apt install ./webcface*.deb
+rm ./webcface*.deb
+```
+</details>
+
+<details><summary>armhf</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_armv7l.deb
+sudo apt install ./webcface*.deb
+rm ./webcface*.deb
+```
+</details>
+
+### macOS
+
+webcface-package リポジトリからmacos用のzipファイルをダウンロードできますが、
+署名や公証をしていないためブラウザーからダウンロードするとGatekeeperにブロックされてしまいます。
+(開発元を検証できないため開けません。の画面になります)
+
+以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。
+
+Universalバイナリになっており、IntelMacもAppleシリコンも共通です。
+macOS 12 (Monterey) でビルドしているので、それより古いMacでは動かないかもしれません。
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_macos_universal.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface-desktop_2.0.4_macos_app.zip
+```
+
+sudo権限が使用できれば以下のように webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開するのがおすすめです。
+```sh
+sudo unzip webcface_2.0.4_macos_universal.zip -d /opt/webcface
+sudo unzip webcface-desktop_2.0.4_macos_app.zip -d /Applications
+rm webcface_2.0.4_macos_universal.zip
+rm webcface-desktop_2.0.4_macos_app.zip
+```
+
+また、展開したディレクトリ内の bin/ をPATHに、 lib/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
+(別の場所に展開した場合や、zsh以外の環境の場合は適宜読み替えてください)
+```sh
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.zshrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc
+```
+
+webcfaceライブラリはinstall_nameが /opt/webcface/lib のパスになっているため、それ以外の場所に展開した場合は
+`export DYLD_LIBRARY_PATH="(webcfaceディレクトリのパス)/lib:$DYLD_LIBRARY_PATH"`
+も必要になるかもしれません。
 
 ### Homebrew (MacOS, Linux)
+
+[na-trium-144/webcface のtap](https://github.com/na-trium-144/homebrew-webcface) からインストールできますが、
+brewでビルドしたwebcfaceはsharedライブラリとして多数の依存ライブラリが必要になるのであまりおすすめしません。
+
+また、brewでインストールした場合 WebCFace Desktop アプリは付属しません。
 ```sh
 brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
 
-### App Bundle for MacOS
-[homebrew-webcfaceのRelease](https://github.com/na-trium-144/homebrew-webcface/releases) から .app.zip ファイルをダウンロードするか、
-```sh
-brew tap na-trium-144/webcface
-brew install --cask webcface-webui-server
-```
-でインストールできます。
+### Windows MSVC
 
-インストールしたappを起動するとWebUIのウィンドウとwebcface-serverが起動します。(詳細はドキュメントの [Overview](https://na-trium-144.github.io/webcface/md_00__overview.html) を参照)
-
-### Windows (MSVC)
-[webcface-windows-packageのRelease](https://github.com/na-trium-144/webcface-windows-package/releases)からダウンロードしてください。
-
-exeファイルは実行するとインストーラーが起動します。
-zipファイルは任意の場所に展開して使用してください。
-
-(ver2.0〜) Windows版WebCFaceのReleaseに含まれるビルド済みのspdlogは
-`SPDLOG_WCHAR_SUPPORT` オプションがオンの状態です
+webcface-package リポジトリからwindows用のexeファイルまたはzipファイルをダウンロードできます。
+x86バージョンとx64バージョンがあります。
+(ただしインストーラーと WebCFace Desktop アプリはどちらも32bitになっています)
+* exeファイルは実行するとインストーラーが起動します。
+    * 署名していないため Windows Defender にブロックされるかもしれません。
+    その場合は「詳細情報」→「実行」をクリックして実行してください。
+    * インストール場所はデフォルトで C:\Program Files\webcface になります。(変更可能です)
+    * また、自動的に環境変数のPATHが設定され、スタートメニューにも WebCFace Desktop のショートカットが追加されます。
+    * アンインストールはコントロールパネルや設定アプリから他のアプリと同様にできます。
+* zipファイルは任意の場所に展開して使用してください。
+    * コマンドラインツールやライブラリを使う(Meson,CMakeでインポートする)には、展開したwebcfaceディレクトリの中の bin/ を手動で環境変数のPATHに追加する必要があります。
+* [最新の Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+がインストールされていない場合はインストールする必要があります。
+* 比較的新しいWindows10以上であれば動作するはずです。古いWindowsでは動作確認していません。
+* いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
-
-</details>
 
 ## Documentation
 
@@ -295,7 +346,7 @@ WebCFace本体とtoolsが使用しているサードパーティーのライブ�
 * Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
 * UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
-* OpenCV (Apache 2.0) : https://opencv.org/license/
 * ImageMagick: https://imagemagick.org/script/license.php
-* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
-* toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)
+* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library
+* toml++ (MIT) : https://github.com/marzer/tomlplusplus
+* FTXUI (MIT) : https://github.com/ArthurSonzogni/FTXUI
