@@ -144,7 +144,7 @@ $(document).ready(function(){initNavTree('md_docs_222__webui.html',''); initResi
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md6">Serverから</a></li>
-<li class="level1"><a href="#autotoc_md7">WebUI Desktop</a></li>
+<li class="level1"><a href="#autotoc_md7">WebCFace Desktop</a></li>
 <li class="level1"><a href="#autotoc_md9">各種データ型へのアクセス</a><ul><li class="level2"><a href="#autotoc_md10">Value</a></li>
 <li class="level2"><a href="#autotoc_md11">Text</a></li>
 <li class="level2"><a href="#autotoc_md12">View</a></li>
@@ -159,18 +159,35 @@ $(document).ready(function(){initNavTree('md_docs_222__webui.html',''); initResi
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md5"></a></p>
-<p>WebCFaceはWebCFaceの通信データにアクセスできるGUIです。</p>
+<p>WebUI はWebCFaceの通信データにアクセスできるGUIです。</p>
 <h1><a class="anchor" id="autotoc_md6"></a>
 Serverから</h1>
 <p>webcface-server を起動し、コンソールに表示されるurl (<a href="http://127.0.0.1:7530/index.html">http://127.0.0.1:7530/index.html</a> など) をブラウザで開きましょう。</p>
 <p>WebUI右上のMenuにWebCFaceに接続しているクライアントの一覧が表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
 <dl class="section note"><dt>Note</dt><dd>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</dd></dl>
 <h1><a class="anchor" id="autotoc_md7"></a>
-WebUI Desktop</h1>
-<p>ver2は準備中</p>
+WebCFace Desktop</h1>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c">2.0</span></dd></dl>
+<p>READMEの手順にしたがってインストールすると、「WebCFace Desktop」のアイコン <img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" alt="" style="pointer-events: none;" height="24" class="inline"/> が スタートメニュー(Windows)、 アプリケーションメニュー(Ubuntu)、 Launchpadまたはアプリケーションフォルダ(Mac) に表示されているはずです。</p>
+<p>それを起動すると、WebUIの画面が独立したアプリとして起動すると同時に、バックグラウンドで webcface-server が起動します。</p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>Windows, Linuxでzipアーカイブを手動で展開した場合は、展開したディレクトリの中の webcface-desktop フォルダの中にwebcface-desktopの実行ファイルがあるはずです。</li>
+<li>Macではダウンロードした webcface-desktop.app はどこに配置しても起動はできます。</li>
+</ul>
+</dd></dl>
+<p>この場合、通常のWebUIにはないメニュー項目がいくつか現れます。 ここで操作した内容は自動的に保存されます。</p>
+<ul>
+<li>Import Config, Export Config: 自動保存される WebCFace Desktop の設定を別ファイルに保存したり読み込むことができます。</li>
+<li>Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。</li>
+<li>Logs: サーバーの出力するログが見れます。</li>
+<li>Launcher Config: <a class="el" href="md_docs_271__launcher.html">webcface-launcher</a> の設定を編集できます。</li>
+</ul>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png" alt="webui-server" class="inline"/></p>
+<p>WebCFace Desktopを終了するとserverやlauncherも自動的に終了します。 次に画面を開いた時自動的に前回の状態が復元されます。</p>
+<dl class="section note"><dt>Note</dt><dd>設定を自動保存する場所はWindowsでは <code>C:\Users\(user)\AppData\Roaming\webcface\sg.toml</code> 、それ以外では <code>$HOME/.webcface.sg.toml</code> です。</dd></dl>
 <details >
 <summary >
-WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
+WebCFace ver1 (WebUI ver1.3〜1.6)まで (WebUI Server Mode)</summary>
 <p></p>
 <p>WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。</p>
 <ul>
@@ -178,16 +195,6 @@ WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
 <li>MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください</li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>ソースコードとバイナリ配布はこのリポジトリではなく <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください</dd></dl>
-<p>この場合、通常のWebUIにはないメニュー項目がいくつか現れます。 ここで操作した内容は自動的に保存されます。</p>
-<ul>
-<li>Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。</li>
-<li>Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。</li>
-<li>Logs: サーバーの出力するログが見れます。</li>
-<li>Launcher Config: <a class="el" href="md_docs_271__launcher.html">webcface-launcher</a> の設定を編集できます。</li>
-</ul>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png" alt="webui-server" class="inline"/></p>
-<p>WebUIの画面を閉じるとserverも終了します。 次に画面を開いた時自動的に前回の状態が復元されます。</p>
-<dl class="section note"><dt>Note</dt><dd>設定を自動保存する場所はWindowsでは <code>C:\Users\(user)\AppData\Roaming\webcface\sg.toml</code> 、それ以外では <code>$HOME/.webcface.sg.toml</code> です。</dd></dl>
 </details>
 <h1><a class="anchor" id="autotoc_md9"></a>
 各種データ型へのアクセス</h1>
@@ -259,7 +266,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Aug 31 2024 11:51:16 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

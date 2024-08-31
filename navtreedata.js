@@ -50,7 +50,7 @@ var NAVTREE =
     ] ],
     [ "2-2. WebUI", "md_docs_222__webui.html", [
       [ "Serverから", "md_docs_222__webui.html#autotoc_md6", null ],
-      [ "WebUI Desktop", "md_docs_222__webui.html#autotoc_md7", null ],
+      [ "WebCFace Desktop", "md_docs_222__webui.html#autotoc_md7", null ],
       [ "各種データ型へのアクセス", "md_docs_222__webui.html#autotoc_md9", [
         [ "Value", "md_docs_222__webui.html#autotoc_md10", null ],
         [ "Text", "md_docs_222__webui.html#autotoc_md11", null ],
