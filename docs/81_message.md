@@ -484,6 +484,6 @@ data = {
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-2. webcface-send](72_send.md) | [8-2. ]() |
+| [7-5. webcface-tui](75_tui.md) | [8-2. ](82_) |
 
 </div>

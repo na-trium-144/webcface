@@ -329,7 +329,7 @@ WebCFace本体とtoolsが使用しているサードパーティーのライブ�
 * Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
 * CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
 * UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
-* OpenCV (Apache 2.0) : https://opencv.org/license/
 * ImageMagick: https://imagemagick.org/script/license.php
-* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library (toolsで使用)
-* toml++ (MIT) : https://github.com/marzer/tomlplusplus (toolsで使用)
+* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library
+* toml++ (MIT) : https://github.com/marzer/tomlplusplus
+* FTXUI (MIT) : https://github.com/ArthurSonzogni/FTXUI

@@ -49,6 +49,6 @@ webcface-send -t log
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-1. webcface-launcher](71_launcher.md) | [8-1. Message](81_message.md) |
+| [7-1. webcface-launcher](71_launcher.md) | [7-4. webcface-ls](74_ls.md) |
 
 </div>
