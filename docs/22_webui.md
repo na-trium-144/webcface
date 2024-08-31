@@ -2,7 +2,7 @@
 
 \tableofcontents
 
-WebCFaceはWebCFaceの通信データにアクセスできるGUIです。
+WebUI はWebCFaceの通信データにアクセスできるGUIです。
 
 ## Serverから
 
@@ -14,11 +14,41 @@ Menuから見たいデータを選ぶことで小さいウィンドウのよう�
 \note
 ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。
 
-## WebUI Desktop
+## WebCFace Desktop
 
-ver2は準備中
+\since <span class="since-c">2.0</span>
 
-<details><summary>WebCFace ver1 (WebUI ver1.6.0)まで (WebUI Server Mode)</summary>
+READMEの手順にしたがってインストールすると、「WebCFace Desktop」のアイコン
+<img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" height="24" />
+が
+スタートメニュー(Windows)、
+アプリケーションメニュー(Ubuntu)、
+Launchpadまたはアプリケーションフォルダ(Mac)
+に表示されているはずです。
+
+それを起動すると、WebUIの画面が独立したアプリとして起動すると同時に、バックグラウンドで webcface-server が起動します。
+
+\note
+* Windows, Linuxでzipアーカイブを手動で展開した場合は、展開したディレクトリの中の webcface-desktop フォルダの中にwebcface-desktopの実行ファイルがあるはずです。
+* Macではダウンロードした webcface-desktop.app はどこに配置しても起動はできます。
+
+この場合、通常のWebUIにはないメニュー項目がいくつか現れます。
+ここで操作した内容は自動的に保存されます。
+
+* Import Config, Export Config: 自動保存される WebCFace Desktop の設定を別ファイルに保存したり読み込むことができます。
+* Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。
+* Logs: サーバーの出力するログが見れます。
+* Launcher Config: [webcface-launcher](./71_launcher.md) の設定を編集できます。
+
+![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
+
+WebCFace Desktopを終了するとserverやlauncherも自動的に終了します。
+次に画面を開いた時自動的に前回の状態が復元されます。
+
+\note
+設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
+
+<details><summary>WebCFace ver1 (WebUI ver1.3〜1.6)まで (WebUI Server Mode)</summary>
 
 WebUIをブラウザーからではなくアプリとして開くと、バックグラウンドでいっしょにサーバーが起動します。
 
@@ -26,22 +56,6 @@ WebUIをブラウザーからではなくアプリとして開くと、バック
 * MacOSではREADMEにしたがってAppバンドルをダウンロードして起動してください
 
 \note ソースコードとバイナリ配布はこのリポジトリではなく [webcface-webui](https://github.com/na-trium-144/webcface-webui) に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください
-
-この場合、通常のWebUIにはないメニュー項目がいくつか現れます。
-ここで操作した内容は自動的に保存されます。
-
-* Import Config, Export Config: 自動保存されるServer Modeの設定を別ファイルに保存したり読み込むことができます。
-* Server Status: サーバーの状態、IPアドレスが見れます。またLauncherの起動、停止ができます。
-* Logs: サーバーの出力するログが見れます。
-* Launcher Config: [webcface-launcher](./71_launcher.md) の設定を編集できます。
-
-![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
-
-WebUIの画面を閉じるとserverも終了します。
-次に画面を開いた時自動的に前回の状態が復元されます。
-
-\note
-設定を自動保存する場所はWindowsでは `C:\Users\(user)\AppData\Roaming\webcface\sg.toml` 、それ以外では `$HOME/.webcface.sg.toml` です。
 
 </details>
 

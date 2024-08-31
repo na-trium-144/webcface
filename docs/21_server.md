@@ -44,7 +44,7 @@ Options:
 
 \since <span class="since-c">1.5.3</span>
 
-配布しているdebパッケージでは [webcface-server.service](https://github.com/na-trium-144/webcface/blob/main/scripts/webcface-server.service) がインストールされ、
+READMEの手順に従って [webcface-server.service](https://github.com/na-trium-144/webcface/blob/main/scripts/webcface-server.service) が /etc/systemd/system または /usr/lib/systemd/system にインストールされていれば、
 ```sh
 sudo systemctl enable webcface-server
 sudo systemctl start webcface-server
