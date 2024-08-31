@@ -256,7 +256,8 @@ rm ./webcface*.deb
 
 ### macOS
 
-webcface-package リポジトリからmacos用のzipファイルをダウンロードできますが、
+[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+macos用のzipファイルをダウンロードできますが、
 署名や公証をしていないためブラウザーからダウンロードするとGatekeeperにブロックされてしまいます。
 (開発元を検証できないため開けません。の画面になります)
 
@@ -302,7 +303,8 @@ brew install webcface webcface-webui webcface-tools
 
 ### Windows MSVC
 
-webcface-package リポジトリからwindows用のexeファイルまたはzipファイルをダウンロードできます。
+[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+windows用のexeファイルまたはzipファイルをダウンロードできます。
 x86バージョンとx64バージョンがあります。
 (ただしインストーラーと WebCFace Desktop アプリはどちらも32bitになっています)
 * exeファイルは実行するとインストーラーが起動します。
