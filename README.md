@@ -89,6 +89,23 @@ WebブラウザーからWebCFaceで通信されているデータを可視化し
 なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
+### WebCFace-Tools
+
+コマンドラインからWebCFaceのデータにアクセスできるコマンドもいくつか用意しています。
+
+[webcface-launcher](https://na-trium-144.github.io/webcface/md_docs_271__launcher.html)
+は事前に登録しておいたコマンドの起動・停止をWebCFaceのViewから操作することができる機能です。
+serverとlauncherだけを常時起動しておき、WebUIを使ってプログラムをリモートに操作するという使い方ができます。
+
+![launcher.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher.png)
+
+[webcface-tui](https://na-trium-144.github.io/webcface/md_docs_275__tui.html)
+はターミナル上で操作できるTUIアプリで、Webブラウザを開かなくてもデータをリアルタイムで確認したり、Viewの操作もできます。
+
+![tui_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_value.gif)
+
+![tui_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_view.png)
+
 <!--
 ### PlotJuggler
 
