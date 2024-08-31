@@ -37,7 +37,7 @@ var classValue =
     [ "onChange", "classValue.html#a2520d5a34f74f1ccde9c1d662e9a8874", null ],
     [ "onChange", "classValue.html#a88dc892ea1acdac2ddc87a4b5c9ef316", null ],
     [ "operator double", "classValue.html#a3c5a46ebe31a3699f441668931f2978e", null ],
-    [ "vector< double >", "classValue.html#aca5e6a70f54aa3e706c8279c640b042a", null ],
+    [ "vector", "classValue.html#aa46255e92da4281522c2b184262a20a2", null ],
     [ "operator!=", "classValue.html#a7ec5efcbe0818dac5fce6ba98ddad0c0", null ],
     [ "operator!=", "classValue.html#aa3ada8194f5f6df572bc2f00e3c9d579", null ],
     [ "operator!=", "classValue.html#a9022a5966eca1f27119c6464e08bafce", null ],

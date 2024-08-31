@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['0_0',['value (kind = 0)',['../md_docs_281__message.html#autotoc_md172',1,'']]],
-  ['04_20focal_1',['Ubuntu 20.04 Focal',['../index.html#autotoc_md221',1,'']]],
-  ['04_20jammy_2',['Ubuntu 22.04 Jammy',['../index.html#autotoc_md220',1,'']]],
-  ['04_20noble_3',['Ubuntu 24.04 Noble',['../index.html#autotoc_md219',1,'']]]
+  ['2_2d1_2e_20server_0',['2-1. Server',['../md_docs_221__server.html',1,'']]],
+  ['2_2d2_2e_20webui_1',['2-2. WebUI',['../md_docs_222__webui.html',1,'']]],
+  ['21_5fserver_2emd_2',['21_server.md',['../21__server_8md.html',1,'']]],
+  ['22_5fwebui_2emd_3',['22_webui.md',['../22__webui_8md.html',1,'']]]
 ];

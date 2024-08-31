@@ -1,12 +1,13 @@
 var searchData=
 [
-  ['3次元_0',['Geometry (3次元)',['../md_docs_263__canvas3d.html#autotoc_md121',1,'']]],
-  ['3_1',['view (kind = 3)',['../md_docs_281__message.html#autotoc_md182',1,'']]],
-  ['3_201_20setup_20webcface_20library_2',['3-1. Setup WebCFace Library',['../md_docs_231__setup.html',1,'']]],
-  ['3_202_20building_20from_20source_3',['3-2. Building from Source',['../md_docs_232__building.html',1,'']]],
-  ['3_20canvas3d_4',['6-3. Canvas3D',['../md_docs_263__canvas3d.html',1,'']]],
-  ['3_20func_5',['5-3. Func',['../md_docs_253__func.html',1,'']]],
-  ['3_20webcface_20cv_20capture_20deleted_6',['7-3. webcface-cv-capture (deleted)',['../md_docs_273__cv__capture.html',1,'']]],
-  ['31_5fsetup_2emd_7',['31_setup.md',['../31__setup_8md.html',1,'']]],
-  ['32_5fbuilding_2emd_8',['32_building.md',['../32__building_8md.html',1,'']]]
+  ['5_2d1_2e_20value_0',['5-1. Value',['../md_docs_251__value.html',1,'']]],
+  ['5_2d2_2e_20text_1',['5-2. Text',['../md_docs_252__text.html',1,'']]],
+  ['5_2d3_2e_20func_2',['5-3. Func',['../md_docs_253__func.html',1,'']]],
+  ['5_2d4_2e_20view_3',['5-4. View',['../md_docs_254__view.html',1,'']]],
+  ['5_2d5_2e_20log_4',['5-5. Log',['../md_docs_255__log.html',1,'']]],
+  ['51_5fvalue_2emd_5',['51_value.md',['../51__value_8md.html',1,'']]],
+  ['52_5ftext_2emd_6',['52_text.md',['../52__text_8md.html',1,'']]],
+  ['53_5ffunc_2emd_7',['53_func.md',['../53__func_8md.html',1,'']]],
+  ['54_5fview_2emd_8',['54_view.md',['../54__view_8md.html',1,'']]],
+  ['55_5flog_2emd_9',['55_log.md',['../55__log_8md.html',1,'']]]
 ];

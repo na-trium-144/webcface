@@ -7,6 +7,6 @@ var searchData=
   ['temporalgeometry_4',['TemporalGeometry',['../classTemporalGeometry.html',1,'']]],
   ['temporalrobotjointdata_5',['TemporalRobotJointData',['../structinternal_1_1TemporalRobotJointData.html',1,'internal']]],
   ['temporalviewcomponent_6',['TemporalViewComponent',['../classTemporalViewComponent.html',1,'']]],
-  ['text_7',['text',['../structmessage_1_1Text.html',1,'Text'],['../classText.html',1,'Text']]],
+  ['text_7',['Text',['../structmessage_1_1Text.html',1,'Text'],['../classText.html',1,'Text']]],
   ['transform_8',['Transform',['../classTransform.html',1,'']]]
 ];

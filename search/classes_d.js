@@ -11,7 +11,7 @@ var searchData=
   ['res_3c_20value_20_3e_8',['Res&lt; Value &gt;',['../structmessage_1_1Res_3_01Value_01_4.html',1,'message']]],
   ['res_3c_20view_20_3e_9',['Res&lt; View &gt;',['../structmessage_1_1Res_3_01View_01_4.html',1,'message']]],
   ['robotjoint_10',['RobotJoint',['../classRobotJoint.html',1,'']]],
-  ['robotlink_11',['robotlink',['../structmessage_1_1RobotLink.html',1,'RobotLink'],['../classRobotLink.html',1,'RobotLink']]],
+  ['robotlink_11',['RobotLink',['../structmessage_1_1RobotLink.html',1,'RobotLink'],['../classRobotLink.html',1,'RobotLink']]],
   ['robotlinkdata_12',['RobotLinkData',['../structinternal_1_1RobotLinkData.html',1,'internal']]],
-  ['robotmodel_13',['robotmodel',['../structmessage_1_1RobotModel.html',1,'RobotModel'],['../classRobotModel.html',1,'RobotModel']]]
+  ['robotmodel_13',['RobotModel',['../structmessage_1_1RobotModel.html',1,'RobotModel'],['../classRobotModel.html',1,'RobotModel']]]
 ];

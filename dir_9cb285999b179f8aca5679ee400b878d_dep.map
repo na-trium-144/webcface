@@ -1,18 +1,13 @@
 <map id="server&#45;store" name="server&#45;store">
 <area shape="rect" id="node2" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html" title="include" alt="" coords="45,100,114,125"/>
 <area shape="rect" id="node4" href="dir_7f2982da9d43e0d7c25a6e4522b21798.html" title="encoding" alt="" coords="5,173,87,199"/>
-<area shape="poly" id="edge2" href="dir_000010_000005.html" alt="" coords="76,127,60,162,55,160,71,125"/>
 <area shape="rect" id="edge2-headlabel" href="dir_000010_000005.html" title="1" alt="" coords="62,153,71,168"/>
 <area shape="rect" id="node5" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html" title="message" alt="" coords="111,173,192,199"/>
-<area shape="poly" id="edge1" href="dir_000010_000012.html" alt="" coords="93,124,132,162,128,166,89,128"/>
 <area shape="rect" id="edge1-headlabel" href="dir_000010_000012.html" title="1" alt="" coords="128,147,137,162"/>
 <area shape="rect" id="node3" href="dir_44cc14728d7860dce3bb0e201967c0c4.html" title="src" alt="" coords="45,27,87,52"/>
-<area shape="poly" id="edge5" href="dir_000021_000010.html" alt="" coords="71,52,77,86,72,87,66,53"/>
 <area shape="rect" id="edge5-headlabel" href="dir_000021_000010.html" title="17" alt="" coords="73,73,91,88"/>
-<area shape="poly" id="edge3" href="dir_000021_000012.html" alt="" coords="83,50,106,71,128,99,142,129,150,159,145,161,137,131,124,101,103,75,80,54"/>
 <area shape="rect" id="edge3-headlabel" href="dir_000021_000012.html" title="3" alt="" coords="150,146,159,161"/>
 <area shape="rect" id="node6" href="dir_db3a54907829b36871118d03417739cd.html" title="client" alt="" coords="234,100,293,125"/>
-<area shape="poly" id="edge4" href="dir_000021_000003.html" alt="" coords="88,46,222,94,220,99,86,51"/>
 <area shape="rect" id="edge4-headlabel" href="dir_000021_000003.html" title="1" alt="" coords="215,79,224,94"/>
 <area shape="rect" id="clust1" href="dir_9cb285999b179f8aca5679ee400b878d.html" alt="" coords="34,16,223,136"/>
 </map>

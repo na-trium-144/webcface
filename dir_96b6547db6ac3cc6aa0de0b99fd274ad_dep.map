@@ -1,10 +1,8 @@
 <map id="client/include/webcface/internal" name="client/include/webcface/internal">
 <area shape="rect" id="node1" href="dir_96b6547db6ac3cc6aa0de0b99fd274ad.html" title="internal" alt="" coords="62,52,134,77"/>
 <area shape="rect" id="node2" href="dir_7f2982da9d43e0d7c25a6e4522b21798.html" title="encoding" alt="" coords="5,125,87,151"/>
-<area shape="poly" id="edge1" href="dir_000011_000005.html" alt="" coords="92,79,65,116,60,113,87,76"/>
 <area shape="rect" id="edge1-headlabel" href="dir_000011_000005.html" title="3" alt="" coords="67,108,77,123"/>
 <area shape="rect" id="node3" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html" title="message" alt="" coords="111,125,192,151"/>
-<area shape="poly" id="edge2" href="dir_000011_000012.html" alt="" coords="109,76,137,113,132,116,105,79"/>
 <area shape="rect" id="edge2-headlabel" href="dir_000011_000012.html" title="3" alt="" coords="134,98,143,113"/>
 <area shape="rect" id="clust1" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html" title="webcface" alt="" coords="51,16,145,88"/>
 </map>

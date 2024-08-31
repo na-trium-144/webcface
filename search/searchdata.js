@@ -1,6 +1,6 @@
 var indexSectionsWithContent =
 {
-  0: "0123456789:_abcdefghijklmnopqrstuvwxy~クグコサバリロ切受各型外引接文時複設送通関",
+  0: "2345678:_abcdefghijklmnopqrstuvwy~",
   1: "abcdefghilmpqrstvw",
   2: ":acefilmrs",
   3: "2345678acdefgilmqrstuvw",
@@ -11,7 +11,7 @@ var indexSectionsWithContent =
   8: "bcdefgijlnoprstuvwy",
   9: "acfirstv",
   10: "cmnpw",
-  11: "12345678bcdfilmrstvw"
+  11: "2345678dtw"
 };
 
 var indexSectionNames =

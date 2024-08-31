@@ -39,7 +39,7 @@ var classRobotModel =
     [ "nameW", "classRobotModel.html#a8c997fd30e7178c869b823143102d682", null ],
     [ "onChange", "classRobotModel.html#a6f18bba268a58ffa149e4f770004fa69", null ],
     [ "onChange", "classRobotModel.html#a8f19f90c4912bdb0bf4459ff3971df9a", null ],
-    [ "vector< RobotLink >", "classRobotModel.html#a7e15ce4242494b52d4fea72ce315859d", null ],
+    [ "vector", "classRobotModel.html#aa46255e92da4281522c2b184262a20a2", null ],
     [ "operator!=", "classRobotModel.html#a7ec5efcbe0818dac5fce6ba98ddad0c0", null ],
     [ "operator!=", "classRobotModel.html#aa3ada8194f5f6df572bc2f00e3c9d579", null ],
     [ "operator!=", "classRobotModel.html#a9022a5966eca1f27119c6464e08bafce", null ],

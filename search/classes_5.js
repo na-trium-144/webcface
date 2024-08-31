@@ -7,7 +7,7 @@ var searchData=
   ['funcargtypecheck_3c_20true_20_3e_4',['FuncArgTypeCheck&lt; true &gt;',['../structFuncArgTypeCheck_3_01true_01_4.html',1,'']]],
   ['funcargtypecheck_3c_28std_3a_3ais_5fconvertible_5fv_3c_20valadaptor_2c_20args_20_3e_20_26_26_2e_2e_2e_29_3e_5',['FuncArgTypeCheck&lt;(std::is_convertible_v&lt; ValAdaptor, Args &gt; &amp;&amp;...)&gt;',['../structFuncArgTypeCheck.html',1,'']]],
   ['funcargtypestrait_6',['FuncArgTypesTrait',['../structFuncArgTypesTrait.html',1,'']]],
-  ['funcinfo_7',['funcinfo',['../structinternal_1_1FuncInfo.html',1,'FuncInfo'],['../structmessage_1_1FuncInfo.html',1,'FuncInfo']]],
+  ['funcinfo_7',['FuncInfo',['../structinternal_1_1FuncInfo.html',1,'FuncInfo'],['../structmessage_1_1FuncInfo.html',1,'FuncInfo']]],
   ['funclistener_8',['FuncListener',['../classFuncListener.html',1,'']]],
   ['funcnotfound_9',['FuncNotFound',['../structFuncNotFound.html',1,'']]],
   ['funcresultstore_10',['FuncResultStore',['../classinternal_1_1FuncResultStore.html',1,'internal']]],
