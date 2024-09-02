@@ -60,7 +60,7 @@
     その場合戻り値のfutureの結果を待機する(get() を呼び出す)のは別スレッドで行われます。
     ```cpp
     wcli.func("hoge").set([](){
-        // ここはrecv()のスレッドで同期実行
+        // ここはsync()のスレッドで同期実行
         std::this_thread::sleep_for(std::chrono::seconds(1));
         return std::async(std::launch::async, []{
             // ここは別スレッドで実行

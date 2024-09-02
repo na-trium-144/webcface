@@ -115,11 +115,11 @@ initセクションは省略できます。
         * 例えばlauncherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
 
 ## WebUIからの設定
-WebUI Server Mode ではGUIから設定ファイルを記述することができます。
+WebCFace Desktop ではGUIから設定ファイルを記述することができます。
 
 * Add New Command でコマンドを追加し、コマンド名、Exec、Workdir を設定できます。
     * Exec と Workdir の右の「...」ボタンを押すとファイル選択ダイアログ、ディレクトリ選択ダイアログが表示されます。
-* Save ボタンを押すと WebUI Server Mode の設定として保存されます。
+* Save ボタンを押すと WebCFace Desktop の設定として保存されます。
 * Cancel ボタンを押すと最後にSaveしたときの内容に戻ります。
 
 ![launcher-setting](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher-setting.png)
