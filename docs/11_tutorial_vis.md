@@ -7,7 +7,10 @@ WebCFaceの機能紹介・チュートリアルです。
 このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。
 プロセス間通信に重点をおいたチュートリアルは [1-2. Tutorial (Communication)](./12_tutorial_comm.md)
 
-このチュートリアルでは C++ (Meson または CMake)、または Python を使用します。
+このチュートリアルでは C++ (Meson または CMake) を使用します。
+
+\todo
+Python用のチュートリアルも書く
 
 ## WebCFaceのインストール
 
@@ -37,11 +40,7 @@ WebCFaceを使用するときはserverを常時立ち上げておく必要があ
 
 - <b class="tab-title">コマンドライン</b>
 
-    ターミナルを開いて
-    ```sh
-    webcface-server
-    ```
-    コマンドでサーバーが起動します。
+    ターミナルを開いて `webcface-server` コマンドを実行するとサーバーが起動します。
     デフォルトでは7530番ポートを開きクライアントの接続を待ちます。
     追加で指定できるコマンドラインオプションなど、詳細は [2-1. Server](./21_server.md)
 
@@ -88,13 +87,18 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     #include <iostream>
     #include <webcface/client.h> // ← webcface::Client
 
+    webcface::Client wcli("tutorial");
+
     int main() {
-        webcface::Client wcli("tutorial");
         wcli.waitConnection();
 
         std::cout << "Hello, World!" << std::endl;
     }
     ```
+    \note
+    Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、
+    このチュートリアルではグローバル変数にします。
+
     * meson.build
     ```meson
     project('webcface-tutorial', 'cpp',
@@ -121,6 +125,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     このチュートリアルでは以降ビルドと実行の手順は省略しますが、
     同様に `meson compile` (またはninja) でビルドして `./build/tutorial` を実行してください。
 
+    <span></span>
 
 - <b class="tab-title">C++ (CMake)</b>
     適当にディレクトリを作ります
@@ -135,13 +140,18 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     #include <iostream>
     #include <webcface/client.h> // ← webcface::Client
 
+    webcface::Client wcli("tutorial");
+
     int main() {
-        webcface::Client wcli("tutorial");
         wcli.waitConnection(); // serverに接続できるまで待機
 
         std::cout << "Hello, World!" << std::endl;
     }
     ```
+    \note
+    Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、
+    このチュートリアルではグローバル変数にします。
+    
     * CMakeLists.txt
     ```cmake
     cmake_minimum_required(VERSION 3.5)
@@ -166,6 +176,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     このチュートリアルでは以降ビルドと実行の手順は省略しますが、
     同様に `cmake --build` (またはmakeやninjaなどでも可) でビルドして `./build/tutorial` を実行してください。
 
+    <span></span>
+
 </div>
 
 ## Log
@@ -181,11 +193,12 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     #include <iostream>
     #include <webcface/client.h>
 
+    webcface::Client wcli("tutorial");
+    // loggerOStream() は std::cout と同様に文字列を出力して使うことができる
+    std::ostream &logger = wcli.loggerOStream();
+
     int main() {
-        webcface::Client wcli("tutorial");
         wcli.waitConnection();
-        std::ostream &logger = wcli.loggerOStream();
-        // loggerOStream() は std::cout と同様に文字列を出力して使うことができる
 
         logger << "Hello, World!" << std::endl;
 
@@ -203,6 +216,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     std::wostream を使うこともできます。
     また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
     詳細は [5-5. Log](./55_log.md)
+
+    <span></span>
 
 </div>
 
@@ -222,10 +237,11 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     #include <webcface/value.h> // ← value() を使うのに必要
     #include <webcface/text.h> // ← text() を使うのに必要
 
+    webcface::Client wcli("tutorial");
+    std::ostream &logger = wcli.loggerOStream();
+
     int main() {
-        webcface::Client wcli("tutorial");
         wcli.waitConnection();
-        std::ostream &logger = wcli.loggerOStream();
 
         logger << "Hello, World!" << std::endl;
 
@@ -257,3 +273,65 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 ## Func
 
 プログラムからWebUIに情報を送信するだけでなく、WebUIからプログラムを操作することも可能です。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    * 引数なしの関数hogeを作り、これをクライアントに登録します。
+    ```cpp
+    #include <webcface/func.h> // ←追加
+
+    int hoge() {
+        logger << "Function hoge started" << std::endl;
+        return 42;
+    }
+
+    int main() {
+        wcli.func("hoge").set(hoge);
+
+        // 以下略...
+    }
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。
+    「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。
+    また、画面右下に関数の戻り値の42が表示されています。
+
+    ![tutorial_func1](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png)
+
+    \note
+    Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
+
+    <span></span>
+
+    * こんどは引数がある関数を作ってみます。
+    ```cpp
+    int fuga(int a, const std::string &b) {
+        logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
+        return a;
+    }
+
+    int main() {
+        wcli.func("hoge").set(hoge);
+        wcli.func("fuga").set(fuga).setArgs({
+            webcface::Arg("a").init(100), // 1つ目の引数の名前はa, 初期値が100
+            webcface::Arg("b").option({"foo", "bar", "baz"}), // 2つ目の引数の名前はb, 選択肢がfoo,bar,baz
+        });
+
+        // 以下略...
+    }
+    ```
+
+    setArgs() はそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。
+    (指定しなくてもよいです。)
+
+    実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。
+    hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。
+
+    ![tutorial_func2](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png)
+
+</div>
+
+## View
+

@@ -4,11 +4,27 @@
 #include <webcface/value.h>
 #include <webcface/text.h>
 
+webcface::Client wcli("tutorial");
+// loggerOStream() は std::cout と同様に文字列を出力して使うことができる
+std::ostream &logger = wcli.loggerOStream();
+
+int hoge() {
+    logger << "Function hoge started" << std::endl;
+    return 42;
+}
+int fuga(int a, const std::string &b) {
+    logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
+    return a;
+}
+
 int main() {
-    webcface::Client wcli("tutorial");
+    wcli.func("hoge").set(hoge);
+    wcli.func("fuga").set(fuga).setArgs({
+        webcface::Arg("a").init(100),
+        webcface::Arg("b").option({"foo", "bar", "baz"}),
+    });
+
     wcli.waitConnection();
-    std::ostream &logger = wcli.loggerOStream();
-    // loggerOStream() は std::cout と同様に文字列を出力して使うことができる
 
     logger << "Hello, World!" << std::endl;
 
