@@ -193,7 +193,7 @@ STRIP_FROM_PATH        =
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = build/include/ client/include/ encoding/include/ message/include/ server-store/include/
+STRIP_FROM_INC_PATH    = build/ client/include/ encoding/include/ message/include/ server-store/include/
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -1059,7 +1059,9 @@ EXCLUDE_SYMLINKS       = NO
 # Note that the wildcards are matched against the file with absolute path, so to
 # exclude all test directories for example use the pattern */test/*
 
-EXCLUDE_PATTERNS       = */docs/*/* */tests/* */examples/* */server_main.cc */build*/*/* */out/* */subprojects/*
+EXCLUDE_PATTERNS       = */docs/*/* */tests/* */examples/* */server_main.cc \
+                         */out/* */subprojects/* */scripts/* \
+                         */meson-*/* */dist/* */build/doxygen/*
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
 # (namespaces, classes, functions, etc.) that should be excluded from the
@@ -2370,7 +2372,7 @@ SEARCH_INCLUDES        = YES
 # RECURSIVE has no effect here.
 # This tag requires that the tag SEARCH_INCLUDES is set to YES.
 
-INCLUDE_PATH           = build/include/ client/include/ encoding/include/ message/include/ server-internal/include/ server-store/include/
+INCLUDE_PATH           = build/ client/include/ encoding/include/ message/include/ server-internal/include/ server-store/include/
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard
 # patterns (like *.h and *.hpp) to filter out the header-files in the
@@ -2388,7 +2390,7 @@ INCLUDE_FILE_PATTERNS  =
 # recursively expanded use the := operator instead of the = operator.
 # This tag requires that the tag ENABLE_PREPROCESSING is set to YES.
 
-PREDEFINED             =
+PREDEFINED             = WEBCFACE_MESON WEBCFACE_DOXYGEN
 
 # If the MACRO_EXPANSION and EXPAND_ONLY_PREDEF tags are set to YES then this
 # tag can be used to specify a list of macro names that should be expanded. The
