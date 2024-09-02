@@ -122,7 +122,7 @@ WebUI Server Mode ではGUIから設定ファイルを記述することがで�
 * Save ボタンを押すと WebUI Server Mode の設定として保存されます。
 * Cancel ボタンを押すと最後にSaveしたときの内容に戻ります。
 
-![webui-server_launcher-setting](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server_launcher-setting.png)
+![launcher-setting](https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher-setting.png)
 
 \note Launcherの起動・停止はメニューの「Server Status」からできます
 

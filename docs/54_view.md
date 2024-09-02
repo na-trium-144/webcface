@@ -36,7 +36,7 @@
     v.sync(); // ここまでにvに追加したものをクライアントに反映
     wcli.sync();
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
     \warning
     <span class="since-c">2.0</span>
@@ -79,7 +79,7 @@
     wcli.sync();
     ```
 
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
 - <b class="tab-title">JavaScript</b>
     Client::view からViewオブジェクトを作り、
@@ -94,7 +94,7 @@
         viewComponents.button("a", () => console.log("hello"))
     ]);
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
 - <b class="tab-title">Python</b>
     Client.view からViewオブジェクトを作り、
@@ -110,7 +110,7 @@
     v.add(webcface.view_components.button("a", lambda: print("hello")))
     v.sync()
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
     with構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
     ```py
