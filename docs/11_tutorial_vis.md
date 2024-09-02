@@ -335,3 +335,53 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
 ## View
 
+Funcに登録した関数は一覧表示させることしかできませんが、
+Viewではテキストや入力欄を任意に並べて表示させることができます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    ```cpp
+    #include <webcface/view.h> // ←追加
+    
+    int main() {
+        // 省略
+
+        while(true){
+            // 他のデータの送信は省略...
+
+            webcface::View v = wcli.view("sample");
+            v << "Hello, world!" << std::endl; // テキスト表示
+            v << "i = " << i << std::endl;
+            v << webcface::button("hoge", hoge) << std::endl; // ボタン
+            static webcface::InputRef ref_str;
+            v << webcface::textInput("str").bind(ref_str); // 文字列入力
+            v << webcface::button("print", []{
+                // クリックすると、入力した文字列を表示
+                logger << "str = " << ref_str.asString() << std::endl;
+              });
+            v << std::endl;
+
+            v.sync(); // ここまでにvに追加したものをwcliに反映
+
+            wcli.sync();
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、
+    画像のようにプログラムで指定したとおりの画面が表示されます。
+    「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、
+    「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。
+
+    ![tutorial_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
+    上のプログラム例のように、
+    テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。
+    ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。
+    またtextInputなどを使って入力欄を表示させることもできます。
+    詳細は [5-4. View](./54_view.md) を参照
+
+</div>
+
