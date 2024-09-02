@@ -212,7 +212,6 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     ![tutorial_log](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png)
 
-    \note
     std::wostream を使うこともできます。
     また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
     詳細は [5-5. Log](./55_log.md)
@@ -267,6 +266,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
 
     ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
+
+    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
 
 </div>
 
@@ -331,6 +332,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     ![tutorial_func2](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png)
 
+    Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
+
 </div>
 
 ## View
@@ -343,7 +346,7 @@ Viewではテキストや入力欄を任意に並べて表示させることが�
 - <b class="tab-title">C++</b>
     ```cpp
     #include <webcface/view.h> // ←追加
-    
+
     int main() {
         // 省略
 
@@ -385,3 +388,30 @@ Viewではテキストや入力欄を任意に並べて表示させることが�
 
 </div>
 
+## おわりに
+
+以上で 1-1. Tutorial (Visualizing) は終わりです。
+次ページ ([1-2. Tutorial (Communication)](12_tutorial_comm.md)) にはプロセス間通信に重点をおいたチュートリアルがあります。
+
+ここで紹介していない機能として
+* [6-1. Canvas2D](61_canvas2d.md)
+* [6-2. Image](62_image.md)
+* [6-3. Canvas3D](63_canvas3d.md)
+* [6-4. RobotModel](64_robot_model.md)
+
+もWebUIからアクセスすることのできる機能としてあるので、見てみてください。
+
+また、チュートリアルでは紹介していないコマンドラインツールとして
+* [7-1. webcface-launcher](71_launcher.md)
+* [7-4. webcface-ls](74_ls.md)
+* [7-5. webcface-tui](75_tui.md)
+
+もあります。
+
+<div class="section_buttons">
+
+| Previous |     Next |
+|:---------|---------:|
+| | [1-2. Tutorial (Communication)](12_tutorial_comm.md) |
+
+</div>
