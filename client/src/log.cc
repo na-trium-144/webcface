@@ -76,8 +76,8 @@ int BasicLoggerBuf<CharT>::sync() {
     this->setp(buf, buf + sizeof(buf));
     return 0;
 }
-template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<char>;
-template class WEBCFACE_DLL_INSTANCE_DEF BasicLoggerBuf<wchar_t>;
+template class BasicLoggerBuf<char>;
+template class BasicLoggerBuf<wchar_t>;
 
 Log::Log(const Field &base) : Field(base) {}
 
