@@ -58,6 +58,7 @@ enum MessageKindEnum {
     ping = 89,
     ping_status = 90,
     ping_status_req = 91,
+    log_entry = 92,
 };
 }
 
@@ -525,6 +526,10 @@ struct Log : public MessageBase<MessageKind::log> {
 struct LogReq : public MessageBase<MessageKind::log_req> {
     SharedString member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member))
+};
+struct LogEntry : public MessageBase<MessageKind::log_entry> {
+    unsigned int member_id = 0;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id))
 };
 /*!
  * \brief client(member)->server->client func登録

@@ -148,6 +148,13 @@ TEST_F(SyncDataStore1Test, getRecv) {
     s1.setRecv("a"_ss, "c");
     EXPECT_EQ(s1.getRecv("a"_ss), "c");
 }
+TEST_F(SyncDataStore1Test, setEntry) {
+    EXPECT_FALSE(s1.getEntry("a"_ss));
+    s1.setEntry("a"_ss);
+    EXPECT_TRUE(s1.getEntry("a"_ss));
+    s1.clearEntry("a"_ss);
+    EXPECT_FALSE(s1.getEntry("a"_ss));
+}
 
 TEST(FuncResultStoreTest, addResult) {
     auto data = std::make_shared<ClientData>("test"_ss);
