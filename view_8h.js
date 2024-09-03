@@ -1,4 +1,4 @@
 var view_8h =
 [
-    [ "View", "classView.html", "classView" ]
+    [ "View", "classwebcface_1_1View.html", "classwebcface_1_1View" ]
 ];

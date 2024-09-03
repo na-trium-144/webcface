@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structmessage_1_1Canvas2DComponent.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structwebcface_1_1message_1_1Canvas2DComponent.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="122,-19 0,-19 0,0 122,0 122,-19"/>
 <text text-anchor="middle" x="61" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2DComponent</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structinternal_1_1Canvas2DComponentData.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1internal_1_1Canvas2DComponentData.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="304,-19 158,-19 158,0 304,0 304,-19"/>
 <text text-anchor="middle" x="231" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Canvas2DComponentData</text>
 </a>

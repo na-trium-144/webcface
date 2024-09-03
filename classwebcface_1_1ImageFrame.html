@@ -1,0 +1,1057 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: ImageFrame Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classwebcface_1_1ImageFrame.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classwebcface_1_1ImageFrame-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ImageFrame Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>(ver1.3から追加) 画像データ  
+ <a href="classwebcface_1_1ImageFrame.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="image__frame_8h_source.html">webcface/image_frame.h</a>&gt;</code></p>
+<div class="dynheader">
+Collaboration diagram for ImageFrame:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1ImageFrame__coll__graph.svg" width="115" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a97481de5ef55755a41b926aa8ecf9473"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a97481de5ef55755a41b926aa8ecf9473">ImageFrame</a> ()</td></tr>
+<tr class="memdesc:a97481de5ef55755a41b926aa8ecf9473"><td class="mdescLeft">&#160;</td><td class="mdescRight">空の(0x0の) ImageFrameを作成  <br /></td></tr>
+<tr class="separator:a97481de5ef55755a41b926aa8ecf9473"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af79f75aaa65c8c99d2fc89978c92618c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#af79f75aaa65c8c99d2fc89978c92618c">ImageFrame</a> (const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;<a class="el" href="classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200">size</a>, const std::shared_ptr&lt; std::vector&lt; unsigned char &gt; &gt; &amp;<a class="el" href="classwebcface_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd">data</a>, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a>=ImageColorMode::bgr, <a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> cmp_mode=ImageCompressMode::raw)</td></tr>
+<tr class="separator:af79f75aaa65c8c99d2fc89978c92618c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa22d5ec78bb0f58c3384a31a5d0ff2a0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#aa22d5ec78bb0f58c3384a31a5d0ff2a0">ImageFrame</a> (const <a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a> &amp;m)</td></tr>
+<tr class="separator:aa22d5ec78bb0f58c3384a31a5d0ff2a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3b50bf1c6c36d2e6573ffc66d8a8653"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#aa3b50bf1c6c36d2e6573ffc66d8a8653">toMessage</a> () const</td></tr>
+<tr class="separator:aa3b50bf1c6c36d2e6573ffc66d8a8653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a0ee55778ae1e6f2034f955edc098a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame</a> (int <a class="el" href="classwebcface_1_1ImageFrame.html#ad107abcacb84cbabb41b87ba81360f91">rows</a>, int <a class="el" href="classwebcface_1_1ImageFrame.html#a8509d6f7951179378f848f5f4cc37720">cols</a>, const void *<a class="el" href="classwebcface_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd">data</a>, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a>=ImageColorMode::bgr)</td></tr>
+<tr class="memdesc:a32a0ee55778ae1e6f2034f955edc098a"><td class="mdescLeft">&#160;</td><td class="mdescRight">生画像データの配列からImageFrameを作成  <br /></td></tr>
+<tr class="separator:a32a0ee55778ae1e6f2034f955edc098a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b499c3e97fe13d3bdbf45df2dc5377d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a4b499c3e97fe13d3bdbf45df2dc5377d">ImageFrame</a> (const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;<a class="el" href="classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200">size</a>, const void *<a class="el" href="classwebcface_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd">data</a>, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a>)</td></tr>
+<tr class="memdesc:a4b499c3e97fe13d3bdbf45df2dc5377d"><td class="mdescLeft">&#160;</td><td class="mdescRight">生画像データの配列からImageFrameを作成  <br /></td></tr>
+<tr class="separator:a4b499c3e97fe13d3bdbf45df2dc5377d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f47f8fd1300bcaf70285ba224a0254b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a3f47f8fd1300bcaf70285ba224a0254b">ImageFrame</a> (const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;<a class="el" href="classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200">size</a>, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a>)</td></tr>
+<tr class="memdesc:a3f47f8fd1300bcaf70285ba224a0254b"><td class="mdescLeft">&#160;</td><td class="mdescRight">空のImageFrameを作成  <br /></td></tr>
+<tr class="separator:a3f47f8fd1300bcaf70285ba224a0254b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () const</td></tr>
+<tr class="memdesc:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像が空かどうかを返す  <br /></td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3b604bffb89540363c974ef3f427200"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200">size</a> () const</td></tr>
+<tr class="memdesc:ab3b604bffb89540363c974ef3f427200"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像のサイズ  <br /></td></tr>
+<tr class="separator:ab3b604bffb89540363c974ef3f427200"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad72663daf610f2a0833a2fc3d78e4fdf"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ad72663daf610f2a0833a2fc3d78e4fdf">width</a> () const</td></tr>
+<tr class="memdesc:ad72663daf610f2a0833a2fc3d78e4fdf"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の幅  <br /></td></tr>
+<tr class="separator:ad72663daf610f2a0833a2fc3d78e4fdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3774f6419003470f54fd495124ef51f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ad3774f6419003470f54fd495124ef51f">height</a> () const</td></tr>
+<tr class="memdesc:ad3774f6419003470f54fd495124ef51f"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の高さ  <br /></td></tr>
+<tr class="separator:ad3774f6419003470f54fd495124ef51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad107abcacb84cbabb41b87ba81360f91"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ad107abcacb84cbabb41b87ba81360f91">rows</a> () const</td></tr>
+<tr class="memdesc:ad107abcacb84cbabb41b87ba81360f91"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の高さ  <br /></td></tr>
+<tr class="separator:ad107abcacb84cbabb41b87ba81360f91"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8509d6f7951179378f848f5f4cc37720"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a8509d6f7951179378f848f5f4cc37720">cols</a> () const</td></tr>
+<tr class="memdesc:a8509d6f7951179378f848f5f4cc37720"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の幅  <br /></td></tr>
+<tr class="separator:a8509d6f7951179378f848f5f4cc37720"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b3516fe40da3e5ff7d703490b7160ee"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a5b3516fe40da3e5ff7d703490b7160ee">channels</a> () const</td></tr>
+<tr class="memdesc:a5b3516fe40da3e5ff7d703490b7160ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">1ピクセル当たりのデータサイズ(byte数)を取得  <br /></td></tr>
+<tr class="separator:a5b3516fe40da3e5ff7d703490b7160ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4941dd960b0e022e1b7957a8364f1fbf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a> () const</td></tr>
+<tr class="separator:a4941dd960b0e022e1b7957a8364f1fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a323cc5ad332c6d460b8b490072e3a2ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a323cc5ad332c6d460b8b490072e3a2ef">colorMode</a> () const</td></tr>
+<tr class="memdesc:a323cc5ad332c6d460b8b490072e3a2ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">色の並び順 (生画像データの場合)  <br /></td></tr>
+<tr class="separator:a323cc5ad332c6d460b8b490072e3a2ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ed263948bec664485f0f05bbeab5ced"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a3ed263948bec664485f0f05bbeab5ced">compress_mode</a> () const</td></tr>
+<tr class="separator:a3ed263948bec664485f0f05bbeab5ced"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82d13c45450be35f7199df88558d199f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a82d13c45450be35f7199df88558d199f">compressMode</a> () const</td></tr>
+<tr class="memdesc:a82d13c45450be35f7199df88558d199f"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の圧縮モード  <br /></td></tr>
+<tr class="separator:a82d13c45450be35f7199df88558d199f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff80d67e46662b15cb76117a05b62976"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; unsigned char &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#aff80d67e46662b15cb76117a05b62976">dataPtr</a> () const</td></tr>
+<tr class="separator:aff80d67e46662b15cb76117a05b62976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a242f6b0ee066e79c281d265da33613bd"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; unsigned char &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd">data</a> () const</td></tr>
+<tr class="memdesc:a242f6b0ee066e79c281d265da33613bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像データ  <br /></td></tr>
+<tr class="separator:a242f6b0ee066e79c281d265da33613bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fae30e58f639a6323e0d5048b3fe633"><td class="memItemLeft" align="right" valign="top">std::vector&lt; unsigned char &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a7fae30e58f639a6323e0d5048b3fe633">data</a> ()</td></tr>
+<tr class="memdesc:a7fae30e58f639a6323e0d5048b3fe633"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像データ (非const)  <br /></td></tr>
+<tr class="separator:a7fae30e58f639a6323e0d5048b3fe633"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67f290272354886cea794d481da18640"><td class="memItemLeft" align="right" valign="top">const unsigned char &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">at</a> (int row, int col, int ch=0) const</td></tr>
+<tr class="memdesc:a67f290272354886cea794d481da18640"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の要素にアクセス  <br /></td></tr>
+<tr class="separator:a67f290272354886cea794d481da18640"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19370724be760dc6557ed348f522c0f5"><td class="memItemLeft" align="right" valign="top">unsigned char &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a19370724be760dc6557ed348f522c0f5">at</a> (int row, int col, int ch=0)</td></tr>
+<tr class="memdesc:a19370724be760dc6557ed348f522c0f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像の要素にアクセス  <br /></td></tr>
+<tr class="separator:a19370724be760dc6557ed348f522c0f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:af413506ef7c7376c1ea8ca4622cb1ada"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Size.html">Size</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#af413506ef7c7376c1ea8ca4622cb1ada">size_</a></td></tr>
+<tr class="separator:af413506ef7c7376c1ea8ca4622cb1ada"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ad623d907d57b62513135dd263b24d"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::vector&lt; unsigned char &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ac4ad623d907d57b62513135dd263b24d">data_</a></td></tr>
+<tr class="separator:ac4ad623d907d57b62513135dd263b24d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3eed0786f0f6cfa610ece7f39dce7d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ae3eed0786f0f6cfa610ece7f39dce7d2">color_mode_</a></td></tr>
+<tr class="separator:ae3eed0786f0f6cfa610ece7f39dce7d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa890d51e2d68d6824208fee67b23628"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#afa890d51e2d68d6824208fee67b23628">cmp_mode_</a></td></tr>
+<tr class="separator:afa890d51e2d68d6824208fee67b23628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>(ver1.3から追加) 画像データ </p>
+<ul>
+<li>8bitのグレースケール, BGR, BGRAフォーマットのみを扱う</li>
+<li>画像受信時にはjpegやpngなどにエンコードされたデータが入ることもある</li>
+<li>データはshared_ptrで保持され、Imageをコピーしてもコピーされない </li>
+</ul>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a97481de5ef55755a41b926aa8ecf9473" name="a97481de5ef55755a41b926aa8ecf9473"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a97481de5ef55755a41b926aa8ecf9473">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>空の(0x0の) ImageFrameを作成 </p>
+
+</div>
+</div>
+<a id="af79f75aaa65c8c99d2fc89978c92618c" name="af79f75aaa65c8c99d2fc89978c92618c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af79f75aaa65c8c99d2fc89978c92618c">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; std::vector&lt; unsigned char &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td>
+          <td class="paramname"><em>color_mode</em> = <code>ImageColorMode::bgr</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a>&#160;</td>
+          <td class="paramname"><em>cmp_mode</em> = <code>ImageCompressMode::raw</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa22d5ec78bb0f58c3384a31a5d0ff2a0" name="aa22d5ec78bb0f58c3384a31a5d0ff2a0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa22d5ec78bb0f58c3384a31a5d0ff2a0">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a32a0ee55778ae1e6f2034f955edc098a" name="a32a0ee55778ae1e6f2034f955edc098a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a0ee55778ae1e6f2034f955edc098a">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>rows</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>cols</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td>
+          <td class="paramname"><em>color_mode</em> = <code>ImageColorMode::bgr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>生画像データの配列からImageFrameを作成 </p>
+<p>dataから rows * cols * channels バイトがコピーされる</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">rows</td><td>画像の高さ </td></tr>
+    <tr><td class="paramname">cols</td><td>画像の幅 </td></tr>
+    <tr><td class="paramname">data</td><td>画像データ </td></tr>
+    <tr><td class="paramname">color_mode</td><td>データの構造を指定 (デフォルトはOpenCVのBGR, uint8*3バイト) </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Deprecated:</a></b></dt><dd>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定</dd></dl>
+
+</div>
+</div>
+<a id="a4b499c3e97fe13d3bdbf45df2dc5377d" name="a4b499c3e97fe13d3bdbf45df2dc5377d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b499c3e97fe13d3bdbf45df2dc5377d">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const void *&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td>
+          <td class="paramname"><em>color_mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>生画像データの配列からImageFrameを作成 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>dataから width * height * channels バイトがコピーされる</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>画像のサイズ (sizeHW または sizeWH) </td></tr>
+    <tr><td class="paramname">cols</td><td>画像の幅 </td></tr>
+    <tr><td class="paramname">data</td><td>画像データ </td></tr>
+    <tr><td class="paramname">color_mode</td><td>データの構造を指定 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a3f47f8fd1300bcaf70285ba224a0254b" name="a3f47f8fd1300bcaf70285ba224a0254b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f47f8fd1300bcaf70285ba224a0254b">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp;&#160;</td>
+          <td class="paramname"><em>size</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a>&#160;</td>
+          <td class="paramname"><em>color_mode</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>空のImageFrameを作成 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>width * height * channels バイトのバッファが生成されるので、 作成後にdata()またはat()でデータを書き込んで使う</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">size</td><td>画像のサイズ (sizeHW または sizeWH) </td></tr>
+    <tr><td class="paramname">cols</td><td>画像の幅 </td></tr>
+    <tr><td class="paramname">color_mode</td><td>データの構造を指定 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a19370724be760dc6557ed348f522c0f5" name="a19370724be760dc6557ed348f522c0f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19370724be760dc6557ed348f522c0f5">&#9670;&#160;</a></span>at() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">unsigned char &amp; at </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ch</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の要素にアクセス </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>compress_modeがrawでない場合は正常にアクセスできない。 </p>
+
+</div>
+</div>
+<a id="a67f290272354886cea794d481da18640" name="a67f290272354886cea794d481da18640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67f290272354886cea794d481da18640">&#9670;&#160;</a></span>at() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const unsigned char &amp; at </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>col</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>ch</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の要素にアクセス </p>
+<p>compress_modeがrawでない場合は正常にアクセスできない。 </p>
+
+</div>
+</div>
+<a id="a5b3516fe40da3e5ff7d703490b7160ee" name="a5b3516fe40da3e5ff7d703490b7160ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b3516fe40da3e5ff7d703490b7160ee">&#9670;&#160;</a></span>channels()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int channels </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>1ピクセル当たりのデータサイズ(byte数)を取得 </p>
+<dl class="section return"><dt>Returns</dt><dd>1, 3, or 4 </dd></dl>
+
+</div>
+</div>
+<a id="a4941dd960b0e022e1b7957a8364f1fbf" name="a4941dd960b0e022e1b7957a8364f1fbf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4941dd960b0e022e1b7957a8364f1fbf">&#9670;&#160;</a></span>color_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> color_mode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1ImageFrame.html#a323cc5ad332c6d460b8b490072e3a2ef" title="色の並び順 (生画像データの場合)">colorMode()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a323cc5ad332c6d460b8b490072e3a2ef" name="a323cc5ad332c6d460b8b490072e3a2ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a323cc5ad332c6d460b8b490072e3a2ef">&#9670;&#160;</a></span>colorMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> colorMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>色の並び順 (生画像データの場合) </p>
+<p>compressModeがrawでない場合意味を持たない。 </p>
+
+</div>
+</div>
+<a id="a8509d6f7951179378f848f5f4cc37720" name="a8509d6f7951179378f848f5f4cc37720"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8509d6f7951179378f848f5f4cc37720">&#9670;&#160;</a></span>cols()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int cols </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の幅 </p>
+
+</div>
+</div>
+<a id="a3ed263948bec664485f0f05bbeab5ced" name="a3ed263948bec664485f0f05bbeab5ced"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ed263948bec664485f0f05bbeab5ced">&#9670;&#160;</a></span>compress_mode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> compress_mode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1ImageFrame.html#a82d13c45450be35f7199df88558d199f" title="画像の圧縮モード">compressMode()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a82d13c45450be35f7199df88558d199f" name="a82d13c45450be35f7199df88558d199f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82d13c45450be35f7199df88558d199f">&#9670;&#160;</a></span>compressMode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> compressMode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の圧縮モード </p>
+
+</div>
+</div>
+<a id="a7fae30e58f639a6323e0d5048b3fe633" name="a7fae30e58f639a6323e0d5048b3fe633"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fae30e58f639a6323e0d5048b3fe633">&#9670;&#160;</a></span>data() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; unsigned char &gt; &amp; data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像データ (非const) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>compress_modeがrawの場合、rows * cols * channels 要素の画像データ。 それ以外の場合、圧縮された画像のデータ </dd></dl>
+
+</div>
+</div>
+<a id="a242f6b0ee066e79c281d265da33613bd" name="a242f6b0ee066e79c281d265da33613bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a242f6b0ee066e79c281d265da33613bd">&#9670;&#160;</a></span>data() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::vector&lt; unsigned char &gt; &amp; data </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像データ </p>
+<dl class="section return"><dt>Returns</dt><dd>compress_modeがrawの場合、rows * cols * channels 要素の画像データ。 それ以外の場合、圧縮された画像のデータ (ver2.0〜非const) </dd></dl>
+
+</div>
+</div>
+<a id="aff80d67e46662b15cb76117a05b62976" name="aff80d67e46662b15cb76117a05b62976"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff80d67e46662b15cb76117a05b62976">&#9670;&#160;</a></span>dataPtr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; std::vector&lt; unsigned char &gt; &gt; dataPtr </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像が空かどうかを返す </p>
+<dl class="section return"><dt>Returns</dt><dd><a class="el" href="classwebcface_1_1ImageFrame.html#aff80d67e46662b15cb76117a05b62976">dataPtr()</a>-&gt;<a class="el" href="classwebcface_1_1ImageFrame.html#ab3b604bffb89540363c974ef3f427200" title="画像のサイズ">size()</a> == 0 </dd></dl>
+
+</div>
+</div>
+<a id="ad3774f6419003470f54fd495124ef51f" name="ad3774f6419003470f54fd495124ef51f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3774f6419003470f54fd495124ef51f">&#9670;&#160;</a></span>height()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int height </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の高さ </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ad107abcacb84cbabb41b87ba81360f91" name="ad107abcacb84cbabb41b87ba81360f91"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad107abcacb84cbabb41b87ba81360f91">&#9670;&#160;</a></span>rows()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int rows </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の高さ </p>
+
+</div>
+</div>
+<a id="ab3b604bffb89540363c974ef3f427200" name="ab3b604bffb89540363c974ef3f427200"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3b604bffb89540363c974ef3f427200">&#9670;&#160;</a></span>size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Size.html">Size</a> &amp; size </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像のサイズ </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="aa3b50bf1c6c36d2e6573ffc66d8a8653" name="aa3b50bf1c6c36d2e6573ffc66d8a8653"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3b50bf1c6c36d2e6573ffc66d8a8653">&#9670;&#160;</a></span>toMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a> toMessage </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad72663daf610f2a0833a2fc3d78e4fdf" name="ad72663daf610f2a0833a2fc3d78e4fdf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad72663daf610f2a0833a2fc3d78e4fdf">&#9670;&#160;</a></span>width()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int width </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>画像の幅 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="afa890d51e2d68d6824208fee67b23628" name="afa890d51e2d68d6824208fee67b23628"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa890d51e2d68d6824208fee67b23628">&#9670;&#160;</a></span>cmp_mode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#ab72e620a597e5f750b2c9b3391e84ded">ImageCompressMode</a> cmp_mode_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae3eed0786f0f6cfa610ece7f39dce7d2" name="ae3eed0786f0f6cfa610ece7f39dce7d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3eed0786f0f6cfa610ece7f39dce7d2">&#9670;&#160;</a></span>color_mode_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> color_mode_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac4ad623d907d57b62513135dd263b24d" name="ac4ad623d907d57b62513135dd263b24d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4ad623d907d57b62513135dd263b24d">&#9670;&#160;</a></span>data_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;std::vector&lt;unsigned char&gt; &gt; data_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af413506ef7c7376c1ea8ca4622cb1ada" name="af413506ef7c7376c1ea8ca4622cb1ada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af413506ef7c7376c1ea8ca4622cb1ada">&#9670;&#160;</a></span>size_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Size.html">Size</a> size_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>client/include/webcface/<a class="el" href="image__frame_8h_source.html">image_frame.h</a></li>
+<li>client/src/<a class="el" href="image__frame_8cc.html">image_frame.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a></li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

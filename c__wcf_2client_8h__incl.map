@@ -1,11 +1,11 @@
 <map id="client/include/webcface/c_wcf/client.h" name="client/include/webcface/c_wcf/client.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="189,5,363,45"/>
-<area shape="rect" id="Node000002" href="$def__types_8h.html" title=" " alt="" coords="227,93,325,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="279,46,279,79,273,79,273,46"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,216,207"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="253,121,164,163,162,158,251,116"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="240,174,312,199"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="279,119,279,160,273,160,273,119"/>
-<area shape="rect" id="Node000005" title=" " alt="" coords="337,174,399,199"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="291,117,346,163,342,167,288,121"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="119,5,293,45"/>
+<area shape="rect" id="Node000002" href="$def__types_8h.html" title=" " alt="" coords="157,93,255,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="209,46,209,79,203,79,203,46"/>
+<area shape="rect" id="Node000003" href="$webcface-config_8h.html" title=" " alt="" coords="5,167,145,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="186,121,110,162,107,158,184,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="170,167,242,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="209,119,209,153,203,153,203,119"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="267,167,329,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="222,117,274,156,271,160,219,121"/>
 </map>

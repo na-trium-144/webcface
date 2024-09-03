@@ -1,9 +1,9 @@
 <map id="client/include/webcface/geometry.h" name="client/include/webcface/geometry.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="183,5,358,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,216,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="237,48,159,89,156,85,234,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="239,101,302,126"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="273,46,273,87,268,87,268,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="326,101,418,126"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="295,44,349,89,346,93,291,48"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="113,5,288,45"/>
+<area shape="rect" id="Node000002" href="$webcface-config_8h.html" title=" " alt="" coords="5,93,145,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,48,107,88,104,84,169,43"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="169,93,232,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="203,46,203,79,198,79,198,46"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="256,93,348,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="227,43,277,82,274,87,224,48"/>
 </map>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,21 +143,21 @@ $(document).ready(function(){initNavTree('md_docs_252__text.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md59">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md60">送信</a><ul><li class="level2"><a href="#autotoc_md61">Variant</a></li>
+<ul><li class="level1"><a href="#autotoc_md69">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md70">送信</a><ul><li class="level2"><a href="#autotoc_md71">Variant</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md62">受信</a><ul><li class="level2"><a href="#autotoc_md63">時刻</a></li>
-<li class="level2"><a href="#autotoc_md64">Entry</a></li>
-<li class="level2"><a href="#autotoc_md65">Event</a></li>
+<li class="level1"><a href="#autotoc_md72">受信</a><ul><li class="level2"><a href="#autotoc_md73">時刻</a></li>
+<li class="level2"><a href="#autotoc_md74">Entry</a></li>
+<li class="level2"><a href="#autotoc_md75">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md58"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md68"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ webcface::Text (<code><a class="el" href="text_8h.html">webcface/text.h</a></code>)</li>
+<li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a> (<code><a class="el" href="text_8h.html">webcface/text.h</a></code>)</li>
 <li>C Reference: <a class="el" href="c__wcf_2text_8h.html">c_wcf/text.h</a></li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Text.html">Text</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.text.html#webcface.text.Text">webcface.Text</a></li>
@@ -165,35 +165,35 @@ $(document).ready(function(){initNavTree('md_docs_252__text.html',''); initResiz
 </dd></dl>
 <p>文字列データを送受信します。</p>
 <p>使い方は<a class="el" href="md_docs_251__value.html">Value</a>とほぼ同じです。</p>
-<h1><a class="anchor" id="autotoc_md59"></a>
+<h1><a class="anchor" id="autotoc_md69"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t text</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>詳細は <a class="el" href="md_docs_272__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md60"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> <a class="el" href="structField.html#a7f0ed33e851f794caa1bf924341fb1a9">Client::text</a> からTextオブジェクトを作り、 <a class="el" href="classText.html#a822534bc7f9b9e069d2be3ef342b3cf6" title="文字列をセットする">Text::set()</a> でデータを代入し、Client::sync()することで送信されます</p>
+<li><p class="startli"><b class="tab-title">C++</b> Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>);</div>
-</div><!-- fragment --><p> set() の代わりに代入演算子(<a class="el" href="classText.html#a64cb587f05cf4faa1e4e3ab2c36ca29b" title="文字列をセットする">Text::operator=</a>)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
+</div><!-- fragment --><p> set() の代わりに代入演算子(Text::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>) = <span class="stringliteral">&quot;hello&quot;</span>;</div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">C</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
-null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#af1e0ec9688c9532bc8408629adce9389">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
-<div class="ttc" id="ac__wcf_2text_8h_html_af1e0ec9688c9532bc8408629adce9389"><div class="ttname"><a href="c__wcf_2text_8h.html#af1e0ec9688c9532bc8408629adce9389">wcfTextSet</a></div><div class="ttdeci">WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:90</div></div>
-</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#aa8474a029dae1ac6ffb5943943dcf032">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
-<div class="ttc" id="ac__wcf_2text_8h_html_aa8474a029dae1ac6ffb5943943dcf032"><div class="ttname"><a href="c__wcf_2text_8h.html#aa8474a029dae1ac6ffb5943943dcf032">wcfTextSetN</a></div><div class="ttdeci">WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:97</div></div>
+null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextSetW) で送信できます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a94470a2a84a02b9af795174cf9d317f9"><div class="ttname"><a href="c__wcf_2text_8h.html#a94470a2a84a02b9af795174cf9d317f9">wcfTextSet</a></div><div class="ttdeci">wcfStatus wcfTextSet(wcfClient *wcli, const char *field, const char *text)</div><div class="ttdoc">文字列を送信する(null終端)</div><div class="ttdef"><b>Definition</b> text.cc:90</div></div>
+</div><!-- fragment --> null終端でない場合は wcfTextSetN, (<span class="since-c">2.0</span> wcfTextSetNW) が使えます <div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, <span class="stringliteral">&quot;hello&quot;</span>, 5);</div>
+<div class="ttc" id="ac__wcf_2text_8h_html_a2dbf1b9e940ba3f11d8a61e533ac39b8"><div class="ttname"><a href="c__wcf_2text_8h.html#a2dbf1b9e940ba3f11d8a61e533ac39b8">wcfTextSetN</a></div><div class="ttdeci">wcfStatus wcfTextSetN(wcfClient *wcli, const char *field, const char *text, int size)</div><div class="ttdoc">文字列を送信する</div><div class="ttdef"><b>Definition</b> text.cc:97</div></div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">JavaScript</b> <a class="el" href="structField.html#a7f0ed33e851f794caa1bf924341fb1a9">Client.text</a> からTextオブジェクトを作り、 <a class="el" href="classText.html#a822534bc7f9b9e069d2be3ef342b3cf6" title="文字列をセットする">Text.set()</a> でデータを代入し、Client.sync()することで送信されます。 <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
+<li><b class="tab-title">JavaScript</b> Client.text からTextオブジェクトを作り、 Text.set() でデータを代入し、Client.sync()することで送信されます。 <div class="fragment"><div class="line">wcli.text(&quot;hoge&quot;).set(&quot;hello&quot;);</div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">Python</b> <a class="el" href="structField.html#a7f0ed33e851f794caa1bf924341fb1a9">Client.text</a> からTextオブジェクトを作り、 <a class="el" href="classText.html#a822534bc7f9b9e069d2be3ef342b3cf6" title="文字列をセットする">Text.set()</a> でデータを代入し、Client.sync()することで送信されます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
+<li><b class="tab-title">Python</b> Client.text からTextオブジェクトを作り、 Text.set() でデータを代入し、Client.sync()することで送信されます。 <div class="fragment"><div class="line">wcli.text(<span class="stringliteral">&quot;hoge&quot;</span>).set(<span class="stringliteral">&quot;hello&quot;</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md61"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md71"></a>
 Variant</h2>
 <dl class="section note"><dt>Note</dt><dd><ul>
 <li><span class="since-c">1.10</span> <span class="since-js">1.6</span> Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。 (<a class="el" href="md_docs_254__view.html">View</a>のInputRefで内部的に使用するため)<ul>
-<li><del>C++では <a class="el" href="classText.html#a822534bc7f9b9e069d2be3ef342b3cf6" title="文字列をセットする">Text::set</a>, <a class="el" href="classText.html#a442c2e70e260b81f142b037ad452dd96" title="文字列を返す (const参照)">Text::get</a> で ValAdaptor 型を経由して文字列以外の型のデータを文字列と同様に送信、受信できます。</del><ul>
-<li><span class="since-c">2.0</span> 文字列以外の型にアクセスするインタフェースは <a class="el" href="classVariant.html" title="文字列、数値などの型を送受信するクラス">Variant</a> という別のクラスに分離しました。 Textクラスから文字列以外のデータ型にはアクセスできません。</li>
+<li><del>C++では Text::set, Text::get で ValAdaptor 型を経由して文字列以外の型のデータを文字列と同様に送信、受信できます。</del><ul>
+<li><span class="since-c">2.0</span> 文字列以外の型にアクセスするインタフェースは Variant という別のクラスに分離しました。 Textクラスから文字列以外のデータ型にはアクセスできません。</li>
 </ul>
 </li>
 <li>JavaScriptでは Text.setAny, Text.getAny 関数を使うと文字列以外のデータを処理できます。</li>
@@ -220,10 +220,10 @@ Variant</h2>
 <div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
 </div><!-- fragment --><p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md62"></a>
+<h1><a class="anchor" id="autotoc_md72"></a>
 受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> <a class="el" href="classMember.html#a7f0ed33e851f794caa1bf924341fb1a9">Member::text()</a> でTextクラスのオブジェクトが得られ、 <a class="el" href="classText.html#a66ed92c16137416044c7c07d2f6076d6" title="文字列を返す">Text::tryGet()</a> で値のリクエストをするとともに受信した値を取得できます。</p>
+<li><p class="startli"><b class="tab-title">C++</b> Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="fragment"><div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 </div><!-- fragment --><ul>
@@ -232,10 +232,10 @@ Variant</h2>
 <li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
 </ul>
 </li>
-<li><a class="el" href="classText.html#a442c2e70e260b81f142b037ad452dd96" title="文字列を返す (const参照)">Text::get()</a> はstd::nulloptの代わりに空文字列を返します。</li>
+<li>Text::get() はstd::nulloptの代わりに空文字列を返します。</li>
 <li>また、std::string にキャストすることでも同様に値が得られます。</li>
 </ul>
-<p class="startli"><span class="since-c">1.7</span> <a class="el" href="classValue.html#a73c7091e52ec1e707f2288e9bb933fc4" title="値をリクエストする">Value::request()</a> で明示的にリクエストを送信することもできます。</p>
+<p class="startli"><span class="since-c">1.7</span> Value::request() で明示的にリクエストを送信することもできます。</p>
 <p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
 <p class="startli">std::ostreamにTextを直接渡して表示することもできます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><ul>
@@ -248,16 +248,15 @@ Variant</h2>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
 <p>wcfTextGet, (<span class="since-c">2.0</span> wcfTextGetW) に受信した文字列を格納するバッファとそのサイズ(null終端を含む)を指定します。</p>
-<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> <a class="code hl_enumvalue" href="component__canvas2d_8h.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">text</a>[6];</div>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。 </p><div class="fragment"><div class="line"><span class="keywordtype">char</span> text[6];</div>
 <div class="line"><span class="keywordtype">int</span> size;</div>
-<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8h.html#a588f2b798fac80402d80d95fbc7ec67e">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, <a class="code hl_enumvalue" href="component__canvas2d_8h.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">text</a>, 6, &amp;size);</div>
+<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_NO_DATA</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// few moments later,</span></div>
-<div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8h.html#a588f2b798fac80402d80d95fbc7ec67e">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, <a class="code hl_enumvalue" href="component__canvas2d_8h.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">text</a>, 6, &amp;size);</div>
+<div class="line">ret = <a class="code hl_function" href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a>(wcli, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;hoge&quot;</span>, text, 6, &amp;size);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, text = &quot;hello\0&quot;, size = 5</span></div>
-<div class="ttc" id="ac__wcf_2text_8h_html_a588f2b798fac80402d80d95fbc7ec67e"><div class="ttname"><a href="c__wcf_2text_8h.html#a588f2b798fac80402d80d95fbc7ec67e">wcfTextGet</a></div><div class="ttdeci">WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:105</div></div>
-<div class="ttc" id="acomponent__canvas2d_8h_html_a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1"><div class="ttname"><a href="component__canvas2d_8h.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">Canvas2DComponentType::text</a></div><div class="ttdeci">@ text</div></div>
+<div class="ttc" id="ac__wcf_2text_8h_html_abf4899fe704f996d49ee477cfb8002dd"><div class="ttname"><a href="c__wcf_2text_8h.html#abf4899fe704f996d49ee477cfb8002dd">wcfTextGet</a></div><div class="ttdeci">wcfStatus wcfTextGet(wcfClient *wcli, const char *member, const char *field, char *text, int size, int *recv_size)</div><div class="ttdoc">文字列を受信する</div><div class="ttdef"><b>Definition</b> text.cc:105</div></div>
 </div><!-- fragment --><ul>
 <li>sizeに受信した文字列の長さ、バッファに受信した文字列が入ります。<ul>
 <li>文字列がバッファの長さを超える場合は、(バッファのサイズ - 1)文字とnullが格納されます。</li>
@@ -270,7 +269,7 @@ Variant</h2>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>member名に空文字列またはNULLを指定すると自分自身を指します。</dd></dl>
 </li>
-<li><p class="startli"><b class="tab-title">JavaScript</b> <a class="el" href="classMember.html#a7f0ed33e851f794caa1bf924341fb1a9">Member.text()</a> でTextクラスのオブジェクトが得られ、 <a class="el" href="classText.html#a66ed92c16137416044c7c07d2f6076d6" title="文字列を返す">Text.tryGet()</a> などで値のリクエストをするとともに受信した値を取得できます。</p>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.text() でTextクラスのオブジェクトが得られ、 Text.tryGet() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="fragment"><div class="line">const hoge: string | null = wcli.member(&quot;foo&quot;).text(&quot;hoge&quot;).tryGet();</div>
 </div><!-- fragment --><ul>
@@ -281,9 +280,9 @@ Variant</h2>
 </li>
 <li>get() はnullの代わりに空文字列を返します。</li>
 </ul>
-<p class="startli"><span class="since-js">1.1</span> <a class="el" href="classText.html#a4021243e831abbaa2739872595f1b5bb" title="文字列をリクエストする">Text.request()</a>で明示的にリクエストを送信することもできます。</p>
+<p class="startli"><span class="since-js">1.1</span> Text.request()で明示的にリクエストを送信することもできます。</p>
 </li>
-<li><p class="startli"><b class="tab-title">Python</b> <a class="el" href="classMember.html#a7f0ed33e851f794caa1bf924341fb1a9">Member.text()</a> でTextクラスのオブジェクトが得られ、 Text.try_get() などで値のリクエストをするとともに受信した値を取得できます。</p>
+<li><p class="startli"><b class="tab-title">Python</b> Member.text() でTextクラスのオブジェクトが得られ、 Text.try_get() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="fragment"><div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
 </div><!-- fragment --><ul>
@@ -293,20 +292,20 @@ Variant</h2>
 </li>
 <li>get() はNoneの代わりに空文字列を返します。</li>
 </ul>
-<p class="startli"><a class="el" href="classValue.html#a73c7091e52ec1e707f2288e9bb933fc4" title="値をリクエストする">Value.request()</a>で明示的にリクエストを送信することもできます。</p>
+<p class="startli">Value.request()で明示的にリクエストを送信することもできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md63"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md73"></a>
 時刻</h2>
-<p><del><a class="el" href="classText.html#a3799c65797b21f35329dc284df16a65d" title="syncの時刻を返す">Text::time()</a> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</del> <br  />
- <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> <a class="el" href="classMember.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に統一しました。詳細は <a class="el" href="md_docs_251__value.html">5-1. Value</a> を参照</p>
-<h2><a class="anchor" id="autotoc_md64"></a>
+<p><del>Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</del> <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に統一しました。詳細は <a class="el" href="md_docs_251__value.html">5-1. Value</a> を参照</p>
+<h2><a class="anchor" id="autotoc_md74"></a>
 Entry</h2>
-<p><strike><a class="el" href="classMember.html#a1cc337f3ebf4841d5fc32f519c400c5a" title="このmemberが公開しているtextのリストを返す。">Member::texts()</a> で</strike> そのMemberが送信しているtextのリストが得られます <br  />
- <span class="since-c">1.6</span> <span class="since-py">1.1</span> <a class="el" href="classMember.html#a56970716d867cddc9b9dfe92ad8394bb">Member::textEntries()</a> に変更</p>
+<p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
+ <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
 <p>また、他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。 (TextEntryイベント)</p>
 <p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md65"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。(TextChange イベント) コールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は onSync() が使えます</p>
@@ -323,7 +322,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

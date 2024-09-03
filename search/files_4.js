@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['61_5fcanvas2d_2emd_0',['61_canvas2d.md',['../61__canvas2d_8md.html',1,'']]],
-  ['62_5fimage_2emd_1',['62_image.md',['../62__image_8md.html',1,'']]],
-  ['63_5fcanvas3d_2emd_2',['63_canvas3d.md',['../63__canvas3d_8md.html',1,'']]],
-  ['64_5frobot_5fmodel_2emd_3',['64_robot_model.md',['../64__robot__model_8md.html',1,'']]]
+  ['51_5fvalue_2emd_0',['51_value.md',['../51__value_8md.html',1,'']]],
+  ['52_5ftext_2emd_1',['52_text.md',['../52__text_8md.html',1,'']]],
+  ['53_5ffunc_2emd_2',['53_func.md',['../53__func_8md.html',1,'']]],
+  ['54_5fview_2emd_3',['54_view.md',['../54__view_8md.html',1,'']]],
+  ['55_5flog_2emd_4',['55_log.md',['../55__log_8md.html',1,'']]]
 ];

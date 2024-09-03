@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['2_2d1_2e_20server_0',['2-1. Server',['../md_docs_221__server.html',1,'']]],
-  ['2_2d2_2e_20webui_1',['2-2. WebUI',['../md_docs_222__webui.html',1,'']]],
-  ['21_5fserver_2emd_2',['21_server.md',['../21__server_8md.html',1,'']]],
-  ['22_5fwebui_2emd_3',['22_webui.md',['../22__webui_8md.html',1,'']]]
+  ['1_2d1_2e_20tutorial_20_28visualizing_29_0',['1-1. Tutorial (Visualizing)',['../md_docs_211__tutorial__vis.html',1,'']]],
+  ['11_5ftutorial_5fvis_2emd_1',['11_tutorial_vis.md',['../11__tutorial__vis_8md.html',1,'']]]
 ];

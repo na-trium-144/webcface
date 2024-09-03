@@ -1,5 +1,0 @@
-<map id="LogLineData" name="LogLineData">
-<area shape="rect" id="Node000001" title=" " alt="" coords="7,93,109,119"/>
-<area shape="rect" id="Node000002" href="$classencoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="5,5,111,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="61,45,61,93,55,93,55,45"/>
-</map>

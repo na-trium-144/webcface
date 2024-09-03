@@ -1,5 +1,5 @@
 var arg_8h =
 [
-    [ "Arg", "classArg.html", "classArg" ],
-    [ "operator<<", "arg_8h.html#a81d463d2ebf19d94ca94d2abe0f75149", null ]
+    [ "Arg", "classwebcface_1_1Arg.html", "classwebcface_1_1Arg" ],
+    [ "operator<<", "arg_8h.html#a247771d30c740ef13dbff87e21baf225", null ]
 ];

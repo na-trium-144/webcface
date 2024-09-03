@@ -1,0 +1,578 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: TemporalCanvas3DComponent Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classwebcface_1_1TemporalCanvas3DComponent.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classwebcface_1_1TemporalCanvas3DComponent-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">TemporalCanvas3DComponent Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>Canvas3Dを構築するときに使う一時的なCanvas3DComponent.  
+ <a href="classwebcface_1_1TemporalCanvas3DComponent.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="component__canvas3d_8h_source.html">webcface/component_canvas3d.h</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a3b8fabe0dfad8f01de7b3812cab5763c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a3b8fabe0dfad8f01de7b3812cab5763c">TemporalCanvas3DComponent</a> (std::nullptr_t=nullptr)</td></tr>
+<tr class="separator:a3b8fabe0dfad8f01de7b3812cab5763c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e655410bfae1ba852e55d19f83135c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a53e655410bfae1ba852e55d19f83135c">TemporalCanvas3DComponent</a> (<a class="el" href="namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a> type)</td></tr>
+<tr class="separator:a53e655410bfae1ba852e55d19f83135c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0fe5e8547fb8005d49e7b242528c69a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#aa0fe5e8547fb8005d49e7b242528c69a">TemporalCanvas3DComponent</a> (const <a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;other)</td></tr>
+<tr class="separator:aa0fe5e8547fb8005d49e7b242528c69a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62238015493b7d84a00cd6e6da546f05"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a62238015493b7d84a00cd6e6da546f05">operator=</a> (const <a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;other)</td></tr>
+<tr class="separator:a62238015493b7d84a00cd6e6da546f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a4417dbedc9d903f14b1c40de5f84cd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a3a4417dbedc9d903f14b1c40de5f84cd">~TemporalCanvas3DComponent</a> () noexcept</td></tr>
+<tr class="separator:a3a4417dbedc9d903f14b1c40de5f84cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88ba00452f5b0ef396eef5b9397a9db"><td class="memItemLeft" align="right" valign="top">std::unique_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1Canvas3DComponentData.html">internal::Canvas3DComponentData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#ae88ba00452f5b0ef396eef5b9397a9db">lockTmp</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data, const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;view_name, std::unordered_map&lt; <a class="el" href="namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a>, int &gt; *idx_next=nullptr)</td></tr>
+<tr class="memdesc:ae88ba00452f5b0ef396eef5b9397a9db"><td class="mdescLeft">&#160;</td><td class="mdescRight">AnonymousFuncの名前を確定  <br /></td></tr>
+<tr class="separator:ae88ba00452f5b0ef396eef5b9397a9db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00ff39b994f9ddcf66c7c7eda7027242"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a00ff39b994f9ddcf66c7c7eda7027242">origin</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;origin)</td></tr>
+<tr class="memdesc:a00ff39b994f9ddcf66c7c7eda7027242"><td class="mdescLeft">&#160;</td><td class="mdescRight">要素の移動  <br /></td></tr>
+<tr class="separator:a00ff39b994f9ddcf66c7c7eda7027242"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ba5ae686ed0193626852064a0bd5016"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a1ba5ae686ed0193626852064a0bd5016">color</a> (<a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a> color)</td></tr>
+<tr class="memdesc:a1ba5ae686ed0193626852064a0bd5016"><td class="mdescLeft">&#160;</td><td class="mdescRight">色  <br /></td></tr>
+<tr class="separator:a1ba5ae686ed0193626852064a0bd5016"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa42062c8613d2b728aea43fa794e9e97"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#aa42062c8613d2b728aea43fa794e9e97">geometry</a> (const <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &amp;g)</td></tr>
+<tr class="memdesc:aa42062c8613d2b728aea43fa794e9e97"><td class="mdescLeft">&#160;</td><td class="mdescRight">geometryをセット  <br /></td></tr>
+<tr class="separator:aa42062c8613d2b728aea43fa794e9e97"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87c978be0af0d3268c4ad7303c2a4e53"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a87c978be0af0d3268c4ad7303c2a4e53">robotModel</a> (const <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;field)</td></tr>
+<tr class="separator:a87c978be0af0d3268c4ad7303c2a4e53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8514e1ca420eb033bfa15f86665c061c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a8514e1ca420eb033bfa15f86665c061c">angles</a> (const std::unordered_map&lt; std::string, double &gt; &amp;angles)</td></tr>
+<tr class="memdesc:a8514e1ca420eb033bfa15f86665c061c"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelの関節をまとめて設定  <br /></td></tr>
+<tr class="separator:a8514e1ca420eb033bfa15f86665c061c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad6480b8533315c983c909f3f395bc56a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#ad6480b8533315c983c909f3f395bc56a">angles</a> (const std::unordered_map&lt; std::wstring, double &gt; &amp;angles)</td></tr>
+<tr class="memdesc:ad6480b8533315c983c909f3f395bc56a"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelの関節をまとめて設定 (wstring)  <br /></td></tr>
+<tr class="separator:ad6480b8533315c983c909f3f395bc56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae9f4a964bd9a5b1b4c14be65316fd09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#aae9f4a964bd9a5b1b4c14be65316fd09">angle</a> (const std::string &amp;joint_name, double angle)</td></tr>
+<tr class="memdesc:aae9f4a964bd9a5b1b4c14be65316fd09"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelの関節を設定  <br /></td></tr>
+<tr class="separator:aae9f4a964bd9a5b1b4c14be65316fd09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4efcf7f56f6c6e75d48aafab6ed7929e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html#a4efcf7f56f6c6e75d48aafab6ed7929e">angle</a> (const std::wstring &amp;joint_name, double angle)</td></tr>
+<tr class="memdesc:a4efcf7f56f6c6e75d48aafab6ed7929e"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelの関節を設定 (wstring)  <br /></td></tr>
+<tr class="separator:a4efcf7f56f6c6e75d48aafab6ed7929e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Canvas3Dを構築するときに使う一時的なCanvas3DComponent. </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a3b8fabe0dfad8f01de7b3812cab5763c" name="a3b8fabe0dfad8f01de7b3812cab5763c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b8fabe0dfad8f01de7b3812cab5763c">&#9670;&#160;</a></span>TemporalCanvas3DComponent() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> </td>
+          <td>(</td>
+          <td class="paramtype">std::nullptr_t&#160;</td>
+          <td class="paramname"> = <code>nullptr</code></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>msg_dataはnullptrになる </p>
+
+</div>
+</div>
+<a id="a53e655410bfae1ba852e55d19f83135c" name="a53e655410bfae1ba852e55d19f83135c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53e655410bfae1ba852e55d19f83135c">&#9670;&#160;</a></span>TemporalCanvas3DComponent() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a>&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>msg_dataを初期化する </p>
+
+</div>
+</div>
+<a id="aa0fe5e8547fb8005d49e7b242528c69a" name="aa0fe5e8547fb8005d49e7b242528c69a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0fe5e8547fb8005d49e7b242528c69a">&#9670;&#160;</a></span>TemporalCanvas3DComponent() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3a4417dbedc9d903f14b1c40de5f84cd" name="a3a4417dbedc9d903f14b1c40de5f84cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3a4417dbedc9d903f14b1c40de5f84cd">&#9670;&#160;</a></span>~TemporalCanvas3DComponent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">~<a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aae9f4a964bd9a5b1b4c14be65316fd09" name="aae9f4a964bd9a5b1b4c14be65316fd09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae9f4a964bd9a5b1b4c14be65316fd09">&#9670;&#160;</a></span>angle() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; angle </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>joint_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RobotModelの関節を設定 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">joint_name</td><td>RobotJointの名前 </td></tr>
+    <tr><td class="paramname">angle</td><td>角度 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4efcf7f56f6c6e75d48aafab6ed7929e" name="a4efcf7f56f6c6e75d48aafab6ed7929e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4efcf7f56f6c6e75d48aafab6ed7929e">&#9670;&#160;</a></span>angle() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; angle </td>
+          <td>(</td>
+          <td class="paramtype">const std::wstring &amp;&#160;</td>
+          <td class="paramname"><em>joint_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>angle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RobotModelの関節を設定 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">joint_name</td><td>RobotJointの名前 </td></tr>
+    <tr><td class="paramname">angle</td><td>角度 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a8514e1ca420eb033bfa15f86665c061c" name="a8514e1ca420eb033bfa15f86665c061c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8514e1ca420eb033bfa15f86665c061c">&#9670;&#160;</a></span>angles() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; angles </td>
+          <td>(</td>
+          <td class="paramtype">const std::unordered_map&lt; std::string, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>angles</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RobotModelの関節をまとめて設定 </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angles</td><td>RobotJointの名前と角度のリスト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad6480b8533315c983c909f3f395bc56a" name="ad6480b8533315c983c909f3f395bc56a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad6480b8533315c983c909f3f395bc56a">&#9670;&#160;</a></span>angles() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; angles </td>
+          <td>(</td>
+          <td class="paramtype">const std::unordered_map&lt; std::wstring, double &gt; &amp;&#160;</td>
+          <td class="paramname"><em>angles</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>RobotModelの関節をまとめて設定 (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">angles</td><td>RobotJointの名前と角度のリスト </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1ba5ae686ed0193626852064a0bd5016" name="a1ba5ae686ed0193626852064a0bd5016"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ba5ae686ed0193626852064a0bd5016">&#9670;&#160;</a></span>color()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; color </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a>&#160;</td>
+          <td class="paramname"><em>color</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>色 </p>
+
+</div>
+</div>
+<a id="aa42062c8613d2b728aea43fa794e9e97" name="aa42062c8613d2b728aea43fa794e9e97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa42062c8613d2b728aea43fa794e9e97">&#9670;&#160;</a></span>geometry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; geometry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &amp;&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>geometryをセット </p>
+
+</div>
+</div>
+<a id="ae88ba00452f5b0ef396eef5b9397a9db" name="ae88ba00452f5b0ef396eef5b9397a9db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae88ba00452f5b0ef396eef5b9397a9db">&#9670;&#160;</a></span>lockTmp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::unique_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1Canvas3DComponentData.html">internal::Canvas3DComponentData</a> &gt; lockTmp </td>
+          <td>(</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>view_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::unordered_map&lt; <a class="el" href="namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155">Canvas3DComponentType</a>, int &gt; *&#160;</td>
+          <td class="paramname"><em>idx_next</em> = <code>nullptr</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>AnonymousFuncの名前を確定 </p>
+<p>現状Canvas3DにFuncを使う要素はないのでなにもしない</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td></td></tr>
+    <tr><td class="paramname">view_name</td><td>viewの名前 </td></tr>
+    <tr><td class="paramname">idx_next</td><td>種類ごとの要素数のmap InputRefの名前に使うidを決定するのに使う </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a62238015493b7d84a00cd6e6da546f05" name="a62238015493b7d84a00cd6e6da546f05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62238015493b7d84a00cd6e6da546f05">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a00ff39b994f9ddcf66c7c7eda7027242" name="a00ff39b994f9ddcf66c7c7eda7027242"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00ff39b994f9ddcf66c7c7eda7027242">&#9670;&#160;</a></span>origin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; origin </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
+          <td class="paramname"><em>origin</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>要素の移動 </p>
+
+</div>
+</div>
+<a id="a87c978be0af0d3268c4ad7303c2a4e53" name="a87c978be0af0d3268c4ad7303c2a4e53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a87c978be0af0d3268c4ad7303c2a4e53">&#9670;&#160;</a></span>robotModel()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a> &amp; robotModel </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &amp;&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>client/include/webcface/<a class="el" href="component__canvas3d_8h_source.html">component_canvas3d.h</a></li>
+<li>client/src/<a class="el" href="component__canvas3d_8cc.html">component_canvas3d.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1TemporalCanvas3DComponent.html">TemporalCanvas3DComponent</a></li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

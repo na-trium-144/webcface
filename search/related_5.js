@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['sizehw_0',['sizeHW',['../classSize.html#ad2acfae9ab1e89a373e167ecf9091ea8',1,'Size::sizeHW'],['../classSizeOption.html#aac73618abcd24aa75c017c226a71ca55',1,'SizeOption::sizeHW']]],
-  ['sizewh_1',['sizeWH',['../classSize.html#a6127b9eaad8364e364b4626a0397f332',1,'Size::sizeWH'],['../classSizeOption.html#a098fe5edad35f0fbcc7fe17270d17d02',1,'SizeOption::sizeWH']]]
+  ['sizehw_0',['sizeHW',['../classwebcface_1_1Size.html#a532ccd01be60db41be021d0f1b3b2e97',1,'webcface::Size::sizeHW'],['../classwebcface_1_1SizeOption.html#a14a2487bf55838b210fb14cd86387a52',1,'webcface::SizeOption::sizeHW']]],
+  ['sizewh_1',['sizeWH',['../classwebcface_1_1Size.html#a93bb9fbe0e3d47abe9f1ece5c5f90767',1,'webcface::Size::sizeWH'],['../classwebcface_1_1SizeOption.html#a28c03ee1b2497489150d00781c32ebb6',1,'webcface::SizeOption::sizeWH']]]
 ];

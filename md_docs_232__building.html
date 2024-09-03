@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,21 +143,21 @@ $(document).ready(function(){initNavTree('md_docs_232__building.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md25">Server &amp; Library</a><ul><li class="level2"><a href="#autotoc_md26">Requirements</a></li>
-<li class="level2"><a href="#autotoc_md27">Dependencies</a></li>
-<li class="level2"><a href="#autotoc_md28">Build</a></li>
+<ul><li class="level1"><a href="#autotoc_md35">Server &amp; Library</a><ul><li class="level2"><a href="#autotoc_md36">Requirements</a></li>
+<li class="level2"><a href="#autotoc_md37">Dependencies</a></li>
+<li class="level2"><a href="#autotoc_md38">Build</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md29">WebUI</a></li>
-<li class="level1"><a href="#autotoc_md30">tools</a></li>
+<li class="level1"><a href="#autotoc_md39">WebUI</a></li>
+<li class="level1"><a href="#autotoc_md40">tools</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md24"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md34"></a></p>
 <p>以下はwebcfaceをソースからビルドする場合の説明です。(webcfaceをインストールした場合は不要です。)</p>
 <dl class="section note"><dt>Note</dt><dd>webcface ver1 をソースからビルドしたい場合は、<a href="https://github.com/na-trium-144/webcface/tree/v1">v1</a> ブランチのREADMEを参照してください。</dd></dl>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md35"></a>
 Server &amp; Library</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md36"></a>
 Requirements</h2>
 <ul>
 <li>C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja が必要です<ul>
@@ -174,7 +174,7 @@ Requirements</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md27"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Dependencies</h2>
 <ul>
 <li>webcfaceは外部ライブラリとして <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/wqking/eventpp">eventpp</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/CrowCpp/Crow">crow</a>, <a href="https://github.com/chriskohlhoff/asio">asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://opencv.org/">OpenCV</a>(exampleのみ), <a href="https://github.com/ImageMagick/ImageMagick">Magick++</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) を使用します。</li>
@@ -264,7 +264,7 @@ Cygwin</summary>
 <p>gcc-core, gcc-g++, cmake, make, meson, pkg-config, ninja をインストールしてください</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Build</h2>
 <div class="fragment"><div class="line">git clone https://github.com/na-trium-144/webcface.git</div>
 <div class="line">cd webcface</div>
@@ -315,14 +315,14 @@ Build</h2>
 </div><!-- fragment --><p> でテストを実行できます。</p>
 <div class="fragment"><div class="line">meson install -C build --skip-subprojects</div>
 </div><!-- fragment --><p> でsetup時に指定したディレクトリにインストールできます。 (staticライブラリの場合は <code>--skip-subprojects</code> を使用せず、依存ライブラリもインストールした方がいいかも)</p>
-<h1><a class="anchor" id="autotoc_md29"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 WebUI</h1>
 <p>デフォルトではビルド済みのものがCMake時にダウンロードされますが、 <code>-Ddownload_webui=OFF</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</p>
 <p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 <br  />
  installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
 <p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
 <p>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
 tools</h1>
 <p><a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールします。 WebCFaceライブラリのビルドと同様、Mesonを使って </p><div class="fragment"><div class="line">meson setup build</div>
 <div class="line">meson compile -Cbuild</div>
@@ -343,7 +343,7 @@ tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -10,8 +10,6 @@ var webcface_config_8h =
     [ "WEBCFACE_DLL_INSTANCE_DEF", "webcface-config_8h.html#aff1aa24a4fbb07ca9a6ee45705929237", null ],
     [ "WEBCFACE_DLL_TEMPLATE", "webcface-config_8h.html#a7287772dfc2ba9afb052b0fa0c286b94", null ],
     [ "WEBCFACE_EXP_FILESYSTEM", "webcface-config_8h.html#a079dca08315129f40e916eb92e8e9ae5", null ],
-    [ "WEBCFACE_NS_ABI", "webcface-config_8h.html#a5f06c4f7c40055dc1f43d82fb63598d1", null ],
-    [ "WEBCFACE_NS_ABI_2", "webcface-config_8h.html#a6812f9f22020506e226b2551baa430a9", null ],
     [ "WEBCFACE_NS_BEGIN", "webcface-config_8h.html#abe991b8f291782627a31118c688e123a", null ],
     [ "WEBCFACE_NS_END", "webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb", null ],
     [ "WEBCFACE_PTR_SIZE", "webcface-config_8h.html#a55016271a7c4a6e4230246e6fa5f802e", null ],

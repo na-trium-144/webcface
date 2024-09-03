@@ -1,4 +1,4 @@
 var robot__model_8h =
 [
-    [ "RobotModel", "classRobotModel.html", "classRobotModel" ]
+    [ "RobotModel", "classwebcface_1_1RobotModel.html", "classwebcface_1_1RobotModel" ]
 ];

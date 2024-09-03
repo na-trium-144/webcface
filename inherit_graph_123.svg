@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structmessage_1_1ViewComponent.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structwebcface_1_1message_1_1ViewComponent.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="97,-19 0,-19 0,0 97,0 97,-19"/>
 <text text-anchor="middle" x="48.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ViewComponent</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structinternal_1_1ViewComponentData.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1internal_1_1ViewComponentData.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="253,-19 133,-19 133,0 253,0 253,-19"/>
 <text text-anchor="middle" x="193" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">ViewComponentData</text>
 </a>

@@ -1,0 +1,11 @@
+<map id="AnonymousFunc" name="AnonymousFunc">
+<area shape="rect" id="Node000001" title="名前を指定せず先に関数を登録するFunc" alt="" coords="5,332,135,357"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Func.html" title="関数1つを表すクラス" alt="" coords="44,257,96,283"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="73,297,73,332,67,332,67,297"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="43,183,97,208"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="73,222,73,257,67,257,67,222"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="27,108,113,133"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="73,148,73,182,67,182,67,148"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="17,5,123,31"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="73,45,73,108,67,108,67,45"/>
+</map>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,29 +143,29 @@ $(document).ready(function(){initNavTree('md_docs_222__webui.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md6">Serverから</a></li>
-<li class="level1"><a href="#autotoc_md7">WebCFace Desktop</a></li>
-<li class="level1"><a href="#autotoc_md9">各種データ型へのアクセス</a><ul><li class="level2"><a href="#autotoc_md10">Value</a></li>
-<li class="level2"><a href="#autotoc_md11">Text</a></li>
-<li class="level2"><a href="#autotoc_md12">View</a></li>
-<li class="level2"><a href="#autotoc_md13">Image</a></li>
-<li class="level2"><a href="#autotoc_md14">Canvas2D</a></li>
-<li class="level2"><a href="#autotoc_md15">Canvas3D</a></li>
-<li class="level2"><a href="#autotoc_md16">RobotModel</a></li>
-<li class="level2"><a href="#autotoc_md17">Func</a></li>
-<li class="level2"><a href="#autotoc_md18">Log</a></li>
+<ul><li class="level1"><a href="#autotoc_md16">Serverから</a></li>
+<li class="level1"><a href="#autotoc_md17">WebCFace Desktop</a></li>
+<li class="level1"><a href="#autotoc_md19">各種データ型へのアクセス</a><ul><li class="level2"><a href="#autotoc_md20">Value</a></li>
+<li class="level2"><a href="#autotoc_md21">Text</a></li>
+<li class="level2"><a href="#autotoc_md22">View</a></li>
+<li class="level2"><a href="#autotoc_md23">Image</a></li>
+<li class="level2"><a href="#autotoc_md24">Canvas2D</a></li>
+<li class="level2"><a href="#autotoc_md25">Canvas3D</a></li>
+<li class="level2"><a href="#autotoc_md26">RobotModel</a></li>
+<li class="level2"><a href="#autotoc_md27">Func</a></li>
+<li class="level2"><a href="#autotoc_md28">Log</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md5"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md15"></a></p>
 <p>WebUI はWebCFaceの通信データにアクセスできるGUIです。</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 Serverから</h1>
 <p>webcface-server を起動し、コンソールに表示されるurl (<a href="http://127.0.0.1:7530/index.html">http://127.0.0.1:7530/index.html</a> など) をブラウザで開きましょう。</p>
 <p>WebUI右上のMenuにWebCFaceに接続しているクライアントの一覧が表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
 <dl class="section note"><dt>Note</dt><dd>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</dd></dl>
-<h1><a class="anchor" id="autotoc_md7"></a>
+<h1><a class="anchor" id="autotoc_md17"></a>
 WebCFace Desktop</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.0</span></dd></dl>
 <p>READMEの手順にしたがってインストールすると、「WebCFace Desktop」のアイコン <img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" alt="" style="pointer-events: none;" height="24" class="inline"/> が スタートメニュー(Windows)、 アプリケーションメニュー(Ubuntu)、 Launchpadまたはアプリケーションフォルダ(Mac) に表示されているはずです。</p>
@@ -182,7 +182,6 @@ WebCFace Desktop</h1>
 <li>Logs: サーバーの出力するログが見れます。</li>
 <li>Launcher Config: <a class="el" href="md_docs_271__launcher.html">webcface-launcher</a> の設定を編集できます。</li>
 </ul>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png" alt="webui-server" class="inline"/></p>
 <p>WebCFace Desktopを終了するとserverやlauncherも自動的に終了します。 次に画面を開いた時自動的に前回の状態が復元されます。</p>
 <dl class="section note"><dt>Note</dt><dd>設定を自動保存する場所はWindowsでは <code>C:\Users\(user)\AppData\Roaming\webcface\sg.toml</code> 、それ以外では <code>$HOME/.webcface.sg.toml</code> です。</dd></dl>
 <details >
@@ -196,9 +195,9 @@ WebCFace ver1 (WebUI ver1.3〜1.6)まで (WebUI Server Mode)</summary>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>ソースコードとバイナリ配布はこのリポジトリではなく <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> に含まれるので、ソースからビルドする場合または個別にダウンロードしたい場合はそちらを参照してください</dd></dl>
 </details>
-<h1><a class="anchor" id="autotoc_md9"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 各種データ型へのアクセス</h1>
-<h2><a class="anchor" id="autotoc_md10"></a>
+<h2><a class="anchor" id="autotoc_md20"></a>
 Value</h2>
 <p>数値データ、または1次元数値配列を送受信する型です。</p>
 <p>WebUI では受信したデータがグラフとして表示されます。 (グラフの画面を表示させた時点より前のデータにはアクセスできません)</p>
@@ -213,47 +212,47 @@ Value</h2>
 <p>ができます。 右下の ? アイコンからも操作説明が見れます。</p>
 <p>また、下のスライダーでも時間をスクロールできます。</p>
 <p>(↓スクショは過去のバージョン)</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png" alt="tutorial_value" class="inline"/></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_value.png" alt="example_value" class="inline"/></p>
 <dl class="section warning"><dt>Warning</dt><dd>WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)</dd></dl>
-<h2><a class="anchor" id="autotoc_md11"></a>
+<h2><a class="anchor" id="autotoc_md21"></a>
 Text</h2>
 <p>文字列データを送受信する型です。</p>
 <p>WebUI では図のように文字列が表示されます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png" alt="tutorial_text" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_text.png" alt="example_text" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md22"></a>
 View</h2>
 <p>図のようにテキストやボタンなどの配置を指定してWebUIに表示させる機能です。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png" alt="example_view.png" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Image</h2>
 <p>画像データを送受信する型です。</p>
 <p>WebUIでは最大10fpsで画像を表示できます。</p>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md24"></a>
 Canvas2D</h2>
 <p>2Dの図形の描画データを送受信する型です。</p>
 <p>WebUI上で2次元の図形を描画することができます。</p>
 <p>また、Viewのように特定の部分をクリックしたときに関数を実行させることもできUIとしても使えます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png" alt="tutorial_canvas2d.png" class="inline"/></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png" alt="example_canvas2d.png" class="inline"/></p>
 <p>WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。 右下のアイコンから操作説明が見れます。</p>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Canvas3D</h2>
 <p>3D空間上のオブジェクト配置データを送受信する型です。</p>
 <p>WebUI上で3次元の図形を描画することができます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png" alt="tutorial_canvas3d.png" class="inline"/></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas3d.png" alt="example_canvas3d.png" class="inline"/></p>
 <p>WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。 右下のアイコンから操作説明が見れます。</p>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md26"></a>
 RobotModel</h2>
 <p>ロボットのリンクと関節の構造の情報を送受信する型です。 事前に定義したRobotModelの各関節の角度だけを後で指定してCanvas3Dに描画することができます。</p>
 <p>WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも表示することができます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png" alt="tutorial_wheel.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md17"></a>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png" alt="example_wheel.png" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Func</h2>
 <p>関数をwebcfaceに登録し、他のクライアントやWebUIから呼び出すことができます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png" alt="tutorial_func.png" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_func.png" alt="example_func.png" class="inline"/></p>
+<h2><a class="anchor" id="autotoc_md28"></a>
 Log</h2>
 <p>エラーメッセージなどを送受信するデータ型です。 出力した文字列1行ごとにタイムスタンプとログのレベルの情報を加えて送信し、WebUIに表示することができます。</p>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png" alt="tutorial_logs" class="inline"/></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_logs.png" alt="example_logs" class="inline"/></p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -266,7 +265,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

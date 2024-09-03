@@ -1,11 +1,13 @@
 var searchData=
 [
-  ['6_2d1_2e_20canvas2d_0',['6-1. Canvas2D',['../md_docs_261__canvas2d.html',1,'']]],
-  ['6_2d2_2e_20image_1',['6-2. Image',['../md_docs_262__image.html',1,'']]],
-  ['6_2d3_2e_20canvas3d_2',['6-3. Canvas3D',['../md_docs_263__canvas3d.html',1,'']]],
-  ['6_2d4_2e_20robotmodel_3',['6-4. RobotModel',['../md_docs_264__robot__model.html',1,'']]],
-  ['61_5fcanvas2d_2emd_4',['61_canvas2d.md',['../61__canvas2d_8md.html',1,'']]],
-  ['62_5fimage_2emd_5',['62_image.md',['../62__image_8md.html',1,'']]],
-  ['63_5fcanvas3d_2emd_6',['63_canvas3d.md',['../63__canvas3d_8md.html',1,'']]],
-  ['64_5frobot_5fmodel_2emd_7',['64_robot_model.md',['../64__robot__model_8md.html',1,'']]]
+  ['5_2d1_2e_20value_0',['5-1. Value',['../md_docs_251__value.html',1,'']]],
+  ['5_2d2_2e_20text_1',['5-2. Text',['../md_docs_252__text.html',1,'']]],
+  ['5_2d3_2e_20func_2',['5-3. Func',['../md_docs_253__func.html',1,'']]],
+  ['5_2d4_2e_20view_3',['5-4. View',['../md_docs_254__view.html',1,'']]],
+  ['5_2d5_2e_20log_4',['5-5. Log',['../md_docs_255__log.html',1,'']]],
+  ['51_5fvalue_2emd_5',['51_value.md',['../51__value_8md.html',1,'']]],
+  ['52_5ftext_2emd_6',['52_text.md',['../52__text_8md.html',1,'']]],
+  ['53_5ffunc_2emd_7',['53_func.md',['../53__func_8md.html',1,'']]],
+  ['54_5fview_2emd_8',['54_view.md',['../54__view_8md.html',1,'']]],
+  ['55_5flog_2emd_9',['55_log.md',['../55__log_8md.html',1,'']]]
 ];

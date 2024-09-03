@@ -1,8 +1,8 @@
 var c__wcf__internal_8h =
 [
-    [ "CharType< CharT >", "structc__wcf_1_1CharType.html", null ],
-    [ "CharType< char >", "structc__wcf_1_1CharType_3_01char_01_4.html", "structc__wcf_1_1CharType_3_01char_01_4" ],
-    [ "CharType< wchar_t >", "structc__wcf_1_1CharType_3_01wchar__t_01_4.html", "structc__wcf_1_1CharType_3_01wchar__t_01_4" ],
+    [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
+    [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4" ],
+    [ "CharType< wchar_t >", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html", "structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4" ],
     [ "argsFromCVal", "c__wcf__internal_8h.html#a7355a5ac516fd8fd01fcfeb23d1bf3b9", null ],
     [ "fromCVal", "c__wcf__internal_8h.html#a769284237b37a24e80f4dafc5a05fd4c", null ],
     [ "getPromise", "c__wcf__internal_8h.html#a1501358830a47b1a1509cf05a4532268", null ],

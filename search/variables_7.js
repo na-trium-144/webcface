@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['geometry_5fproperties_0',['geometry_properties',['../structmessage_1_1RobotLink.html#afd36e459252c2441c758f6545400282b',1,'message::RobotLink::geometry_properties'],['../structmessage_1_1Canvas3DComponent.html#afd36e459252c2441c758f6545400282b',1,'message::Canvas3DComponent::geometry_properties']]],
-  ['geometry_5ftype_1',['geometry_type',['../structmessage_1_1RobotLink.html#a9323fb54e511d60ce8cffc5afd207480',1,'message::RobotLink::geometry_type'],['../structmessage_1_1Canvas3DComponent.html#aa721dc058ed7b4eac6eb4e37a68d19c2',1,'message::Canvas3DComponent::geometry_type'],['../structmessage_1_1Canvas2DComponent.html#aa721dc058ed7b4eac6eb4e37a68d19c2',1,'message::Canvas2DComponent::geometry_type']]]
+  ['height_0',['height',['../structwebcface_1_1internal_1_1Canvas2DDataBase.html#a89f6abd564014faeff7cd20c340a9c7d',1,'webcface::internal::Canvas2DDataBase::height'],['../structwebcface_1_1message_1_1Canvas2DData.html#a89f6abd564014faeff7cd20c340a9c7d',1,'webcface::message::Canvas2DData::height'],['../structwebcface_1_1message_1_1Canvas2D.html#a89f6abd564014faeff7cd20c340a9c7d',1,'webcface::message::Canvas2D::height'],['../structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a89f6abd564014faeff7cd20c340a9c7d',1,'webcface::message::Res&lt; Canvas2D &gt;::height']]],
+  ['height_5f_1',['height_',['../structwebcface_1_1message_1_1ImageFrame.html#a45a159d389017b03a58e3508186fb445',1,'webcface::message::ImageFrame']]],
+  ['host_2',['host',['../structwebcface_1_1internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b',1,'webcface::internal::ClientData']]],
+  ['hostname_3',['hostname',['../structwebcface_1_1message_1_1SyncInitEnd.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::message::SyncInitEnd::hostname'],['../structwebcface_1_1server_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::server::ServerStorage::hostname']]]
 ];

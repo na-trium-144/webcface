@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structLogLineData.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structwebcface_1_1LogLineData.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="77,-37 0,-37 0,-18 77,-18 77,-37"/>
 <text text-anchor="middle" x="38.5" y="-25" font-family="Helvetica,sans-Serif" font-size="10.00">LogLineData</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="classLogLine.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="classwebcface_1_1LogLine.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="172,-56 118,-56 118,-37 172,-37 172,-56"/>
 <text text-anchor="middle" x="145" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">LogLine</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classLogLineW.html" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classwebcface_1_1LogLineW.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="177,-19 113,-19 113,0 177,0 177,-19"/>
 <text text-anchor="middle" x="145" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">LogLineW</text>
 </a>

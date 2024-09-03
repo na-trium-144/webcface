@@ -1,6 +1,6 @@
 var geometry_8h =
 [
-    [ "Geometry", "structGeometry.html", "structGeometry" ],
+    [ "Geometry", "structwebcface_1_1Geometry.html", "structwebcface_1_1Geometry" ],
     [ "GeometryType", "geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6", [
       [ "none", "geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8", null ],
       [ "line", "geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474", null ],

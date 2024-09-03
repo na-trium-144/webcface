@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -151,9 +151,9 @@ $(document).ready(function(){initNavTree('webcface-config_8h_source.html',''); i
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a4298b547b461c5709eb54d5171cf3b81">    7</a></span><span class="preprocessor">#define WEBCFACE_SERVER_NAME &quot;webcface&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a1bc206868c13e523a5484af2deaf2c98">    8</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MAJOR 2</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#aa83206e52f1b52bbf9c7e2399c8add41">    9</a></span><span class="preprocessor">#define WEBCFACE_VERSION_MINOR 0</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a4b25565a130978dd7b2b132b89b5776b">   10</a></span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 4</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a4b25565a130978dd7b2b132b89b5776b">   10</a></span><span class="preprocessor">#define WEBCFACE_VERSION_REVISION 5</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a542d6bb73934c3187781d0c89fa55766">   11</a></span><span class="preprocessor">#define WEBCFACE_ABI_MAJOR 20</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a9373ced4210d2f436da678a29364095b">   12</a></span><span class="preprocessor">#define WEBCFACE_VERSION &quot;2.0.4&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a9373ced4210d2f436da678a29364095b">   12</a></span><span class="preprocessor">#define WEBCFACE_VERSION &quot;2.0.5&quot;</span></div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#ac8ce28cb6b94aebdd792999c5be28375">   13</a></span><span class="preprocessor">#define WEBCFACE_SHARED 1</span></div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a0882e9474a6e1557fa51f4d0f27ea201">   14</a></span><span class="preprocessor">#define WEBCFACE_SYSTEM_DLLEXPORT 0</span></div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a3df2e7501cb3d9ac0da17dff7b0386b3">   15</a></span><span class="preprocessor">#define WEBCFACE_SYSTEM_VISIBILITY 1</span></div>
@@ -242,30 +242,40 @@ $(document).ready(function(){initNavTree('webcface-config_8h_source.html',''); i
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#aedce4d32bf11cefb9b7c8067ca7db3c7">   98</a></span><span class="preprocessor">#define WEBCFACE_CALL_FP</span></div>
 <div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="preprocessor">#if WEBCFACE_SYSTEM_ADD_DEBUG</span></div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#ifdef _DEBUG</span></div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span><span class="preprocessor">#define WEBCFACE_NS_ABI_2(ver) v##ver##_debug</span></div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="preprocessor">#ifndef WEBCFACE_NS_ABI_2</span></div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a6812f9f22020506e226b2551baa430a9">  108</a></span><span class="preprocessor">#define WEBCFACE_NS_ABI_2(ver) v##ver##_</span></div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#a5f06c4f7c40055dc1f43d82fb63598d1">  111</a></span><span class="preprocessor">#define WEBCFACE_NS_ABI(ver) WEBCFACE_NS_ABI_2(ver)</span></div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">  112</a></span><span class="preprocessor">#define WEBCFACE_NS_BEGIN                                                      \</span></div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">    namespace webcface {                                                       \</span></div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span><span class="preprocessor">    inline namespace WEBCFACE_NS_ABI(WEBCFACE_ABI_MAJOR) {</span></div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">  115</a></span><span class="preprocessor">#define WEBCFACE_NS_END                                                        \</span></div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">    }                                                                          \</span></div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">    }</span></div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span><span class="comment">// doxygenを生成するときは namespace webcface だけにする</span></div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span><span class="preprocessor">#ifdef WEBCFACE_DOXYGEN</span></div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">  103</a></span><span class="preprocessor">#define WEBCFACE_NS_BEGIN namespace webcface {</span></div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">  104</a></span><span class="preprocessor">#define WEBCFACE_NS_END }</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="preprocessor">#else</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span><span class="comment">// コンパイル時にnamespaceにabiバージョンを埋め込む</span></div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span><span class="preprocessor">#if WEBCFACE_SYSTEM_ADD_DEBUG</span></div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span><span class="preprocessor">#ifdef _DEBUG</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="preprocessor">#define WEBCFACE_NS_ABI_2(ver) v##ver##_debug</span></div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="preprocessor">#ifndef WEBCFACE_NS_ABI_2</span></div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span><span class="preprocessor">#define WEBCFACE_NS_ABI_2(ver) v##ver##_</span></div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span><span class="preprocessor">#define WEBCFACE_NS_ABI(ver) WEBCFACE_NS_ABI_2(ver)</span></div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="preprocessor">#define WEBCFACE_NS_BEGIN                                                      \</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span><span class="preprocessor">    namespace webcface {                                                       \</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="preprocessor">    inline namespace WEBCFACE_NS_ABI(WEBCFACE_ABI_MAJOR) {</span></div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span><span class="preprocessor">#define WEBCFACE_NS_END                                                        \</span></div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span><span class="preprocessor">    }                                                                          \</span></div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span><span class="preprocessor">    }</span></div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span><span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_4fef79e7177ba769987a8da36c892c5f.html">build</a></li><li class="navelem"><a class="el" href="webcface-config_8h.html">webcface-config.h</a></li>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

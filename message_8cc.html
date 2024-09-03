@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -151,12 +151,14 @@ $(document).ready(function(){initNavTree('message_8cc.html',''); initResizable()
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for message.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="message_8cc__incl.svg" width="1566" height="447"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="message_8cc__incl.svg" width="1566" height="432"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespacemessage"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html">message</a></td></tr>
+<tr class="memitem:namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacewebcface_1_1message"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html">webcface::message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -168,9 +170,9 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aaaae13bc09562632bfc1591ce70ed469"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#aaaae13bc09562632bfc1591ce70ed469">printMsg</a> (const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger, const std::string &amp;message)</td></tr>
+<tr class="memitem:aaaae13bc09562632bfc1591ce70ed469"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#aaaae13bc09562632bfc1591ce70ed469">printMsg</a> (const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger, const std::string &amp;message)</td></tr>
 <tr class="separator:aaaae13bc09562632bfc1591ce70ed469"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80e74661d4870765688ab1b4ffc0a496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacemessage.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a> (const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memitem:a80e74661d4870765688ab1b4ffc0a496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a> (const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
 <tr class="memdesc:a80e74661d4870765688ab1b4ffc0a496"><td class="mdescLeft">&#160;</td><td class="mdescRight">msgpackのメッセージをパースし返す  <br /></td></tr>
 <tr class="separator:a80e74661d4870765688ab1b4ffc0a496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -197,11 +199,10 @@ Functions</h2></td></tr>
 <div class="line">        } <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e) {                                    \</div>
 <div class="line">            logger-&gt;error(<span class="stringliteral">&quot;unpack error: {} at index={}, kind={}&quot;</span>, e.what(),   \</div>
 <div class="line">                          i + 1, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(type::kind));                \</div>
-<div class="line">            printMsg(logger, <a class="code hl_namespace" href="namespacemessage.html">message</a>);                                         \</div>
+<div class="line">            printMsg(logger, message);                                         \</div>
 <div class="line">            <span class="keywordflow">continue</span>;                                                          \</div>
 <div class="line">        }                                                                      \</div>
 <div class="line">        <span class="keywordflow">break</span>;</div>
-<div class="ttc" id="anamespacemessage_html"><div class="ttname"><a href="namespacemessage.html">message</a></div><div class="ttdef"><b>Definition</b> arg.h:16</div></div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -236,7 +237,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_5cd5fef91ed9e003d1c4f4f0fb46e869.html">src</a></li><li class="navelem"><a class="el" href="message_8cc.html">message.cc</a></li>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

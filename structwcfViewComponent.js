@@ -7,6 +7,7 @@ var structwcfViewComponent =
     [ "on_click_member", "structwcfViewComponent.html#aa057346a3d80071b08daae64b5b2326f", null ],
     [ "option", "structwcfViewComponent.html#aaae4ca8afbba32c85d5bda51ea7fd64d", null ],
     [ "option_num", "structwcfViewComponent.html#adb5754658e76c371fe767d20f7ae8e9a", null ],
+    [ "reserved", "structwcfViewComponent.html#a72091fd3d479061995098bcc2e749ba5", null ],
     [ "step", "structwcfViewComponent.html#a4736138d712d9ee570d0652f08a4786a", null ],
     [ "text", "structwcfViewComponent.html#a16343090e80c4472521560f30113d96c", null ],
     [ "text_color", "structwcfViewComponent.html#a7101f8452e4da8610ed233dae588b145", null ],

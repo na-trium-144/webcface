@@ -1,0 +1,453 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 1-1. Tutorial (Visualizing)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_211__tutorial__vis.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">1-1. Tutorial (Visualizing)</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md1">WebCFaceのインストール</a></li>
+<li class="level1"><a href="#autotoc_md2">Server</a></li>
+<li class="level1"><a href="#autotoc_md3">WebUI</a></li>
+<li class="level1"><a href="#autotoc_md4">Setup</a></li>
+<li class="level1"><a href="#autotoc_md5">Log</a></li>
+<li class="level1"><a href="#autotoc_md6">Value, Text</a></li>
+<li class="level1"><a href="#autotoc_md7">Func</a></li>
+<li class="level1"><a href="#autotoc_md8">View</a></li>
+<li class="level1"><a href="#autotoc_md9">おわりに</a></li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
+<p>WebCFaceの機能紹介・チュートリアルです。</p>
+<p>このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。 プロセス間通信に重点をおいたチュートリアルは 1-2. Tutorial (Communication)</p>
+<p>このチュートリアルでは C++ (Meson または CMake) を使用します。</p>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Python用のチュートリアルも書く</dd></dl>
+<h1><a class="anchor" id="autotoc_md1"></a>
+WebCFaceのインストール</h1>
+<p>READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。</p>
+<p>C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれていますが、 Pythonで利用したい場合は別途 <code>pip install webcface</code> でクライアントライブラリをインストールしてください。</p>
+<h1><a class="anchor" id="autotoc_md2"></a>
+Server</h1>
+<p>WebCFaceを使用するときはserverを常時立ち上げておく必要があります。 次のように WebCFace Desktop アプリから、またはコマンドラインからの2つの方法があります。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">WebCFace Desktop</b></p>
+<p class="startli">スタートメニュー(Windows)、 アプリケーションメニュー(Ubuntu)、 Launchpadまたはアプリケーションフォルダ(Mac) に 「WebCFace Desktop」のアイコン <img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" alt="" style="pointer-events: none;" height="24" class="inline"/> が表示されているはずなので、それを起動してください。</p>
+<p class="startli">それを起動すると、WebCFaceのメイン画面(WebUI)が起動すると同時に、バックグラウンドでサーバーが起動します。</p>
+</li>
+<li><p class="startli"><b class="tab-title">コマンドライン</b></p>
+<p class="startli">ターミナルを開いて <code>webcface-server</code> コマンドを実行するとサーバーが起動します。 デフォルトでは7530番ポートを開きクライアントの接続を待ちます。 追加で指定できるコマンドラインオプションなど、詳細は <a class="el" href="md_docs_221__server.html">2-1. Server</a></p>
+<p class="startli">serverは起動したまま、起動時に表示されるurl (<a href="http://IPアドレス:7530/index.html">http://IPアドレス:7530/index.html</a>) をブラウザで開くと、 WebCFaceのメイン画面(WebUI)が開きます。 使用しているターミナルによっては、Ctrl(Command)+クリックなどで開くことができるかもしれません。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md3"></a>
+WebUI</h1>
+<p>WebCFaceのメイン画面です。 WebCFaceにクライアントが接続すると、WebUI右上のMenuに表示されます。 Menuから見たいデータを選ぶことで小さいウィンドウのようなものが現れデータを見ることができます。</p>
+<p>ウィンドウの表示状態などは自動的にブラウザ(LocalStorage)に保存され、次回アクセスしたときに復元されます。</p>
+<p>詳細な使い方については <a class="el" href="md_docs_222__webui.html">2-2. WebUI</a></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/desktop_empty.png" alt="desktop_empty" class="inline"/></p>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Setup</h1>
+<p>ここからWebCFaceを使ったプログラムを書いていきます。</p>
+<p>まずはプロジェクトを作成しWebCFaceライブラリを使えるようにします。</p>
+<dl class="section note"><dt>Note</dt><dd>C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパイル・リンクすることも可能です。 詳細な説明は <a class="el" href="md_docs_231__setup.html">3-1. Setup WebCFace Library</a></dd></dl>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++ (Meson)</b> 適当にディレクトリを作ります </p><div class="fragment"><div class="line">mkdir webcface-tutorial</div>
+<div class="line">cd webcface-tutorial</div>
+</div><!-- fragment --><p> 以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>main.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span> <span class="comment">// ← webcface::Client</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:18</div></div>
+<div class="ttc" id="aclient_8h_html"><div class="ttname"><a href="client_8h.html">client.h</a></div></div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+</li>
+<li>meson.build <div class="fragment"><div class="line">project(&#39;webcface-tutorial&#39;, &#39;cpp&#39;,</div>
+<div class="line">  default_options: [&#39;cpp_std=c++17&#39;],</div>
+<div class="line">)</div>
+<div class="line">webcface_dep = dependency(&#39;webcface&#39;)</div>
+<div class="line">executable(&#39;tutorial&#39;, &#39;main.cc&#39;,</div>
+<div class="line">  dependencies: webcface_dep,</div>
+<div class="line">)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">ビルドして、実行します </p><div class="fragment"><div class="line">meson setup build  # ← 初回のみ</div>
+<div class="line">meson compile -C build</div>
+<div class="line">./build/tutorial</div>
+</div><!-- fragment --><p> 実行すると、<code>Hello, World!</code> と出力されると同時に、 WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_helloworld.png" alt="tutorial_helloworld" class="inline"/></p>
+<dl class="section note"><dt>Note</dt><dd>このチュートリアルでは以降ビルドと実行の手順は省略しますが、 同様に <code>meson compile</code> (またはninja) でビルドして <code>./build/tutorial</code> を実行してください。</dd></dl>
+<p><span></span></p>
+</li>
+<li><p class="startli"><b class="tab-title">C++ (CMake)</b> 適当にディレクトリを作ります </p><div class="fragment"><div class="line">mkdir webcface-tutorial</div>
+<div class="line">cd webcface-tutorial</div>
+</div><!-- fragment --><p> 以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>main.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span> <span class="comment">// ← webcface::Client</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection(); <span class="comment">// serverに接続できるまで待機</span></div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+</li>
+<li>CMakeLists.txt <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.5)</div>
+<div class="line">project(webcface-tutorial)</div>
+<div class="line">find_package(webcface 2.0 CONFIG REQUIRED)</div>
+<div class="line">add_executable(tutorial main.cc)</div>
+<div class="line">target_link_libraries(tutorial PRIVATE webcface::webcface)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">ビルドして、実行します </p><div class="fragment"><div class="line">cmake -B build  # ← 初回のみ</div>
+<div class="line">cmake --build build</div>
+<div class="line">./build/tutorial</div>
+</div><!-- fragment --><p> 実行すると、<code>Hello, World!</code> と出力されると同時に、 WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_helloworld.png" alt="tutorial_helloworld" class="inline"/></p>
+<dl class="section note"><dt>Note</dt><dd>このチュートリアルでは以降ビルドと実行の手順は省略しますが、 同様に <code>cmake --build</code> (またはmakeやninjaなどでも可) でビルドして <code>./build/tutorial</code> を実行してください。</dd></dl>
+<p><span></span></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md5"></a>
+Log</h1>
+<p>コンソールに出力していた <code>Hello, World!</code> を、WebCFaceにも送信してみましょう。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>main.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial&quot;</span>);</div>
+<div class="line"><span class="comment">// loggerOStream() は std::cout と同様に文字列を出力して使うことができる</span></div>
+<div class="line">std::ostream &amp;logger = wcli.loggerOStream();</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    wcli.sync(); <span class="comment">// wcli に書き込んだデータを送信する</span></div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行すると、コンソール (std::coutではなくstd::cerrと同じ標準エラー出力ですが) には今まで通り <code>Hello, World!</code> と表示されます。</p>
+<p class="startli">それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも <code>Hello, World!</code> を確認できるはずです。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png" alt="tutorial_log" class="inline"/></p>
+<p class="startli">std::wostream を使うこともできます。 また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。 詳細は <a class="el" href="md_docs_255__log.html">5-5. Log</a></p>
+<p class="startli"><span></span></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md6"></a>
+Value, Text</h1>
+<p>数値や文字列のデータを送信すると、それをリアルタイムに表示することができます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>main.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="value_8h.html">webcface/value.h</a>&gt;</span> <span class="comment">// ← value() を使うのに必要</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="text_8h.html">webcface/text.h</a>&gt;</span> <span class="comment">// ← text() を使うのに必要</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial&quot;</span>);</div>
+<div class="line">std::ostream &amp;logger = wcli.loggerOStream();</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Hello, World!&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordtype">int</span> i = 0;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line">        i++;</div>
+<div class="line">        wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = i; <span class="comment">// 「hoge」という名前のvalueに値をセット</span></div>
+<div class="line">        <span class="keywordflow">if</span>(i % 2 == 0){</div>
+<div class="line">            wcli.text(<span class="stringliteral">&quot;fuga&quot;</span>) = <span class="stringliteral">&quot;even&quot;</span>; <span class="comment">// 「fuga」という名前のtextに文字列をセット</span></div>
+<div class="line">        }<span class="keywordflow">else</span>{</div>
+<div class="line">            wcli.text(<span class="stringliteral">&quot;fuga&quot;</span>) = <span class="stringliteral">&quot;odd&quot;</span>;</div>
+<div class="line">        }</div>
+<div class="line"> </div>
+<div class="line">        wcli.sync(); <span class="comment">// wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)</span></div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="atext_8h_html"><div class="ttname"><a href="text_8h.html">text.h</a></div></div>
+<div class="ttc" id="avalue_8h_html"><div class="ttname"><a href="value_8h.html">value.h</a></div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。</p>
+<p class="startli">また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png" alt="tutorial_value" class="inline"/></p>
+<p class="startli">Value, Textについては <a class="el" href="md_docs_251__value.html">5-1. Value</a>, <a class="el" href="md_docs_252__text.html">5-2. Text</a> に詳細なドキュメントがあります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md7"></a>
+Func</h1>
+<p>プログラムからWebUIに情報を送信するだけでなく、WebUIからプログラムを操作することも可能です。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="func_8h.html">webcface/func.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> hoge() {</div>
+<div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Function hoge started&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">return</span> 42;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 以下略...</span></div>
+<div class="line">}</div>
+<div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。 「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。 また、画面右下に関数の戻り値の42が表示されています。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png" alt="tutorial_func1" class="inline"/></p>
+<dl class="section note"><dt>Note</dt><dd>Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。 これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。</dd></dl>
+<p><span></span></p><ul>
+<li>こんどは引数がある関数を作ってみます。 <div class="fragment"><div class="line"><span class="keywordtype">int</span> fuga(<span class="keywordtype">int</span> a, <span class="keyword">const</span> std::string &amp;b) {</div>
+<div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Function fuga(&quot;</span> &lt;&lt; a &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; b &lt;&lt; <span class="stringliteral">&quot;) started&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">return</span> a;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge);</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).set(fuga).setArgs({</div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">init</a>(100), <span class="comment">// 1つ目の引数の名前はa, 初期値が100</span></div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;b&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">option</a>({<span class="stringliteral">&quot;foo&quot;</span>, <span class="stringliteral">&quot;bar&quot;</span>, <span class="stringliteral">&quot;baz&quot;</span>}), <span class="comment">// 2つ目の引数の名前はb, 選択肢がfoo,bar,baz</span></div>
+<div class="line">    });</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 以下略...</span></div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> arg.h:30</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:60</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:83</div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">setArgs() はそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。 (指定しなくてもよいです。)</p>
+<p class="startli">実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。 hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png" alt="tutorial_func2" class="inline"/></p>
+<p class="startli">Funcについては <a class="el" href="md_docs_253__func.html">5-3. Func</a> に詳細なドキュメントがあります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md8"></a>
+View</h1>
+<p>Funcに登録した関数は一覧表示させることしかできませんが、 Viewではテキストや入力欄を任意に並べて表示させることができます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="view_8h.html">webcface/view.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    <span class="comment">// 省略</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line">        <span class="comment">// 他のデータの送信は省略...</span></div>
+<div class="line"> </div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;sample&quot;</span>);</div>
+<div class="line">        v &lt;&lt; <span class="stringliteral">&quot;Hello, world!&quot;</span> &lt;&lt; std::endl; <span class="comment">// テキスト表示</span></div>
+<div class="line">        v &lt;&lt; <span class="stringliteral">&quot;i = &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
+<div class="line">        v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;hoge&quot;</span>, hoge) &lt;&lt; std::endl; <span class="comment">// ボタン</span></div>
+<div class="line">        <span class="keyword">static</span> <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> ref_str;</div>
+<div class="line">        v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;str&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">bind</a>(ref_str); <span class="comment">// 文字列入力</span></div>
+<div class="line">        v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;print&quot;</span>, []{</div>
+<div class="line">            <span class="comment">// クリックすると、入力した文字列を表示</span></div>
+<div class="line">            logger &lt;&lt; <span class="stringliteral">&quot;str = &quot;</span> &lt;&lt; ref_str.<a class="code hl_function" href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">asString</a>() &lt;&lt; std::endl;</div>
+<div class="line">          });</div>
+<div class="line">        v &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">        v.<a class="code hl_function" href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">sync</a>(); <span class="comment">// ここまでにvに追加したものをwcliに反映</span></div>
+<div class="line"> </div>
+<div class="line">        wcli.<a class="code hl_function" href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">sync</a>();</div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:429</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html_a21aed6732ef1c8a17601d42e53959781"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">webcface::InputRef::asString</a></div><div class="ttdeci">std::string asString() const</div><div class="ttdoc">文字列として返す(コピー)</div><div class="ttdef"><b>Definition</b> text.h:496</div></div>
+<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_aaaae04287c268ecb48a67a7c7939d40d"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref)</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:215</div></div>
+<div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:26</div></div>
+<div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:29</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:451</div></div>
+<div class="ttc" id="anamespacewebcface_html_a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"><div class="ttname"><a href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::ViewComponentType::button</a></div><div class="ttdeci">@ button</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a1a6e1affea60ef37fbb3118637671da0"><div class="ttname"><a href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">webcface::Field::view</a></div><div class="ttdeci">View view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:73</div></div>
+<div class="ttc" id="aview_8h_html"><div class="ttname"><a href="view_8h.html">view.h</a></div></div>
+</div><!-- fragment --><p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、 画像のようにプログラムで指定したとおりの画面が表示されます。 「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、 「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
+<p class="startli">上のプログラム例のように、 テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。 ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。 またtextInputなどを使って入力欄を表示させることもできます。 詳細は <a class="el" href="md_docs_254__view.html">5-4. View</a> を参照</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md9"></a>
+おわりに</h1>
+<p>以上で 1-1. Tutorial (Visualizing) は終わりです。 次ページ (1-2. Tutorial (Communication)) にはプロセス間通信に重点をおいたチュートリアルがあります。</p>
+<p>ここで紹介していない機能として</p><ul>
+<li><a class="el" href="md_docs_261__canvas2d.html">6-1. Canvas2D</a></li>
+<li><a class="el" href="md_docs_262__image.html">6-2. Image</a></li>
+<li><a class="el" href="md_docs_263__canvas3d.html">6-3. Canvas3D</a></li>
+<li><a class="el" href="md_docs_264__robot__model.html">6-4. RobotModel</a></li>
+</ul>
+<p>もWebUIからアクセスすることのできる機能としてあるので、見てみてください。</p>
+<p>また、チュートリアルでは紹介していないコマンドラインツールとして</p><ul>
+<li><a class="el" href="md_docs_271__launcher.html">7-1. webcface-launcher</a></li>
+<li><a class="el" href="md_docs_274__ls.html">7-4. webcface-ls</a></li>
+<li><a class="el" href="md_docs_275__tui.html">7-5. webcface-tui</a></li>
+</ul>
+<p>もあります。</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"></td><td class="markdownTableBodyRight">1-2. Tutorial (Communication)   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

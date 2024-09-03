@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -141,17 +141,18 @@ $(document).ready(function(){initNavTree('geometry_8h.html',''); initResizable()
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
+<a href="#namespaces">Namespaces</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">geometry.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;webcface/common/webcface-config.h&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="webcface-config_8h_source.html">webcface-config.h</a>&quot;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;type_traits&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for geometry.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="geometry_8h__incl.svg" width="424" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="geometry_8h__incl.svg" width="354" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -163,71 +164,40 @@ This graph shows which files directly or indirectly include this file:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structGeometry.html">Geometry</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Geometry.html">Geometry</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a1b753fd9c2659910ca1a042a05b56be6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6">GeometryType</a> { <br />
-&#160;&#160;<a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8">none</a> = 0
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474">line</a> = 1
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">plane</a> = 2
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01">rect</a> = 2
+<tr class="memitem:a1b753fd9c2659910ca1a042a05b56be6"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6">GeometryType</a> { <br />
+&#160;&#160;<a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8">none</a> = 0
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474">line</a> = 1
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">plane</a> = 2
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01">rect</a> = 2
 , <br />
-&#160;&#160;<a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">box</a> = 3
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072">circle</a> = 4
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36">cylinder</a> = 5
-, <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963">sphere</a> = 6
+&#160;&#160;<a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">box</a> = 3
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072">circle</a> = 4
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36">cylinder</a> = 5
+, <a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963">sphere</a> = 6
 , <br />
-&#160;&#160;<a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608">polygon</a> = 7
+&#160;&#160;<a class="el" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608">polygon</a> = 7
 <br />
  }</td></tr>
-<tr class="memdesc:a1b753fd9c2659910ca1a042a05b56be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canvas3Dと2Dで共用、図形の種類を表す  <a href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6">More...</a><br /></td></tr>
+<tr class="memdesc:a1b753fd9c2659910ca1a042a05b56be6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Canvas3Dと2Dで共用、図形の種類を表す  <a href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6">More...</a><br /></td></tr>
 <tr class="separator:a1b753fd9c2659910ca1a042a05b56be6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a1b753fd9c2659910ca1a042a05b56be6" name="a1b753fd9c2659910ca1a042a05b56be6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b753fd9c2659910ca1a042a05b56be6">&#9670;&#160;</a></span>GeometryType</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum class <a class="el" href="geometry_8h.html#a1b753fd9c2659910ca1a042a05b56be6">GeometryType</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Canvas3Dと2Dで共用、図形の種類を表す </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8" name="a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8"></a>none&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474" name="a1b753fd9c2659910ca1a042a05b56be6a6438c669e0d0de98e6929c2cc0fac474"></a>line&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb" name="a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb"></a>plane&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01" name="a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01"></a>rect&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862" name="a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862"></a>box&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072" name="a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072"></a>circle&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36" name="a1b753fd9c2659910ca1a042a05b56be6a9c7cd9fc9aa15fae1e37885314637c36"></a>cylinder&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963" name="a1b753fd9c2659910ca1a042a05b56be6a34248a9bfcbd589d9b5fccb6a0ac6963"></a>sphere&#160;</td><td class="fielddoc"></td></tr>
-<tr><td class="fieldname"><a id="a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608" name="a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608"></a>polygon&#160;</td><td class="fielddoc"></td></tr>
-</table>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="geometry_8h.html">geometry.h</a></li>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

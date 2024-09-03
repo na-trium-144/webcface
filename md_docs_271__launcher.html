@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.4</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,16 +143,16 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md146">サービスとして (Linuxのみ)</a></li>
-<li class="level1"><a href="#autotoc_md147">コマンドライン引数</a></li>
-<li class="level1"><a href="#autotoc_md148">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md149">init</a></li>
-<li class="level2"><a href="#autotoc_md150">command</a></li>
+<ul><li class="level1"><a href="#autotoc_md156">サービスとして (Linuxのみ)</a></li>
+<li class="level1"><a href="#autotoc_md157">コマンドライン引数</a></li>
+<li class="level1"><a href="#autotoc_md158">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md159">init</a></li>
+<li class="level2"><a href="#autotoc_md160">command</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md151">WebUIからの設定</a></li>
+<li class="level1"><a href="#autotoc_md161">WebUIからの設定</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md145"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md155"></a></p>
 <dl class="section since"><dt>Since</dt><dd>tools ver1.0</dd></dl>
 <p>設定ファイルにしたがってコマンドの実行、停止をするボタンをWebUIに表示します。</p>
 <p>tomlファイルに設定を記述し、 </p><div class="fragment"><div class="line">webcface-launcher ./webcface-launcher.toml</div>
@@ -170,12 +170,12 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 </li>
 </ul>
 </dd></dl>
-<h1><a class="anchor" id="autotoc_md146"></a>
+<h1><a class="anchor" id="autotoc_md156"></a>
 サービスとして (Linuxのみ)</h1>
 <p>配布しているdebパッケージからインストールした場合は、serverと同様に </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
 <div class="line">sudo systemctl start webcface-launcher</div>
 </div><!-- fragment --><p> でwebcface-launcherをサービスとして自動起動することができます。 ただしその場合は設定ファイルを /etc/webcface/webcface-launcher.toml として置いてください。</p>
-<h1><a class="anchor" id="autotoc_md147"></a>
+<h1><a class="anchor" id="autotoc_md157"></a>
 コマンドライン引数</h1>
 <div class="fragment"><div class="line">Usage: webcface-launcher [OPTIONS] [config_path]</div>
 </div><!-- fragment --><ul>
@@ -186,7 +186,7 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <li><code>-m name</code>: (tools ver1.1から) WebCFaceでのメンバー名(WebUIで表示される名前)です。省略時は設定ファイル内の記述を参照し、それもなければ webcface-launcher になります。</li>
 <li><code>-s</code>: (tools ver1.2から) 設定ファイルを読み込む代わりに、標準入力から入力された文字列をtomlとしてパースします。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md148"></a>
+<h1><a class="anchor" id="autotoc_md158"></a>
 設定ファイル</h1>
 <p>tomlファイルの例</p>
 <div class="fragment"><div class="line">[init]</div>
@@ -212,7 +212,7 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <div class="line">[command.env]</div>
 <div class="line">FOO = &quot;foo&quot;</div>
 <div class="line">BAR = &quot;bar&quot;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md149"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md159"></a>
 init</h2>
 <p>initセクションは省略できます。</p>
 <ul>
@@ -227,7 +227,7 @@ init</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md150"></a>
+<h2><a class="anchor" id="autotoc_md160"></a>
 command</h2>
 <ul>
 <li>name (必須)<ul>
@@ -279,18 +279,18 @@ command</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md151"></a>
+<h1><a class="anchor" id="autotoc_md161"></a>
 WebUIからの設定</h1>
-<p>WebUI Server Mode ではGUIから設定ファイルを記述することができます。</p>
+<p>WebCFace Desktop ではGUIから設定ファイルを記述することができます。</p>
 <ul>
 <li>Add New Command でコマンドを追加し、コマンド名、Exec、Workdir を設定できます。<ul>
 <li>Exec と Workdir の右の「...」ボタンを押すとファイル選択ダイアログ、ディレクトリ選択ダイアログが表示されます。</li>
 </ul>
 </li>
-<li>Save ボタンを押すと WebUI Server Mode の設定として保存されます。</li>
+<li>Save ボタンを押すと WebCFace Desktop の設定として保存されます。</li>
 <li>Cancel ボタンを押すと最後にSaveしたときの内容に戻ります。</li>
 </ul>
-<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server_launcher-setting.png" alt="webui-server_launcher-setting" class="inline"/></p>
+<p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/launcher-setting.png" alt="launcher-setting" class="inline"/></p>
 <dl class="section note"><dt>Note</dt><dd>Launcherの起動・停止はメニューの「Server Status」からできます</dd></dl>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -304,7 +304,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Aug 31 2024 13:19:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

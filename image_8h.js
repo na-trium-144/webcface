@@ -1,4 +1,4 @@
 var image_8h =
 [
-    [ "Image", "classImage.html", "classImage" ]
+    [ "Image", "classwebcface_1_1Image.html", "classwebcface_1_1Image" ]
 ];

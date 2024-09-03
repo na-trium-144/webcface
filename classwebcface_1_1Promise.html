@@ -1,0 +1,923 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: Promise Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classwebcface_1_1Promise.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="classwebcface_1_1Promise-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">Promise Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>非同期で実行した関数の実行結果を取得するインタフェース。  
+ <a href="classwebcface_1_1Promise.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="func__result_8h_source.html">webcface/func_result.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for Promise:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Promise__inherit__graph.svg" width="96" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for Promise:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Promise__coll__graph.svg" width="127" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a27c0577a4c173fddc7e8e8d1d9fff9c4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a27c0577a4c173fddc7e8e8d1d9fff9c4">Promise</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base, const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1PromiseData.html">internal::PromiseData</a> &gt; &amp;data, const std::shared_future&lt; bool &gt; &amp;<a class="el" href="classwebcface_1_1Promise.html#a98d52cac5d23020581151ee1f106ec8a">started</a>, const std::shared_future&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;<a class="el" href="classwebcface_1_1Promise.html#a05a565f888fd60985445985ca89ba408">result</a>)</td></tr>
+<tr class="separator:a27c0577a4c173fddc7e8e8d1d9fff9c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a100794e956da6b0716eee17d8ade58b9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9">reached</a> () const</td></tr>
+<tr class="memdesc:a100794e956da6b0716eee17d8ade58b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達したかどうかを返す  <br /></td></tr>
+<tr class="separator:a100794e956da6b0716eee17d8ade58b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c8cd46cb5cb4df9f4cf59d80e987f05"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a5c8cd46cb5cb4df9f4cf59d80e987f05">found</a> () const</td></tr>
+<tr class="memdesc:a5c8cd46cb5cb4df9f4cf59d80e987f05"><td class="mdescLeft">&#160;</td><td class="mdescRight">呼び出した関数がリモートに存在するか(=実行が開始されたか)を返す  <br /></td></tr>
+<tr class="separator:a5c8cd46cb5cb4df9f4cf59d80e987f05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3441c9c9e3c16ba8336963bf77338b37"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37">waitReach</a> ()</td></tr>
+<tr class="memdesc:a3441c9c9e3c16ba8336963bf77338b37"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達するまで待機  <br /></td></tr>
+<tr class="separator:a3441c9c9e3c16ba8336963bf77338b37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf236d5f889ab3cac0d883d4ad248fb8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#abf236d5f889ab3cac0d883d4ad248fb8">waitReachFor</a> (std::chrono::microseconds timeout)</td></tr>
+<tr class="memdesc:abf236d5f889ab3cac0d883d4ad248fb8"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達するまで待機  <br /></td></tr>
+<tr class="separator:abf236d5f889ab3cac0d883d4ad248fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa333299e59677576bc1ccc86168d2fd7"><td class="memTemplParams" colspan="2">template&lt;typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:aa333299e59677576bc1ccc86168d2fd7"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#aa333299e59677576bc1ccc86168d2fd7">waitReachUntil</a> (std::chrono::time_point&lt; Clock, Duration &gt; timeout)</td></tr>
+<tr class="memdesc:aa333299e59677576bc1ccc86168d2fd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達するまで待機  <br /></td></tr>
+<tr class="separator:aa333299e59677576bc1ccc86168d2fd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aebaed0be88cbcf45f1985b819c9dabb7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7">finished</a> () const</td></tr>
+<tr class="memdesc:aebaed0be88cbcf45f1985b819c9dabb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了したかどうかを返す  <br /></td></tr>
+<tr class="separator:aebaed0be88cbcf45f1985b819c9dabb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a057b21531e5541d9e1ef6f203530de47"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a> () const</td></tr>
+<tr class="memdesc:a057b21531e5541d9e1ef6f203530de47"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数がエラーになったかどうかを返す  <br /></td></tr>
+<tr class="separator:a057b21531e5541d9e1ef6f203530de47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4541e9cca69aee68553ce9ea5a4c0eb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb">response</a> () const</td></tr>
+<tr class="memdesc:ad4541e9cca69aee68553ce9ea5a4c0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了した場合その戻り値を返す  <br /></td></tr>
+<tr class="separator:ad4541e9cca69aee68553ce9ea5a4c0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af590971bb4437cd389a7ae84ceeade18"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18">rejection</a> () const</td></tr>
+<tr class="memdesc:af590971bb4437cd389a7ae84ceeade18"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行がエラーになった場合そのエラーメッセージを返す  <br /></td></tr>
+<tr class="separator:af590971bb4437cd389a7ae84ceeade18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab90ff420349a3252a7a6883a827d7c3b"><td class="memItemLeft" align="right" valign="top">const std::wstring &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#ab90ff420349a3252a7a6883a827d7c3b">rejectionW</a> () const</td></tr>
+<tr class="memdesc:ab90ff420349a3252a7a6883a827d7c3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行がエラーになった場合そのエラーメッセージを返す (wstring)  <br /></td></tr>
+<tr class="separator:ab90ff420349a3252a7a6883a827d7c3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d94db7b219195abca18504e8a86e4b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2">waitFinish</a> ()</td></tr>
+<tr class="memdesc:a9d94db7b219195abca18504e8a86e4b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了するまで待機  <br /></td></tr>
+<tr class="separator:a9d94db7b219195abca18504e8a86e4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b2dc09f09068654aa54a7469fc32b6f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a1b2dc09f09068654aa54a7469fc32b6f">waitFinishFor</a> (std::chrono::microseconds timeout)</td></tr>
+<tr class="memdesc:a1b2dc09f09068654aa54a7469fc32b6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了するまで待機  <br /></td></tr>
+<tr class="separator:a1b2dc09f09068654aa54a7469fc32b6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6800e1025a5728797913ac8bff1cdac5"><td class="memTemplParams" colspan="2">template&lt;typename Clock , typename Duration &gt; </td></tr>
+<tr class="memitem:a6800e1025a5728797913ac8bff1cdac5"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a6800e1025a5728797913ac8bff1cdac5">waitFinishUntil</a> (std::chrono::time_point&lt; Clock, Duration &gt; timeout)</td></tr>
+<tr class="memdesc:a6800e1025a5728797913ac8bff1cdac5"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了するまで待機  <br /></td></tr>
+<tr class="separator:a6800e1025a5728797913ac8bff1cdac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acae0016adc9ede00a91f34efebb16fcd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#acae0016adc9ede00a91f34efebb16fcd">onReach</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Promise.html">Promise</a>)&gt; callback)</td></tr>
+<tr class="memdesc:acae0016adc9ede00a91f34efebb16fcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定  <br /></td></tr>
+<tr class="separator:acae0016adc9ede00a91f34efebb16fcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2607bd62f1ea3fae4d10c4fbf8b3c672"><td class="memTemplParams" colspan="2">template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a2607bd62f1ea3fae4d10c4fbf8b3c672"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a2607bd62f1ea3fae4d10c4fbf8b3c672">onReach</a> (F callback)</td></tr>
+<tr class="memdesc:a2607bd62f1ea3fae4d10c4fbf8b3c672"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定  <br /></td></tr>
+<tr class="separator:a2607bd62f1ea3fae4d10c4fbf8b3c672"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcb0086c9cc1938e4ac0441a9e1994be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Promise.html">Promise</a>)&gt; callback)</td></tr>
+<tr class="memdesc:afcb0086c9cc1938e4ac0441a9e1994be"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了した時呼び出すコールバックを設定  <br /></td></tr>
+<tr class="separator:afcb0086c9cc1938e4ac0441a9e1994be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa3ce945886380b0ee30ec7765b2c3fa"><td class="memTemplParams" colspan="2">template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aaa3ce945886380b0ee30ec7765b2c3fa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#aaa3ce945886380b0ee30ec7765b2c3fa">onFinish</a> (F callback)</td></tr>
+<tr class="memdesc:aaa3ce945886380b0ee30ec7765b2c3fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了した時呼び出すコールバックを設定  <br /></td></tr>
+<tr class="separator:aaa3ce945886380b0ee30ec7765b2c3fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a> () const</td></tr>
+<tr class="memdesc:aa8fab40ead35fa8e761986d5f4000a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
+<tr class="separator:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () const</td></tr>
+<tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す  <br /></td></tr>
+<tr class="separator:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c997fd30e7178c869b823143102d682"><td class="memItemLeft" align="right" valign="top">const std::wstring &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a8c997fd30e7178c869b823143102d682">nameW</a> () const</td></tr>
+<tr class="memdesc:a8c997fd30e7178c869b823143102d682"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す (wstring)  <br /></td></tr>
+<tr class="separator:a8c997fd30e7178c869b823143102d682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a98d52cac5d23020581151ee1f106ec8a"><td class="memItemLeft" align="right" valign="top">std::shared_future&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a98d52cac5d23020581151ee1f106ec8a">started</a></td></tr>
+<tr class="memdesc:a98d52cac5d23020581151ee1f106ec8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">リモートに呼び出しメッセージが到達したときに値が入る  <br /></td></tr>
+<tr class="separator:a98d52cac5d23020581151ee1f106ec8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05a565f888fd60985445985ca89ba408"><td class="memItemLeft" align="right" valign="top">std::shared_future&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Promise.html#a05a565f888fd60985445985ca89ba408">result</a></td></tr>
+<tr class="memdesc:a05a565f888fd60985445985ca89ba408"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数の実行が完了した時戻り値が入る  <br /></td></tr>
+<tr class="separator:a05a565f888fd60985445985ca89ba408"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>非同期で実行した関数の実行結果を取得するインタフェース。 </p>
+<p>ver1.11まではAsyncFuncResult、ver2.0からPromiseに名前変更 </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a27c0577a4c173fddc7e8e8d1d9fff9c4" name="a27c0577a4c173fddc7e8e8d1d9fff9c4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27c0577a4c173fddc7e8e8d1d9fff9c4">&#9670;&#160;</a></span>Promise()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1PromiseData.html">internal::PromiseData</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_future&lt; bool &gt; &amp;&#160;</td>
+          <td class="paramname"><em>started</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::shared_future&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
+          <td class="paramname"><em>result</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="aebaed0be88cbcf45f1985b819c9dabb7" name="aebaed0be88cbcf45f1985b819c9dabb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aebaed0be88cbcf45f1985b819c9dabb7">&#9670;&#160;</a></span>finished()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool finished </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了したかどうかを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<p>finishedがtrueの場合、 <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a> または <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a> (<a class="el" href="classwebcface_1_1Promise.html#ab90ff420349a3252a7a6883a827d7c3b" title="関数の実行がエラーになった場合そのエラーメッセージを返す (wstring)">rejectionW()</a>) のどちらかに結果が入る。 </p>
+
+</div>
+</div>
+<a id="a5c8cd46cb5cb4df9f4cf59d80e987f05" name="a5c8cd46cb5cb4df9f4cf59d80e987f05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c8cd46cb5cb4df9f4cf59d80e987f05">&#9670;&#160;</a></span>found()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool found </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>呼び出した関数がリモートに存在するか(=実行が開始されたか)を返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>trueの場合、関数の実行が開始されている(はず)。</li>
+<li>関数がリモートに存在しないなど呼び出しが失敗した場合falseを返し、 また <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a> はtrue, <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a> もエラーメッセージを返す。</li>
+<li>まだリモートに呼び出しメッセージが到達していない場合にもfalseを返す。 この場合 <a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9" title="リモートに呼び出しメッセージが到達したかどうかを返す">reached()</a> がfalse, また <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a> もfalse。 </li>
+</ul>
+
+</div>
+</div>
+<a id="a057b21531e5541d9e1ef6f203530de47" name="a057b21531e5541d9e1ef6f203530de47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a057b21531e5541d9e1ef6f203530de47">&#9670;&#160;</a></span>isError()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isError </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数がエラーになったかどうかを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>trueの場合、rejection()にエラーメッセージが入る。</li>
+<li>実行が完了していてfalseの場合は、 <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a>に戻り値が入る。</li>
+<li>まだ実行が完了していない場合falseを返す。 </li>
+</ul>
+
+</div>
+</div>
+<a id="aa8fab40ead35fa8e761986d5f4000a5c" name="aa8fab40ead35fa8e761986d5f4000a5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8fab40ead35fa8e761986d5f4000a5c">&#9670;&#160;</a></span>member()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Member.html">Member</a> member </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Memberを返す </p>
+
+</div>
+</div>
+<a id="a24dcbf29c0d6cd766009a182a6484e3b" name="a24dcbf29c0d6cd766009a182a6484e3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24dcbf29c0d6cd766009a182a6484e3b">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>field名を返す </p>
+
+</div>
+</div>
+<a id="a8c997fd30e7178c869b823143102d682" name="a8c997fd30e7178c869b823143102d682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c997fd30e7178c869b823143102d682">&#9670;&#160;</a></span>nameW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::wstring &amp; nameW </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>field名を返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="aaa3ce945886380b0ee30ec7765b2c3fa" name="aaa3ce945886380b0ee30ec7765b2c3fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa3ce945886380b0ee30ec7765b2c3fa">&#9670;&#160;</a></span>onFinish() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; onFinish </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了した時呼び出すコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>コールバックの引数にはこのPromiseオブジェクトが渡される。</li>
+<li>コールバックは <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> のスレッドで実行され、 この関数が完了するまで他のデータの受信処理はブロックされる。</li>
+<li>すでにfinished()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数をとらない関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="afcb0086c9cc1938e4ac0441a9e1994be" name="afcb0086c9cc1938e4ac0441a9e1994be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcb0086c9cc1938e4ac0441a9e1994be">&#9670;&#160;</a></span>onFinish() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; onFinish </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="classwebcface_1_1Promise.html">Promise</a>)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了した時呼び出すコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>コールバックの引数にはこのPromiseオブジェクトが渡される。</li>
+<li>コールバックは <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> のスレッドで実行され、 この関数が完了するまで他のデータの受信処理はブロックされる。</li>
+<li>すでにfinished()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数にPromiseをとる関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2607bd62f1ea3fae4d10c4fbf8b3c672" name="a2607bd62f1ea3fae4d10c4fbf8b3c672"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2607bd62f1ea3fae4d10c4fbf8b3c672">&#9670;&#160;</a></span>onReach() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; onReach </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>コールバックは <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> のスレッドで実行され、 この関数が完了するまで他のデータの受信処理はブロックされる。</li>
+<li>すでにreached()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数をとらない関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="acae0016adc9ede00a91f34efebb16fcd" name="acae0016adc9ede00a91f34efebb16fcd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acae0016adc9ede00a91f34efebb16fcd">&#9670;&#160;</a></span>onReach() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; onReach </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="classwebcface_1_1Promise.html">Promise</a>)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達したときに呼び出すコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li>コールバックの引数にはこのPromiseオブジェクトが渡される。</li>
+<li>コールバックは <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> のスレッドで実行され、 この関数が完了するまで他のデータの受信処理はブロックされる。</li>
+<li>すでにreached()がtrueの場合はこのスレッドで即座にcallbackが呼ばれる。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数にPromiseをとる関数 </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a100794e956da6b0716eee17d8ade58b9" name="a100794e956da6b0716eee17d8ade58b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a100794e956da6b0716eee17d8ade58b9">&#9670;&#160;</a></span>reached()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool reached </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達したかどうかを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="af590971bb4437cd389a7ae84ceeade18" name="af590971bb4437cd389a7ae84ceeade18"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af590971bb4437cd389a7ae84ceeade18">&#9670;&#160;</a></span>rejection()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; rejection </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行がエラーになった場合そのエラーメッセージを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="ab90ff420349a3252a7a6883a827d7c3b" name="ab90ff420349a3252a7a6883a827d7c3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab90ff420349a3252a7a6883a827d7c3b">&#9670;&#160;</a></span>rejectionW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::wstring &amp; rejectionW </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行がエラーになった場合そのエラーメッセージを返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad4541e9cca69aee68553ce9ea5a4c0eb" name="ad4541e9cca69aee68553ce9ea5a4c0eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4541e9cca69aee68553ce9ea5a4c0eb">&#9670;&#160;</a></span>response()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> response </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了した場合その戻り値を返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a9d94db7b219195abca18504e8a86e4b2" name="a9d94db7b219195abca18504e8a86e4b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d94db7b219195abca18504e8a86e4b2">&#9670;&#160;</a></span>waitFinish()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitFinish </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a> がtrueになるまで待機する。</li>
+<li>onFinished にコールバックが設定されている場合そのコールバックの完了も待機する。</li>
+<li><a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> を呼ぶのとは別のスレッドで使用することを想定している。 関数実行が完了したかどうかの情報の受信は <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> で行われるため、 この関数を使用して待機している間に <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> が呼ばれていないとデッドロックしてしまうので注意。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#a1b2dc09f09068654aa54a7469fc32b6f" title="関数の実行が完了するまで待機">waitFinishFor()</a>, <a class="el" href="classwebcface_1_1Promise.html#a6800e1025a5728797913ac8bff1cdac5" title="関数の実行が完了するまで待機">waitFinishUntil()</a>, onFinished() </dd></dl>
+
+</div>
+</div>
+<a id="a1b2dc09f09068654aa54a7469fc32b6f" name="a1b2dc09f09068654aa54a7469fc32b6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b2dc09f09068654aa54a7469fc32b6f">&#9670;&#160;</a></span>waitFinishFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitFinishFor </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a>と同じだが、timeoutが経過したらreturnする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a>, <a class="el" href="classwebcface_1_1Promise.html#a6800e1025a5728797913ac8bff1cdac5" title="関数の実行が完了するまで待機">waitFinishUntil()</a>, onFinished() </dd></dl>
+
+</div>
+</div>
+<a id="a6800e1025a5728797913ac8bff1cdac5" name="a6800e1025a5728797913ac8bff1cdac5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6800e1025a5728797913ac8bff1cdac5">&#9670;&#160;</a></span>waitFinishUntil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Clock , typename Duration &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitFinishUntil </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt;&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a>と同じだが、timeoutが経過したらreturnする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a>, <a class="el" href="classwebcface_1_1Promise.html#a1b2dc09f09068654aa54a7469fc32b6f" title="関数の実行が完了するまで待機">waitFinishFor()</a>, onFinished() </dd></dl>
+
+</div>
+</div>
+<a id="a3441c9c9e3c16ba8336963bf77338b37" name="a3441c9c9e3c16ba8336963bf77338b37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3441c9c9e3c16ba8336963bf77338b37">&#9670;&#160;</a></span>waitReach()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitReach </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9" title="リモートに呼び出しメッセージが到達したかどうかを返す">reached()</a> がtrueになるまで待機する。</li>
+<li>onReached にコールバックが設定されている場合そのコールバックの完了も待機する。</li>
+<li><a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> を呼ぶのとは別のスレッドで使用することを想定している。 呼び出しが成功したかどうかの情報の受信は <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> で行われるため、 この関数を使用して待機している間に <a class="el" href="classwebcface_1_1Client.html#ab8205d44d42b1f6cf0b37f95f341f671" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。">Client::sync()</a> が呼ばれていないとデッドロックしてしまうので注意。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#abf236d5f889ab3cac0d883d4ad248fb8" title="リモートに呼び出しメッセージが到達するまで待機">waitReachFor()</a>, <a class="el" href="classwebcface_1_1Promise.html#aa333299e59677576bc1ccc86168d2fd7" title="リモートに呼び出しメッセージが到達するまで待機">waitReachUntil()</a>, onReached() </dd></dl>
+
+</div>
+</div>
+<a id="abf236d5f889ab3cac0d883d4ad248fb8" name="abf236d5f889ab3cac0d883d4ad248fb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf236d5f889ab3cac0d883d4ad248fb8">&#9670;&#160;</a></span>waitReachFor()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitReachFor </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::microseconds&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a>と同じだが、timeoutが経過したらreturnする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a>, <a class="el" href="classwebcface_1_1Promise.html#aa333299e59677576bc1ccc86168d2fd7" title="リモートに呼び出しメッセージが到達するまで待機">waitReachUntil()</a>, onReached() </dd></dl>
+
+</div>
+</div>
+<a id="aa333299e59677576bc1ccc86168d2fd7" name="aa333299e59677576bc1ccc86168d2fd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa333299e59677576bc1ccc86168d2fd7">&#9670;&#160;</a></span>waitReachUntil()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Clock , typename Duration &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Promise.html">Promise</a> &amp; waitReachUntil </td>
+          <td>(</td>
+          <td class="paramtype">std::chrono::time_point&lt; Clock, Duration &gt;&#160;</td>
+          <td class="paramname"><em>timeout</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達するまで待機 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a>と同じだが、timeoutが経過したらreturnする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a>, <a class="el" href="classwebcface_1_1Promise.html#abf236d5f889ab3cac0d883d4ad248fb8" title="リモートに呼び出しメッセージが到達するまで待機">waitReachFor()</a>, onReached() </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a05a565f888fd60985445985ca89ba408" name="a05a565f888fd60985445985ca89ba408"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05a565f888fd60985445985ca89ba408">&#9670;&#160;</a></span>result</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_future&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a>&gt; result</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>関数の実行が完了した時戻り値が入る </p>
+<ul>
+<li>例外が発生した場合例外が入る</li>
+<li><p class="startli">ver2.0〜: 例外はresultにexceptionとして格納されるが、 そのエラーメッセージにはutf-8ではないstringが使われる</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a>, <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a>, <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a>, <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a> を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。</dd></dl>
+</li>
+</ul>
+
+</div>
+</div>
+<a id="a98d52cac5d23020581151ee1f106ec8a" name="a98d52cac5d23020581151ee1f106ec8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98d52cac5d23020581151ee1f106ec8a">&#9670;&#160;</a></span>started</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_future&lt;bool&gt; started</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>リモートに呼び出しメッセージが到達したときに値が入る </p>
+<ul>
+<li><p class="startli">実行開始したらtrue, 呼び出しに失敗したらfalseが返る。 falseの場合resultにFuncNotFound例外が入る</p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9" title="リモートに呼び出しメッセージが到達したかどうかを返す">reached()</a>, <a class="el" href="classwebcface_1_1Promise.html#a5c8cd46cb5cb4df9f4cf59d80e987f05" title="呼び出した関数がリモートに存在するか(=実行が開始されたか)を返す">found()</a>, <a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a> を推奨。 started.get(), started.wait() 使用時の注意はwaitReach()を参照。</dd></dl>
+</li>
+</ul>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>client/include/webcface/<a class="el" href="func__result_8h_source.html">func_result.h</a></li>
+<li>client/src/<a class="el" href="func__result_8cc.html">func_result.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Promise.html">Promise</a></li>
+    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

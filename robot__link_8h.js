@@ -1,7 +1,7 @@
 var robot__link_8h =
 [
-    [ "RobotJoint", "classRobotJoint.html", "classRobotJoint" ],
-    [ "RobotLink", "classRobotLink.html", "classRobotLink" ],
+    [ "RobotJoint", "classwebcface_1_1RobotJoint.html", "classwebcface_1_1RobotJoint" ],
+    [ "RobotLink", "classwebcface_1_1RobotLink.html", "classwebcface_1_1RobotLink" ],
     [ "RobotJointType", "robot__link_8h.html#af888dd203afb5bdf79dc950d618bcad9", [
       [ "fixed_absolute", "robot__link_8h.html#af888dd203afb5bdf79dc950d618bcad9ac225ecbe8e23dc2daa03b4028ac5c961", null ],
       [ "fixed", "robot__link_8h.html#af888dd203afb5bdf79dc950d618bcad9acec315e3d0975e5cc2811d5d8725f149", null ],

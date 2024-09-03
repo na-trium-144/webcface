@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structinternal_1_1ClientData.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1internal_1_1ClientData.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="250,-56 182,-56 182,-37 250,-37 250,-56"/>
 <text text-anchor="middle" x="216" y="-44" font-family="Helvetica,sans-Serif" font-size="10.00">ClientData</text>
 </a>
@@ -38,7 +38,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="structinternal_1_1PromiseData.html" target="_top" xlink:title="PromiseとCallHandleのデータを保持するクラス">
+<g id="a_Node000002"><a xlink:href="structwebcface_1_1internal_1_1PromiseData.html" target="_top" xlink:title="PromiseとCallHandleのデータを保持するクラス">
 <polygon fill="white" stroke="#666666" points="256,-19 176,-19 176,0 256,0 256,-19"/>
 <text text-anchor="middle" x="216" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">PromiseData</text>
 </a>

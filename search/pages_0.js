@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['2_2d1_2e_20server_0',['2-1. Server',['../md_docs_221__server.html',1,'']]],
-  ['2_2d2_2e_20webui_1',['2-2. WebUI',['../md_docs_222__webui.html',1,'']]]
+  ['1_2d1_2e_20tutorial_20_28visualizing_29_0',['1-1. Tutorial (Visualizing)',['../md_docs_211__tutorial__vis.html',1,'']]]
 ];

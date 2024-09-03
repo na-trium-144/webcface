@@ -11,7 +11,7 @@
 <!-- Node0 -->
 <g id="Node000000" class="node">
 <title>Node0</title>
-<g id="a_Node000000"><a xlink:href="structmessage_1_1RobotLink.html" target="_top" xlink:title=" ">
+<g id="a_Node000000"><a xlink:href="structwebcface_1_1message_1_1RobotLink.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="65,-19 0,-19 0,0 65,0 65,-19"/>
 <text text-anchor="middle" x="32.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RobotLink</text>
 </a>
@@ -20,7 +20,7 @@
 <!-- Node1 -->
 <g id="Node000001" class="node">
 <title>Node1</title>
-<g id="a_Node000001"><a xlink:href="structinternal_1_1RobotLinkData.html" target="_top" xlink:title=" ">
+<g id="a_Node000001"><a xlink:href="structwebcface_1_1internal_1_1RobotLinkData.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="190,-19 101,-19 101,0 190,0 190,-19"/>
 <text text-anchor="middle" x="145.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">RobotLinkData</text>
 </a>

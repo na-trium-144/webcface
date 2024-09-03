@@ -1,9 +1,0 @@
-<map id="ViewBuf" name="ViewBuf">
-<area shape="rect" id="Node000001" title="Viewの送信用データを保持する" alt="" coords="23,183,99,208"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,101,85,126"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,139,62,182,56,183,48,140"/>
-<area shape="rect" id="Node000003" href="$classinternal_1_1DataSetBuffer.html" title=" " alt="" coords="110,93,330,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,142,86,185,83,180,169,137"/>
-<area shape="rect" id="Node000004" href="$classinternal_1_1DataSetBuffer.html" title="View,Canvasなどで送信用にaddされたデータを管理する" alt="" coords="111,5,329,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="223,44,223,93,217,93,217,44"/>
-</map>
