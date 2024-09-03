@@ -616,18 +616,12 @@ ViewComponent::id() で各要素に割り振られたid(文字列)を取得で�
 <span class="since-c">1.7</span>
 <span class="since-js">1.6</span>
 <span class="since-py"></span>
-Member::syncTime() に変更
+Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md) を参照
 
 ### Entry
 
-~~Member::views() で~~ そのMemberが送信しているviewのリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::viewEntries() に変更
-
-また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 

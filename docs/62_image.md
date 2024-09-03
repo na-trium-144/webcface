@@ -215,32 +215,17 @@ Image::tryGet() で受信した画像を取得できます。
 
 </div>
 
-### 時刻
+<!-- ### 時刻
 
 ~~Image::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
 <span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
-
-### Entry
-
-~~Member::images() で~~ そのMemberが送信しているimageのリストが得られます  
-<span class="since-c">1.6</span>
-Member::imageEntries() に変更
-
-また、Member::onImageEntry() で新しくデータが追加されたときのコールバックを設定できます
+ -->
+### Entry, Event
 
 いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
-
-### Event
-
-受信したデータが変化したときにコールバックを呼び出すことができます。
-コールバックを設定することでもその値はリクエストされます。
-
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
-
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 
 <div class="section_buttons">

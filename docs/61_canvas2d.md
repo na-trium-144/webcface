@@ -303,30 +303,18 @@ Canvas2DComponentオブジェクトから各種プロパティを取得できま
 
 また、Canvasの幅と高さも取得できます。
 
-### 時刻
+<!-- ### 時刻
 
 ~~Canvas2D::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
 <span class="since-c">1.7</span>
 <span class="since-js">1.6</span>
 <span class="since-py"></span>
 Member::syncTime() に変更
+ -->
 
-### Entry
-
-Member::canvas2DEntries() でそのMemberが送信しているCanvas2Dのリストが得られます
-
-また、Member::onCanvas2DEntry() で新しくデータが追加されたときのコールバックを設定できます
+### Entry, Event
 
 いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
-
-### Event
-
-受信したデータが変化したときにコールバックを呼び出すことができます。
-コールバックを設定することでもその値はリクエストされます。
-
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
-
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 

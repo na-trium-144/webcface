@@ -189,7 +189,7 @@ wcli.text("a").set(a_instance); // Dictにキャストされる
     const hoge: string | null = wcli.member("foo").text("hoge").tryGet();
     ```
     * 値を受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。
-        * リクエストは <del>次にClient::sync()したときに</del>
+        * リクエストは <del>次にClient.sync()したときに</del>
         <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * get() はnullの代わりに空文字列を返します。
@@ -224,15 +224,8 @@ Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md)
 
 ### Entry
 
-~~Member::texts() で~~ そのMemberが送信しているtextのリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::textEntries() に変更
-
-また、他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。
-(TextEntryイベント)
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 

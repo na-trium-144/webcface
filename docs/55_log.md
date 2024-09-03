@@ -161,30 +161,135 @@ Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるの
 
 ## 受信
 
-Member::log() でLogクラスのオブジェクトが得られ、
-Log::tryGet() でデータのリクエストをするとともにログが得られます。
-
-<span class="since-c">2.0</span>
-ワイド文字列で取得したい場合は tryGetW() を使います
-
-ログデータは  
-C++: webcface::LogLine, webcface::LogLineW  
-JavaScript: [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html)  
-Python: [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine)  
-のリストとして得られ、
-メッセージ、ログレベル、時刻を取得できます。
-
-<span class="since-c">1.1.5</span>
-<span class="since-js">1.0.4</span>
-<span class="since-py"></span>
-Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、
-前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
-
 \note
 <span class="since-c">1.1.9</span>
 サーバーは各クライアントのログを1000行まで保持しています。
 logの受信リクエストを送った時点から1000行より前のログは取得できません。
-serverの起動時のオプションでこの行数は変更できます。(`webcface-server -h`を参照)
+serverの起動時のオプションでこの行数は変更できます。([2-1. Server](21_server.md)を参照)
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    Member::log() でLogクラスのオブジェクトが得られ、
+    Log::tryGet() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    webcface::LogLine
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```cpp
+    std::optional<std::vector<LogLine>> logs = wcli.member("foo").log().tryGet();
+    ```
+    * 値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient::sync()したときに</del>
+        <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log::get() はstd::nulloptの代わりに空のvectorを返します。
+    
+    <span class="since-c">1.1.5</span>
+    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
+
+    ```cpp
+    while(true){
+        for(LogLine line : wcli.member("foo").log().get()){
+            // 新しく送られてきたログについてなにかする
+        }
+        wcli.member("foo").log().clear(); // 次get()をしたときにはすでに処理済みのログは返ってこない
+
+        // ...
+    }
+    ```
+
+    <span class="since-c">1.7</span>
+    Log::request() で明示的にリクエストを送信することもできます。
+
+    <span class="since-c">2.0</span>
+    tryGetW(), getW() ではstringの代わりにwstringを使った webcface::LogLineW のリストで返ります。
+
+- <b class="tab-title">JavaScript</b>
+    Member.log() でLogクラスのオブジェクトが得られ、
+    Log.tryGet() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html)
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```ts
+    const logs: LogLine[] | null = wcli.member("foo").log().tryGet();
+    ```
+    * 値をまだ受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient.sync()したときに</del>
+        <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log.get() はnullの代わりに空のリストを返します。
+    
+    <span class="since-js">1.0.4</span>
+    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
+
+    ```ts
+    while(true){
+        for(const line of wcli.member("foo").log().get()){
+            // 新しく送られてきたログについてなにかする
+        }
+        wcli.member("foo").log().clear(); // 次get()をしたときにはすでに処理済みのログは返ってこない
+
+        // ...
+    }
+    ```
+
+    <span class="since-js">1.1</span>
+    Log::request() で明示的にリクエストを送信することもできます。
+
+- <b class="tab-title">Python</b>
+    Member.log() でLogクラスのオブジェクトが得られ、
+    Log.try_get() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine)
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```ts
+    logs = wcli.member("foo").log().try_get()
+    ```
+    * 値をまだ受信していない場合 try_get() はNoneを返し、そのデータのリクエストをサーバーに送ります。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log.get() はNoneの代わりに空のリストを返します。
+    
+    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
+
+    ```python
+    while True:
+        for line in wcli.member("foo").log().get():
+            # 新しく送られてきたログについてなにかする
+        wcli.member("foo").log().clear(); # 次get()をしたときにはすでに処理済みのログは返ってこない
+    ```
+
+    Log::request() で明示的にリクエストを送信することもできます。
+
+</div>
+
+### Entry
+
+ログをすべて受信しなくても、ログが少なくとも1行存在するかどうか(他memberが送信しているかどうか)は取得することができます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.1</span>
+
+    ログが少なくとも1行存在する場合、 Log::exists() がtrueを返します。
+    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
+
+- <b class="tab-title">JavaScript</b>
+    \since <span class="since-js">1.8</span>
+
+    ログが少なくとも1行存在する場合、 Log.exists() がtrueを返します。
+    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
+
+</div>
 
 ### Event
 
