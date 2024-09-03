@@ -470,6 +470,8 @@ viewに入力欄を表示します。
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
     また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
+    <span></span>
+
 - <b class="tab-title">JavaScript</b>
     入力された値にアクセスするため [InputRef](https://na-trium-144.github.io/webcface-js/classes/InputRef.html) オブジェクトを作成し、inputにbindします。
     そのInputRefオブジェクトを別の関数などに渡すと、あとから値を取得することができます。
@@ -506,6 +508,8 @@ viewに入力欄を表示します。
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
     また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
+    <span></span>
+
 </div>
 
 #### onChange
@@ -522,6 +526,8 @@ viewに入力欄を表示します。
     ```
 
     \note bindとonChangeを両方設定することはできません。
+
+    <span></span>
 
 - <b class="tab-title">JavaScript</b>
     onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
