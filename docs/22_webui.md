@@ -40,8 +40,6 @@ Launchpadまたはアプリケーションフォルダ(Mac)
 * Logs: サーバーの出力するログが見れます。
 * Launcher Config: [webcface-launcher](./71_launcher.md) の設定を編集できます。
 
-![webui-server](https://github.com/na-trium-144/webcface/raw/main/docs/images/webui-server.png)
-
 WebCFace Desktopを終了するとserverやlauncherも自動的に終了します。
 次に画面を開いた時自動的に前回の状態が復元されます。
 
@@ -92,7 +90,7 @@ WebUI では受信したデータがグラフとして表示されます。
 
 (↓スクショは過去のバージョン)
 
-![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
+![example_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_value.png)
 
 \warning WebUI では数値配列のデータの表示が未実装です (配列の先頭の値のみが表示されます)
 
@@ -102,12 +100,12 @@ WebUI では受信したデータがグラフとして表示されます。
 
 WebUI では図のように文字列が表示されます。
 
-![tutorial_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_text.png)
+![example_text](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_text.png)
 
 ### View
 図のようにテキストやボタンなどの配置を指定してWebUIに表示させる機能です。
 
-![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
 ### Image
 画像データを送受信する型です。
@@ -121,7 +119,7 @@ WebUI上で2次元の図形を描画することができます。
 
 また、Viewのように特定の部分をクリックしたときに関数を実行させることもできUIとしても使えます。
 
-![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+![example_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png)
 
 WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。
 右下のアイコンから操作説明が見れます。
@@ -131,7 +129,7 @@ WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮
 
 WebUI上で3次元の図形を描画することができます。
 
-![tutorial_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas3d.png)
+![example_canvas3d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas3d.png)
 
 WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮小できます。
 右下のアイコンから操作説明が見れます。
@@ -143,18 +141,18 @@ WebUIではマウス操作やタッチ操作で画面を動かしたり拡大縮
 
 WebUI上ではCanvas3D上に描画して表示する他、RobotModel単体でも表示することができます。
 
-![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
+![example_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png)
 
 ### Func
 関数をwebcfaceに登録し、他のクライアントやWebUIから呼び出すことができます。
 
-![tutorial_func.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func.png)
+![example_func.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_func.png)
 
 ### Log
 エラーメッセージなどを送受信するデータ型です。
 出力した文字列1行ごとにタイムスタンプとログのレベルの情報を加えて送信し、WebUIに表示することができます。
 
-![tutorial_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_logs.png)
+![example_logs](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_logs.png)
 
 <div class="section_buttons">
 

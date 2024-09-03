@@ -1,3 +1,8 @@
+## [2.0.5] - 2024-09-03
+### Changed
+* Doxygenでドキュメントを生成するときnamespaceを`webcface`に固定
+* 一部のinternalクラスがエクスポートされていたのを削除
+
 ## [2.0.4] - 2024-08-30
 ### Fixed
 * macosのuniversalビルドでstd::bad_any_castになることがあるので、std::anyをやめてshared_ptr\<void\>に変更 (#392)

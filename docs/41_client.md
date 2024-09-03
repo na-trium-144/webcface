@@ -54,6 +54,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     // または wcli.waitConnection();
     ```
 
+    * Clientオブジェクトのライフタイムはstaticでもローカルでも問題ありません。
+    初期化のタイミングにも制限はありません(main()の中でもグローバルな初期化でもok)
     * `Client::start()` の代わりに `Client::waitConnection()` を使うと <del>接続が完了するまで待機することができます。</del>
     * <span class="since-c">2.0</span>
     `Client::start()` の代わりに `Client::waitConnection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
@@ -233,6 +235,7 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     * <span class="since-c">2.0</span>
     Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、
     また Client::loopSync() は通信を切断するまでずっと sync() を繰り返します。
+        * 具体的には内部で100μsおきにsync()を呼んだり接続状態を確認しています。
         * ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
     while(true){
@@ -277,6 +280,7 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```
     * <span class="since-c">2.0</span>
     wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または wcfLoopSync() は指定した時間の間(または永遠に) wcfSync() を繰り返します。
+        * 具体的には内部で100μsおきにwcfSync()を呼んだり接続状態を確認しています。
         * ただしサーバーに接続しておらず wcfAutoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
     while(1){
@@ -358,6 +362,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         * waitConnection() → sync() → close() とすれば確実にデータを送信することができます。
         * start()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でclose()が呼ばれたときはメッセージを送信することなく終了してしまいます。
     * Clientのデストラクタは通信を切断するまで待機します。
+
+    <span></span>
     
 - <b class="tab-title">C</b>
     ```c
@@ -374,6 +380,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         * wcfStart()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でwcfClose()が呼ばれたときはメッセージを送信することなく終了してしまいます。
     * wcfClose()は通信を切断するまで待機します。
 
+    <span></span>
+    
 - <b class="tab-title">JavaScript</b>
     ```ts
     wcli.close();

@@ -250,16 +250,14 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 }
 
 // ライブラリ外からは参照できないが、testのためにexportしている
-template class WEBCFACE_DLL_INSTANCE_DEF
-    SyncDataStore2<std::string, int>; // test用
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ValueData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<TextData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<FuncData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<ViewData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<RobotModelData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas3DData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF SyncDataStore2<Canvas2DData, int>;
-template class WEBCFACE_DLL_INSTANCE_DEF
-    SyncDataStore2<ImageData, message::ImageReq>;
+template class SyncDataStore2<std::string, int>; // test用
+template class SyncDataStore2<ValueData, int>;
+template class SyncDataStore2<TextData, int>;
+template class SyncDataStore2<FuncData, int>;
+template class SyncDataStore2<ViewData, int>;
+template class SyncDataStore2<RobotModelData, int>;
+template class SyncDataStore2<Canvas3DData, int>;
+template class SyncDataStore2<Canvas2DData, int>;
+template class SyncDataStore2<ImageData, message::ImageReq>;
 } // namespace internal
 WEBCFACE_NS_END

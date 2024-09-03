@@ -60,6 +60,6 @@ sudo systemctl start webcface-server
 
 | Previous |     Next |
 |:---------|---------:|
-| []() | [2-2. WebUI](22_webui.md) |
+| [1-2. Tutorial (Communication)](12_tutorial_comm.md) | [2-2. WebUI](22_webui.md) |
 
 </div>

@@ -93,7 +93,7 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     canvas.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
     ```
-    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+    ![example_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png)
 
     C++ではCanvas2Dのデストラクタでも自動的にCanvas2D::sync()が呼ばれます。
 
@@ -127,7 +127,7 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     ]);
     wcli.sync();
     ```
-    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+    ![example_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png)
 
     WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。
 
@@ -161,7 +161,7 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     canvas.sync() # ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync()#
     ```
-    ![tutorial_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_canvas2d.png)
+    ![example_canvas2d.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png)
 
     init() で指定するキャンバスのサイズを canvas2d() 時に指定することもできます。(init() は不要になります)
     ```py

@@ -36,7 +36,7 @@
     v.sync(); // ここまでにvに追加したものをクライアントに反映
     wcli.sync();
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
     \warning
     <span class="since-c">2.0</span>
@@ -79,7 +79,7 @@
     wcli.sync();
     ```
 
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
 - <b class="tab-title">JavaScript</b>
     Client::view からViewオブジェクトを作り、
@@ -94,7 +94,7 @@
         viewComponents.button("a", () => console.log("hello"))
     ]);
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
 - <b class="tab-title">Python</b>
     Client.view からViewオブジェクトを作り、
@@ -110,7 +110,7 @@
     v.add(webcface.view_components.button("a", lambda: print("hello")))
     v.sync()
     ```
-    ![tutorial_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+    ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
     with構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
     ```py
@@ -131,16 +131,21 @@ Viewに追加する各種要素をViewComponentといいます。
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    <span class="since-c">1.9</span> `webcface::Components` 名前空間に定義されています。
+    <del>`webcface::ViewComponents` </del>  
+    <span class="since-c">1.9</span> <del>`webcface::Components`</del>  
+    <span class="since-c">2.0</span> `webcface::components`
+    名前空間に定義されています。
+
     ```cpp
-    using namespace webcface::Components;
+    using namespace webcface::components;
     ```
     をすると便利かもしれません
-    \note namespace Components はinlineなので、 `webcface::` の名前空間でもアクセス可能です
 
-    ver1.8以前はViewComponentsという名前空間でしたが現在はエイリアスになっておりどちらでもok
+    \note
+    * namespace components はinlineなので、 `webcface::` の名前空間でもアクセス可能です。
+    * また以前のnamespace名もエイリアスになっておりどちらでもokです。
 
-    各要素はそれぞれの関数から webcface::ViewComponent または webcface::TemporalComponent のオブジェクトとして得られます。
+    各要素はそれぞれの関数から webcface::TemporalViewComponent または webcface::TemporalComponent のオブジェクトとして得られます。
     `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
 
     <span class="since-c">1.11</span>
@@ -435,7 +440,7 @@ viewに入力欄を表示します。
       << std::endl;
     ```
 
-    \note
+    \warning
     上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、
     staticにできない場合(複数のviewで使い回す場合など)は次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。
     ```cpp

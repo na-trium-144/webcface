@@ -316,9 +316,9 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 
 \warning
 <span class="since-c">2.0</span>
-各クライアントがPingに応答する処理は受信処理の中で行われるため、
-recv() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。
-(例えば100msに1回 recv() を呼ぶ場合通信遅延が100msあるように見える可能性があります)
+各クライアントがPingに応答する処理はClient::sync()の中で行われるため、
+sync() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。
+(例えば100msに1回 sync() を呼ぶ場合通信遅延が100msあるように見える可能性があります)
 
 <div class="section_buttons">
 

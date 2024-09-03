@@ -1,6 +1,6 @@
 <sub><img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" height="40" /></sub>
 WebCFace
---
+====
 <!-- ↑ Doxygenで見出しが崩れないように、かつGitHubではちゃんと見出しになるようにでっちあげたやつ -->
 
 [![C++17](https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B)](https://github.com/na-trium-144/webcface)
@@ -174,9 +174,9 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_amd64.zip
-sudo unzip webcface_2.0.4_linux_amd64.zip -d /opt/webcface
-rm webcface_2.0.4_linux_amd64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.5/webcface_2.0.5_linux_amd64.zip
+sudo unzip webcface_2.0.5_linux_amd64.zip -d /opt/webcface
+rm webcface_2.0.5_linux_amd64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -186,9 +186,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_arm64.zip
-sudo unzip webcface_2.0.4_linux_arm64.zip -d /opt/webcface
-rm webcface_2.0.4_linux_arm64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.5/webcface_2.0.5_linux_arm64.zip
+sudo unzip webcface_2.0.5_linux_arm64.zip -d /opt/webcface
+rm webcface_2.0.5_linux_arm64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -198,9 +198,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_linux_armhf.zip
-sudo unzip webcface_2.0.4_linux_armhf.zip -d /opt/webcface
-rm webcface_2.0.4_linux_armhf.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.5/webcface_2.0.5_linux_armhf.zip
+sudo unzip webcface_2.0.5_linux_armhf.zip -d /opt/webcface
+rm webcface_2.0.5_linux_armhf.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -221,7 +221,7 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.5/webcface_2.0.5_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_amd64.deb
@@ -233,7 +233,7 @@ rm ./webcface*.deb
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.5/webcface_2.0.5_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_arm64.deb
@@ -245,7 +245,7 @@ rm ./webcface*.deb
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.4/webcface_2.0.4_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.0.5/webcface_2.0.5_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.0.1/webcface-tools_2.0.1_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-webui_1.8.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.8.0/webcface-desktop_1.8.0_linux_armv7l.deb
@@ -267,16 +267,16 @@ Universalバイナリになっており、IntelMacもAppleシリコンも共通�
 macOS 12 (Monterey) でビルドしているので、それより古いMacでは動かないかもしれません。
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface_2.0.4_macos_universal.zip
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.4/webcface-desktop_2.0.4_macos_app.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.5/webcface_2.0.5_macos_universal.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.0.5/webcface-desktop_2.0.5_macos_app.zip
 ```
 
 sudo権限が使用できれば以下のように webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開するのがおすすめです。
 ```sh
-sudo unzip webcface_2.0.4_macos_universal.zip -d /opt/webcface
-sudo unzip webcface-desktop_2.0.4_macos_app.zip -d /Applications
-rm webcface_2.0.4_macos_universal.zip
-rm webcface-desktop_2.0.4_macos_app.zip
+sudo unzip webcface_2.0.5_macos_universal.zip -d /opt/webcface
+sudo unzip webcface-desktop_2.0.5_macos_app.zip -d /Applications
+rm webcface_2.0.5_macos_universal.zip
+rm webcface-desktop_2.0.5_macos_app.zip
 ```
 
 また、展開したディレクトリ内の bin/ をPATHに、 lib/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
@@ -326,7 +326,7 @@ MinGW用バイナリは今のところ配布していません(ソースから�
 
 DoxygenでAPIリファレンスとともにチュートリアル、ドキュメントを公開しています。
 
-* 1 チュートリアル: 準備中
+* 1 チュートリアル: [Visualizing](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html) / [Communication](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
 * 2 [Server](https://na-trium-144.github.io/webcface/md_docs_221__server.html)
 / [WebUI](https://na-trium-144.github.io/webcface/md_docs_222__webui.html)
 * 3 [クライアントライブラリのセットアップ](https://na-trium-144.github.io/webcface/md_docs_231__setup.html)

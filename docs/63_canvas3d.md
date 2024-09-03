@@ -97,7 +97,7 @@ Pointでは x, y, z 座標、Transformでは x, y, z 座標と z, y, x軸回り�
     world.sync(); // ここまでにcanvasに追加したものをクライアントに反映
     wcli.sync();
     ```
-    ![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
+    ![example_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png)
 
     C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。
 

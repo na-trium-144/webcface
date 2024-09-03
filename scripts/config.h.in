@@ -98,6 +98,14 @@ std::function<>の中には要る(ただし型推論ができたりできなか�
 #define WEBCFACE_CALL_FP
 #endif
 
+// doxygenを生成するときは namespace webcface だけにする
+#ifdef WEBCFACE_DOXYGEN
+#define WEBCFACE_NS_BEGIN namespace webcface {
+#define WEBCFACE_NS_END }
+
+#else
+// コンパイル時にnamespaceにabiバージョンを埋め込む
+
 #if WEBCFACE_SYSTEM_ADD_DEBUG
 #ifdef _DEBUG
 #define WEBCFACE_NS_ABI_2(ver) v##ver##_debug
@@ -115,3 +123,5 @@ std::function<>の中には要る(ただし型推論ができたりできなか�
 #define WEBCFACE_NS_END                                                        \
     }                                                                          \
     }
+
+#endif

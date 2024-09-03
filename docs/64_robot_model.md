@@ -54,7 +54,7 @@ Client::robotModel からRobotModelオブジェクトを作り、 RobotModel::se
     ```
     (この謎のロボット何)
 
-    ![tutorial_wheel_model.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel_model.png)
+    ![example_wheel_model.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel_model.png)
 
 </div>
 
@@ -119,7 +119,7 @@ prismaticJoint(std::string joint_name, std::string parent, Transform origin, dou
     \note
     RobotModelはこのプログラム内で定義したものではなく別Memberのものを指定することもできます。
 
-    ![tutorial_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_wheel.png)
+    ![example_wheel.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png)
 
 </div>
 

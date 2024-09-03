@@ -21,9 +21,19 @@
 - <b class="tab-title">C++</b>
     Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます
 
-    関数は関数オブジェクトでもokです。
+    関数は関数オブジェクト(ラムダ式など)でもokです。
     引数、戻り値は整数、実数、bool、文字列型であれば自由に指定できます。
     ```cpp
+    void hoge() {
+        std::cout << "hello, world!" << std::endl;
+    }
+    double fuga(int a, const std::string &b) {
+        return 3.1415;
+    }
+    wcli.func("hoge").set(hoge);
+    wcli.func("fuga").set(fuga);
+
+    // or, using lambda:
     wcli.func("hoge").set([](){ /* ... */ });
     wcli.func("fuga").set([](int a, const std::string &b){ return 3.1415; });
     ```
@@ -32,7 +42,7 @@
     * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
     ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
     * <span class="since-c">2.0</span>
-    set()で登録した関数はsync()時に同じスレッドで実行されます。
+    set()で登録した関数はClient::sync()時に同じスレッドで実行されます。
     そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。
         * 関数を非同期(別スレッド)で実行したい場合は Func::setAsync() を使用してください。
         ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。
@@ -50,7 +60,7 @@
     その場合戻り値のfutureの結果を待機する(get() を呼び出す)のは別スレッドで行われます。
     ```cpp
     wcli.func("hoge").set([](){
-        // ここはrecv()のスレッドで同期実行
+        // ここはsync()のスレッドで同期実行
         std::this_thread::sleep_for(std::chrono::seconds(1));
         return std::async(std::launch::async, []{
             // ここは別スレッドで実行
@@ -64,14 +74,19 @@
 
     \warning
     <span class="since-c">2.0</span>
-    WebCFaceで他のクライアントの関数をrun()で呼び出して結果を受け取るには受信処理が必要になるので、
-    set()で登録した関数内でrun()を呼ぶとデッドロックしてしまいます。
+    set()で登録した関数はClient::sync() の中で呼び出されるため、
+    * sync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。
+    その場合はsync()を呼び出す頻度を上げるか、loopSync() を使ってください ([4-1. Client](./41_client.md) 参照)
+    * set()で登録した関数内で他のクライアントの関数をrun()やrunAsync()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。
+    (結果を受け取る処理も sync() で行われるため)
     ```cpp
     wcli.func("hoge").set([&](){
-        return wcli.member("foo").func("piyo").run(); // deadlock
-        return std::async([&]{
-            wcli.member("foo").func("piyo").run(); // ok (非同期実行)
+        wcli.member("foo").func("piyo").runAsync().waitFinish(); // deadlock
+        
+        std::async([&]{
+            wcli.member("foo").func("piyo").waitFinish(); // ok (非同期実行)
         });
+
         // またはそもそもこの関数をsetAsync()で登録すればok
     });
     ```
@@ -128,8 +143,11 @@
     
     \warning
     <span class="since-c">2.0</span>
-    WebCFaceで他のクライアントの関数をwcfFuncRun()で呼び出して結果を受け取るには受信処理が必要になるので、
-    wcfFuncSet()で登録した関数内でwcfFuncRun()を呼ぶとデッドロックしてしまいます。
+    wcfFuncSet()で登録した関数はwcfSync() の中で呼び出されるため、
+    * wcfSync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。
+    その場合はwcfSync()を呼び出す頻度を上げるか、wcfLoopSync() を使ってください ([4-1. Client](./41_client.md) 参照)
+    * wcfFuncSet()で登録した関数内で他のクライアントの関数をwcfFuncRun()やwcfFuncRunAsync()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。
+    (結果を受け取る処理も wcfSync() で行われるため)
     その場合はwcfFuncSetAsync()を使用してください。
 
 - <b class="tab-title">JavaScript</b>
