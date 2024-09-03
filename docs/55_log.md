@@ -91,6 +91,8 @@ webcface-send -t log
 
   spdlog→webcfaceにログを送信するsinkの例(ver1.11までwebcfaceに含まれていた実装):
   ```cpp
+  #include <spdlog/sinks/base_sink.h>
+  
   class LoggerSink final : public spdlog::sinks::base_sink<std::mutex> {
       webcface::Log wcli_log;
 
