@@ -135,7 +135,7 @@ wcli.text("a").set(a_instance); // Dictにキャストされる
     * また、std::string にキャストすることでも同様に値が得られます。
 
     <span class="since-c">1.7</span>
-    Value::request() で明示的にリクエストを送信することもできます。
+    Text::request() で明示的にリクエストを送信することもできます。
 
     <span class="since-c">2.0</span>
     ワイド文字列は tryGetW(), getW() で得られます。
@@ -210,7 +210,7 @@ wcli.text("a").set(a_instance); // Dictにキャストされる
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度try_get()することで値が得られます。
     * get() はNoneの代わりに空文字列を返します。
 
-    Value.request()で明示的にリクエストを送信することもできます。
+    Text.request()で明示的にリクエストを送信することもできます。
 
 </div>
 
