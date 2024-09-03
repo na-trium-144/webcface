@@ -165,5 +165,8 @@ const View &View::free() const {
     }
     return *this;
 }
+bool View::exists() const {
+    return dataLock()->view_store.getEntry(member_).count(field_);
+}
 
 WEBCFACE_NS_END

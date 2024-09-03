@@ -93,5 +93,8 @@ const Canvas3D &Canvas3D::free() const {
     }
     return *this;
 }
+bool Canvas3D::exists() const {
+    return dataLock()->canvas3d_store.getEntry(member_).count(field_);
+}
 
 WEBCFACE_NS_END

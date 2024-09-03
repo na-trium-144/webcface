@@ -120,6 +120,10 @@ const Value &Value::free() const {
     return *this;
 }
 
+bool Value::exists() const {
+    return dataLock()->value_store.getEntry(member_).count(field_);
+}
+
 std::ostream &operator<<(std::ostream &os, const Value &data) {
     auto v = data.tryGetVec();
     if (v) {

@@ -361,6 +361,16 @@ class WEBCFACE_DLL Text : protected Variant {
     operator const std::wstring &() const { return getW(); }
 
     /*!
+     * \brief このフィールドにデータが存在すればtrue
+     * \since ver2.1
+     *
+     * tryGet() などとは違って、実際のデータを受信しない。
+     * リクエストも送信しない。
+     *
+     */
+    bool exists() const;
+
+    /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime()に変更
      */

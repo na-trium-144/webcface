@@ -94,5 +94,8 @@ const Canvas2D &Canvas2D::free() const {
     }
     return *this;
 }
+bool Canvas2D::exists() const {
+    return dataLock()->canvas2d_store.getEntry(member_).count(field_);
+}
 
 WEBCFACE_NS_END

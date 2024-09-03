@@ -180,6 +180,15 @@ class WEBCFACE_DLL RobotModel : protected Field {
     }
     operator std::vector<RobotLink>() const { return get(); }
     /*!
+     * \brief このフィールドにデータが存在すればtrue
+     * \since ver2.1
+     *
+     * tryGet() などとは違って、実際のデータを受信しない。
+     * リクエストも送信しない。
+     *
+     */
+    bool exists() const;
+    /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7でMember::syncTime() に変更
      */
