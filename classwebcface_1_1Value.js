@@ -15,6 +15,7 @@ var classwebcface_1_1Value =
     [ "child", "classwebcface_1_1Value.html#a674a58b1300ca229bdb0729000c60f0a", null ],
     [ "child", "classwebcface_1_1Value.html#a9f05c0a2c1ee4610466a00aa275ccc48", null ],
     [ "dataLock", "classwebcface_1_1Value.html#a725c14e25d8d4e15eb297b926aec13bf", null ],
+    [ "exists", "classwebcface_1_1Value.html#aa7d8623150e6d43ab4bf7493aa8cbc1a", null ],
     [ "expired", "classwebcface_1_1Value.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1Value.html#ac0990076a2d9bef64213ee3f0d7fe001", null ],
     [ "func", "classwebcface_1_1Value.html#a6ae7a23d3e36930f42b466890bd38711", null ],

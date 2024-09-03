@@ -26,6 +26,7 @@ var message_8h =
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", "structwebcface_1_1message_1_1LogLine" ],
     [ "Log", "structwebcface_1_1message_1_1Log.html", "structwebcface_1_1message_1_1Log" ],
     [ "LogReq", "structwebcface_1_1message_1_1LogReq.html", "structwebcface_1_1message_1_1LogReq" ],
+    [ "LogEntry", "structwebcface_1_1message_1_1LogEntry.html", "structwebcface_1_1message_1_1LogEntry" ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", "structwebcface_1_1message_1_1Arg" ],
     [ "FuncInfo", "structwebcface_1_1message_1_1FuncInfo.html", "structwebcface_1_1message_1_1FuncInfo" ],
     [ "Req< T >", "structwebcface_1_1message_1_1Req.html", "structwebcface_1_1message_1_1Req" ],
@@ -65,7 +66,8 @@ var message_8h =
       [ "sync_init_end", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd", null ],
       [ "ping", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
       [ "ping_status", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
-      [ "ping_status_req", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]
+      [ "ping_status_req", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ],
+      [ "log_entry", "message_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aad4d2d623fb8588fc8b79618555384f8", null ]
     ] ],
     [ "pack", "message_8h.html#a36879effdf16e6acdd563b41fb630f35", null ],
     [ "packDone", "message_8h.html#a0368ef47eb403e45018a73ef46c90c62", null ],

@@ -16,6 +16,7 @@ var classwebcface_1_1Canvas3D =
     [ "child", "classwebcface_1_1Canvas3D.html#a5bce1bfd5dfb09277dfbc27bba007ee9", null ],
     [ "child", "classwebcface_1_1Canvas3D.html#a58cfcdc93ea5a2bd34130e314e578064", null ],
     [ "dataLock", "classwebcface_1_1Canvas3D.html#a725c14e25d8d4e15eb297b926aec13bf", null ],
+    [ "exists", "classwebcface_1_1Canvas3D.html#aa7d8623150e6d43ab4bf7493aa8cbc1a", null ],
     [ "expired", "classwebcface_1_1Canvas3D.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1Canvas3D.html#a5a2bf828d725b1f95e0b9930f7f0a1bb", null ],
     [ "func", "classwebcface_1_1Canvas3D.html#a6ae7a23d3e36930f42b466890bd38711", null ],

@@ -19,6 +19,7 @@ var classwebcface_1_1AnonymousFunc =
     [ "child", "classwebcface_1_1AnonymousFunc.html#a3acdeffcf3a286db94b1507fae0c42ed", null ],
     [ "child", "classwebcface_1_1AnonymousFunc.html#a15228fc50ac81365d3e1d5756a746519", null ],
     [ "dataLock", "classwebcface_1_1AnonymousFunc.html#a725c14e25d8d4e15eb297b926aec13bf", null ],
+    [ "exists", "classwebcface_1_1AnonymousFunc.html#aa7d8623150e6d43ab4bf7493aa8cbc1a", null ],
     [ "expired", "classwebcface_1_1AnonymousFunc.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "free", "classwebcface_1_1AnonymousFunc.html#a019bdaf62d23fe8c2be0c37c7cbc993b", null ],
     [ "func", "classwebcface_1_1AnonymousFunc.html#a6ae7a23d3e36930f42b466890bd38711", null ],

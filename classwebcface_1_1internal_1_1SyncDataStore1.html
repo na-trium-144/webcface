@@ -173,6 +173,17 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a5a8685f3c356d0fa0049d7536784f928"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46516658ce89c7a60fe7b45eea06318d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#a46516658ce89c7a60fe7b45eea06318d">setRecv</a> (const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;member, const T &amp;data)</td></tr>
 <tr class="separator:a46516658ce89c7a60fe7b45eea06318d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa760b59a37300561cbb8a59c9987df7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#aaa760b59a37300561cbb8a59c9987df7">clearEntry</a> (const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
+<tr class="memdesc:aaa760b59a37300561cbb8a59c9987df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberのentryをクリア  <br /></td></tr>
+<tr class="separator:aaa760b59a37300561cbb8a59c9987df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad04186661834241d9cba4226d65b714f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#ad04186661834241d9cba4226d65b714f">setEntry</a> (const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
+<tr class="memdesc:ad04186661834241d9cba4226d65b714f"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
+<tr class="separator:ad04186661834241d9cba4226d65b714f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a767fed63a8213df0c86a55e0fe15ab80"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#a767fed63a8213df0c86a55e0fe15ab80">getEntry</a> (const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
+<tr class="memdesc:a767fed63a8213df0c86a55e0fe15ab80"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryを取得  <br /></td></tr>
+<tr class="separator:a767fed63a8213df0c86a55e0fe15ab80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a642d6238447107af7b73fbbf59f0cfd7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#a642d6238447107af7b73fbbf59f0cfd7">getEntry</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
+<tr class="separator:a642d6238447107af7b73fbbf59f0cfd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a671964da6a2b262e8759b7d80101e0cf"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#a671964da6a2b262e8759b7d80101e0cf">getRecv</a> (const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;member)</td></tr>
 <tr class="separator:a671964da6a2b262e8759b7d80101e0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a550c782771607b42f1d7d570ca20fd46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759">StrMap1</a>&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html#a550c782771607b42f1d7d570ca20fd46">transferReq</a> ()</td></tr>
@@ -239,6 +250,28 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="aaa760b59a37300561cbb8a59c9987df7" name="aaa760b59a37300561cbb8a59c9987df7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa760b59a37300561cbb8a59c9987df7">&#9670;&#160;</a></span>clearEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void clearEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>memberのentryをクリア </p>
+
+</div>
+</div>
 <a id="ac78011f32e7f62acb2801e68c5675634" name="ac78011f32e7f62acb2801e68c5675634"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac78011f32e7f62acb2801e68c5675634">&#9670;&#160;</a></span>clearReq()</h2>
 
@@ -259,6 +292,48 @@ template&lt;typename T &gt; </div>
 
 <p>リクエストを削除 </p>
 <dl class="section return"><dt>Returns</dt><dd>削除した場合trueを返し、すでに削除されていた場合falseを返す </dd></dl>
+
+</div>
+</div>
+<a id="a642d6238447107af7b73fbbf59f0cfd7" name="a642d6238447107af7b73fbbf59f0cfd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a642d6238447107af7b73fbbf59f0cfd7">&#9670;&#160;</a></span>getEntry() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a767fed63a8213df0c86a55e0fe15ab80" name="a767fed63a8213df0c86a55e0fe15ab80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a767fed63a8213df0c86a55e0fe15ab80">&#9670;&#160;</a></span>getEntry() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool getEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>entryを取得 </p>
 
 </div>
 </div>
@@ -299,6 +374,28 @@ template&lt;typename T &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad04186661834241d9cba4226d65b714f" name="ad04186661834241d9cba4226d65b714f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad04186661834241d9cba4226d65b714f">&#9670;&#160;</a></span>setEntry()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void setEntry </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>受信したentryを追加 </p>
 
 </div>
 </div>
@@ -393,7 +490,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore1.html">SyncDataStore1</a></li>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

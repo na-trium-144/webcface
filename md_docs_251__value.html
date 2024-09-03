@@ -151,9 +151,8 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </li>
 <li class="level1"><a href="#autotoc_md63">受信</a><ul><li class="level2"><a href="#autotoc_md64">時刻</a></li>
 <li class="level2"><a href="#autotoc_md65">Entry</a></li>
-</ul>
-</li>
-<li class="level1"><a href="#autotoc_md66">ValueEntry イベント</a><ul><li class="level2"><a href="#autotoc_md67">ValueChange イベント, onSync イベント</a></li>
+<li class="level2"><a href="#autotoc_md66">ValueEntry イベント</a></li>
+<li class="level2"><a href="#autotoc_md67">ValueChange イベント, onSync イベント</a></li>
 </ul>
 </li>
 </ul>
@@ -381,7 +380,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <div class="line">const hoge: double[] | null = wcli.member(&quot;foo&quot;).value(&quot;hoge&quot;).tryGetVec();</div>
 </div><!-- fragment --><ul>
 <li>値を受信していない場合 tryGet(), tryGetVec() はnullを返し、そのデータのリクエストをサーバーに送ります。<ul>
-<li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
+<li>リクエストは <del>次にClient.sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
 <li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
 </ul>
 </li>
@@ -416,6 +415,8 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md65"></a>
 Entry</h2>
+<p>データ自体はすべて受信しなくても、データが存在するかどうか(他memberが送信しているかどうか)は取得することができます。</p>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">1.10</span> 半角ピリオドから始まる名前のデータはEntryが送信されないため、 明示的に名前を指定して受信することはできても、以下の方法でデータが存在するかどうかを確認することはできません。</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <del>Member::values() で</del> そのMemberが送信しているvalueのリストが得られます <br  />
  <span class="since-c">1.6</span> Member::valueEntries() に変更</p>
@@ -424,26 +425,28 @@ Entry</h2>
 <div class="line">}</div>
 </div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> Field::valueEntries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">std::vector&lt;webcface::Value&gt; values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).valueEntries();</div>
 <div class="line"><span class="comment">// pos.x, pos.y などのvalueが得られる</span></div>
-</div><!-- fragment --></li>
+</div><!-- fragment --><p class="startli"><span class="since-c">2.1</span> Value::exists() でそのデータが送信されているかどうかを確認できます。 tryGet() と違い、データそのものを受信するリクエストは送られません。</p>
+</li>
 <li><b class="tab-title">C</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.0</span></dd></dl>
 <code>wcfValueEntryList</code>, <code>wcfValueEntryListW</code> にchar*の配列とサイズを渡すと、valueの一覧を取得できます。 <div class="fragment"><div class="line"><span class="keyword">const</span> <span class="keywordtype">char</span> *value_list[10];</div>
 <div class="line"><span class="keywordtype">int</span> actual_value_num;</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086">wcfMemberList</a>(wcli, <span class="stringliteral">&quot;foo&quot;</span>, value_list, 10, &amp;actual_value_num);</div>
 <div class="ttc" id="ac__wcf_2client_8h_html_ae8a188449215119f8bd85c2c00f82086"><div class="ttname"><a href="c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086">wcfMemberList</a></div><div class="ttdeci">wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size, int *members_num)</div><div class="ttdoc">サーバーに接続されている他のmemberのリストを得る。</div><div class="ttdef"><b>Definition</b> client.cc:201</div></div>
 </div><!-- fragment --> それぞれのvalue名の文字列は、 <a class="el" href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab" title="クライアントを閉じる">wcfClose()</a> するまではfreeされません。</li>
-<li><b class="tab-title">JavaScript</b> Member.values() でそのMemberが送信しているvalueのリストが得られます <br  />
- <div class="fragment"><div class="line">for(const v of wcli.member(&quot;foo&quot;).values()){</div>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.values() でそのMemberが送信しているvalueのリストが得られます <br  />
+ </p><div class="fragment"><div class="line">for(const v of wcli.member(&quot;foo&quot;).values()){</div>
 <div class="line">    // ...</div>
 <div class="line">}</div>
-</div><!-- fragment --></li>
+</div><!-- fragment --><p class="startli"><span class="since-js">1.8</span> Value.exists() でそのデータが送信されているかどうかを確認できます。 tryGet() と違い、データそのものを受信するリクエストは送られません。</p>
+</li>
 <li><p class="startli"><b class="tab-title">Python</b> <del>Member.values() で</del> そのMemberが送信しているvalueのリストが得られます <br  />
  <span class="since-py">1.1</span> Member.value_entries() に変更</p>
 <div class="fragment"><div class="line"><span class="keywordflow">for</span> v <span class="keywordflow">in</span> wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value_entries():</div>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md66"></a>
-ValueEntry イベント</h1>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md66"></a>
+ValueEntry イベント</h2>
 <p>他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。</p>
 <p>イベントの詳細な使い方はMemberEntryと同様です(<a class="el" href="md_docs_242__member.html">Member</a> のページを参照してください)。 このクライアントが接続する前から存在したデータについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
 <p>ValueEntryではデータの存在を知ることしかできません。 データの内容を取得するにはコールバックの中で改めてget()やrequest()を呼ぶか、 後述のValueChangeイベントを使ってください。</p>
@@ -551,7 +554,7 @@ ValueChange イベント, onSync イベント</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -19,6 +19,7 @@ var classwebcface_1_1Log =
     [ "child", "classwebcface_1_1Log.html#a5df64f9f1d96814b040c8898fa3faa58", null ],
     [ "clear", "classwebcface_1_1Log.html#a29abb2f5657f92eff267bc63a5dde7da", null ],
     [ "dataLock", "classwebcface_1_1Log.html#a725c14e25d8d4e15eb297b926aec13bf", null ],
+    [ "exists", "classwebcface_1_1Log.html#aa7d8623150e6d43ab4bf7493aa8cbc1a", null ],
     [ "expired", "classwebcface_1_1Log.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29", null ],
     [ "func", "classwebcface_1_1Log.html#a6ae7a23d3e36930f42b466890bd38711", null ],
     [ "func", "classwebcface_1_1Log.html#a925d25447fc38f6db840d3839a2ad295", null ],

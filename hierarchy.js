@@ -148,6 +148,9 @@ var hierarchy =
     [ "MessageBase< MessageKind::log >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Log", "structwebcface_1_1message_1_1Log.html", null ]
     ] ],
+    [ "MessageBase< MessageKind::log_entry >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "LogEntry", "structwebcface_1_1message_1_1LogEntry.html", null ]
+    ] ],
     [ "MessageBase< MessageKind::log_req >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "LogReq", "structwebcface_1_1message_1_1LogReq.html", null ]
     ] ],

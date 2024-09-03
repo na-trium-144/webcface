@@ -72,6 +72,7 @@ var annotated_dup =
         [ "ImageFrame", "structwebcface_1_1message_1_1ImageFrame.html", "structwebcface_1_1message_1_1ImageFrame" ],
         [ "ImageReq", "structwebcface_1_1message_1_1ImageReq.html", "structwebcface_1_1message_1_1ImageReq" ],
         [ "Log", "structwebcface_1_1message_1_1Log.html", "structwebcface_1_1message_1_1Log" ],
+        [ "LogEntry", "structwebcface_1_1message_1_1LogEntry.html", "structwebcface_1_1message_1_1LogEntry" ],
         [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", "structwebcface_1_1message_1_1LogLine" ],
         [ "LogReq", "structwebcface_1_1message_1_1LogReq.html", "structwebcface_1_1message_1_1LogReq" ],
         [ "MessageBase", "structwebcface_1_1message_1_1MessageBase.html", "structwebcface_1_1message_1_1MessageBase" ],

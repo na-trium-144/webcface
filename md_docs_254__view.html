@@ -285,7 +285,7 @@ text</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> std::ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。 View::add()関数, set()関数でも同様に文字列に変換されます。 </p><div class="fragment"><div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">add</a>(<span class="stringliteral">&quot;hello&quot;</span>).<a class="code hl_function" href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">add</a>(123);</div>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; 123;</div>
-<div class="ttc" id="aclasswebcface_1_1View_html_ad9dd8ab0c2a24cdf120d2f294cebf838"><div class="ttname"><a href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">webcface::View::add</a></div><div class="ttdeci">const View &amp; add(T &amp;&amp;rhs) const</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> view.h:234</div></div>
+<div class="ttc" id="aclasswebcface_1_1View_html_ad9dd8ab0c2a24cdf120d2f294cebf838"><div class="ttname"><a href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">webcface::View::add</a></div><div class="ttdeci">const View &amp; add(T &amp;&amp;rhs) const</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> view.h:243</div></div>
 </div><!-- fragment --><p> <code>text(文字列)</code>とし、さらにtextColorを指定することでテキストの色を変更することができます。 </p><div class="fragment"><div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">add</a>(<a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">webcface::text</a>(<span class="stringliteral">&quot;hello&quot;</span>).textColor(<a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">webcface::ViewColor::red</a>));</div>
 <div class="line">v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">webcface::text</a>(<span class="stringliteral">&quot;hello&quot;</span>).textColor(<a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">webcface::ViewColor::red</a>);</div>
 <div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928a1cb251ec0d568de6a929b520c4aed8d1">webcface::Canvas2DComponentType::text</a></div><div class="ttdeci">@ text</div></div>
@@ -423,7 +423,7 @@ InputRef</h3>
 <div class="line">                      [=] { std::cout &lt;&lt; input_val &lt;&lt; std::endl; })</div>
 <div class="line">  &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">bind</a>(input_val)</div>
 <div class="line">  &lt;&lt; std::endl;</div>
-<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:429</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:439</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_aaaae04287c268ecb48a67a7c7939d40d"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref)</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:215</div></div>
 <div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:451</div></div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、 staticにできない場合(複数のviewで使い回す場合など)は次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。 <div class="fragment"><div class="line"><span class="keywordflow">while</span> (<span class="keyword">true</span>){</div>
@@ -443,6 +443,7 @@ InputRef</h3>
  (std::string, double, bool などの型にキャストすることでも値を得られます。) <br  />
  (任意の型に対応したい場合は <code>get()</code> で <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型として取得できます。)</p>
 <dl class="section note"><dt>Note</dt><dd>内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。 また、InputRefの値は<a class="el" href="md_docs_252__text.html">Text</a>型のデータとしてviewを表示しているクライアントに送信されます。</dd></dl>
+<p><span></span></p>
 </li>
 <li><b class="tab-title">JavaScript</b> 入力された値にアクセスするため <a href="https://na-trium-144.github.io/webcface-js/classes/InputRef.html">InputRef</a> オブジェクトを作成し、inputにbindします。 そのInputRefオブジェクトを別の関数などに渡すと、あとから値を取得することができます。 <div class="fragment"><div class="line">import { InputRef, viewComponents } from &quot;webcface&quot;;</div>
 <div class="line">const inputVal = new InputRef();</div>
@@ -465,25 +466,26 @@ InputRef</h3>
 <div class="line">}, 100);</div>
 </div><!-- fragment --> この場合はview.set()が実行される時に前周期のinputValの内容が復元されるという挙動になります。 (したがってv.set()の引数内ではinputValの値は未初期化になります)</dd></dl>
 <dl class="section note"><dt>Note</dt><dd>内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。 また、InputRefの値は<a class="el" href="md_docs_252__text.html">Text</a>型のデータとしてviewを表示しているクライアントに送信されます。</dd></dl>
-</li>
+<span></span></li>
 </ul>
 </div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md93"></a>
 onChange</h3>
-<div class="tabbed"></div><div class="tabbed"><div class="tabbed"></div></div><div class="tabbed"><div class="tabbed"><ul>
+<div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#ab041a49d174cdb7b68fb7b272e267789">onChange</a>([](std::string val) {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;input changed: &quot;</span> &lt;&lt; val &lt;&lt; std::endl;</div>
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_ab041a49d174cdb7b68fb7b272e267789"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#ab041a49d174cdb7b68fb7b272e267789">webcface::TemporalViewComponent::onChange</a></div><div class="ttdeci">TemporalViewComponent &amp; onChange(T func)</div><div class="ttdoc">値が変化した時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_view.h:320</div></div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>bindとonChangeを両方設定することはできません。</dd></dl>
+<p><span></span></p>
 </li>
 <li><b class="tab-title">JavaScript</b> onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。 <div class="fragment"><div class="line">viewComponents.textInput(&quot;表示する文字列&quot;, {</div>
 <div class="line">    onChange: (val: string | number | boolean) =&gt; console.log(val),</div>
 <div class="line">})</div>
 </div><!-- fragment --></li>
 </ul>
-</div></div><div class="tabbed"><div class="tabbed"></div></div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md94"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md94"></a>
 options</h3>
-<div class="tabbed"></div><div class="tabbed"><div class="tabbed"></div></div><div class="tabbed"><div class="tabbed"><ul>
+<div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> その他各種inputに指定できるオプションには以下のものがあります。 (<a class="el" href="md_docs_253__func.html">Func</a>のArgオプションと同様です。)</p>
 <p class="startli"><code>.init(初期値)</code> <br  />
  <code>.min(最小値)</code>, <code>.max(最大値)</code>: decimalInput, numberInput, sliderInputのみ <br  />
@@ -501,37 +503,96 @@ options</h3>
 </p>
 </li>
 </ul>
-</div></div><div class="tabbed"><div class="tabbed"></div></div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md95"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md95"></a>
 受信</h1>
-<div class="tabbed"></div><div class="tabbed">ValueやTextと同様、Member::view() でViewクラスのオブジェクトが得られ、 View::tryGet(), View::get() で受信したViewデータを取得できます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</div><div class="tabbed">Viewデータは <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html">ViewComponent</a>, Python <a href="https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent">webcface.ViewComponent</a>) のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。</div><div class="tabbed"><span class="since-c">1.7</span> Cの場合は wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で <a class="el" href="structwcfViewComponent.html" title="Viewの要素を表すstruct.">wcfViewComponent</a>, (<span class="since-c">2.0</span> <a class="el" href="structwcfViewComponentW.html" title="Viewの要素を表すstruct (wstring)">wcfViewComponentW</a>) の配列が得られます。 取得した配列は不要になったら wcfDestroy で破棄してください。</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md96"></a>
+<p>ViewデータはWebUIに表示するだけでなく、ValueやTextと同様プログラムから受信することもできます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> Member::view() でViewクラスのオブジェクトが得られ、 View::tryGet(), View::get() で受信したViewデータを取得できます。</p>
+<p class="startli">Viewデータは <a class="el" href="classwebcface_1_1ViewComponent.html" title="Viewに表示する要素です">webcface::ViewComponent</a> のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="fragment"><div class="line">std::optional&lt;std::vector&lt;ViewComponent&gt;&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).view(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+</div><!-- fragment --><ul>
+<li>値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-c">1.2</span>自動的に別スレッドで送信されます。</li>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
+</ul>
+</li>
+<li>View::get() はstd::nulloptの代わりに空のvectorを返します。</li>
+</ul>
+<p class="startli"><span class="since-c">1.7</span> View::request() で明示的にリクエストを送信することもできます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.7</span></dd></dl>
+<p>wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で <a class="el" href="structwcfViewComponent.html" title="Viewの要素を表すstruct.">wcfViewComponent</a>, (<span class="since-c">2.0</span> <a class="el" href="structwcfViewComponentW.html" title="Viewの要素を表すstruct (wstring)">wcfViewComponentW</a>) の配列が得られます。</p>
+<p class="startli">取得した配列は不要になったら wcfDestroy で破棄してください。</p>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.view() でViewクラスのオブジェクトが得られ、 View.tryGet(), View.get() で受信したViewデータを取得できます。</p>
+<p class="startli">Viewデータは <a href="https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html">ViewComponent</a> のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="fragment"><div class="line">const hoge: ViewComponent[] | null = wcli.member(&quot;foo&quot;).view(&quot;hoge&quot;).tryGet();</div>
+</div><!-- fragment --><ul>
+<li>値を受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>リクエストは <del>次にClient.sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
+</ul>
+</li>
+<li>get() はnullの代わりに空のリストを返します。</li>
+</ul>
+<p class="startli"><span class="since-js">1.1</span> View.request()で明示的にリクエストを送信することもできます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> Member.view() でViewクラスのオブジェクトが得られ、 View.tryGet(), View.get() で受信したViewデータを取得できます。</p>
+<p class="startli">Viewデータは <a href="https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent">webcface.ViewComponent</a> のリストとして得られ、 ViewComponentオブジェクトから各種プロパティを取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="fragment"><div class="line">hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).view(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+</div><!-- fragment --><ul>
+<li>値を受信していない場合 try_get() はNoneを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度try_get()することで値が得られます。</li>
+</ul>
+</li>
+<li>get() はNoneの代わりに空のリストを返します。</li>
+</ul>
+<p class="startli">View.request()で明示的にリクエストを送信することもできます。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md96"></a>
 onClick</h2>
-<div class="tabbed"></div><div class="tabbed">ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が<a class="el" href="md_docs_253__func.html">Func</a>オブジェクトとして取得できます。 したがって、ボタンを表示し、クリックされたときに<code>onClick().runAsync()</code>などとすることでそのボタンを動作させられます。</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md97"></a>
+<p>ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が<a class="el" href="md_docs_253__func.html">Func</a>オブジェクトとして取得できます。 したがって、ボタンを表示し、クリックされたときに<code>onClick().runAsync()</code>などとすることでそのボタンを動作させられます。</p>
+<h2><a class="anchor" id="autotoc_md97"></a>
 onChangeとbind</h2>
-<div class="tabbed"> <span class="since-c">1.10</span> <span class="since-js">1.6</span></div><div class="tabbed">各種Input要素の現在の値は ViewComponent::bind() で <del><a class="el" href="md_docs_252__text.html">Text</a>オブジェクトとして</del> <span class="since-c">2.0</span> <a class="el" href="classwebcface_1_1Variant.html" title="文字列、数値などの型を送受信するクラス">webcface::Variant</a> オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。</div><div class="tabbed"><span class="since-c">2.0</span> Variant の値は <code>asStringRef()</code>, <code>asWStringRef()</code>, <code>asString()</code>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code> で型を指定して取得できます。 <br  />
+<p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
+<p>各種Input要素の現在の値は ViewComponent::bind() で <del><a class="el" href="md_docs_252__text.html">Text</a>オブジェクトとして</del> <span class="since-c">2.0</span> <a class="el" href="classwebcface_1_1Variant.html" title="文字列、数値などの型を送受信するクラス">webcface::Variant</a> オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。</p>
+<p><span class="since-c">2.0</span> Variant の値は <code>asStringRef()</code>, <code>asWStringRef()</code>, <code>asString()</code>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code> で型を指定して取得できます。 <br  />
  (std::string, double, bool などの型にキャストすることでも値を得られます。) <br  />
- (bind().get() で <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型としても取得できます。)</div><div class="tabbed">Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md98"></a>
+ (bind().get() で <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型としても取得できます。)</p>
+<p>Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</p>
+<h2><a class="anchor" id="autotoc_md98"></a>
 id</h2>
-<div class="tabbed"> <span class="since-c">1.10</span> <span class="since-js">1.6</span></div><div class="tabbed">ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ) 同じbutton、同じinputには常に同じidが振られます。 (実際はそのview内で種類ごとに分けて要素に連番を振っているだけです)</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md99"></a>
+<p><span class="since-c">1.10</span> <span class="since-js">1.6</span></p>
+<p>ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ) 同じbutton、同じinputには常に同じidが振られます。 (実際はそのview内で種類ごとに分けて要素に連番を振っているだけです)</p>
+<h2><a class="anchor" id="autotoc_md99"></a>
 時刻</h2>
-<div class="tabbed"></div><div class="tabbed"><strike>View::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
- <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に変更</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md100"></a>
+<p><strike>View::time()</strike> でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。 <br  />
+ <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に統一しました。詳細は <a class="el" href="md_docs_251__value.html">5-1. Value</a> を参照</p>
+<h2><a class="anchor" id="autotoc_md100"></a>
 Entry</h2>
-<div class="tabbed"></div><div class="tabbed"><strike>Member::views() で</strike> そのMemberが送信しているviewのリストが得られます <br  />
- <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::viewEntries() に変更</div><div class="tabbed">また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます</div><div class="tabbed">いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md101"></a>
+<p>Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。 使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<h2><a class="anchor" id="autotoc_md101"></a>
 Event</h2>
-<div class="tabbed"></div><div class="tabbed">受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</div><div class="tabbed">また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</div><div class="tabbed">使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</div><div class="tabbed"><div class="section_buttons"></div></div><div class="tabbed"><div class="section_buttons"><table class="markdownTable">
+<p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
+<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
+<p>使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><a class="el" href="md_docs_253__func.html">5-3. Func</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_255__log.html">5-5. Log</a>   </td></tr>
 </table>
-</div></div><div class="tabbed"><div class="section_buttons"></div> </div></div></div><!-- contents -->
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -235,7 +235,7 @@ Variant</h2>
 <li>Text::get() はstd::nulloptの代わりに空文字列を返します。</li>
 <li>また、std::string にキャストすることでも同様に値が得られます。</li>
 </ul>
-<p class="startli"><span class="since-c">1.7</span> Value::request() で明示的にリクエストを送信することもできます。</p>
+<p class="startli"><span class="since-c">1.7</span> Text::request() で明示的にリクエストを送信することもできます。</p>
 <p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
 <p class="startli">std::ostreamにTextを直接渡して表示することもできます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><ul>
@@ -274,7 +274,7 @@ Variant</h2>
 <div class="fragment"><div class="line">const hoge: string | null = wcli.member(&quot;foo&quot;).text(&quot;hoge&quot;).tryGet();</div>
 </div><!-- fragment --><ul>
 <li>値を受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。<ul>
-<li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
+<li>リクエストは <del>次にClient.sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
 <li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
 </ul>
 </li>
@@ -292,7 +292,7 @@ Variant</h2>
 </li>
 <li>get() はNoneの代わりに空文字列を返します。</li>
 </ul>
-<p class="startli">Value.request()で明示的にリクエストを送信することもできます。</p>
+<p class="startli">Text.request()で明示的にリクエストを送信することもできます。</p>
 </li>
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md73"></a>
@@ -301,10 +301,7 @@ Variant</h2>
  <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に統一しました。詳細は <a class="el" href="md_docs_251__value.html">5-1. Value</a> を参照</p>
 <h2><a class="anchor" id="autotoc_md74"></a>
 Entry</h2>
-<p><strike>Member::texts() で</strike> そのMemberが送信しているtextのリストが得られます <br  />
- <span class="since-c">1.6</span> <span class="since-py">1.1</span> Member::textEntries() に変更</p>
-<p>また、他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。 (TextEntryイベント)</p>
-<p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+<p>Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。 使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <h2><a class="anchor" id="autotoc_md75"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。(TextChange イベント) コールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。</p>
@@ -322,7 +319,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

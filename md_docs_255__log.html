@@ -147,7 +147,8 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <li class="level1"><a href="#autotoc_md104">送信</a><ul><li class="level2"><a href="#autotoc_md105">外部ライブラリの利用</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md106">受信</a><ul><li class="level2"><a href="#autotoc_md107">Event</a></li>
+<li class="level1"><a href="#autotoc_md106">受信</a><ul><li class="level2"><a href="#autotoc_md107">Entry</a></li>
+<li class="level2"><a href="#autotoc_md108">Event</a></li>
 </ul>
 </li>
 </ul>
@@ -200,7 +201,9 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 外部ライブラリの利用</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">spdlog (C++)</b> spdlog: <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></p>
-<p class="startli">spdlog→webcfaceにログを送信するsinkの例(ver1.11までwebcfaceに含まれていた実装): </p><div class="fragment"><div class="line"><span class="keyword">class </span>LoggerSink final : <span class="keyword">public</span> spdlog::sinks::base_sink&lt;std::mutex&gt; {</div>
+<p class="startli">spdlog→webcfaceにログを送信するsinkの例(ver1.11までwebcfaceに含まれていた実装): </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;spdlog/sinks/base_sink.h&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">class </span>LoggerSink final : <span class="keyword">public</span> spdlog::sinks::base_sink&lt;std::mutex&gt; {</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Log.html">webcface::Log</a> wcli_log;</div>
 <div class="line"> </div>
 <div class="line">  <span class="keyword">protected</span>:</div>
@@ -259,16 +262,81 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 </details>
 <h1><a class="anchor" id="autotoc_md106"></a>
 受信</h1>
-<p>Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
-<p><span class="since-c">2.0</span> ワイド文字列で取得したい場合は tryGetW() を使います</p>
-<p>ログデータは <br  />
- C++: <a class="el" href="classwebcface_1_1LogLine.html">webcface::LogLine</a>, <a class="el" href="classwebcface_1_1LogLineW.html">webcface::LogLineW</a> <br  />
- JavaScript: <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a> <br  />
- Python: <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a> <br  />
- のリストとして得られ、 メッセージ、ログレベル、時刻を取得できます。</p>
-<p><span class="since-c">1.1.5</span> <span class="since-js">1.0.4</span> <span class="since-py"></span> Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
-<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.1.9</span> サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<code>webcface-server -h</code>を参照)</dd></dl>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<dl class="section note"><dt>Note</dt><dd><span class="since-c">1.1.9</span> サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<a class="el" href="md_docs_221__server.html">2-1. Server</a>を参照)</dd></dl>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> Member::log() でLogクラスのオブジェクトが得られ、 Log::tryGet() でデータのリクエストをするとともにログが得られます。</p>
+<p class="startli">データは <a class="el" href="classwebcface_1_1LogLine.html">webcface::LogLine</a> のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。</p>
+<div class="fragment"><div class="line">std::optional&lt;std::vector&lt;LogLine&gt;&gt; logs = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().tryGet();</div>
+</div><!-- fragment --><ul>
+<li>値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-c">1.2</span>自動的に別スレッドで送信されます。</li>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
+</ul>
+</li>
+<li>Log::get() はstd::nulloptの代わりに空のvectorを返します。</li>
+</ul>
+<p class="startli"><span class="since-c">1.1.5</span> Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
+<div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
+<div class="line">    <span class="keywordflow">for</span>(LogLine line : wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().get()){</div>
+<div class="line">        <span class="comment">// 新しく送られてきたログについてなにかする</span></div>
+<div class="line">    }</div>
+<div class="line">    wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().clear(); <span class="comment">// 次get()をしたときにはすでに処理済みのログは返ってこない</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// ...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.7</span> Log::request() で明示的にリクエストを送信することもできます。</p>
+<p class="startli"><span class="since-c">2.0</span> tryGetW(), getW() ではstringの代わりにwstringを使った <a class="el" href="classwebcface_1_1LogLineW.html">webcface::LogLineW</a> のリストで返ります。</p>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.log() でLogクラスのオブジェクトが得られ、 Log.tryGet() でデータのリクエストをするとともにログが得られます。</p>
+<p class="startli">データは <a href="https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html">LogLine</a> のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。</p>
+<div class="fragment"><div class="line">const logs: LogLine[] | null = wcli.member(&quot;foo&quot;).log().tryGet();</div>
+</div><!-- fragment --><ul>
+<li>値をまだ受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>リクエストは <del>次にClient.sync()したときに</del> <span class="since-js">1.1</span>自動的に別スレッドで送信されます。</li>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
+</ul>
+</li>
+<li>Log.get() はnullの代わりに空のリストを返します。</li>
+</ul>
+<p class="startli"><span class="since-js">1.0.4</span> Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。</p>
+<div class="fragment"><div class="line">while(true){</div>
+<div class="line">    for(const line of wcli.member(&quot;foo&quot;).log().get()){</div>
+<div class="line">        // 新しく送られてきたログについてなにかする</div>
+<div class="line">    }</div>
+<div class="line">    wcli.member(&quot;foo&quot;).log().clear(); // 次get()をしたときにはすでに処理済みのログは返ってこない</div>
+<div class="line"> </div>
+<div class="line">    // ...</div>
+<div class="line">}</div>
+</div><!-- fragment --><p class="startli"><span class="since-js">1.1</span> Log::request() で明示的にリクエストを送信することもできます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> Member.log() でLogクラスのオブジェクトが得られ、 Log.try_get() でデータのリクエストをするとともにログが得られます。</p>
+<p class="startli">データは <a href="https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine">webcface.LogLine</a> のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。</p>
+<div class="fragment"><div class="line">logs = wcli.member(&quot;foo&quot;).log().try_get()</div>
+</div><!-- fragment --><ul>
+<li>値をまだ受信していない場合 try_get() はNoneを返し、そのデータのリクエストをサーバーに送ります。<ul>
+<li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
+</ul>
+</li>
+<li>Log.get() はNoneの代わりに空のリストを返します。</li>
+</ul>
+<p class="startli">Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。</p>
+<div class="fragment"><div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="keywordflow">for</span> line <span class="keywordflow">in</span> wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().get():</div>
+<div class="line">        <span class="comment"># 新しく送られてきたログについてなにかする</span></div>
+<div class="line">    wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().clear(); <span class="comment"># 次get()をしたときにはすでに処理済みのログは返ってこない</span></div>
+</div><!-- fragment --><p class="startli">Log::request() で明示的にリクエストを送信することもできます。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md107"></a>
+Entry</h2>
+<p>ログをすべて受信しなくても、ログが少なくとも1行存在するかどうか(他memberが送信しているかどうか)は取得することができます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.1</span></dd></dl>
+ログが少なくとも1行存在する場合、 Log::exists() がtrueを返します。 tryGet() と違い、ログデータそのものを受信するリクエストは送られません。</li>
+<li><b class="tab-title">JavaScript</b> <dl class="section since"><dt>Since</dt><dd><span class="since-js">1.8</span></dd></dl>
+ログが少なくとも1行存在する場合、 Log.exists() がtrueを返します。 tryGet() と違い、ログデータそのものを受信するリクエストは送られません。</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md108"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -285,7 +353,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -25,7 +25,8 @@ var namespacewebcface_1_1message =
         [ "sync_init_end", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd", null ],
         [ "ping", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
         [ "ping_status", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
-        [ "ping_status_req", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ]
+        [ "ping_status_req", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ],
+        [ "log_entry", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad4d2d623fb8588fc8b79618555384f8", null ]
       ] ]
     ] ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", "structwebcface_1_1message_1_1Arg" ],
@@ -43,6 +44,7 @@ var namespacewebcface_1_1message =
     [ "ImageFrame", "structwebcface_1_1message_1_1ImageFrame.html", "structwebcface_1_1message_1_1ImageFrame" ],
     [ "ImageReq", "structwebcface_1_1message_1_1ImageReq.html", "structwebcface_1_1message_1_1ImageReq" ],
     [ "Log", "structwebcface_1_1message_1_1Log.html", "structwebcface_1_1message_1_1Log" ],
+    [ "LogEntry", "structwebcface_1_1message_1_1LogEntry.html", "structwebcface_1_1message_1_1LogEntry" ],
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", "structwebcface_1_1message_1_1LogLine" ],
     [ "LogReq", "structwebcface_1_1message_1_1LogReq.html", "structwebcface_1_1message_1_1LogReq" ],
     [ "MessageBase", "structwebcface_1_1message_1_1MessageBase.html", "structwebcface_1_1message_1_1MessageBase" ],

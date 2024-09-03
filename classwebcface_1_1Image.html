@@ -226,6 +226,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa0c69c273f1fa34fccceaac2ef4850cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Image.html#aa0c69c273f1fa34fccceaac2ef4850cb">get</a> () const</td></tr>
 <tr class="memdesc:aa0c69c273f1fa34fccceaac2ef4850cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">画像を返す (データがない場合0x0の画像が返る)  <br /></td></tr>
 <tr class="separator:aa0c69c273f1fa34fccceaac2ef4850cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Image.html#aa7d8623150e6d43ab4bf7493aa8cbc1a">exists</a> () const</td></tr>
+<tr class="memdesc:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">このフィールドにデータが存在すればtrue  <br /></td></tr>
+<tr class="separator:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3799c65797b21f35329dc284df16a65d"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Image.html#a3799c65797b21f35329dc284df16a65d">time</a> () const</td></tr>
 <tr class="memdesc:a3799c65797b21f35329dc284df16a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻を返す  <br /></td></tr>
 <tr class="separator:a3799c65797b21f35329dc284df16a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -770,6 +773,27 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>data_wをlockし、失敗したらruntime_errorを投げる </p>
+
+</div>
+</div>
+<a id="aa7d8623150e6d43ab4bf7493aa8cbc1a" name="aa7d8623150e6d43ab4bf7493aa8cbc1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7d8623150e6d43ab4bf7493aa8cbc1a">&#9670;&#160;</a></span>exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool exists </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>このフィールドにデータが存在すればtrue </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.1</dd></dl>
+<p><a class="el" href="classwebcface_1_1Image.html#a01b8f38e45d6ea414d3023ad6c0c4b55" title="画像を返す">tryGet()</a> などとは違って、実際のデータを受信しない。 リクエストも送信しない。 </p>
 
 </div>
 </div>
@@ -2407,7 +2431,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Image.html">Image</a></li>
-    <li class="footer">Generated on Tue Sep 3 2024 03:34:12 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
