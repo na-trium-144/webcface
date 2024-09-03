@@ -381,7 +381,7 @@ TEST_F(ClientTest, logSend) {
         wait();
     }
     auto ls =
-        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
+        std::make_shared<std::deque<LogLineData>>(std::deque<LogLineData>{
             {0, std::chrono::system_clock::now(),
              SharedString::fromU8String(std::string(100000, 'a'))},
             {1, std::chrono::system_clock::now(), "b"_ss},
@@ -450,4 +450,21 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3u);
+
+    // keep_lines以上のログは保存しない
+    webcface::Log::keepLines(2);
+    dummy_s->send(message::Log{
+        10, std::make_shared<std::deque<message::LogLine>>(
+                std::deque<message::LogLine>{
+                    LogLineData{3, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                })});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 3);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 2);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 3);
+
+    webcface::Log::keepLines(1000);
 }
