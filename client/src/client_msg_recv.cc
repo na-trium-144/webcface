@@ -280,13 +280,20 @@ void internal::ClientData::onRecv(const std::string &message) {
                 this->log_store.setRecv(member, *log_s);
             }
             int log_keep_lines_local = log_keep_lines.load();
-            for (auto &lm : *r.log) {
-                (*log_s)->emplace_back(lm);
-                while (log_keep_lines_local >= 0 &&
-                       (*log_s)->size() >
-                           static_cast<std::size_t>(log_keep_lines_local)) {
+            auto r_begin = r.log->begin();
+            auto r_end = r.log->end();
+            if (log_keep_lines_local >= 0) {
+                if (r.log->size() >
+                    static_cast<std::size_t>(log_keep_lines_local)) {
+                    r_begin = r_end - log_keep_lines_local;
+                }
+                while ((*log_s)->size() + (r_end - r_begin) >
+                       static_cast<std::size_t>(log_keep_lines_local)) {
                     (*log_s)->pop_front();
                 }
+            }
+            for (auto lit = r_begin; lit != r_end; lit++) {
+                (*log_s)->emplace_back(*lit);
             }
             std::shared_ptr<std::function<void(Log)>> cl;
             {

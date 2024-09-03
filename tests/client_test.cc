@@ -466,5 +466,24 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 2);
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 3);
 
+    dummy_s->send(message::Log{
+        10, std::make_shared<std::deque<message::LogLine>>(
+                std::deque<message::LogLine>{
+                    LogLineData{4, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{5, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{6, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{7, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                })});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 4);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 6);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 7);
+
     webcface::Log::keepLines(1000);
 }
