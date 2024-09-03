@@ -131,6 +131,15 @@ class WEBCFACE_DLL Log : protected Field {
     }
 
     /*!
+     * \brief このメンバーがログを1行以上出力していればtrue
+     * \since ver2.1
+     *
+     * tryGet(), get().size() などとは違って、実際のログデータを受信しない。
+     * リクエストも送信しない。
+     *
+     */
+    bool exists() const;
+    /*!
      * \brief 受信したログをクリアする
      * \since ver1.1.5
      *

@@ -18,6 +18,27 @@ void SyncDataStore1<T>::setRecv(const SharedString &member, const T &data) {
 }
 
 template <typename T>
+void SyncDataStore1<T>::clearEntry(const SharedString &from) {
+    std::lock_guard lock(mtx);
+    entry.erase(from);
+}
+template <typename T>
+void SyncDataStore1<T>::setEntry(const SharedString &from) {
+    std::lock_guard lock(mtx);
+    entry.emplace(from);
+}
+template <typename T>
+bool SyncDataStore1<T>::getEntry(const SharedString &from) {
+    std::lock_guard lock(mtx);
+    return entry.count(from) > 0;
+}
+template <typename T>
+bool SyncDataStore1<T>::getEntry(const FieldBase &base) {
+    std::lock_guard lock(mtx);
+    return entry.count(base.member_) > 0;
+}
+
+template <typename T>
 bool SyncDataStore1<T>::addReq(const SharedString &member) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member] == false) {

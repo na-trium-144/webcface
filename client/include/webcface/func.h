@@ -446,6 +446,13 @@ class WEBCFACE_DLL Func : protected Field {
     Promise runAsync(std::vector<ValAdaptor> args_vec) const;
 
     /*!
+     * \brief 関数の情報が存在すればtrue
+     * \since ver2.1
+     *
+     */
+    bool exists() const;
+
+    /*!
      * \brief 戻り値の型を返す
      *
      */

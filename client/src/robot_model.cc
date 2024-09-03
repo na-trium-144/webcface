@@ -103,5 +103,8 @@ const RobotModel &RobotModel::free() const {
     }
     return *this;
 }
+bool RobotModel::exists() const {
+    return dataLock()->robot_model_store.getEntry(member_).count(field_);
+}
 
 WEBCFACE_NS_END

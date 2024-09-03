@@ -223,6 +223,16 @@ class WEBCFACE_DLL Value : protected Field {
     }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
+
+    /*!
+     * \brief このフィールドにデータが存在すればtrue
+     * \since ver2.1
+     *
+     * tryGet() などとは違って、実際のデータを受信しない。
+     * リクエストも送信しない。
+     *
+     */
+    bool exists() const;
     /*!
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更

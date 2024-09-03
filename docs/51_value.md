@@ -364,7 +364,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     const hoge: double[] | null = wcli.member("foo").value("hoge").tryGetVec();
     ```
     * 値を受信していない場合 tryGet(), tryGetVec() はnullを返し、そのデータのリクエストをサーバーに送ります。
-        * リクエストは <del>次にClient::sync()したときに</del>
+        * リクエストは <del>次にClient.sync()したときに</del>
         <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * get(), getVec() はnullの代わりに0を返します。
@@ -420,6 +420,13 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
 ### Entry
 
+データ自体はすべて受信しなくても、データが存在するかどうか(他memberが送信しているかどうか)は取得することができます。
+
+\warning
+<span class="since-c">1.10</span>
+半角ピリオドから始まる名前のデータはEntryが送信されないため、
+明示的に名前を指定して受信することはできても、以下の方法でデータが存在するかどうかを確認することはできません。
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -441,6 +448,10 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     // pos.x, pos.y などのvalueが得られる
     ```
 
+    <span class="since-c">2.1</span>
+    Value::exists() でそのデータが送信されているかどうかを確認できます。
+    tryGet() と違い、データそのものを受信するリクエストは送られません。
+
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 
@@ -460,6 +471,10 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     }
     ```
 
+    <span class="since-js">1.8</span>
+    Value.exists() でそのデータが送信されているかどうかを確認できます。
+    tryGet() と違い、データそのものを受信するリクエストは送られません。
+
 - <b class="tab-title">Python</b>
     <del>Member.values() で</del> そのMemberが送信しているvalueのリストが得られます  
     <span class="since-py">1.1</span>
@@ -472,7 +487,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
 </div>
 
-## ValueEntry イベント
+### ValueEntry イベント
 
 他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。
 

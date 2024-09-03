@@ -11,6 +11,13 @@ class SyncDataStore1 {
     StrMap1<T> data_recv;
     StrMap1<bool> req;
     StrMap1<bool> req_send;
+    /*!
+     * \brief 受信済みのentry
+     *
+     * entry[member名] = {データ名のリスト}
+     *
+     */
+    StrSet1 entry;
 
   public:
     SharedString self_member_name;
@@ -33,6 +40,21 @@ class SyncDataStore1 {
     bool isSelf(const SharedString &member) const;
 
     void setRecv(const SharedString &member, const T &data);
+
+    /*!
+     * \brief memberのentryをクリア
+     */
+    void clearEntry(const SharedString &from);
+    /*!
+     * \brief 受信したentryを追加
+     */
+    void setEntry(const SharedString &from);
+
+    /*!
+     * \brief entryを取得
+     */
+    bool getEntry(const SharedString &from);
+    bool getEntry(const FieldBase &base);
 
     std::optional<T> getRecv(const SharedString &member);
     //! req_sendを返し、req_sendをクリア

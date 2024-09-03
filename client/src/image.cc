@@ -78,5 +78,8 @@ const Image &Image::free() const {
     }
     return *this;
 }
+bool Image::exists() const {
+    return dataLock()->image_store.getEntry(member_).count(field_);
+}
 
 WEBCFACE_NS_END

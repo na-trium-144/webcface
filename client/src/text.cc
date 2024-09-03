@@ -140,6 +140,10 @@ const Text &Text::free() const {
     return *this;
 }
 
+bool Text::exists() const {
+    return dataLock()->text_store.getEntry(member_).count(field_);
+}
+
 std::ostream &operator<<(std::ostream &os, const Text &data) {
     return os << data.get();
 }

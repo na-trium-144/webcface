@@ -128,6 +128,8 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     }
 }
 
+bool Log::exists() const { return dataLock()->log_store.getEntry(member_); }
+
 const Log &Log::clear() const {
     dataLock()->log_store.setRecv(member_,
                                   std::make_shared<std::vector<LogLineData>>());

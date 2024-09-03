@@ -148,6 +148,12 @@ TEST_F(ServerTest, entry) {
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr}
             .toMessage()});
+    dummy_c1->send(message::Log{
+        0, std::make_shared<std::deque<message::LogLine>>(
+               std::deque<message::LogLine>{
+                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                       .toMessage(),
+               })});
     dummy_c1->send(message::FuncInfo{0, "a"_ss, ValType::none_, {}});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
@@ -184,6 +190,9 @@ TEST_F(ServerTest, entry) {
     dummy_c2->waitRecv<message::Entry<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
+    });
+    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
     });
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -259,6 +268,33 @@ TEST_F(ServerTest, entry) {
 }
 TEST_F(ServerTest, log) {
     dummy_c1 = std::make_shared<DummyClient>();
+    dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    wait();
+    dummy_c1->send(message::Log{
+        0, std::make_shared<std::deque<message::LogLine>>(
+               std::deque<message::LogLine>{
+                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                       .toMessage(),
+               })});
+    // 初回のみリクエストしていなくても送られる
+    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+    });
+    dummy_c2->send(message::LogReq{{}, "c1"_ss});
+    // req時の値
+    // keep_logを超えたので最後の3行だけ送られる
+    dummy_c2->waitRecv<message::Log>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.log->size(), 1u);
+        EXPECT_EQ(obj.log->at(0).level_, 0);
+        EXPECT_EQ(obj.log->at(0).message_, "0"_ss);
+    });
+}
+TEST_F(ServerTest, logKeep) {
+    dummy_c1 = std::make_shared<DummyClient>();
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
@@ -278,6 +314,10 @@ TEST_F(ServerTest, log) {
                })});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    // syncinit時に送られる
+    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+    });
     dummy_c2->send(message::LogReq{{}, "c1"_ss});
     // req時の値
     // keep_logを超えたので最後の3行だけ送られる

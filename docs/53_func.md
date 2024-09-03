@@ -412,6 +412,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 </div>
 
 ## 関数の情報の取得
+
 Member::func() でFuncクラスのオブジェクトが得られ、
 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。
 
@@ -420,15 +421,8 @@ Func::returnType() や Func::args() で関数の引数や戻り値の情報を�
 
 ### Entry
 
-~~Member::funcs() で~~ そのMemberが送信している関数のリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::funcEntries() に変更
-
-また、新しく関数が追加されたときのコールバックを設定できます
-(FuncEntryイベント)
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+Valueと同様、関数が存在するかどうかを取得することができます。
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ## 関数の実行
 

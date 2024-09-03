@@ -470,6 +470,8 @@ viewに入力欄を表示します。
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
     また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
+    <span></span>
+
 - <b class="tab-title">JavaScript</b>
     入力された値にアクセスするため [InputRef](https://na-trium-144.github.io/webcface-js/classes/InputRef.html) オブジェクトを作成し、inputにbindします。
     そのInputRefオブジェクトを別の関数などに渡すと、あとから値を取得することができます。
@@ -506,6 +508,8 @@ viewに入力欄を表示します。
     内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
     また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
 
+    <span></span>
+
 </div>
 
 #### onChange
@@ -522,6 +526,8 @@ viewに入力欄を表示します。
     ```
 
     \note bindとonChangeを両方設定することはできません。
+
+    <span></span>
 
 - <b class="tab-title">JavaScript</b>
     onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
@@ -562,20 +568,86 @@ viewに入力欄を表示します。
 
 ## 受信
 
-ValueやTextと同様、Member::view() でViewクラスのオブジェクトが得られ、
-View::tryGet(), View::get() で受信したViewデータを取得できます。
+ViewデータはWebUIに表示するだけでなく、ValueやTextと同様プログラムから受信することもできます。
 (これを使うのはViewを表示するアプリを作る場合などですかね)
 
-Viewデータは
-webcface::ViewComponent
-(JavaScript [ViewComponent](https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html),
-Python [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent))
-のリストとして得られ、
-ViewComponentオブジェクトから各種プロパティを取得できます。
+<div class="tabbed">
 
-<span class="since-c">1.7</span>
-Cの場合は wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で wcfViewComponent, (<span class="since-c">2.0</span> wcfViewComponentW) の配列が得られます。
-取得した配列は不要になったら wcfDestroy で破棄してください。
+- <b class="tab-title">C++</b>
+    Member::view() でViewクラスのオブジェクトが得られ、
+    View::tryGet(), View::get() で受信したViewデータを取得できます。
+
+    Viewデータは
+    webcface::ViewComponent
+    のリストとして得られ、
+    ViewComponentオブジェクトから各種プロパティを取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
+    ```cpp
+    std::optional<std::vector<ViewComponent>> hoge = wcli.member("foo").view("hoge").tryGet();
+    ```
+    * 値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient::sync()したときに</del>
+        <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * View::get() はstd::nulloptの代わりに空のvectorを返します。
+
+    <span class="since-c">1.7</span>
+    View::request() で明示的にリクエストを送信することもできます。
+
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.7</span>
+
+    wcfViewGet, (<span class="since-c">2.0</span> wcfViewGetW) で
+    wcfViewComponent, (<span class="since-c">2.0</span> wcfViewComponentW) の配列が得られます。
+    
+    取得した配列は不要になったら wcfDestroy で破棄してください。
+
+- <b class="tab-title">JavaScript</b>
+    Member.view() でViewクラスのオブジェクトが得られ、
+    View.tryGet(), View.get() で受信したViewデータを取得できます。
+
+    Viewデータは
+    [ViewComponent](https://na-trium-144.github.io/webcface-js/classes/ViewComponent.html)
+    のリストとして得られ、
+    ViewComponentオブジェクトから各種プロパティを取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
+    ```ts
+    const hoge: ViewComponent[] | null = wcli.member("foo").view("hoge").tryGet();
+    ```
+    * 値を受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient.sync()したときに</del>
+        <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * get() はnullの代わりに空のリストを返します。
+
+    <span class="since-js">1.1</span>
+    View.request()で明示的にリクエストを送信することもできます。
+
+- <b class="tab-title">Python</b>
+    Member.view() でViewクラスのオブジェクトが得られ、
+    View.tryGet(), View.get() で受信したViewデータを取得できます。
+
+    Viewデータは
+    [webcface.ViewComponent](https://na-trium-144.github.io/webcface-python/webcface.view.html#webcface.view.ViewComponent)
+    のリストとして得られ、
+    ViewComponentオブジェクトから各種プロパティを取得できます。
+
+    例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
+
+    ```python
+    hoge = wcli.member("foo").view("hoge").try_get()
+    ```
+    * 値を受信していない場合 try_get() はNoneを返し、そのデータのリクエストをサーバーに送ります。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度try_get()することで値が得られます。
+    * get() はNoneの代わりに空のリストを返します。
+
+    View.request()で明示的にリクエストを送信することもできます。
+
+</div>
 
 ### onClick
 
@@ -616,18 +688,12 @@ ViewComponent::id() で各要素に割り振られたid(文字列)を取得で�
 <span class="since-c">1.7</span>
 <span class="since-js">1.6</span>
 <span class="since-py"></span>
-Member::syncTime() に変更
+Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md) を参照
 
 ### Entry
 
-~~Member::views() で~~ そのMemberが送信しているviewのリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::viewEntries() に変更
-
-また、Member::onViewEntry() で新しくデータが追加されたときのコールバックを設定できます
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ### Event
 

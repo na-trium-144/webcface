@@ -369,6 +369,7 @@ void internal::ClientData::onRecv(const std::string &message) {
             this->robot_model_store.clearEntry(r.member_name);
             this->canvas3d_store.clearEntry(r.member_name);
             this->canvas2d_store.clearEntry(r.member_name);
+            this->log_store.clearEntry(r.member_name);
             this->member_ids[r.member_name] = r.member_id;
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;
@@ -431,6 +432,21 @@ void internal::ClientData::onRecv(const std::string &message) {
                 webcface::message::Entry<webcface::message::Image> *>(
                 obj.get());
             onRecvEntry(this, r, this->image_store, this->image_entry_event);
+            break;
+        }
+        case MessageKind::log_entry: {
+            auto &r = *static_cast<webcface::message::LogEntry *>(obj.get());
+            auto member = this->getMemberNameFromId(r.member_id);
+            this->log_store.setEntry(member);
+            // std::decay_t<decltype(this->log_entry_event.at(member))> cl;
+            // {
+            //     std::lock_guard lock(this->event_m);
+            //     cl = findFromMap1(this->log_entry_event,
+            //     member).value_or(nullptr);
+            // }
+            // if (cl && *cl) {
+            //     cl->operator()(Field{this->shared_from_this(), member});
+            // }
             break;
         }
         case MessageKind::func_info: {

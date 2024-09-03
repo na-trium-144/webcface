@@ -97,6 +97,9 @@ std::vector<Arg> Func::args() const {
     }
     return std::vector<Arg>{};
 }
+bool Func::exists() const {
+    return dataLock()->func_store.getEntry(member_).count(field_);
+}
 
 const Func &Func::setArgs(const std::vector<Arg> &args) const {
     auto func_info = setCheck()->func_store.getRecv(*this);

@@ -264,6 +264,12 @@ void MemberData::onRecv(const std::string &message) {
                                           f.first.decode(), cd->member_id);
                         }
                     }
+                    if (!cd->log->empty()) {
+                        this->pack(
+                            webcface::message::LogEntry{{}, cd->member_id});
+                        logger->trace("send log_entry of member {}",
+                                      cd->member_id);
+                    }
                     for (const auto &f : cd->func) {
                         if (!f.first.startsWith(field_separator)) {
                             this->pack(*f.second);
@@ -615,6 +621,16 @@ void MemberData::onRecv(const std::string &message) {
                              "log will be romoved.",
                              store->keep_log);
             }
+            if (this->log->empty()) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
+                            webcface::message::LogEntry{{}, this->member_id});
+                        cd->logger->trace("send log_entry of member {}",
+                                          this->member_id);
+                    }
+                });
+            }
             for (auto &ll : *v.log) {
                 this->log->push_back(ll);
             }
@@ -935,6 +951,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::canvas2d:
         case MessageKind::entry + MessageKind::image:
         case MessageKind::res + MessageKind::image:
+        case MessageKind::log_entry:
         case MessageKind::sync_init_end:
         case MessageKind::ping_status:
             if (!message_kind_warned[kind]) {
