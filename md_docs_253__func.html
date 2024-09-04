@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.0.5</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.1.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -466,26 +466,44 @@ Entry</h2>
 <li>response(): 関数の戻り値です。 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型で返り、 <code>asStringRef()</code>, <code>asString()</code>, <code>asWStringRef()</code>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code> またはstatic_castにより型変換できます。</li>
 <li>rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。 またその場合 isError() がtrueになります。</li>
 </ul>
-<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> waitReach(), waitFinish() などで結果が返ってくるまで待機することができますが、 これらが結果を受信するためには Client::sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。</dd></dl>
+<div class="fragment"><div class="line">Promise res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
+<div class="line">res.waitReach();</div>
+<div class="line"><span class="keywordflow">if</span>(res.found()){</div>
+<div class="line">    <span class="comment">// 関数hogeが存在し、実行が開始された</span></div>
+<div class="line">    res.waitFinish();</div>
+<div class="line">    <span class="keywordflow">if</span>(res.isError()){</div>
+<div class="line">        <span class="comment">// res.rejection() がエラーメッセージ</span></div>
+<div class="line">    }<span class="keywordflow">else</span>{</div>
+<div class="line">        <span class="comment">// res.response() が戻り値</span></div>
+<div class="line">    }</div>
+<div class="line">}<span class="keywordflow">else</span>{</div>
+<div class="line">    <span class="comment">// 関数hogeが存在しないか未接続で呼び出し失敗</span></div>
+<div class="line">}</div>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> 上の例のようにwaitReach(), waitFinish() などで結果が返ってくるまで待機することができますが、 これらが結果を受信するためには Client::sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。</dd></dl>
 <p><span></span></p><ul>
 <li><code>onReach()</code>, <code>onFinish()</code> で値が返ってきたときに実行されるコールバックを設定することができます。<ul>
-<li>引数にはそのPromise自身が渡されますが、(キャプチャするなどして)必要なければ引数なしの関数も設定可能です <div class="fragment"><div class="line">Promise res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
+<li>引数にはそのPromise自身が渡されますが、(キャプチャするなどして)必要なければ引数なしの関数も設定可能です</li>
+<li>コールバックは Client::sync() の中から呼び出されます。 <div class="fragment"><div class="line">Promise res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
 <div class="line">res.onReach([](Promise res){</div>
-<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;func hoge() &quot;</span> &lt;&lt; res.found() ? <span class="stringliteral">&quot;started&quot;</span> : <span class="stringliteral">&quot;not started&quot;</span> &lt;&lt; std::endl;</div>
-<div class="line">});</div>
-<div class="line">res.onFinish([](Promise res){</div>
-<div class="line">    <span class="keywordflow">if</span>(!res.isError()){</div>
-<div class="line">        <span class="keywordtype">double</span> ans = res.response();</div>
+<div class="line">    <span class="keywordflow">if</span>(res.found()){</div>
+<div class="line">        <span class="comment">// 関数hogeが存在し、実行が開始された</span></div>
 <div class="line">    }<span class="keywordflow">else</span>{</div>
-<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;Error: &quot;</span> &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a>.rejection() &lt;&lt; std::endl;</div>
+<div class="line">        <span class="comment">// 関数hogeが存在しないか未接続で呼び出し失敗</span></div>
 <div class="line">    }</div>
 <div class="line">});</div>
-<div class="ttc" id="anamespacewebcface_1_1message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f"><div class="ttname"><a href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">webcface::message::MessageKind::res</a></div><div class="ttdeci">@ res</div><div class="ttdef"><b>Definition</b> message.h:47</div></div>
+<div class="line">res.onFinish([](Promise res){</div>
+<div class="line">    <span class="keywordflow">if</span>(res.isError()){</div>
+<div class="line">        <span class="comment">// res.rejection() がエラーメッセージ</span></div>
+<div class="line">    }<span class="keywordflow">else</span>{</div>
+<div class="line">        <span class="comment">// res.response() が戻り値</span></div>
+<div class="line">    }</div>
+<div class="line">});</div>
 </div><!-- fragment --></li>
 </ul>
 </li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd>onReach, onFinish を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。 したがってコールバックはどの状況で設定したとしても必ず1回呼ばれます。 (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)</dd></dl>
+<p><span></span></p>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> wcfFuncRunAsync, (<span class="since-c">2.0</span> wcfFuncRunAsyncW) で関数を呼び出し、完了を待たずに続行します。 受け取った wcfPromise を使って、 wcfFuncGetResult, (<span class="since-c">2.0</span> wcfFuncGetResultW) 後から関数の戻り値や例外を取得できます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> args[3] = {</div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2func_8h.html#aa371cd469c55d58b0332f2261a120533">wcfValI</a>(42),</div>
@@ -521,18 +539,31 @@ Entry</h2>
 <dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> <a class="el" href="c__wcf_2func_8h.html#a1a29429472d65e1d80e3d2c119d80bc3" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得">wcfFuncWaitResult()</a> が結果を受信するためには <a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> が必要なため、別スレッドでwcfSync()が呼ばれていなければデッドロックします。</dd></dl>
 <p><span></span></p>
 </li>
-<li><p class="startli"><b class="tab-title">JavaScript</b> Func.runAsync() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
-<p class="startli">AsyncFuncResultからは started と result が取得できます。</p><ul>
-<li>started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。</li>
-<li>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> </p><dl class="section note"><dt>Note</dt><dd><span class="since-js">1.8</span> C++の Promise 型に合わせて名前変更しました。 以前の名前もまだ使えます。</dd></dl>
+<p>Func.runAsync() で関数を呼び出すと、戻り値として <del>AsyncFuncResult</del> FuncPromise クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
+<p class="startli"><del>AsyncFuncResult</del> FuncPromise からは <del>started</del> reach と <del>result</del> finish が取得できます。 いずれもPromise型で、awaitで待機したり、then()とcatch()でコールバックを設定できます。</p><ul>
+<li>reach (started) は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。<ul>
+<li><span class="since-js">1.8</span> runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseが返ります</li>
 </ul>
-<p class="startli">startedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。 詳細は <a href="https://na-trium-144.github.io/webcface-js/classes/AsyncFuncResult.html">AsyncFuncResult</a> を参照してください</p>
-<div class="fragment"><div class="line">import { AsyncFuncResult } from &quot;webcface&quot;;</div>
-<div class="line">const res: AsyncFuncResult = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).runAsync(1, &quot;aa&quot;);</div>
-<div class="line">res.result.then((ret: number | boolean | string) =&gt; {</div>
-<div class="line">    // ...</div>
+</li>
+<li>finish (result) は実行が完了したときに返ります。関数の戻り値を返すか、または発生した例外のメッセージを含むErrorでrejectします。<ul>
+<li><span class="since-js">1.8</span> Rejectする値は常にError型になっています。 (1.7以前は関数がthrowしたオブジェクトをそのまま返していた)</li>
+</ul>
+</li>
+</ul>
+<div class="fragment"><div class="line">import { FuncPromise } from &quot;webcface&quot;;</div>
+<div class="line">const res: FuncPromise = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).runAsync(1, &quot;aa&quot;);</div>
+<div class="line">res.reach.then((found: boolean) =&gt; {</div>
+<div class="line">    if (found) {</div>
+<div class="line">        // 関数hogeが存在し、実行が開始された</div>
+<div class="line">    } else {</div>
+<div class="line">        // 関数hogeが存在しないか未接続で呼び出し失敗</div>
+<div class="line">    }</div>
+<div class="line">});</div>
+<div class="line">res.finish.then((ret: number | boolean | string) =&gt; {</div>
+<div class="line">    // ret が戻り値</div>
 <div class="line">}).catch((e) =&gt; {</div>
-<div class="line">    // ...</div>
+<div class="line">    // (e as Error).message がエラーメッセージ</div>
 <div class="line">});</div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">Python</b> Func.run() は関数を呼び出し、結果が返ってくるまで待機します。 </p><div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
@@ -620,7 +651,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Sep 4 2024 04:30:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Sep 4 2024 12:10:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
