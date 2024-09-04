@@ -1,3 +1,10 @@
+## [2.1.0] - 2024-09-04
+### Added
+* LogEntryメッセージ (#397)
+	* 各種Field型::exists() 追加
+* Log::keepLines() 追加 (#398)
+	* 指定した行数以上のログをClientが保持しないようにした
+
 ## [2.0.5] - 2024-09-03
 ### Changed
 * Doxygenでドキュメントを生成するときnamespaceを`webcface`に固定
