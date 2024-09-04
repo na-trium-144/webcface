@@ -12,8 +12,11 @@
 
 テキストのログ出力を送受信します。
 
-trace, debug, info, warning, error, critical の6段階のレベルに分けたログを扱うことができます。
+trace(0), debug(1), info(2), warning(3), error(4), critical(5) の6段階のレベルに分けたログを扱うことができます。
 (外部ライブラリのspdlogをそのままインタフェースに利用していたver1の仕様を引き継いでいる)
+
+\note
+WebCFaceはログレベルを単に数値として扱うので、-1以下や6以上のレベルも一応使用可能です。
 
 ## コマンドライン
 ```sh
@@ -56,6 +59,15 @@ webcface-send -t log
     wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。
     その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
     
+- <b class="tab-title">JavaScript</b>
+    <span class="since-js">1.8</span>
+    Log.append() でログを送信することができます。
+    webcfaceに送信されるのみで、コンソールへの出力などは行いません。
+    ```ts
+    wcli.log().append(2, "this is info");
+    wcli.log().append(3, "this is error");
+    ```
+
 - <b class="tab-title">Python</b>
     Python標準のloggingモジュールを使うことができます。
 
@@ -122,9 +134,41 @@ webcface-send -t log
 - <b class="tab-title">log4js (JavaScript)</b>
     log4js: https://www.npmjs.com/package/log4js
 
-    log4jsのappenderにClient.logAppenderを登録すると出力されます。
-    ```js
+    log4js→webcfaceにログを送信するappenderの例(ver1.7までwebcfaceに含まれていた実装):
+    ```ts
+    import { Level, Levels, LoggingEvent, AppenderModule } from "log4js";
     import log4js from "log4js";
+
+    function log4jsLevelConvert(level: Level, levels: Levels) {
+      if (level.isGreaterThanOrEqualTo(levels.FATAL)) {
+        return 5;
+      } else if (level.isGreaterThanOrEqualTo(levels.ERROR)) {
+        return 4;
+      } else if (level.isGreaterThanOrEqualTo(levels.WARN)) {
+        return 3;
+      } else if (level.isGreaterThanOrEqualTo(levels.INFO)) {
+        return 2;
+      } else if (level.isGreaterThanOrEqualTo(levels.DEBUG)) {
+        return 1;
+      } else if (level.isGreaterThanOrEqualTo(levels.TRACE)) {
+        return 0;
+      } else {
+        return -1;
+      }
+    }
+    export function appender(): AppenderModule {
+      return {
+        configure:
+          (config?: object, layouts?: any, findAppender?: any, levels?: Levels) =>
+          (logEvent: LoggingEvent) => {
+            wcli.log().append(
+              levels !== undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+              util.format(...logEvent.data)
+            );
+          },
+      };
+    }
 
     log4js.configure({
       appenders: {
