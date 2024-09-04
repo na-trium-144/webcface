@@ -253,13 +253,15 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 
 通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します
 
-デフォルトの状態ではpingの情報は受信しませんが、pingStatusまたはonPingに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。
-
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     Member::pingStatus() でmemberの通信速度(int型)を取得できます。
+    デフォルトの状態ではpingの情報は受信しておらずstd::nulloptを返しますが、
+    pingStatusに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。
+
     また、 Member::onPing() でpingの情報が更新された時に実行するコールバックを設定できます。
+    onPing()を使うことでもリクエストが送られます。
 
     <span class="since-c">2.0</span>
     ```cpp
@@ -296,6 +298,12 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
     ```
 
 - <b class="tab-title">JavaScript</b>
+    Member.pingStatus でmemberの通信速度を取得できます。
+    デフォルトの状態ではpingの情報は受信しておらずnullを返しますが、
+    pingStatusに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。
+
+    また、 Member.onPing でpingの情報が更新された時に実行するコールバックを設定できます。
+    onPingを使うことでもリクエストが送られます。
     ```ts
     import { Member } from "webcface";
     wcli.member("foo").onPing.on((m: Member) => {
@@ -304,6 +312,8 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
     ```
     * <span class="since-js">1.7</span>
     自分自身のping値も取得できるようになりました。(`wcli.pingStatus`, `wcli.onPing`)
+    * <span class="since-js">1.8</span>
+    Member.requestPingStatus() で明示的にリクエストを送ることもできます。
 
 - <b class="tab-title">Python</b>
     ```python
