@@ -1,5 +1,4 @@
 #include "webcface/internal/data_store1.h"
-#include <deque>
 
 WEBCFACE_NS_BEGIN
 namespace internal {

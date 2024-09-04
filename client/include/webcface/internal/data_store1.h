@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <optional>
+#include <deque>
 #include "webcface/log.h"
 #include "webcface/encoding/encoding.h"
 
