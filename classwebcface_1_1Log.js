@@ -32,6 +32,7 @@ var classwebcface_1_1Log =
     [ "image", "classwebcface_1_1Log.html#abc6a895380d1cd1f3966ca35dbd454cc", null ],
     [ "imageEntries", "classwebcface_1_1Log.html#aa71834447f8b14aa597bf6add6a33749", null ],
     [ "isSelf", "classwebcface_1_1Log.html#a0522a651826ba6fcbb9ce86258e8fa30", null ],
+    [ "keepLines", "classwebcface_1_1Log.html#a929e6956b0d5d97ba4f3329468a745a2", null ],
     [ "lastName", "classwebcface_1_1Log.html#ab53487c64d4c15b7a2f16a968197003c", null ],
     [ "lastName8", "classwebcface_1_1Log.html#a6c06b66607b91e9ae36f0688b3d108f7", null ],
     [ "lastNameW", "classwebcface_1_1Log.html#af4e3ae9c11a8760127d92e61cdd9e03f", null ],

@@ -162,7 +162,8 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 </ul>
 </dd></dl>
 <p>テキストのログ出力を送受信します。</p>
-<p>trace, debug, info, warning, error, critical の6段階のレベルに分けたログを扱うことができます。 (外部ライブラリのspdlogをそのままインタフェースに利用していたver1の仕様を引き継いでいる)</p>
+<p>trace(0), debug(1), info(2), warning(3), error(4), critical(5) の6段階のレベルに分けたログを扱うことができます。 (外部ライブラリのspdlogをそのままインタフェースに利用していたver1の仕様を引き継いでいる)</p>
+<dl class="section note"><dt>Note</dt><dd>WebCFaceはログレベルを単に数値として扱うので、-1以下や6以上のレベルも一応使用可能です。</dd></dl>
 <h1><a class="anchor" id="autotoc_md103"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t log</div>
@@ -182,6 +183,9 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 </div><!-- fragment --><p> のようにcoutやcerrの出力先を置き換えることができます。 これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。 (<del>spdlogのstderr_sinkを使って</del> <span class="since-c">2.0</span>fputs,fputcを使って 直接stderrに出力されます) またこの場合はログレベルが設定できず、常にinfoになります。</p>
 <p class="startli"><span class="since-c">2.0</span> wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。 その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。</p>
 </li>
+<li><b class="tab-title">JavaScript</b> <span class="since-js">1.8</span> Log.append() でログを送信することができます。 webcfaceに送信されるのみで、コンソールへの出力などは行いません。 <div class="fragment"><div class="line">wcli.log().append(2, &quot;this is info&quot;);</div>
+<div class="line">wcli.log().append(3, &quot;this is error&quot;);</div>
+</div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">Python</b> Python標準のloggingモジュールを使うことができます。</p>
 <p class="startli">Client.logging_handler をLoggerのhandlerとして追加して使います。 </p><div class="fragment"><div class="line"><span class="keyword">from</span> logging <span class="keyword">import</span> getLogger, DEBUG, StreamHandler</div>
 <div class="line">logger = getLogger(__name__)</div>
@@ -232,7 +236,39 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <div class="ttc" id="anamespacewebcface_1_1message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3"><div class="ttname"><a href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">webcface::message::MessageKind::log</a></div><div class="ttdeci">@ log</div><div class="ttdef"><b>Definition</b> message.h:53</div></div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">log4js (JavaScript)</b> log4js: <a href="https://www.npmjs.com/package/log4js">https://www.npmjs.com/package/log4js</a></p>
-<p class="startli">log4jsのappenderにClient.logAppenderを登録すると出力されます。 </p><div class="fragment"><div class="line">import log4js from &quot;log4js&quot;;</div>
+<p class="startli">log4js→webcfaceにログを送信するappenderの例(ver1.7までwebcfaceに含まれていた実装): </p><div class="fragment"><div class="line">import { Level, Levels, LoggingEvent, AppenderModule } from &quot;log4js&quot;;</div>
+<div class="line">import log4js from &quot;log4js&quot;;</div>
+<div class="line"> </div>
+<div class="line">function log4jsLevelConvert(level: Level, levels: Levels) {</div>
+<div class="line">  if (level.isGreaterThanOrEqualTo(levels.FATAL)) {</div>
+<div class="line">    return 5;</div>
+<div class="line">  } else if (level.isGreaterThanOrEqualTo(levels.ERROR)) {</div>
+<div class="line">    return 4;</div>
+<div class="line">  } else if (level.isGreaterThanOrEqualTo(levels.WARN)) {</div>
+<div class="line">    return 3;</div>
+<div class="line">  } else if (level.isGreaterThanOrEqualTo(levels.INFO)) {</div>
+<div class="line">    return 2;</div>
+<div class="line">  } else if (level.isGreaterThanOrEqualTo(levels.DEBUG)) {</div>
+<div class="line">    return 1;</div>
+<div class="line">  } else if (level.isGreaterThanOrEqualTo(levels.TRACE)) {</div>
+<div class="line">    return 0;</div>
+<div class="line">  } else {</div>
+<div class="line">    return -1;</div>
+<div class="line">  }</div>
+<div class="line">}</div>
+<div class="line">export function appender(): AppenderModule {</div>
+<div class="line">  return {</div>
+<div class="line">    configure:</div>
+<div class="line">      (config?: object, layouts?: any, findAppender?: any, levels?: Levels) =&gt;</div>
+<div class="line">      (logEvent: LoggingEvent) =&gt; {</div>
+<div class="line">        wcli.log().append(</div>
+<div class="line">          levels !== undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,</div>
+<div class="line">          // eslint-disable-next-line @typescript-eslint/no-unsafe-argument</div>
+<div class="line">          util.format(...logEvent.data)</div>
+<div class="line">        );</div>
+<div class="line">      },</div>
+<div class="line">  };</div>
+<div class="line">}</div>
 <div class="line"> </div>
 <div class="line">log4js.configure({</div>
 <div class="line">  appenders: {</div>
@@ -275,7 +311,10 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 </li>
 <li>Log::get() はstd::nulloptの代わりに空のvectorを返します。</li>
 </ul>
-<p class="startli"><span class="since-c">1.1.5</span> Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.1</span> Clientはmemberごとに最大1000行までのログを保持しています。 それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。 <br  />
+ 保持するログの行数は <code><a class="el" href="classwebcface_1_1Log.html#a929e6956b0d5d97ba4f3329468a745a2" title="Clientが保持するログの行数を設定する。">webcface::Log::keepLines()</a></code> で変更できます。 負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)</dd></dl>
+<p><span></span></p>
+<p class="startli"><span class="since-c">1.1.5</span> Log::tryGet(), get() はClientが保持しているログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。</p>
 <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    <span class="keywordflow">for</span>(LogLine line : wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).log().get()){</div>
 <div class="line">        <span class="comment">// 新しく送られてきたログについてなにかする</span></div>
@@ -298,7 +337,10 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 </li>
 <li>Log.get() はnullの代わりに空のリストを返します。</li>
 </ul>
-<p class="startli"><span class="since-js">1.0.4</span> Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。</p>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-js">1.8</span> Clientはmemberごとに最大1000行までのログを保持しています。 それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。 <br  />
+ 保持するログの行数は <code>Log.keepLines = 1000</code> などとすると変更できます。 負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)</dd></dl>
+<p><span></span></p>
+<p class="startli"><span class="since-js">1.0.4</span> Log.tryGet(), get() はClientが保持しているログデータすべてを返しますが、 前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。</p>
 <div class="fragment"><div class="line">while(true){</div>
 <div class="line">    for(const line of wcli.member(&quot;foo&quot;).log().get()){</div>
 <div class="line">        // 新しく送られてきたログについてなにかする</div>
@@ -353,7 +395,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Sep 4 2024 04:30:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

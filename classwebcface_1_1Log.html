@@ -141,6 +141,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Log.html',''); initRe
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classwebcface_1_1Log-members.html">List of all members</a>  </div>
@@ -222,6 +223,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Member.html">Member</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a> () const</td></tr>
 <tr class="memdesc:aa8fab40ead35fa8e761986d5f4000a5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
 <tr class="separator:aa8fab40ead35fa8e761986d5f4000a5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a929e6956b0d5d97ba4f3329468a745a2"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a929e6956b0d5d97ba4f3329468a745a2">keepLines</a> (int n)</td></tr>
+<tr class="memdesc:a929e6956b0d5d97ba4f3329468a745a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clientが保持するログの行数を設定する。  <br /></td></tr>
+<tr class="separator:a929e6956b0d5d97ba4f3329468a745a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -1245,6 +1252,40 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
+<a id="a929e6956b0d5d97ba4f3329468a745a2" name="a929e6956b0d5d97ba4f3329468a745a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a929e6956b0d5d97ba4f3329468a745a2">&#9670;&#160;</a></span>keepLines()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void keepLines </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Clientが保持するログの行数を設定する。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.1</dd></dl>
+<ul>
+<li>この行数以上のログが送られてきたら古いログから順に削除され、get()で取得できなくなる。</li>
+<li>デフォルトは1000</li>
+<li>負の値を設定すると無制限に保持する。 </li>
+</ul>
+
+</div>
+</div>
 <a id="ab53487c64d4c15b7a2f16a968197003c" name="ab53487c64d4c15b7a2f16a968197003c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab53487c64d4c15b7a2f16a968197003c">&#9670;&#160;</a></span>lastName()</h2>
 
@@ -2221,7 +2262,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Tue Sep 3 2024 14:23:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Sep 4 2024 04:30:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

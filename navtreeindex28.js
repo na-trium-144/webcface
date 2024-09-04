@@ -1,5 +1,10 @@
 var NAVTREEINDEX28 =
 {
+"structwebcface_1_1server_1_1ServerStorage.html#a744eacca6163a75a3e1fc84de5cf3f15":[25,0,0,8,4,4],
+"structwebcface_1_1server_1_1ServerStorage.html#a937b33f9efb3d5d56b0ba71669ed2d96":[26,0,0,6,4,3],
+"structwebcface_1_1server_1_1ServerStorage.html#a937b33f9efb3d5d56b0ba71669ed2d96":[25,0,0,8,4,3],
+"structwebcface_1_1server_1_1ServerStorage.html#aa45c4a8d61114752c695184f098bdf7b":[25,0,0,8,4,6],
+"structwebcface_1_1server_1_1ServerStorage.html#aa45c4a8d61114752c695184f098bdf7b":[26,0,0,6,4,6],
 "structwebcface_1_1server_1_1ServerStorage.html#aac122449fd3bbb64fd0eb7fc567a7a46":[26,0,0,6,4,16],
 "structwebcface_1_1server_1_1ServerStorage.html#aac122449fd3bbb64fd0eb7fc567a7a46":[25,0,0,8,4,16],
 "structwebcface_1_1server_1_1ServerStorage.html#ab07367191bdc9192fa11850cc627489e":[26,0,0,6,4,10],

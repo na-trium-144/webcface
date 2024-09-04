@@ -42,7 +42,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "image_store", "structwebcface_1_1internal_1_1ClientData.html#a77143c5fd86ccc7b60cf91604c206e3d", null ],
     [ "log_append_event", "structwebcface_1_1internal_1_1ClientData.html#a18b2fcee82db94a0e048371576167afb", null ],
     [ "log_sent_lines", "structwebcface_1_1internal_1_1ClientData.html#aba7df97e7d2aed6c1dfce7eef73001e2", null ],
-    [ "log_store", "structwebcface_1_1internal_1_1ClientData.html#a98a7730feda1a536e3dbf7e1a2e37d65", null ],
+    [ "log_store", "structwebcface_1_1internal_1_1ClientData.html#ac214f0948ffb413b29bed532c48c9360", null ],
     [ "logger_buf", "structwebcface_1_1internal_1_1ClientData.html#a661c931689a42c3d6678446e985c14ce", null ],
     [ "logger_buf_w", "structwebcface_1_1internal_1_1ClientData.html#a7bbda28ee9976cd80182cfb2f2fa0b4a", null ],
     [ "logger_internal", "structwebcface_1_1internal_1_1ClientData.html#ae7bdc5a9588d9977fd43d9b2e3cd511a", null ],

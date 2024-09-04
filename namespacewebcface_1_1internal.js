@@ -38,5 +38,6 @@ var namespacewebcface_1_1internal =
     [ "unixSocketPathWSLInterop", "namespacewebcface_1_1internal.html#a8afb05983581f6ed761162fb6498dd78", null ],
     [ "updateUnixSocketPerms", "namespacewebcface_1_1internal.html#acf16ef85442812ea0597b9bc2d9df693", null ],
     [ "wsl2Host", "namespacewebcface_1_1internal.html#a6f66b6ebca37cbc0fd22190142e37fb3", null ],
-    [ "wsThreadMain", "namespacewebcface_1_1internal.html#afd83eaea48642bb91173288271a8f398", null ]
+    [ "wsThreadMain", "namespacewebcface_1_1internal.html#afd83eaea48642bb91173288271a8f398", null ],
+    [ "log_keep_lines", "namespacewebcface_1_1internal.html#a446bbf399941c098956bd5557c7e35ef", null ]
 ];

@@ -237,7 +237,7 @@ var hierarchy =
     ] ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
-    [ "SyncDataStore1< std::shared_ptr< std::vector< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
+    [ "SyncDataStore1< std::shared_ptr< std::deque< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas3DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
