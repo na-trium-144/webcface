@@ -188,8 +188,17 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * Log::get() はstd::nulloptの代わりに空のvectorを返します。
     
+    \warning
+    <span class="since-c">2.1</span>
+    Clientはmemberごとに最大1000行までのログを保持しています。
+    それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。  
+    保持するログの行数は `webcface::Log::keepLines()` で変更できます。
+    負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)
+
+    <span></span>
+
     <span class="since-c">1.1.5</span>
-    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    Log::tryGet(), get() はClientが保持しているログデータすべてを返しますが、
     前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
 
     ```cpp
@@ -226,8 +235,17 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * Log.get() はnullの代わりに空のリストを返します。
     
+    \warning
+    <span class="since-js">1.8</span>
+    Clientはmemberごとに最大1000行までのログを保持しています。
+    それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。  
+    保持するログの行数は `Log.keepLines = 1000` などとすると変更できます。
+    負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)
+
+    <span></span>
+
     <span class="since-js">1.0.4</span>
-    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    Log.tryGet(), get() はClientが保持しているログデータすべてを返しますが、
     前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
 
     ```ts
