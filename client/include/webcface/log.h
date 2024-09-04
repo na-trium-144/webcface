@@ -68,6 +68,17 @@ class WEBCFACE_DLL Log : protected Field {
     using Field::member;
 
     /*!
+     * \brief Clientが保持するログの行数を設定する。
+     * \since ver2.1
+     * 
+     * * この行数以上のログが送られてきたら古いログから順に削除され、get()で取得できなくなる。
+     * * デフォルトは1000
+     * * 負の値を設定すると無制限に保持する。
+     * 
+     */
+    static void WEBCFACE_CALL keepLines(int n);
+
+    /*!
      * \brief ログが追加されたときに呼び出されるコールバックを設定
      * \since ver2.0
      * \param callback Log型の引数(thisが渡される)を1つ取る関数

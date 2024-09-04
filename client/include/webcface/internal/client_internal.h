@@ -28,6 +28,8 @@ namespace internal {
 void wsThreadMain(const std::shared_ptr<ClientData> &data);
 // void syncThreadMain(const std::shared_ptr<ClientData> &data);
 
+extern std::atomic<int> log_keep_lines;
+
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(const SharedString &name,
                         const SharedString &host = nullptr, int port = -1);
@@ -235,7 +237,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;
-    SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>> log_store;
+    SyncDataStore1<std::shared_ptr<std::deque<LogLineData>>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
     std::size_t log_sent_lines = 0;

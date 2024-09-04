@@ -1,6 +1,7 @@
 #pragma once
 #include <mutex>
 #include <optional>
+#include <deque>
 #include "webcface/log.h"
 #include "webcface/encoding/encoding.h"
 
@@ -63,7 +64,7 @@ class SyncDataStore1 {
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore1<std::string>; // test用
-extern template class SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>>;
+extern template class SyncDataStore1<std::shared_ptr<std::deque<LogLineData>>>;
 extern template class SyncDataStore1<std::chrono::system_clock::time_point>;
 #endif
 

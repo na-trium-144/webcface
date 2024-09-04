@@ -276,11 +276,24 @@ void internal::ClientData::onRecv(const std::string &message) {
             std::lock_guard lock_s(this->log_store.mtx);
             auto log_s = this->log_store.getRecv(member);
             if (!log_s) {
-                log_s = std::make_shared<std::vector<LogLineData>>();
+                log_s = std::make_shared<std::deque<LogLineData>>();
                 this->log_store.setRecv(member, *log_s);
             }
-            for (auto &lm : *r.log) {
-                (*log_s)->emplace_back(lm);
+            int log_keep_lines_local = log_keep_lines.load();
+            auto r_begin = r.log->begin();
+            auto r_end = r.log->end();
+            if (log_keep_lines_local >= 0) {
+                if (r.log->size() >
+                    static_cast<std::size_t>(log_keep_lines_local)) {
+                    r_begin = r_end - log_keep_lines_local;
+                }
+                while ((*log_s)->size() + (r_end - r_begin) >
+                       static_cast<std::size_t>(log_keep_lines_local)) {
+                    (*log_s)->pop_front();
+                }
+            }
+            for (auto lit = r_begin; lit != r_end; lit++) {
+                (*log_s)->emplace_back(*lit);
             }
             std::shared_ptr<std::function<void(Log)>> cl;
             {
