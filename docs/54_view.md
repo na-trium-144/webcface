@@ -106,10 +106,12 @@
     v = wcli.view("a")
     # v.init() ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
     v.add("hello world\n")
-    v.add(i).add("\n") # i は適当な変数とか
+    v.add(i, "\n") # i は適当な変数とか
     v.add(webcface.view_components.button("a", lambda: print("hello")))
     v.sync()
     ```
+    add() にはコンマ区切りで複数の要素を渡すこともできます(1つずつadd()するのと同じです)
+    
     ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
     with構文を使って `with wcli.view("hoge") as v:` などとするとwithを抜けるときに自動でv.sync()がされます。
