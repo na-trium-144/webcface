@@ -15,15 +15,6 @@ void internal::ClientData::pingStatusReq() {
 }
 
 internal::ClientData::SyncDataFirst internal::ClientData::syncDataFirst() {
-    std::lock_guard value_lock(value_store.mtx);
-    std::lock_guard text_lock(text_store.mtx);
-    std::lock_guard view_lock(view_store.mtx);
-    std::lock_guard func_lock(func_store.mtx);
-    std::lock_guard image_lock(image_store.mtx);
-    std::lock_guard robot_model_lock(robot_model_store.mtx);
-    std::lock_guard canvas3d_lock(canvas3d_store.mtx);
-    std::lock_guard canvas2d_lock(canvas2d_store.mtx);
-    std::lock_guard log_lock(log_store.mtx);
 
     SyncDataFirst data;
     data.value_req = value_store.transferReq();
@@ -32,11 +23,14 @@ internal::ClientData::SyncDataFirst internal::ClientData::syncDataFirst() {
     data.robot_model_req = robot_model_store.transferReq();
     data.canvas3d_req = canvas3d_store.transferReq();
     data.canvas2d_req = canvas2d_store.transferReq();
-    data.image_req = image_store.transferReq();
-    for (const auto &v : data.image_req) {
-        for (const auto &v2 : v.second) {
-            data.image_req_info[v.first][v2.first] =
-                image_store.getReqInfo(v.first, v2.first);
+    {
+        std::lock_guard image_lock(image_store.mtx);
+        data.image_req = image_store.transferReq();
+        for (const auto &v : data.image_req) {
+            for (const auto &v2 : v.second) {
+                data.image_req_info[v.first][v2.first] =
+                    image_store.getReqInfo(v.first, v2.first);
+            }
         }
     }
     data.log_req = log_store.transferReq();
@@ -115,30 +109,35 @@ std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
 }
 internal::ClientData::SyncDataSnapshot
 internal::ClientData::syncData(bool is_first) {
-    std::lock_guard value_lock(value_store.mtx);
-    std::lock_guard text_lock(text_store.mtx);
-    std::lock_guard view_lock(view_store.mtx);
-    std::lock_guard func_lock(func_store.mtx);
-    std::lock_guard image_lock(image_store.mtx);
-    std::lock_guard robot_model_lock(robot_model_store.mtx);
-    std::lock_guard canvas3d_lock(canvas3d_store.mtx);
-    std::lock_guard canvas2d_lock(canvas2d_store.mtx);
-    std::lock_guard log_lock(log_store.mtx);
 
     SyncDataSnapshot data;
     data.time = std::chrono::system_clock::now();
 
+    // std::lock_guard value_lock(value_store.mtx);
     data.value_data = value_store.transferSend(is_first);
+    // std::lock_guard text_lock(text_store.mtx);
     data.text_data = text_store.transferSend(is_first);
+    // std::lock_guard robot_model_lock(robot_model_store.mtx);
     data.robot_model_data = robot_model_store.transferSend(is_first);
-    data.view_prev = view_store.getSendPrev(is_first);
-    data.view_data = view_store.transferSend(is_first);
-    data.canvas3d_prev = canvas3d_store.getSendPrev(is_first);
-    data.canvas3d_data = canvas3d_store.transferSend(is_first);
-    data.canvas2d_prev = canvas2d_store.getSendPrev(is_first);
-    data.canvas2d_data = canvas2d_store.transferSend(is_first);
+    {
+        std::lock_guard view_lock(view_store.mtx);
+        data.view_prev = view_store.getSendPrev(is_first);
+        data.view_data = view_store.transferSend(is_first);
+    }
+    {
+        std::lock_guard canvas3d_lock(canvas3d_store.mtx);
+        data.canvas3d_prev = canvas3d_store.getSendPrev(is_first);
+        data.canvas3d_data = canvas3d_store.transferSend(is_first);
+    }
+    {
+        std::lock_guard canvas2d_lock(canvas2d_store.mtx);
+        data.canvas2d_prev = canvas2d_store.getSendPrev(is_first);
+        data.canvas2d_data = canvas2d_store.transferSend(is_first);
+    }
+    // std::lock_guard image_lock(image_store.mtx);
     data.image_data = image_store.transferSend(is_first);
 
+    // std::lock_guard log_lock(log_store.mtx);
     auto log_self_opt = log_store.getRecv(self_member_name);
     if (!log_self_opt) {
         throw std::runtime_error("self log data is null");
@@ -154,6 +153,7 @@ internal::ClientData::syncData(bool is_first) {
             data.log_data = std::vector<LogLineData>(begin, end);
         }
     }
+    // std::lock_guard func_lock(func_store.mtx);
     data.func_data = func_store.transferSend(is_first);
 
     return data;
