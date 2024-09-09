@@ -139,7 +139,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 ScopedUnlock un(lock);
                 while (true) { // データがなくなるまで受信
                     bool has_recv = internal::WebSocket::recv(
-                        data, [data](std::string msg) {
+                        data, [data](std::string &&msg) {
                             std::unique_lock lock(data->ws_m);
                             data->recv_queue.push(
                                 message::unpack(msg, data->logger_internal));
