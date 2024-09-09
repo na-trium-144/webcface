@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include <mutex>
 #include "webcface/func_result.h"
 #include "webcface/func.h"

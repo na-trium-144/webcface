@@ -787,9 +787,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::ViewComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::ViewComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
                             diff.emplace(std::to_string(i), it.second[i]);
@@ -829,9 +828,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::Canvas3DComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::Canvas3DComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
                             diff.emplace(std::to_string(i), it.second[i]);
@@ -871,9 +869,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::Canvas2DComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::Canvas2DComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.components.size();
                              i++) {

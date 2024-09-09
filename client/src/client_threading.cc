@@ -115,11 +115,12 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             if (data->connected) {
                 ScopedUnlock un(lock);
                 std::lock_guard lock_s(data->sync_m);
-                if (data->sync_first.empty()) {
+                if (!data->sync_first) {
                     data->sync_first = data->syncDataFirst();
                 }
-                internal::WebSocket::send(data, data->sync_first);
-                data->sync_first.clear();
+                internal::WebSocket::send(
+                    data, data->packSyncDataFirst(*data->sync_first));
+                data->sync_first = std::nullopt;
             }
         } else {
             if (last_recv) {
@@ -138,9 +139,10 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 ScopedUnlock un(lock);
                 while (true) { // データがなくなるまで受信
                     bool has_recv = internal::WebSocket::recv(
-                        data, [data](std::string msg) {
+                        data, [data](std::string &&msg) {
                             std::unique_lock lock(data->ws_m);
-                            data->recv_queue.push(std::move(msg));
+                            data->recv_queue.push(
+                                message::unpack(msg, data->logger_internal));
                             data->ws_cond.notify_all();
                         });
                     if (!has_recv) {
@@ -159,13 +161,24 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             last_recv = std::chrono::steady_clock::now();
 
             while (data->connected && !data->sync_queue.empty()) {
+                ScopedUnlock un(lock);
                 // sync
-                std::string msg = std::move(data->sync_queue.front());
+                auto msg = std::move(data->sync_queue.front());
+                std::string msg_s;
                 data->sync_queue.pop();
-                {
-                    ScopedUnlock un(lock);
-                    internal::WebSocket::send(data, msg);
+                switch (msg.index()) {
+                case 0:
+                    msg_s = std::move(std::get<0>(msg));
+                    break;
+                case 1:
+                default: {
+                    std::stringstream buf;
+                    int len = 0;
+                    msg_s = data->packSyncData(buf, len, std::get<1>(msg));
+                    break;
                 }
+                }
+                internal::WebSocket::send(data, msg_s);
             }
 
             if (data->closing.load()) {
@@ -196,9 +209,19 @@ void internal::ClientData::syncImpl(
             this->do_ws_recv = true;
             // 接続できてるなら、recvが完了するまで待つ
             // 1回のrecvはすぐ終わるのでtimeoutいらない
-            this->ws_cond.wait(lock, [&] {
-                return this->closing.load() || !this->do_ws_recv;
-            });
+            // condition_variableは遅い
+            // this->ws_cond.wait(lock, [&] {
+            //     return this->closing.load() || !this->do_ws_recv;
+            // });
+            if (timeout && *timeout <= std::chrono::microseconds(0)) {
+                ScopedUnlock un(lock);
+                while (true) {
+                    std::unique_lock lock2(this->ws_m);
+                    if (this->closing.load() || this->do_ws_recv) {
+                        break;
+                    }
+                }
+            }
         } else {
             this->do_ws_recv = true;
             // recvさせるけど、待たない
@@ -211,7 +234,7 @@ void internal::ClientData::syncImpl(
             std::unique_lock lock(this->ws_m);
             connected2 = this->connected;
         }
-        if (!connected2 && this->sync_first.empty()) {
+        if (!connected2 && !this->sync_first) {
             this->sync_first = this->syncDataFirst();
         } else {
             this->messagePushAlways(this->syncData(false));
@@ -220,13 +243,15 @@ void internal::ClientData::syncImpl(
     do {
         std::unique_lock lock(this->ws_m);
         if (timeout) {
-            // recv_queueにデータが入るまで待つ
-            // 遅くともtimeout経過したら抜ける
-            this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
-                return this->closing.load() ||
-                       (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                       (!this->connected && !this->auto_reconnect.load());
-            });
+            if (*timeout > std::chrono::microseconds(0)) {
+                // recv_queueにデータが入るまで待つ
+                // 遅くともtimeout経過したら抜ける
+                this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
+                    return this->closing.load() ||
+                           (!this->recv_queue.empty() && !this->do_ws_recv) ||
+                           (!this->connected && !this->auto_reconnect.load());
+                });
+            }
             if (this->recv_queue.empty()) {
                 // timeoutし、recv準備完了でない場合return
                 return;
@@ -246,7 +271,7 @@ void internal::ClientData::syncImpl(
         }
 
         while (!this->recv_queue.empty()) {
-            std::string msg = std::move(this->recv_queue.front());
+            auto msg = std::move(this->recv_queue.front());
             this->recv_queue.pop();
             {
                 ScopedUnlock un(lock);

@@ -25,7 +25,7 @@ void close(const std::shared_ptr<internal::ClientData> &data);
  *
  */
 bool recv(const std::shared_ptr<internal::ClientData> &data,
-          const std::function<void(std::string)> &cb);
+          const std::function<void(std::string &&)> &cb);
 /*!
  * \brief メッセージを送信する
  *

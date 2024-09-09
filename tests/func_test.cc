@@ -361,7 +361,7 @@ TEST_F(FuncTest, funcRunRemote) {
     while (!data_->sync_queue.empty()) {
         auto msg = data_->sync_queue.front();
         data_->sync_queue.pop();
-        if (msg ==
+        if (std::get<0>(msg) ==
             message::packSingle(message::Call{
                 1,
                 0,

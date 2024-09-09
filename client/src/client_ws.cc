@@ -94,7 +94,7 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
     data->current_curl_connected = false;
 }
 bool recv(const std::shared_ptr<internal::ClientData> &data,
-          const std::function<void(std::string)> &cb) {
+          const std::function<void(std::string &&)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
@@ -143,7 +143,7 @@ bool recv(const std::shared_ptr<internal::ClientData> &data,
         if (recv_ok) { // ここにはmutexかからない
             // data->recv_queue.push(data->current_ws_buf);
             // data->onRecv(data->current_ws_buf);
-            cb(data->current_ws_buf);
+            cb(std::move(data->current_ws_buf));
             data->current_ws_buf.clear();
             has_recv = true;
         }

@@ -1,5 +1,6 @@
 #pragma once
 #include <optional>
+#include <unordered_map>
 #include <vector>
 #include "field.h"
 #ifdef WEBCFACE_MESON

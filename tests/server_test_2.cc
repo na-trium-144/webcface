@@ -119,8 +119,7 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>{
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
             {"0", ViewComponents::text("a").component_v.lockTmp(data_, ""_ss)},
             {"1", ViewComponents::newLine().lockTmp(data_, ""_ss)},
             {"2", ViewComponents::button(
@@ -147,8 +146,7 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>{
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
             {"0", ViewComponents::text("b").component_v.lockTmp(data_, ""_ss)},
         },
         3});
@@ -169,8 +167,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
@@ -190,8 +187,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
             {"0", {}},
         },
         3});
@@ -210,8 +206,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
@@ -231,8 +226,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
             {"0", {}},
         },
         3});
