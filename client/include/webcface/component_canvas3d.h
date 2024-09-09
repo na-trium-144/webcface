@@ -1,4 +1,5 @@
 #pragma once
+#include <unordered_map>
 #include "webcface/component_view.h"
 #include "webcface/geometry.h"
 #include "webcface/transform.h"
