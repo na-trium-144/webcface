@@ -204,6 +204,7 @@ struct Sync : public MessageBase<MessageKind::sync> {
                    time.time_since_epoch())
                    .count()) {}
     Sync() : Sync(0, std::chrono::system_clock::now()) {}
+    Sync(const std::chrono::system_clock::time_point &time) : Sync(0, time) {}
     std::chrono::system_clock::time_point getTime() const {
         return std::chrono::system_clock::time_point(
             std::chrono::milliseconds(time));

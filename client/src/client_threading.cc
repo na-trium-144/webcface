@@ -115,11 +115,12 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             if (data->connected) {
                 ScopedUnlock un(lock);
                 std::lock_guard lock_s(data->sync_m);
-                if (data->sync_first.empty()) {
+                if (!data->sync_first) {
                     data->sync_first = data->syncDataFirst();
                 }
-                internal::WebSocket::send(data, data->sync_first);
-                data->sync_first.clear();
+                internal::WebSocket::send(
+                    data, data->packSyncDataFirst(*data->sync_first));
+                data->sync_first = std::nullopt;
             }
         } else {
             if (last_recv) {
@@ -159,13 +160,24 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             last_recv = std::chrono::steady_clock::now();
 
             while (data->connected && !data->sync_queue.empty()) {
+                ScopedUnlock un(lock);
                 // sync
-                std::string msg = std::move(data->sync_queue.front());
+                auto msg = std::move(data->sync_queue.front());
+                std::string msg_s;
                 data->sync_queue.pop();
-                {
-                    ScopedUnlock un(lock);
-                    internal::WebSocket::send(data, msg);
+                switch (msg.index()) {
+                case 0:
+                    msg_s = std::move(std::get<0>(msg));
+                    break;
+                case 1:
+                default: {
+                    std::stringstream buf;
+                    int len = 0;
+                    msg_s = data->packSyncData(buf, len, std::get<1>(msg));
+                    break;
                 }
+                }
+                internal::WebSocket::send(data, msg_s);
             }
 
             if (data->closing.load()) {
@@ -221,7 +233,7 @@ void internal::ClientData::syncImpl(
             std::unique_lock lock(this->ws_m);
             connected2 = this->connected;
         }
-        if (!connected2 && this->sync_first.empty()) {
+        if (!connected2 && !this->sync_first) {
             this->sync_first = this->syncDataFirst();
         } else {
             this->messagePushAlways(this->syncData(false));

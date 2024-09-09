@@ -124,27 +124,56 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::atomic<bool> auto_reconnect = true;
 
+    std::queue<std::string> recv_queue;
+
+    struct SyncDataSnapshot {
+        std::chrono::system_clock::time_point time;
+        StrMap1<ValueData> value_data;
+        StrMap1<TextData> text_data;
+        StrMap1<RobotModelData> robot_model_data;
+        StrMap1<ViewData> view_prev, view_data;
+        StrMap1<Canvas3DData> canvas3d_prev, canvas3d_data;
+        StrMap1<Canvas2DData> canvas2d_prev, canvas2d_data;
+        StrMap1<ImageData> image_data;
+        std::vector<LogLineData> log_data;
+        StrMap1<FuncData> func_data;
+    };
     /*!
      * \brief 送信したいメッセージを入れるキュー
      *
      * 接続できていない場合送信されずキューにたまる
      *
+     * msgpackのシリアライズに時間がかかるので、
+     * sync()時はシリアライズ後のメッセージではなく
+     * 必要なデータを含んだSyncDataSnapshotをpushし(syncData()),
+     * あとで別スレッドでそれをメッセージにする (packSyncData())
+     * 
      */
-    std::queue<std::string> sync_queue, recv_queue;
+    std::queue<std::variant<std::string, SyncDataSnapshot>> sync_queue;
 
+    struct SyncDataFirst {
+        StrMap2<unsigned int> value_req, text_req, robot_model_req, view_req,
+            canvas3d_req, canvas2d_req, image_req;
+        StrMap2<message::ImageReq> image_req_info;
+        StrMap1<bool> log_req;
+        bool ping_status_req;
+        SyncDataSnapshot sync_data;
+    };
     /*!
      * 次回接続後一番最初に送信するメッセージ
-     * 
+     *
      * * syncDataFirst() の返り値であり、
      * すべてのリクエストとすべてのsyncデータ(1時刻分)が含まれる
      * * sync()時に未接続かつこれが空ならその時点のsyncDataFirstをこれにセット
      * * 接続時にこれが空でなければ、
-     *   * これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ) を、
+     *   * これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ)
+     * を、
      *   * これが空ならその時点のsyncDataFirstを、
      * * 送信する
      * * 送信したら再度これを空にする
      */
-    std::string sync_first;
+    std::optional<SyncDataFirst> sync_first;
+
     /*!
      * sync_firstとsyncData(),syncDataFirst()呼び出しをガードするmutex
      */
@@ -153,26 +182,31 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     /*!
      * 接続中の場合メッセージをキューに入れtrueを返し、
      * 接続していない場合なにもせずfalseを返す
-     * 
+     *
      * 未接続の間送る必要のないデータに使う。
      * Req, Callなど
      */
     bool messagePushOnline(std::string &&msg) {
         std::lock_guard lock(this->ws_m);
-        if(this->connected){
+        if (this->connected) {
             this->sync_queue.push(std::move(msg));
             this->ws_cond.notify_all();
             return true;
-        }else{
+        } else {
             return false;
         }
     }
     /*!
      * 接続中かどうかに関係なくメッセージをキューに入れる
-     * 
+     *
      * syncで確実に送信するデータに使う。
      */
     void messagePushAlways(std::string &&msg) {
+        std::lock_guard lock(this->ws_m);
+        this->sync_queue.push(std::move(msg));
+        this->ws_cond.notify_all();
+    }
+    void messagePushAlways(SyncDataSnapshot &&msg) {
         std::lock_guard lock(this->ws_m);
         this->sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();
@@ -208,7 +242,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * 変数 sync_first の説明を参照
      *
      */
-    std::string syncDataFirst();
+    SyncDataFirst syncDataFirst();
+    std::string packSyncDataFirst(const SyncDataFirst &data);
     /*!
      * \brief sync() 1回分のメッセージ
      *
@@ -219,8 +254,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * (syncDataFirst()内から呼ばれる)
      *
      */
-    std::string syncData(bool is_first);
-    std::string syncData(bool is_first, std::stringstream &buffer, int &len);
+    SyncDataSnapshot syncData(bool is_first);
+    std::string packSyncData(std::stringstream &buffer, int &len,
+                             const SyncDataSnapshot &data);
     /*!
      * \brief 受信時の処理
      *
