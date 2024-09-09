@@ -171,12 +171,12 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
         message::pack(buffer, len, message::Text{{}, v.first, v.second});
     }
     for (const auto &v : data.robot_model_data) {
-        std::vector<std::shared_ptr<message::RobotLink>> data;
-        data.reserve(v.second->size());
+        std::vector<std::shared_ptr<message::RobotLink>> links;
+        links.reserve(v.second->size());
         for (std::size_t i = 0; i < v.second->size(); i++) {
-            data.emplace_back(v.second->at(i));
+            links.emplace_back(v.second->at(i));
         }
-        message::pack(buffer, len, message::RobotModel{v.first, data});
+        message::pack(buffer, len, message::RobotModel{v.first, links});
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
