@@ -196,9 +196,19 @@ void internal::ClientData::syncImpl(
             this->do_ws_recv = true;
             // 接続できてるなら、recvが完了するまで待つ
             // 1回のrecvはすぐ終わるのでtimeoutいらない
-            this->ws_cond.wait(lock, [&] {
-                return this->closing.load() || !this->do_ws_recv;
-            });
+            // condition_variableは遅い
+            // this->ws_cond.wait(lock, [&] {
+            //     return this->closing.load() || !this->do_ws_recv;
+            // });
+            if (timeout && *timeout <= std::chrono::microseconds(0)) {
+                ScopedUnlock un(lock);
+                while (true) {
+                    std::unique_lock lock2(this->ws_m);
+                    if (this->closing.load() || this->do_ws_recv) {
+                        break;
+                    }
+                }
+            }
         } else {
             this->do_ws_recv = true;
             // recvさせるけど、待たない
@@ -220,13 +230,15 @@ void internal::ClientData::syncImpl(
     do {
         std::unique_lock lock(this->ws_m);
         if (timeout) {
-            // recv_queueにデータが入るまで待つ
-            // 遅くともtimeout経過したら抜ける
-            this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
-                return this->closing.load() ||
-                       (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                       (!this->connected && !this->auto_reconnect.load());
-            });
+            if (*timeout > std::chrono::microseconds(0)) {
+                // recv_queueにデータが入るまで待つ
+                // 遅くともtimeout経過したら抜ける
+                this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
+                    return this->closing.load() ||
+                           (!this->recv_queue.empty() && !this->do_ws_recv) ||
+                           (!this->connected && !this->auto_reconnect.load());
+                });
+            }
             if (this->recv_queue.empty()) {
                 // timeoutし、recv準備完了でない場合return
                 return;
