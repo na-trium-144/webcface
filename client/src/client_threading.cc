@@ -141,7 +141,8 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     bool has_recv = internal::WebSocket::recv(
                         data, [data](std::string msg) {
                             std::unique_lock lock(data->ws_m);
-                            data->recv_queue.push(std::move(msg));
+                            data->recv_queue.push(
+                                message::unpack(msg, data->logger_internal));
                             data->ws_cond.notify_all();
                         });
                     if (!has_recv) {
@@ -270,7 +271,7 @@ void internal::ClientData::syncImpl(
         }
 
         while (!this->recv_queue.empty()) {
-            std::string msg = std::move(this->recv_queue.front());
+            auto msg = std::move(this->recv_queue.front());
             this->recv_queue.pop();
             {
                 ScopedUnlock un(lock);

@@ -124,7 +124,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::atomic<bool> auto_reconnect = true;
 
-    std::queue<std::string> recv_queue;
+    std::queue<std::vector<std::pair<int, std::shared_ptr<void>>>> recv_queue;
 
     struct SyncDataSnapshot {
         std::chrono::system_clock::time_point time;
@@ -147,7 +147,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * sync()時はシリアライズ後のメッセージではなく
      * 必要なデータを含んだSyncDataSnapshotをpushし(syncData()),
      * あとで別スレッドでそれをメッセージにする (packSyncData())
-     * 
+     *
      */
     std::queue<std::variant<std::string, SyncDataSnapshot>> sync_queue;
 
@@ -261,7 +261,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief 受信時の処理
      *
      */
-    void onRecv(const std::string &message);
+    void
+    onRecv(const std::vector<std::pair<int, std::shared_ptr<void>>> &messages);
 
     std::mutex entry_m;
     StrSet1 member_entry;

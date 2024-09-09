@@ -66,10 +66,10 @@ static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
     }
 }
 
-void internal::ClientData::onRecv(const std::string &message) {
+void internal::ClientData::onRecv(
+    const std::vector<std::pair<int, std::shared_ptr<void>>> &messages) {
     static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = webcface::message::MessageKind;
-    auto messages = webcface::message::unpack(message, this->logger_internal);
     std::vector<SharedString> sync_members;
     for (const auto &m : messages) {
         const auto &[kind, obj] = m;
