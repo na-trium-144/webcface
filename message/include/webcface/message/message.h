@@ -353,7 +353,7 @@ struct ViewComponent {
 };
 struct View : public MessageBase<MessageKind::view> {
     SharedString field;
-    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
     View() = default;
     View(const SharedString &field,
@@ -366,7 +366,7 @@ struct View : public MessageBase<MessageKind::view> {
         }
     }
     View(const SharedString &field,
-         const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
+         const std::map<std::string, std::shared_ptr<ViewComponent>>
              &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
@@ -380,7 +380,7 @@ struct Canvas3DComponent {
     std::optional<int> geometry_type;
     std::vector<double> geometry_properties;
     std::optional<SharedString> field_member, field_field;
-    std::unordered_map<std::string, double> angles;
+    std::map<std::string, double> angles;
     Canvas3DComponent() = default;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
                        MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
@@ -391,7 +391,7 @@ struct Canvas3DComponent {
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    std::unordered_map<std::string, std::shared_ptr<Canvas3DComponent>>
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Canvas3D() = default;
@@ -405,7 +405,7 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
         }
     }
     Canvas3D(const SharedString &field,
-             const std::unordered_map<
+             const std::map<
                  std::string, std::shared_ptr<Canvas3DComponent>> &data_diff,
              std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
@@ -438,7 +438,7 @@ struct Canvas2DData {
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    std::unordered_map<std::string, std::shared_ptr<Canvas2DComponent>>
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Canvas2D() = default;
@@ -453,7 +453,7 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         }
     }
     Canvas2D(const SharedString &field, double width, double height,
-             const std::unordered_map<
+             const std::map<
                  std::string, std::shared_ptr<Canvas2DComponent>> &data_diff,
              std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
@@ -675,11 +675,11 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
+        const std::map<std::string, std::shared_ptr<ViewComponent>>
             &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
@@ -692,12 +692,12 @@ struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::unordered_map<std::string, std::shared_ptr<Canvas3DComponent>>
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>>
         data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::unordered_map<std::string,
+        const std::map<std::string,
                                  std::shared_ptr<Canvas3DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
@@ -711,13 +711,13 @@ struct Res<Canvas2D>
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
-    std::unordered_map<std::string, std::shared_ptr<Canvas2DComponent>>
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>>
         data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field, double width,
         double height,
-        const std::unordered_map<std::string,
+        const std::map<std::string,
                                  std::shared_ptr<Canvas2DComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),

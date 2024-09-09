@@ -1,10 +1,9 @@
 #pragma once
+#include <map>
+#include <set>
 #include <string>
 #include <string_view>
 #include <memory>
-#include <mutex>
-#include <unordered_map>
-#include <unordered_set>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -109,10 +108,10 @@ class WEBCFACE_DLL SharedString {
 };
 
 template <typename T>
-using StrMap1 = std::unordered_map<SharedString, T, SharedString::Hash>;
+using StrMap1 = std::map<SharedString, T>;
 template <typename T>
 using StrMap2 = StrMap1<StrMap1<T>>;
-using StrSet1 = std::unordered_set<SharedString, SharedString::Hash>;
+using StrSet1 = std::set<SharedString>;
 using StrSet2 = StrMap1<StrSet1>;
 
 } // namespace encoding

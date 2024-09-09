@@ -2,6 +2,7 @@
 #include <functional>
 #include <optional>
 #include <vector>
+#include <chrono>
 #include "field.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"

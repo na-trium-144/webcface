@@ -129,19 +129,15 @@ TEST_F(ServerTest, entry) {
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
     dummy_c1->send(message::Image{
         "a"_ss,
         ImageFrame{sizeWH(100, 100),
@@ -191,9 +187,8 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
     });
-    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_id, 1u);
-    });
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
@@ -223,17 +218,14 @@ TEST_F(ServerTest, entry) {
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -241,8 +233,7 @@ TEST_F(ServerTest, entry) {
     });
     dummy_c1->send(message::Canvas2D{
         "b"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -280,9 +271,8 @@ TEST_F(ServerTest, log) {
                        .toMessage(),
                })});
     // 初回のみリクエストしていなくても送られる
-    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_id, 1u);
-    });
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->send(message::LogReq{{}, "c1"_ss});
     // req時の値
     // keep_logを超えたので最後の3行だけ送られる
@@ -315,9 +305,8 @@ TEST_F(ServerTest, logKeep) {
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     // syncinit時に送られる
-    dummy_c2->waitRecv<message::LogEntry>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_id, 1u);
-    });
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->send(message::LogReq{{}, "c1"_ss});
     // req時の値
     // keep_logを超えたので最後の3行だけ送られる
