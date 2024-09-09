@@ -104,9 +104,9 @@ var namespacewebcface =
     [ "LoggerBuf", "namespacewebcface.html#a5d0220b13276ff62ae5c0c6793aae628", null ],
     [ "LoggerBufW", "namespacewebcface.html#ad129abf240c40c4cab70ab8fae7973f9", null ],
     [ "Rect", "namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4", null ],
-    [ "StrMap1", "namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759", null ],
+    [ "StrMap1", "namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095", null ],
     [ "StrMap2", "namespacewebcface_1_1encoding.html#abd5eab460a31c187724b48a8773dbb40", null ],
-    [ "StrSet1", "namespacewebcface_1_1encoding.html#a2cce793d23704d7099f3befdd5203f2e", null ],
+    [ "StrSet1", "namespacewebcface_1_1encoding.html#ac6b473f4adca237a3e8cc413871a4e99", null ],
     [ "StrSet2", "namespacewebcface_1_1encoding.html#aa211fead709a7546b1b6416379df5449", null ],
     [ "Canvas2DComponentType", "namespacewebcface.html#a18133126518e30ea437441c60fa26928", [
       [ "geometry", "namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26", null ],

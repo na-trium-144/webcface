@@ -2,9 +2,9 @@ var namespacewebcface_1_1encoding =
 [
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", "classwebcface_1_1encoding_1_1SharedString" ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", "classwebcface_1_1encoding_1_1ValAdaptor" ],
-    [ "StrMap1", "namespacewebcface_1_1encoding.html#a56d3269e324a6f481ed288a48e48c759", null ],
+    [ "StrMap1", "namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095", null ],
     [ "StrMap2", "namespacewebcface_1_1encoding.html#abd5eab460a31c187724b48a8773dbb40", null ],
-    [ "StrSet1", "namespacewebcface_1_1encoding.html#a2cce793d23704d7099f3befdd5203f2e", null ],
+    [ "StrSet1", "namespacewebcface_1_1encoding.html#ac6b473f4adca237a3e8cc413871a4e99", null ],
     [ "StrSet2", "namespacewebcface_1_1encoding.html#aa211fead709a7546b1b6416379df5449", null ],
     [ "ImageColorMode", "namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e", [
       [ "gray", "namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825", null ],

@@ -385,11 +385,11 @@ var NAVTREEINDEX =
 "structwebcface_1_1Geometry.html#ab204ea59eadb3ecc96823deec9045f0f",
 "structwebcface_1_1components_1_1geometries_1_1Cylinder.html#a3abcf0571d81409b4c8043ae979fdab1",
 "structwebcface_1_1internal_1_1Canvas2DComponentData.html#a3dce4c9ff356241d650d129af63c32f9",
-"structwebcface_1_1internal_1_1FuncInfo.html#a0a31041ede0c897922e94f483c8a344f",
-"structwebcface_1_1internal_1_1ViewComponentData.html#a45fb6de0b5002feb0203ac9f32f536c2",
-"structwebcface_1_1message_1_1ImageReq.html#ac04d87c61f19fc387c81b9c5881e7b23",
-"structwebcface_1_1message_1_1RobotLink.html#ad0d6f32f93eff48961c273e59ee25d72",
-"structwebcface_1_1server_1_1ServerStorage.html#a744eacca6163a75a3e1fc84de5cf3f15"
+"structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html#a4ce7fa8e6a72606e4356c310dcda1d7c",
+"structwebcface_1_1internal_1_1RobotLinkData.html#a9323fb54e511d60ce8cffc5afd207480",
+"structwebcface_1_1message_1_1FuncInfo.html#a227b05abb1bc9f7c6a913d6a2fe7cb3b",
+"structwebcface_1_1message_1_1Res_3_01Text_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
+"structwebcface_1_1server_1_1MemberData.html#aa0fd96bc25e3d509fb54028c2e4b91f6"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

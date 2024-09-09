@@ -3,7 +3,7 @@ var namespacewebcface_1_1internal =
     [ "WebSocket", "namespacewebcface_1_1internal_1_1WebSocket.html", [
       [ "close", "namespacewebcface_1_1internal_1_1WebSocket.html#a9edb79f3cfdfb2f0d2cd1b589a930e5f", null ],
       [ "init", "namespacewebcface_1_1internal_1_1WebSocket.html#a9edb9a94135ef05398d4618b01c427e3", null ],
-      [ "recv", "namespacewebcface_1_1internal_1_1WebSocket.html#a3cabef159533bea57c36489a2ff3f2e7", null ],
+      [ "recv", "namespacewebcface_1_1internal_1_1WebSocket.html#ae57c4645b559951f5644623d91ae362c", null ],
       [ "send", "namespacewebcface_1_1internal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd", null ]
     ] ],
     [ "Canvas2DComponentData", "structwebcface_1_1internal_1_1Canvas2DComponentData.html", "structwebcface_1_1internal_1_1Canvas2DComponentData" ],

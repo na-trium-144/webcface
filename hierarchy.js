@@ -235,6 +235,8 @@ var hierarchy =
     [ "stringbuf", null, [
       [ "ViewBuf", "classwebcface_1_1internal_1_1ViewBuf.html", null ]
     ] ],
+    [ "SyncDataFirst", "structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html", null ],
+    [ "SyncDataSnapshot", "structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html", null ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::shared_ptr< std::deque< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],

@@ -5,7 +5,7 @@ var structwebcface_1_1internal_1_1Canvas3DComponentData =
     [ "anglesAt", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#ad304c2b3e6e333154a80973f58b71df8", null ],
     [ "operator!=", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#ad488e1fe3f0f5748ddc7163168053c4c", null ],
     [ "operator==", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#a978df444dd05c31cc0f23082da83d583", null ],
-    [ "angles", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#aa9eb195aef6e15246c1fc250fe313ad9", null ],
+    [ "angles", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#acc91bb5c698fce42c1c364cfe2531b73", null ],
     [ "color", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#a0fd02fb9277ffcb35a75066ffe95e8c7", null ],
     [ "data_w", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_field", "structwebcface_1_1internal_1_1Canvas3DComponentData.html#a0c9a13deb5b2a13035c6c4e832e51667", null ],

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.1.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.2.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('component__canvas2d_8h_source.html',''
 </div><!--header-->
 <div class="contents">
 <a href="component__canvas2d_8h.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#ifdef WEBCFACE_MESON</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;<a class="code" href="webcface-config_8h.html">webcface-config.h</a>&quot;</span></div>
@@ -246,14 +246,14 @@ $(document).ready(function(){initNavTree('component__canvas2d_8h_source.html',''
 <div class="ttc" id="aclasswebcface_1_1TemporalCanvas2DComponent_html_ac82353d4937d92d00093f62c27ccb453"><div class="ttname"><a href="classwebcface_1_1TemporalCanvas2DComponent.html#ac82353d4937d92d00093f62c27ccb453">webcface::TemporalCanvas2DComponent::onClick</a></div><div class="ttdeci">TemporalCanvas2DComponent &amp; onClick(T func)</div><div class="ttdoc">クリック時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:235</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalCanvas2DComponent_html_ad6b4a1e927dc776cf6a5e276ef198073"><div class="ttname"><a href="classwebcface_1_1TemporalCanvas2DComponent.html#ad6b4a1e927dc776cf6a5e276ef198073">webcface::TemporalCanvas2DComponent::onClick</a></div><div class="ttdeci">TemporalCanvas2DComponent &amp; onClick(AnonymousFunc &amp;&amp;func)</div><div class="ttdoc">クリック時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:247</div></div>
 <div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:72</div></div>
-<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:71</div></div>
+<div class="ttc" id="aclasswebcface_1_1encoding_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1encoding_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:70</div></div>
 <div class="ttc" id="acomponent__view_8h_html"><div class="ttname"><a href="component__view_8h.html">component_view.h</a></div></div>
 <div class="ttc" id="afield_8h_html"><div class="ttname"><a href="field_8h.html">field.h</a></div></div>
 <div class="ttc" id="ageometry_8h_html"><div class="ttname"><a href="geometry_8h.html">geometry.h</a></div></div>
 <div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928">webcface::Canvas2DComponentType</a></div><div class="ttdeci">Canvas2DComponentType</div><div class="ttdef"><b>Definition</b> component_canvas2d.h:19</div></div>
 <div class="ttc" id="anamespacewebcface_html_a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26"><div class="ttname"><a href="namespacewebcface.html#a18133126518e30ea437441c60fa26928aed7daeb157cd9b31e53896ad3c771a26">webcface::Canvas2DComponentType::geometry</a></div><div class="ttdeci">@ geometry</div></div>
 <div class="ttc" id="anamespacewebcface_html_a4d810c78099d1c67779adcf796b50e1d"><div class="ttname"><a href="namespacewebcface.html#a4d810c78099d1c67779adcf796b50e1d">webcface::operator==</a></div><div class="ttdeci">bool operator==(const T &amp;other, const InputRef &amp;ref)</div><div class="ttdef"><b>Definition</b> text.h:566</div></div>
-<div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124a"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a></div><div class="ttdeci">ViewColor</div><div class="ttdef"><b>Definition</b> component_view.h:28</div></div>
+<div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124a"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a></div><div class="ttdeci">ViewColor</div><div class="ttdef"><b>Definition</b> component_view.h:29</div></div>
 <div class="ttc" id="astructwebcface_1_1Geometry_html"><div class="ttname"><a href="structwebcface_1_1Geometry.html">webcface::Geometry</a></div><div class="ttdef"><b>Definition</b> geometry.h:26</div></div>
 <div class="ttc" id="atransform_8h_html"><div class="ttname"><a href="transform_8h.html">transform.h</a></div></div>
 <div class="ttc" id="awebcface-config_8h_html"><div class="ttname"><a href="webcface-config_8h.html">webcface-config.h</a></div></div>
@@ -266,7 +266,7 @@ $(document).ready(function(){initNavTree('component__canvas2d_8h_source.html',''
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="component__canvas2d_8h.html">component_canvas2d.h</a></li>
-    <li class="footer">Generated on Wed Sep 4 2024 12:10:17 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Sep 9 2024 17:25:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
