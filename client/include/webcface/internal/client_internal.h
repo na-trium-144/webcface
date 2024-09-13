@@ -170,7 +170,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * を、
      *   * これが空ならその時点のsyncDataFirstを、
      * * 送信する
-     * * 送信したら再度これを空にする
+     * * <del>送信したら</del> 切断時に再度これを空にする
      */
     std::optional<SyncDataFirst> sync_first;
 
@@ -182,13 +182,28 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     /*!
      * 接続中の場合メッセージをキューに入れtrueを返し、
      * 接続していない場合なにもせずfalseを返す
-     *
-     * 未接続の間送る必要のないデータに使う。
-     * Req, Callなど
+     * 
+     * Call, Pingなど
      */
     bool messagePushOnline(std::string &&msg) {
         std::lock_guard lock(this->ws_m);
         if (this->connected) {
+            this->sync_queue.push(std::move(msg));
+            this->ws_cond.notify_all();
+            return true;
+        } else {
+            return false;
+        }
+    }
+    /*!
+     * sync_firstが空でなければメッセージをキューに入れtrueを返し、
+     * sync_firstが空ならなにもせずfalseを返す
+     *
+     * Reqはsync_first時にすべて含まれるので。
+     */
+    bool messagePushReq(std::string &&msg) {
+        std::lock_guard lock(this->sync_m);
+        if (this->sync_first) {
             this->sync_queue.push(std::move(msg));
             this->ws_cond.notify_all();
             return true;

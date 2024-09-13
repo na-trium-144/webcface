@@ -12,6 +12,11 @@
 #include <sys/stat.h>
 #endif
 
+static void wait() {
+    std::this_thread::sleep_for(
+        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+}
+
 using namespace webcface;
 
 // 同じ実装がserver-internalにあるがimportもincludeもできないのでコピペしている
@@ -46,6 +51,7 @@ DummyServer::~DummyServer() {
     try {
         if (connPtr) {
             reinterpret_cast<crow::websocket::connection *>(connPtr)->close();
+            wait();
             connPtr = nullptr;
         }
         static_cast<crow::SimpleApp *>(server_)->stop();

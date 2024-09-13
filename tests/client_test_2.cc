@@ -77,6 +77,7 @@ TEST_F(ClientTest, valueReqTiming) {
     wcli_->member("a").value("2").request();
 
     dummy_s = std::make_shared<DummyServer>(false);
+    wcli_->start();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
@@ -97,6 +98,7 @@ TEST_F(ClientTest, valueReqTiming) {
     wcli_->member("a").value("5").request();
 
     dummy_s = std::make_shared<DummyServer>(false);
+    wcli_->start();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }

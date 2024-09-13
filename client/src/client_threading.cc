@@ -120,7 +120,6 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 }
                 internal::WebSocket::send(
                     data, data->packSyncDataFirst(*data->sync_first));
-                data->sync_first = std::nullopt;
             }
         } else {
             if (last_recv) {
@@ -156,6 +155,10 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             if (!data->connected) {
                 data->self_member_id = std::nullopt;
                 data->sync_init_end = false;
+                {
+                    std::lock_guard lock_s(data->sync_m);
+                    data->sync_first = std::nullopt;
+                }
             }
             data->ws_cond.notify_all();
             last_recv = std::chrono::steady_clock::now();
