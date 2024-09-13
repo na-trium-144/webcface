@@ -12,7 +12,6 @@
 #include "wcf.h"
 
 #include "version.h"
-#include "func_info.h"
 #include "components.h"
 #include "image_frame.h"
 #include "transform.h"
