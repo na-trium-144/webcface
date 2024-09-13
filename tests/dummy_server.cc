@@ -44,6 +44,10 @@ class CustomLogger : public crow::ILogHandler {
 
 DummyServer::~DummyServer() {
     try {
+        if (connPtr) {
+            reinterpret_cast<crow::websocket::connection *>(connPtr)->close();
+            connPtr = nullptr;
+        }
         static_cast<crow::SimpleApp *>(server_)->stop();
         t.join();
     } catch (...) {

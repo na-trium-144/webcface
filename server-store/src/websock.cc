@@ -86,6 +86,11 @@ Server::~Server() {
         server_stop.store(true);
     }
     server_ping_wait.notify_one();
+    store->forEach([](const auto &cd) {
+        if (cd->connected()) {
+            AppWrapper::close(cd->con);
+        }
+    });
     for (auto &app : apps) {
         static_cast<AppWrapper *>(app)->stop();
     }

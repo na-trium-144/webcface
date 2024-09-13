@@ -55,6 +55,9 @@ void AppWrapper::send(wsConnPtr conn, const char *msg,
     static_cast<crow::websocket::connection *>(conn)->send_binary(
         std::string(msg, size));
 }
+void AppWrapper::close(wsConnPtr conn) noexcept {
+    static_cast<crow::websocket::connection *>(conn)->close();
+}
 
 AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
                        std::uint16_t port, const char *unix_path,

@@ -33,6 +33,7 @@ class AppWrapper {
     ~AppWrapper() noexcept;
     static void send(wsConnPtr conn, const char *msg,
                      std::size_t size) noexcept;
+    static void close(wsConnPtr conn) noexcept;
     void stop() noexcept;
     void run() noexcept;
     const char *exception() noexcept;

@@ -68,6 +68,62 @@ TEST_F(ClientTest, valueReq) {
                   .size(),
               3u);
 }
+TEST_F(ClientTest, valueReqTiming) {
+    wcli_->autoReconnect(false);
+    // 1. 接続前、sync前
+    wcli_->member("a").value("1").request();
+    wcli_->sync();
+    // 2. 接続前、sync後
+    wcli_->member("a").value("2").request();
+
+    dummy_s = std::make_shared<DummyServer>(false);
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+
+    // 3. 接続後
+    wcli_->member("a").value("3").request();
+
+    wait();
+
+    dummy_s.reset();
+    while (wcli_->connected()) {
+        wait();
+    }
+    // 4. 切断後、sync前
+    wcli_->member("a").value("4").request();
+    wcli_->sync();
+    // 5. 切断後、sync後
+    wcli_->member("a").value("5").request();
+
+    dummy_s = std::make_shared<DummyServer>(false);
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+
+    // 6. 再接続後
+    wcli_->member("a").value("6").request();
+    wait();
+
+    std::array<bool, 6> req_found = {};
+    {
+        std::lock_guard lock(dummy_s->server_m);
+        for (const auto &m : dummy_s->recv_data) {
+            if (m.first ==
+                message::MessageKind::req + message::MessageKind::value) {
+                auto &obj = *static_cast<message::Req<message::Value> *>(
+                    m.second.get());
+                EXPECT_EQ(obj.member.u8String(), "a");
+                ASSERT_GE(obj.req_id, 1u);
+                ASSERT_LE(obj.req_id, 6u);
+                EXPECT_EQ(obj.field.u8String(), std::to_string(obj.req_id));
+                EXPECT_FALSE(req_found.at(obj.req_id - 1));
+                req_found.at(obj.req_id - 1) = true;
+            }
+        }
+    }
+    EXPECT_EQ(req_found, (std::array<bool, 6>{1, 1, 1, 1, 1, 1}));
+}
 TEST_F(ClientTest, textSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wcli_->start();
