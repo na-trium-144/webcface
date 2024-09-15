@@ -76,6 +76,7 @@ TEST_F(ClientTest, valueReqTiming) {
     // 2. 接続前、sync後
     wcli_->member("a").value("2").request();
 
+    wait();
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->start();
@@ -92,12 +93,14 @@ TEST_F(ClientTest, valueReqTiming) {
     while (wcli_->connected()) {
         wait();
     }
+    wait();
     // 4. 切断後、sync前
     wcli_->member("a").value("4").request();
     wcli_->sync();
     // 5. 切断後、sync後
     wcli_->member("a").value("5").request();
 
+    wait();
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     wcli_->start();

@@ -122,6 +122,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     data, data->packSyncDataFirst(*data->sync_first));
             }
         } else {
+            data->do_ws_init = false;
             if (last_recv) {
                 // syncデータがなければ、100us間隔を空ける
                 data->recv_ready = true;
