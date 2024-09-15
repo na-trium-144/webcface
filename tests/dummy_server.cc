@@ -50,6 +50,7 @@ class CustomLogger : public crow::ILogHandler {
 DummyServer::~DummyServer() {
     try {
         if (connPtr) {
+            reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary("");
             reinterpret_cast<crow::websocket::connection *>(connPtr)->close();
             wait();
             connPtr = nullptr;
