@@ -177,6 +177,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a55d582963e9e3bc398aae2d0f5a6fe8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bdf413788d105b28b973d824581e4e5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a0bdf413788d105b28b973d824581e4e5">messagePushOnline</a> (std::string &amp;&amp;msg)</td></tr>
 <tr class="separator:a0bdf413788d105b28b973d824581e4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4541629c917b995e993b8b8bc9beabee"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a4541629c917b995e993b8b8bc9beabee">messagePushReq</a> (std::string &amp;&amp;msg)</td></tr>
+<tr class="separator:a4541629c917b995e993b8b8bc9beabee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a855cf16a139fed55a8500919a82e08ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a855cf16a139fed55a8500919a82e08ce">messagePushAlways</a> (std::string &amp;&amp;msg)</td></tr>
 <tr class="separator:a855cf16a139fed55a8500919a82e08ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcbc15d6010c5254d6ab528b2db3cebc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#afcbc15d6010c5254d6ab528b2db3cebc">messagePushAlways</a> (<a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &amp;&amp;msg)</td></tr>
@@ -597,7 +599,35 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 <p>接続中の場合メッセージをキューに入れtrueを返し、 接続していない場合なにもせずfalseを返す</p>
-<p>未接続の間送る必要のないデータに使う。 Req, Callなど </p>
+<p>Call, Pingなど </p>
+
+</div>
+</div>
+<a id="a4541629c917b995e993b8b8bc9beabee" name="a4541629c917b995e993b8b8bc9beabee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4541629c917b995e993b8b8bc9beabee">&#9670;&#160;</a></span>messagePushReq()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool messagePushReq </td>
+          <td>(</td>
+          <td class="paramtype">std::string &amp;&amp;&#160;</td>
+          <td class="paramname"><em>msg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>sync_firstが空でなければメッセージをキューに入れtrueを返し、 sync_firstが空ならなにもせずfalseを返す</p>
+<p>Reqはsync_first時にすべて含まれるので。 </p>
 
 </div>
 </div>
@@ -1597,7 +1627,7 @@ Public Attributes</h2></td></tr>
 </ul>
 </li>
 <li>送信する</li>
-<li>送信したら再度これを空にする </li>
+<li><del>送信したら</del> 切断時に再度これを空にする </li>
 </ul>
 
 </div>
@@ -1860,7 +1890,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Fri Sep 13 2024 16:03:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 15 2024 15:57:57 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

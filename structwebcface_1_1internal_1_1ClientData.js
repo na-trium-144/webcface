@@ -11,6 +11,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "messagePushAlways", "structwebcface_1_1internal_1_1ClientData.html#a855cf16a139fed55a8500919a82e08ce", null ],
     [ "messagePushAlways", "structwebcface_1_1internal_1_1ClientData.html#afcbc15d6010c5254d6ab528b2db3cebc", null ],
     [ "messagePushOnline", "structwebcface_1_1internal_1_1ClientData.html#a0bdf413788d105b28b973d824581e4e5", null ],
+    [ "messagePushReq", "structwebcface_1_1internal_1_1ClientData.html#a4541629c917b995e993b8b8bc9beabee", null ],
     [ "onRecv", "structwebcface_1_1internal_1_1ClientData.html#a3060a0607e2dbb8602cb6a529dd25991", null ],
     [ "packSyncData", "structwebcface_1_1internal_1_1ClientData.html#aa9508c08841227156828181d7187f183", null ],
     [ "packSyncDataFirst", "structwebcface_1_1internal_1_1ClientData.html#a43dea91610affab8561ded446e3d60ee", null ],

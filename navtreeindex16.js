@@ -1,5 +1,7 @@
 var NAVTREEINDEX16 =
 {
+"def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7a29335448a920870e66d5fe07dea216bd":[27,0,1,0,0,0,1,25,9],
+"def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7a2e09ecac55fdd6438a0b591822d8d262":[27,0,1,0,0,0,1,25,4],
 "def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7a3befe6291a34f49241e2d307c279d28b":[27,0,1,0,0,0,1,25,13],
 "def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7a49c89aee72835598793dc7bfa4a09c5a":[27,0,1,0,0,0,1,25,0],
 "def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7a550894cdaa167f9d3f4095b9d44f52f7":[27,0,1,0,0,0,1,25,8],
@@ -154,8 +156,8 @@ var NAVTREEINDEX16 =
 "functions_type.html":[26,3,3],
 "functions_u.html":[26,3,0,20],
 "functions_v.html":[26,3,0,21],
-"functions_vars.html":[26,3,2],
 "functions_vars.html":[26,3,2,0],
+"functions_vars.html":[26,3,2],
 "functions_vars_b.html":[26,3,2,1],
 "functions_vars_c.html":[26,3,2,2],
 "functions_vars_d.html":[26,3,2,3],
@@ -197,8 +199,8 @@ var NAVTREEINDEX16 =
 "globals_defs.html":[27,1,5],
 "globals_enum.html":[27,1,3],
 "globals_eval.html":[27,1,4],
-"globals_func.html":[27,1,1],
 "globals_func.html":[27,1,1,0],
+"globals_func.html":[27,1,1],
 "globals_m.html":[27,1,0,1],
 "globals_n.html":[27,1,0,2],
 "globals_p.html":[27,1,0,3],
@@ -247,7 +249,5 @@ var NAVTREEINDEX16 =
 "index.html#autotoc_md233":[0,2,3],
 "index.html#autotoc_md234":[0,2,4],
 "index.html#autotoc_md235":[0,3],
-"index.html#autotoc_md236":[0,4],
-"internal_2logger_8h.html":[27,0,1,0,0,1,7],
-"internal_2logger_8h.html#a5d0220b13276ff62ae5c0c6793aae628":[27,0,1,0,0,1,7,1]
+"index.html#autotoc_md236":[0,4]
 };
