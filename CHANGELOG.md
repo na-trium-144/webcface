@@ -1,3 +1,8 @@
+## [2.2.1] - 2024-09-16
+### Fixed
+* webcface/webcface.h をincludeするとfunc_info.hのwarningが出ていたのを修正 (#404)
+* サーバーに未接続のときのReq送信を修正 (#403)
+
 ## [2.2.0] - 2024-09-10
 ### Fixed
 * Client::sync() を高速化 (#402)
