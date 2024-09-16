@@ -11,7 +11,7 @@ var searchData=
   ['_7erobotlink_8',['~RobotLink',['../classwebcface_1_1RobotLink.html#a228948433f5899a42a57e3d905386039',1,'webcface::RobotLink']]],
   ['_7escopedunlock_9',['~ScopedUnlock',['../structwebcface_1_1ScopedUnlock.html#a339e713f20211a616d865189c6cd6e33',1,'webcface::ScopedUnlock']]],
   ['_7eserver_10',['~Server',['../classwebcface_1_1server_1_1Server.html#aa9320a8b35b2d116b716ae4077358c6b',1,'webcface::server::Server']]],
-  ['_7eserverstorage_11',['~ServerStorage',['../structwebcface_1_1server_1_1ServerStorage.html#a67510a38f587b0abde7b01f8cd7ee8d4',1,'webcface::server::ServerStorage']]],
+  ['_7eserverstorage_11',['~ServerStorage',['../classwebcface_1_1server_1_1ServerStorage.html#a67510a38f587b0abde7b01f8cd7ee8d4',1,'webcface::server::ServerStorage']]],
   ['_7etemporalcanvas2dcomponent_12',['~TemporalCanvas2DComponent',['../classwebcface_1_1TemporalCanvas2DComponent.html#ad201d245f4fcff88da1c26271850fe3a',1,'webcface::TemporalCanvas2DComponent']]],
   ['_7etemporalcanvas3dcomponent_13',['~TemporalCanvas3DComponent',['../classwebcface_1_1TemporalCanvas3DComponent.html#a3a4417dbedc9d903f14b1c40de5f84cd',1,'webcface::TemporalCanvas3DComponent']]],
   ['_7etemporalviewcomponent_14',['~TemporalViewComponent',['../classwebcface_1_1TemporalViewComponent.html#ac8d3a7eab3dfb1c8b43c4c7c09634ba8',1,'webcface::TemporalViewComponent']]],

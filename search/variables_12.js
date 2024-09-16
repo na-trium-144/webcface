@@ -5,7 +5,7 @@ var searchData=
   ['self_5fmember_5fname_2',['self_member_name',['../structwebcface_1_1internal_1_1ClientData.html#a996478ee74e409baf746715e27e4f1ee',1,'webcface::internal::ClientData::self_member_name'],['../classwebcface_1_1internal_1_1SyncDataStore1.html#a996478ee74e409baf746715e27e4f1ee',1,'webcface::internal::SyncDataStore1::self_member_name']]],
   ['send_5fbuffer_3',['send_buffer',['../structwebcface_1_1server_1_1MemberData.html#a28beb71e3568e218778f423fd95ed391',1,'webcface::server::MemberData']]],
   ['send_5flen_4',['send_len',['../structwebcface_1_1server_1_1MemberData.html#a87a99f62a98bec91542c1bc1d1a18ba5',1,'webcface::server::MemberData']]],
-  ['server_5',['server',['../structwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage']]],
+  ['server_5',['server',['../classwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage']]],
   ['server_5fping_5fwait_6',['server_ping_wait',['../classwebcface_1_1server_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245',1,'webcface::server::Server']]],
   ['sink_7',['sink',['../structwebcface_1_1server_1_1MemberData.html#a11573073f52fb4b379c28b67a1a9799c',1,'webcface::server::MemberData']]],
   ['size_5f_8',['size_',['../classwebcface_1_1ImageFrame.html#af413506ef7c7376c1ea8ca4622cb1ada',1,'webcface::ImageFrame']]],

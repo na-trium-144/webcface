@@ -1,6 +1,6 @@
 <map id="MemberData" name="MemberData">
 <area shape="rect" id="Node000001" title=" " alt="" coords="116,299,223,324"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1server_1_1ServerStorage.html" title=" " alt="" coords="5,211,120,236"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1server_1_1ServerStorage.html" title=" " alt="" coords="5,211,120,236"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="84,244,115,273,150,296,147,301,112,277,81,248"/>
 <area shape="rect" id="Node000003" href="$classwebcface_1_1server_1_1Server.html" title=" " alt="" coords="29,115,93,141"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="64,154,65,211,60,211,59,154"/>

@@ -223,7 +223,7 @@ var hierarchy =
     ] ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1server_1_1Server.html", null ],
-    [ "ServerStorage", "structwebcface_1_1server_1_1ServerStorage.html", null ],
+    [ "ServerStorage", "classwebcface_1_1server_1_1ServerStorage.html", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
     [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", null ],

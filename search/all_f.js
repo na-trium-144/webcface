@@ -6,5 +6,5 @@ var searchData=
   ['height_5f_3',['height_',['../structwebcface_1_1message_1_1ImageFrame.html#a45a159d389017b03a58e3508186fb445',1,'webcface::message::ImageFrame']]],
   ['hidden_4',['hidden',['../classwebcface_1_1Func.html#a33e24fb2d5d52fe428c37276c47ce9ba',1,'webcface::Func::hidden()'],['../classwebcface_1_1FuncListener.html#aac80d390ce7bdfe7df4b7ca2e34fe5e8',1,'webcface::FuncListener::hidden()']]],
   ['host_5',['host',['../structwebcface_1_1internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b',1,'webcface::internal::ClientData']]],
-  ['hostname_6',['hostname',['../structwebcface_1_1message_1_1SyncInitEnd.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::message::SyncInitEnd::hostname'],['../structwebcface_1_1server_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::server::ServerStorage::hostname']]]
+  ['hostname_6',['hostname',['../structwebcface_1_1message_1_1SyncInitEnd.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::message::SyncInitEnd::hostname'],['../classwebcface_1_1server_1_1ServerStorage.html#ac7273a7e83cfd952262d941e5bfc73c2',1,'webcface::server::ServerStorage::hostname']]]
 ];

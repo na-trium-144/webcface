@@ -104,7 +104,7 @@ var annotated_dup =
         [ "CustomLogger", "classwebcface_1_1server_1_1CustomLogger.html", "classwebcface_1_1server_1_1CustomLogger" ],
         [ "MemberData", "structwebcface_1_1server_1_1MemberData.html", "structwebcface_1_1server_1_1MemberData" ],
         [ "Server", "classwebcface_1_1server_1_1Server.html", "classwebcface_1_1server_1_1Server" ],
-        [ "ServerStorage", "structwebcface_1_1server_1_1ServerStorage.html", "structwebcface_1_1server_1_1ServerStorage" ]
+        [ "ServerStorage", "classwebcface_1_1server_1_1ServerStorage.html", "classwebcface_1_1server_1_1ServerStorage" ]
       ] ],
       [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", "classwebcface_1_1AnonymousFunc" ],
       [ "Arg", "classwebcface_1_1Arg.html", "classwebcface_1_1Arg" ],
