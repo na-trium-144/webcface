@@ -158,10 +158,11 @@ void MemberData::onRecv(const std::string &message) {
             auto &v = *static_cast<webcface::message::SyncInit *>(obj.get());
             this->name = v.member_name;
             auto member_id_before = this->member_id;
+            auto clients_by_id = store->clientsByIdCopy();
             auto prev_cli_it = std::find_if(
-                store->clients_by_id.begin(), store->clients_by_id.end(),
+                clients_by_id.begin(), clients_by_id.end(),
                 [&](const auto &it) { return it.second->name == this->name; });
-            if (prev_cli_it != store->clients_by_id.end()) {
+            if (prev_cli_it != clients_by_id.end()) {
                 this->member_id = v.member_id = prev_cli_it->first;
             } else {
                 // コンストラクタですでに一意のidが振られているはず
@@ -170,9 +171,7 @@ void MemberData::onRecv(const std::string &message) {
             v.addr = this->remote_addr;
             this->init_data = v;
             this->sync_init = true;
-            store->clients_by_id.erase(this->member_id);
-            store->clients_by_id.emplace(this->member_id,
-                                         store->getClient(con));
+            store->initClientId(this->member_id, con);
             if (this->name.empty()) {
                 logger->debug("sync_init (no name)");
             } else {
