@@ -9,7 +9,7 @@ TEST_F(ServerTest, connection) {
     while (!dummy_c2->connected()) {
         wait();
     }
-    EXPECT_EQ(server->store->clients.size(), 2u);
+    EXPECT_EQ(server->store->clientsCopy().size(), 2u);
 }
 TEST_F(ServerTest, unixSocketConnection) {
     dummy_c1 = std::make_shared<DummyClient>(true);
@@ -20,7 +20,7 @@ TEST_F(ServerTest, unixSocketConnection) {
     while (!dummy_c2->connected()) {
         wait();
     }
-    EXPECT_EQ(server->store->clients.size(), 2u);
+    EXPECT_EQ(server->store->clientsCopy().size(), 2u);
 }
 TEST_F(ServerTest, sync) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -70,12 +70,12 @@ TEST_F(ServerTest, sync) {
         },
         [&] { ADD_FAILURE() << "should have been received entry"; });
 
-    ASSERT_TRUE(server->store->clients_by_id.count(1));
-    ASSERT_TRUE(server->store->clients_by_id.count(2));
-    ASSERT_TRUE(server->store->clients_by_id.count(3));
-    EXPECT_EQ(server->store->clients_by_id.at(1)->name, ""_ss);
-    EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2"_ss);
-    EXPECT_EQ(server->store->clients_by_id.at(3)->name, "c3"_ss);
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(1));
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(2));
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(3));
+    EXPECT_EQ(server->store->clientsByIdCopy().at(1)->name, ""_ss);
+    EXPECT_EQ(server->store->clientsByIdCopy().at(2)->name, "c2"_ss);
+    EXPECT_EQ(server->store->clientsByIdCopy().at(3)->name, "c3"_ss);
     dummy_c1->recvClear();
 
     // dummy_c2->send(message::Sync{});
@@ -90,7 +90,7 @@ TEST_F(ServerTest, ping) {
     wait();
     auto start = std::chrono::steady_clock::now();
     server->server_ping_wait.notify_one(); // これで無理やりpingさせる
-    auto s_c1 = server->store->clients_by_id.at(1);
+    auto s_c1 = server->store->clientsByIdCopy().at(1);
     dummy_c1->waitRecv<message::Ping>([&](const auto &) {});
     dummy_c1->send(message::Ping{});
     wait();
