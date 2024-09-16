@@ -11,7 +11,9 @@ namespace server {
 struct MemberData;
 using MemberDataPtr = std::shared_ptr<MemberData>;
 
-struct ServerStorage {
+class ServerStorage {
+    std::mutex store_m;
+
     /*!
      * \brief 現在接続されているクライアントの一覧
      *
@@ -26,6 +28,24 @@ struct ServerStorage {
      */
     std::unordered_map<unsigned int, MemberDataPtr> clients_by_id;
 
+
+    /*!
+     * * onCloseを呼んでclientsから削除
+     * * 名前がないものはclients_by_idからも削除
+     */
+    void removeClient(std::unordered_map<wsConnPtr, MemberDataPtr>::iterator it,
+                      std::unique_lock<std::mutex> &lock);
+
+  public:
+    auto clientsCopy() {
+        std::lock_guard lock(store_m);
+        return clients;
+    }
+    auto clientsByIdCopy() {
+        std::lock_guard lock(store_m);
+        return clients_by_id;
+    }
+
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status;
     Server *server;
 
@@ -38,16 +58,15 @@ struct ServerStorage {
     ~ServerStorage() { clear(); }
 
     /*!
-     * テスト用
+     * clientをすべてonCloseを呼んで削除
      */
     void clear();
 
     void newClient(const wsConnPtr &con, const std::string &remote_addr,
                    const spdlog::sink_ptr &sink,
                    spdlog::level::level_enum level);
+    void initClientId(unsigned int id, const wsConnPtr &con);
     void removeClient(const wsConnPtr &con);
-    void
-    removeClient(std::unordered_map<wsConnPtr, MemberDataPtr>::iterator it);
     MemberDataPtr getClient(const wsConnPtr &con);
 
     void clientSendAll();

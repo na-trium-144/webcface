@@ -15,7 +15,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace server {
-struct ServerStorage;
+class ServerStorage;
 struct MemberData;
 
 using wsConnPtr = void *;
