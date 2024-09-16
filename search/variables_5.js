@@ -14,13 +14,12 @@ var searchData=
   ['found_11',['found',['../structwebcface_1_1internal_1_1PromiseData.html#a7141f237b2648c631ce5b73215683565',1,'webcface::internal::PromiseData']]],
   ['frame_5frate_12',['frame_rate',['../structwebcface_1_1message_1_1ImageReq.html#abe0db23ce7f19f5dfd27436efea2e30d',1,'webcface::message::ImageReq']]],
   ['func_13',['func',['../structwebcface_1_1server_1_1MemberData.html#a75295c4f99f8efcfcdac97cdf0311c1e',1,'webcface::server::MemberData']]],
-  ['func_5fdata_14',['func_data',['../structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html#a47db480eb7f59dde8004daae8155a57f',1,'webcface::internal::ClientData::SyncDataSnapshot']]],
-  ['func_5fentry_5fevent_15',['func_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#a99e107697ad8856bb816e2116451a558',1,'webcface::internal::ClientData']]],
-  ['func_5fimpl_16',['func_impl',['../structwebcface_1_1internal_1_1FuncInfo.html#a0a31041ede0c897922e94f483c8a344f',1,'webcface::internal::FuncInfo']]],
-  ['func_5flistener_5fhandlers_17',['func_listener_handlers',['../structwebcface_1_1internal_1_1ClientData.html#afae3e6fe36d2deca2716a78c3aa98f6b',1,'webcface::internal::ClientData']]],
-  ['func_5fresult_5flist_18',['func_result_list',['../namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3',1,'webcface::func_result_list'],['../namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3',1,'webcface::c_wcf::func_result_list']]],
-  ['func_5fresult_5fstore_19',['func_result_store',['../structwebcface_1_1internal_1_1ClientData.html#a00f818e1a82882952d07c59cb3557b2d',1,'webcface::internal::ClientData']]],
-  ['func_5fstore_20',['func_store',['../structwebcface_1_1internal_1_1ClientData.html#ab2174459e01f585ba92cb06be2b27bbf',1,'webcface::internal::ClientData']]],
-  ['func_5fval_5flist_21',['func_val_list',['../namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32',1,'webcface::func_val_list'],['../namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32',1,'webcface::c_wcf::func_val_list']]],
-  ['func_5fval_5flist_5fw_22',['func_val_list_w',['../namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d',1,'webcface::func_val_list_w'],['../namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d',1,'webcface::c_wcf::func_val_list_w']]]
+  ['func_5fentry_5fevent_14',['func_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#a99e107697ad8856bb816e2116451a558',1,'webcface::internal::ClientData']]],
+  ['func_5fimpl_15',['func_impl',['../structwebcface_1_1internal_1_1FuncInfo.html#a0a31041ede0c897922e94f483c8a344f',1,'webcface::internal::FuncInfo']]],
+  ['func_5flistener_5fhandlers_16',['func_listener_handlers',['../structwebcface_1_1internal_1_1ClientData.html#afae3e6fe36d2deca2716a78c3aa98f6b',1,'webcface::internal::ClientData']]],
+  ['func_5fresult_5flist_17',['func_result_list',['../namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3',1,'webcface::func_result_list'],['../namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3',1,'webcface::c_wcf::func_result_list']]],
+  ['func_5fresult_5fstore_18',['func_result_store',['../structwebcface_1_1internal_1_1ClientData.html#a00f818e1a82882952d07c59cb3557b2d',1,'webcface::internal::ClientData']]],
+  ['func_5fstore_19',['func_store',['../structwebcface_1_1internal_1_1ClientData.html#ab2174459e01f585ba92cb06be2b27bbf',1,'webcface::internal::ClientData']]],
+  ['func_5fval_5flist_20',['func_val_list',['../namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32',1,'webcface::func_val_list'],['../namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32',1,'webcface::c_wcf::func_val_list']]],
+  ['func_5fval_5flist_5fw_21',['func_val_list_w',['../namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d',1,'webcface::func_val_list_w'],['../namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d',1,'webcface::c_wcf::func_val_list_w']]]
 ];

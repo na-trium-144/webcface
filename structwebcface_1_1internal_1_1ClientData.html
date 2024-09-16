@@ -162,9 +162,13 @@ Collaboration diagram for ClientData:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock.html">ScopedSyncLock</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock.html">ScopedWsLock</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData.html">SyncMutexedData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html">WsMutexedData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -181,8 +185,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4541629c917b995e993b8b8bc9beabee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a855cf16a139fed55a8500919a82e08ce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a855cf16a139fed55a8500919a82e08ce">messagePushAlways</a> (std::string &amp;&amp;msg)</td></tr>
 <tr class="separator:a855cf16a139fed55a8500919a82e08ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afcbc15d6010c5254d6ab528b2db3cebc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#afcbc15d6010c5254d6ab528b2db3cebc">messagePushAlways</a> (<a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &amp;&amp;msg)</td></tr>
+<tr class="memitem:afcbc15d6010c5254d6ab528b2db3cebc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#afcbc15d6010c5254d6ab528b2db3cebc">messagePushAlways</a> (SyncDataSnapshot &amp;&amp;msg)</td></tr>
 <tr class="separator:afcbc15d6010c5254d6ab528b2db3cebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43dea91610affab8561ded446e3d60ee"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a43dea91610affab8561ded446e3d60ee">packSyncDataFirst</a> (const SyncDataFirst &amp;data)</td></tr>
+<tr class="separator:a43dea91610affab8561ded446e3d60ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9508c08841227156828181d7187f183"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa9508c08841227156828181d7187f183">packSyncData</a> (std::stringstream &amp;buffer, int &amp;len, const SyncDataSnapshot &amp;data)</td></tr>
+<tr class="separator:aa9508c08841227156828181d7187f183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60de64d75454385b23995437f1d72669"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a60de64d75454385b23995437f1d72669">start</a> ()</td></tr>
 <tr class="memdesc:a60de64d75454385b23995437f1d72669"><td class="mdescLeft">&#160;</td><td class="mdescRight">通信関係のスレッドを開始する  <br /></td></tr>
 <tr class="separator:a60de64d75454385b23995437f1d72669"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -192,16 +200,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a99832ffc61cf60b3538c8f57da9080be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a99832ffc61cf60b3538c8f57da9080be">syncImpl</a> (bool sync, bool forever, std::optional&lt; std::chrono::microseconds &gt; timeout)</td></tr>
 <tr class="memdesc:a99832ffc61cf60b3538c8f57da9080be"><td class="mdescLeft">&#160;</td><td class="mdescRight">recv_queueのメッセージを処理する  <br /></td></tr>
 <tr class="separator:a99832ffc61cf60b3538c8f57da9080be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8226a5fb4298112fa6f983e90c956b00"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a8226a5fb4298112fa6f983e90c956b00">syncDataFirst</a> ()</td></tr>
-<tr class="memdesc:a8226a5fb4298112fa6f983e90c956b00"><td class="mdescLeft">&#160;</td><td class="mdescRight">初期化時に送信するメッセージ  <br /></td></tr>
-<tr class="separator:a8226a5fb4298112fa6f983e90c956b00"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43dea91610affab8561ded446e3d60ee"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a43dea91610affab8561ded446e3d60ee">packSyncDataFirst</a> (const <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a> &amp;data)</td></tr>
-<tr class="separator:a43dea91610affab8561ded446e3d60ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93d25b478aabbe11b618e9f280a5d5fc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a93d25b478aabbe11b618e9f280a5d5fc">syncData</a> (bool is_first)</td></tr>
-<tr class="memdesc:a93d25b478aabbe11b618e9f280a5d5fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">sync() 1回分のメッセージ  <br /></td></tr>
-<tr class="separator:a93d25b478aabbe11b618e9f280a5d5fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9508c08841227156828181d7187f183"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa9508c08841227156828181d7187f183">packSyncData</a> (std::stringstream &amp;buffer, int &amp;len, const <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &amp;data)</td></tr>
-<tr class="separator:aa9508c08841227156828181d7187f183"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3060a0607e2dbb8602cb6a529dd25991"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a3060a0607e2dbb8602cb6a529dd25991">onRecv</a> (const std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt; &amp;messages)</td></tr>
 <tr class="memdesc:a3060a0607e2dbb8602cb6a529dd25991"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信時の処理  <br /></td></tr>
 <tr class="separator:a3060a0607e2dbb8602cb6a529dd25991"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -235,33 +233,13 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a177dbf20b799483063395f54b12992fd"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a177dbf20b799483063395f54b12992fd">ws_thread</a></td></tr>
 <tr class="memdesc:a177dbf20b799483063395f54b12992fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">websocket接続、通信するスレッド  <br /></td></tr>
 <tr class="separator:a177dbf20b799483063395f54b12992fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5f6af571ef4242dc37a768ca49c614b"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ae5f6af571ef4242dc37a768ca49c614b">ws_cond</a></td></tr>
-<tr class="separator:ae5f6af571ef4242dc37a768ca49c614b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa68af0d4d9a87afe8e05ceccd6dbf5f"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aaa68af0d4d9a87afe8e05ceccd6dbf5f">ws_m</a></td></tr>
-<tr class="separator:aaa68af0d4d9a87afe8e05ceccd6dbf5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac12c0189fb9871dca59ac653ce95b4cf"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ac12c0189fb9871dca59ac653ce95b4cf">closing</a> = false</td></tr>
 <tr class="separator:ac12c0189fb9871dca59ac653ce95b4cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab36823025f12a809217f7771125658c2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ab36823025f12a809217f7771125658c2">connected</a> = false</td></tr>
-<tr class="separator:ab36823025f12a809217f7771125658c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58c7facb25080a3b127ced037129ef98"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a58c7facb25080a3b127ced037129ef98">sync_init_end</a> = false</td></tr>
-<tr class="separator:a58c7facb25080a3b127ced037129ef98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aca3bb1f15de8217014145111f65bc1be"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aca3bb1f15de8217014145111f65bc1be">do_ws_init</a> = false</td></tr>
-<tr class="separator:aca3bb1f15de8217014145111f65bc1be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5805c512558747900b64ff5a8d10a010"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a5805c512558747900b64ff5a8d10a010">do_ws_recv</a> = false</td></tr>
-<tr class="separator:a5805c512558747900b64ff5a8d10a010"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa01401fdeda45a2af8b88ba585af6677"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa01401fdeda45a2af8b88ba585af6677">recv_ready</a> = false</td></tr>
-<tr class="separator:aa01401fdeda45a2af8b88ba585af6677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5f6af571ef4242dc37a768ca49c614b"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ae5f6af571ef4242dc37a768ca49c614b">ws_cond</a></td></tr>
+<tr class="memdesc:ae5f6af571ef4242dc37a768ca49c614b"><td class="mdescLeft">&#160;</td><td class="mdescRight">ws_thread, recv_thread, queue 間の同期  <br /></td></tr>
+<tr class="separator:ae5f6af571ef4242dc37a768ca49c614b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28fa2543fb357fbd1bd5fa91b65b9025"><td class="memItemLeft" align="right" valign="top">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a28fa2543fb357fbd1bd5fa91b65b9025">auto_reconnect</a> = true</td></tr>
 <tr class="separator:a28fa2543fb357fbd1bd5fa91b65b9025"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2f7d841ab39be5c743a4ff486662971"><td class="memItemLeft" align="right" valign="top">std::queue&lt; std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa2f7d841ab39be5c743a4ff486662971">recv_queue</a></td></tr>
-<tr class="separator:aa2f7d841ab39be5c743a4ff486662971"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7e18e346511472d846f4779aa202138"><td class="memItemLeft" align="right" valign="top">std::queue&lt; std::variant&lt; std::string, <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ae7e18e346511472d846f4779aa202138">sync_queue</a></td></tr>
-<tr class="memdesc:ae7e18e346511472d846f4779aa202138"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信したいメッセージを入れるキュー  <br /></td></tr>
-<tr class="separator:ae7e18e346511472d846f4779aa202138"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a58010d65d13217060fe3b678374b2d35"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a58010d65d13217060fe3b678374b2d35">sync_first</a></td></tr>
-<tr class="separator:a58010d65d13217060fe3b678374b2d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c71f998f2104add78a847d92120d527"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a2c71f998f2104add78a847d92120d527">sync_m</a></td></tr>
-<tr class="separator:a2c71f998f2104add78a847d92120d527"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0de54f364a8b0de0eb081c1c44329ff"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa0de54f364a8b0de0eb081c1c44329ff">entry_m</a></td></tr>
 <tr class="separator:aa0de54f364a8b0de0eb081c1c44329ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a8d2a0a890f0601f5e5fa259940e9cb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a5a8d2a0a890f0601f5e5fa259940e9cb">member_entry</a></td></tr>
@@ -561,7 +539,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">void messagePushAlways </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &amp;&amp;&#160;</td>
+          <td class="paramtype">SyncDataSnapshot &amp;&amp;&#160;</td>
           <td class="paramname"><em>msg</em></td><td>)</td>
           <td></td>
         </tr>
@@ -672,7 +650,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a> &amp;&#160;</td>
+          <td class="paramtype">const SyncDataSnapshot &amp;&#160;</td>
           <td class="paramname"><em>data</em>&#160;</td>
         </tr>
         <tr>
@@ -694,7 +672,7 @@ Public Attributes</h2></td></tr>
         <tr>
           <td class="memname">std::string packSyncDataFirst </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a> &amp;&#160;</td>
+          <td class="paramtype">const SyncDataFirst &amp;&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
           <td></td>
         </tr>
@@ -738,54 +716,6 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>通信関係のスレッドを開始する </p>
-
-</div>
-</div>
-<a id="a93d25b478aabbe11b618e9f280a5d5fc" name="a93d25b478aabbe11b618e9f280a5d5fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93d25b478aabbe11b618e9f280a5d5fc">&#9670;&#160;</a></span>syncData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">internal::ClientData::SyncDataSnapshot</a> syncData </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>is_first</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>sync() 1回分のメッセージ </p>
-<p>value, text, view, log, funcの送信データの前回からの差分が含まれる。 各種reqはsyncとは無関係に送信される</p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">is_first</td><td>trueのとき差分ではなく全データを送る (<a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a8226a5fb4298112fa6f983e90c956b00" title="初期化時に送信するメッセージ">syncDataFirst()</a>内から呼ばれる) </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a8226a5fb4298112fa6f983e90c956b00" name="a8226a5fb4298112fa6f983e90c956b00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8226a5fb4298112fa6f983e90c956b00">&#9670;&#160;</a></span>syncDataFirst()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">internal::ClientData::SyncDataFirst</a> syncDataFirst </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>初期化時に送信するメッセージ </p>
-<p>各種req と syncData(true) の全データが含まれる。</p>
-<p>変数 sync_first の説明を参照 </p>
 
 </div>
 </div>
@@ -941,23 +871,36 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a5ae591df94fc66ccb85cbb6565368bca">close()</a>が呼ばれたらtrue、すべてのスレッドは停止する </p>
+<pre class="fragment">      \brief recv_queueのメッセージを処理するスレッド
 
-</div>
-</div>
-<a id="ab36823025f12a809217f7771125658c2" name="ab36823025f12a809217f7771125658c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab36823025f12a809217f7771125658c2">&#9670;&#160;</a></span>connected</h2>
+      auto_recv がtrueの場合のみ。
 
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool connected = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>current_curl_connectedがWebSocket::initまたはrecv側の内部で変更されるので、 それを呼び出したスレッドがそれをこっちに反映させる </p>
+     &amp;zwj;/
+</pre><p> std::thread sync_thread; </p><pre class="fragment">struct SyncDataSnapshot {
+    std::chrono::system_clock::time_point time;
+    StrMap1&lt;ValueData&gt; value_data;
+    StrMap1&lt;TextData&gt; text_data;
+    StrMap1&lt;RobotModelData&gt; robot_model_data;
+    StrMap1&lt;ViewData&gt; view_prev, view_data;
+    StrMap1&lt;Canvas3DData&gt; canvas3d_prev, canvas3d_data;
+    StrMap1&lt;Canvas2DData&gt; canvas2d_prev, canvas2d_data;
+    StrMap1&lt;ImageData&gt; image_data;
+    std::vector&lt;LogLineData&gt; log_data;
+    StrMap1&lt;FuncData&gt; func_data;
+};
 
+struct SyncDataFirst {
+    StrMap2&lt;unsigned int&gt; value_req, text_req, robot_model_req, view_req,
+        canvas3d_req, canvas2d_req, image_req;
+    StrMap2&lt;message::ImageReq&gt; image_req_info;
+    StrMap1&lt;bool&gt; log_req;
+    bool ping_status_req;
+    SyncDataSnapshot sync_data;
+};
+
+/*!
+   close()が呼ばれたらtrue、すべてのスレッドは停止する
+</pre> 
 </div>
 </div>
 <a id="a29052a9bd8573a795ebe2adcdaf1ea1e" name="a29052a9bd8573a795ebe2adcdaf1ea1e"></a>
@@ -1013,39 +956,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="aca3bb1f15de8217014145111f65bc1be" name="aca3bb1f15de8217014145111f65bc1be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aca3bb1f15de8217014145111f65bc1be">&#9670;&#160;</a></span>do_ws_init</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool do_ws_init = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Client側から関数が呼ばれたらtrue、 WebSocket::側のinit関数が完了したらfalse</p>
-<p>trueになったときnotify </p>
-
-</div>
-</div>
-<a id="a5805c512558747900b64ff5a8d10a010" name="a5805c512558747900b64ff5a8d10a010"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5805c512558747900b64ff5a8d10a010">&#9670;&#160;</a></span>do_ws_recv</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool do_ws_recv = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Client側から関数が呼ばれたらtrue、 WebSocket::側のrecv関数が完了したらfalse</p>
-<p>true,falseになったときnotify</p>
-<p>recv_readyの間にdo_ws_recvを立て、 recv()を行い、これがfalseになったことで完了したことを知る </p>
 
 </div>
 </div>
@@ -1449,35 +1359,6 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa2f7d841ab39be5c743a4ff486662971" name="aa2f7d841ab39be5c743a4ff486662971"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2f7d841ab39be5c743a4ff486662971">&#9670;&#160;</a></span>recv_queue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::queue&lt;std::vector&lt;std::pair&lt;int, std::shared_ptr&lt;void&gt; &gt; &gt; &gt; recv_queue</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa01401fdeda45a2af8b88ba585af6677" name="aa01401fdeda45a2af8b88ba585af6677"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa01401fdeda45a2af8b88ba585af6677">&#9670;&#160;</a></span>recv_ready</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool recv_ready = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>recv待機中true WebSocket::側のrecv関数が完了したらfalse </p>
-
-</div>
-</div>
 <a id="a509e649ce19f81360327133075aca08d" name="a509e649ce19f81360327133075aca08d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a509e649ce19f81360327133075aca08d">&#9670;&#160;</a></span>robot_model_change_event</h2>
 
@@ -1603,80 +1484,6 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<a id="a58010d65d13217060fe3b678374b2d35" name="a58010d65d13217060fe3b678374b2d35"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58010d65d13217060fe3b678374b2d35">&#9670;&#160;</a></span>sync_first</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::optional&lt;<a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html">SyncDataFirst</a>&gt; sync_first</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>次回接続後一番最初に送信するメッセージ</p>
-<ul>
-<li><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a8226a5fb4298112fa6f983e90c956b00" title="初期化時に送信するメッセージ">syncDataFirst()</a> の返り値であり、 すべてのリクエストとすべてのsyncデータ(1時刻分)が含まれる</li>
-<li>sync()時に未接続かつこれが空ならその時点のsyncDataFirstをこれにセット</li>
-<li>接続時にこれが空でなければ、<ul>
-<li>これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ) を、</li>
-<li>これが空ならその時点のsyncDataFirstを、</li>
-</ul>
-</li>
-<li>送信する</li>
-<li><del>送信したら</del> 切断時に再度これを空にする </li>
-</ul>
-
-</div>
-</div>
-<a id="a58c7facb25080a3b127ced037129ef98" name="a58c7facb25080a3b127ced037129ef98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a58c7facb25080a3b127ced037129ef98">&#9670;&#160;</a></span>sync_init_end</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool sync_init_end = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>SyncInitEndを受信したらtrue 切断時にfalseにもどす </p>
-
-</div>
-</div>
-<a id="a2c71f998f2104add78a847d92120d527" name="a2c71f998f2104add78a847d92120d527"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c71f998f2104add78a847d92120d527">&#9670;&#160;</a></span>sync_m</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex sync_m</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>sync_firstとsyncData(),<a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a8226a5fb4298112fa6f983e90c956b00" title="初期化時に送信するメッセージ">syncDataFirst()</a>呼び出しをガードするmutex </p>
-
-</div>
-</div>
-<a id="ae7e18e346511472d846f4779aa202138" name="ae7e18e346511472d846f4779aa202138"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7e18e346511472d846f4779aa202138">&#9670;&#160;</a></span>sync_queue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::queue&lt;std::variant&lt;std::string, <a class="el" href="structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html">SyncDataSnapshot</a>&gt; &gt; sync_queue</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>送信したいメッセージを入れるキュー </p>
-<p>接続できていない場合送信されずキューにたまる</p>
-<p>msgpackのシリアライズに時間がかかるので、 sync()時はシリアライズ後のメッセージではなく 必要なデータを含んだSyncDataSnapshotをpushし(syncData()), あとで別スレッドでそれをメッセージにする (<a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa9508c08841227156828181d7187f183">packSyncData()</a>) </p>
 
 </div>
 </div>
@@ -1831,30 +1638,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">      \brief recv_queueのメッセージを処理するスレッド
 
-      auto_recv がtrueの場合のみ。
-
-     &amp;zwj;/
-</pre><p> std::thread sync_thread; </p><pre class="fragment">/*!
-   \brief ws_thread, recv_thread, queue 間の同期
-
-   closing, connected, do_ws_init, do_ws_recv,
-   sync_queue, recv_queue, sync_init_end が変化した時notifyする
-</pre> 
-</div>
-</div>
-<a id="aaa68af0d4d9a87afe8e05ceccd6dbf5f" name="aaa68af0d4d9a87afe8e05ceccd6dbf5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa68af0d4d9a87afe8e05ceccd6dbf5f">&#9670;&#160;</a></span>ws_m</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::mutex ws_m</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
+<p>ws_thread, recv_thread, queue 間の同期 </p>
+<p>ws_dataの中身 (closing, connected, do_ws_init, do_ws_recv, sync_queue, recv_queue, sync_init_end) が変化した時notifyする </p>
 
 </div>
 </div>
@@ -1890,7 +1676,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Mon Sep 16 2024 15:42:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Sep 16 2024 16:41:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

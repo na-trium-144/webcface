@@ -235,8 +235,6 @@ var hierarchy =
     [ "stringbuf", null, [
       [ "ViewBuf", "classwebcface_1_1internal_1_1ViewBuf.html", null ]
     ] ],
-    [ "SyncDataFirst", "structwebcface_1_1internal_1_1ClientData_1_1SyncDataFirst.html", null ],
-    [ "SyncDataSnapshot", "structwebcface_1_1internal_1_1ClientData_1_1SyncDataSnapshot.html", null ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::shared_ptr< std::deque< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
@@ -249,6 +247,7 @@ var hierarchy =
     [ "SyncDataStore2< ValueData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ViewData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::ImageFrame, webcface::message::ImageReq >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData.html", null ],
     [ "TemporalCanvas2DComponent", "classwebcface_1_1TemporalCanvas2DComponent.html", null ],
     [ "TemporalCanvas3DComponent", "classwebcface_1_1TemporalCanvas3DComponent.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "structwebcface_1_1TemporalComponent.html", null ],
@@ -257,6 +256,10 @@ var hierarchy =
     ] ],
     [ "TemporalRobotJointData", "structwebcface_1_1internal_1_1TemporalRobotJointData.html", null ],
     [ "TemporalViewComponent", "classwebcface_1_1TemporalViewComponent.html", null ],
+    [ "unique_lock", null, [
+      [ "ScopedSyncLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock.html", null ],
+      [ "ScopedWsLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock.html", null ]
+    ] ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
     [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
     [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", [
@@ -268,5 +271,6 @@ var hierarchy =
     [ "wcfMultiVal", "structwcfMultiVal.html", null ],
     [ "wcfMultiValW", "structwcfMultiValW.html", null ],
     [ "wcfViewComponent", "structwcfViewComponent.html", null ],
-    [ "wcfViewComponentW", "structwcfViewComponentW.html", null ]
+    [ "wcfViewComponentW", "structwcfViewComponentW.html", null ],
+    [ "WsMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html", null ]
 ];
