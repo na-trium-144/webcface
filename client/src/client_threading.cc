@@ -260,9 +260,9 @@ void internal::ClientData::syncImpl(
                 lock_s.getData().sync_first =
                     lock_s.getData().syncDataFirst(this);
             } else {
-                auto sync_data = lock_s.getData().syncData(this, false);
+                auto sync_now_data = lock_s.getData().syncData(this, false);
                 lock_s.unlock();
-                this->messagePushAlways(std::move(sync_data));
+                this->messagePushAlways(std::move(sync_now_data));
             }
         }
     }
