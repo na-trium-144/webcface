@@ -57,8 +57,8 @@ void internal::ClientData::join() {
 }
 
 void internal::ClientData::start() {
-    std::lock_guard lock(this->ws_m);
-    this->do_ws_init = true;
+    ScopedWsLock lock_ws(this);
+    lock_ws.getData().do_ws_init = true;
     this->ws_cond.notify_all();
     if (!ws_thread.joinable()) {
         ws_thread = std::thread(internal::wsThreadMain, shared_from_this());
@@ -73,13 +73,13 @@ const Client &Client::close() const {
     return *this;
 }
 void internal::ClientData::close() {
-    std::lock_guard lock(this->ws_m);
+    ScopedWsLock lock_ws(this);
     this->closing.store(true);
     this->ws_cond.notify_all();
 }
 bool Client::connected() const {
-    std::lock_guard lock(data->ws_m);
-    return data->connected;
+    internal::ClientData::ScopedWsLock lock_ws(data);
+    return lock_ws.getData().connected;
 }
 void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
@@ -88,60 +88,70 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
     std::optional<std::chrono::steady_clock::time_point> last_connected,
         last_recv;
     while (true) {
-        std::unique_lock lock(data->ws_m);
-        if (!data->connected) {
+        ClientData::ScopedWsLock lock_ws(data);
+        if (!lock_ws.getData().connected) {
             if (last_connected) {
                 // すでに接続したことがあるなら最低10ms間隔を空ける
                 data->ws_cond.wait_until(
-                    lock, *last_connected + std::chrono::milliseconds(10),
+                    lock_ws, *last_connected + std::chrono::milliseconds(10),
                     [&] { return data->closing.load(); });
             }
-            data->ws_cond.wait(lock, [&] {
-                return data->closing.load() || data->do_ws_init ||
+            data->ws_cond.wait(lock_ws, [&] {
+                return data->closing.load() || lock_ws.getData().do_ws_init ||
                        data->auto_reconnect.load();
             });
             if (data->closing.load()) {
                 return;
             }
             { // do_ws_initがtrueまたはauto_reconnectがtrueなので再接続を行う
-                ScopedUnlock un(lock);
+                ScopedUnlock un(lock_ws);
                 internal::WebSocket::init(data);
             }
-            data->do_ws_init = false;
-            data->connected = data->current_curl_connected;
+            lock_ws.getData().do_ws_init = false;
+            lock_ws.getData().connected = data->current_curl_connected;
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
             data->ws_cond.notify_all();
-            if (data->connected) {
-                ScopedUnlock un(lock);
-                std::lock_guard lock_s(data->sync_m);
-                if (!data->sync_first) {
-                    data->sync_first = data->syncDataFirst();
+            if (lock_ws.getData().connected) {
+                ScopedUnlock un(lock_ws);
+                ClientData::SyncDataFirst sync_first;
+                {
+                    // sync_firstがnulloptでない(sync()時にsyncDataFirstを実行済み)の場合はそれを使い、
+                    // nulloptの場合はここでsyncDataFirstを呼ぶ
+                    ClientData::ScopedSyncLock lock_s(data);
+                    if (!lock_s.getData().sync_first) {
+                        lock_s.getData().sync_first =
+                            lock_s.getData().syncDataFirst(data.get());
+                    }
+                    sync_first = std::move(*lock_s.getData().sync_first);
+                    // data->sync_firstはnulloptでない値が入ったままにしておく
+                    // (std::moveで空にはなるがnulloptにはならない)
                 }
-                internal::WebSocket::send(
-                    data, data->packSyncDataFirst(*data->sync_first));
+                internal::WebSocket::send(data,
+                                          data->packSyncDataFirst(sync_first));
             }
         } else {
-            data->do_ws_init = false;
+            lock_ws.getData().do_ws_init = false;
             if (last_recv) {
                 // syncデータがなければ、100us間隔を空ける
-                data->recv_ready = true;
+                lock_ws.getData().recv_ready = true;
                 data->ws_cond.wait_until(
-                    lock, *last_recv + std::chrono::microseconds(100), [&] {
-                        return data->closing.load() || data->do_ws_recv ||
-                               !data->sync_queue.empty();
+                    lock_ws, *last_recv + std::chrono::microseconds(100), [&] {
+                        return data->closing.load() ||
+                               lock_ws.getData().do_ws_recv ||
+                               !lock_ws.getData().sync_queue.empty();
                     });
-                data->do_ws_recv = true;
+                lock_ws.getData().do_ws_recv = true;
             }
 
             {
                 // syncの前にrecv
-                ScopedUnlock un(lock);
+                ScopedUnlock un(lock_ws);
                 while (true) { // データがなくなるまで受信
                     bool has_recv = internal::WebSocket::recv(
                         data, [data](std::string &&msg) {
-                            std::unique_lock lock(data->ws_m);
-                            data->recv_queue.push(
+                            ClientData::ScopedWsLock lock_ws(data);
+                            lock_ws.getData().recv_queue.push(
                                 message::unpack(msg, data->logger_internal));
                             data->ws_cond.notify_all();
                         });
@@ -150,47 +160,53 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     }
                 }
             }
-            data->do_ws_recv = false;
-            data->recv_ready = false;
-            data->connected = data->current_curl_connected;
-            if (!data->connected) {
+            lock_ws.getData().do_ws_recv = false;
+            lock_ws.getData().recv_ready = false;
+            lock_ws.getData().connected = data->current_curl_connected;
+            if (!lock_ws.getData().connected) {
                 data->self_member_id = std::nullopt;
-                data->sync_init_end = false;
+                lock_ws.getData().sync_init_end = false;
+                ScopedUnlock un(lock_ws);
                 {
-                    std::lock_guard lock_s(data->sync_m);
-                    data->sync_first = std::nullopt;
+                    ClientData::ScopedSyncLock lock_s(data);
+                    lock_s.getData().sync_first = std::nullopt;
                 }
             }
             data->ws_cond.notify_all();
             last_recv = std::chrono::steady_clock::now();
 
-            while (data->connected && !data->sync_queue.empty()) {
-                ScopedUnlock un(lock);
-                // sync
-                auto msg = std::move(data->sync_queue.front());
-                std::string msg_s;
-                data->sync_queue.pop();
-                switch (msg.index()) {
-                case 0:
-                    msg_s = std::move(std::get<0>(msg));
-                    break;
-                case 1:
-                default: {
-                    std::stringstream buf;
-                    int len = 0;
-                    msg_s = data->packSyncData(buf, len, std::get<1>(msg));
-                    break;
+            std::queue<std::variant<std::string, ClientData::SyncDataSnapshot>>
+                sync_queue_data;
+            lock_ws.getData().sync_queue.swap(sync_queue_data);
+            if (lock_ws.getData().connected) {
+                ScopedUnlock un(lock_ws);
+                while (!sync_queue_data.empty()) {
+                    // sync
+                    auto msg = std::move(sync_queue_data.front());
+                    std::string msg_s;
+                    sync_queue_data.pop();
+                    switch (msg.index()) {
+                    case 0:
+                        msg_s = std::move(std::get<0>(msg));
+                        break;
+                    case 1:
+                    default: {
+                        std::stringstream buf;
+                        int len = 0;
+                        msg_s = data->packSyncData(buf, len, std::get<1>(msg));
+                        break;
+                    }
+                    }
+                    internal::WebSocket::send(data, msg_s);
                 }
-                }
-                internal::WebSocket::send(data, msg_s);
             }
 
             if (data->closing.load()) {
                 {
-                    ScopedUnlock un(lock);
+                    ScopedUnlock un(lock_ws);
                     internal::WebSocket::close(data);
                 }
-                data->connected = data->current_curl_connected;
+                lock_ws.getData().connected = data->current_curl_connected;
                 data->ws_cond.notify_all();
                 return;
             }
@@ -208,9 +224,9 @@ void internal::ClientData::syncImpl(
     bool sync, bool forever, std::optional<std::chrono::microseconds> timeout) {
     auto start_t = std::chrono::steady_clock::now();
     {
-        std::unique_lock lock(this->ws_m);
-        if (this->recv_ready) {
-            this->do_ws_recv = true;
+        ScopedWsLock lock_ws(this);
+        if (lock_ws.getData().recv_ready) {
+            lock_ws.getData().do_ws_recv = true;
             // 接続できてるなら、recvが完了するまで待つ
             // 1回のrecvはすぐ終わるのでtimeoutいらない
             // condition_variableは遅い
@@ -218,67 +234,77 @@ void internal::ClientData::syncImpl(
             //     return this->closing.load() || !this->do_ws_recv;
             // });
             if (timeout && *timeout <= std::chrono::microseconds(0)) {
-                ScopedUnlock un(lock);
+                ScopedUnlock un(lock_ws);
                 while (true) {
-                    std::unique_lock lock2(this->ws_m);
-                    if (this->closing.load() || this->do_ws_recv) {
+                    ScopedWsLock lock_ws2(this);
+                    if (this->closing.load() ||
+                        !lock_ws2.getData().do_ws_recv) {
                         break;
                     }
                 }
             }
         } else {
-            this->do_ws_recv = true;
+            lock_ws.getData().do_ws_recv = true;
             // recvさせるけど、待たない
         }
     }
     if (sync) {
-        std::lock_guard lock_s(this->sync_m);
         bool connected2;
         {
-            std::unique_lock lock(this->ws_m);
-            connected2 = this->connected;
+            ScopedWsLock lock_ws(this);
+            connected2 = lock_ws.getData().connected;
         }
-        if (!connected2 && !this->sync_first) {
-            this->sync_first = this->syncDataFirst();
-        } else {
-            this->messagePushAlways(this->syncData(false));
+        {
+            ScopedSyncLock lock_s(this);
+            if (!connected2 && !lock_s.getData().sync_first) {
+                lock_s.getData().sync_first =
+                    lock_s.getData().syncDataFirst(this);
+            } else {
+                auto sync_data = lock_s.getData().syncData(this, false);
+                lock_s.unlock();
+                this->messagePushAlways(std::move(sync_data));
+            }
         }
     }
     do {
-        std::unique_lock lock(this->ws_m);
+        ScopedWsLock lock_ws(this);
         if (timeout) {
             if (*timeout > std::chrono::microseconds(0)) {
                 // recv_queueにデータが入るまで待つ
                 // 遅くともtimeout経過したら抜ける
-                this->ws_cond.wait_until(lock, start_t + *timeout, [&] {
+                this->ws_cond.wait_until(lock_ws, start_t + *timeout, [&] {
                     return this->closing.load() ||
-                           (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                           (!this->connected && !this->auto_reconnect.load());
+                           (!lock_ws.getData().recv_queue.empty() &&
+                            !lock_ws.getData().do_ws_recv) ||
+                           (!lock_ws.getData().connected &&
+                            !this->auto_reconnect.load());
                 });
             }
-            if (this->recv_queue.empty()) {
+            if (lock_ws.getData().recv_queue.empty()) {
                 // timeoutし、recv準備完了でない場合return
                 return;
             }
         } else {
             // recv_queueにデータが入るまで無制限に待つ
-            this->ws_cond.wait(lock, [&] {
+            this->ws_cond.wait(lock_ws, [&] {
                 return this->closing.load() ||
-                       (!this->recv_queue.empty() && !this->do_ws_recv) ||
-                       (!this->connected && !this->auto_reconnect.load());
+                       (!lock_ws.getData().recv_queue.empty() &&
+                        !lock_ws.getData().do_ws_recv) ||
+                       (!lock_ws.getData().connected &&
+                        !this->auto_reconnect.load());
             });
         }
         if (this->closing.load() ||
-            (!this->connected && !this->auto_reconnect.load())) {
+            (!lock_ws.getData().connected && !this->auto_reconnect.load())) {
             // close時と接続されてないときreturn
             return;
         }
 
-        while (!this->recv_queue.empty()) {
-            auto msg = std::move(this->recv_queue.front());
-            this->recv_queue.pop();
+        while (!lock_ws.getData().recv_queue.empty()) {
+            auto msg = std::move(lock_ws.getData().recv_queue.front());
+            lock_ws.getData().recv_queue.pop();
             {
-                ScopedUnlock un(lock);
+                ScopedUnlock un(lock_ws);
                 this->onRecv(msg);
             }
         }
@@ -311,21 +337,22 @@ const Client &Client::waitConnection() const {
     data->start();
     bool first_loop = true;
     while (!data->closing.load()) {
-        std::unique_lock lock(data->ws_m);
-        if (!data->connected) {
+        internal::ClientData::ScopedWsLock lock_ws(data);
+        if (!lock_ws.getData().connected) {
             // 初回またはautoReconnectが有効なら接続完了まで待機
             if (first_loop || data->auto_reconnect.load()) {
-                data->do_ws_init = true;
+                lock_ws.getData().do_ws_init = true;
                 data->ws_cond.notify_all();
-                data->ws_cond.wait(lock, [this] {
-                    return data->closing.load() || data->connected ||
-                           !data->do_ws_init;
+                data->ws_cond.wait(lock_ws, [this, &lock_ws] {
+                    return data->closing.load() ||
+                           lock_ws.getData().connected ||
+                           !lock_ws.getData().do_ws_init;
                 });
             } else {
                 return *this;
             }
         } else {
-            if (data->sync_init_end) {
+            if (lock_ws.getData().sync_init_end) {
                 return *this;
             } else {
                 // autoRecvならsyncInit完了まで待機
@@ -336,7 +363,7 @@ const Client &Client::waitConnection() const {
                 //                data->sync_init_end;
                 //     });
                 // } else {
-                ScopedUnlock un(lock);
+                ScopedUnlock un(lock_ws);
                 data->syncImpl(false, false, std::nullopt);
                 // }
             }
