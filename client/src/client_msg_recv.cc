@@ -81,8 +81,8 @@ void internal::ClientData::onRecv(
             this->self_member_id.emplace(r.member_id);
             this->svr_hostname = r.hostname;
             {
-                std::lock_guard lock(this->ws_m);
-                this->sync_init_end = true;
+                ScopedWsLock lock_ws(this);
+                lock_ws.getData().sync_init_end = true;
                 this->ws_cond.notify_all();
             }
             break;
