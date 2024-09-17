@@ -1,3 +1,8 @@
+## [2.3.0] - 2024-09-17
+### Fixed
+* ver2.2.1以降でserverがセグフォすることがあったバグを修正 (#407)
+* ver2.2.0以降でclientがセグフォすることがあったバグを修正 (#406)
+
 ## [2.2.1] - 2024-09-16
 ### Fixed
 * webcface/webcface.h をincludeするとfunc_info.hのwarningが出ていたのを修正 (#404)
