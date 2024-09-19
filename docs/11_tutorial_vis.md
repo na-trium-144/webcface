@@ -7,17 +7,13 @@ WebCFaceの機能紹介・チュートリアルです。
 このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。
 プロセス間通信に重点をおいたチュートリアルは [1-2. Tutorial (Communication)](./12_tutorial_comm.md)
 
-このチュートリアルでは C++ (Meson または CMake) を使用します。
-
-\todo
-Python用のチュートリアルも書く
+このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.8以上が必要です) を使用します。
 
 ## WebCFaceのインストール
 
 READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。
 
-C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれていますが、
-Pythonで利用したい場合は別途 `pip install webcface` でクライアントライブラリをインストールしてください。
+C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれています。
 
 ## Server
 
@@ -178,6 +174,37 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     <span></span>
 
+- <b class="tab-title">Python</b>
+    PythonでWebCFaceを使うには、クライアントライブラリをインストールする必要があります。
+    venv内でもグローバルにインストールしても構いません。
+    ```sh
+    pip install webcface
+    ```
+
+    以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます
+    
+    * main.py
+    ```py
+    from webcface import Client
+
+    wcli = Client("tutorial")
+    wcli.wait_connection()
+
+    print("Hello, World!")
+    ```
+    \note
+    Clientの初期化はグローバル変数でもローカル変数 (main() やクラスの初期化など) でもどちらでも構いませんが、
+    このチュートリアルではグローバル変数にします。
+    
+    実行します
+    ```sh
+    python3 ./main.py
+    ```
+    実行すると、`Hello, World!` と出力されると同時に、
+    WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。
+
+    ![tutorial_helloworld](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_helloworld.png)
+
 </div>
 
 ## Log
@@ -217,6 +244,31 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     詳細は [5-5. Log](./55_log.md)
 
     <span></span>
+
+- <b class="tab-title">Python</b>
+
+    * main.py
+    ```py
+    from webcface import Client
+    import sys
+
+    wcli = Client("tutorial")
+    sys.stdout = wcli.logging_io  # sys.stdout (printの出力先) をwebcfaceのlogging_ioに置き換える
+    wcli.wait_connection()
+
+    print("Hello, World!")
+    wcli.sync();  # wcli に書き込んだデータを送信する
+    ```
+
+    これを実行すると、コンソール (stdoutではなくstderrですが) には今まで通り `Hello, World!` と表示されます。
+
+    それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも `Hello, World!` を確認できるはずです。
+
+    ![tutorial_log](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png)
+
+    pythonのloggingモジュールを使いたい場合はLoggerの出力先として使用できるHandlerも用意しています。
+    また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
+    詳細は [5-5. Log](./55_log.md)
 
 </div>
 
@@ -259,6 +311,42 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
             std::this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。
+
+    また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
+
+    ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
+
+    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
+
+- <b class="tab-title">Python</b>
+
+    * main.py
+    ```py
+    from webcface import Client
+    import sys
+    import time
+
+    wcli = Client("tutorial")
+    sys.stdout = wcli.logging_io
+    wcli.wait_connection()
+
+    print("Hello, World!")
+
+    i = 0
+
+    while True:
+        i += 1
+        wcli.value("hoge").set(i)  # 「hoge」という名前のvalueに値をセット
+        if i % 2 == 0:
+            wcli.text("fuga").set("even")  # 「fuga」という名前のtextに文字列をセット
+        else:
+            wcli.text("fuga").set("odd")
+
+        wcli.sync()  # wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)
+        time.sleep(1)
     ```
 
     これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。
@@ -334,6 +422,74 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
 
+- <b class="tab-title">Python</b>
+    * 引数なしの関数hogeを作り、これをクライアントに登録します。
+    ```py
+    from webcface import Client
+    import sys
+    import time
+
+    def hoge() -> int:
+        print("Function hoge started")
+        return 42
+
+    wcli = Client("tutorial")
+    wcli.func("hoge").set(hoge)  # 関数hogeを"hoge"という名前のFuncとして登録
+    sys.stdout = wcli.logging_io
+    wcli.wait_connection()
+
+    # 以下略...
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。
+    「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。
+    また、画面右下に関数の戻り値の42が表示されています。
+
+    ![tutorial_func1](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png)
+
+    \note
+    Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
+
+    <span></span>
+
+    * こんどは引数がある関数を作ってみます。
+    ```py
+    from webcface import Client, Arg  # <= Arg のimportを追加
+    import sys
+    import time
+
+    def hoge() -> int:
+        print("Function hoge started")
+        return 42
+
+    # webcfaceは型アノテーションを使って引数の型を判別できるので、引数の型は書いたほうがいいです
+    def fuga(a: int, b: str) -> int:
+        print(f"Function fuga({a}, {b}) started")
+        return a
+
+    wcli = Client("tutorial")
+    wcli.func("hoge").set(hoge)
+    wcli.func("fuga").set(fuga, args=[
+        Arg(init=100),  # 1つ目の引数aは初期値が100
+        Arg(option=["foo", "bar", "baz"]),  # 2つ目の引数bは選択肢がfoo,bar,baz
+    ])
+    sys.stdout = wcli.logging_io
+    wcli.wait_connection()
+
+    # 以下略...
+    ```
+
+    args ではそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。
+    (指定しなくてもよいです。)
+
+    実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。
+    hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。
+
+    ![tutorial_func2](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png)
+
+    Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
+
 </div>
 
 ## View
@@ -382,6 +538,47 @@ Viewではテキストや入力欄を任意に並べて表示させることが�
 
     上のプログラム例のように、
     テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。
+    ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。
+    またtextInputなどを使って入力欄を表示させることもできます。
+    詳細は [5-4. View](./54_view.md) を参照
+
+- <b class="tab-title">Python</b>
+    ```py
+    from webcface import Client, Arg, view_components, InputRef
+
+    while True:
+        # 他のデータの送信は省略...
+
+        with wcli.view("sample") as v:
+            v.add("Hello, world!")  # テキスト表示
+            v.add("i = ", i)
+            # ↑ v.add("i = ") と v.add(i) をするのと同じ
+            v.add(view_components.button("hoge", hoge))  # ボタン
+            ref_str = InputRef()
+            v.add(view_components.text_input("str", bind=ref_str))  # 文字列入力
+            v.add(
+                view_components.button(
+                    "print",
+                    # クリックすると、入力した文字列を表示
+                    lambda: print(f"str = {ref_str.as_str()}"),
+                )
+            )
+            v.add("\n")
+        # withを抜けると、ここまでにvに追加したものがwcliに反映される
+
+        wcli.sync()  # wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)
+        time.sleep(1)
+    ```
+
+    これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、
+    画像のようにプログラムで指定したとおりの画面が表示されます。
+    「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、
+    「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。
+
+    ![tutorial_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
+
+    上のプログラム例のように、
+    テキストの表示はadd()に文字列や数値などを渡すことでできます。
     ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。
     またtextInputなどを使って入力欄を表示させることもできます。
     詳細は [5-4. View](./54_view.md) を参照
