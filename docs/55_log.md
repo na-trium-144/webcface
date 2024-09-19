@@ -12,8 +12,11 @@
 
 テキストのログ出力を送受信します。
 
-trace, debug, info, warning, error, critical の6段階のレベルに分けたログを扱うことができます。
+trace(0), debug(1), info(2), warning(3), error(4), critical(5) の6段階のレベルに分けたログを扱うことができます。
 (外部ライブラリのspdlogをそのままインタフェースに利用していたver1の仕様を引き継いでいる)
+
+\note
+WebCFaceはログレベルを単に数値として扱うので、-1以下や6以上のレベルも一応使用可能です。
 
 ## コマンドライン
 ```sh
@@ -56,6 +59,15 @@ webcface-send -t log
     wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。
     その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
     
+- <b class="tab-title">JavaScript</b>
+    <span class="since-js">1.8</span>
+    Log.append() でログを送信することができます。
+    webcfaceに送信されるのみで、コンソールへの出力などは行いません。
+    ```ts
+    wcli.log().append(2, "this is info");
+    wcli.log().append(3, "this is error");
+    ```
+
 - <b class="tab-title">Python</b>
     Python標準のloggingモジュールを使うことができます。
 
@@ -122,9 +134,41 @@ webcface-send -t log
 - <b class="tab-title">log4js (JavaScript)</b>
     log4js: https://www.npmjs.com/package/log4js
 
-    log4jsのappenderにClient.logAppenderを登録すると出力されます。
-    ```js
+    log4js→webcfaceにログを送信するappenderの例(ver1.7までwebcfaceに含まれていた実装):
+    ```ts
+    import { Level, Levels, LoggingEvent, AppenderModule } from "log4js";
     import log4js from "log4js";
+
+    function log4jsLevelConvert(level: Level, levels: Levels) {
+      if (level.isGreaterThanOrEqualTo(levels.FATAL)) {
+        return 5;
+      } else if (level.isGreaterThanOrEqualTo(levels.ERROR)) {
+        return 4;
+      } else if (level.isGreaterThanOrEqualTo(levels.WARN)) {
+        return 3;
+      } else if (level.isGreaterThanOrEqualTo(levels.INFO)) {
+        return 2;
+      } else if (level.isGreaterThanOrEqualTo(levels.DEBUG)) {
+        return 1;
+      } else if (level.isGreaterThanOrEqualTo(levels.TRACE)) {
+        return 0;
+      } else {
+        return -1;
+      }
+    }
+    export function appender(): AppenderModule {
+      return {
+        configure:
+          (config?: object, layouts?: any, findAppender?: any, levels?: Levels) =>
+          (logEvent: LoggingEvent) => {
+            wcli.log().append(
+              levels !== undefined ? log4jsLevelConvert(logEvent.level, levels) : 2,
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+              util.format(...logEvent.data)
+            );
+          },
+      };
+    }
 
     log4js.configure({
       appenders: {
@@ -163,30 +207,153 @@ Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるの
 
 ## 受信
 
-Member::log() でLogクラスのオブジェクトが得られ、
-Log::tryGet() でデータのリクエストをするとともにログが得られます。
-
-<span class="since-c">2.0</span>
-ワイド文字列で取得したい場合は tryGetW() を使います
-
-ログデータは  
-C++: webcface::LogLine, webcface::LogLineW  
-JavaScript: [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html)  
-Python: [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine)  
-のリストとして得られ、
-メッセージ、ログレベル、時刻を取得できます。
-
-<span class="since-c">1.1.5</span>
-<span class="since-js">1.0.4</span>
-<span class="since-py"></span>
-Logオブジェクトにはこれまで受信したログデータがすべて含まれますが、
-前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
-
 \note
 <span class="since-c">1.1.9</span>
 サーバーは各クライアントのログを1000行まで保持しています。
 logの受信リクエストを送った時点から1000行より前のログは取得できません。
-serverの起動時のオプションでこの行数は変更できます。(`webcface-server -h`を参照)
+serverの起動時のオプションでこの行数は変更できます。([2-1. Server](21_server.md)を参照)
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    Member::log() でLogクラスのオブジェクトが得られ、
+    Log::tryGet() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    webcface::LogLine
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```cpp
+    std::optional<std::vector<LogLine>> logs = wcli.member("foo").log().tryGet();
+    ```
+    * 値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient::sync()したときに</del>
+        <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log::get() はstd::nulloptの代わりに空のvectorを返します。
+    
+    \warning
+    <span class="since-c">2.1</span>
+    Clientはmemberごとに最大1000行までのログを保持しています。
+    それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。  
+    保持するログの行数は `webcface::Log::keepLines()` で変更できます。
+    負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)
+
+    <span></span>
+
+    <span class="since-c">1.1.5</span>
+    Log::tryGet(), get() はClientが保持しているログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log::clear() で受信したログデータをすべて削除することもできます。
+
+    ```cpp
+    while(true){
+        for(LogLine line : wcli.member("foo").log().get()){
+            // 新しく送られてきたログについてなにかする
+        }
+        wcli.member("foo").log().clear(); // 次get()をしたときにはすでに処理済みのログは返ってこない
+
+        // ...
+    }
+    ```
+
+    <span class="since-c">1.7</span>
+    Log::request() で明示的にリクエストを送信することもできます。
+
+    <span class="since-c">2.0</span>
+    tryGetW(), getW() ではstringの代わりにwstringを使った webcface::LogLineW のリストで返ります。
+
+- <b class="tab-title">JavaScript</b>
+    Member.log() でLogクラスのオブジェクトが得られ、
+    Log.tryGet() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    [LogLine](https://na-trium-144.github.io/webcface-js/interfaces/LogLine.html)
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```ts
+    const logs: LogLine[] | null = wcli.member("foo").log().tryGet();
+    ```
+    * 値をまだ受信していない場合 tryGet() はnullを返し、そのデータのリクエストをサーバーに送ります。
+        * リクエストは <del>次にClient.sync()したときに</del>
+        <span class="since-js">1.1</span>自動的に別スレッドで送信されます。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log.get() はnullの代わりに空のリストを返します。
+    
+    \warning
+    <span class="since-js">1.8</span>
+    Clientはmemberごとに最大1000行までのログを保持しています。
+    それ以上の行数のログがある場合は古いものから削除され、tryGet()やget()で取得できなくなります。  
+    保持するログの行数は `Log.keepLines = 1000` などとすると変更できます。
+    負の値にすると無制限に保持するようになります(ver2.0までと同じ動作)
+
+    <span></span>
+
+    <span class="since-js">1.0.4</span>
+    Log.tryGet(), get() はClientが保持しているログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
+
+    ```ts
+    while(true){
+        for(const line of wcli.member("foo").log().get()){
+            // 新しく送られてきたログについてなにかする
+        }
+        wcli.member("foo").log().clear(); // 次get()をしたときにはすでに処理済みのログは返ってこない
+
+        // ...
+    }
+    ```
+
+    <span class="since-js">1.1</span>
+    Log::request() で明示的にリクエストを送信することもできます。
+
+- <b class="tab-title">Python</b>
+    Member.log() でLogクラスのオブジェクトが得られ、
+    Log.try_get() でデータのリクエストをするとともにログが得られます。
+
+    データは
+    [webcface.LogLine](https://na-trium-144.github.io/webcface-python/webcface.log_handler.html#webcface.log_handler.LogLine)
+    のリストとして得られ、メッセージ、ログレベル、時刻を取得できます。
+
+    ```ts
+    logs = wcli.member("foo").log().try_get()
+    ```
+    * 値をまだ受信していない場合 try_get() はNoneを返し、そのデータのリクエストをサーバーに送ります。
+        * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
+    * Log.get() はNoneの代わりに空のリストを返します。
+    
+    Log.tryGet(), get() はそれまでに受信したログデータすべてを返しますが、
+    前回からの差分だけが必要な場合は、データの処理後に Log.clear() で受信したログデータをすべて削除することもできます。
+
+    ```python
+    while True:
+        for line in wcli.member("foo").log().get():
+            # 新しく送られてきたログについてなにかする
+        wcli.member("foo").log().clear(); # 次get()をしたときにはすでに処理済みのログは返ってこない
+    ```
+
+    Log::request() で明示的にリクエストを送信することもできます。
+
+</div>
+
+### Entry
+
+ログをすべて受信しなくても、ログが少なくとも1行存在するかどうか(他memberが送信しているかどうか)は取得することができます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.1</span>
+
+    ログが少なくとも1行存在する場合、 Log::exists() がtrueを返します。
+    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
+
+- <b class="tab-title">JavaScript</b>
+    \since <span class="since-js">1.8</span>
+
+    ログが少なくとも1行存在する場合、 Log.exists() がtrueを返します。
+    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
+
+</div>
 
 ### Event
 

@@ -9,7 +9,7 @@ TEST_F(ServerTest, connection) {
     while (!dummy_c2->connected()) {
         wait();
     }
-    EXPECT_EQ(server->store->clients.size(), 2u);
+    EXPECT_EQ(server->store->clientsCopy().size(), 2u);
 }
 TEST_F(ServerTest, unixSocketConnection) {
     dummy_c1 = std::make_shared<DummyClient>(true);
@@ -20,7 +20,7 @@ TEST_F(ServerTest, unixSocketConnection) {
     while (!dummy_c2->connected()) {
         wait();
     }
-    EXPECT_EQ(server->store->clients.size(), 2u);
+    EXPECT_EQ(server->store->clientsCopy().size(), 2u);
 }
 TEST_F(ServerTest, sync) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -70,12 +70,12 @@ TEST_F(ServerTest, sync) {
         },
         [&] { ADD_FAILURE() << "should have been received entry"; });
 
-    ASSERT_TRUE(server->store->clients_by_id.count(1));
-    ASSERT_TRUE(server->store->clients_by_id.count(2));
-    ASSERT_TRUE(server->store->clients_by_id.count(3));
-    EXPECT_EQ(server->store->clients_by_id.at(1)->name, ""_ss);
-    EXPECT_EQ(server->store->clients_by_id.at(2)->name, "c2"_ss);
-    EXPECT_EQ(server->store->clients_by_id.at(3)->name, "c3"_ss);
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(1));
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(2));
+    ASSERT_TRUE(server->store->clientsByIdCopy().count(3));
+    EXPECT_EQ(server->store->clientsByIdCopy().at(1)->name, ""_ss);
+    EXPECT_EQ(server->store->clientsByIdCopy().at(2)->name, "c2"_ss);
+    EXPECT_EQ(server->store->clientsByIdCopy().at(3)->name, "c3"_ss);
     dummy_c1->recvClear();
 
     // dummy_c2->send(message::Sync{});
@@ -90,7 +90,7 @@ TEST_F(ServerTest, ping) {
     wait();
     auto start = std::chrono::steady_clock::now();
     server->server_ping_wait.notify_one(); // これで無理やりpingさせる
-    auto s_c1 = server->store->clients_by_id.at(1);
+    auto s_c1 = server->store->clientsByIdCopy().at(1);
     dummy_c1->waitRecv<message::Ping>([&](const auto &) {});
     dummy_c1->send(message::Ping{});
     wait();
@@ -129,25 +129,27 @@ TEST_F(ServerTest, entry) {
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
     dummy_c1->send(message::Image{
         "a"_ss,
         ImageFrame{sizeWH(100, 100),
                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
                    ImageColorMode::bgr}
             .toMessage()});
+    dummy_c1->send(message::Log{
+        0, std::make_shared<std::deque<message::LogLine>>(
+               std::deque<message::LogLine>{
+                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                       .toMessage(),
+               })});
     dummy_c1->send(message::FuncInfo{0, "a"_ss, ValType::none_, {}});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
@@ -185,6 +187,8 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
     });
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
@@ -214,17 +218,14 @@ TEST_F(ServerTest, entry) {
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::ViewComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas3DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -232,8 +233,7 @@ TEST_F(ServerTest, entry) {
     });
     dummy_c1->send(message::Canvas2D{
         "b"_ss, 0, 0,
-        std::unordered_map<std::string,
-                           std::shared_ptr<message::Canvas2DComponent>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
         0});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -259,6 +259,32 @@ TEST_F(ServerTest, entry) {
 }
 TEST_F(ServerTest, log) {
     dummy_c1 = std::make_shared<DummyClient>();
+    dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    wait();
+    dummy_c1->send(message::Log{
+        0, std::make_shared<std::deque<message::LogLine>>(
+               std::deque<message::LogLine>{
+                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                       .toMessage(),
+               })});
+    // 初回のみリクエストしていなくても送られる
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
+    dummy_c2->send(message::LogReq{{}, "c1"_ss});
+    // req時の値
+    // keep_logを超えたので最後の3行だけ送られる
+    dummy_c2->waitRecv<message::Log>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.log->size(), 1u);
+        EXPECT_EQ(obj.log->at(0).level_, 0);
+        EXPECT_EQ(obj.log->at(0).message_, "0"_ss);
+    });
+}
+TEST_F(ServerTest, logKeep) {
+    dummy_c1 = std::make_shared<DummyClient>();
     wait();
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
@@ -278,6 +304,9 @@ TEST_F(ServerTest, log) {
                })});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    // syncinit時に送られる
+    dummy_c2->waitRecv<message::LogEntry>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->send(message::LogReq{{}, "c1"_ss});
     // req時の値
     // keep_logを超えたので最後の3行だけ送られる

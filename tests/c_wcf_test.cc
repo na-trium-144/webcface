@@ -586,16 +586,15 @@ TEST_F(CClientTest, viewReq) {
         EXPECT_EQ(obj.req_id, 1u);
     });
 
-        std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v{
-            {"0", ViewComponents::text("a")
-                      .textColor(ViewColor::yellow)
-                      .bgColor(ViewColor::green)
-                      .component_v
-                      .lockTmp({}, ""_ss)},
-            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
-            {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
-                      .lockTmp({}, ""_ss)},
-        };
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> v{
+        {"0", ViewComponents::text("a")
+                  .textColor(ViewColor::yellow)
+                  .bgColor(ViewColor::green)
+                  .component_v.lockTmp({}, ""_ss)},
+        {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
+        {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
+                  .lockTmp({}, ""_ss)},
+    };
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});

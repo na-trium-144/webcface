@@ -11,7 +11,7 @@ Image::Image(const Field &base) : Field(base) {}
 const Image &Image::tryRequest() const {
     auto req_id = dataLock()->image_store.addReq(member_, field_);
     if (req_id) {
-        dataLock()->messagePushOnline(
+        dataLock()->messagePushReq(
             message::packSingle(message::Req<message::Image>{
                 member_, field_, req_id, message::ImageReq{}}));
     }
@@ -30,7 +30,7 @@ const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
         frame_rate};
     auto req_id = dataLock()->image_store.addReq(member_, field_, req);
     if (req_id) {
-        dataLock()->messagePushOnline(message::packSingle(
+        dataLock()->messagePushReq(message::packSingle(
             message::Req<message::Image>{member_, field_, req_id, req}));
         this->clear();
     }
@@ -77,6 +77,9 @@ const Image &Image::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+bool Image::exists() const {
+    return dataLock()->image_store.getEntry(member_).count(field_);
 }
 
 WEBCFACE_NS_END

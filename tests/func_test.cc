@@ -351,24 +351,28 @@ TEST_F(FuncTest, funcRunRemote) {
     EXPECT_TRUE(res.finished());
     EXPECT_FALSE(res.found());
     EXPECT_TRUE(res.isError());
-    EXPECT_TRUE(data_->sync_queue.empty());
-
-    data_->connected = true;
-
+    {
+        internal::ClientData::ScopedWsLock lock_ws(data_);
+        EXPECT_TRUE(lock_ws.getData().sync_queue.empty());
+        lock_ws.getData().connected = true;
+    }
     res = func("a", "b").runAsync(1.23, true, "abc");
     EXPECT_FALSE(res.reached());
     bool call_msg_found = false;
-    while (!data_->sync_queue.empty()) {
-        auto msg = data_->sync_queue.front();
-        data_->sync_queue.pop();
-        if (msg ==
-            message::packSingle(message::Call{
-                1,
-                0,
-                0,
-                "b"_ss,
-                {ValAdaptor(1.23), ValAdaptor(true), ValAdaptor("abc")}})) {
-            call_msg_found = true;
+    {
+        internal::ClientData::ScopedWsLock lock_ws(data_);
+        while (!lock_ws.getData().sync_queue.empty()) {
+            auto msg = lock_ws.getData().sync_queue.front();
+            lock_ws.getData().sync_queue.pop();
+            if (std::get<0>(msg) ==
+                message::packSingle(message::Call{
+                    1,
+                    0,
+                    0,
+                    "b"_ss,
+                    {ValAdaptor(1.23), ValAdaptor(true), ValAdaptor("abc")}})) {
+                call_msg_found = true;
+            }
         }
     }
     EXPECT_TRUE(call_msg_found);

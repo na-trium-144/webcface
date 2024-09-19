@@ -69,7 +69,7 @@ const RobotModel &RobotModel::request() const {
     auto data = dataLock();
     auto req = data->robot_model_store.addReq(member_, field_);
     if (req) {
-        data->messagePushOnline(message::packSingle(
+        data->messagePushReq(message::packSingle(
             message::Req<message::RobotModel>{{}, member_, field_, req}));
     }
     return *this;
@@ -102,6 +102,9 @@ const RobotModel &RobotModel::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+bool RobotModel::exists() const {
+    return dataLock()->robot_model_store.getEntry(member_).count(field_);
 }
 
 WEBCFACE_NS_END

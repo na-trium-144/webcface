@@ -158,10 +158,11 @@ void MemberData::onRecv(const std::string &message) {
             auto &v = *static_cast<webcface::message::SyncInit *>(obj.get());
             this->name = v.member_name;
             auto member_id_before = this->member_id;
+            auto clients_by_id = store->clientsByIdCopy();
             auto prev_cli_it = std::find_if(
-                store->clients_by_id.begin(), store->clients_by_id.end(),
+                clients_by_id.begin(), clients_by_id.end(),
                 [&](const auto &it) { return it.second->name == this->name; });
-            if (prev_cli_it != store->clients_by_id.end()) {
+            if (prev_cli_it != clients_by_id.end()) {
                 this->member_id = v.member_id = prev_cli_it->first;
             } else {
                 // コンストラクタですでに一意のidが振られているはず
@@ -170,9 +171,7 @@ void MemberData::onRecv(const std::string &message) {
             v.addr = this->remote_addr;
             this->init_data = v;
             this->sync_init = true;
-            store->clients_by_id.erase(this->member_id);
-            store->clients_by_id.emplace(this->member_id,
-                                         store->getClient(con));
+            store->initClientId(this->member_id, con);
             if (this->name.empty()) {
                 logger->debug("sync_init (no name)");
             } else {
@@ -263,6 +262,12 @@ void MemberData::onRecv(const std::string &message) {
                             logger->trace("send image_entry {} of member {}",
                                           f.first.decode(), cd->member_id);
                         }
+                    }
+                    if (!cd->log->empty()) {
+                        this->pack(
+                            webcface::message::LogEntry{{}, cd->member_id});
+                        logger->trace("send log_entry of member {}",
+                                      cd->member_id);
                     }
                     for (const auto &f : cd->func) {
                         if (!f.first.startsWith(field_separator)) {
@@ -615,6 +620,16 @@ void MemberData::onRecv(const std::string &message) {
                              "log will be romoved.",
                              store->keep_log);
             }
+            if (this->log->empty()) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
+                            webcface::message::LogEntry{{}, this->member_id});
+                        cd->logger->trace("send log_entry of member {}",
+                                          this->member_id);
+                    }
+                });
+            }
             for (auto &ll : *v.log) {
                 this->log->push_back(ll);
             }
@@ -771,9 +786,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::ViewComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::ViewComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
                             diff.emplace(std::to_string(i), it.second[i]);
@@ -813,9 +827,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::Canvas3DComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::Canvas3DComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.size(); i++) {
                             diff.emplace(std::to_string(i), it.second[i]);
@@ -855,9 +868,8 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::unordered_map<
-                            std::string,
-                            std::shared_ptr<message::Canvas2DComponent>>
+                        std::map<std::string,
+                                 std::shared_ptr<message::Canvas2DComponent>>
                             diff;
                         for (std::size_t i = 0; i < it.second.components.size();
                              i++) {
@@ -935,6 +947,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::canvas2d:
         case MessageKind::entry + MessageKind::image:
         case MessageKind::res + MessageKind::image:
+        case MessageKind::log_entry:
         case MessageKind::sync_init_end:
         case MessageKind::ping_status:
             if (!message_kind_warned[kind]) {

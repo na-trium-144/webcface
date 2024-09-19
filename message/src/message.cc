@@ -73,6 +73,7 @@ unpack(const std::string &message,
                 MSG_PARSE_DATA(Canvas2D)
                 MSG_PARSE(Log)
                 MSG_PARSE(LogReq)
+                MSG_PARSE(LogEntry)
                 MSG_PARSE(FuncInfo)
                 MSG_PARSE(Sync)
                 MSG_PARSE(SyncInitEnd)

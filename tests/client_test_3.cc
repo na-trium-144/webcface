@@ -106,27 +106,26 @@ TEST_F(ClientTest, canvas2DReq) {
     });
     wcli_->member("a").canvas2D("b").onChange(callback<Canvas2D>());
 
-    std::unordered_map<std::string, std::shared_ptr<message::Canvas2DComponent>>
-        v{
-            {"0", geometries::line({0, 0}, {30, 30})
-                      .color(ViewColor::black)
-                      .fillColor(ViewColor::white)
-                      .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"_ss}})
-                      .component_2d.lockTmp(data_, ""_ss, nullptr)},
-            {"1", geometries::rect({0, 0}, {30, 30})
-                      .color(ViewColor::black)
-                      .fillColor(ViewColor::white)
-                      .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"_ss}})
-                      .component_2d.lockTmp(data_, ""_ss, nullptr)},
-            {"2", geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
-                      .color(ViewColor::black)
-                      .fillColor(ViewColor::white)
-                      .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"_ss}})
-                      .component_2d.lockTmp(data_, ""_ss, nullptr)},
-        };
+    std::map<std::string, std::shared_ptr<message::Canvas2DComponent>> v{
+        {"0", geometries::line({0, 0}, {30, 30})
+                  .color(ViewColor::black)
+                  .fillColor(ViewColor::white)
+                  .strokeWidth(5)
+                  .onClick(Func{Field{data_, self_name, "f"_ss}})
+                  .component_2d.lockTmp(data_, ""_ss, nullptr)},
+        {"1", geometries::rect({0, 0}, {30, 30})
+                  .color(ViewColor::black)
+                  .fillColor(ViewColor::white)
+                  .strokeWidth(5)
+                  .onClick(Func{Field{data_, self_name, "f"_ss}})
+                  .component_2d.lockTmp(data_, ""_ss, nullptr)},
+        {"2", geometries::polygon({{0, 0}, {30, 30}, {50, 20}})
+                  .color(ViewColor::black)
+                  .fillColor(ViewColor::white)
+                  .strokeWidth(5)
+                  .onClick(Func{Field{data_, self_name, "f"_ss}})
+                  .component_2d.lockTmp(data_, ""_ss, nullptr)},
+    };
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 200, 200, v, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Canvas2D>{1, "c"_ss, 200, 200, v, 3});
@@ -189,15 +188,14 @@ TEST_F(ClientTest, canvas2DReq) {
     EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b.c"_ss).has_value());
 
     // 差分だけ送る
-    std::unordered_map<std::string, std::shared_ptr<message::Canvas2DComponent>>
-        v2{
-            {"0", geometries::line({0, 0}, {30, 30})
-                      .color(ViewColor::red)
-                      .fillColor(ViewColor::white)
-                      .strokeWidth(5)
-                      .onClick(Func{Field{data_, self_name, "f"_ss}})
-                      .component_2d.lockTmp(data_, ""_ss, nullptr)},
-        };
+    std::map<std::string, std::shared_ptr<message::Canvas2DComponent>> v2{
+        {"0", geometries::line({0, 0}, {30, 30})
+                  .color(ViewColor::red)
+                  .fillColor(ViewColor::white)
+                  .strokeWidth(5)
+                  .onClick(Func{Field{data_, self_name, "f"_ss}})
+                  .component_2d.lockTmp(data_, ""_ss, nullptr)},
+    };
     dummy_s->send(message::Res<message::Canvas2D>{1, ""_ss, 100, 100, v2, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
@@ -325,27 +323,26 @@ TEST_F(ClientTest, canvas3DReq) {
     });
     wcli_->member("a").canvas3D("b").onChange(callback<Canvas3D>());
 
-    std::unordered_map<std::string, std::shared_ptr<message::Canvas3DComponent>>
-        v{
-            {
-                "0",
-                geometries::line({0, 0, 0}, {30, 30, 30})
-                    .color(ViewColor::black)
-                    .component_3d.lockTmp(data_, ""_ss, nullptr),
-            },
-            {
-                "1",
-                geometries::rect({0, 0}, {30, 30})
-                    .color(ViewColor::black)
-                    .component_3d.lockTmp(data_, ""_ss, nullptr),
-            },
-            {
-                "2",
-                geometries::sphere({0, 0, 0}, 1)
-                    .color(ViewColor::black)
-                    .component_3d.lockTmp(data_, ""_ss, nullptr),
-            },
-        };
+    std::map<std::string, std::shared_ptr<message::Canvas3DComponent>> v{
+        {
+            "0",
+            geometries::line({0, 0, 0}, {30, 30, 30})
+                .color(ViewColor::black)
+                .component_3d.lockTmp(data_, ""_ss, nullptr),
+        },
+        {
+            "1",
+            geometries::rect({0, 0}, {30, 30})
+                .color(ViewColor::black)
+                .component_3d.lockTmp(data_, ""_ss, nullptr),
+        },
+        {
+            "2",
+            geometries::sphere({0, 0, 0}, 1)
+                .color(ViewColor::black)
+                .component_3d.lockTmp(data_, ""_ss, nullptr),
+        },
+    };
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Canvas3D>{1, "c"_ss, v, 3});
@@ -381,16 +378,15 @@ TEST_F(ClientTest, canvas3DReq) {
     EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b.c"_ss).has_value());
 
     // 差分だけ送る
-    std::unordered_map<std::string, std::shared_ptr<message::Canvas3DComponent>>
-        v2{
-            {
-                "0",
+    std::map<std::string, std::shared_ptr<message::Canvas3DComponent>> v2{
+        {
+            "0",
 
-                geometries::line({0, 0, 0}, {30, 30, 30})
-                    .color(ViewColor::red)
-                    .component_3d.lockTmp(data_, ""_ss, nullptr),
-            },
-        };
+            geometries::line({0, 0, 0}, {30, 30, 30})
+                .color(ViewColor::red)
+                .component_3d.lockTmp(data_, ""_ss, nullptr),
+        },
+    };
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, 3});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);

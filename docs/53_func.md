@@ -412,6 +412,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 </div>
 
 ## 関数の情報の取得
+
 Member::func() でFuncクラスのオブジェクトが得られ、
 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。
 
@@ -420,15 +421,8 @@ Func::returnType() や Func::args() で関数の引数や戻り値の情報を�
 
 ### Entry
 
-~~Member::funcs() で~~ そのMemberが送信している関数のリストが得られます  
-<span class="since-c">1.6</span>
-<span class="since-py">1.1</span>
-Member::funcEntries() に変更
-
-また、新しく関数が追加されたときのコールバックを設定できます
-(FuncEntryイベント)
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+Valueと同様、関数が存在するかどうかを取得することができます。
+使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 ## 関数の実行
 
@@ -472,25 +466,46 @@ Member::funcEntries() に変更
     * rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。
     またその場合 isError() がtrueになります。
 
+    ```cpp
+    Promise res = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.waitReach();
+    if(res.found()){
+        // 関数hogeが存在し、実行が開始された
+        res.waitFinish();
+        if(res.isError()){
+            // res.rejection() がエラーメッセージ
+        }else{
+            // res.response() が戻り値
+        }
+    }else{
+        // 関数hogeが存在しないか未接続で呼び出し失敗
+    }
+    ```
+
     \warning
     <span class="since-c">2.0</span>
-    waitReach(), waitFinish() などで結果が返ってくるまで待機することができますが、
+    上の例のようにwaitReach(), waitFinish() などで結果が返ってくるまで待機することができますが、
     これらが結果を受信するためには Client::sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。
 
     <span></span>
 
     * `onReach()`, `onFinish()` で値が返ってきたときに実行されるコールバックを設定することができます。
         * 引数にはそのPromise自身が渡されますが、(キャプチャするなどして)必要なければ引数なしの関数も設定可能です
+        * コールバックは Client::sync() の中から呼び出されます。
     ```cpp
     Promise res = wcli.member("foo").func("hoge").runAsync(1, "aa");
     res.onReach([](Promise res){
-        std::cout << "func hoge() " << res.found() ? "started" : "not started" << std::endl;
+        if(res.found()){
+            // 関数hogeが存在し、実行が開始された
+        }else{
+            // 関数hogeが存在しないか未接続で呼び出し失敗
+        }
     });
     res.onFinish([](Promise res){
-        if(!res.isError()){
-            double ans = res.response();
+        if(res.isError()){
+            // res.rejection() がエラーメッセージ
         }else{
-            std::cout << "Error: " << res.rejection() << std::endl;
+            // res.response() が戻り値
         }
     });
     ```
@@ -499,6 +514,8 @@ Member::funcEntries() に変更
     onReach, onFinish を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。
     したがってコールバックはどの状況で設定したとしても必ず1回呼ばれます。
     (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)
+
+    <span></span>
 
 - <b class="tab-title">C</b>
     wcfFuncRunAsync, (<span class="since-c">2.0</span> wcfFuncRunAsyncW)
@@ -540,22 +557,39 @@ Member::funcEntries() に変更
     <span></span>
 
 - <b class="tab-title">JavaScript</b>
-    Func.runAsync() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
+    \note
+    <span class="since-js">1.8</span> C++の Promise 型に合わせて名前変更しました。
+    以前の名前もまだ使えます。
 
-    AsyncFuncResultからは started と result が取得できます。
-    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
-    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
+    Func.runAsync() で関数を呼び出すと、戻り値として <del>AsyncFuncResult</del> FuncPromise
+    クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
 
-    startedとresultはPromiseです。awaitで待機したり、then()とcatch()でコールバックを設定できます。
-    詳細は [AsyncFuncResult](https://na-trium-144.github.io/webcface-js/classes/AsyncFuncResult.html) を参照してください
+    <del>AsyncFuncResult</del> FuncPromise からは
+    <del>started</del> reach と
+    <del>result</del> finish
+    が取得できます。
+    いずれもPromise型で、awaitで待機したり、then()とcatch()でコールバックを設定できます。
+    * reach (started) は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+        * <span class="since-js">1.8</span>
+        runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseが返ります
+    * finish (result) は実行が完了したときに返ります。関数の戻り値を返すか、または発生した例外のメッセージを含むErrorでrejectします。
+        * <span class="since-js">1.8</span> Rejectする値は常にError型になっています。
+        (1.7以前は関数がthrowしたオブジェクトをそのまま返していた)
 
     ```ts
-    import { AsyncFuncResult } from "webcface";
-    const res: AsyncFuncResult = wcli.member("foo").func("hoge").runAsync(1, "aa");
-    res.result.then((ret: number | boolean | string) => {
-        // ...
+    import { FuncPromise } from "webcface";
+    const res: FuncPromise = wcli.member("foo").func("hoge").runAsync(1, "aa");
+    res.reach.then((found: boolean) => {
+        if (found) {
+            // 関数hogeが存在し、実行が開始された
+        } else {
+            // 関数hogeが存在しないか未接続で呼び出し失敗
+        }
+    });
+    res.finish.then((ret: number | boolean | string) => {
+        // ret が戻り値
     }).catch((e) => {
-        // ...
+        // (e as Error).message がエラーメッセージ
     });
     ```
 

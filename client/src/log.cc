@@ -5,6 +5,12 @@
 
 WEBCFACE_NS_BEGIN
 
+std::atomic<int> internal::log_keep_lines = 1000;
+
+void Log::keepLines(int n){
+    internal::log_keep_lines.store(n);
+}
+
 LogLineData::LogLineData(int level, std::chrono::system_clock::time_point time,
                          const SharedString &message)
     : level_(level), time_(time), message_(message) {}
@@ -93,7 +99,7 @@ const Log &Log::request() const {
     auto data = dataLock();
     auto req = data->log_store.addReq(member_);
     if (req) {
-        data->messagePushOnline(
+        data->messagePushReq(
             message::packSingle(message::LogReq{{}, member_}));
     }
     return *this;
@@ -128,9 +134,11 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     }
 }
 
+bool Log::exists() const { return dataLock()->log_store.getEntry(member_); }
+
 const Log &Log::clear() const {
     dataLock()->log_store.setRecv(member_,
-                                  std::make_shared<std::vector<LogLineData>>());
+                                  std::make_shared<std::deque<LogLineData>>());
     return *this;
 }
 

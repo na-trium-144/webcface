@@ -274,78 +274,99 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.libVersion(), "1");
     EXPECT_EQ(m.remoteAddr(), "12345");
 
+    EXPECT_FALSE(m.value("b").exists());
     m.onValueEntry(callback<Value>());
     dummy_s->send(message::Entry<message::Value>{{}, 10, "b"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.value("b").exists());
     ASSERT_EQ(m.valueEntries().size(), 1u);
     EXPECT_EQ(m.valueEntries()[0].name(), "b");
     EXPECT_EQ(m.valueEntries()[0].nameW(), L"b");
 
+    EXPECT_FALSE(m.text("c").exists());
     m.onTextEntry(callback<Text>());
     dummy_s->send(message::Entry<message::Text>{{}, 10, "c"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.text("c").exists());
     ASSERT_EQ(m.textEntries().size(), 1u);
     EXPECT_EQ(m.textEntries()[0].name(), "c");
     EXPECT_EQ(m.textEntries()[0].nameW(), L"c");
 
+    EXPECT_FALSE(m.view("d").exists());
     m.onViewEntry(callback<View>());
     dummy_s->send(message::Entry<message::View>{{}, 10, "d"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.view("d").exists());
     ASSERT_EQ(m.viewEntries().size(), 1u);
     EXPECT_EQ(m.viewEntries()[0].name(), "d");
     EXPECT_EQ(m.viewEntries()[0].nameW(), L"d");
 
+    EXPECT_FALSE(m.canvas2D("d").exists());
     m.onCanvas2DEntry(callback<Canvas2D>());
     dummy_s->send(message::Entry<message::Canvas2D>{{}, 10, "d"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.canvas2D("d").exists());
     ASSERT_EQ(m.canvas2DEntries().size(), 1u);
     EXPECT_EQ(m.canvas2DEntries()[0].name(), "d");
     EXPECT_EQ(m.canvas2DEntries()[0].nameW(), L"d");
 
+    EXPECT_FALSE(m.canvas3D("d").exists());
     m.onCanvas3DEntry(callback<Canvas3D>());
     dummy_s->send(message::Entry<message::Canvas3D>{{}, 10, "d"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.canvas3D("d").exists());
     ASSERT_EQ(m.canvas3DEntries().size(), 1u);
     EXPECT_EQ(m.canvas3DEntries()[0].name(), "d");
     EXPECT_EQ(m.canvas3DEntries()[0].nameW(), L"d");
 
+    EXPECT_FALSE(m.robotModel("d").exists());
     m.onRobotModelEntry(callback<RobotModel>());
     dummy_s->send(message::Entry<message::RobotModel>{{}, 10, "d"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.robotModel("d").exists());
     ASSERT_EQ(m.robotModelEntries().size(), 1u);
     EXPECT_EQ(m.robotModelEntries()[0].name(), "d");
     EXPECT_EQ(m.robotModelEntries()[0].nameW(), L"d");
 
+    EXPECT_FALSE(m.image("d").exists());
     m.onImageEntry(callback<Image>());
     dummy_s->send(message::Entry<message::Image>{{}, 10, "d"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.image("d").exists());
     ASSERT_EQ(m.imageEntries().size(), 1u);
     EXPECT_EQ(m.imageEntries()[0].name(), "d");
     EXPECT_EQ(m.imageEntries()[0].nameW(), L"d");
 
+    EXPECT_FALSE(m.func("a").exists());
     m.onFuncEntry(callback<Func>());
     dummy_s->send(message::FuncInfo{
         10, "a"_ss, ValType::int_, {std::make_shared<message::Arg>()}});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+    EXPECT_TRUE(m.func("a").exists());
     EXPECT_EQ(m.funcEntries().size(), 1u);
     EXPECT_EQ(m.funcEntries()[0].name(), "a");
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
+
+    EXPECT_FALSE(m.log().exists());
+    dummy_s->send(message::LogEntry{{},10});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_TRUE(m.log().exists());
 
     m.onSync(callback<Member>());
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
@@ -360,7 +381,7 @@ TEST_F(ClientTest, logSend) {
         wait();
     }
     auto ls =
-        std::make_shared<std::vector<LogLineData>>(std::vector<LogLineData>{
+        std::make_shared<std::deque<LogLineData>>(std::deque<LogLineData>{
             {0, std::chrono::system_clock::now(),
              SharedString::fromU8String(std::string(100000, 'a'))},
             {1, std::chrono::system_clock::now(), "b"_ss},
@@ -429,4 +450,40 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(callback_called, 2);
     EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
     EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3u);
+
+    // keep_lines以上のログは保存しない
+    webcface::Log::keepLines(2);
+    dummy_s->send(message::Log{
+        10, std::make_shared<std::deque<message::LogLine>>(
+                std::deque<message::LogLine>{
+                    LogLineData{3, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                })});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 3);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 2);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 3);
+
+    dummy_s->send(message::Log{
+        10, std::make_shared<std::deque<message::LogLine>>(
+                std::deque<message::LogLine>{
+                    LogLineData{4, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{5, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{6, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                    LogLineData{7, std::chrono::system_clock::now(), "d"_ss}
+                        .toMessage(),
+                })});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 4);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 6);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 7);
+
+    webcface::Log::keepLines(1000);
 }

@@ -64,7 +64,7 @@ const Canvas2D &Canvas2D::request() const {
     auto data = dataLock();
     auto req = data->canvas2d_store.addReq(member_, field_);
     if (req) {
-        data->messagePushOnline(message::packSingle(
+        data->messagePushReq(message::packSingle(
             message::Req<message::Canvas2D>{{}, member_, field_, req}));
     }
     return *this;
@@ -93,6 +93,9 @@ const Canvas2D &Canvas2D::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+bool Canvas2D::exists() const {
+    return dataLock()->canvas2d_store.getEntry(member_).count(field_);
 }
 
 WEBCFACE_NS_END

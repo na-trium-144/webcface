@@ -28,6 +28,8 @@ namespace internal {
 void wsThreadMain(const std::shared_ptr<ClientData> &data);
 // void syncThreadMain(const std::shared_ptr<ClientData> &data);
 
+extern std::atomic<int> log_keep_lines;
+
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(const SharedString &name,
                         const SharedString &host = nullptr, int port = -1);
@@ -70,111 +72,245 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     //  */
     // std::thread sync_thread;
 
-    /*!
-     * \brief ws_thread, recv_thread, queue 間の同期
-     *
-     * closing, connected, do_ws_init, do_ws_recv,
-     * sync_queue, recv_queue, sync_init_end が変化した時notifyする
-     *
-     */
-    std::condition_variable ws_cond;
-    std::mutex ws_m;
+    struct SyncDataSnapshot {
+        std::chrono::system_clock::time_point time;
+        StrMap1<ValueData> value_data;
+        StrMap1<TextData> text_data;
+        StrMap1<RobotModelData> robot_model_data;
+        StrMap1<ViewData> view_prev, view_data;
+        StrMap1<Canvas3DData> canvas3d_prev, canvas3d_data;
+        StrMap1<Canvas2DData> canvas2d_prev, canvas2d_data;
+        StrMap1<ImageData> image_data;
+        std::vector<LogLineData> log_data;
+        StrMap1<FuncData> func_data;
+    };
+
+    struct SyncDataFirst {
+        StrMap2<unsigned int> value_req, text_req, robot_model_req, view_req,
+            canvas3d_req, canvas2d_req, image_req;
+        StrMap2<message::ImageReq> image_req_info;
+        StrMap1<bool> log_req;
+        bool ping_status_req;
+        SyncDataSnapshot sync_data;
+    };
+
     /*!
      * close()が呼ばれたらtrue、すべてのスレッドは停止する
      */
     std::atomic<bool> closing = false;
-    /*!
-     * current_curl_connectedがWebSocket::initまたはrecv側の内部で変更されるので、
-     * それを呼び出したスレッドがそれをこっちに反映させる
-     */
-    bool connected = false;
-    /*!
-     * SyncInitEndを受信したらtrue
-     * 切断時にfalseにもどす
-     */
-    bool sync_init_end = false;
-    /*!
-     * Client側から関数が呼ばれたらtrue、
-     * WebSocket::側のinit関数が完了したらfalse
-     *
-     * trueになったときnotify
-     */
-    bool do_ws_init = false;
-    /*!
-     * Client側から関数が呼ばれたらtrue、
-     * WebSocket::側のrecv関数が完了したらfalse
-     *
-     * true,falseになったときnotify
-     *
-     * recv_readyの間にdo_ws_recvを立て、
-     * recv()を行い、これがfalseになったことで完了したことを知る
-     */
-    bool do_ws_recv = false;
-    /*!
-     * recv待機中true
-     * WebSocket::側のrecv関数が完了したらfalse
-     */
-    bool recv_ready = false;
 
+    struct WsMutexedData {
+        /*!
+         * current_curl_connectedがWebSocket::initまたはrecv側の内部で変更されるので、
+         * それを呼び出したスレッドがそれをこっちに反映させる
+         */
+        bool connected = false;
+        /*!
+         * SyncInitEndを受信したらtrue
+         * 切断時にfalseにもどす
+         */
+        bool sync_init_end = false;
+        /*!
+         * Client側から関数が呼ばれたらtrue、
+         * WebSocket::側のinit関数が完了したらfalse
+         *
+         * trueになったときnotify
+         */
+        bool do_ws_init = false;
+        /*!
+         * Client側から関数が呼ばれたらtrue、
+         * WebSocket::側のrecv関数が完了したらfalse
+         *
+         * true,falseになったときnotify
+         *
+         * recv_readyの間にdo_ws_recvを立て、
+         * recv()を行い、これがfalseになったことで完了したことを知る
+         */
+        bool do_ws_recv = false;
+        /*!
+         * recv待機中true
+         * WebSocket::側のrecv関数が完了したらfalse
+         */
+        bool recv_ready = false;
+
+        std::queue<std::vector<std::pair<int, std::shared_ptr<void>>>>
+            recv_queue;
+        /*!
+         * \brief 送信したいメッセージを入れるキュー
+         *
+         * 接続できていない場合送信されずキューにたまる
+         *
+         * msgpackのシリアライズに時間がかかるので、
+         * sync()時はシリアライズ後のメッセージではなく
+         * 必要なデータを含んだSyncDataSnapshotをpushし(syncData()),
+         * あとで別スレッドでそれをメッセージにする (packSyncData())
+         *
+         * 変更するときはws_mをロックしws_condで変更通知をする
+         * (sync_mはロックしない)
+         */
+        std::queue<std::variant<std::string, SyncDataSnapshot>> sync_queue;
+    };
+
+  private:
+    WsMutexedData ws_data;
+    std::mutex ws_m;
+
+  public:
+    /*!
+     * \brief ws_thread, recv_thread, queue 間の同期
+     *
+     * ws_dataの中身
+     * (closing, connected, do_ws_init, do_ws_recv,
+     *  sync_queue, recv_queue, sync_init_end)
+     * が変化した時notifyする
+     *
+     */
+    std::condition_variable ws_cond;
+
+    /*!
+     * std::unique_lockのように使い、lockしている間だけWsMutexedDataにアクセスできる
+     */
+    class ScopedWsLock : public std::unique_lock<std::mutex> {
+        ClientData *data;
+
+      public:
+        explicit ScopedWsLock(ClientData *data)
+            : std::unique_lock<std::mutex>(data->ws_m), data(data) {}
+        explicit ScopedWsLock(const std::shared_ptr<ClientData> &data)
+            : ScopedWsLock(data.get()) {}
+        auto &getData() {
+            assert(this->owns_lock());
+            return data->ws_data;
+        }
+    };
 
     /*!
      * ただの設定フラグなのでmutexやcondとは無関係
      */
     std::atomic<bool> auto_reconnect = true;
 
-    /*!
-     * \brief 送信したいメッセージを入れるキュー
-     *
-     * 接続できていない場合送信されずキューにたまる
-     *
-     */
-    std::queue<std::string> sync_queue, recv_queue;
+    struct SyncMutexedData {
+        /*!
+         * 次回接続後一番最初に送信するメッセージ
+         *
+         * * syncDataFirst() の返り値であり、
+         * すべてのリクエストとすべてのsyncデータ(1時刻分)が含まれる
+         * * sync()時に未接続かつこれが空ならその時点のsyncDataFirstをこれにセット
+         * * 接続時にこれが空でなければ、
+         *   * これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ)
+         * を、
+         *   * これが空ならその時点のsyncDataFirstを、
+         * * 送信する
+         * * <del>送信したら</del> 切断時に再度これを空にする
+         */
+        std::optional<SyncDataFirst> sync_first;
+        /*!
+         * \brief 初期化時に送信するメッセージ
+         *
+         * 各種req と syncData(true) の全データが含まれる。
+         *
+         * 変数 sync_first の説明を参照
+         *
+         */
+        SyncDataFirst syncDataFirst(internal::ClientData *this_);
+        /*!
+         * \brief sync() 1回分のメッセージ
+         *
+         * value, text, view, log, funcの送信データの前回からの差分が含まれる。
+         * 各種reqはsyncとは無関係に送信される
+         *
+         * \param is_first trueのとき差分ではなく全データを送る
+         * (syncDataFirst()内から呼ばれる)
+         *
+         */
+        SyncDataSnapshot syncData(internal::ClientData *this_, bool is_first);
+    };
 
+  private:
+    SyncMutexedData sync_data;
     /*!
-     * 次回接続後一番最初に送信するメッセージ
-     * 
-     * * syncDataFirst() の返り値であり、
-     * すべてのリクエストとすべてのsyncデータ(1時刻分)が含まれる
-     * * sync()時に未接続かつこれが空ならその時点のsyncDataFirstをこれにセット
-     * * 接続時にこれが空でなければ、
-     *   * これ + sync_queueの中身(=syncDataFirst以降のすべてのsync()データ) を、
-     *   * これが空ならその時点のsyncDataFirstを、
-     * * 送信する
-     * * 送信したら再度これを空にする
-     */
-    std::string sync_first;
-    /*!
-     * sync_firstとsyncData(),syncDataFirst()呼び出しをガードするmutex
+     * sync_first,syncData(),syncDataFirst()呼び出しをガードするmutex
+     *
+     * ws_mとsync_mを両方同時にロックすることがないようにする
+     *
+     * sync_queueへのpush時にはこれではなくws_mのロックが必要 (ややこしい)
      */
     std::mutex sync_m;
+
+  public:
+    /*!
+     * std::unique_lockのように使い、lockしている間だけSyncMutexedDataにアクセスできる
+     */
+    class ScopedSyncLock : public std::unique_lock<std::mutex> {
+        ClientData *data;
+
+      public:
+        explicit ScopedSyncLock(ClientData *data)
+            : std::unique_lock<std::mutex>(data->sync_m), data(data) {}
+        explicit ScopedSyncLock(const std::shared_ptr<ClientData> &data)
+            : ScopedSyncLock(data.get()) {}
+        auto &getData() {
+            assert(this->owns_lock());
+            return data->sync_data;
+        }
+    };
 
     /*!
      * 接続中の場合メッセージをキューに入れtrueを返し、
      * 接続していない場合なにもせずfalseを返す
-     * 
-     * 未接続の間送る必要のないデータに使う。
-     * Req, Callなど
+     *
+     * Call, Pingなど
      */
     bool messagePushOnline(std::string &&msg) {
-        std::lock_guard lock(this->ws_m);
-        if(this->connected){
-            this->sync_queue.push(std::move(msg));
+        ScopedWsLock lock_ws(this);
+        if (lock_ws.getData().connected) {
+            lock_ws.getData().sync_queue.push(std::move(msg));
             this->ws_cond.notify_all();
             return true;
-        }else{
+        } else {
+            return false;
+        }
+    }
+    /*!
+     * sync_firstが空でなければメッセージをキューに入れtrueを返し、
+     * sync_firstが空ならなにもせずfalseを返す
+     *
+     * Reqはsync_first時にすべて含まれるので。
+     */
+    bool messagePushReq(std::string &&msg) {
+        bool has_sync_first;
+        {
+            ScopedSyncLock lock_s(this);
+            has_sync_first = (lock_s.getData().sync_first != std::nullopt);
+        }
+        if (has_sync_first) {
+            ScopedWsLock lock_ws(this);
+            lock_ws.getData().sync_queue.push(std::move(msg));
+            this->ws_cond.notify_all();
+            return true;
+        } else {
             return false;
         }
     }
     /*!
      * 接続中かどうかに関係なくメッセージをキューに入れる
-     * 
+     *
      * syncで確実に送信するデータに使う。
      */
     void messagePushAlways(std::string &&msg) {
-        std::lock_guard lock(this->ws_m);
-        this->sync_queue.push(std::move(msg));
+        ScopedWsLock lock_ws(this);
+        lock_ws.getData().sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();
     }
+    void messagePushAlways(SyncDataSnapshot &&msg) {
+        ScopedWsLock lock_ws(this);
+        lock_ws.getData().sync_queue.push(std::move(msg));
+        this->ws_cond.notify_all();
+    }
+
+    std::string packSyncDataFirst(const SyncDataFirst &data);
+    std::string packSyncData(std::stringstream &buffer, int &len,
+                             const SyncDataSnapshot &data);
 
     /*!
      * \brief 通信関係のスレッドを開始する
@@ -199,31 +335,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
                   std::optional<std::chrono::microseconds> timeout);
 
     /*!
-     * \brief 初期化時に送信するメッセージ
-     *
-     * 各種req と syncData(true) の全データが含まれる。
-     *
-     * 変数 sync_first の説明を参照
-     *
-     */
-    std::string syncDataFirst();
-    /*!
-     * \brief sync() 1回分のメッセージ
-     *
-     * value, text, view, log, funcの送信データの前回からの差分が含まれる。
-     * 各種reqはsyncとは無関係に送信される
-     *
-     * \param is_first trueのとき差分ではなく全データを送る
-     * (syncDataFirst()内から呼ばれる)
-     *
-     */
-    std::string syncData(bool is_first);
-    std::string syncData(bool is_first, std::stringstream &buffer, int &len);
-    /*!
      * \brief 受信時の処理
      *
      */
-    void onRecv(const std::string &message);
+    void
+    onRecv(const std::vector<std::pair<int, std::shared_ptr<void>>> &messages);
 
     std::mutex entry_m;
     StrSet1 member_entry;
@@ -235,7 +351,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;
-    SyncDataStore1<std::shared_ptr<std::vector<LogLineData>>> log_store;
+    SyncDataStore1<std::shared_ptr<std::deque<LogLineData>>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
     std::size_t log_sent_lines = 0;

@@ -136,7 +136,7 @@ const View &View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
-        data->messagePushOnline(message::packSingle(
+        data->messagePushReq(message::packSingle(
             message::Req<message::View>{{}, member_, field_, req}));
     }
     return *this;
@@ -164,6 +164,9 @@ const View &View::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+bool View::exists() const {
+    return dataLock()->view_store.getEntry(member_).count(field_);
 }
 
 WEBCFACE_NS_END

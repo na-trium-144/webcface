@@ -13,7 +13,7 @@ const Value &Value::request() const {
     auto data = dataLock();
     auto req = data->value_store.addReq(member_, field_);
     if (req) {
-        data->messagePushOnline(message::packSingle(
+        data->messagePushReq(message::packSingle(
             message::Req<message::Value>{{}, member_, field_, req}));
     }
     return *this;
@@ -118,6 +118,10 @@ const Value &Value::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+
+bool Value::exists() const {
+    return dataLock()->value_store.getEntry(member_).count(field_);
 }
 
 std::ostream &operator<<(std::ostream &os, const Value &data) {

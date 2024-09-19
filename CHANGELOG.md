@@ -1,3 +1,24 @@
+## [2.3.0] - 2024-09-17
+### Fixed
+* ver2.2.1以降でserverがセグフォすることがあったバグを修正 (#407)
+* ver2.2.0以降でclientがセグフォすることがあったバグを修正 (#406)
+
+## [2.2.1] - 2024-09-16
+### Fixed
+* webcface/webcface.h をincludeするとfunc_info.hのwarningが出ていたのを修正 (#404)
+* サーバーに未接続のときのReq送信を修正 (#403)
+
+## [2.2.0] - 2024-09-10
+### Fixed
+* Client::sync() を高速化 (#402)
+
+## [2.1.0] - 2024-09-04
+### Added
+* LogEntryメッセージ (#397)
+	* 各種Field型::exists() 追加
+* Log::keepLines() 追加 (#398)
+	* 指定した行数以上のログをClientが保持しないようにした
+
 ## [2.0.5] - 2024-09-03
 ### Changed
 * Doxygenでドキュメントを生成するときnamespaceを`webcface`に固定

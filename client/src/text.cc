@@ -40,7 +40,7 @@ const Variant &Variant::request() const {
     auto data = dataLock();
     auto req = data->text_store.addReq(member_, field_);
     if (req) {
-        data->messagePushOnline(message::packSingle(
+        data->messagePushReq(message::packSingle(
             message::Req<message::Text>{{}, member_, field_, req}));
     }
     return *this;
@@ -138,6 +138,10 @@ const Text &Text::free() const {
         // todo: リクエスト解除
     }
     return *this;
+}
+
+bool Text::exists() const {
+    return dataLock()->text_store.getEntry(member_).count(field_);
 }
 
 std::ostream &operator<<(std::ostream &os, const Text &data) {
