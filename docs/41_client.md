@@ -165,7 +165,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 - <b class="tab-title">Python</b>
     ```python
-    import webcface
+    from webcface import Client
+    # import webcface をして webcface.Client でもok
 
     wcli = webcface.Client("sample")
     # アドレスを指定する場合
@@ -175,9 +176,23 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     # または wcli.wait_connection()
     ```
 
+    * `start()` の代わりに `wait_connection()` を使うと <del>接続が完了するまで待機することができます。</del>
+        * <span class="since-py">2.0</span>
+    `start()` の代わりに `wait_connection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
+        * waitConnectionは通信完了までの間sync()を呼び出します。 詳細は後述の送受信の説明を参照
     * 接続できているかどうかは `wcli.connected` で取得できます。
-    * `start()` の代わりに `wait_connection()` を使うと接続が完了するまで待機することができます。
     * 通信が切断された場合は自動で再接続します。
+        * <span class="since-py">2.0</span>
+        Clientの引数に `auto_reconnect=False`を指定すると自動で再接続しなくなります。
+        その場合`wait_connection()`は1度だけ接続を試行し失敗してもreturnするという挙動になります。
+
+    \note
+    * Clientはstart()時に1つのスレッドを建てます。
+        * 送信用キューにデータが追加されたらそれを送信し、データを受信したら受信用キューに入れます。
+        また通信が切断されたときに再接続を行います。
+        * <span class="since-py">2.0</span>
+        受信したデータを処理してコールバックを呼ぶのは別スレッドではありません。
+        (詳細はこのページの送受信の章を参照)
 
     <span></span>
 
@@ -328,8 +343,11 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```python
     wcli.sync();
     ```
-    * sync() をすることでこれ以降の章で扱う各種データを送信します。
-        * sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。
+
+    * sync() をすることでこれ以降の章で扱う各種データを送受信します。
+        * <del>データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。</del>
+        * <span class="since-py">2.0</span>
+        受信したデータをキューから取り出して処理するのもsync()関数の中で行われます。
     * データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信/受信するようなプログラムの場合は、周期実行している場所があればそこで繰り返し呼ぶようにするとよいと思います。
     ```python
     while True:
@@ -339,7 +357,27 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         time.sleep(0.1)
     ```
 
-    * データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。
+    * <span class="since-py">2.0</span>
+    sync() の引数にtimeout(秒)を指定すると、
+    指定した時間の間 sync() を繰り返します。
+        * デフォルトは0です(一度sync処理をした後すぐにreturnします)
+        * Noneを指定すると通信を切断するまでずっとsyncし、returnしません。
+        * ただしサーバーに接続しておらず auto_reconnect がオフの場合は、即座にreturnします。(デッドロック回避)
+    ```python
+    while True:
+        # ...
+
+        wcli.sync(timeout=0.1)
+    ```
+
+    \warning
+    * <span class="since-py">2.0</span>
+    受信した各種データの処理がsync()で行われるため、データを受信するだけの使い方の場合でもsync()が必要になります。
+    * <span class="since-py">2.0</span>
+    これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはsync()を呼んだスレッドで実行されます。
+    そのため長時間かかるコールバックを登録した場合、その間sync()を呼んだメインスレッドがブロックされるだけでなく、他のデータの受信もできなくなるため注意してください。
+
+    <span></span>
 
 </div>
 
@@ -392,6 +430,19 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```py
     wcli.close()
     ```
+    * <span class="since-py">1.1.1</span>
+    Pythonがexitするときは確実にclose()が呼ばれます。
+    * <span class="since-py">2.0</span>
+    sync() はclose()で停止します。
+    (別スレッドからでも、sync内から呼ばれたコールバックの中などでも可)
+
+    \note
+    * <span class="since-py">1.1.1</span>
+    close()を呼んだ時点(またはexitするとき)でサーバーに接続できていた場合は、sync()でキューに入れたメッセージがすべて送信したあとに切断されます。
+        * wait_cpnnection() → sync() → close() とすれば確実にデータを送信することができます。
+        * start()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でclose()が呼ばれたときはメッセージを送信することなく終了してしまいます。
+
+    <span></span>
 
 </div>
 
@@ -485,6 +536,11 @@ WebUI ver1.7 以降ではWebUIのページタイトルにも表示されてい�
     \since <span class="since-js">1.7</span>
 
     `wcli.serverHostName` で取得できます。
+
+- <b class="tab-title">Python</b>
+    \since <span class="since-js">2.0</span>
+
+    `wcli.server_hostname` で取得できます。
 
 </div>
 

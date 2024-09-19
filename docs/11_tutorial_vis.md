@@ -560,7 +560,7 @@ Viewではテキストや入力欄を任意に並べて表示させることが�
                 view_components.button(
                     "print",
                     # クリックすると、入力した文字列を表示
-                    lambda: print(f"str = {ref_str.as_str()}"),
+                    lambda: print(f"str = {str(ref_str.get())}"),
                 )
             )
             v.add("\n")
