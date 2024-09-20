@@ -83,11 +83,14 @@ webcface-send
     wcli.value("hoge").set(5)
     wcli.value("fuga").set([1, 2, 3, 4, 5])
     ```
+    
+    <span class="since-py">2.0</span>
+    数値型はfloatに変換可能なもの(SupportsFloat型)であればなんでもokです。(例えばnumpyの数値型なども使用可能です。)
 
 </div>
 
 \note
-<span class="since-c">1.10</span>
+(serverが<span class="since-c">1.10</span>以降の場合)
 データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。
 (WebUI上に表示することなくデータを送ることができます)  
 半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。  
@@ -294,7 +297,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     std::cout << "hoge = " << wcli.member("foo").value("hoge") << std::endl;
     ```
 
-    グループ化したデータは送信時と同様child()を使って要素を参照できます。
+    グループ化したデータは送信時と同様child()を使っても要素を参照できます。
     ```cpp
     webcface::Value pos = wcli.member("foo").value("pos");
     double x = pos.child("x").get(); // = "pos.x"
@@ -379,14 +382,24 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
 
     ```python
+    # float型 or None
     hoge = wcli.member("foo").value("hoge").try_get()
+    # List[float] or None
     hoge = wcli.member("foo").value("hoge").try_get_vec()
     ```
-    * 値を受信していない場合 try_get(), try_get_vec() はNoneを返し、そのデータのリクエストをサーバーに送ります。
+    * 値をまだ受信していない場合 try_get(), try_get_vec() はNoneを返し、そのデータのリクエストをサーバーに送ります。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度try_get()することで値が得られます。
     * get(), getVec() はNoneの代わりに0を返します。
 
     Value.request()で明示的にリクエストを送信することもできます。
+
+    グループ化したデータは送信時と同様child()を使っても要素を参照できます。
+    ```cpp
+    pos = wcli.member("foo").value("pos");
+    x = pos.child("x").get(); // = "pos.x"
+    y = pos.child("y").get(); // = "pos.y"
+    z = pos.child("z").get(); // = "pos.z"
+    ```
 
 </div>
 
@@ -423,7 +436,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 データ自体はすべて受信しなくても、データが存在するかどうか(他memberが送信しているかどうか)は取得することができます。
 
 \warning
-<span class="since-c">1.10</span>
+(serverが<span class="since-c">1.10</span>以降の場合)
 半角ピリオドから始まる名前のデータはEntryが送信されないため、
 明示的に名前を指定して受信することはできても、以下の方法でデータが存在するかどうかを確認することはできません。
 
@@ -440,6 +453,9 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     }
     ```
 
+    [Text](52_text.md), [Func](53_func.md), [View](54_view.md)
+    など他のデータ型に関しても同様に `textEntries()`, `funcEntries()`, `viewEntries()` などで取得できます。
+
     <span class="since-c">1.11</span>
     Field::valueEntries() でそのfield以下のvalueのみが得られます
     (Textなど他の型についても同様)
@@ -451,6 +467,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     <span class="since-c">2.1</span>
     Value::exists() でそのデータが送信されているかどうかを確認できます。
     tryGet() と違い、データそのものを受信するリクエストは送られません。
+    他のデータ型に関しても同様に `Text::exists()`, `Func::exists()`, `View::exists()` などが使えます。
 
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
@@ -459,9 +476,13 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     ```c
     const char *value_list[10];
     int actual_value_num;
-    wcfMemberList(wcli, "foo", value_list, 10, &actual_value_num);
+    wcfValueEntryList(wcli, "foo", value_list, 10, &actual_value_num);
     ```
     それぞれのvalue名の文字列は、 wcfClose() するまではfreeされません。
+
+    [Text](52_text.md), [Func](53_func.md), [View](54_view.md)
+    など他のデータ型に関しても同様に `wcfTextEntryList()`, `wcfFuncEntryList()`, `wcfViewEntryList()` などで取得できます。
+
 
 - <b class="tab-title">JavaScript</b>
     Member.values() でそのMemberが送信しているvalueのリストが得られます  
@@ -471,9 +492,13 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     }
     ```
 
+    [Text](52_text.md), [Func](53_func.md), [View](54_view.md)
+    など他のデータ型に関しても同様に `texts()`, `funcs()`, `views()` などで取得できます。
+
     <span class="since-js">1.8</span>
     Value.exists() でそのデータが送信されているかどうかを確認できます。
     tryGet() と違い、データそのものを受信するリクエストは送られません。
+    他のデータ型に関しても同様に `Text.exists()`, `Func.exists()`, `View.exists()` などが使えます。
 
 - <b class="tab-title">Python</b>
     <del>Member.values() で</del> そのMemberが送信しているvalueのリストが得られます  
@@ -484,6 +509,14 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     for v in wcli.member("foo").value_entries():
         # ...
     ```
+
+    [Text](52_text.md), [Func](53_func.md), [View](54_view.md)
+    など他のデータ型に関しても同様に `text_entries()`, `func_entries()`, `view_entries()` などで取得できます。
+
+    <span class="since-py">2.0</span>
+    Value.exists() でそのデータが送信されているかどうかを確認できます。
+    try_get() と違い、データそのものを受信するリクエストは送られません。
+    他のデータ型に関しても同様に `Text.exists()`, `Func.exists()`, `View.exists()` などが使えます。
 
 </div>
 
@@ -510,6 +543,8 @@ ValueEntryではデータの存在を知ることしかできません。
     ```
     ver1.11以前では `.onValueEntry().appendListener(...)`
 
+    他のデータ型に関しても同様に `onTextEntry()`, `onFuncEntry()`, `onViewEntry()` などが使えます。
+
     \note
     * コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
     * <span class="since-c">2.0</span>
@@ -535,21 +570,52 @@ ValueEntryではデータの存在を知ることしかできません。
     wcfValueEntryEvent(wcli, "foo", callback_value_entry, &user_data);
     ```
 
+    他のデータ型に関しても同様に `wcfTextEntryEvent()`, `wcfFuncEntryEvent()`, `wcfViewEntryEvent()` などが使えます。
+
+    \note
+    * コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
+    * wcfWaitConnection()は接続時にサーバーに存在するデータすべてについてコールバックを呼んでからreturnします。
+    * すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
+    Member名がわかっていれば wcfStart() または wcfWaitConnection() 前に設定してください。
+    * すべてのメンバーのすべてのデータに対してコールバックが呼ばれるようにしたい場合は、 MemberEntryイベントのコールバックの中で各種イベントを設定すればよいです。
+
 - <b class="tab-title">JavaScript</b>
-    Member.onValueEntry() でコールバックを設定できます。
+    Member.onValueEntry でコールバックを設定できます。
     新しく追加されたValueの情報が引数に渡されます。
     ```ts
     import { Value } from "webcface";
     wcli.member("foo").onValueEntry.on((v: Value) => { /* ... */ });
     ```
+
+    他のデータ型に関しても同様に `onTextEntry`, `onFuncEntry`, `onViewEntry` などが使えます。
+
+    \note
+    * コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
+    * すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
+    Member名がわかっていれば Client.start() 前に設定してください。
+    * すべてのメンバーのすべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Client.onMemberEntry イベントのコールバックの中で各種イベントを設定すればよいです。
+
 - <b class="tab-title">Python</b>
     Member.on_value_entry() でコールバックを設定できます。
     新しく追加されたValueの情報が引数に渡されます。
     ```python
     def value_entry(v: webcface.Value):
         pass
-    wcli.member("foo").on_value_entry.connect(value_entry)
+    wcli.member("foo").on_value_entry(value_entry)
     ```
+    * ver1.1以前では `on_value_entry.connect(...)`
+    * 他のデータ型に関しても同様に `on_text_entry()`, `on_func_entry()`, `on_view_entry()` などが使えます。
+    * on_member_entryと同様、デコレータにすることもできます。
+
+    \note
+    * コールバックを設定する前から存在したデータについてはコールバックは呼び出されません。
+    * <span class="since-py">2.0</span>
+    Client.wait_connection()は接続時にサーバーに存在するデータすべてについてコールバックを呼んでからreturnします。
+    * すべてのデータに対してコールバックが呼ばれるようにしたい場合は、
+    Member名がわかっていればClient.start() または wait_connection() 前に設定してください。
+    * すべてのメンバーのすべてのデータに対してコールバックが呼ばれるようにしたい場合は、 Client.on_member_entry() イベントのコールバックの中で各種イベントを設定すればよいです。
+
+    <span></span>
 
 </div>
 
@@ -566,7 +632,7 @@ ValueEntryではデータの存在を知ることしかできません。
 
 - <b class="tab-title">C++</b>
     <span class="since-c">2.0</span>
-    Value::onValueChange(), Member::onSync() でコールバックを設定できます。  
+    Value::onChange(), Member::onSync() でコールバックを設定できます。  
     引数にはそれぞれそのValue自身,Member自身が渡されます。
     (キャプチャでも同じことができるのでなくてもよい)
     ```cpp
@@ -616,6 +682,10 @@ ValueEntryではデータの存在を知ることしかできません。
     ```
 
 - <b class="tab-title">JavaScript</b>
+    Value.on(), Member.onSync.on() などでコールバックを設定できます。  
+    引数にはそれぞれそのValue自身,Member自身が渡されます。
+    (なくてもよい)
+
     ```ts
     import { Member, Value } from "webcface";
     wcli.member("foo").value("hoge").on((v: Value) => { /* ... */ });
@@ -632,18 +702,47 @@ ValueEntryではデータの存在を知ることしかできません。
     });
     ```
     のようにすると可能です。
+
 - <b class="tab-title">Python</b>
-    pythonでは Value.signal プロパティがこのイベントのsignalを返します。
+    <span class="since-py">2.0</span>
+    Value.on_change(), Member.on_sync() でコールバックを設定できます。
+    引数にはそれぞれそのValue自身,Member自身が渡されます。
+
     ```python
     def value_change(v: webcface.Value):
         pass
-    wcli.member("foo").value("hoge").signal.connect(value_change)
+    wcli.member("foo").value("hoge").on_change(value_change)
     def synced(m: webcface.Member):
         pass
-    wcli.member("foo").on_sync.connect(synced)
+    wcli.member("foo").on_sync(synced)
+    ```
+
+    すべてのデータを受信したい場合は ValueEntry イベントの中でonChangeを設定すると可能です。
+    ```python
+    @wcli.on_member_entry
+    def member_entry(m: Member):
+        @m.on_value_entry
+        def value_entry(v: Value):
+            @v.on_change
+            def on_change(v: Value):
+                pass
     ```
 
 </div>
+
+<details><summary>Python 〜ver1.1の仕様</summary>
+
+pythonでは Value.signal プロパティがこのイベントのsignalを返します。
+```python
+def value_change(v: webcface.Value):
+    pass
+wcli.member("foo").value("hoge").signal.connect(value_change)
+def synced(m: webcface.Member):
+    pass
+wcli.member("foo").on_sync.connect(synced)
+```
+
+</details>
 
 <div class="section_buttons">
 

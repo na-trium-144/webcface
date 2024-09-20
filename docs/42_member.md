@@ -170,14 +170,26 @@ Memberクラスおよびこれ以降説明する各種データ型のクラス (
 - <b class="tab-title">Python</b>
     引数にMemberを受け取る関数を Client.on_member_entry() に設定することができます。
     新しく接続したMemberの情報が引数に渡されます。
+
+    <span class="since-py">2.0</span>
     ```python
     def member_entry(m: webcface.Member):
         pass
 
-    wcli.on_member_entry.connect(member_entry)
+    wcli.on_member_entry(member_entry)
     ```
-    Pythonでは client.on_member_entry プロパティが [blinker](https://pypi.org/project/blinker/) ライブラリの signal を返します。  
-    `connect(関数)` でコールバックを設定できます。
+
+    デコレータとして使うこともできます。
+    ```python
+    @wcli.on_member_entry
+    def member_entry(m: webcface.Member):
+        pass
+    ```
+
+    <span class="since-py">2.0</span>
+    Client.wait_connection() を使う場合、
+    クライアントはサーバーに接続し、発見したすべてのメンバーについてon_member_entryコールバックを呼んでからreturnします。
+
 
 </div>
 
@@ -214,6 +226,19 @@ ver1.10以前は eventpp::EventDispatcher を使用していたため、
 EventTargetでの関数名(appendListenerなど)はCallbackListではなくEventDispatcherのものに従っている
 
 これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。
+
+</details>
+
+<details><summary>Python 〜ver1.1の仕様</summary>
+
+```python
+def member_entry(m: webcface.Member):
+    pass
+
+wcli.on_member_entry.connect(member_entry)
+```
+Pythonでは client.on_member_entry プロパティが [blinker](https://pypi.org/project/blinker/) ライブラリの signal を返します。  
+`connect(関数)` でコールバックを設定できます。
 
 </details>
 
@@ -316,11 +341,27 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
     Member.requestPingStatus() で明示的にリクエストを送ることもできます。
 
 - <b class="tab-title">Python</b>
+    Member.ping_status でmemberの通信速度(int型)を取得できます。
+    デフォルトの状態ではpingの情報は受信しておらずNoneを返しますが、
+    ping_statusに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。
+
+    また、 Member.on_ping() でpingの情報が更新された時に実行するコールバックを設定できます。
+    on_ping()を使うことでもリクエストが送られます。
+
+    <span class=since-py>2.0</span>
     ```python
     def ping_update(m: webcface.Member):
         print(f"{m.name}: {m.ping_status} ms")
-    wcli.member("foo").on_ping.connect(ping_update)
+    wcli.member("foo").on_ping(ping_update)
     ```
+    * ver1.1以前は `on_ping.connect(...)`
+    * <span class=since-py>2.0</span>
+    on_member_entryと同様、デコレータとして使うこともできます。
+    * <span class="since-py">2.0</span>
+    自分自身のping値も取得できるようになりました。(`wcli.ping_status`, `wcli.on_ping(...)`)
+    * <span class="since-py">2.0</span>
+    Member.request_ping_status() で明示的にリクエストを送ることもできます。
+
 
 </div>
 
@@ -329,6 +370,7 @@ C++のライブラリは `"cpp"`, Pythonのライブラリ(webcface-python)は`"
 各クライアントがPingに応答する処理はClient::sync()の中で行われるため、
 sync() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。
 (例えば100msに1回 sync() を呼ぶ場合通信遅延が100msあるように見える可能性があります)
+[4-1. Client](41_client.md)の送受信の章にあるようにloopSync()などを使っている場合は問題ありません。
 
 <div class="section_buttons">
 

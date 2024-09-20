@@ -249,7 +249,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     ```
     * <span class="since-c">2.0</span>
     Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、
-    また Client::loopSync() は通信を切断するまでずっと sync() を繰り返します。
+    また Client::loopSync() は通信を切断するまで受信データの待機を続けます。
+    上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
         * 具体的には内部で100μsおきにsync()を呼んだり接続状態を確認しています。
         * ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
@@ -275,6 +276,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     * 1msに1回程度の頻度までは動作確認していますが、
     それ以上短い周期で sync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)
 
+    <span></span>
+
 - <b class="tab-title">C</b>
     ```cpp
     wcfSync(wcli);
@@ -294,7 +297,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     }
     ```
     * <span class="since-c">2.0</span>
-    wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または wcfLoopSync() は指定した時間の間(または永遠に) wcfSync() を繰り返します。
+    wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または wcfLoopSync() は指定した時間の間(または永遠に) 受信データの待機を続けます。
+    上の例のようにwcfSync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
         * 具体的には内部で100μsおきにwcfSync()を呼んだり接続状態を確認しています。
         * ただしサーバーに接続しておらず wcfAutoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
@@ -319,6 +323,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     * 1msに1回程度の頻度までは動作確認していますが、
     それ以上短い周期で wcfSync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)
 
+    <span></span>
+
 - <b class="tab-title">JavaScript</b>
     ```ts
     wcli.sync();
@@ -339,6 +345,8 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     * <span class="since-js">1.1</span>
     Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。
 
+    <span></span>
+
 - <b class="tab-title">Python</b>
     ```python
     wcli.sync();
@@ -356,10 +364,9 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
         wcli.sync()
         time.sleep(0.1)
     ```
-
     * <span class="since-py">2.0</span>
-    sync() の引数にtimeout(秒)を指定すると、
-    指定した時間の間 sync() を繰り返します。
+    sync() の引数にtimeout(秒)を指定すると、指定した時間の間受信データの待機を続けます。
+    上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
         * デフォルトは0です(一度sync処理をした後すぐにreturnします)
         * Noneを指定すると通信を切断するまでずっとsyncし、returnしません。
         * ただしサーバーに接続しておらず auto_reconnect がオフの場合は、即座にreturnします。(デッドロック回避)
