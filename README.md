@@ -65,6 +65,9 @@ WebCFaceで送受信できるデータ型として
 などの型が用意されています。
 ユーザーがメッセージ型を定義できるROSやgRPCと比べると自由度は低いかもしれませんが、
 これらのデータ型の組み合わせであれば簡単に送受信させることができます。
+コード例についてはドキュメントの
+[1-2. Tutorial (Communication)](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
+を参照してください。
 
 Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。
 表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
@@ -81,12 +84,15 @@ WebブラウザーからWebCFaceで通信されているデータを可視化し
 
 さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++,Pythonなどのプログラムの側で定義してそれをWebUIに表示させることができ、
 これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
+コード例はドキュメントの
+[1-1. Tutorial (Visualizing)](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html)
+を参照してください。
 
 また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
 
 ![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
 
-なお、これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
+これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
 WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
 ### WebCFace-Tools
@@ -140,6 +146,20 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 </details>
 -->
 
+## Documentation
+
+DoxygenでAPIリファレンスとともにチュートリアル、ドキュメントを公開しています。
+
+* ダウンロード、インストール方法はREADME(この下)にあります
+* 1 チュートリアル: [Visualizing](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html) / [Communication](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
+* 2 [Server](https://na-trium-144.github.io/webcface/md_docs_221__server.html)
+/ [WebUI](https://na-trium-144.github.io/webcface/md_docs_222__webui.html)
+* 3 [クライアントライブラリのセットアップ](https://na-trium-144.github.io/webcface/md_docs_231__setup.html)
+/ [WebCFaceのソースからのビルド](https://na-trium-144.github.io/webcface/md_docs_232__building.html)
+* [C/C++ APIリファレンス](https://na-trium-144.github.io/webcface/namespaces.html)
+* [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
+* [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
+
 ## Links
 
 * [webcface](https://github.com/na-trium-144/webcface): サーバー & C/C++クライアントライブラリ (このリポジトリ)
@@ -147,9 +167,9 @@ ver1.11時点のReleaseビルドの src/example/benchmark.cc で通信速度を�
 * [webcface-tools](https://github.com/na-trium-144/webcface-tools): コマンドラインツール群
 * [webcface-js](https://github.com/na-trium-144/webcface-js): JavaScriptクライアントライブラリ
 * [webcface-python](https://github.com/na-trium-144/webcface-python): Pythonクライアントライブラリ
+* [webcface-package](https://github.com/na-trium-144/webcface-package): ビルドしたサーバー、ライブラリ、WebUI、Tools をアーカイブ化してリリースしている場所
 * [homebrew-webcface](https://github.com/na-trium-144/homebrew-webcface): HomebrewのTapを管理しています
-* [webcface-windows-package](https://github.com/na-trium-144/webcface-windows-package): Windows用ビルドをリリースする場所
-* [plogjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin): PlotJuggler プラグイン
+<!-- * [plogjuggler-webcface-plugin](https://github.com/na-trium-144/plotjuggler-webcface-plugin): PlotJuggler プラグイン -->
 
 ## Installation
 
@@ -321,19 +341,6 @@ x86バージョンとx64バージョンがあります。
 * いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
 
 MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
-
-## Documentation
-
-DoxygenでAPIリファレンスとともにチュートリアル、ドキュメントを公開しています。
-
-* 1 チュートリアル: [Visualizing](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html) / [Communication](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
-* 2 [Server](https://na-trium-144.github.io/webcface/md_docs_221__server.html)
-/ [WebUI](https://na-trium-144.github.io/webcface/md_docs_222__webui.html)
-* 3 [クライアントライブラリのセットアップ](https://na-trium-144.github.io/webcface/md_docs_231__setup.html)
-/ [WebCFaceのソースからのビルド](https://na-trium-144.github.io/webcface/md_docs_232__building.html)
-* [APIリファレンス](https://na-trium-144.github.io/webcface/namespaces.html)
-* [webcface-python APIリファレンス](https://na-trium-144.github.io/webcface-python/)
-* [webcface-js APIリファレンス](https://na-trium-144.github.io/webcface-js/)
 
 ## License
 
