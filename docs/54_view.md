@@ -65,7 +65,7 @@
     の配列を wcfViewSet, (<span class="since-c">2.0</span> wcfViewSetW) に指定することで送信されます。
 
     例
-    ```cpp
+    ```c
     wcfViewComponent vc[10];
     vc[0] = wcfText("hello world\n");
     char buf[10];
@@ -76,7 +76,7 @@
     vc[3] = wcfButton("a", NULL, "hoge");
     
     wcfViewSet(wcli, "a", vc, 4);
-    wcli.sync();
+    wcfSync();
     ```
 
     ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
@@ -148,7 +148,6 @@ Viewに追加する各種要素をViewComponentといいます。
     * また以前のnamespace名もエイリアスになっておりどちらでもokです。
 
     各要素はそれぞれの関数から webcface::TemporalViewComponent または webcface::TemporalComponent のオブジェクトとして得られます。
-    `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
 
     <span class="since-c">1.11</span>
     引数にView(コピーまたはconst参照)を取る関数オブジェクトをViewに渡すと、その場でその関数が呼び出されます。
@@ -170,7 +169,6 @@ Viewに追加する各種要素をViewComponentといいます。
     ```ts
     import { viewComponents } from "webcface";
     ```
-    オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。(詳細はこの後のそれぞれの要素の説明を参照)
 
 - <b class="tab-title">Python</b>
     Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にそれぞれの要素を表す関数があります
@@ -178,8 +176,6 @@ Viewに追加する各種要素をViewComponentといいます。
     from webcface.view_components import *
     ```
     とすることもできます
-
-    それぞれ関数のキーワード引数でオプションを設定できます。
 
 </div>
 
@@ -195,9 +191,9 @@ Viewに追加する各種要素をViewComponentといいます。
     v.add("hello").add(123);
     v << "hello" << 123;
     ```
-    `text(文字列)`とし、さらにtextColorを指定することでテキストの色を変更することができます。
+    
+    文字列を直接渡す代わりに `text(文字列)` でViewComponentに変換すると、textColorなど後述のオプションを指定することもできるようになります。
     ```cpp
-    v.add(webcface::text("hello").textColor(webcface::ViewColor::red));
     v << webcface::text("hello").textColor(webcface::ViewColor::red);
     ```
 
@@ -206,10 +202,8 @@ Viewに追加する各種要素をViewComponentといいます。
 
 - <b class="tab-title">C</b>
     wcfText, (<span class="since-c">2.0</span> wcfTextW) でテキストを指定します。
-    text_color でテキストの色を変更することができます。
     ```c
     vc[0] = wcfText("hello");
-    vc[0].text_color = WCF_COLOR_RED;
     ```
 
 - <b class="tab-title">JavaScript</b>
@@ -220,7 +214,7 @@ Viewに追加する各種要素をViewComponentといいます。
         123,
     ]);
     ```
-    `text(文字列)`を使ってtextColorを指定するとテキストの色を変更することができます。
+    文字列を直接渡す代わりに `text(文字列)` でViewComponentに変換すると、textColorなど後述のオプションを指定することもできるようになります。
     ```ts
     import { viewComponents, viewColor } from "webcface";
     wcli.view("hoge").set([
@@ -231,12 +225,12 @@ Viewに追加する各種要素をViewComponentといいます。
 
 - <b class="tab-title">Python</b>
     str, int, float, bool はaddの引数に直接指定すると文字列に変換されます。
-    ```cpp
+    ```python
     v.add("hello").add(123)
     ```
-    `text(文字列)`を使ってtext_colorを指定するとテキストの色を変更することができます。
-    ```cpp
-    v.add(webcface.view_components.text("hello", text_color=webcface.view_components.view_color.RED))
+    文字列を直接渡す代わりに `text(文字列)` でViewComponentに変換すると、text_colorなど後述のオプションを指定することもできるようになります。
+    ```python
+    v.add(view_components.text("hello", text_color=webcface.view_components.view_color.RED))
     ```
 
 </div>
@@ -293,6 +287,7 @@ Viewに追加する各種要素をViewComponentといいます。
 
 
 ### button
+
 ボタンを表示します。
 
 クリック時の動作は、関数を登録済みの[Funcオブジェクト](./53_func.md)、または関数を直接設定できます。
@@ -324,13 +319,6 @@ Viewに追加する各種要素をViewComponentといいます。
         wcli.func([](){ /* ... */ })/*.setRunCond...*/
     );
     ```
-    文字の色、背景色を設定できます
-    (デフォルトではどちらも `ViewColor::inherit` で、その場合WebUI上では文字色=black、背景色=greenになります)
-    ```cpp
-    v << webcface::button(/* ... */)
-            .textColor(webcface::ViewColor::red)
-            .bgColor(webcface::ViewColor::yellow);
-    ```
 
 - <b class="tab-title">C</b>
     関数の登録方法は [Func](./53_func.md) を参照してください。
@@ -339,11 +327,6 @@ Viewに追加する各種要素をViewComponentといいます。
     member名をNULLまたは空文字列にすると自分自身が登録した関数を指します。
     ```c
     vc[0] = wcfButton("表示する文字列", NULL, "hoge");
-    ```
-    text_color, bg_color でテキストと背景の色を変更することができます。
-    ```c
-    vc[0].text_color = WCF_COLOR_RED;
-    vc[0].bg_color = WCF_COLOR_YELLOW;
     ```
 
 - <b class="tab-title">JavaScript</b>
@@ -361,16 +344,7 @@ Viewに追加する各種要素をViewComponentといいます。
         viewComponents.button("表示する文字列", () => {/* ... */})
     ]);
     ```
-    文字の色、背景色を設定できます
-    (デフォルトではどちらも `viewColor.inherit` で、その場合WebUI上では文字色=black、背景色=greenになります)
-    ```ts
-    wcli.view("hoge").set([
-        viewComponents.button(/* ... */, {
-            textColor: viewColor.red,
-            bgColor: viewColor.yellow,
-        })
-    ]);
-    ```
+
 - <b class="tab-title">Python</b>
     Funcオブジェクトの場合
     ```py
@@ -383,15 +357,6 @@ Viewに追加する各種要素をViewComponentといいます。
     def hoge():
         pass
     v.add(webcface.view_components.button("表示する文字列", hoge));
-    ```
-    文字の色、背景色を設定できます
-    (デフォルトではどちらも `view_color.INHERIT` で、その場合WebUI上では文字色=black、背景色=greenになります)
-    ```py
-    v.add(webcface.view_components.button(
-        ... ,
-        text_color=webcface.view_components.view_color.RED,
-        bg_color=webcface.view_components.view_color.YELLOW,
-    ))
     ```
 
 </div>
@@ -415,7 +380,7 @@ while (true){
 インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。
 
 ### input
-\since <span class="since-c">1.10</span><span class="since-js">1.6</span>
+\since <span class="since-c">1.10</span><span class="since-js">1.6</span><span class="since-py">2.0</span>
 
 viewに入力欄を表示します。
 
@@ -512,6 +477,44 @@ viewに入力欄を表示します。
 
     <span></span>
 
+- <b class="tab-title">Python</b>
+    入力された値にアクセスするため InputRef オブジェクトを作成し、inputにbindします。
+    そのInputRefオブジェクトをコピーまたは参照で別の関数などに渡すと、あとから値を取得することができます。
+    ```python
+    from webcface import InputRef
+    input_val = InputRef()
+    def print_val():
+        print(str(input_val.get()))
+    v.add(view_components.button("print", print_val))
+    v.add(view_components.text_input("表示する文字列", bind=input_val)
+    ```
+
+    \warning
+    viewを繰り返し送信するときInputRefオブジェクトは同じものを使いまわすのでも、
+    毎回新しいInputRefオブジェクトを生成するのでも、どちらでも動作します。
+    ```python
+    from webcface import InputRef
+
+    while True:
+        input_val = InputRef()
+        def print_val():
+            print(str(input_val.get()))
+        with wcli.view("hoge") as v:
+            v.add(view_components.button("print", print_val))
+            v.add(view_components.text_input("表示する文字列", bind=input_val)
+            # print(input_val.get()) # ここでは使えない
+            # v.sync()
+        wcli.sync()
+    ```
+    この場合はview.sync()が実行される時に前周期のinput_valの内容が復元されるという挙動になります。
+    (したがってv.sync()より前ではinput_valの値は未初期化になります)
+
+    \note
+    内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。
+    また、InputRefの値は[Text](./52_text.md)型のデータとしてviewを表示しているクライアントに送信されます。
+
+    <span></span>
+
 </div>
 
 #### onChange
@@ -533,38 +536,74 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">JavaScript</b>
     onChange で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
-    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
+    buttonに渡す関数と同様、関数、Funcオブジェクトが使用できます。
     ```ts
     viewComponents.textInput("表示する文字列", {
         onChange: (val: string | number | boolean) => console.log(val),
     })
     ```
 
+    \note bindとonChangeを両方設定することはできません。
+
+    <span></span>
+
+- <b class="tab-title">Python</b>
+    on_change で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
+    buttonに渡す関数と同様、関数、ラムダ式、またはFuncオブジェクトが使用できます。
+    ```ts
+    view_components.text_input("表示する文字列", on_change=...)
+    ```
+
+    \note bindとonChangeを両方設定することはできません。
+
+    <span></span>
+    
 </div>
 
-#### options
+### オプション
+
+各ViewComponentには以下のオプションを指定することができます。
+(要素の種類によっては効果がないものもあります)
+
+* textColor: 文字の色を変更します。
+    * WebUIではデフォルトは黒です
+* bgColor: 背景色を変更します。
+    * WebUIではデフォルトは緑です
+* 各種inputに指定できるオプション
+([Func](./53_func.md)のArgオプションと同様です。)
+    * init: 初期値
+    * min: 最小値, max: 最大値 (decimalInput, numberInput, sliderInputのみ)
+    * min: 最小文字数, max: 最大文字数 (textInputのみ)
+    * step: 刻み幅 (numberInput, sliderInputのみ)
+    * option: 選択肢 (selectInput, toggleInput)
+
+\note
+[webcface-tui](75_tui.md)では文字色と背景色に指定した白と黒がそれぞれ反転して表示されます。
+
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    その他各種inputに指定できるオプションには以下のものがあります。
-    ([Func](./53_func.md)のArgオプションと同様です。)
+    `button(...).textColor(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
+    詳細は webcface::TemporalViewComponent のリファレンスを参照してください。
 
-    `.init(初期値)`  
-    `.min(最小値)`, `.max(最大値)`: decimalInput, numberInput, sliderInputのみ  
-    `.min(最小文字数)`, `.max(最大文字数)`: textInputのみ  
-    `.step(刻み幅)`: numberInput, sliderInputのみ  
-    `.option({ 選択肢, ... })`: selectInput, toggleInput  
+    色は webcface::ViewColor のenumで指定します。
+
+- <b class="tab-title">C</b>
+    wcfViewComponent 構造体のメンバーでオプションを指定することができます。
+
+    ```c
+    wcfViewComponent vc[10];
+    vc[0] = wcfText("hello world\n");
+    vc[0].text_color = WCF_COLOR_RED;
+    ```
 
 - <b class="tab-title">JavaScript</b>
-    その他各種inputに指定できるオプションには以下のものがあります。
-    ([Func](./53_func.md)のArgオプションと同様です。)
+    `button("text", { textColor: ... })`
+    などのように、オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。
 
-    `init: 初期値`  
-    `min: 最小値, max: 最大値`: decimalInput, numberInput, sliderInputのみ  
-    `min: 最小文字数, max: 最大文字数`: textInputのみ  
-    `step: 刻み幅`: numberInput, sliderInputのみ  
-    `option: [選択肢, ... ]`: selectInput, toggleInput  
+- <b class="tab-title">Python</b>
+    `button("text", text_color=...)` などのように、それぞれ関数のキーワード引数でオプションを設定できます。
 
 </div>
 
@@ -659,16 +698,18 @@ ViewComponent::onClick() でボタン要素のクリック時に実行するべ�
 ### onChangeとbind
 <span class="since-c">1.10</span>
 <span class="since-js">1.6</span>
+<span class="since-py">2.0</span>
 
 各種Input要素の現在の値は ViewComponent::bind() で
 <del>[Text](./52_text.md)オブジェクトとして</del>
-<span class="since-c">2.0</span> webcface::Variant オブジェクトとして取得できます。
+<span class="since-c">2.0</span> <span class="since-py">2.0</span> Variant オブジェクトとして取得できます。
 したがって`bind()`の値をInputの初期値として使用すればよいです。
 
-<span class="since-c">2.0</span> Variant の値は
+<!-- <span class="since-c">2.0</span> Variant の値は
 `asStringRef()`, `asWStringRef()`, `asString()`, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()` で型を指定して取得できます。  
 (std::string, double, bool などの型にキャストすることでも値を得られます。)  
 (bind().get() で webcface::ValAdaptor 型としても取得できます。)
+ -->
 
 Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず)
 ViewComponent::onChange() を使います。
