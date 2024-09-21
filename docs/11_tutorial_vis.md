@@ -448,8 +448,10 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     ![tutorial_func1](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png)
 
     \note
-    Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    * Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
     これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
+    * また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。
+    メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに setAsync() が使えます。
 
     <span></span>
 

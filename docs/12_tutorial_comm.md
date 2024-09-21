@@ -228,9 +228,10 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 ## Value, Text
 
 まずは数値や文字列のデータを送受信してみましょう。
+(他のPub-Sub型通信でいうところのTopicをPublishするようなものです)
 
 \note
-このチュートリアルではC++同士・Python同士の通信だけでなく、C++のsend側とPythonのrecv側、のように組み合わせても動作します。
+以降このチュートリアルではC++同士・Python同士の通信だけでなく、C++のsend側とPythonのrecv側、のように組み合わせても動作します。
 
 <div class="tabbed">
 
@@ -250,9 +251,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
         std::cout << "Hello, World! (sender)" << std::endl;
 
-        // "data" という名前のValueデータとして 42 という値をセット
-        // 他のPub-Sub型通信でいうところのTopicのようなものです
-        wcli.value("data") = 42;
+        // "data" という名前のValueデータとして 100 という値をセット
+        wcli.value("data") = 100;
         // "message" という名前のTextデータとして "Hello, World! (sender)" という文字列をセット
         wcli.text("message") = "Hello, World! (sender)";
         wcli.sync(); // データを送信します
@@ -306,9 +306,9 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     Hello, World! (receiver)
     data is null
     message is null
-    data = 42
+    data = 100
     message = Hello, World! (sender)
-    data = 42
+    data = 100
     message = Hello, World! (sender)
     ```
 
@@ -322,43 +322,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     これはサーバーのほうにデータが残っているためです。
         * サーバーも1度終了して起動し直すとまた値がない状態に戻ります。
 
-    現在の値を常に確認するのではなく、値が変化した時に処理が実行されるようにするという使い方もできます。
-    * recv.cc
-    ```cpp
-    #include <iostream>
-    #include <thread>
-    #include <webcface/client.h>
-    #include <webcface/value.h>
-    #include <webcface/text.h>
-
-    webcface::Client wcli("tutorial-recv");
-
-    int main() {
-        wcli.waitConnection();
-
-        std::cout << "Hello, World! (receiver)" << std::endl;
-
-        // ちなみに "tutorial-send" を毎回書くのは面倒なので変数に入れることもできます
-        webcface::Member sender = wcli.member("tutorial-send");
-
-        // "tutorial-send" が送信している "data" という名前のValueデータが変わった時に呼び出される処理
-        sender.value("data").onChange([](webcface::Value v){
-            std::cout << "data changed: " << v.get() << std::endl;
-        });
-
-        // "tutorial-send" が送信している "message" という名前のTextデータが変わった時に呼び出される処理
-        sender.text("message").onChange([](webcface::Text t){
-            std::cout << "message changed: " << t.get() << std::endl;
-        });
-
-        while (true) {
-            wcli.sync(); // データを受信し、値が変化すればコールバックが呼ばれます
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-    }
-    ```
-
-    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
+    <span></span>
 
 - <b class="tab-title">Python</b>
 
@@ -394,90 +358,85 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
-    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
-
 </div>
 
-<!--
+## コールバック
 
-## Log
-
-コンソールに出力していた `Hello, World!` を、WebCFaceにも送信してみましょう。
+データを受信する側では、現在の値を繰り返し確認するのではなく、値が変化した時に処理が実行されるようにするという使い方もできます。
+(他のPub-Sub型通信でいうところのSubscribeのようなものです)
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
 
-    * main.cc
+    * send側は上のプログラムと同じです。
+    * recv.cc
     ```cpp
     #include <iostream>
+    #include <thread>
     #include <webcface/client.h>
+    #include <webcface/value.h>
+    #include <webcface/text.h>
 
-    webcface::Client wcli("tutorial");
-    // loggerOStream() は std::cout と同様に文字列を出力して使うことができる
-    std::ostream &logger = wcli.loggerOStream();
+    webcface::Client wcli("tutorial-recv");
 
     int main() {
         wcli.waitConnection();
 
-        logger << "Hello, World!" << std::endl;
+        std::cout << "Hello, World! (receiver)" << std::endl;
 
-        wcli.sync(); // wcli に書き込んだデータを送信する
+        // ちなみに "tutorial-send" を毎回書くのは面倒なのでこのように変数に入れることもできます
+        webcface::Member sender = wcli.member("tutorial-send");
+
+        // "tutorial-send" が送信している "data" という名前のValueデータが変わった時に呼び出される処理
+        sender.value("data").onChange([](webcface::Value v){
+            std::cout << "data changed: " << v.get() << std::endl;
+        });
+
+        // "tutorial-send" が送信している "message" という名前のTextデータが変わった時に呼び出される処理
+        sender.text("message").onChange([](webcface::Text t){
+            std::cout << "message changed: " << t.get() << std::endl;
+        });
+
+        while (true) {
+            wcli.sync(); // データを受信し、値が変化すればコールバックが呼ばれます
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
     }
     ```
 
-    これを実行すると、コンソール (std::coutではなくstd::cerrと同じ標準エラー出力ですが) には今まで通り `Hello, World!` と表示されます。
-
-    それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも `Hello, World!` を確認できるはずです。
-
-    ![tutorial_log](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png)
-
-    std::wostream を使うこともできます。
-    また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
-    詳細は [5-5. Log](./55_log.md)
-
-    <span></span>
-
-- <b class="tab-title">Python</b>
-
-    * main.py
-    ```py
-    from webcface import Client
-    import sys
-
-    wcli = Client("tutorial")
-    sys.stdout = wcli.logging_io  # sys.stdout (printの出力先) をwebcfaceのlogging_ioに置き換える
-    wcli.wait_connection()
-
-    print("Hello, World!")
-    wcli.sync();  # wcli に書き込んだデータを送信する
+    これを実行すると、1秒ごとに受信した値が表示される代わりに、send側からデータが送られてきたタイミングで1度だけ
     ```
+    data changed: 100
+    message changed: Hello, World! (sender)
+    ```
+    のように表示されます。
 
-    これを実行すると、コンソール (stdoutではなくstderrですが) には今まで通り `Hello, World!` と表示されます。
+    このプログラムではsend側は常に同じデータを送っていますが、違うデータを送るようにすればデータが変わったタイミングで再度コールバックが呼ばれます。
 
-    それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも `Hello, World!` を確認できるはずです。
+    \note
+    このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで最大1秒のラグがあると思います。これはrecv側がデータを受信する処理(`wcli.sync()`)が1秒に1回しか呼ばれていないためです。
+    これを改善するにはsync()を呼ぶ頻度を上げるか、
+    [4-1. Client](41_client.md) のページで説明していますが`wcli.loopSync()`などが使えます。
 
-    ![tutorial_log](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png)
-
-    pythonのloggingモジュールを使いたい場合はLoggerの出力先として使用できるHandlerも用意しています。
-    また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。
-    詳細は [5-5. Log](./55_log.md)
+    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
 
 </div>
 
 ## Func
 
-プログラムからWebUIに情報を送信するだけでなく、WebUIからプログラムを操作することも可能です。
+データを送信するだけでなく、プロセス間で関数を呼び出すこともできます。
+このチュートリアルではsend側の関数をrecv側から呼び出します。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    * 引数なしの関数hogeを作り、これをクライアントに登録します。
+    * send.cc で引数なしの関数hogeを作り、これをクライアントに登録します。
     ```cpp
     #include <webcface/func.h> // ←追加
 
     int hoge() {
-        logger << "Function hoge started" << std::endl;
+        std::cout << "Function hoge started" << std::endl;
         return 42;
     }
 
@@ -487,20 +446,55 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
         // 以下略...
     }
     ```
+    * recv.cc では1秒おきにそれを呼び出します。
+    ```cpp
+    #include <webcface/func.h> // ← 追加
 
-    これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。
-    「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。
-    また、画面右下に関数の戻り値の42が表示されています。
+    int main() {
+        wcli.waitConnection();
 
-    ![tutorial_func1](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png)
+        std::cout << "Hello, World! (receiver)" << std::endl;
+
+        webcface::Member sender = wcli.member("tutorial-send");
+
+        // 省略...
+
+        while (true) {
+            // tutorial-send の "hoge" という関数を呼び出します
+            webcface::Promise hoge_p = sender.func("hoge").runAsync();
+            hoge_p.onFinish([hoge_p](){
+                // hoge_pが完了したとき、結果を表示します
+                if(hoge_p.isError()){
+                    std::cout << "Error in hoge(): " << hoge_p.rejection() << std::endl;
+                }else{
+                    std::cout << "hoge() = " << hoge_p.response().asInt() << std::endl;
+                }
+            });
+
+            wcli.sync(); // データを受信します
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
+    ```
+
+    実行すると、send側とrecv側が両方起動していればsend側では1秒おきに hoge() が呼び出され(`Function hoge started`と表示され)、recv側ではhoge()の戻り値である42が表示されるはずです。
+
+    send側が起動していない状態でrecv側だけを起動すると呼び出しは失敗し、エラー表示になります。
+    またsend側の関数の中でthrowをした場合にもエラーになります。
 
     \note
-    Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    * Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
     これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
+    これを改善するにはsync()を呼ぶ頻度を上げるか、
+    [4-1. Client](41_client.md) のページで説明していますが`wcli.loopSync()`などが使えます。
+    * また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。
+    メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに setAsync() が使えます。
 
     <span></span>
 
-    * こんどは引数がある関数を作ってみます。
+    こんどは引数がある関数を作ってみます。
+
+    * send.cc
     ```cpp
     int fuga(int a, const std::string &b) {
         logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
@@ -509,22 +503,53 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     int main() {
         wcli.func("hoge").set(hoge);
-        wcli.func("fuga").set(fuga).setArgs({
-            webcface::Arg("a").init(100), // 1つ目の引数の名前はa, 初期値が100
-            webcface::Arg("b").option({"foo", "bar", "baz"}), // 2つ目の引数の名前はb, 選択肢がfoo,bar,baz
-        });
+        wcli.func("fuga").set(fuga);
 
         // 以下略...
     }
     ```
+    * recv.cc
+    ```cpp
+    int main() {
+        wcli.waitConnection();
 
-    setArgs() はそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。
-    (指定しなくてもよいです。)
+        std::cout << "Hello, World! (receiver)" << std::endl;
 
-    実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。
-    hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。
+        webcface::Member sender = wcli.member("tutorial-send");
 
-    ![tutorial_func2](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png)
+        // 省略...
+
+        while (true) {
+            // tutorial-send の "hoge" という関数を呼び出します
+            webcface::Promise hoge_p = sender.func("hoge").runAsync();
+            hoge_p.onFinish([hoge_p](){
+                // hoge_pが完了したとき、結果を表示します
+                if(hoge_p.isError()){
+                    std::cout << "Error in hoge(): " << hoge_p.rejection() << std::endl;
+                }else{
+                    std::cout << "hoge() = " << hoge_p.response().asInt() << std::endl;
+                }
+            });
+
+            // tutorial-send の "fuga" という関数を引数を渡して呼び出します
+            webcface::Promise fuga_p = sender.func("fuga").runAsync(123, "abc");
+            fuga_p.onFinish([fuga_p](){
+                // fuga_pが完了したとき、結果を表示します
+                if(fuga_p.isError()){
+                    std::cout << "Error in fuga(123, abc): " << fuga_p.rejection() << std::endl;
+                }else{
+                    std::cout << "fuga(123, abc) = " << fuga_p.response().asInt() << std::endl;
+                }
+            });
+
+            wcli.sync(); // データを受信します
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
+    }
+    ```
+
+    引数は整数型、実数型、bool、文字列型であればいくつでも使うことができます。
+    呼び出す側ではrunAsync()に引数を渡せば、引数のない関数と同様に呼び出すことができます。
 
     Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
 
@@ -598,118 +623,17 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
 </div>
 
-## View
-
-Funcに登録した関数は一覧表示させることしかできませんが、
-Viewではテキストや入力欄を任意に並べて表示させることができます。
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    ```cpp
-    #include <webcface/view.h> // ←追加
-
-    int main() {
-        // 省略
-
-        while(true){
-            // 他のデータの送信は省略...
-
-            webcface::View v = wcli.view("sample");
-            v << "Hello, world!" << std::endl; // テキスト表示
-            v << "i = " << i << std::endl;
-            v << webcface::button("hoge", hoge) << std::endl; // ボタン
-            static webcface::InputRef ref_str;
-            v << webcface::textInput("str").bind(ref_str); // 文字列入力
-            v << webcface::button("print", []{
-                // クリックすると、入力した文字列を表示
-                logger << "str = " << ref_str.asString() << std::endl;
-              });
-            v << std::endl;
-
-            v.sync(); // ここまでにvに追加したものをwcliに反映
-
-            wcli.sync();
-            std::this_thread::sleep_for(std::chrono::seconds(1));
-        }
-    }
-    ```
-
-    これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、
-    画像のようにプログラムで指定したとおりの画面が表示されます。
-    「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、
-    「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。
-
-    ![tutorial_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
-
-    上のプログラム例のように、
-    テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。
-    ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。
-    またtextInputなどを使って入力欄を表示させることもできます。
-    詳細は [5-4. View](./54_view.md) を参照
-
-- <b class="tab-title">Python</b>
-    ```py
-    from webcface import Client, Arg, view_components, InputRef
-
-    while True:
-        # 他のデータの送信は省略...
-
-        with wcli.view("sample") as v:
-            v.add("Hello, world!")  # テキスト表示
-            v.add("i = ", i)
-            # ↑ v.add("i = ") と v.add(i) をするのと同じ
-            v.add(view_components.button("hoge", hoge))  # ボタン
-            ref_str = InputRef()
-            v.add(view_components.text_input("str", bind=ref_str))  # 文字列入力
-            v.add(
-                view_components.button(
-                    "print",
-                    # クリックすると、入力した文字列を表示
-                    lambda: print(f"str = {str(ref_str.get())}"),
-                )
-            )
-            v.add("\n")
-        # withを抜けると、ここまでにvに追加したものがwcliに反映される
-
-        wcli.sync()  # wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)
-        time.sleep(1)
-    ```
-
-    これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、
-    画像のようにプログラムで指定したとおりの画面が表示されます。
-    「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、
-    「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。
-
-    ![tutorial_view](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png)
-
-    上のプログラム例のように、
-    テキストの表示はadd()に文字列や数値などを渡すことでできます。
-    ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。
-    またtextInputなどを使って入力欄を表示させることもできます。
-    詳細は [5-4. View](./54_view.md) を参照
-
-</div>
-
--->
-
 ## おわりに
 
-以上で 1-1. Tutorial (Visualizing) は終わりです。
-次ページ ([1-2. Tutorial (Communication)](12_tutorial_comm.md)) にはプロセス間通信に重点をおいたチュートリアルがあります。
+以上で 1-2. Tutorial (Communication) は終わりです。
 
 ここで紹介していない機能として
-* [6-1. Canvas2D](61_canvas2d.md)
 * [6-2. Image](62_image.md)
-* [6-3. Canvas3D](63_canvas3d.md)
-* [6-4. RobotModel](64_robot_model.md)
 
-もWebUIからアクセスすることのできる機能としてあるので、見てみてください。
+も送受信することができるデータとしてあるので、見てみてください。
 
 また、チュートリアルでは紹介していないコマンドラインツールとして
-* [7-1. webcface-launcher](71_launcher.md)
-* [7-4. webcface-ls](74_ls.md)
-* [7-5. webcface-tui](75_tui.md)
+* [7-2. webcface-send](72_send.md)
 
 もあります。
 

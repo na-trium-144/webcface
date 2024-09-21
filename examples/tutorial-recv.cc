@@ -12,14 +12,24 @@ int main() {
     std::cout << "Hello, World! (receiver)" << std::endl;
 
     webcface::Member sender = wcli.member("tutorial-send");
-    sender.value("data").onChange([](const webcface::Value& v) {
+    sender.value("data").onChange([](const webcface::Value &v) {
         std::cout << "data changed: " << v.get() << std::endl;
     });
-    sender.text("message").onChange([](const webcface::Text& t) {
+    sender.text("message").onChange([](const webcface::Text &t) {
         std::cout << "message changed: " << t.get() << std::endl;
     });
 
     while (true) {
+        webcface::Promise fuga_p = sender.func("fuga").runAsync(123, "abc");
+        fuga_p.onFinish([fuga_p](){
+            // fuga_pが完了したとき、結果を表示します
+            if(fuga_p.isError()){
+                std::cout << "Error in fuga(123, abc): " << fuga_p.rejection() << std::endl;
+            }else{
+                std::cout << "fuga(123, abc) = " << fuga_p.response().asInt() << std::endl;
+            }
+        });
+
         wcli.sync();
 
         std::optional<double> data =
