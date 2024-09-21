@@ -41,7 +41,8 @@ webcface-send -t log
     wcli.log().append(webcface::level::error, "this is error");
     ```
 
-    std::ostreamを使いたい場合は
+    コンソールにも表示しつつwebcfaceにも送信したい場合は、
+    std::ostream を使って
     ```cpp
     wcli.loggerOStream() << "hello" << std::endl;
     ```
@@ -69,8 +70,17 @@ webcface-send -t log
     ```
 
 - <b class="tab-title">Python</b>
-    Python標準のloggingモジュールを使うことができます。
+    <span class="since-py">2.0</span>
+    Log.append() でログを送信することができます。
+    時刻を指定することもできます(省略するとdatetime.datetime.now())になります  
+    webcfaceに送信されるのみで、コンソールへの出力などは行いません。
+    ```python
+    wcli.log().append(2, "this is info")
+    wcli.log().append(4, "this is error")
+    ```
 
+    コンソールにも表示しつつwebcfaceにも送信したい場合は、
+    Python標準のloggingモジュールを使うことができます。
     Client.logging_handler をLoggerのhandlerとして追加して使います。
     ```py
     from logging import getLogger, DEBUG, StreamHandler
@@ -84,7 +94,7 @@ webcface-send -t log
     logger.info("hello") # コンソールとwebcfaceの両方に出力される
     ```
 
-    printを使いたい場合など、 Client.logging_io で取得できるIOオブジェクトを使って送信することもできます。
+    printを使いたい場合は、 Client.logging_io で取得できるIOオブジェクトを使って送信することもできます。
     logging_io はwebcfaceに送信すると同時に`sys.__stderr__`にも出力します。
     ```py
     import sys
@@ -208,7 +218,7 @@ Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるの
 ## 受信
 
 \note
-<span class="since-c">1.1.9</span>
+(サーバーが<span class="since-c">1.1.9</span>以降の場合)
 サーバーは各クライアントのログを1000行まで保持しています。
 logの受信リクエストを送った時点から1000行より前のログは取得できません。
 serverの起動時のオプションでこの行数は変更できます。([2-1. Server](21_server.md)を参照)
@@ -337,23 +347,15 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
 
 ### Entry
 
+\since <span class="since-c">2.1</span><span class="since-js">1.8</span><span class="since-js">1.8</span>
+
+(サーバーが<span class="since-c">2.1</span>以降の場合のみ)
+
 ログをすべて受信しなくても、ログが少なくとも1行存在するかどうか(他memberが送信しているかどうか)は取得することができます。
 
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    \since <span class="since-c">2.1</span>
-
-    ログが少なくとも1行存在する場合、 Log::exists() がtrueを返します。
-    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
-
-- <b class="tab-title">JavaScript</b>
-    \since <span class="since-js">1.8</span>
-
-    ログが少なくとも1行存在する場合、 Log.exists() がtrueを返します。
-    tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
-
-</div>
+Log.exists()
+はログが少なくとも1行存在する場合、trueを返します。
+tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
 
 ### Event
 
