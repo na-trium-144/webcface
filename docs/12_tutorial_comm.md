@@ -201,14 +201,23 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます
     
-    * main.py
+    * send.py
     ```py
     from webcface import Client
 
-    wcli = Client("tutorial")
+    wcli = Client("tutorial-send")
     wcli.wait_connection()
 
-    print("Hello, World!")
+    print("Hello, World! (sender)")
+    ```
+    * recv.py
+    ```py
+    from webcface import Client
+
+    wcli = Client("tutorial-recv")  # ←ここの名前が違うことに注意
+    wcli.wait_connection()
+
+    print("Hello, World! (receiver)")
     ```
     \note
     Clientの初期化はグローバル変数でもローカル変数 (main() やクラスの初期化など) でもどちらでも構いませんが、
@@ -216,12 +225,13 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     
     実行します
     ```sh
-    python3 ./main.py
+    python3 ./send.py
     ```
-    実行すると、`Hello, World!` と出力されると同時に、
-    WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。
-
-    ![tutorial_helloworld](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_helloworld.png)
+    ターミナルをもう1つ開いて
+    ```sh
+    python3 ./recv.py
+    ```
+    実行すると、`Hello, World! (sender)` `Hello, World! (receiver)` と出力されます。
 
 </div>
 
@@ -326,37 +336,76 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
 - <b class="tab-title">Python</b>
 
-    * main.py
+    * send.py
     ```py
     from webcface import Client
-    import sys
-    import time
 
-    wcli = Client("tutorial")
-    sys.stdout = wcli.logging_io
+    wcli = Client("tutorial-send")
     wcli.wait_connection()
 
-    print("Hello, World!")
+    print("Hello, World! (sender)")
 
-    i = 0
+    # "data" という名前のvalueデータとして100という値をセット
+    wcli.value("data").set(100)
+    # "message" という名前のtextデータとして "Hello World! (sender)" という文字列をセット
+    wcli.text("message").set("Hello, World! (sender)")
+
+    wcli.sync()  # データを送信します
+    ```
+    * recv.py
+    ```py
+    from webcface import Client
+    import time
+
+    wcli = Client("tutorial-recv")
+    wcli.wait_connection()
+
+    print("Hello, World! (receiver)")
 
     while True:
-        i += 1
-        wcli.value("hoge").set(i)  # 「hoge」という名前のvalueに値をセット
-        if i % 2 == 0:
-            wcli.text("fuga").set("even")  # 「fuga」という名前のtextに文字列をセット
+        # "tutorial-send" が送信している "data" という名前のvalueデータをリクエスト&取得
+        data = wcli.member("tutorial-send").value("data").try_get()
+        if data is not None:
+            # 送信されたデータがあれば取得できるはず
+            print(f"data = {data}")
         else:
-            wcli.text("fuga").set("odd")
+            # まだなにも送信されていない
+            print("data is None")
 
-        wcli.sync()  # wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)
+        # "tutorial-send" が送信している "message" という名前のtextデータをリクエスト&取得
+        message = wcli.member("tutorial-send").text("message").try_get()
+        if message is not None:
+            print(f"message = {message}")
+        else:
+            print("message is None")
+
+        wcli.sync()  # データを受信します
         time.sleep(1)
     ```
 
-    これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。
+    実行すると、send側で送信した `data` と `message` の内容が、1秒ごとにrecv側にも表示されます。
+    起動する順番はどちらが先でも大丈夫です。
+    ```
+    Hello, World! (receiver)
+    data is None
+    message is None
+    data = 100
+    message = Hello, World! (sender)
+    data = 100
+    message = Hello, World! (sender)
+    ```
 
-    また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
+    \note
+    * recv側は最初からsend側が送信したすべてのデータを受信しているわけではなく、
+    1回目のtry_get()呼び出しで `data` と `message` の内容をリクエストしています。
+        * (この時点では値はNoneになっています)
+        * そしてその後の `wcli.sync()` (受信したデータの処理が行われる) をした後の2回目のtry_get()の呼び出しで実際に値が得られます。
+    * recv側を先に起動した場合、send側が起動するまでの間はデータはNoneのままになります。
+    * send側とrecv側を1度実行して終了した後に再度recv側だけを起動すると、send側を起動しなくても値を取得できてしまいますが、
+    これはサーバーのほうにデータが残っているためです。
+        * サーバーも1度終了して起動し直すとまた値がない状態に戻ります。
 
-    ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
+    <span></span>
 
 </div>
 
