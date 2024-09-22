@@ -143,21 +143,21 @@ $(document).ready(function(){initNavTree('md_docs_221__server.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md11">コマンドラインから</a></li>
-<li class="level1"><a href="#autotoc_md12">コマンドライン引数</a></li>
-<li class="level1"><a href="#autotoc_md13">サービスとして (Linuxのみ)</a></li>
-<li class="level1"><a href="#autotoc_md14">WebCFace Desktop</a></li>
+<ul><li class="level1"><a href="#autotoc_md19">コマンドラインから</a></li>
+<li class="level1"><a href="#autotoc_md20">コマンドライン引数</a></li>
+<li class="level1"><a href="#autotoc_md21">サービスとして (Linuxのみ)</a></li>
+<li class="level1"><a href="#autotoc_md22">WebCFace Desktop</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md18"></a></p>
 <p>WebCFaceを使用するときはserverを常時立ち上げておく必要があります。</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<h1><a class="anchor" id="autotoc_md19"></a>
 コマンドラインから</h1>
 <div class="fragment"><div class="line">webcface-server</div>
 </div><!-- fragment --><p> でサーバーを起動します。 デフォルトでは7530番ポートを開きクライアントの接続を待ちます。</p>
 <p><span class="since-c">1.11</span> TCPポートだけでなく、Unixドメインソケットも開くようになりました。 Linux,Macでは <code>/tmp/webcface/ポート番号.sock</code> Windowsでは <code>C:\ProgramData\webcface\ポート番号.sock</code> が自動的に作成されます。</p>
 <p>さらに、WSL1上で起動した場合は <code>/mnt/c/ProgramData/webcface/ポート番号.sock</code> も追加で開きます。 これによりWindows側のクライアントがWSL1側のサーバーに接続することができます。</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 コマンドライン引数</h1>
 <div class="fragment"><div class="line">Usage: webcface-server [OPTIONS]</div>
 <div class="line"> </div>
@@ -177,20 +177,20 @@ $(document).ready(function(){initNavTree('md_docs_221__server.html',''); initRes
 </li>
 <li><code>-l lines</code>: <a class="el" href="md_docs_255__log.html">Log</a>のデータをサーバーが保持しておく行数を変更できます。(デフォルト=1000)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 サービスとして (Linuxのみ)</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.5.3</span></dd></dl>
 <p>READMEの手順に従って <a href="https://github.com/na-trium-144/webcface/blob/main/scripts/webcface-server.service">webcface-server.service</a> が /etc/systemd/system または /usr/lib/systemd/system にインストールされていれば、 </p><div class="fragment"><div class="line">sudo systemctl enable webcface-server</div>
 <div class="line">sudo systemctl start webcface-server</div>
 </div><!-- fragment --><p> でサーバーを常時自動起動させることができます。</p>
-<h1><a class="anchor" id="autotoc_md14"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 WebCFace Desktop</h1>
 <p>コマンドラインを使うことなく、 WebCFace Desktop からサーバーを起動できます。 詳細は次のWebUIのページで</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft">1-2. Tutorial (Communication)   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_222__webui.html">2-2. WebUI</a>   </td></tr>
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_212__tutorial__comm.html">1-2. Tutorial (Communication)</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_222__webui.html">2-2. WebUI</a>   </td></tr>
 </table>
 </div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -198,7 +198,7 @@ WebCFace Desktop</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

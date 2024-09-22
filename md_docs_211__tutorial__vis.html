@@ -156,13 +156,12 @@ $(document).ready(function(){initNavTree('md_docs_211__tutorial__vis.html',''); 
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md0"></a></p>
 <p>WebCFaceの機能紹介・チュートリアルです。</p>
-<p>このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。 プロセス間通信に重点をおいたチュートリアルは 1-2. Tutorial (Communication)</p>
-<p>このチュートリアルでは C++ (Meson または CMake) を使用します。</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd>Python用のチュートリアルも書く</dd></dl>
+<p>このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。 プロセス間通信に重点をおいたチュートリアルは <a class="el" href="md_docs_212__tutorial__comm.html">1-2. Tutorial (Communication)</a></p>
+<p>このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.8以上が必要です) を使用します。</p>
 <h1><a class="anchor" id="autotoc_md1"></a>
 WebCFaceのインストール</h1>
 <p>READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。</p>
-<p>C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれていますが、 Pythonで利用したい場合は別途 <code>pip install webcface</code> でクライアントライブラリをインストールしてください。</p>
+<p>C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれています。</p>
 <h1><a class="anchor" id="autotoc_md2"></a>
 Server</h1>
 <p>WebCFaceを使用するときはserverを常時立ち上げておく必要があります。 次のように WebCFace Desktop アプリから、またはコマンドラインからの2つの方法があります。</p>
@@ -252,6 +251,20 @@ Setup</h1>
 <dl class="section note"><dt>Note</dt><dd>このチュートリアルでは以降ビルドと実行の手順は省略しますが、 同様に <code>cmake --build</code> (またはmakeやninjaなどでも可) でビルドして <code>./build/tutorial</code> を実行してください。</dd></dl>
 <p><span></span></p>
 </li>
+<li><p class="startli"><b class="tab-title">Python</b> PythonでWebCFaceを使うには、クライアントライブラリをインストールする必要があります。 venv内でもグローバルにインストールしても構いません。 </p><div class="fragment"><div class="line">pip install webcface</div>
+</div><!-- fragment --><p class="startli">以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>main.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World!&quot;</span>)</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() やクラスの初期化など) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+実行します <div class="fragment"><div class="line">python3 ./main.py</div>
+</div><!-- fragment --> 実行すると、<code>Hello, World!</code> と出力されると同時に、 WebUI の右上のメニューの中にClientで指定した名前「tutorial」が現れるはずです。</li>
+</ul>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_helloworld.png" alt="tutorial_helloworld" class="inline"/></p>
+</li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md5"></a>
 Log</h1>
@@ -279,6 +292,23 @@ Log</h1>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png" alt="tutorial_log" class="inline"/></p>
 <p class="startli">std::wostream を使うこともできます。 また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。 詳細は <a class="el" href="md_docs_255__log.html">5-5. Log</a></p>
 <p class="startli"><span></span></p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>main.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="keyword">import</span> sys</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial&quot;</span>)</div>
+<div class="line">sys.stdout = wcli.logging_io  <span class="comment"># sys.stdout (printの出力先) をwebcfaceのlogging_ioに置き換える</span></div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World!&quot;</span>)</div>
+<div class="line">wcli.sync();  <span class="comment"># wcli に書き込んだデータを送信する</span></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行すると、コンソール (stdoutではなくstderrですが) には今まで通り <code>Hello, World!</code> と表示されます。</p>
+<p class="startli">それに加えて、WebUI右上のメニューから「tutorial」を開き「Logs」をクリックすると、ログを表示する画面が開きこちらからも <code>Hello, World!</code> を確認できるはずです。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_log.png" alt="tutorial_log" class="inline"/></p>
+<p class="startli">pythonのloggingモジュールを使いたい場合はLoggerの出力先として使用できるHandlerも用意しています。 また、コンソールに表示せずWebCFaceにログの文字列を送信する関数もあります。 詳細は <a class="el" href="md_docs_255__log.html">5-5. Log</a></p>
 </li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md6"></a>
@@ -317,6 +347,36 @@ Value, Text</h1>
 <div class="line">}</div>
 <div class="ttc" id="atext_8h_html"><div class="ttname"><a href="text_8h.html">text.h</a></div></div>
 <div class="ttc" id="avalue_8h_html"><div class="ttname"><a href="value_8h.html">value.h</a></div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。</p>
+<p class="startli">また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png" alt="tutorial_value" class="inline"/></p>
+<p class="startli">Value, Textについては <a class="el" href="md_docs_251__value.html">5-1. Value</a>, <a class="el" href="md_docs_252__text.html">5-2. Text</a> に詳細なドキュメントがあります。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>main.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="keyword">import</span> sys</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial&quot;</span>)</div>
+<div class="line">sys.stdout = wcli.logging_io</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World!&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">i = 0</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    i += 1</div>
+<div class="line">    wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(i)  <span class="comment"># 「hoge」という名前のvalueに値をセット</span></div>
+<div class="line">    <span class="keywordflow">if</span> i % 2 == 0:</div>
+<div class="line">        wcli.text(<span class="stringliteral">&quot;fuga&quot;</span>).set(<span class="stringliteral">&quot;even&quot;</span>)  <span class="comment"># 「fuga」という名前のtextに文字列をセット</span></div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        wcli.text(<span class="stringliteral">&quot;fuga&quot;</span>).set(<span class="stringliteral">&quot;odd&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    wcli.sync()  <span class="comment"># wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)</span></div>
+<div class="line">    time.sleep(1)</div>
 </div><!-- fragment --></li>
 </ul>
 <p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。</p>
@@ -373,6 +433,75 @@ Func</h1>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png" alt="tutorial_func2" class="inline"/></p>
 <p class="startli">Funcについては <a class="el" href="md_docs_253__func.html">5-3. Func</a> に詳細なドキュメントがあります。</p>
 </li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="keyword">import</span> sys</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 関数hogeを&quot;hoge&quot;という名前のFuncとして登録</span></div>
+<div class="line"><span class="preprocessor">@wcli.func(&quot;hoge&quot;)</span></div>
+<div class="line"><span class="keyword">def </span>hoge() -&gt; int:</div>
+<div class="line">    print(<span class="stringliteral">&quot;Function hoge started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> 42</div>
+<div class="line"> </div>
+<div class="line">sys.stdout = wcli.logging_io</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 以下略...</span></div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><code>@wcli.func("hoge")</code> はデコレータです(糖衣構文というPythonの構文です)。 この書き方に馴染みがないなら <div class="fragment"><div class="line"><span class="keyword">def </span>hoge() -&gt; int:</div>
+<div class="line">    print(<span class="stringliteral">&quot;Function hoge started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> 42</div>
+<div class="line"> </div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge)</div>
+</div><!-- fragment --> と書いて使うこともできます(がこの場合は@を使ったほうがかんたんに書けます)。</dd></dl>
+これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。 「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。 また、画面右下に関数の戻り値の42が表示されています。</li>
+</ul>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png" alt="tutorial_func1" class="inline"/></p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。 これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。</li>
+<li>また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。 メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに setAsync() が使えます。</li>
+</ul>
+</dd></dl>
+<p><span></span></p><ul>
+<li>こんどは引数がある関数を作ってみます。 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client, Arg  <span class="comment"># &lt;= Arg のimportを追加</span></div>
+<div class="line"><span class="keyword">import</span> sys</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">@wcli.func(&quot;hoge&quot;)</span></div>
+<div class="line"><span class="keyword">def </span>hoge() -&gt; int:</div>
+<div class="line">    print(<span class="stringliteral">&quot;Function hoge started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> 42</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># webcfaceは型アノテーションを使って引数の型を判別できるので、引数の型は書いたほうがいいです</span></div>
+<div class="line"><span class="preprocessor">@wcli.func</span>(<span class="stringliteral">&quot;fuga&quot;</span>, args=[</div>
+<div class="line">    Arg(init=100),  <span class="comment"># 1つ目の引数aは初期値が100</span></div>
+<div class="line">    Arg(option=[<span class="stringliteral">&quot;foo&quot;</span>, <span class="stringliteral">&quot;bar&quot;</span>, <span class="stringliteral">&quot;baz&quot;</span>]),  <span class="comment"># 2つ目の引数bは選択肢がfoo,bar,baz        ],</span></div>
+<div class="line">])</div>
+<div class="line"><span class="keyword">def </span>fuga(a: int, b: str) -&gt; int:</div>
+<div class="line">    print(f<span class="stringliteral">&quot;Function fuga({a}, {b}) started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> a</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># デコレータを使わないなら</span></div>
+<div class="line"><span class="comment"># wcli.func(&quot;fuga&quot;).set(fuga, args=[</span></div>
+<div class="line"><span class="comment">#     Arg(init=100),  # 1つ目の引数aは初期値が100</span></div>
+<div class="line"><span class="comment">#     Arg(option=[&quot;foo&quot;, &quot;bar&quot;, &quot;baz&quot;]),  # 2つ目の引数bは選択肢がfoo,bar,baz        ],</span></div>
+<div class="line"><span class="comment"># ])</span></div>
+<div class="line"> </div>
+<div class="line">sys.stdout = wcli.logging_io</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 以下略...</span></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">args ではそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。 (指定しなくてもよいです。)</p>
+<p class="startli">実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。 hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png" alt="tutorial_func2" class="inline"/></p>
+<p class="startli">Funcについては <a class="el" href="md_docs_253__func.html">5-3. Func</a> に詳細なドキュメントがあります。</p>
+</li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md8"></a>
 View</h1>
@@ -417,10 +546,38 @@ View</h1>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
 <p class="startli">上のプログラム例のように、 テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。 ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。 またtextInputなどを使って入力欄を表示させることもできます。 詳細は <a class="el" href="md_docs_254__view.html">5-4. View</a> を参照</p>
 </li>
+<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client, Arg, view_components, InputRef</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="comment"># 他のデータの送信は省略...</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="keyword">with</span> wcli.view(<span class="stringliteral">&quot;sample&quot;</span>) <span class="keyword">as</span> v:</div>
+<div class="line">        v.add(<span class="stringliteral">&quot;Hello, world!&quot;</span>)  <span class="comment"># テキスト表示</span></div>
+<div class="line">        v.add(<span class="stringliteral">&quot;i = &quot;</span>, i)</div>
+<div class="line">        <span class="comment"># ↑ v.add(&quot;i = &quot;) と v.add(i) をするのと同じ</span></div>
+<div class="line">        v.add(view_components.button(<span class="stringliteral">&quot;hoge&quot;</span>, hoge))  <span class="comment"># ボタン</span></div>
+<div class="line">        ref_str = InputRef()</div>
+<div class="line">        v.add(view_components.text_input(<span class="stringliteral">&quot;str&quot;</span>, bind=ref_str))  <span class="comment"># 文字列入力</span></div>
+<div class="line">        v.add(</div>
+<div class="line">            view_components.button(</div>
+<div class="line">                <span class="stringliteral">&quot;print&quot;</span>,</div>
+<div class="line">                <span class="comment"># クリックすると、入力した文字列を表示</span></div>
+<div class="line">                <span class="keyword">lambda</span>: print(f<span class="stringliteral">&quot;str = {str(ref_str.get())}&quot;</span>),</div>
+<div class="line">            )</div>
+<div class="line">        )</div>
+<div class="line">        v.add(<span class="stringliteral">&quot;\n&quot;</span>)</div>
+<div class="line">    <span class="comment"># withを抜けると、ここまでにvに追加したものがwcliに反映される</span></div>
+<div class="line"> </div>
+<div class="line">    wcli.sync()  <span class="comment"># wcli に書き込んだデータを送信する (繰り返し呼ぶ必要がある)</span></div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --><p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、 画像のようにプログラムで指定したとおりの画面が表示されます。 「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、 「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。</p>
+<p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
+<p class="startli">上のプログラム例のように、 テキストの表示はadd()に文字列や数値などを渡すことでできます。 ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。 またtextInputなどを使って入力欄を表示させることもできます。 詳細は <a class="el" href="md_docs_254__view.html">5-4. View</a> を参照</p>
+</li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md9"></a>
 おわりに</h1>
-<p>以上で 1-1. Tutorial (Visualizing) は終わりです。 次ページ (1-2. Tutorial (Communication)) にはプロセス間通信に重点をおいたチュートリアルがあります。</p>
+<p>以上で 1-1. Tutorial (Visualizing) は終わりです。 次ページ (<a class="el" href="md_docs_212__tutorial__comm.html">1-2. Tutorial (Communication)</a>) にはプロセス間通信に重点をおいたチュートリアルがあります。</p>
 <p>ここで紹介していない機能として</p><ul>
 <li><a class="el" href="md_docs_261__canvas2d.html">6-1. Canvas2D</a></li>
 <li><a class="el" href="md_docs_262__image.html">6-2. Image</a></li>
@@ -438,7 +595,7 @@ View</h1>
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"></td><td class="markdownTableBodyRight">1-2. Tutorial (Communication)   </td></tr>
+<td class="markdownTableBodyLeft"></td><td class="markdownTableBodyRight"><a class="el" href="md_docs_212__tutorial__comm.html">1-2. Tutorial (Communication)</a>   </td></tr>
 </table>
 </div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -446,7 +603,7 @@ View</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

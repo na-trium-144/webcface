@@ -143,19 +143,19 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md42">接続</a></li>
-<li class="level1"><a href="#autotoc_md43">Encoding</a></li>
-<li class="level1"><a href="#autotoc_md44">送受信</a></li>
-<li class="level1"><a href="#autotoc_md45">切断する</a></li>
-<li class="level1"><a href="#autotoc_md46">バージョン情報</a></li>
-<li class="level1"><a href="#autotoc_md47">サーバーの情報</a><ul><li class="level2"><a href="#autotoc_md48">serverVersion, serverName</a></li>
-<li class="level2"><a href="#autotoc_md49">serverHostName</a></li>
+<ul><li class="level1"><a href="#autotoc_md50">接続</a></li>
+<li class="level1"><a href="#autotoc_md51">Encoding</a></li>
+<li class="level1"><a href="#autotoc_md52">送受信</a></li>
+<li class="level1"><a href="#autotoc_md53">切断する</a></li>
+<li class="level1"><a href="#autotoc_md54">バージョン情報</a></li>
+<li class="level1"><a href="#autotoc_md55">サーバーの情報</a><ul><li class="level2"><a href="#autotoc_md56">serverVersion, serverName</a></li>
+<li class="level2"><a href="#autotoc_md57">serverHostName</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md50">ログ出力</a></li>
+<li class="level1"><a href="#autotoc_md58">ログ出力</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md41"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md49"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface::Client</a> (<code><a class="el" href="client_8h.html">webcface/client.h</a></code>)</li>
 <li>C Reference: <a class="el" href="c__wcf_2client_8h.html">c_wcf/client.h</a></li>
@@ -164,7 +164,7 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 </ul>
 </dd></dl>
 <p>WebCFaceのメインとなるクラスです。</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 接続</h1>
 <p><strike>Client オブジェクトを作るとサーバーへの接続を開始します。</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。</p>
@@ -295,7 +295,8 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 </dd></dl>
 <p><span></span></p>
 </li>
-<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
+<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="comment"># import webcface をして webcface.Client でもok</span></div>
 <div class="line"> </div>
 <div class="line">wcli = <a class="code hl_class" href="classwebcface_1_1Client.html">webcface.Client</a>(<span class="stringliteral">&quot;sample&quot;</span>)</div>
 <div class="line"><span class="comment"># アドレスを指定する場合</span></div>
@@ -304,24 +305,39 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 <div class="line">wcli.start()</div>
 <div class="line"><span class="comment"># または wcli.wait_connection()</span></div>
 </div><!-- fragment --><ul>
-<li>接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
-<li><code>start()</code> の代わりに <code>wait_connection()</code> を使うと接続が完了するまで待機することができます。</li>
-<li>通信が切断された場合は自動で再接続します。</li>
+<li><code>start()</code> の代わりに <code>wait_connection()</code> を使うと <del>接続が完了するまで待機することができます。</del><ul>
+<li><span class="since-py">2.0</span> <code>start()</code> の代わりに <code>wait_connection()</code> を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。</li>
+<li>waitConnectionは通信完了までの間sync()を呼び出します。 詳細は後述の送受信の説明を参照</li>
 </ul>
-<p class="startli"><span></span></p>
+</li>
+<li>接続できているかどうかは <code>wcli.connected</code> で取得できます。</li>
+<li>通信が切断された場合は自動で再接続します。<ul>
+<li><span class="since-py">2.0</span> Clientの引数に <code>auto_reconnect=False</code>を指定すると自動で再接続しなくなります。 その場合<code>wait_connection()</code>は1度だけ接続を試行し失敗してもreturnするという挙動になります。</li>
+</ul>
+</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>Clientはstart()時に1つのスレッドを建てます。<ul>
+<li>送信用キューにデータが追加されたらそれを送信し、データを受信したら受信用キューに入れます。 また通信が切断されたときに再接続を行います。</li>
+<li><span class="since-py">2.0</span> 受信したデータを処理してコールバックを呼ぶのは別スレッドではありません。 (詳細はこのページの送受信の章を参照)</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
 </li>
 </ul>
 </div><div class="tabbed"></div><p>クライアントが正常に接続できると、サーバーのログに </p><div class="fragment"><div class="line">[info] Successfully connected and initialized.</div>
 </div><!-- fragment --><p> などと表示されます。 (クライアントの名前を指定しなかった場合は表示されません)</p>
 <p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 Encoding</h1>
 <p><span class="since-c">2.0</span></p>
 <p>webcfaceのAPIではほぼすべての関数でマルチバイト文字列(<code>std::string</code>, <code>char *</code>)の代わりにワイド文字列(<code>std::wstring</code>, <code>wchar_t *</code>)が使用可能です。</p>
 <p>マルチバイト文字列はデフォルトではWindows,Linux,MacOSともにUTF-8エンコーディングとして扱われます。 ただしWindowsでのみClientの初期化前に最初に <code>webcface::usingUTF8(false)</code> (Cでは <code>wcfUsingUTF8(0)</code>) をすることでANSIエンコーディング(日本語環境ではShiftJIS)として扱われるようにすることもできます。 (その場合webcface内部でUTF-8との変換が行われます) デフォルトでは <code>webcface::usingUTF8(true)</code> (Cでは <code>wcfUsingUTF8(1)</code>) が設定されています。</p>
 <p>ワイド文字列はWindowsではUTF-16、Linux/MacOSではUTF-32でエンコードされていることを想定しています。 usingUTF8 の設定はワイド文字列の扱いには影響しませんが、 windowsで Client::loggerWStreamBuf(), loggerWOStream() を使用する場合は出力するコンソールのコードページに合わせてください。 (内部でstringに変換してコンソールへ出力されるため)</p>
 <p>C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を使用する関数やstruct名には末尾に<code>W</code>が付きます。</p>
-<h1><a class="anchor" id="autotoc_md44"></a>
+<h1><a class="anchor" id="autotoc_md52"></a>
 送受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.sync();</div>
@@ -337,7 +353,7 @@ Encoding</h1>
 <div class="line">    std::this_thread::sleep_for(std::chrono::milliseconds(100));</div>
 <div class="line">}</div>
 </div><!-- fragment --></li>
-<li><span class="since-c">2.0</span> Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、 また Client::loopSync() は通信を切断するまでずっと sync() を繰り返します。<ul>
+<li><span class="since-c">2.0</span> Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、 また Client::loopSync() は通信を切断するまで受信データの待機を続けます。 上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
 <li>具体的には内部で100μsおきにsync()を呼んだり接続状態を確認しています。</li>
 <li>ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    <span class="comment">// 繰り返し実行する処理...</span></div>
@@ -362,6 +378,7 @@ Encoding</h1>
 <li>1msに1回程度の頻度までは動作確認していますが、 それ以上短い周期で sync() を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)</li>
 </ul>
 </dd></dl>
+<p><span></span></p>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a>(wcli);</div>
 <div class="ttc" id="ac__wcf_2client_8h_html_ad675449898eb92ab9461d31fe88b4896"><div class="ttname"><a href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a></div><div class="ttdeci">wcfStatus wcfSync(wcfClient *wcli)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する</div><div class="ttdef"><b>Definition</b> client.cc:72</div></div>
@@ -380,7 +397,7 @@ Encoding</h1>
 <div class="line">    usleep(100000);</div>
 <div class="line">}</div>
 </div><!-- fragment --></li>
-<li><span class="since-c">2.0</span> wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または <a class="el" href="c__wcf_2client_8h.html#abd0cb7925d14b7c8bfa40e3b8c3eeaac" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfLoopSync()</a> は指定した時間の間(または永遠に) <a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> を繰り返します。<ul>
+<li><span class="since-c">2.0</span> wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または <a class="el" href="c__wcf_2client_8h.html#abd0cb7925d14b7c8bfa40e3b8c3eeaac" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfLoopSync()</a> は指定した時間の間(または永遠に) 受信データの待機を続けます。 上の例のようにwcfSync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
 <li>具体的には内部で100μsおきにwcfSync()を呼んだり接続状態を確認しています。</li>
 <li>ただしサーバーに接続しておらず <a class="el" href="c__wcf_2client_8h.html#acba49f7a260d842ab77f040071e95798" title="通信が切断されたときに自動で再試行するかどうかを設定する。">wcfAutoReconnect()</a> がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span>(1){</div>
 <div class="line">    <span class="comment">// 繰り返し実行する処理...</span></div>
@@ -406,6 +423,7 @@ Encoding</h1>
 <li>1msに1回程度の頻度までは動作確認していますが、 それ以上短い周期で <a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> を呼ぶとサーバーの処理が間に合わなくなるかもしれません(未検証)</li>
 </ul>
 </dd></dl>
+<p><span></span></p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> </p><div class="fragment"><div class="line">wcli.sync();</div>
 </div><!-- fragment --><ul>
@@ -424,11 +442,13 @@ Encoding</h1>
 <li><span class="since-js">1.1</span> Funcの呼び出しとデータ受信リクエストの送信は sync() とは非同期に行われるので sync() は不要です。</li>
 </ul>
 </dd></dl>
+<p><span></span></p>
 </li>
-<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.sync();</div>
+<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line">wcli.sync();</div>
 </div><!-- fragment --><ul>
-<li>sync() をすることでこれ以降の章で扱う各種データを送信します。<ul>
-<li>sync()自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</li>
+<li>sync() をすることでこれ以降の章で扱う各種データを送受信します。<ul>
+<li><del>データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。</del></li>
+<li><span class="since-py">2.0</span> 受信したデータをキューから取り出して処理するのもsync()関数の中で行われます。</li>
 </ul>
 </li>
 <li>データを1回送信して終了するプログラムではなく、変化するデータを繰り返し送信/受信するようなプログラムの場合は、周期実行している場所があればそこで繰り返し呼ぶようにするとよいと思います。 <div class="fragment"><div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
@@ -437,11 +457,26 @@ Encoding</h1>
 <div class="line">    wcli.sync()</div>
 <div class="line">    time.sleep(0.1)</div>
 </div><!-- fragment --></li>
-<li>データの受信処理は非同期で(sync()を呼ぶタイミングとは無関係に)行われます。</li>
+<li><span class="since-py">2.0</span> sync() の引数にtimeout(秒)を指定すると、指定した時間の間受信データの待機を続けます。 上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
+<li>デフォルトは0です(一度sync処理をした後すぐにreturnします)</li>
+<li>Noneを指定すると通信を切断するまでずっとsyncし、returnしません。</li>
+<li>ただしサーバーに接続しておらず auto_reconnect がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="comment"># ...</span></div>
+<div class="line"> </div>
+<div class="line">    wcli.sync(timeout=0.1)</div>
+</div><!-- fragment --></li>
 </ul>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md45"></a>
+<dl class="section warning"><dt>Warning</dt><dd><ul>
+<li><span class="since-py">2.0</span> 受信した各種データの処理がsync()で行われるため、データを受信するだけの使い方の場合でもsync()が必要になります。</li>
+<li><span class="since-py">2.0</span> これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはsync()を呼んだスレッドで実行されます。 そのため長時間かかるコールバックを登録した場合、その間sync()を呼んだメインスレッドがブロックされるだけでなく、他のデータの受信もできなくなるため注意してください。</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md53"></a>
 切断する</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.close();</div>
@@ -478,13 +513,26 @@ Encoding</h1>
 </li>
 <li><b class="tab-title">JavaScript</b> <div class="fragment"><div class="line">wcli.close();</div>
 </div><!-- fragment --></li>
-<li><b class="tab-title">Python</b> <div class="fragment"><div class="line">wcli.close()</div>
-</div><!-- fragment --></li>
+<li><p class="startli"><b class="tab-title">Python</b> </p><div class="fragment"><div class="line">wcli.close()</div>
+</div><!-- fragment --><ul>
+<li><span class="since-py">1.1.1</span> Pythonがexitするときは確実にclose()が呼ばれます。</li>
+<li><span class="since-py">2.0</span> sync() はclose()で停止します。 (別スレッドからでも、sync内から呼ばれたコールバックの中などでも可)</li>
+</ul>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li><span class="since-py">1.1.1</span> close()を呼んだ時点(またはexitするとき)でサーバーに接続できていた場合は、sync()でキューに入れたメッセージがすべて送信したあとに切断されます。<ul>
+<li>wait_cpnnection() → sync() → close() とすれば確実にデータを送信することができます。</li>
+<li>start()を使ってまだ接続が完了していない場合、または1回接続した後で通信が切断された場合など、サーバーに未接続の状態でclose()が呼ばれたときはメッセージを送信することなく終了してしまいます。</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+</li>
 </ul>
 </div><div class="tabbed"></div><p>切断するとサーバーのログに </p><div class="fragment"><div class="line">[info] connection closed</div>
 </div><!-- fragment --><p> などと表示されます。</p>
 <dl class="section warning"><dt>Warning</dt><dd>closeしたあと再度start()を呼んで再接続することはできません。</dd></dl>
-<h1><a class="anchor" id="autotoc_md46"></a>
+<h1><a class="anchor" id="autotoc_md54"></a>
 バージョン情報</h1>
 <p>いま使用しているWebCFaceライブラリのバージョンを確認できます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -504,9 +552,9 @@ Encoding</h1>
 <li><b class="tab-title">Python</b> <dl class="section since"><dt>Since</dt><dd><span class="since-py">1.0.2</span></dd></dl>
 <code>webcface.__version__</code> で文字列として(例: <code>"1.0.2"</code>)取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md47"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md55"></a>
 サーバーの情報</h1>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 serverVersion, serverName</h2>
 <ul>
 <li>serverVersion でサーバーのバージョンを取得できます。</li>
@@ -519,7 +567,7 @@ serverVersion, serverName</h2>
 <li><b class="tab-title">JavaScript</b> <code>wcli.serverVersion</code>, <code>wcli.serverName</code> で取得できます。</li>
 <li><b class="tab-title">Python</b> <code>wcli.server_version</code>, <code>wcli.server_name</code> で取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md49"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md57"></a>
 serverHostName</h2>
 <p>サーバーを起動しているPCのホスト名を取得できます。 WebUI ver1.7 以降ではWebUIのページタイトルにも表示されています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -529,9 +577,11 @@ serverHostName</h2>
 <code>wcfServerHostName(wcli)</code> で取得できます。</li>
 <li><b class="tab-title">JavaScript</b> <dl class="section since"><dt>Since</dt><dd><span class="since-js">1.7</span></dd></dl>
 <code>wcli.serverHostName</code> で取得できます。</li>
+<li><b class="tab-title">Python</b> <dl class="section since"><dt>Since</dt><dd><span class="since-js">2.0</span></dd></dl>
+<code>wcli.server_hostname</code> で取得できます。</li>
 </ul>
 </div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd>Clientの接続が完了し受信するまでは取得できません(空文字列になります)。 受信するのは waitConnection() の待機完了よりも後です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md58"></a>
 ログ出力</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
 <p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
@@ -548,7 +598,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

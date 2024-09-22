@@ -143,20 +143,20 @@ $(document).ready(function(){initNavTree('md_docs_231__setup.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md30">C/C++</a><ul><li class="level2"><a href="#autotoc_md31">API</a></li>
+<ul><li class="level1"><a href="#autotoc_md38">C/C++</a><ul><li class="level2"><a href="#autotoc_md39">API</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md32">Python</a></li>
-<li class="level1"><a href="#autotoc_md33">JavaScript/TypeScript</a></li>
+<li class="level1"><a href="#autotoc_md40">Python</a></li>
+<li class="level1"><a href="#autotoc_md41">JavaScript/TypeScript</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md29"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md37"></a></p>
 <p>以降、このドキュメントではクライアントの仕様変更された機能は <br  />
  C,C++のwebcface: <span class="since-c"></span> <br  />
  webcface-js: <span class="since-js"></span> <br  />
  webcface-python: <span class="since-py"></span> <br  />
  の画像で示します。</p>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md38"></a>
 C/C++</h1>
 <p>C/C++のライブラリはREADMEにしたがってwebcfaceをインストールすれば使うことができます。 MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWebCFaceを追加してソースからビルドすることもできます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -224,7 +224,7 @@ C/C++</h1>
 </ul>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md31"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md39"></a>
 API</h2>
 <p>C++のソースコードでは<code>&lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code>をincludeするとwebcfaceのすべての機能が使用できます。</p>
 <p><span class="since-c">1.10</span> <code>&lt;<a class="el" href="client_8h.html">webcface/client.h</a>&gt;</code>, <code>&lt;<a class="el" href="value_8h.html">webcface/value.h</a>&gt;</code>など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。</p>
@@ -232,14 +232,14 @@ API</h2>
 <p><strike>&lt;<a class="el" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt; をincludeすることで使えます。</strike> <br  />
  <span class="since-c">1.7</span> &lt;<a class="el" href="wcf_8h.html">webcface/wcf.h</a>&gt; をincludeすることで使えます。(c_wcf.hも一応使えます) <br  />
  ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c">2.0</span> enum wcfStatus 型で、 成功した場合 0 (= <del>WCF_OK</del> <span class="since-c">2.0</span> WCF_OK)、例外が発生した場合正の値を返します。</p>
-<h1><a class="anchor" id="autotoc_md32"></a>
+<h1><a class="anchor" id="autotoc_md40"></a>
 Python</h1>
 <p>Pythonで利用したい場合は <code>pip install webcface</code> でライブラリをインストールしてください。 Python3.8以上で動作します。</p>
 <p>importは </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
 </div><!-- fragment --><p> で <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> のように使うか、 </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
 </div><!-- fragment --><p> のように使います。</p>
 <p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a> も参照してください</p>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md41"></a>
 JavaScript/TypeScript</h1>
 <p><code>npm install webcface</code> でライブラリをインストールできます。 Node.jsでもブラウザー(webpackなど)でも動きます。</p>
 <p>Node.jsの場合、ESMで </p><div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
@@ -259,7 +259,7 @@ JavaScript/TypeScript</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

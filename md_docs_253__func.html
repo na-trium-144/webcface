@@ -143,20 +143,20 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md77">関数の登録</a><ul><li class="level2"><a href="#autotoc_md78">引数と戻り値型</a></li>
-<li class="level2"><a href="#autotoc_md79">関数をWebUIから隠す</a></li>
+<ul><li class="level1"><a href="#autotoc_md84">関数の登録</a><ul><li class="level2"><a href="#autotoc_md85">引数と戻り値型</a></li>
+<li class="level2"><a href="#autotoc_md86">関数をWebUIから隠す</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md80">FuncListener</a></li>
-<li class="level1"><a href="#autotoc_md81">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md82">Entry</a></li>
+<li class="level1"><a href="#autotoc_md87">FuncListener</a></li>
+<li class="level1"><a href="#autotoc_md88">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md89">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md83">関数の実行</a><ul><li class="level2"><a href="#autotoc_md84">型変換</a></li>
+<li class="level1"><a href="#autotoc_md90">関数の実行</a><ul><li class="level2"><a href="#autotoc_md91">型変換</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md76"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md83"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a> (<code><a class="el" href="func_8h.html">webcface/func.h</a></code>)</li>
@@ -166,7 +166,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md77"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 関数の登録</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
@@ -274,7 +274,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 <li>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</li>
 </ul>
 </li>
-<li><b class="tab-title">Python</b> Client.func からFuncオブジェクトを作り、 Func.set() で関数を登録し、Client.sync()することで送信されます <div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a, b):</div>
+<li><p class="startli"><b class="tab-title">Python</b> Client.func からFuncオブジェクトを作り、 Func.set() で関数を登録し、Client.sync()することで送信されます </p><div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a, b):</div>
 <div class="line">    <span class="keywordflow">return</span> 3.1415</div>
 <div class="line"> </div>
 <div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge)</div>
@@ -292,7 +292,32 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </div><!-- fragment --></li>
 </ul>
 </li>
+<li><span class="since-py">2.0</span> set() で登録した関数はClient.sync()時に同じスレッドで実行されます。 そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。<ul>
+<li>関数を非同期(別スレッド)で実行したい場合は Func.set_async() を使用してください。 ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。</li>
+<li>set_async() で登録した関数は新しいスレッド(threading.Thread)で実行されます。 <div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a, b):</div>
+<div class="line">    time.sleep(5)</div>
+<div class="line"> </div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set_async(hoge)</div>
+</div><!-- fragment --></li>
 </ul>
+</li>
+</ul>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-py">2.0</span> set()で登録した関数はClient.sync() の中で呼び出されるため、<ul>
+<li>sync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。 その場合はsync()を呼び出す頻度を上げるか、sync(timeout) を使ってください (<a class="el" href="md_docs_241__client.html">4-1. Client</a> 参照)</li>
+<li>set()で登録した関数内で他のクライアントの関数をrun()やrun_async()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。 (結果を受け取る処理も sync() で行われるため) <div class="fragment"><div class="line"><span class="preprocessor">@wcli.func()</span></div>
+<div class="line"><span class="keyword">def </span>hoge():</div>
+<div class="line">    wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;piyo&quot;</span>).run() <span class="comment"># deadlock</span></div>
+<div class="line">    </div>
+<div class="line">    <span class="keyword">def </span>wait_piyo():</div>
+<div class="line">        wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;piyo&quot;</span>).run() <span class="comment"># ok (非同期実行)</span></div>
+<div class="line"> </div>
+<div class="line">    threading.Thread(target=wait_piyo)</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment"># またはそもそもこの関数をsetAsync()で登録すればok</span></div>
+</div><!-- fragment --></li>
+</ul>
+</dd></dl>
+<p><span></span></p>
 </li>
 </ul>
 </div><div class="tabbed"></div><details >
@@ -314,7 +339,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md78"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 引数型や戻り値型は関数の型から自動で取得されますが、 引数名などの情報や引数に設定する条件などを Func::setArgs() でセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -351,18 +376,18 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">])</div>
 <div class="line"><span class="keyword">def </span>hoge(a, b):</div>
 <div class="line">    <span class="keywordflow">return</span> 3.1415</div>
-</div><!-- fragment --><p> 引数と戻り値の型アノテーションをすると、型の指定を省略できます。 </p><div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a: int, b: str) -&gt; float:</div>
+</div><!-- fragment --><p> 引数と戻り値の型アノテーションをすると、型の指定を省略できます。 また、デフォルト引数も指定されていればそれが使われます。 </p><div class="fragment"><div class="line"><span class="keyword">def </span>hoge(a: int = 100, b: str = <span class="stringliteral">&quot;aaa&quot;</span>) -&gt; float:</div>
 <div class="line">    <span class="keywordflow">return</span> 3.1415</div>
 <div class="line"> </div>
 <div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge, args=[</div>
-<div class="line">    Arg(init=100),</div>
+<div class="line">    Arg(),</div>
 <div class="line">    Arg(option=[<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>]),</div>
 <div class="line">])</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md79"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md86"></a>
 関数をWebUIから隠す</h2>
-<dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span></dd></dl>
+<p>(serverが<span class="since-c">1.10</span>以降の場合)</p>
 <p>関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、 他のMemberやWebUIから関数の存在を隠すことができます。 (Valueなど他のデータ型についても同様です。)</p>
 <p>なお半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。</p>
 <p>以前のバージョンでは名前に関係なく関数を非表示にするオプションがありましたが、削除しました。</p>
@@ -379,7 +404,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div> </details>
-<h1><a class="anchor" id="autotoc_md80"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 FuncListener</h1>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -424,38 +449,37 @@ FuncListener</h1>
 </ul>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md81"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md88"></a>
 関数の情報の取得</h1>
-<p>Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。</p>
-<p>他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
-<h2><a class="anchor" id="autotoc_md82"></a>
+<p>関数の引数や戻り値の情報を取得できます。 他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">C++</b> Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">std::vector&lt;webcface::Arg&gt; args = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).args();</div>
+<div class="line"><a class="code hl_enumeration" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a> return_type = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).returnType();</div>
+<div class="ttc" id="anamespacewebcface_1_1encoding_html_acd1dd9e2d5f885ad3f73197cfa6b0185"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::encoding::ValType</a></div><div class="ttdeci">ValType</div><div class="ttdoc">引数や戻り値の型を表すenum</div><div class="ttdef"><b>Definition</b> val_adaptor.h:21</div></div>
+</div><!-- fragment --> 引数の情報については <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照 また、戻り値型は <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185" title="引数や戻り値の型を表すenum">webcface::ValType</a> というenum型で得られます。</li>
+<li><b class="tab-title">JavaScript</b> Member.func() でFuncクラスのオブジェクトが得られ、 Func.returnType や Func.args で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">const args = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).args;</div>
+<div class="line">const returnType = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).returnType;</div>
+</div><!-- fragment --> 引数の情報については <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照</li>
+<li><b class="tab-title">Python</b> Member.func() でFuncクラスのオブジェクトが得られ、 Func.return_type や Func.args で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">args = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).args</div>
+<div class="line">return_type = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).return_type</div>
+</div><!-- fragment --> 引数の情報については <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.Arg">webcface.Arg</a> を参照</li>
+</ul>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md89"></a>
 Entry</h2>
 <p>Valueと同様、関数が存在するかどうかを取得することができます。 使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md90"></a>
 関数の実行</h1>
 <p>他クライアントに登録された関数を呼び出すことができます。 (自分でsetした関数を自分で実行することも一応可能です)</p>
 <p>引数を渡したり、戻り値またはエラーメッセージを取得することができます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Func::runAsync() で関数を呼び出し、完了を待たずに続行します。 戻り値として <del>AsyncFuncResult</del> <span class="since-c">2.0</span> Promise クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000036">Deprecated:</a></b></dt><dd>AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。<ul>
-<li>started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。<ul>
-<li><span class="since-c">2.0</span> runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります</li>
-</ul>
-</li>
-<li>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。<ul>
-<li>実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。</li>
-</ul>
-</li>
-<li><span class="since-c">2.0</span> started.get() や result.get() はver2.0以降デッドロックする可能性があります。 詳細は後述の waitReach(), waitFinish() を参照してください</li>
-</ul>
-</dd></dl>
 <p class="startli"><span class="since-c">2.0</span> Promiseでは以下のメソッドが使用可能です。</p><ul>
 <li>reached(): 関数呼び出しのメッセージが相手のクライアントに到達したらtrue、それまでの間はfalseです。<ul>
-<li>waitReach(), waitReachFor(), waitReachUntil(): reach()がtrueになるまで待機します。 For, Until の場合はタイムアウトを指定します。</li>
+<li>waitReach(), waitReachFor(), waitReachUntil(): reached()がtrueになるまで待機します。 For, Until の場合はタイムアウトを指定します。</li>
 </ul>
 </li>
 <li>found(): reached()がtrueになった後、相手のクライアントが関数の実行を開始したらtrue、指定したクライアントまたは関数が存在しなかった場合falseです。<ul>
-<li>reach()がfalseの間はfalseです。</li>
+<li>reached()がfalseの間はfalseです。</li>
 <li>runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります</li>
 </ul>
 </li>
@@ -566,21 +590,97 @@ Entry</h2>
 <div class="line">    // (e as Error).message がエラーメッセージ</div>
 <div class="line">});</div>
 </div><!-- fragment --></li>
-<li><p class="startli"><b class="tab-title">Python</b> Func.run() は関数を呼び出し、結果が返ってくるまで待機します。 </p><div class="fragment"><div class="line">ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
-</div><!-- fragment --><p> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func.__call__</code>)</p>
-<p class="startli">Func.run_async() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。</p>
-<p class="startli">AsyncFuncResultからは started と result が取得できます。</p><ul>
+<li><p class="startli"><b class="tab-title">Python</b> Func.run_async() で関数を呼び出すと、 戻り値として <del>AsyncFuncResult</del> <span class="since-py">2.0</span> Promise クラスのオブジェクトが返り、 後から関数の戻り値や例外を取得できます。</p>
+<p class="startli"><span class="since-py">2.0</span> Promiseでは以下のメソッドが使用可能です。</p><ul>
+<li>reached: 関数呼び出しのメッセージが相手のクライアントに到達したらTrue、それまでの間はFalseです。<ul>
+<li>wait_reach(): reached がTrueになるまで待機します。 timeoutを指定することもできます。</li>
+</ul>
+</li>
+<li>found: reachedがTrueになった後、相手のクライアントが関数の実行を開始したらTrue、指定したクライアントまたは関数が存在しなかった場合Falseです。<ul>
+<li>reached がFalseの間はFalseです。</li>
+<li>run_async呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にFalseになります</li>
+</ul>
+</li>
+<li>finished: 関数の実行が完了し戻り値かエラーメッセージを受け取ったらTrue、それまでの間はFalseです。<ul>
+<li>wait_finish(): finished()がTrueになるまで待機します。 timeoutを指定することもできます。</li>
+</ul>
+</li>
+<li>response: 関数の戻り値です。 int, float, bool, str型のいずれかで返ります</li>
+<li>rejection: 関数が例外を返した場合そのエラーメッセージを表す文字列です。 またその場合 is_error がTrueになります。</li>
+</ul>
+<div class="fragment"><div class="line">res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run_async(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
+<div class="line">res.wait_reach()</div>
+<div class="line"><span class="keywordflow">if</span> res.found:</div>
+<div class="line">    <span class="comment"># 関数hogeが存在し、実行が開始された</span></div>
+<div class="line">    res.wait_finish()</div>
+<div class="line">    <span class="keywordflow">if</span> res.is_error:</div>
+<div class="line">        <span class="comment"># res.rejection がエラーメッセージ</span></div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        <span class="comment"># res.response が戻り値</span></div>
+<div class="line"><span class="keywordflow">else</span>:</div>
+<div class="line">     関数hogeが存在しないか未接続で呼び出し失敗</div>
+</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><span class="since-py">2.0</span> 上の例のようにwait_reach(), wait_finish() などで結果が返ってくるまで待機することができますが、 これらが結果を受信するためには Client.sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。</dd></dl>
+<p><span></span></p><ul>
+<li><code>on_reach()</code>, <code>on_finish()</code> で値が返ってきたときに実行されるコールバックを設定することができます。<ul>
+<li>引数にはそのPromise自身が渡されます</li>
+<li>eventのコールバックと同様、デコレータとして使ってコールバックを設定することもできます。</li>
+<li>コールバックは Client.sync() の中から呼び出されます。 <div class="fragment"><div class="line">res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run_async(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">@res.on_reach</span></div>
+<div class="line"><span class="keyword">def </span>on_reach(res: Promise):</div>
+<div class="line">    <span class="keywordflow">if</span> res.found:</div>
+<div class="line">        <span class="comment"># 関数hogeが存在し、実行が開始された</span></div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        <span class="comment"># 関数hogeが存在しないか未接続で呼び出し失敗</span></div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">@res.on_finish</span></div>
+<div class="line"><span class="keyword">def </span>on_finish(res: Promise):</div>
+<div class="line">    <span class="keywordflow">if</span> res.is_error:</div>
+<div class="line">        <span class="comment"># res.rejection がエラーメッセージ</span></div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        <span class="comment"># res.response が戻り値</span></div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>on_reach, on_finish を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。 したがってコールバックはどの状況で設定したとしても必ず1回呼ばれます。 (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)</dd></dl>
+<span></span></li>
+</ul>
+</li>
+</ul>
+<p class="startli">Func.run() は関数を呼び出し、結果が返ってくるまで待機します。 例外が返ってきた場合はRuntimeErrorを、また呼び出しに失敗した場合は webcface.FuncNotFoundError をraiseします。 </p><div class="fragment"><div class="line">result = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
+</div><!-- fragment --><ul>
+<li>wait_reach(), wait_finish() と同様 Client.sync() が呼ばれていないとデッドロックするので注意してください。</li>
+</ul>
+<p class="startli">Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func.__call__</code>)</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><details >
+<summary >
+AsyncFuncResult.started と result (ver2.0からdeprecated)</summary>
+<p></p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p>
+<p class="startli">AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。</p><ul>
+<li>started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。<ul>
+<li><span class="since-c">2.0</span> runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります</li>
+</ul>
+</li>
+<li>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。<ul>
+<li>実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。</li>
+</ul>
+</li>
+<li><span class="since-c">2.0</span> started.get() や result.get() はver2.0以降デッドロックする可能性があります。 詳細は上に書かれている waitReach(), waitFinish() の注意を参照してください</li>
+</ul>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> AsyncFuncResultからは started と result が取得できます。</p><ul>
 <li>started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。</li>
 <li>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。</li>
 </ul>
 <p class="startli">startedとresultは取得できるまで待機するgetterです。例外の場合はresultの取得時に投げます。 また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。 詳細は <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult">webcface.AsyncFuncResult</a> を参照</p>
-<div class="fragment"><div class="line">res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run_async(1, <span class="stringliteral">&quot;aa&quot;</span>)</div>
-<div class="line">ans = res.result</div>
-</div><!-- fragment --></li>
+</li>
 </ul>
-</div><div class="tabbed"></div><details >
+</div><div class="tabbed"></div><p></p>
+</details>
+<details >
 <summary >
-CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
+CallbackListを返す AsyncFuncResult::onStarted(), onResult() (C++ ver1.11)</summary>
 <p></p>
 <p><span class="since-c">1.11</span> <code>onStarted()</code>, <code>onResult()</code> で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。 (<a href="https://github.com/wqking/eventpp/blob/master/doc/callbacklist.md">eventpp::CallbackList 型</a>の参照で返ります) <br  />
  </p><div class="fragment"><div class="line">AsyncFuncResult res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
@@ -631,7 +731,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 </ul>
 </div><div class="tabbed"></div><p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md91"></a>
 型変換</h2>
 <ul>
 <li>引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。</li>
@@ -651,7 +751,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

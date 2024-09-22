@@ -1,0 +1,815 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 1-2. Tutorial (Communication)</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_212__tutorial__comm.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">1-2. Tutorial (Communication)</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md11">WebCFaceのインストール</a></li>
+<li class="level1"><a href="#autotoc_md12">Server</a></li>
+<li class="level1"><a href="#autotoc_md13">Setup</a></li>
+<li class="level1"><a href="#autotoc_md14">Value, Text</a></li>
+<li class="level1"><a href="#autotoc_md15">コールバック</a></li>
+<li class="level1"><a href="#autotoc_md16">Func</a></li>
+<li class="level1"><a href="#autotoc_md17">おわりに</a></li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md10"></a></p>
+<p>WebCFaceの機能紹介・チュートリアルです。</p>
+<p>このチュートリアルはプロセス間通信をメインにしたものです。 WebUIでのデータの可視化やWebUIからのプログラム操作に重点をおいたチュートリアルは <a class="el" href="md_docs_211__tutorial__vis.html">1-1. Tutorial (Visualizing)</a></p>
+<p>このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.8以上が必要です) を使用します。</p>
+<h1><a class="anchor" id="autotoc_md11"></a>
+WebCFaceのインストール</h1>
+<p>READMEにしたがって webcface, webcface-webui, webcface-tools をインストールしましょう。</p>
+<p>C++の場合はインストールしたwebcfaceパッケージにクライアントライブラリも含まれています。</p>
+<h1><a class="anchor" id="autotoc_md12"></a>
+Server</h1>
+<p>WebCFaceを使用するときはserverを常時立ち上げておく必要があります。 次のように WebCFace Desktop アプリから、またはコマンドラインからの2つの方法があります。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">WebCFace Desktop</b></p>
+<p class="startli">スタートメニュー(Windows)、 アプリケーションメニュー(Ubuntu)、 Launchpadまたはアプリケーションフォルダ(Mac) に 「WebCFace Desktop」のアイコン <img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" alt="" style="pointer-events: none;" height="24" class="inline"/> が表示されているはずなので、それを起動してください。</p>
+<p class="startli">それを起動すると、WebCFaceのメイン画面(WebUI)が起動すると同時に、バックグラウンドでサーバーが起動します。</p>
+</li>
+<li><p class="startli"><b class="tab-title">コマンドライン</b></p>
+<p class="startli">ターミナルを開いて <code>webcface-server</code> コマンドを実行するとサーバーが起動します。 デフォルトでは7530番ポートを開きクライアントの接続を待ちます。 追加で指定できるコマンドラインオプションなど、詳細は <a class="el" href="md_docs_221__server.html">2-1. Server</a></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md13"></a>
+Setup</h1>
+<p>ここからWebCFaceを使ったプログラムを書いていきます。</p>
+<p>まずはプロジェクトを作成しWebCFaceライブラリを使えるようにします。</p>
+<dl class="section note"><dt>Note</dt><dd>C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコンパイル・リンクすることも可能です。 詳細な説明は <a class="el" href="md_docs_231__setup.html">3-1. Setup WebCFace Library</a></dd></dl>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++ (Meson)</b> 適当にディレクトリを作ります </p><div class="fragment"><div class="line">mkdir webcface-tutorial</div>
+<div class="line">cd webcface-tutorial</div>
+</div><!-- fragment --><p> 以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>send.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span> <span class="comment">// ← webcface::Client</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (sender)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:18</div></div>
+<div class="ttc" id="aclient_8h_html"><div class="ttname"><a href="client_8h.html">client.h</a></div></div>
+</div><!-- fragment --></li>
+<li>recv.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-recv&quot;</span>);  <span class="comment">// ← ここの名前が違うことに注意</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+</li>
+<li>meson.build <div class="fragment"><div class="line">project(&#39;webcface-tutorial&#39;, &#39;cpp&#39;,</div>
+<div class="line">  default_options: [&#39;cpp_std=c++17&#39;],</div>
+<div class="line">)</div>
+<div class="line">webcface_dep = dependency(&#39;webcface&#39;)</div>
+<div class="line">executable(&#39;tutorial-send&#39;, &#39;send.cc&#39;,</div>
+<div class="line">  dependencies: webcface_dep,</div>
+<div class="line">)</div>
+<div class="line">executable(&#39;tutorial-recv&#39;, &#39;recv.cc&#39;,</div>
+<div class="line">  dependencies: webcface_dep,</div>
+<div class="line">)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">ビルドして、実行します </p><div class="fragment"><div class="line">meson setup build  # ← 初回のみ</div>
+<div class="line">meson compile -C build</div>
+<div class="line">./build/tutorial-send</div>
+</div><!-- fragment --><p> ターミナルをもう1つ開いて </p><div class="fragment"><div class="line">./build/tutorial-recv</div>
+</div><!-- fragment --><p> 実行すると、<code>Hello, World! (sender)</code> <code>Hello, World! (receiver)</code> と出力されます。</p>
+<dl class="section note"><dt>Note</dt><dd>このチュートリアルでは以降ビルドと実行の手順は省略しますが、 同様に <code>meson compile</code> (またはninja) でビルドして <code>./build/tutorial-send</code> と <code>./build/tutorial-recv</code> を実行してください。</dd></dl>
+<p><span></span></p>
+</li>
+<li><p class="startli"><b class="tab-title">C++ (CMake)</b> 適当にディレクトリを作ります </p><div class="fragment"><div class="line">mkdir webcface-tutorial</div>
+<div class="line">cd webcface-tutorial</div>
+</div><!-- fragment --><p> 以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>send.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span> <span class="comment">// ← webcface::Client</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (sender)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+<li>recv.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-recv&quot;</span>);  <span class="comment">// ← ここの名前が違うことに注意</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() の最初) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+</li>
+<li>CMakeLists.txt <div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.5)</div>
+<div class="line">project(webcface-tutorial)</div>
+<div class="line">find_package(webcface 2.0 CONFIG REQUIRED)</div>
+<div class="line">add_executable(tutorial-send send.cc)</div>
+<div class="line">target_link_libraries(tutorial-send PRIVATE webcface::webcface)</div>
+<div class="line">add_executable(tutorial-recv recv.cc)</div>
+<div class="line">target_link_libraries(tutorial-recv PRIVATE webcface::webcface)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">ビルドして、実行します </p><div class="fragment"><div class="line">cmake -B build  # ← 初回のみ</div>
+<div class="line">cmake --build build</div>
+<div class="line">./build/tutorial-send</div>
+</div><!-- fragment --><p> ターミナルをもう1つ開いて </p><div class="fragment"><div class="line">./build/tutorial-recv</div>
+</div><!-- fragment --><p> 実行すると、<code>Hello, World! (sender)</code> <code>Hello, World! (receiver)</code> と出力されます。</p>
+<dl class="section note"><dt>Note</dt><dd>このチュートリアルでは以降ビルドと実行の手順は省略しますが、 同様に <code>cmake --build</code> (またはmakeやninjaなどでも可) でビルドして <code>./build/tutorial-send</code> と <code>./build/tutorial-recv</code> を実行してください。</dd></dl>
+<p><span></span></p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> PythonでWebCFaceを使うには、クライアントライブラリをインストールする必要があります。 venv内でもグローバルにインストールしても構いません。 </p><div class="fragment"><div class="line">pip install webcface</div>
+</div><!-- fragment --><p class="startli">以下のようにWebCFaceの初期化 + 簡単な Hello World を書きます</p><ul>
+<li>send.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (sender)&quot;</span>)</div>
+</div><!-- fragment --></li>
+<li>recv.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-recv&quot;</span>)  <span class="comment"># ←ここの名前が違うことに注意</span></div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span>)</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>Clientの初期化はグローバル変数でもローカル変数 (main() やクラスの初期化など) でもどちらでも構いませんが、 このチュートリアルではグローバル変数にします。</dd></dl>
+実行します <div class="fragment"><div class="line">python3 ./send.py</div>
+</div><!-- fragment --> ターミナルをもう1つ開いて <div class="fragment"><div class="line">python3 ./recv.py</div>
+</div><!-- fragment --> 実行すると、<code>Hello, World! (sender)</code> <code>Hello, World! (receiver)</code> と出力されます。</li>
+</ul>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md14"></a>
+Value, Text</h1>
+<p>まずは数値や文字列のデータを送受信してみましょう。 (他のPub-Sub型通信でいうところのTopicをPublishするようなものです)</p>
+<dl class="section note"><dt>Note</dt><dd>以降このチュートリアルではC++同士・Python同士の通信だけでなく、C++のsend側とPythonのrecv側、のように組み合わせても動作します。</dd></dl>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>send.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="value_8h.html">webcface/value.h</a>&gt;</span> <span class="comment">// ← value() を使うのに必要</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="text_8h.html">webcface/text.h</a>&gt;</span> <span class="comment">// ← text() を使うのに必要</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (sender)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// &quot;data&quot; という名前のValueデータとして 100 という値をセット</span></div>
+<div class="line">    wcli.value(<span class="stringliteral">&quot;data&quot;</span>) = 100;</div>
+<div class="line">    <span class="comment">// &quot;message&quot; という名前のTextデータとして &quot;Hello, World! (sender)&quot; という文字列をセット</span></div>
+<div class="line">    wcli.text(<span class="stringliteral">&quot;message&quot;</span>) = <span class="stringliteral">&quot;Hello, World! (sender)&quot;</span>;</div>
+<div class="line">    wcli.sync(); <span class="comment">// データを送信します</span></div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;sender finish&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">}</div>
+<div class="ttc" id="atext_8h_html"><div class="ttname"><a href="text_8h.html">text.h</a></div></div>
+<div class="ttc" id="avalue_8h_html"><div class="ttname"><a href="value_8h.html">value.h</a></div></div>
+</div><!-- fragment --></li>
+<li>recv.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="value_8h.html">webcface/value.h</a>&gt;</span> <span class="comment">// ← value() を使うのに必要</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="text_8h.html">webcface/text.h</a>&gt;</span> <span class="comment">// ← text() を使うのに必要</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-recv&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line">        <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;data&quot; という名前のValueデータをリクエスト &amp; 取得</span></div>
+<div class="line">        std::optional&lt;double&gt; data = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>).value(<span class="stringliteral">&quot;data&quot;</span>).tryGet();</div>
+<div class="line">        <span class="keywordflow">if</span> (data.has_value()){</div>
+<div class="line">            <span class="comment">// 送信されたデータがあれば取得できるはず</span></div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;data = &quot;</span> &lt;&lt; *data &lt;&lt; std::endl;</div>
+<div class="line">        } <span class="keywordflow">else</span> {</div>
+<div class="line">            <span class="comment">// まだ何も送信されていない</span></div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;data is null&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">        }</div>
+<div class="line"> </div>
+<div class="line">        <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;message&quot; という名前のTextデータをリクエスト &amp; 取得</span></div>
+<div class="line">        std::optional&lt;std::string&gt; message = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>).text(<span class="stringliteral">&quot;message&quot;</span>).tryGet();</div>
+<div class="line">        <span class="keywordflow">if</span> (message.has_value()){</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;message = &quot;</span> &lt;&lt; *message &lt;&lt; std::endl;</div>
+<div class="line">        } <span class="keywordflow">else</span> {</div>
+<div class="line">            std::cout &lt;&lt; <span class="stringliteral">&quot;message is null&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">        }</div>
+<div class="line"> </div>
+<div class="line">        wcli.sync(); <span class="comment">// データを受信します</span></div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">実行すると、send側で送信した <code>data</code> と <code>message</code> の内容が、1秒ごとにrecv側にも表示されます。 起動する順番はどちらが先でも大丈夫です。 </p><div class="fragment"><div class="line">Hello, World! (receiver)</div>
+<div class="line">data is null</div>
+<div class="line">message is null</div>
+<div class="line">data = 100</div>
+<div class="line">message = Hello, World! (sender)</div>
+<div class="line">data = 100</div>
+<div class="line">message = Hello, World! (sender)</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>recv側は最初からsend側が送信したすべてのデータを受信しているわけではなく、 1回目のtryGet()呼び出しで <code>data</code> と <code>message</code> の内容をリクエストしています。<ul>
+<li>(この時点では値はnulloptになっています)</li>
+<li>そしてその後の <code>wcli.sync()</code> (受信したデータの処理が行われる) をした後の2回目のtryGet()の呼び出しで実際に値が得られます。</li>
+</ul>
+</li>
+<li>recv側を先に起動した場合、send側が起動するまでの間はデータはnulloptのままになります。</li>
+<li>send側とrecv側を1度実行して終了した後に再度recv側だけを起動すると、send側を起動しなくても値を取得できてしまいますが、 これはサーバーのほうにデータが残っているためです。<ul>
+<li>サーバーも1度終了して起動し直すとまた値がない状態に戻ります。</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>send.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (sender)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># &quot;data&quot; という名前のvalueデータとして100という値をセット</span></div>
+<div class="line">wcli.value(<span class="stringliteral">&quot;data&quot;</span>).set(100)</div>
+<div class="line"><span class="comment"># &quot;message&quot; という名前のtextデータとして &quot;Hello World! (sender)&quot; という文字列をセット</span></div>
+<div class="line">wcli.text(<span class="stringliteral">&quot;message&quot;</span>).set(<span class="stringliteral">&quot;Hello, World! (sender)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">wcli.sync()  <span class="comment"># データを送信します</span></div>
+<div class="line">print(<span class="stringliteral">&quot;sender finish&quot;</span>)</div>
+</div><!-- fragment --></li>
+<li>recv.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-recv&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="comment"># &quot;tutorial-send&quot; が送信している &quot;data&quot; という名前のvalueデータをリクエスト&amp;取得</span></div>
+<div class="line">    data = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>).value(<span class="stringliteral">&quot;data&quot;</span>).try_get()</div>
+<div class="line">    <span class="keywordflow">if</span> data <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line">        <span class="comment"># 送信されたデータがあれば取得できるはず</span></div>
+<div class="line">        print(f<span class="stringliteral">&quot;data = {data}&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        <span class="comment"># まだなにも送信されていない</span></div>
+<div class="line">        print(<span class="stringliteral">&quot;data is None&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment"># &quot;tutorial-send&quot; が送信している &quot;message&quot; という名前のtextデータをリクエスト&amp;取得</span></div>
+<div class="line">    message = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>).text(<span class="stringliteral">&quot;message&quot;</span>).try_get()</div>
+<div class="line">    <span class="keywordflow">if</span> message <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line">        print(f<span class="stringliteral">&quot;message = {message}&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">else</span>:</div>
+<div class="line">        print(<span class="stringliteral">&quot;message is None&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    wcli.sync()  <span class="comment"># データを受信します</span></div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">実行すると、send側で送信した <code>data</code> と <code>message</code> の内容が、1秒ごとにrecv側にも表示されます。 起動する順番はどちらが先でも大丈夫です。 </p><div class="fragment"><div class="line">Hello, World! (receiver)</div>
+<div class="line">data is None</div>
+<div class="line">message is None</div>
+<div class="line">data = 100</div>
+<div class="line">message = Hello, World! (sender)</div>
+<div class="line">data = 100</div>
+<div class="line">message = Hello, World! (sender)</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>recv側は最初からsend側が送信したすべてのデータを受信しているわけではなく、 1回目のtry_get()呼び出しで <code>data</code> と <code>message</code> の内容をリクエストしています。<ul>
+<li>(この時点では値はNoneになっています)</li>
+<li>そしてその後の <code>wcli.sync()</code> (受信したデータの処理が行われる) をした後の2回目のtry_get()の呼び出しで実際に値が得られます。</li>
+</ul>
+</li>
+<li>recv側を先に起動した場合、send側が起動するまでの間はデータはNoneのままになります。</li>
+<li>send側とrecv側を1度実行して終了した後に再度recv側だけを起動すると、send側を起動しなくても値を取得できてしまいますが、 これはサーバーのほうにデータが残っているためです。<ul>
+<li>サーバーも1度終了して起動し直すとまた値がない状態に戻ります。</li>
+</ul>
+</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md15"></a>
+コールバック</h1>
+<p>データを受信する側では、現在の値を繰り返し確認するのではなく、値が変化した時に処理が実行されるようにするという使い方もできます。 (他のPub-Sub型通信でいうところのSubscribeのようなものです)</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>send側は上のプログラムと同じです。</li>
+<li>recv.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="value_8h.html">webcface/value.h</a>&gt;</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="text_8h.html">webcface/text.h</a>&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial-recv&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// ちなみに &quot;tutorial-send&quot; を毎回書くのは面倒なのでこのように変数に入れることもできます</span></div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;data&quot; という名前のValueデータが変わった時に呼び出される処理</span></div>
+<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;data&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#a5015290390a1b4942a768968150fc2df">onChange</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;data changed: &quot;</span> &lt;&lt; v.<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>() &lt;&lt; std::endl;</div>
+<div class="line">    });</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;message&quot; という名前のTextデータが変わった時に呼び出される処理</span></div>
+<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a7f0ed33e851f794caa1bf924341fb1a9">text</a>(<span class="stringliteral">&quot;message&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Text.html#aa6aa50819dc8edd13316f34918100d05">onChange</a>([](<a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> t){</div>
+<div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;message changed: &quot;</span> &lt;&lt; t.<a class="code hl_function" href="classwebcface_1_1Text.html#a442c2e70e260b81f142b037ad452dd96">get</a>() &lt;&lt; std::endl;</div>
+<div class="line">    });</div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line">        wcli.sync(); <span class="comment">// データを受信し、値が変化すればコールバックが呼ばれます</span></div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:23</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a7f0ed33e851f794caa1bf924341fb1a9"><div class="ttname"><a href="classwebcface_1_1Member.html#a7f0ed33e851f794caa1bf924341fb1a9">webcface::Member::text</a></div><div class="ttdeci">Text text(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:55</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">webcface::Member::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:53</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:183</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html_a442c2e70e260b81f142b037ad452dd96"><div class="ttname"><a href="classwebcface_1_1Text.html#a442c2e70e260b81f142b037ad452dd96">webcface::Text::get</a></div><div class="ttdeci">const std::string &amp; get() const</div><div class="ttdoc">文字列を返す (const参照)</div><div class="ttdef"><b>Definition</b> text.cc:98</div></div>
+<div class="ttc" id="aclasswebcface_1_1Text_html_aa6aa50819dc8edd13316f34918100d05"><div class="ttname"><a href="classwebcface_1_1Text.html#aa6aa50819dc8edd13316f34918100d05">webcface::Text::onChange</a></div><div class="ttdeci">const Text &amp; onChange(F callback) const</div><div class="ttdoc">値が変化したときに呼び出されるコールバックを設定</div><div class="ttdef"><b>Definition</b> text.h:251</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:22</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_a5015290390a1b4942a768968150fc2df"><div class="ttname"><a href="classwebcface_1_1Value.html#a5015290390a1b4942a768968150fc2df">webcface::Value::onChange</a></div><div class="ttdeci">const Value &amp; onChange(std::function&lt; void(Value)&gt; callback) const</div><div class="ttdoc">値が変化したときに呼び出されるコールバックを設定</div><div class="ttdef"><b>Definition</b> value.cc:56</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_af53ec2e557ea14cce1373e0f77954c82"><div class="ttname"><a href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">webcface::Value::get</a></div><div class="ttdeci">double get() const</div><div class="ttdoc">値を返す</div><div class="ttdef"><b>Definition</b> value.h:216</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:20</div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">これを実行すると、1秒ごとに受信した値が表示される代わりに、send側からデータが送られてきたタイミングで1度だけ </p><div class="fragment"><div class="line">data changed: 100</div>
+<div class="line">message changed: Hello, World! (sender)</div>
+</div><!-- fragment --><p> のように表示されます。</p>
+<p class="startli">このプログラムではsend側は常に同じデータを送っていますが、違うデータを送るようにすればデータが変わったタイミングで再度コールバックが呼ばれます。</p>
+<dl class="section note"><dt>Note</dt><dd>このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで1秒のラグがあると思います。これはrecv側がデータを受信する処理(<code>wcli.sync()</code>)が1秒に1回しか呼ばれていないためです。 これを改善するにはsync()を呼ぶ頻度を上げるか、 <a class="el" href="md_docs_241__client.html">4-1. Client</a> のページで説明していますが<code>wcli.loopSync()</code>などが使えます。</dd></dl>
+<p>Value, Textについては <a class="el" href="md_docs_251__value.html">5-1. Value</a>, <a class="el" href="md_docs_252__text.html">5-2. Text</a> に詳細なドキュメントがあります。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>send側は上のプログラムと同じです。</li>
+<li>recv.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client, Value, Text</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-recv&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># ちなみに &quot;tutorial-send&quot; を毎回書くのは面倒なのでこのように変数に入れることもできます</span></div>
+<div class="line">sender = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># tutorial-send が送信している &quot;data&quot; という名前のValueデータが変わったときに呼び出される処理</span></div>
+<div class="line"><span class="preprocessor">@sender.value(&quot;data&quot;)</span>.on_change</div>
+<div class="line"><span class="keyword">def </span>on_data_change(v: Value):</div>
+<div class="line">    print(f<span class="stringliteral">&quot;data changed: {v.get()}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># tutorial-send が送信している &quot;message&quot; という名前のTextデータが変わったときに呼び出される処理</span></div>
+<div class="line"><span class="preprocessor">@sender.text(&quot;message&quot;)</span>.on_change</div>
+<div class="line"><span class="keyword">def </span>on_message_change(t: Text):</div>
+<div class="line">    print(f<span class="stringliteral">&quot;message changed: {t}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    wcli.sync()  <span class="comment"># データを受信し、値が変化すればコールバックが呼ばれます</span></div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd><code>@sender.value("data").on_change</code> はデコレータです(糖衣構文というPythonの構文です)。 この書き方に馴染みがないなら <div class="fragment"><div class="line"><span class="keyword">def </span>on_data_change(v: Value):</div>
+<div class="line">    print(f<span class="stringliteral">&quot;data changed: {v.get()}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">sender.value(<span class="stringliteral">&quot;data&quot;</span>).on_change(on_data_change)</div>
+</div><!-- fragment --> と書いても同じです(がこの場合は@を使ったほうがかんたんに書けます)。</dd></dl>
+<span></span></li>
+</ul>
+<p class="startli">これを実行すると、1秒ごとに受信した値が表示される代わりに、send側からデータが送られてきたタイミングで1度だけ </p><div class="fragment"><div class="line">data changed: 100</div>
+<div class="line">message changed: Hello, World! (sender)</div>
+</div><!-- fragment --><p> のように表示されます。</p>
+<p class="startli">このプログラムではsend側は常に同じデータを送っていますが、違うデータを送るようにすればデータが変わったタイミングで再度コールバックが呼ばれます。</p>
+<dl class="section note"><dt>Note</dt><dd>このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで1秒のラグがあると思います。これはrecv側がデータを受信する処理(<code>wcli.sync()</code>)が1秒に1回しか呼ばれていないためです。 これを改善するにはsync()を呼ぶ頻度を上げるか、 <a class="el" href="md_docs_241__client.html">4-1. Client</a> のページで説明していますが<code>wcli.sync(timeout)</code>などが使えます。</dd></dl>
+<p>Value, Textについては <a class="el" href="md_docs_251__value.html">5-1. Value</a>, <a class="el" href="md_docs_252__text.html">5-2. Text</a> に詳細なドキュメントがあります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md16"></a>
+Func</h1>
+<p>データを送信するだけでなく、プロセス間で関数を呼び出すこともできます。 このチュートリアルではsend側の関数をrecv側から呼び出します。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b></p><ul>
+<li>send.cc で引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="func_8h.html">webcface/func.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
+<div class="line"><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> hoge() {</div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Function hoge started&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">return</span> 42;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 省略...</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 関数が呼び出されるのを待つために、無限ループを追加します</span></div>
+<div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>){</div>
+<div class="line">        wcli.sync();</div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
+</div><!-- fragment --></li>
+<li>recv.cc では1秒おきにそれを呼び出します。 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="func_8h.html">webcface/func.h</a>&gt;</span> <span class="comment">// ← 追加</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 省略...</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line">        <span class="comment">// tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a16c611bd8009f785bee61fd0e10bf386">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>();</div>
+<div class="line">        hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([hoge_p](){</div>
+<div class="line">            <span class="comment">// hoge_pが完了したとき、結果を表示します</span></div>
+<div class="line">            <span class="keywordflow">if</span>(hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;Error in hoge(): &quot;</span> &lt;&lt; hoge_p.rejection() &lt;&lt; std::endl;</div>
+<div class="line">            }<span class="keywordflow">else</span>{</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;hoge() = &quot;</span> &lt;&lt; hoge_p.response().asInt() &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        });</div>
+<div class="line"> </div>
+<div class="line">        wcli.sync(); <span class="comment">// データを受信します</span></div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+<div class="ttc" id="aclasswebcface_1_1Func_html_af6fa739e31a048973df789bf7c3f2530"><div class="ttname"><a href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">webcface::Func::runAsync</a></div><div class="ttdeci">Promise runAsync(Args... args) const</div><div class="ttdoc">関数を実行する (非同期)</div><div class="ttdef"><b>Definition</b> func.h:443</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a16c611bd8009f785bee61fd0e10bf386"><div class="ttname"><a href="classwebcface_1_1Member.html#a16c611bd8009f785bee61fd0e10bf386">webcface::Member::func</a></div><div class="ttdeci">AnonymousFunc func(const T &amp;func) const</div><div class="ttdoc">AnonymousFuncオブジェクトを作成しfuncをsetする</div><div class="ttdef"><b>Definition</b> member.h:65</div></div>
+<div class="ttc" id="aclasswebcface_1_1Promise_html"><div class="ttname"><a href="classwebcface_1_1Promise.html">webcface::Promise</a></div><div class="ttdoc">非同期で実行した関数の実行結果を取得するインタフェース。</div><div class="ttdef"><b>Definition</b> func_result.h:50</div></div>
+<div class="ttc" id="aclasswebcface_1_1Promise_html_a057b21531e5541d9e1ef6f203530de47"><div class="ttname"><a href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">webcface::Promise::isError</a></div><div class="ttdeci">bool isError() const</div><div class="ttdoc">関数がエラーになったかどうかを返す</div><div class="ttdef"><b>Definition</b> func_result.cc:235</div></div>
+<div class="ttc" id="aclasswebcface_1_1Promise_html_afcb0086c9cc1938e4ac0441a9e1994be"><div class="ttname"><a href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">webcface::Promise::onFinish</a></div><div class="ttdeci">Promise &amp; onFinish(std::function&lt; void(Promise)&gt; callback)</div><div class="ttdoc">関数の実行が完了した時呼び出すコールバックを設定</div><div class="ttdef"><b>Definition</b> func_result.cc:149</div></div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">実行すると、send側とrecv側が両方起動していればsend側では1秒おきに hoge() が呼び出され(<code>Function hoge started</code>と表示され)、recv側ではhoge()の戻り値である42が表示されるはずです。</p>
+<p class="startli">send側が起動していない状態でrecv側だけを起動すると呼び出しは失敗し、エラー表示になります。 またsend側の関数の中でthrowをした場合にもエラーになります。</p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>関数の呼び出しに1秒程度ラグがあると思います。 これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。 これを改善するにはsync()を呼ぶ頻度を上げるか、 <a class="el" href="md_docs_241__client.html">4-1. Client</a> のページで説明していますが<code>wcli.loopSync()</code>などが使えます。</li>
+<li>また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。 メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに setAsync() が使えます。</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+<p class="startli">こんどは引数がある関数を作ってみます。</p><ul>
+<li>send.cc <div class="fragment"><div class="line"><span class="keywordtype">int</span> fuga(<span class="keywordtype">int</span> a, <span class="keyword">const</span> std::string &amp;b) {</div>
+<div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Function fuga(&quot;</span> &lt;&lt; a &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; b &lt;&lt; <span class="stringliteral">&quot;) started&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">    <span class="keywordflow">return</span> a;</div>
+<div class="line">}</div>
+<div class="line"> </div>
+<div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge);</div>
+<div class="line">    wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).set(fuga);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 以下略...</span></div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+<li>recv.cc <div class="fragment"><div class="line"><span class="keywordtype">int</span> main() {</div>
+<div class="line">    wcli.waitConnection();</div>
+<div class="line"> </div>
+<div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line"> </div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment">// 省略...</span></div>
+<div class="line"> </div>
+<div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
+<div class="line">        <span class="comment">// tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a16c611bd8009f785bee61fd0e10bf386">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>();</div>
+<div class="line">        hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([hoge_p](){</div>
+<div class="line">            <span class="comment">// hoge_pが完了したとき、結果を表示します</span></div>
+<div class="line">            <span class="keywordflow">if</span>(hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;Error in hoge(): &quot;</span> &lt;&lt; hoge_p.rejection() &lt;&lt; std::endl;</div>
+<div class="line">            }<span class="keywordflow">else</span>{</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;hoge() = &quot;</span> &lt;&lt; hoge_p.response().asInt() &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        });</div>
+<div class="line"> </div>
+<div class="line">        <span class="comment">// tutorial-send の &quot;fuga&quot; という関数を引数を渡して呼び出します</span></div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> fuga_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a16c611bd8009f785bee61fd0e10bf386">func</a>(<span class="stringliteral">&quot;fuga&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>(123, <span class="stringliteral">&quot;abc&quot;</span>);</div>
+<div class="line">        fuga_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([fuga_p](){</div>
+<div class="line">            <span class="comment">// fuga_pが完了したとき、結果を表示します</span></div>
+<div class="line">            <span class="keywordflow">if</span>(fuga_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;Error in fuga(123, abc): &quot;</span> &lt;&lt; fuga_p.rejection() &lt;&lt; std::endl;</div>
+<div class="line">            }<span class="keywordflow">else</span>{</div>
+<div class="line">                std::cout &lt;&lt; <span class="stringliteral">&quot;fuga(123, abc) = &quot;</span> &lt;&lt; fuga_p.response().asInt() &lt;&lt; std::endl;</div>
+<div class="line">            }</div>
+<div class="line">        });</div>
+<div class="line"> </div>
+<div class="line">        wcli.sync(); <span class="comment">// データを受信します</span></div>
+<div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">引数は整数型、実数型、bool、文字列型であればいくつでも使うことができます。 呼び出す側ではrunAsync()に引数を渡せば、引数のない関数と同様に呼び出すことができます。</p>
+<p class="startli">Funcについては <a class="el" href="md_docs_253__func.html">5-3. Func</a> に詳細なドキュメントがあります。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b></p><ul>
+<li>send.cc で引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 関数を&quot;hoge&quot;という名前のFuncとして登録</span></div>
+<div class="line"><span class="preprocessor">@wcli.func(&quot;hoge&quot;)</span></div>
+<div class="line"><span class="keyword">def </span>hoge() -&gt; int:</div>
+<div class="line">    print(<span class="stringliteral">&quot;Function hoge started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> 42</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># デコレータを使わないなら wcli.func(&quot;hoge&quot;).set(hoge)</span></div>
+<div class="line"> </div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 省略...</span></div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 関数が呼び出されるのを待つために、無限ループを追加します</span></div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    wcli.sync()</div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --></li>
+<li>recv.py では1秒おきにそれを呼び出します。 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client, Promise</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-recv&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">sender = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 省略...</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="comment"># tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
+<div class="line">    hoge_p = sender.func(<span class="stringliteral">&quot;hoge&quot;</span>).run_async()</div>
+<div class="line">    <span class="preprocessor">@hoge_p.on_finish</span></div>
+<div class="line">    <span class="keyword">def </span>on_hoge_finish(hoge_p: Promise):</div>
+<div class="line">        <span class="comment"># hoge_p が完了したとき、結果を表示します</span></div>
+<div class="line">        <span class="keywordflow">if</span> hoge_p.is_error:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;Error in hoge(): {hoge_p.rejection}&quot;</span>)</div>
+<div class="line">        <span class="keywordflow">else</span>:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;hoge() = {hoge_p.response()}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment"># デコレータを使わないなら</span></div>
+<div class="line">    <span class="comment"># hoge_p.on_finish(on_hoge_finish)</span></div>
+<div class="line"> </div>
+<div class="line">    wcli.sync() <span class="comment"># データを受信します</span></div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">実行すると、send側とrecv側が両方起動していればsend側では1秒おきに hoge() が呼び出され(<code>Function hoge started</code>と表示され)、recv側ではhoge()の戻り値である42が表示されるはずです。</p>
+<p class="startli">send側が起動していない状態でrecv側だけを起動すると呼び出しは失敗し、エラー表示になります。 またsend側の関数の中で例外をraiseした場合にもエラーになります。</p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>関数の呼び出しに1秒程度ラグがあると思います。 これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。 これを改善するにはsync()を呼ぶ頻度を上げるか、 <a class="el" href="md_docs_241__client.html">4-1. Client</a> のページで説明していますが<code>wcli.sync(timeout)</code>などが使えます。</li>
+<li>また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。 メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに set_async() が使えます。</li>
+</ul>
+</dd></dl>
+<p><span></span></p>
+<p class="startli">こんどは引数がある関数を作ってみます。</p><ul>
+<li>send.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="preprocessor">@wcli.func(&quot;fuga&quot;)</span></div>
+<div class="line"><span class="keyword">def </span>fuga(a: int, b: str) -&gt; int:</div>
+<div class="line">    print(f<span class="stringliteral">&quot;Function fuga({a}, {b}) started&quot;</span>)</div>
+<div class="line">    <span class="keywordflow">return</span> a</div>
+<div class="line"> </div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"><span class="comment"># 以下略...</span></div>
+</div><!-- fragment --></li>
+<li>recv.py <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client, Promise</div>
+<div class="line"><span class="keyword">import</span> time</div>
+<div class="line"> </div>
+<div class="line">wcli = Client(<span class="stringliteral">&quot;tutorial-recv&quot;</span>)</div>
+<div class="line">wcli.wait_connection()</div>
+<div class="line"> </div>
+<div class="line">print(<span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">sender = wcli.member(<span class="stringliteral">&quot;tutorial-send&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line"><span class="comment"># 省略...</span></div>
+<div class="line"> </div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    <span class="comment"># tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
+<div class="line">    hoge_p = sender.func(<span class="stringliteral">&quot;hoge&quot;</span>).run_async()</div>
+<div class="line">    <span class="preprocessor">@hoge_p.on_finish</span></div>
+<div class="line">    <span class="keyword">def </span>on_hoge_finish(hoge_p: Promise):</div>
+<div class="line">        <span class="comment"># hoge_p が完了したとき、結果を表示します</span></div>
+<div class="line">        <span class="keywordflow">if</span> hoge_p.is_error:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;Error in hoge(): {hoge_p.rejection}&quot;</span>)</div>
+<div class="line">        <span class="keywordflow">else</span>:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;hoge() = {hoge_p.response()}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment"># tutorial-send の &quot;fuga&quot; という関数を引数を渡して呼び出します</span></div>
+<div class="line">    fuga_p = sender.func(<span class="stringliteral">&quot;fuga&quot;</span>).run_async(123, <span class="stringliteral">&quot;abc&quot;</span>)</div>
+<div class="line">    <span class="preprocessor">@fuga_p.on_finish</span></div>
+<div class="line">    <span class="keyword">def </span>on_fuga_finish(fuga_p: Promise):</div>
+<div class="line">        <span class="comment"># fuga_p が完了したとき、結果を表示します</span></div>
+<div class="line">        <span class="keywordflow">if</span> fuga_p.is_error:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;Error in fuga(): {fuga_p.rejection}&quot;</span>)</div>
+<div class="line">        <span class="keywordflow">else</span>:</div>
+<div class="line">            print(f<span class="stringliteral">&quot;fuga() = {fuga_p.response()}&quot;</span>)</div>
+<div class="line"> </div>
+<div class="line">    <span class="comment"># デコレータを使わないなら</span></div>
+<div class="line">    <span class="comment"># fuga_p.on_finish(on_fuga_finish)</span></div>
+<div class="line"> </div>
+<div class="line">    wcli.sync() <span class="comment"># データを受信します</span></div>
+<div class="line">    time.sleep(1)</div>
+</div><!-- fragment --></li>
+</ul>
+<p class="startli">引数は整数型、実数型、bool、文字列型であればいくつでも使うことができます。 呼び出す側ではrunAsync()に引数を渡せば、引数のない関数と同様に呼び出すことができます。</p>
+<p class="startli">Funcについては <a class="el" href="md_docs_253__func.html">5-3. Func</a> に詳細なドキュメントがあります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md17"></a>
+おわりに</h1>
+<p>以上で 1-2. Tutorial (Communication) は終わりです。</p>
+<p>ここで紹介していない機能として</p><ul>
+<li><a class="el" href="md_docs_262__image.html">6-2. Image</a></li>
+</ul>
+<p>も送受信することができるデータとしてあるので、見てみてください。</p>
+<p>また、チュートリアルでは紹介していないコマンドラインツールとして</p><ul>
+<li><a class="el" href="md_docs_272__send.html">7-2. webcface-send</a></li>
+</ul>
+<p>もあります。</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_211__tutorial__vis.html">1-1. Tutorial (Visualizing)</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_221__server.html">2-1. Server</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

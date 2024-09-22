@@ -143,19 +143,6 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt>Page <a class="el" href="md_docs_253__func.html">5-3. Func</a>  </dt>
-<dd><a class="anchor" id="_deprecated000036"></a> AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。<ul>
-<li>started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。<ul>
-<li><span class="since-c">2.0</span> runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります</li>
-</ul>
-</li>
-<li>result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。<ul>
-<li>実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。</li>
-</ul>
-</li>
-<li><span class="since-c">2.0</span> started.get() や result.get() はver2.0以降デッドロックする可能性があります。 詳細は後述の waitReach(), waitFinish() を参照してください </li>
-</ul>
-</dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#aa30c2b2fa223cf32c0f2612b55941de3">Canvas2D::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000003"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a3799c65797b21f35329dc284df16a65d">Canvas2D::time</a>  () const</dt>
@@ -213,7 +200,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000030"></a>1.7でMember::syncTime()に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a6c8717854f176b75328439d1defc7a17">ValAdaptor::as</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000037"></a>ver2.0〜 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
+<dd><a class="anchor" id="_deprecated000036"></a>ver2.0〜 <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#aa30c2b2fa223cf32c0f2612b55941de3">Value::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000032"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">Value::time</a>  () const</dt>
@@ -235,7 +222,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

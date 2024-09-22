@@ -143,14 +143,14 @@ $(document).ready(function(){initNavTree('md_docs_242__member.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md52">members</a></li>
-<li class="level1"><a href="#autotoc_md53">Field系クラスの扱いについて</a></li>
-<li class="level1"><a href="#autotoc_md54">Event</a></li>
-<li class="level1"><a href="#autotoc_md55">クライアントの情報</a></li>
-<li class="level1"><a href="#autotoc_md56">ping</a></li>
+<ul><li class="level1"><a href="#autotoc_md60">members</a></li>
+<li class="level1"><a href="#autotoc_md61">Field系クラスの扱いについて</a></li>
+<li class="level1"><a href="#autotoc_md62">Event</a></li>
+<li class="level1"><a href="#autotoc_md63">クライアントの情報</a></li>
+<li class="level1"><a href="#autotoc_md64">ping</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md51"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md59"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">webcface::Member</a> (<code><a class="el" href="member_8h.html">webcface/member.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Member.html">Member</a></li>
@@ -187,7 +187,7 @@ $(document).ready(function(){initNavTree('md_docs_242__member.html',''); initRes
 </ul>
 </div><div class="tabbed"></div><p>Memberクラスから実際にそれぞれのデータにアクセスする方法は次ページ以降で説明します。</p>
 <p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。</p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 members</h1>
 <p>現在サーバーに接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -213,7 +213,7 @@ members</h1>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md53"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md61"></a>
 Field系クラスの扱いについて</h1>
 <p>Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> を継承している) について、</p>
 <ul>
@@ -221,7 +221,7 @@ Field系クラスの扱いについて</h1>
 <li>構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。</li>
 <li>オブジェクトのコピー、ムーブは可能です。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md62"></a>
 Event</h1>
 <p>新しいメンバーが接続されたときに呼び出されるコールバックを設定できます</p>
 <p>このクライアントが接続する前から存在したメンバーについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
@@ -249,12 +249,16 @@ Event</h1>
 </div><!-- fragment --><p class="startli">イベントの管理には <a href="https://www.npmjs.com/package/eventemitter3">eventemitter3</a> ライブラリを使用しており、 Client.onMemberEntry プロパティが返す <a href="https://na-trium-144.github.io/webcface-js/classes/EventTarget.html">EventTarget</a> クラスのオブジェクトがEventEmitterのラッパーになっています。</p>
 <p class="startli"><code>on(関数)</code> または <code>addListener(関数)</code> でコールバックを設定し、 <code>off(関数)</code> または <code>removeListener(関数)</code> で解除したりできます。 また <code>once(関数)</code> で1回だけ実行されるコールバックを設定できます。</p>
 </li>
-<li><b class="tab-title">Python</b> 引数にMemberを受け取る関数を Client.on_member_entry() に設定することができます。 新しく接続したMemberの情報が引数に渡されます。 <div class="fragment"><div class="line"><span class="keyword">def </span>member_entry(m: webcface.Member):</div>
+<li><p class="startli"><b class="tab-title">Python</b> 引数にMemberを受け取る関数を Client.on_member_entry() に設定することができます。 新しく接続したMemberの情報が引数に渡されます。</p>
+<p class="startli"><span class="since-py">2.0</span> </p><div class="fragment"><div class="line"><span class="keyword">def </span>member_entry(m: webcface.Member):</div>
 <div class="line">    <span class="keywordflow">pass</span></div>
 <div class="line"> </div>
-<div class="line">wcli.on_member_entry.connect(member_entry)</div>
-</div><!-- fragment --> Pythonでは client.on_member_entry プロパティが <a href="https://pypi.org/project/blinker/">blinker</a> ライブラリの signal を返します。 <br  />
- <code>connect(関数)</code> でコールバックを設定できます。</li>
+<div class="line">wcli.on_member_entry(member_entry)</div>
+</div><!-- fragment --><p class="startli">デコレータとして使うこともできます。 </p><div class="fragment"><div class="line"><span class="preprocessor">@wcli.on_member_entry</span></div>
+<div class="line"><span class="keyword">def </span>member_entry(m: webcface.Member):</div>
+<div class="line">    <span class="keywordflow">pass</span></div>
+</div><!-- fragment --><p class="startli"><span class="since-py">2.0</span> Client.wait_connection() を使う場合、 クライアントはサーバーに接続し、発見したすべてのメンバーについてon_member_entryコールバックを呼んでからreturnします。</p>
+</li>
 </ul>
 </div><div class="tabbed"></div><details >
 <summary >
@@ -273,7 +277,19 @@ C++ 〜ver1.11の仕様</summary>
 <p>これ以降の章でもいくつかイベントが登場しますが、いずれもこれと同様の実装、使い方になっています。</p>
 <p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md55"></a>
+<details >
+<summary >
+Python 〜ver1.1の仕様</summary>
+<p></p>
+<div class="fragment"><div class="line"><span class="keyword">def </span>member_entry(m: webcface.Member):</div>
+<div class="line">    <span class="keywordflow">pass</span></div>
+<div class="line"> </div>
+<div class="line">wcli.on_member_entry.connect(member_entry)</div>
+</div><!-- fragment --><p> Pythonでは client.on_member_entry プロパティが <a href="https://pypi.org/project/blinker/">blinker</a> ライブラリの signal を返します。 <br  />
+ <code>connect(関数)</code> でコールバックを設定できます。</p>
+<p></p>
+</details>
+<h1><a class="anchor" id="autotoc_md63"></a>
 クライアントの情報</h1>
 <p>以下のようなクライアントの情報を取得できます。 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)</p>
 <ul>
@@ -291,7 +307,7 @@ C++ 〜ver1.11の仕様</summary>
 <li><b class="tab-title">JavaScript</b> <code>member.libVersion</code>, <code>member.libName</code>, <code>member.remoteAddr</code> で取得できます。</li>
 <li><b class="tab-title">Python</b> <code>member.lib_version</code>, <code>member.lib_name</code>, <code>member.remote_addr</code> で取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md56"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md64"></a>
 ping</h1>
 <p>クライアントの通信速度を取得できます。(単位はms) ここでは通信速度とはサーバーとクライアントの間で1往復データを送受信するのにかかる遅延です。</p>
 <p>通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します</p>
@@ -332,12 +348,20 @@ ping</h1>
 <li><span class="since-js">1.8</span> Member.requestPingStatus() で明示的にリクエストを送ることもできます。</li>
 </ul>
 </li>
-<li><b class="tab-title">Python</b> <div class="fragment"><div class="line"><span class="keyword">def </span>ping_update(m: webcface.Member):</div>
+<li><p class="startli"><b class="tab-title">Python</b> Member.ping_status でmemberの通信速度(int型)を取得できます。 デフォルトの状態ではpingの情報は受信しておらずNoneを返しますが、 ping_statusに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。</p>
+<p class="startli">また、 Member.on_ping() でpingの情報が更新された時に実行するコールバックを設定できます。 on_ping()を使うことでもリクエストが送られます。</p>
+<p class="startli"><span class="since-py">2.0</span> </p><div class="fragment"><div class="line"><span class="keyword">def </span>ping_update(m: webcface.Member):</div>
 <div class="line">    print(f<span class="stringliteral">&quot;{m.name}: {m.ping_status} ms&quot;</span>)</div>
-<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).on_ping.connect(ping_update)</div>
-</div><!-- fragment --></li>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).on_ping(ping_update)</div>
+</div><!-- fragment --><ul>
+<li>ver1.1以前は <code>on_ping.connect(...)</code></li>
+<li><span class="since-py">2.0</span> on_member_entryと同様、デコレータとして使うこともできます。</li>
+<li><span class="since-py">2.0</span> 自分自身のping値も取得できるようになりました。(<code>wcli.ping_status</code>, <code>wcli.on_ping(...)</code>)</li>
+<li><span class="since-py">2.0</span> Member.request_ping_status() で明示的にリクエストを送ることもできます。</li>
 </ul>
-</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> 各クライアントがPingに応答する処理はClient::sync()の中で行われるため、 sync() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。 (例えば100msに1回 sync() を呼ぶ場合通信遅延が100msあるように見える可能性があります)</dd></dl>
+</li>
+</ul>
+</div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> 各クライアントがPingに応答する処理はClient::sync()の中で行われるため、 sync() を呼ぶ頻度が遅いとPingの応答も遅くなり通信速度の表示に影響します。 (例えば100msに1回 sync() を呼ぶ場合通信遅延が100msあるように見える可能性があります) <a class="el" href="md_docs_241__client.html">4-1. Client</a>の送受信の章にあるようにloopSync()などを使っている場合は問題ありません。</dd></dl>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -350,7 +374,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Sep 17 2024 02:00:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
