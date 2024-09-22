@@ -351,6 +351,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     wcli.text("message").set("Hello, World! (sender)")
 
     wcli.sync()  # データを送信します
+    print("sender finish")
     ```
     * recv.py
     ```py
@@ -464,11 +465,71 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     このプログラムではsend側は常に同じデータを送っていますが、違うデータを送るようにすればデータが変わったタイミングで再度コールバックが呼ばれます。
 
     \note
-    このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで最大1秒のラグがあると思います。これはrecv側がデータを受信する処理(`wcli.sync()`)が1秒に1回しか呼ばれていないためです。
+    このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで1秒のラグがあると思います。これはrecv側がデータを受信する処理(`wcli.sync()`)が1秒に1回しか呼ばれていないためです。
     これを改善するにはsync()を呼ぶ頻度を上げるか、
     [4-1. Client](41_client.md) のページで説明していますが`wcli.loopSync()`などが使えます。
 
     Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
+
+- <b class="tab-title">Python</b>
+
+    * send側は上のプログラムと同じです。
+    * recv.py
+    ```py
+    from webcface import Client, Value, Text
+    import time
+
+    wcli = Client("tutorial-recv")
+    wcli.wait_connection()
+
+    print("Hello, World! (receiver)")
+
+    # ちなみに "tutorial-send" を毎回書くのは面倒なのでこのように変数に入れることもできます
+    sender = wcli.member("tutorial-send")
+
+    # tutorial-send が送信している "data" という名前のValueデータが変わったときに呼び出される処理
+    @sender.value("data").on_change
+    def on_data_change(v: Value):
+        print(f"data changed: {v.get()}")
+
+    # tutorial-send が送信している "message" という名前のTextデータが変わったときに呼び出される処理
+    @sender.text("message").on_change
+    def on_message_change(t: Text):
+        print(f"message changed: {t}")
+
+    while True:
+        wcli.sync()  # データを受信し、値が変化すればコールバックが呼ばれます
+        time.sleep(1)
+    ```
+    \note
+    `@sender.value("data").on_change` はデコレータです(糖衣構文というPythonの構文です)。
+    この書き方に馴染みがないなら
+    ```py
+    def on_data_change(v: Value):
+        print(f"data changed: {v.get()}")
+
+    sender.value("data").on_change(on_data_change)
+    ```
+    と書いても同じです(がこの場合は@を使ったほうがかんたんに書けます)。
+
+    <span></span>
+
+    これを実行すると、1秒ごとに受信した値が表示される代わりに、send側からデータが送られてきたタイミングで1度だけ
+    ```
+    data changed: 100
+    message changed: Hello, World! (sender)
+    ```
+    のように表示されます。
+
+    このプログラムではsend側は常に同じデータを送っていますが、違うデータを送るようにすればデータが変わったタイミングで再度コールバックが呼ばれます。
+
+    \note
+    このサンプルプログラムではsend側がデータを送ってからrecv側のコールバックが呼ばれるまで1秒のラグがあると思います。これはrecv側がデータを受信する処理(`wcli.sync()`)が1秒に1回しか呼ばれていないためです。
+    これを改善するにはsync()を呼ぶ頻度を上げるか、
+    [4-1. Client](41_client.md) のページで説明していますが`wcli.sync(timeout)`などが使えます。
+
+    Value, Textについては [5-1. Value](./51_value.md), [5-2. Text](52_text.md) に詳細なドキュメントがあります。
+
 
 </div>
 
@@ -483,6 +544,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     * send.cc で引数なしの関数hogeを作り、これをクライアントに登録します。
     ```cpp
     #include <webcface/func.h> // ←追加
+    #include <thread>
 
     int hoge() {
         std::cout << "Function hoge started" << std::endl;
@@ -492,7 +554,13 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     int main() {
         wcli.func("hoge").set(hoge);
 
-        // 以下略...
+        // 省略...
+
+        // 関数が呼び出されるのを待つために、無限ループを追加します
+        while (true){
+            wcli.sync();
+            std::this_thread::sleep_for(std::chrono::seconds(1));
+        }
     }
     ```
     * recv.cc では1秒おきにそれを呼び出します。
@@ -532,7 +600,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     またsend側の関数の中でthrowをした場合にもエラーになります。
 
     \note
-    * Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    * 関数の呼び出しに1秒程度ラグがあると思います。
     これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
     これを改善するにはsync()を呼ぶ頻度を上げるか、
     [4-1. Client](41_client.md) のページで説明していますが`wcli.loopSync()`などが使えます。
@@ -603,70 +671,137 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
 
 - <b class="tab-title">Python</b>
-    * 引数なしの関数hogeを作り、これをクライアントに登録します。
+    * send.cc で引数なしの関数hogeを作り、これをクライアントに登録します。
     ```py
     from webcface import Client
-    import sys
     import time
 
+    wcli = Client("tutorial-send")
+    
+    # 関数を"hoge"という名前のFuncとして登録
+    @wcli.func("hoge")
     def hoge() -> int:
         print("Function hoge started")
         return 42
 
-    wcli = Client("tutorial")
-    wcli.func("hoge").set(hoge)  # 関数hogeを"hoge"という名前のFuncとして登録
-    sys.stdout = wcli.logging_io
+    # デコレータを使わないなら wcli.func("hoge").set(hoge)
+
     wcli.wait_connection()
 
-    # 以下略...
+    # 省略...
+
+    # 関数が呼び出されるのを待つために、無限ループを追加します
+    while True:
+        wcli.sync()
+        time.sleep(1)
+    ```
+    * recv.py では1秒おきにそれを呼び出します。
+    ```py
+    from webcface import Client, Promise
+    import time
+
+    wcli = Client("tutorial-recv")
+    wcli.wait_connection()
+
+    print("Hello, World! (receiver)")
+
+    sender = wcli.member("tutorial-send")
+
+    # 省略...
+
+    while True:
+        # tutorial-send の "hoge" という関数を呼び出します
+        hoge_p = sender.func("hoge").run_async()
+        @hoge_p.on_finish
+        def on_hoge_finish(hoge_p: Promise):
+            # hoge_p が完了したとき、結果を表示します
+            if hoge_p.is_error:
+                print(f"Error in hoge(): {hoge_p.rejection}")
+            else:
+                print(f"hoge() = {hoge_p.response()}")
+
+        # デコレータを使わないなら
+        # hoge_p.on_finish(on_hoge_finish)
+
+        wcli.sync() # データを受信します
+        time.sleep(1)
     ```
 
-    これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。
-    「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。
-    また、画面右下に関数の戻り値の42が表示されています。
+    実行すると、send側とrecv側が両方起動していればsend側では1秒おきに hoge() が呼び出され(`Function hoge started`と表示され)、recv側ではhoge()の戻り値である42が表示されるはずです。
 
-    ![tutorial_func1](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func1.png)
+    send側が起動していない状態でrecv側だけを起動すると呼び出しは失敗し、エラー表示になります。
+    またsend側の関数の中で例外をraiseした場合にもエラーになります。
 
     \note
-    Runを押してから「Function hoge started」が表示されるまでに1秒程度ラグがあると思います。
+    * 関数の呼び出しに1秒程度ラグがあると思います。
     これは関数を実際に実行する処理が wcli.sync() (このチュートリアルでは1秒に1回呼んでいる) の中で行われているためです。
+    これを改善するにはsync()を呼ぶ頻度を上げるか、
+    [4-1. Client](41_client.md) のページで説明していますが`wcli.sync(timeout)`などが使えます。
+    * また、send側では呼び出された関数の実行が完了するまで wcli.sync() は完了しません。
+    メインループをブロックせず別スレッドで関数を呼び出したい場合は set() の代わりに set_async() が使えます。
 
     <span></span>
 
-    * こんどは引数がある関数を作ってみます。
+    こんどは引数がある関数を作ってみます。
+
+    * send.py
     ```py
-    from webcface import Client, Arg  # <= Arg のimportを追加
-    import sys
-    import time
+    from webcface import Client
 
-    def hoge() -> int:
-        print("Function hoge started")
-        return 42
+    wcli = Client("tutorial-send")
 
-    # webcfaceは型アノテーションを使って引数の型を判別できるので、引数の型は書いたほうがいいです
+    @wcli.func("fuga")
     def fuga(a: int, b: str) -> int:
         print(f"Function fuga({a}, {b}) started")
         return a
 
-    wcli = Client("tutorial")
-    wcli.func("hoge").set(hoge)
-    wcli.func("fuga").set(fuga, args=[
-        Arg(init=100),  # 1つ目の引数aは初期値が100
-        Arg(option=["foo", "bar", "baz"]),  # 2つ目の引数bは選択肢がfoo,bar,baz
-    ])
-    sys.stdout = wcli.logging_io
     wcli.wait_connection()
-
     # 以下略...
     ```
+    * recv.py
+    ```py
+    from webcface import Client, Promise
+    import time
 
-    args ではそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。
-    (指定しなくてもよいです。)
+    wcli = Client("tutorial-recv")
+    wcli.wait_connection()
 
-    実行すると fuga() の引数を入力する欄と実行するボタンが現れると思います。
-    hogeの場合と同様、引数を入力して「Run」をクリックすると実行されます。
+    print("Hello, World! (receiver)")
 
-    ![tutorial_func2](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_func2.png)
+    sender = wcli.member("tutorial-send")
+
+    # 省略...
+
+    while True:
+        # tutorial-send の "hoge" という関数を呼び出します
+        hoge_p = sender.func("hoge").run_async()
+        @hoge_p.on_finish
+        def on_hoge_finish(hoge_p: Promise):
+            # hoge_p が完了したとき、結果を表示します
+            if hoge_p.is_error:
+                print(f"Error in hoge(): {hoge_p.rejection}")
+            else:
+                print(f"hoge() = {hoge_p.response()}")
+
+        # tutorial-send の "fuga" という関数を引数を渡して呼び出します
+        fuga_p = sender.func("fuga").run_async(123, "abc")
+        @fuga_p.on_finish
+        def on_fuga_finish(fuga_p: Promise):
+            # fuga_p が完了したとき、結果を表示します
+            if fuga_p.is_error:
+                print(f"Error in fuga(): {fuga_p.rejection}")
+            else:
+                print(f"fuga() = {fuga_p.response()}")
+
+        # デコレータを使わないなら
+        # fuga_p.on_finish(on_fuga_finish)
+
+        wcli.sync() # データを受信します
+        time.sleep(1)
+    ```
+    
+    引数は整数型、実数型、bool、文字列型であればいくつでも使うことができます。
+    呼び出す側ではrunAsync()に引数を渡せば、引数のない関数と同様に呼び出すことができます。
 
     Funcについては [5-3. Func](./53_func.md) に詳細なドキュメントがあります。
 

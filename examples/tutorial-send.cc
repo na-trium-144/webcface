@@ -3,6 +3,7 @@
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/func.h>
+#include <thread>
 
 webcface::Client wcli("tutorial-send");
 
@@ -26,5 +27,8 @@ int main() {
     wcli.text("message") = "Hello, World! (sender)";
     wcli.sync();
 
-    std::cout << "sender finish" << std::endl;
+    while (true){
+        wcli.sync();
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
 }

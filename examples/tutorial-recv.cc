@@ -20,17 +20,26 @@ int main() {
     });
 
     while (true) {
-        webcface::Promise fuga_p = sender.func("fuga").runAsync(123, "abc");
-        fuga_p.onFinish([fuga_p](){
-            // fuga_pが完了したとき、結果を表示します
-            if(fuga_p.isError()){
-                std::cout << "Error in fuga(123, abc): " << fuga_p.rejection() << std::endl;
-            }else{
-                std::cout << "fuga(123, abc) = " << fuga_p.response().asInt() << std::endl;
+        webcface::Promise hoge_p = sender.func("hoge").runAsync();
+        hoge_p.onFinish([hoge_p]() {
+            if (hoge_p.isError()) {
+                std::cout << "Error in hoge(): " << hoge_p.rejection()
+                          << std::endl;
+            } else {
+                std::cout << "hoge() = " << hoge_p.response().asInt()
+                          << std::endl;
             }
         });
-
-        wcli.sync();
+        webcface::Promise fuga_p = sender.func("fuga").runAsync(123, "abc");
+        fuga_p.onFinish([fuga_p]() {
+            if (fuga_p.isError()) {
+                std::cout << "Error in fuga(123, abc): " << fuga_p.rejection()
+                          << std::endl;
+            } else {
+                std::cout << "fuga(123, abc) = " << fuga_p.response().asInt()
+                          << std::endl;
+            }
+        });
 
         std::optional<double> data =
             wcli.member("tutorial-send").value("data").tryGet();
@@ -48,6 +57,7 @@ int main() {
             std::cout << "message is null" << std::endl;
         }
 
+        wcli.sync();
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }

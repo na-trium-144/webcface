@@ -429,17 +429,30 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     import sys
     import time
 
+    wcli = Client("tutorial")
+
+    # 関数hogeを"hoge"という名前のFuncとして登録
+    @wcli.func("hoge")
     def hoge() -> int:
         print("Function hoge started")
         return 42
 
-    wcli = Client("tutorial")
-    wcli.func("hoge").set(hoge)  # 関数hogeを"hoge"という名前のFuncとして登録
     sys.stdout = wcli.logging_io
     wcli.wait_connection()
 
     # 以下略...
     ```
+    \note
+    `@wcli.func("hoge")` はデコレータです(糖衣構文というPythonの構文です)。
+    この書き方に馴染みがないなら
+    ```py
+    def hoge() -> int:
+        print("Function hoge started")
+        return 42
+
+    wcli.func("hoge").set(hoge)
+    ```
+    と書いて使うこともできます(がこの場合は@を使ったほうがかんたんに書けます)。
 
     これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。
     「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。
@@ -461,21 +474,28 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
     import sys
     import time
 
+    wcli = Client("tutorial")
+
+    @wcli.func("hoge")
     def hoge() -> int:
         print("Function hoge started")
         return 42
 
     # webcfaceは型アノテーションを使って引数の型を判別できるので、引数の型は書いたほうがいいです
+    @wcli.func("fuga", args=[
+        Arg(init=100),  # 1つ目の引数aは初期値が100
+        Arg(option=["foo", "bar", "baz"]),  # 2つ目の引数bは選択肢がfoo,bar,baz        ],
+    ])
     def fuga(a: int, b: str) -> int:
         print(f"Function fuga({a}, {b}) started")
         return a
 
-    wcli = Client("tutorial")
-    wcli.func("hoge").set(hoge)
-    wcli.func("fuga").set(fuga, args=[
-        Arg(init=100),  # 1つ目の引数aは初期値が100
-        Arg(option=["foo", "bar", "baz"]),  # 2つ目の引数bは選択肢がfoo,bar,baz
-    ])
+    # デコレータを使わないなら
+    # wcli.func("fuga").set(fuga, args=[
+    #     Arg(init=100),  # 1つ目の引数aは初期値が100
+    #     Arg(option=["foo", "bar", "baz"]),  # 2つ目の引数bは選択肢がfoo,bar,baz        ],
+    # ])
+
     sys.stdout = wcli.logging_io
     wcli.wait_connection()
 
