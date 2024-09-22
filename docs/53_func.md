@@ -185,6 +185,40 @@
     def hoge(a, b):
         return 3.1415
     ```
+    * <span class="since-py">2.0</span>
+    set() で登録した関数はClient.sync()時に同じスレッドで実行されます。
+    そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。
+        * 関数を非同期(別スレッド)で実行したい場合は Func.set_async() を使用してください。
+        ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。
+        * set_async() で登録した関数は新しいスレッド(threading.Thread)で実行されます。
+    ```py
+    def hoge(a, b):
+        time.sleep(5)
+
+    wcli.func("hoge").set_async(hoge)
+    ```
+
+    \warning
+    <span class="since-py">2.0</span>
+    set()で登録した関数はClient.sync() の中で呼び出されるため、
+    * sync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。
+    その場合はsync()を呼び出す頻度を上げるか、sync(timeout) を使ってください ([4-1. Client](./41_client.md) 参照)
+    * set()で登録した関数内で他のクライアントの関数をrun()やrun_async()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。
+    (結果を受け取る処理も sync() で行われるため)
+    ```python
+    @wcli.func()
+    def hoge():
+        wcli.member("foo").func("piyo").run() # deadlock
+        
+        def wait_piyo():
+            wcli.member("foo").func("piyo").run() # ok (非同期実行)
+
+        threading.Thread(target=wait_piyo)
+
+        # またはそもそもこの関数をsetAsync()で登録すればok
+    ```
+
+    <span></span>
 
 </div>
 
@@ -280,12 +314,13 @@ wcli.func("fuga").setRunCondNone();
         return 3.1415
     ```
     引数と戻り値の型アノテーションをすると、型の指定を省略できます。
+    また、デフォルト引数も指定されていればそれが使われます。
     ```py
-    def hoge(a: int, b: str) -> float:
+    def hoge(a: int = 100, b: str = "aaa") -> float:
         return 3.1415
 
     wcli.func("hoge").set(hoge, args=[
-        Arg(init=100),
+        Arg(),
         Arg(option=["aaa", "bbb", "ccc"]),
     ])
     ```
@@ -294,7 +329,7 @@ wcli.func("fuga").setRunCondNone();
 
 ### 関数をWebUIから隠す
 
-\since <span class="since-c">1.10</span>
+(serverが<span class="since-c">1.10</span>以降の場合)
 
 関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、
 他のMemberやWebUIから関数の存在を隠すことができます。
@@ -413,11 +448,41 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 ## 関数の情報の取得
 
-Member::func() でFuncクラスのオブジェクトが得られ、
-Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。
-
+関数の引数や戻り値の情報を取得できます。
 他のデータ型と違ってデータをリクエストする機能はなく、
 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    Member::func() でFuncクラスのオブジェクトが得られ、
+    Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。
+    ```cpp
+    std::vector<webcface::Arg> args = wcli.member("foo").func("hoge").args();
+    webcface::ValType return_type = wcli.member("foo").func("hoge").returnType();
+    ```
+    引数の情報については webcface::Arg を参照
+    また、戻り値型は webcface::ValType というenum型で得られます。
+
+- <b class="tab-title">JavaScript</b>
+    Member.func() でFuncクラスのオブジェクトが得られ、
+    Func.returnType や Func.args で関数の引数や戻り値の情報を取得できます。
+    ```ts
+    const args = wcli.member("foo").func("hoge").args;
+    const returnType = wcli.member("foo").func("hoge").returnType;
+    ```
+    引数の情報については [Arg](https://na-trium-144.github.io/webcface-js/interfaces/Arg.html) を参照
+
+- <b class="tab-title">Python</b>
+    Member.func() でFuncクラスのオブジェクトが得られ、
+    Func.return_type や Func.args で関数の引数や戻り値の情報を取得できます。
+    ```python
+    args = wcli.member("foo").func("hoge").args
+    return_type = wcli.member("foo").func("hoge").return_type
+    ```
+    引数の情報については [webcface.Arg](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.Arg) を参照
+
+</div>
 
 ### Entry
 
@@ -437,24 +502,13 @@ Valueと同様、関数が存在するかどうかを取得することができ
     Func::runAsync() で関数を呼び出し、完了を待たずに続行します。
     戻り値として <del>AsyncFuncResult</del> <span class="since-c">2.0</span> Promise クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
 
-    \deprecated
-    AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。
-    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
-        * <span class="since-c">2.0</span>
-        runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
-    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
-        * 実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。
-    * <span class="since-c">2.0</span>
-    started.get() や result.get() はver2.0以降デッドロックする可能性があります。
-    詳細は後述の waitReach(), waitFinish() を参照してください
-    
     <span class="since-c">2.0</span>
     Promiseでは以下のメソッドが使用可能です。
     * reached(): 関数呼び出しのメッセージが相手のクライアントに到達したらtrue、それまでの間はfalseです。
-        * waitReach(), waitReachFor(), waitReachUntil(): reach()がtrueになるまで待機します。
+        * waitReach(), waitReachFor(), waitReachUntil(): reached()がtrueになるまで待機します。
         For, Until の場合はタイムアウトを指定します。
     * found(): reached()がtrueになった後、相手のクライアントが関数の実行を開始したらtrue、指定したクライアントまたは関数が存在しなかった場合falseです。
-        * reach()がfalseの間はfalseです。
+        * reached()がfalseの間はfalseです。
         * runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
     * finished(): 関数の実行が完了し戻り値かエラーメッセージを受け取ったらtrue、それまでの間はfalseです。
         * waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。
@@ -594,15 +648,105 @@ Valueと同様、関数が存在するかどうかを取得することができ
     ```
 
 - <b class="tab-title">Python</b>
-    Func.run() は関数を呼び出し、結果が返ってくるまで待機します。
-    ```py
-    ans = wcli.member("foo").func("hoge").run(1, "aa")
+    Func.run_async() で関数を呼び出すと、
+    戻り値として <del>AsyncFuncResult</del> <span class="since-py">2.0</span> Promise クラスのオブジェクトが返り、
+    後から関数の戻り値や例外を取得できます。
+
+    <span class="since-py">2.0</span>
+    Promiseでは以下のメソッドが使用可能です。
+    * reached: 関数呼び出しのメッセージが相手のクライアントに到達したらTrue、それまでの間はFalseです。
+        * wait_reach(): reached がTrueになるまで待機します。
+        timeoutを指定することもできます。
+    * found: reachedがTrueになった後、相手のクライアントが関数の実行を開始したらTrue、指定したクライアントまたは関数が存在しなかった場合Falseです。
+        * reached がFalseの間はFalseです。
+        * run_async呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にFalseになります
+    * finished: 関数の実行が完了し戻り値かエラーメッセージを受け取ったらTrue、それまでの間はFalseです。
+        * wait_finish(): finished()がTrueになるまで待機します。
+        timeoutを指定することもできます。
+    * response: 関数の戻り値です。
+    int, float, bool, str型のいずれかで返ります
+    * rejection: 関数が例外を返した場合そのエラーメッセージを表す文字列です。
+    またその場合 is_error がTrueになります。
+
+    ```python
+    res = wcli.member("foo").func("hoge").run_async(1, "aa")
+    res.wait_reach()
+    if res.found:
+        # 関数hogeが存在し、実行が開始された
+        res.wait_finish()
+        if res.is_error:
+            # res.rejection がエラーメッセージ
+        else:
+            # res.response が戻り値
+    else:
+         関数hogeが存在しないか未接続で呼び出し失敗
     ```
+
+    \warning
+    <span class="since-py">2.0</span>
+    上の例のようにwait_reach(), wait_finish() などで結果が返ってくるまで待機することができますが、
+    これらが結果を受信するためには Client.sync() が必要なため、別スレッドでsync()が呼ばれていなければデッドロックします。
+
+    <span></span>
+
+    * `on_reach()`, `on_finish()` で値が返ってきたときに実行されるコールバックを設定することができます。
+        * 引数にはそのPromise自身が渡されます
+        * eventのコールバックと同様、デコレータとして使ってコールバックを設定することもできます。
+        * コールバックは Client.sync() の中から呼び出されます。
+    ```python
+    res = wcli.member("foo").func("hoge").run_async(1, "aa")
+
+    @res.on_reach
+    def on_reach(res: Promise):
+        if res.found:
+            # 関数hogeが存在し、実行が開始された
+        else:
+            # 関数hogeが存在しないか未接続で呼び出し失敗
+
+    @res.on_finish
+    def on_finish(res: Promise):
+        if res.is_error:
+            # res.rejection がエラーメッセージ
+        else:
+            # res.response が戻り値
+    ```
+    \note
+    on_reach, on_finish を設定した時点ですでに関数の実行が完了していた場合は、そのときにコールバックが呼ばれます。
+    したがってコールバックはどの状況で設定したとしても必ず1回呼ばれます。
+    (呼ばれたあとにコールバックを再設定したりしても2度目が呼ばれることはありません)
+
+    <span></span>
+
+    Func.run() は関数を呼び出し、結果が返ってくるまで待機します。
+    例外が返ってきた場合はRuntimeErrorを、また呼び出しに失敗した場合は webcface.FuncNotFoundError をraiseします。
+    ```python
+    result = wcli.member("foo").func("hoge").run(1, "aa")
+    ```
+
+    * wait_reach(), wait_finish() と同様 Client.sync() が呼ばれていないとデッドロックするので注意してください。
+    
     Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
     (`Func.__call__`)
 
-    Func.run_async() で関数を呼び出すと、戻り値として AsyncFuncResult クラスのオブジェクトが返り、後から関数の戻り値や例外を取得できます。
+</div>
 
+<details><summary>AsyncFuncResult.started と result (ver2.0からdeprecated)</summary>
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+
+    AsyncFuncStarted::started と AsyncFuncResult::result はstd::shared_futureであり、取得できるまで待機するならget(), ブロックせず完了したか確認したければwait_for()などが使えます。
+    * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
+        * <span class="since-c">2.0</span>
+        runAsync呼び出し時にクライアントがサーバーに接続していなかった場合は、関数呼び出しメッセージを送信することなく即座にfalseになります
+    * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
+        * 実行した関数が例外を返した場合はresult.get()がstd::runtime_errorを投げます。
+    * <span class="since-c">2.0</span>
+    started.get() や result.get() はver2.0以降デッドロックする可能性があります。
+    詳細は上に書かれている waitReach(), waitFinish() の注意を参照してください
+
+- <b class="tab-title">Python</b>
     AsyncFuncResultからは started と result が取得できます。
     * started は対象の関数が存在して実行が開始したときにtrueになり、指定したクライアントまたは関数が存在しなかった場合falseとなります。
     * result は実行が完了したときに返ります。関数の戻り値、または発生した例外の情報を含んでいます。
@@ -611,14 +755,11 @@ Valueと同様、関数が存在するかどうかを取得することができ
     また、取得可能になったかどうかをstarted_readyとresult_readyで取得できます。
     詳細は [webcface.AsyncFuncResult](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.AsyncFuncResult) を参照
 
-    ```python
-    res = wcli.member("foo").func("hoge").run_async(1, "aa")
-    ans = res.result
-    ```
-
 </div>
 
-<details><summary>CallbackListを返す AsyncFuncResult::onStarted(), onResult() (ver1.11)</summary>
+</details>
+
+<details><summary>CallbackListを返す AsyncFuncResult::onStarted(), onResult() (C++ ver1.11)</summary>
 
 <span class="since-c">1.11</span>
 `onStarted()`, `onResult()` で値が返ってきたときに実行されるイベントが取得でき、コールバックを設定することができます。

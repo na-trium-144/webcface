@@ -24,6 +24,7 @@ message('copying configure to ' + new_configure_name)
 run_command(cp, 'configure', new_configure_name, check: true)
 
 if build_machine.system() == 'windows'
+  # workaround mesonbuild/meson#13699
   # mingwでは$0がwindowsパスの場合なぜかうまく動作しないので、configureを書き換える
   cygpath = find_program('cygpath', required: false)
   if cygpath.found()

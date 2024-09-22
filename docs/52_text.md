@@ -65,17 +65,17 @@ webcface-send -t text
 
 </div>
 
-### Variant
-
 \note
 * <span class="since-c">1.10</span>
 <span class="since-js">1.6</span>
+<span class="since-py">2.0</span>
 Textの内部データは文字列だけでなく数値やbool値も型を保持して扱えるようになっています。
 ([View](./54_view.md)のInputRefで内部的に使用するため)
-    * <del>C++では Text::set, Text::get で ValAdaptor 型を経由して文字列以外の型のデータを文字列と同様に送信、受信できます。</del>
-        * <span class="since-c">2.0</span> 文字列以外の型にアクセスするインタフェースは Variant という別のクラスに分離しました。
-        Textクラスから文字列以外のデータ型にはアクセスできません。
-    * JavaScriptでは Text.setAny, Text.getAny 関数を使うと文字列以外のデータを処理できます。
+* <del>C++では Text::set, Text::get で ValAdaptor 型を経由して文字列以外の型のデータを文字列と同様に送信、受信できます。</del>
+    * <span class="since-c">2.0</span> 文字列以外の型にアクセスするインタフェースは Variant という別のクラスに分離しました。
+    Textクラスから文字列以外のデータ型にはアクセスできません。
+* PythonもC++と同様Variantクラスからアクセスできます。
+* JavaScriptでは Text.setAny, Text.getAny 関数を使うと文字列以外のデータを処理できます。
 
 <!--Valueと同様名前に半角ピリオドを含めると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。-->
 
