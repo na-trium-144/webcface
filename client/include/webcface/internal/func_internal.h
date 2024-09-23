@@ -134,10 +134,14 @@ class FuncResultStore {
 /*!
  * \brief 関数1つの情報を表す。関数の実体も持つ
  *
+ * ver2.4〜: args が空vectorではなくstd::nulloptの場合、
+ * 引数の個数が確定していないことを表し、
+ * あとから setArgs() で個数を変更することができる
+ * 
  */
 struct FuncInfo : public Field {
     ValType return_type;
-    std::vector<Arg> args;
+    std::optional<std::vector<Arg>> args;
     std::function<Func::FuncType> func_impl;
 
     /*!
@@ -162,7 +166,7 @@ struct FuncInfo : public Field {
     void run(webcface::message::Call &&call);
 
     FuncInfo() : Field(), return_type(ValType::none_), args(), func_impl() {}
-    FuncInfo(const Field &base, ValType return_type, std::vector<Arg> &&args,
+    FuncInfo(const Field &base, ValType return_type, std::optional<std::vector<Arg>> &&args,
              std::function<Func::FuncType> &&func_impl)
         : Field(base), return_type(return_type), args(std::move(args)),
           func_impl(std::move(func_impl)) {}

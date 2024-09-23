@@ -1,5 +1,4 @@
 #include "webcface/func.h"
-#include <thread>
 #include <stdexcept>
 #include "webcface/internal/func_internal.h"
 #include "webcface/message/message.h"
@@ -17,6 +16,12 @@ const Func &Func::setImpl(ValType return_type, std::vector<Arg> &&args,
                           std::function<FuncType> &&func_impl) const {
     return setImpl(std::make_shared<internal::FuncInfo>(
         static_cast<Field>(*this), return_type, std::move(args),
+        std::move(func_impl)));
+}
+const Func &Func::setImpl(ValType return_type, std::nullopt_t,
+                          std::function<FuncType> &&func_impl) const {
+    return setImpl(std::make_shared<internal::FuncInfo>(
+        static_cast<Field>(*this), return_type, std::nullopt,
         std::move(func_impl)));
 }
 const Func &Func::setImpl(const std::shared_ptr<internal::FuncInfo> &v) const {
@@ -93,7 +98,7 @@ ValType Func::returnType() const {
 std::vector<Arg> Func::args() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return (*func_info)->args;
+        return (*func_info)->args.value_or(std::vector<Arg>{});
     }
     return std::vector<Arg>{};
 }
@@ -106,15 +111,28 @@ const Func &Func::setArgs(const std::vector<Arg> &args) const {
     if (!func_info) {
         throw std::invalid_argument("setArgs failed: Func not set");
     } else {
-        if ((*func_info)->args.size() != args.size()) {
-            throw std::invalid_argument(
-                "setArgs failed: Number of args does not match, size: " +
-                std::to_string(args.size()) +
-                " actual: " + std::to_string((*func_info)->args.size()));
+        if ((*func_info)->args.has_value()) {
+            if ((*func_info)->args->size() != args.size()) {
+                throw std::invalid_argument(
+                    "setArgs failed: Number of args does not match, size: " +
+                    std::to_string(args.size()) +
+                    " actual: " + std::to_string((*func_info)->args->size()));
+            }
+            for (std::size_t i = 0; i < args.size(); i++) {
+                (*func_info)->args->at(i).mergeConfig(args[i]);
+            }
+        } else {
+            (*func_info)->args.emplace(args);
         }
-        for (std::size_t i = 0; i < args.size(); i++) {
-            (*func_info)->args[i].mergeConfig(args[i]);
-        }
+        return *this;
+    }
+}
+const Func &Func::setReturnType(ValType return_type) const {
+    auto func_info = setCheck()->func_store.getRecv(*this);
+    if (!func_info) {
+        throw std::invalid_argument("setReturnType failed: Func not set");
+    } else {
+        (*func_info)->return_type = return_type;
         return *this;
     }
 }

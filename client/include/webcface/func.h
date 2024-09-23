@@ -160,6 +160,12 @@ class WEBCFACE_DLL Func : protected Field {
      */
     const Func &setImpl(ValType return_type, std::vector<Arg> &&args,
                         std::function<FuncType> &&func_impl) const;
+    /*!
+     * 引数の個数不定バージョン
+     * 
+     */
+    const Func &setImpl(ValType return_type, std::nullopt_t,
+                        std::function<FuncType> &&func_impl) const;
     const Func &
     setImpl(const std::shared_ptr<internal::FuncInfo> &func_info) const;
 
@@ -365,6 +371,66 @@ class WEBCFACE_DLL Func : protected Field {
                 }
             });
     }
+    /*!
+     * \brief 引数にCallHandleを取る関数を登録する
+     * \since ver2.4
+     *
+     * * 自動でrespondされることはないので、
+     * 関数が受け取ったhandleを別スレッドに渡すなどして、
+     * ここでセットした関数の終了後にrespond()やreject()することも可能。
+     * * setArgs(), setReturnType() で引数の個数や型と戻り値の型を指定する。
+     * 指定しない場合、引数なし戻り値なしとみなされる。
+     *
+     * \param func セットする関数または関数オブジェクト。
+     * 引数としてCallHandleを1つ取り、戻り値はvoidで、
+     * CallHandle::respond() や reject() を通して値を返す
+     *
+     */
+    template <typename T,
+              typename std::enable_if_t<
+                  std::is_same_v<std::invoke_result_t<T, CallHandle>, void>,
+                  std::nullptr_t> = nullptr>
+    const Func &set(T callback) const {
+        return setImpl(ValType::none_, std::nullopt,
+                       [base = *this, callback = std::move(callback)](
+                           const CallHandle &handle) {
+                           if (handle.assertArgsNum(base.args().size())) {
+                               callback(handle);
+                           }
+                       });
+    }
+    /*!
+     * \brief 引数にFuncCallHandleを取り非同期に実行される関数を登録する
+     * \since ver2.4
+     *
+     * * 自動でrespondされることはないので、
+     * 関数が受け取ったhandleを別スレッドに渡すなどして、
+     * ここでセットした関数の終了後にrespond()やreject()することも可能。
+     * * setArgs(), setReturnType() で引数の個数や型と戻り値の型を指定する。
+     * 指定しない場合、引数なし戻り値なしとみなされる。
+     *
+     * \param func セットする関数または関数オブジェクト。
+     * 引数としてCallHandleを1つ取り、戻り値はvoidで、
+     * CallHandle::respond() や reject() を通して値を返す
+     *
+     */
+    template <typename T,
+              typename std::enable_if_t<
+                  std::is_same_v<std::invoke_result_t<T, CallHandle>, void>,
+                  std::nullptr_t> = nullptr>
+    const Func &setAsync(T callback) const {
+        return setImpl(
+            ValType::none_, std::nullopt,
+            [base = *this,
+             callback = std::make_shared<std::function<void(FuncCallHandle)>>(
+                 std::move(callback))](const CallHandle &handle) {
+                if (handle.assertArgsNum(base.args().size())) {
+                    std::thread([callback, handle] {
+                        callback->operator()(handle);
+                    }).detach();
+                }
+            });
+    }
 
     /*!
      * \brief 関数を関数リストで非表示にする
@@ -481,6 +547,15 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     const Func &setArgs(const std::vector<Arg> &args) const;
+    /*!
+     * \brief 戻り値の型の情報を更新する
+     * \since ver2.4
+     * 
+     * set()やsetAsync()で通常の関数をセットした場合戻り値の型は自動的に取得されるので
+     * setReturnType() を呼ぶ必要はない。
+     * 
+     */
+    const Func &setReturnType(ValType return_type) const;
 
     /*!
      * \brief Funcの参照先を比較
