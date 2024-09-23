@@ -98,7 +98,11 @@ std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
         }
     }
     for (const auto &v : data.log_req) {
-        message::pack(buffer, len, message::LogReq{{}, v.first});
+        for (const auto &v2 : v.second) {
+            message::pack(
+                buffer, len,
+                message::Req<message::Log>{{}, v.first, v2.first, v2.second});
+        }
     }
 
     if (data.ping_status_req) {
@@ -138,21 +142,14 @@ internal::ClientData::SyncMutexedData::syncData(internal::ClientData *this_,
     // std::lock_guard image_lock(this_->image_store.mtx);
     data.image_data = this_->image_store.transferSend(is_first);
 
-    // std::lock_guard log_lock(this_->log_store.mtx);
-    auto log_self_opt = this_->log_store.getRecv(this_->self_member_name);
-    if (!log_self_opt) {
-        throw std::runtime_error("self log data is null");
-    } else {
-        auto &log_s = *log_self_opt;
-        if ((log_s->size() > 0 && is_first) ||
-            log_s->size() > this_->log_sent_lines) {
-            auto begin = log_s->begin();
-            auto end = log_s->end();
-            if (!is_first) {
-                begin += static_cast<int>(this_->log_sent_lines);
+    {
+        std::lock_guard log_lock(this_->log_store.mtx);
+        for (const auto &ld : this_->log_store.transferSend(is_first)) {
+            if (is_first) {
+                data.log_data[ld.first] = ld.second->getAll();
+            } else {
+                data.log_data[ld.first] = ld.second->getDiff();
             }
-            this_->log_sent_lines = log_s->size();
-            data.log_data = std::vector<LogLineData>(begin, end);
         }
     }
     // std::lock_guard func_lock(this_->func_store.mtx);
@@ -234,9 +231,9 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
                       message::Image{v.first, v.second.toMessage()});
     }
 
-    if (!data.log_data.empty()) {
+    for (const auto &v : data.log_data) {
         message::pack(buffer, len,
-                      message::Log{data.log_data.begin(), data.log_data.end()});
+                      message::Log{v.first, v.second.begin(), v.second.end()});
     }
     for (const auto &v : data.func_data) {
         if (!v.first.startsWith(field_separator)) {

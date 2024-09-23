@@ -81,15 +81,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         StrMap1<Canvas3DData> canvas3d_prev, canvas3d_data;
         StrMap1<Canvas2DData> canvas2d_prev, canvas2d_data;
         StrMap1<ImageData> image_data;
-        std::vector<LogLineData> log_data;
+        StrMap1<std::vector<LogLineData>> log_data;
         StrMap1<FuncData> func_data;
     };
 
     struct SyncDataFirst {
         StrMap2<unsigned int> value_req, text_req, robot_model_req, view_req,
-            canvas3d_req, canvas2d_req, image_req;
+            canvas3d_req, canvas2d_req, image_req, log_req;
         StrMap2<message::ImageReq> image_req_info;
-        StrMap1<bool> log_req;
         bool ping_status_req;
         SyncDataSnapshot sync_data;
     };
@@ -351,10 +350,9 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<RobotModelData> robot_model_store;
     SyncDataStore2<Canvas3DData> canvas3d_store;
     SyncDataStore2<Canvas2DData> canvas2d_store;
-    SyncDataStore1<std::shared_ptr<std::deque<LogLineData>>> log_store;
+    SyncDataStore2<std::shared_ptr<LogData>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
-    std::size_t log_sent_lines = 0;
 
     /*!
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
@@ -411,7 +409,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas3d_change_event;
     StrMap2<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_change_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_append_event;
+    StrMap2<std::shared_ptr<std::function<void(Log)>>> log_append_event;
     StrMap1<std::shared_ptr<std::function<void(Member)>>> sync_event,
         ping_event;
     StrMap1<std::shared_ptr<std::function<void(Value)>>> value_entry_event;

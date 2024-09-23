@@ -42,6 +42,7 @@ enum MessageKindEnum {
     image = 5,
     robot_model = 6,
     canvas3d = 7,
+    log = 8,
     entry = 20,
     req = 40,
     res = 60,
@@ -50,15 +51,15 @@ enum MessageKindEnum {
     call_response = 82,
     call_result = 83,
     func_info = 84,
-    log = 85,
-    log_req = 86,
+    log_default = 85,
+    log_req_default = 86,
     sync = 87,
     sync_init_end = 88,
     // svr_version = 88,
     ping = 89,
     ping_status = 90,
     ping_status_req = 91,
-    log_entry = 92,
+    log_entry_default = 92,
 };
 }
 
@@ -366,8 +367,7 @@ struct View : public MessageBase<MessageKind::view> {
         }
     }
     View(const SharedString &field,
-         const std::map<std::string, std::shared_ptr<ViewComponent>>
-             &data_diff,
+         const std::map<std::string, std::shared_ptr<ViewComponent>> &data_diff,
          std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -391,8 +391,7 @@ struct Canvas3DComponent {
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    std::map<std::string, std::shared_ptr<Canvas3DComponent>>
-        data_diff;
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;
     std::size_t length = 0;
     Canvas3D() = default;
     Canvas3D(const SharedString &field,
@@ -405,8 +404,8 @@ struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
         }
     }
     Canvas3D(const SharedString &field,
-             const std::map<
-                 std::string, std::shared_ptr<Canvas3DComponent>> &data_diff,
+             const std::map<std::string, std::shared_ptr<Canvas3DComponent>>
+                 &data_diff,
              std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -438,8 +437,7 @@ struct Canvas2DData {
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    std::map<std::string, std::shared_ptr<Canvas2DComponent>>
-        data_diff;
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff;
     std::size_t length;
     Canvas2D() = default;
     Canvas2D(const SharedString &field, double width, double height,
@@ -453,8 +451,8 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         }
     }
     Canvas2D(const SharedString &field, double width, double height,
-             const std::map<
-                 std::string, std::shared_ptr<Canvas2DComponent>> &data_diff,
+             const std::map<std::string, std::shared_ptr<Canvas2DComponent>>
+                 &data_diff,
              std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
           length(length) {}
@@ -501,14 +499,15 @@ struct LogLine {
  * client->server時はmemberは無視
  *
  */
-struct Log : public MessageBase<MessageKind::log> {
+struct LogDefault : public MessageBase<MessageKind::log_default> {
     unsigned int member_id = 0;
     std::shared_ptr<std::deque<LogLine>> log;
-    Log() = default;
-    Log(unsigned int member_id, const std::shared_ptr<std::deque<LogLine>> &log)
+    LogDefault() = default;
+    LogDefault(unsigned int member_id,
+               const std::shared_ptr<std::deque<LogLine>> &log)
         : member_id(member_id), log(log) {}
     template <typename It>
-    Log(const It &begin, const It &end) : member_id(0) {
+    LogDefault(const It &begin, const It &end) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>();
         for (auto it = begin; it < end; it++) {
             if constexpr (std::is_same_v<decltype(*it), LogLine>) {
@@ -518,17 +517,47 @@ struct Log : public MessageBase<MessageKind::log> {
             }
         }
     }
-    explicit Log(const LogLine &ll) : member_id(0) {
+    explicit LogDefault(const LogLine &ll) : member_id(0) {
         this->log = std::make_shared<std::deque<LogLine>>(1);
         this->log->front() = ll;
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("l", log))
 };
-struct LogReq : public MessageBase<MessageKind::log_req> {
+/*!
+ * \brief client(member)->server->client logを追加
+ * \since ver2.4
+ *
+ */
+struct Log : public MessageBase<MessageKind::log> {
+    SharedString field;
+    std::shared_ptr<std::deque<LogLine>> log;
+    Log() = default;
+    Log(const SharedString &field,
+        const std::shared_ptr<std::deque<LogLine>> &log)
+        : field(field), log(log) {}
+    template <typename It>
+    Log(const SharedString &field, const It &begin, const It &end)
+        : field(field) {
+        this->log = std::make_shared<std::deque<LogLine>>();
+        for (auto it = begin; it < end; it++) {
+            if constexpr (std::is_same_v<decltype(*it), LogLine>) {
+                this->log->push_back(*it);
+            } else {
+                this->log->emplace_back(it->toMessage());
+            }
+        }
+    }
+    explicit Log(const SharedString &field, const LogLine &ll) : field(field) {
+        this->log = std::make_shared<std::deque<LogLine>>(1);
+        this->log->front() = ll;
+    }
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("l", log))
+};
+struct LogReqDefault : public MessageBase<MessageKind::log_req_default> {
     SharedString member;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("M", member))
 };
-struct LogEntry : public MessageBase<MessageKind::log_entry> {
+struct LogEntryDefault : public MessageBase<MessageKind::log_entry_default> {
     unsigned int member_id = 0;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id))
 };
@@ -679,8 +708,7 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::map<std::string, std::shared_ptr<ViewComponent>>
-            &data_diff,
+        const std::map<std::string, std::shared_ptr<ViewComponent>> &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
@@ -692,13 +720,12 @@ struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::map<std::string, std::shared_ptr<Canvas3DComponent>>
-        data_diff;
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;
     std::size_t length = 0;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::map<std::string,
-                                 std::shared_ptr<Canvas3DComponent>> &data_diff,
+        const std::map<std::string, std::shared_ptr<Canvas3DComponent>>
+            &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           length(length) {}
@@ -711,14 +738,13 @@ struct Res<Canvas2D>
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<Canvas2DComponent>>
-        data_diff;
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff;
     std::size_t length;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field, double width,
         double height,
-        const std::map<std::string,
-                                 std::shared_ptr<Canvas2DComponent>> &data_diff,
+        const std::map<std::string, std::shared_ptr<Canvas2DComponent>>
+            &data_diff,
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), length(length) {}
@@ -741,6 +767,35 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("d", data_), MSGPACK_NVP("w", width_),
                        MSGPACK_NVP("h", height_), MSGPACK_NVP("l", color_mode_),
                        MSGPACK_NVP("p", cmp_mode_))
+};
+
+template <>
+struct Res<Log> : public MessageBase<MessageKind::log + MessageKind::res> {
+    unsigned int req_id = 0;
+    SharedString sub_field;
+    std::shared_ptr<std::deque<LogLine>> log;
+    Res() = default;
+    Res(unsigned int req_id, const SharedString &sub_field,
+        const std::shared_ptr<std::deque<LogLine>> &log)
+        : MessageBase<MessageKind::log + MessageKind::res>(), req_id(req_id),
+          sub_field(sub_field), log(log) {}
+    template <typename It>
+    Res(unsigned int req_id, const SharedString &sub_field, const It &begin,
+        const It &end)
+        : MessageBase<MessageKind::log + MessageKind::res>(), req_id(req_id),
+          sub_field(sub_field) {
+        this->log = std::make_shared<std::deque<LogLine>>();
+        for (auto it = begin; it < end; it++) {
+            if constexpr (std::is_same_v<decltype(*it), LogLine>) {
+                this->log->push_back(*it);
+            } else {
+                this->log->emplace_back(it->toMessage());
+            }
+        }
+    }
+
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("l", log))
 };
 
 /*!

@@ -270,14 +270,15 @@ void internal::ClientData::onRecv(
             onRecvRes(this, r, r, this->image_store, this->image_change_event);
             break;
         }
-        case MessageKind::log: {
-            auto &r = *static_cast<webcface::message::Log *>(obj.get());
-            auto member = this->getMemberNameFromId(r.member_id);
+        case MessageKind::log + MessageKind::res: {
+            auto &r = *static_cast<webcface::message::Res<webcface::message::Log> *>(obj.get());
             std::lock_guard lock_s(this->log_store.mtx);
-            auto log_s = this->log_store.getRecv(member);
+            auto [member, field] =
+                this->view_store.getReq(r.req_id, r.sub_field);
+                        auto log_s = this->log_store.getRecv(member, field);
             if (!log_s) {
-                log_s = std::make_shared<std::deque<LogLineData>>();
-                this->log_store.setRecv(member, *log_s);
+                log_s = std::make_shared<LogData>();
+                this->log_store.setRecv(member, field, *log_s);
             }
             int log_keep_lines_local = log_keep_lines.load();
             auto r_begin = r.log->begin();
@@ -287,22 +288,22 @@ void internal::ClientData::onRecv(
                     static_cast<std::size_t>(log_keep_lines_local)) {
                     r_begin = r_end - log_keep_lines_local;
                 }
-                while ((*log_s)->size() + (r_end - r_begin) >
+                while ((*log_s)->data.size() + (r_end - r_begin) >
                        static_cast<std::size_t>(log_keep_lines_local)) {
-                    (*log_s)->pop_front();
+                    (*log_s)->data.pop_front();
                 }
             }
             for (auto lit = r_begin; lit != r_end; lit++) {
-                (*log_s)->emplace_back(*lit);
+                (*log_s)->data.emplace_back(*lit);
             }
             std::shared_ptr<std::function<void(Log)>> cl;
             {
                 std::lock_guard lock(event_m);
-                cl = findFromMap1(this->log_append_event, member)
+                cl = findFromMap2(this->log_append_event, member, field)
                          .value_or(nullptr);
             }
             if (cl && *cl) {
-                cl->operator()(Field{shared_from_this(), member});
+                cl->operator()(Field{shared_from_this(), member, field});
             }
             break;
         }
@@ -447,10 +448,10 @@ void internal::ClientData::onRecv(
             onRecvEntry(this, r, this->image_store, this->image_entry_event);
             break;
         }
-        case MessageKind::log_entry: {
-            auto &r = *static_cast<webcface::message::LogEntry *>(obj.get());
+        case MessageKind::entry + MessageKind::log: {
+            auto &r = *static_cast<webcface::message::Entry<webcface::message::Log> *>(obj.get());
             auto member = this->getMemberNameFromId(r.member_id);
-            this->log_store.setEntry(member);
+            this->log_store.setEntry(member, r.field);
             // std::decay_t<decltype(this->log_entry_event.at(member))> cl;
             // {
             //     std::lock_guard lock(this->event_m);
@@ -494,12 +495,15 @@ void internal::ClientData::onRecv(
         case MessageKind::robot_model + MessageKind::req:
         case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:
-        case MessageKind::log_req:
+        case MessageKind::log + MessageKind::req:
+        case MessageKind::log_default:
+        case MessageKind::log_req_default:
             if (!message_kind_warned[kind]) {
                 logger_internal->warn("Invalid message Kind {}", kind);
                 message_kind_warned[kind] = true;
             }
             break;
+        case MessageKind::log_entry_default:
         case MessageKind::unknown:
             break;
         default:

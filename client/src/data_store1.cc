@@ -78,7 +78,6 @@ StrMap1<bool> SyncDataStore1<T>::transferReq() {
 }
 
 template class SyncDataStore1<std::string>; // test用
-template class SyncDataStore1<std::shared_ptr<std::deque<LogLineData>>>;
 template class SyncDataStore1<std::chrono::system_clock::time_point>;
 
 } // namespace internal

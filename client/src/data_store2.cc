@@ -259,5 +259,6 @@ template class SyncDataStore2<RobotModelData, int>;
 template class SyncDataStore2<Canvas3DData, int>;
 template class SyncDataStore2<Canvas2DData, int>;
 template class SyncDataStore2<ImageData, message::ImageReq>;
+template class SyncDataStore2<std::shared_ptr<std::deque<LogLineData>>, int>;
 } // namespace internal
 WEBCFACE_NS_END
