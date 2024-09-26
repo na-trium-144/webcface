@@ -263,11 +263,22 @@ void MemberData::onRecv(const std::string &message) {
                                           f.first.decode(), cd->member_id);
                         }
                     }
-                    if (!cd->log->empty()) {
-                        this->pack(
-                            webcface::message::LogEntry{{}, cd->member_id});
-                        logger->trace("send log_entry of member {}",
-                                      cd->member_id);
+                    for (const auto &f : cd->log) {
+                        if (!f.first.startsWith(field_separator)) {
+                            this->pack(webcface::message::Entry<
+                                       webcface::message::Log>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send log_entry {} of member {}",
+                                          f.first.decode(), cd->member_id);
+                            // 古いクライアントのために古いLogEntryも送る
+                            if (f.first == message::Log::defaultLogName()) {
+                                this->pack(webcface::message::LogEntryDefault{
+                                    {}, cd->member_id});
+                                logger->trace(
+                                    "send log_entry_default(obsolete) of member {}",
+                                    cd->member_id);
+                            }
+                        }
                     }
                     for (const auto &f : cd->func) {
                         if (!f.first.startsWith(field_separator)) {
@@ -607,42 +618,77 @@ void MemberData::onRecv(const std::string &message) {
             }
             break;
         }
-        case MessageKind::log: {
-            auto &v = *static_cast<webcface::message::Log *>(obj.get());
-            v.member_id = this->member_id;
-            logger->debug("log {} lines", v.log->size());
-            if (store->keep_log >= 0 &&
-                this->log->size() <
-                    static_cast<unsigned int>(store->keep_log) &&
-                this->log->size() + v.log->size() >=
-                    static_cast<unsigned int>(store->keep_log)) {
-                logger->info("number of log lines reached {}, so the oldest "
-                             "log will be romoved.",
-                             store->keep_log);
+        case MessageKind::log:
+        case MessageKind::log_default: {
+            SharedString field;
+            std::shared_ptr<std::deque<message::LogLine>> log_data;
+            if (kind == MessageKind::log) {
+                auto &v = *static_cast<webcface::message::Log *>(obj.get());
+                logger->debug("log {}: {} lines", v.field.decode(),
+                              v.log->size());
+                field = v.field;
+                log_data = v.log;
+            } else {
+                auto &v =
+                    *static_cast<webcface::message::LogDefault *>(obj.get());
+                logger->debug("log_default(obsolete) {} lines", v.log->size());
+                field = message::Log::defaultLogName();
+                log_data = v.log;
             }
-            if (this->log->empty()) {
+            if (!this->log.count(field)) {
+                this->log.emplace(field, log_data);
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
-                        cd->pack(
-                            webcface::message::LogEntry{{}, this->member_id});
-                        cd->logger->trace("send log_entry of member {}",
-                                          this->member_id);
+                        cd->pack(webcface::message::Entry<message::Log>{
+                            {}, this->member_id, field});
+                        cd->logger->trace("send log_entry {} of member {}",
+                                          field.decode(), this->member_id);
+                        // 古いクライアントのために古いLogEntryも送る
+                        if (field == message::Log::defaultLogName()) {
+                            cd->pack(webcface::message::LogEntryDefault{
+                                {}, this->member_id});
+                            cd->logger->trace(
+                                "send log_entry_default(obsolete) of member {}",
+                                this->member_id);
+                        }
                     }
                 });
-            }
-            for (auto &ll : *v.log) {
-                this->log->push_back(ll);
-            }
-            while (store->keep_log >= 0 &&
-                   this->log->size() >
-                       static_cast<unsigned int>(store->keep_log)) {
-                this->log->pop_front();
+            } else {
+                auto this_log = this->log.at(field);
+                if (store->keep_log >= 0 &&
+                    this_log->size() <
+                        static_cast<unsigned int>(store->keep_log) &&
+                    this_log->size() + log_data->size() >=
+                        static_cast<unsigned int>(store->keep_log)) {
+                    logger->info(
+                        "number of log lines reached {}, so the oldest "
+                        "log will be romoved.",
+                        store->keep_log);
+                }
+                for (auto &ll : *log_data) {
+                    this_log->push_back(ll);
+                }
+                while (store->keep_log >= 0 &&
+                       this_log->size() >
+                           static_cast<unsigned int>(store->keep_log)) {
+                    this_log->pop_front();
+                }
             }
             // このlogをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                if (cd->log_req.count(this->name)) {
-                    cd->pack(v);
-                    cd->logger->trace("send log {} lines", v.log->size());
+                auto req_field = findReqField(cd->log_req, this->name, field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
+                if (req_id > 0) {
+                    cd->pack(webcface::message::Res<webcface::message::Log>(
+                        req_id, sub_field, log_data));
+                    cd->logger->trace("send log_res req_id={} + '{}'", req_id,
+                                      sub_field.decode());
+                }
+                if (cd->log_req_default.count(this->name)) {
+                    cd->pack(message::LogDefault{this->member_id, log_data});
+                    cd->logger->trace("send log_default(obsolete) {} lines",
+                                      log_data->size());
                 }
             });
             break;
@@ -922,14 +968,55 @@ void MemberData::onRecv(const std::string &message) {
             }
             break;
         }
-        case MessageKind::log_req: {
-            auto &s = *static_cast<webcface::message::LogReq *>(obj.get());
-            logger->debug("request log from {}", s.member.decode());
-            log_req.insert(s.member);
+        case MessageKind::req + MessageKind::log: {
+            auto &s =
+                *static_cast<webcface::message::Req<webcface::message::Log> *>(
+                    obj.get());
+            logger->debug("request log ({}): {} from {}", s.req_id,
+                          s.field.decode(), s.member.decode());
             // 指定した値を返す
             store->findAndDo(s.member, [&](auto cd) {
-                this->pack(webcface::message::Log{cd->member_id, cd->log});
-                logger->trace("send log {} lines", cd->log->size());
+                // if (!this->hasReq(s.member)) {
+                //     this->pack(webcface::message::Sync{cd->member_id,
+                //                                        cd->last_sync_time});
+                //     logger->trace("send sync {}", this->member_id);
+                // }
+                for (const auto &it : cd->log) {
+                    if (it.first == s.field ||
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
+                        SharedString sub_field;
+                        if (it.first == s.field) {
+                        } else {
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
+                        }
+                        this->pack(
+                            webcface::message::Res<webcface::message::Log>{
+                                s.req_id, sub_field, it.second});
+                        logger->trace("send log_res {} lines, req_id={} + '{}'",
+                                      it.second->size(), s.req_id,
+                                      sub_field.decode());
+                    }
+                }
+            });
+            log_req[s.member][s.field] = s.req_id;
+            break;
+        }
+        case MessageKind::log_req_default: {
+            auto &s =
+                *static_cast<webcface::message::LogReqDefault *>(obj.get());
+            logger->debug("request log from {}", s.member.decode());
+            this->log_req_default.insert(s.member);
+            // 指定した値を返す
+            store->findAndDo(s.member, [&](auto cd) {
+                if (cd->log.count(message::Log::defaultLogName())) {
+                    auto log_data = cd->log.at(message::Log::defaultLogName());
+                    this->pack(
+                        webcface::message::LogDefault{cd->member_id, log_data});
+                    logger->trace("send log {} lines", log_data->size());
+                }
             });
             break;
         }
@@ -947,7 +1034,9 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::canvas2d:
         case MessageKind::entry + MessageKind::image:
         case MessageKind::res + MessageKind::image:
-        case MessageKind::log_entry:
+        case MessageKind::entry + MessageKind::log:
+        case MessageKind::res + MessageKind::log:
+        case MessageKind::log_entry_default:
         case MessageKind::sync_init_end:
         case MessageKind::ping_status:
             if (!message_kind_warned[kind]) {

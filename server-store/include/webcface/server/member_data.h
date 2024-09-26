@@ -87,7 +87,7 @@ struct MemberData {
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
-        robot_model_req, canvas3d_req, canvas2d_req;
+        robot_model_req, canvas3d_req, canvas2d_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
@@ -96,10 +96,11 @@ struct MemberData {
                                 const SharedString &field);
     StrMap1<std::vector<std::shared_ptr<message::RobotLink>>> robot_model;
 
-    StrSet1 log_req;
     bool hasReq(const SharedString &member);
+    //! 古いLogリクエスト ("default"のログを古いメッセージ形式で返す)
+    StrSet1 log_req_default;
     //! ログ全履歴
-    std::shared_ptr<std::deque<message::LogLine>> log;
+    StrMap1<std::shared_ptr<std::deque<message::LogLine>>> log;
     /*!
      * \brief まだ完了していない自分へのcall呼び出しのリスト
      *
@@ -123,8 +124,7 @@ struct MemberData {
                         const spdlog::sink_ptr &sink,
                         spdlog::level::level_enum level)
         : sink(sink), logger_level(level), store(store), con(con),
-          remote_addr(remote_addr),
-          log(std::make_shared<std::deque<message::LogLine>>()) {
+          remote_addr(remote_addr) {
         this->member_id = ++last_member_id;
         logger = std::make_shared<spdlog::logger>(
             std::to_string(member_id) + "_(unknown client)", this->sink);
