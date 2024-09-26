@@ -1,8 +1,8 @@
 #pragma once
 #include <mutex>
 #include <optional>
-#include <deque>
 #include "webcface/encoding/encoding.h"
+#include "webcface/field.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

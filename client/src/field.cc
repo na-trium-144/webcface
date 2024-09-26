@@ -8,6 +8,7 @@
 #include "webcface/func.h"
 #include "webcface/canvas2d.h"
 #include "webcface/canvas3d.h"
+#include "webcface/log.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
 #ifdef WEBCFACE_MESON
@@ -76,6 +77,8 @@ Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }
 Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
 Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
+Log Field::log(std::string_view field) const { return child(field); }
+Log Field::log(std::wstring_view field) const { return child(field); }
 
 /// \private
 template <typename V, typename S>

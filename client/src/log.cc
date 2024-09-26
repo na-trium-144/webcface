@@ -7,9 +7,7 @@ WEBCFACE_NS_BEGIN
 
 std::atomic<int> internal::log_keep_lines = 1000;
 
-void Log::keepLines(int n){
-    internal::log_keep_lines.store(n);
-}
+void Log::keepLines(int n) { internal::log_keep_lines.store(n); }
 
 LogLineData::LogLineData(int level, std::chrono::system_clock::time_point time,
                          const SharedString &message)
@@ -31,20 +29,21 @@ message::LogLine LogLineData::toMessage() const {
 }
 
 /// \private
-static void writeLog(internal::ClientData *data_p, LogLineData &&ll) {
+static void writeLog(internal::ClientData *data_p, const SharedString &field,
+                     LogLineData &&ll) {
     std::lock_guard lock(data_p->log_store.mtx);
-    auto v = data_p->log_store.getRecv(data_p->self_member_name);
+    auto v = data_p->log_store.getRecv(data_p->self_member_name, field);
     if (!v) {
-        throw std::runtime_error("self log data is null");
-    } else {
-        // log_storeにはClientDataのコンストラクタで空vectorを入れてある
-        (*v)->emplace_back(std::move(ll));
+        v.emplace(std::make_shared<internal::LogData>());
     }
+    (*v)->data.emplace_back(std::move(ll));
+    data_p->log_store.setSend(field, *v);
 }
 
 template <typename CharT>
-BasicLoggerBuf<CharT>::BasicLoggerBuf(internal::ClientData *data_p)
-    : std::basic_streambuf<CharT>(), data_p(data_p) {
+BasicLoggerBuf<CharT>::BasicLoggerBuf(internal::ClientData *data_p,
+                                      const SharedString &field)
+    : std::basic_streambuf<CharT>(), data_p(data_p), field(field) {
     this->setp(buf, buf + sizeof(buf));
 }
 template <typename CharT>
@@ -69,8 +68,9 @@ int BasicLoggerBuf<CharT>::sync() {
         if (message.size() > 0 && message.back() == '\r') {
             message.pop_back();
         }
-        writeLog(data_p, {2, std::chrono::system_clock::now(),
-                          SharedString::encode(message)});
+        writeLog(data_p, field,
+                 {2, std::chrono::system_clock::now(),
+                  SharedString::encode(message)});
         if constexpr (std::is_same_v<CharT, char>) {
             std::fputs(message.c_str(), stderr);
         } else if constexpr (std::is_same_v<CharT, wchar_t>) {
@@ -90,28 +90,28 @@ Log::Log(const Field &base) : Field(base) {}
 const Log &Log::onChange(std::function<void(Log)> callback) const {
     this->request();
     std::lock_guard lock(this->dataLock()->event_m);
-    this->dataLock()->log_append_event[this->member_] =
+    this->dataLock()->log_append_event[this->member_][this->field_] =
         std::make_shared<std::function<void(Log)>>(std::move(callback));
     return *this;
 }
 
 const Log &Log::request() const {
     auto data = dataLock();
-    auto req = data->log_store.addReq(member_);
+    auto req = data->log_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(
-            message::packSingle(message::LogReq{{}, member_}));
+        data->messagePushReq(message::packSingle(
+            message::Req<message::Log>{{}, member_, field_, req}));
     }
     return *this;
 }
 
 std::optional<std::vector<LogLine>> Log::tryGet() const {
     request();
-    auto v = dataLock()->log_store.getRecv(member_);
+    auto v = dataLock()->log_store.getRecv(member_, field_);
     if (v) {
         std::vector<LogLine> log_s;
-        log_s.reserve((*v)->size());
-        for (const auto &l : **v) {
+        log_s.reserve((*v)->data.size());
+        for (const auto &l : (*v)->data) {
             log_s.emplace_back(l);
         }
         return log_s;
@@ -121,11 +121,11 @@ std::optional<std::vector<LogLine>> Log::tryGet() const {
 }
 std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     request();
-    auto v = dataLock()->log_store.getRecv(member_);
+    auto v = dataLock()->log_store.getRecv(member_, field_);
     if (v) {
         std::vector<LogLineW> log_s;
-        log_s.reserve((*v)->size());
-        for (const auto &l : **v) {
+        log_s.reserve((*v)->data.size());
+        for (const auto &l : (*v)->data) {
             log_s.emplace_back(l);
         }
         return log_s;
@@ -134,16 +134,18 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     }
 }
 
-bool Log::exists() const { return dataLock()->log_store.getEntry(member_); }
+bool Log::exists() const {
+    return dataLock()->log_store.getEntry(member_).count(field_);
+}
 
 const Log &Log::clear() const {
-    dataLock()->log_store.setRecv(member_,
-                                  std::make_shared<std::deque<LogLineData>>());
+    dataLock()->log_store.setRecv(member_, field_,
+                                  std::make_shared<internal::LogData>());
     return *this;
 }
 
 const Log &Log::append(LogLineData &&ll) const {
-    writeLog(setCheck().get(), std::move(ll));
+    writeLog(setCheck().get(), field_, std::move(ll));
     return *this;
 }
 

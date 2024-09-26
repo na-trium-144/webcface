@@ -529,6 +529,8 @@ struct LogDefault : public MessageBase<MessageKind::log_default> {
  *
  */
 struct Log : public MessageBase<MessageKind::log> {
+    static SharedString defaultLogName();
+
     SharedString field;
     std::shared_ptr<std::deque<LogLine>> log;
     Log() = default;

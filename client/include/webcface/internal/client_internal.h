@@ -425,10 +425,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas2d_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
-    std::unique_ptr<std::streambuf> logger_buf;
-    std::unique_ptr<std::ostream> logger_os;
-    std::unique_ptr<std::wstreambuf> logger_buf_w;
-    std::unique_ptr<std::wostream> logger_os_w;
+    std::mutex logger_m;
+    StrMap1<std::unique_ptr<std::streambuf>> logger_buf;
+    StrMap1<std::unique_ptr<std::ostream>> logger_os;
+    StrMap1<std::unique_ptr<std::wstreambuf>> logger_buf_w;
+    StrMap1<std::unique_ptr<std::wostream>> logger_os_w;
 
     std::string svr_name, svr_version, svr_hostname;
 

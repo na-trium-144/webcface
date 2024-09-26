@@ -240,7 +240,7 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
      * \since ver2.0.2 (constつけ忘れ)
-     * 
+     *
      * 自分自身と、無名のmemberを除く。
      * \sa member(), onMemberEntry()
      */
@@ -272,6 +272,14 @@ class WEBCFACE_DLL Client : public Member {
      */
     std::streambuf *loggerStreamBuf() const;
     /*!
+     * \brief webcfaceに出力するstreambuf
+     * \since ver2.4
+     *
+     * * nameを省略した場合 "default" になる。
+     *
+     */
+    std::streambuf *loggerStreamBuf(std::string_view name) const;
+    /*!
      * \brief webcfaceに出力するostream
      *
      * * (ver1.11.xまで: 出力先が loggerStreamBuf() に設定されているostream。
@@ -285,17 +293,41 @@ class WEBCFACE_DLL Client : public Member {
      */
     std::ostream &loggerOStream() const;
     /*!
+     * \brief webcfaceに出力するostream
+     * \since ver2.4
+     *
+     * * nameを省略した場合 "default" になる。
+     *
+     */
+    std::ostream &loggerOStream(std::string_view name) const;
+    /*!
      * \brief webcfaceに出力するwstreambuf
      * \since ver2.0
      * \sa loggerStreamBuf
      */
     std::wstreambuf *loggerWStreamBuf() const;
     /*!
+     * \brief webcfaceに出力するwstreambuf
+     * \since ver2.4
+     *
+     * * nameを省略した場合 "default" になる。
+     *
+     */
+    std::wstreambuf *loggerWStreamBuf(std::wstring_view name) const;
+    /*!
      * \brief webcfaceに出力するwostream
      * \since ver2.0
      * \sa loggerOStream
      */
     std::wostream &loggerWOStream() const;
+    /*!
+     * \brief webcfaceに出力するwostream
+     * \since ver2.4
+     *
+     * * nameを省略した場合 "default" になる。
+     *
+     */
+    std::wostream &loggerWOStream(std::wstring_view name) const;
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

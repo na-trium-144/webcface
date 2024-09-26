@@ -53,6 +53,19 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::text;
     using Field::value;
     using Field::view;
+
+    /*!
+     * \since ver2.4
+     */
+    Log log(std::string_view name) const { return this->Field::log(name); }
+    /*!
+     * \since ver2.4
+     */
+    Log log(std::wstring_view name) const { return this->Field::log(name); }
+    /*!
+     * ver2.4〜: nameを省略した場合 "default" として送信される。
+     * 
+     */
     Log log() const;
     /*!
      * \brief AnonymousFuncオブジェクトを作成しfuncをsetする

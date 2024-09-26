@@ -98,5 +98,11 @@ unpack(const std::string &message,
         return std::vector<std::pair<int, std::shared_ptr<void>>>{};
     }
 }
+
+SharedString Log::defaultLogName() {
+    static SharedString default_name = SharedString::fromU8String("default");
+    return default_name;
+}
+
 } // namespace message
 WEBCFACE_NS_END

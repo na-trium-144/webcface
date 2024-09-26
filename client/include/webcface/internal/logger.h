@@ -19,12 +19,13 @@ class BasicLoggerBuf final : public std::basic_streambuf<CharT> {
 
     // どうせclientが消える時にはLoggerBufも消える
     internal::ClientData *data_p;
+    SharedString field;
 
     int sync() override;
     int_type overflow(int_type c) override;
 
   public:
-    explicit BasicLoggerBuf(internal::ClientData *data_p);
+    explicit BasicLoggerBuf(internal::ClientData *data_p, const SharedString &field);
     ~BasicLoggerBuf() = default;
 };
 #if WEBCFACE_SYSTEM_DLLEXPORT
