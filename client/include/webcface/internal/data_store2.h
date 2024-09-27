@@ -212,7 +212,10 @@ using ImageData = ImageFrame;
 
 struct LogData {
     std::deque<LogLineData> data;
-    std::size_t sent_lines;
+    std::size_t sent_lines = 0;
+
+    LogData() = default;
+    explicit LogData(const std::deque<LogLineData> &data) : data(data) {}
 
     std::vector<LogLineData> getDiff() {
         auto begin = data.cbegin() + static_cast<int>(sent_lines);

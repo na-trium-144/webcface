@@ -145,11 +145,12 @@ TEST_F(ServerTest, entry) {
                    ImageColorMode::bgr}
             .toMessage()});
     dummy_c1->send(message::Log{
-        0, std::make_shared<std::deque<message::LogLine>>(
-               std::deque<message::LogLine>{
-                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
-                       .toMessage(),
-               })});
+        "default"_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                    .toMessage(),
+            })});
     dummy_c1->send(message::FuncInfo{0, "a"_ss, ValType::none_, {}});
     wait();
     // c2が接続したタイミングでのc1のentryが全部返る
@@ -187,7 +188,11 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
     });
-    dummy_c2->waitRecv<message::LogEntry>(
+    dummy_c2->waitRecv<message::Entry<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8String(), "default");
+    });
+    dummy_c2->waitRecv<message::LogEntryDefault>(
         [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -264,24 +269,82 @@ TEST_F(ServerTest, log) {
     dummy_c2 = std::make_shared<DummyClient>();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     wait();
+    dummy_c3 = std::make_shared<DummyClient>();
+    dummy_c3->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    wait();
     dummy_c1->send(message::Log{
-        0, std::make_shared<std::deque<message::LogLine>>(
-               std::deque<message::LogLine>{
-                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
-                       .toMessage(),
-               })});
+        "default"_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                    .toMessage(),
+            })});
     // 初回のみリクエストしていなくても送られる
-    dummy_c2->waitRecv<message::LogEntry>(
+    dummy_c2->waitRecv<message::Entry<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field, "default"_ss);
+    });
+    dummy_c2->waitRecv<message::LogEntryDefault>(
         [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
-    dummy_c2->send(message::LogReq{{}, "c1"_ss});
+    dummy_c2->send(message::Req<message::Log>{{}, "c1"_ss, "default"_ss, 1});
     // req時の値
-    // keep_logを超えたので最後の3行だけ送られる
-    dummy_c2->waitRecv<message::Log>([&](const auto &obj) {
+    dummy_c2->waitRecv<message::Res<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 1u);
+        EXPECT_EQ(obj.log->size(), 1u);
+        EXPECT_EQ(obj.log->at(0).level_, 0);
+        EXPECT_EQ(obj.log->at(0).message_, "0"_ss);
+    });
+
+    // 古いクライアントの場合
+    dummy_c3->send(message::LogReqDefault{{}, "c1"_ss});
+    dummy_c3->waitRecv<message::LogDefault>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.log->size(), 1u);
         EXPECT_EQ(obj.log->at(0).level_, 0);
         EXPECT_EQ(obj.log->at(0).message_, "0"_ss);
     });
+}
+TEST_F(ServerTest, logNamed) {
+    dummy_c1 = std::make_shared<DummyClient>();
+    dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
+    wait();
+    dummy_c2 = std::make_shared<DummyClient>();
+    dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    wait();
+    dummy_c3 = std::make_shared<DummyClient>();
+    dummy_c3->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    wait();
+    dummy_c1->send(message::Log{
+        "aaa"_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                    .toMessage(),
+            })});
+    // 初回のみリクエストしていなくても送られる
+    dummy_c2->waitRecv<message::Entry<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field, "aaa"_ss);
+    });
+    dummy_c2->recv<message::LogEntryDefault>(
+        [&](const auto &) {
+            ADD_FAILURE() << "should not receive LogEntryDefault";
+        },
+        [&]() {});
+    dummy_c2->send(message::Req<message::Log>{{}, "c1"_ss, "aaa"_ss, 1});
+    // req時の値
+    dummy_c2->waitRecv<message::Res<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 1u);
+        EXPECT_EQ(obj.log->size(), 1u);
+        EXPECT_EQ(obj.log->at(0).level_, 0);
+        EXPECT_EQ(obj.log->at(0).message_, "0"_ss);
+    });
+
+    // 古いクライアントの場合
+    dummy_c3->send(message::LogReqDefault{{}, "c1"_ss});
+    dummy_c2->recv<message::LogDefault>(
+        [&](const auto &) { ADD_FAILURE() << "should not receive LogDefault"; },
+        [&]() {});
 }
 TEST_F(ServerTest, logKeep) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -291,27 +354,31 @@ TEST_F(ServerTest, logKeep) {
     server->store->keep_log = 3;
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
     dummy_c1->send(message::Log{
-        0, std::make_shared<std::deque<message::LogLine>>(
-               std::deque<message::LogLine>{
-                   LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
-                       .toMessage(),
-                   LogLineData{1, std::chrono::system_clock::now(), "1"_ss}
-                       .toMessage(),
-                   LogLineData{2, std::chrono::system_clock::now(), "2"_ss}
-                       .toMessage(),
-                   LogLineData{3, std::chrono::system_clock::now(), "3"_ss}
-                       .toMessage(),
-               })});
+        "default"_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{0, std::chrono::system_clock::now(), "0"_ss}
+                    .toMessage(),
+                LogLineData{1, std::chrono::system_clock::now(), "1"_ss}
+                    .toMessage(),
+                LogLineData{2, std::chrono::system_clock::now(), "2"_ss}
+                    .toMessage(),
+                LogLineData{3, std::chrono::system_clock::now(), "3"_ss}
+                    .toMessage(),
+            })});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     // syncinit時に送られる
-    dummy_c2->waitRecv<message::LogEntry>(
-        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
-    dummy_c2->send(message::LogReq{{}, "c1"_ss});
-    // req時の値
-    // keep_logを超えたので最後の3行だけ送られる
-    dummy_c2->waitRecv<message::Log>([&](const auto &obj) {
+    dummy_c2->waitRecv<message::Entry<message::Log>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field, "default"_ss);
+    });
+    dummy_c2->waitRecv<message::LogEntryDefault>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
+    dummy_c2->send(message::Req<message::Log>{{}, "c1"_ss, "default"_ss, 1});
+    // req時の値
+    dummy_c2->waitRecv<message::Res<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.log->size(), 3u);
         EXPECT_EQ(obj.log->at(0).level_, 1);
         EXPECT_EQ(obj.log->at(0).message_, "1"_ss);
@@ -320,21 +387,22 @@ TEST_F(ServerTest, logKeep) {
 
     // 変化後の値
     dummy_c1->send(message::Log{
-        0, std::make_shared<std::deque<message::LogLine>>(
-               std::deque<message::LogLine>{
-                   LogLineData{4, std::chrono::system_clock::now(), "4"_ss}
-                       .toMessage(),
-                   LogLineData{5, std::chrono::system_clock::now(), "5"_ss}
-                       .toMessage(),
-                   LogLineData{6, std::chrono::system_clock::now(), "6"_ss}
-                       .toMessage(),
-                   LogLineData{7, std::chrono::system_clock::now(), "7"_ss}
-                       .toMessage(),
-                   LogLineData{8, std::chrono::system_clock::now(), "8"_ss}
-                       .toMessage(),
-               })});
-    dummy_c2->waitRecv<message::Log>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_id, 1u);
+        "default"_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{4, std::chrono::system_clock::now(), "4"_ss}
+                    .toMessage(),
+                LogLineData{5, std::chrono::system_clock::now(), "5"_ss}
+                    .toMessage(),
+                LogLineData{6, std::chrono::system_clock::now(), "6"_ss}
+                    .toMessage(),
+                LogLineData{7, std::chrono::system_clock::now(), "7"_ss}
+                    .toMessage(),
+                LogLineData{8, std::chrono::system_clock::now(), "8"_ss}
+                    .toMessage(),
+            })});
+    dummy_c2->waitRecv<message::Res<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.log->size(), 5u);
         EXPECT_EQ(obj.log->at(0).level_, 4);
         EXPECT_EQ(obj.log->at(0).message_, "4"_ss);

@@ -275,7 +275,8 @@ void MemberData::onRecv(const std::string &message) {
                                 this->pack(webcface::message::LogEntryDefault{
                                     {}, cd->member_id});
                                 logger->trace(
-                                    "send log_entry_default(obsolete) of member {}",
+                                    "send log_entry_default(obsolete) of "
+                                    "member {}",
                                     cd->member_id);
                             }
                         }
@@ -636,6 +637,19 @@ void MemberData::onRecv(const std::string &message) {
                 log_data = v.log;
             }
             if (!this->log.count(field)) {
+                if (store->keep_log >= 0 &&
+                    log_data->size() >
+                        static_cast<unsigned int>(store->keep_log)) {
+                    logger->info(
+                        "number of log lines reached {}, so the oldest "
+                        "log will be romoved.",
+                        store->keep_log);
+                }
+                while (store->keep_log >= 0 &&
+                       log_data->size() >
+                           static_cast<unsigned int>(store->keep_log)) {
+                    log_data->pop_front();
+                }
                 this->log.emplace(field, log_data);
                 store->forEach([&](auto cd) {
                     if (cd->name != this->name) {
@@ -1007,7 +1021,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::log_req_default: {
             auto &s =
                 *static_cast<webcface::message::LogReqDefault *>(obj.get());
-            logger->debug("request log from {}", s.member.decode());
+            logger->debug("request log_default(obsolete) from {}",
+                          s.member.decode());
             this->log_req_default.insert(s.member);
             // 指定した値を返す
             store->findAndDo(s.member, [&](auto cd) {
@@ -1015,7 +1030,8 @@ void MemberData::onRecv(const std::string &message) {
                     auto log_data = cd->log.at(message::Log::defaultLogName());
                     this->pack(
                         webcface::message::LogDefault{cd->member_id, log_data});
-                    logger->trace("send log {} lines", log_data->size());
+                    logger->trace("send log_default(obsolete) {} lines",
+                                  log_data->size());
                 }
             });
             break;

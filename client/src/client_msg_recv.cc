@@ -274,7 +274,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<webcface::message::Res<webcface::message::Log> *>(obj.get());
             std::lock_guard lock_s(this->log_store.mtx);
             auto [member, field] =
-                this->view_store.getReq(r.req_id, r.sub_field);
+                this->log_store.getReq(r.req_id, r.sub_field);
                         auto log_s = this->log_store.getRecv(member, field);
             if (!log_s) {
                 log_s = std::make_shared<LogData>();
