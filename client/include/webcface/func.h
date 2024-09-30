@@ -162,7 +162,7 @@ class WEBCFACE_DLL Func : protected Field {
                         std::function<FuncType> &&func_impl) const;
     /*!
      * 引数の個数不定バージョン
-     * 
+     *
      */
     const Func &setImpl(ValType return_type, std::nullopt_t,
                         std::function<FuncType> &&func_impl) const;
@@ -170,14 +170,14 @@ class WEBCFACE_DLL Func : protected Field {
     setImpl(const std::shared_ptr<internal::FuncInfo> &func_info) const;
 
     /*!
-     * f_run()を実行し結果をCallHandleに渡す
+     * f_run()を実行し例外を投げた場合はrejectする
      *
      */
     template <typename F1>
-    static void tryRun(F1 &&f_run, const CallHandle &handle) {
+    static void catchAll(F1 &&f_run, const CallHandle &handle) {
         ValAdaptor error;
         try {
-            handle.respond(f_run());
+            f_run();
             return;
         } catch (const std::exception &e) {
             error = e.what();
@@ -193,6 +193,14 @@ class WEBCFACE_DLL Func : protected Field {
             error = "unknown exception";
         }
         handle.reject(error);
+    }
+    /*!
+     * f_run()を実行し結果をCallHandleに渡す
+     *
+     */
+    template <typename F1>
+    static void tryRun(F1 &&f_run, const CallHandle &handle) {
+        catchAll([&] { handle.respond(f_run()); }, handle);
     }
 
     static constexpr std::nullptr_t TraitOk = nullptr;
@@ -313,6 +321,7 @@ class WEBCFACE_DLL Func : protected Field {
      * * ver2.0〜: 自動でrespondされることはないので、
      * 関数が受け取ったhandleを別スレッドに渡すなどして、
      * ここでセットした関数の終了後にrespond()やreject()することも可能。
+     * * ver2.4〜: 例外をthrowした場合catchしてreject()する。
      *
      * \param args 引数の型などの情報
      * \param return_type 戻り値の型
@@ -332,7 +341,7 @@ class WEBCFACE_DLL Func : protected Field {
                        [args_size, callback = std::move(callback)](
                            const CallHandle &handle) {
                            if (handle.assertArgsNum(args_size)) {
-                               callback(handle);
+                               catchAll([&] { callback(handle); }, handle);
                            }
                        });
     }
@@ -344,6 +353,7 @@ class WEBCFACE_DLL Func : protected Field {
      * * 関数がrespond()もreject()もせず終了した場合自動でrespondされることはないので、
      * 関数が受け取ったhandleを別スレッドに渡すなどして、
      * ここでセットした関数の終了後にrespond()やreject()することも可能。
+     * * ver2.4〜: 例外をthrowした場合catchしてreject()する。
      *
      * \param args 引数の型などの情報
      * \param return_type 戻り値の型
@@ -366,7 +376,7 @@ class WEBCFACE_DLL Func : protected Field {
                  std::move(callback))](const CallHandle &handle) {
                 if (handle.assertArgsNum(args_size)) {
                     std::thread([callback, handle] {
-                        callback->operator()(handle);
+                        catchAll([&] { callback->operator()(handle); }, handle);
                     }).detach();
                 }
             });
@@ -380,6 +390,7 @@ class WEBCFACE_DLL Func : protected Field {
      * ここでセットした関数の終了後にrespond()やreject()することも可能。
      * * setArgs(), setReturnType() で引数の個数や型と戻り値の型を指定する。
      * 指定しない場合、引数なし戻り値なしとみなされる。
+     * * 例外をthrowした場合catchしてreject()する。
      *
      * \param func セットする関数または関数オブジェクト。
      * 引数としてCallHandleを1つ取り、戻り値はvoidで、
@@ -395,7 +406,7 @@ class WEBCFACE_DLL Func : protected Field {
                        [base = *this, callback = std::move(callback)](
                            const CallHandle &handle) {
                            if (handle.assertArgsNum(base.args().size())) {
-                               callback(handle);
+                               catchAll([&] { callback(handle); }, handle);
                            }
                        });
     }
@@ -408,6 +419,7 @@ class WEBCFACE_DLL Func : protected Field {
      * ここでセットした関数の終了後にrespond()やreject()することも可能。
      * * setArgs(), setReturnType() で引数の個数や型と戻り値の型を指定する。
      * 指定しない場合、引数なし戻り値なしとみなされる。
+     * * 例外をthrowした場合catchしてreject()する。
      *
      * \param func セットする関数または関数オブジェクト。
      * 引数としてCallHandleを1つ取り、戻り値はvoidで、
@@ -426,7 +438,7 @@ class WEBCFACE_DLL Func : protected Field {
                  std::move(callback))](const CallHandle &handle) {
                 if (handle.assertArgsNum(base.args().size())) {
                     std::thread([callback, handle] {
-                        callback->operator()(handle);
+                        catchAll([&] { callback->operator()(handle); }, handle);
                     }).detach();
                 }
             });
@@ -550,10 +562,10 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 戻り値の型の情報を更新する
      * \since ver2.4
-     * 
+     *
      * set()やsetAsync()で通常の関数をセットした場合戻り値の型は自動的に取得されるので
      * setReturnType() を呼ぶ必要はない。
-     * 
+     *
      */
     const Func &setReturnType(ValType return_type) const;
 
