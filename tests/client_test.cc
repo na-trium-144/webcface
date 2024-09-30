@@ -364,8 +364,11 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
 
     EXPECT_FALSE(m.log().exists());
+    m.onLogEntry(callback<Log>());
     dummy_s->send(message::Entry<message::Log>{{}, 10, "a"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
     EXPECT_TRUE(m.log("a").exists());
 
     m.onSync(callback<Member>());

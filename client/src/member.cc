@@ -65,6 +65,12 @@ const Member &Member::onImageEntry(std::function<void(Image)> callback) const {
         std::make_shared<std::function<void(Image)>>(std::move(callback));
     return *this;
 }
+const Member &Member::onLogEntry(std::function<void(Log)> callback) const {
+    std::lock_guard lock(dataLock()->event_m);
+    dataLock()->log_entry_event[member_] =
+        std::make_shared<std::function<void(Log)>>(std::move(callback));
+    return *this;
+}
 const Member &Member::onSync(std::function<void(Member)> callback) const {
     std::lock_guard lock(dataLock()->event_m);
     dataLock()->sync_event[member_] =

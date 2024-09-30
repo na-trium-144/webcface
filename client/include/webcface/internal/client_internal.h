@@ -423,6 +423,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas3d_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>>
+        log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::mutex logger_m;

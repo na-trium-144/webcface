@@ -117,6 +117,9 @@ std::vector<Canvas2D> Field::canvas2DEntries() const {
 std::vector<Image> Field::imageEntries() const {
     return entries<Image>(this, dataLock()->image_store);
 }
+std::vector<Log> Field::logEntries() const {
+    return entries<Log>(this, dataLock()->log_store);
+}
 
 bool Field::expired() const { return data_w.expired(); }
 

@@ -271,11 +271,13 @@ void internal::ClientData::onRecv(
             break;
         }
         case MessageKind::log + MessageKind::res: {
-            auto &r = *static_cast<webcface::message::Res<webcface::message::Log> *>(obj.get());
+            auto &r =
+                *static_cast<webcface::message::Res<webcface::message::Log> *>(
+                    obj.get());
             std::lock_guard lock_s(this->log_store.mtx);
             auto [member, field] =
                 this->log_store.getReq(r.req_id, r.sub_field);
-                        auto log_s = this->log_store.getRecv(member, field);
+            auto log_s = this->log_store.getRecv(member, field);
             if (!log_s) {
                 log_s = std::make_shared<LogData>();
                 this->log_store.setRecv(member, field, *log_s);
@@ -449,18 +451,9 @@ void internal::ClientData::onRecv(
             break;
         }
         case MessageKind::entry + MessageKind::log: {
-            auto &r = *static_cast<webcface::message::Entry<webcface::message::Log> *>(obj.get());
-            auto member = this->getMemberNameFromId(r.member_id);
-            this->log_store.setEntry(member, r.field);
-            // std::decay_t<decltype(this->log_entry_event.at(member))> cl;
-            // {
-            //     std::lock_guard lock(this->event_m);
-            //     cl = findFromMap1(this->log_entry_event,
-            //     member).value_or(nullptr);
-            // }
-            // if (cl && *cl) {
-            //     cl->operator()(Field{this->shared_from_this(), member});
-            // }
+            auto &r = *static_cast<
+                webcface::message::Entry<webcface::message::Log> *>(obj.get());
+            onRecvEntry(this, r, this->log_store, this->log_entry_event);
             break;
         }
         case MessageKind::func_info: {

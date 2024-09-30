@@ -64,7 +64,7 @@ class WEBCFACE_DLL Member : protected Field {
     Log log(std::wstring_view name) const { return this->Field::log(name); }
     /*!
      * ver2.4〜: nameを省略した場合 "default" として送信される。
-     * 
+     *
      */
     Log log() const;
     /*!
@@ -83,6 +83,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::canvas3DEntries;
     using Field::funcEntries;
     using Field::imageEntries;
+    using Field::logEntries;
     using Field::robotModelEntries;
     using Field::textEntries;
     using Field::valueEntries;
@@ -131,7 +132,7 @@ class WEBCFACE_DLL Member : protected Field {
     onValueEntry(std::function<void WEBCFACE_CALL_FP(Value)> callback) const;
     /*!
      * \brief textが追加された時のイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback Text型の引数をとる関数
      *
      */
@@ -139,7 +140,7 @@ class WEBCFACE_DLL Member : protected Field {
     onTextEntry(std::function<void WEBCFACE_CALL_FP(Text)> callback) const;
     /*!
      * \brief robotModelが追加された時のイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback RobotModel型の引数をとる関数
      *
      */
@@ -147,7 +148,7 @@ class WEBCFACE_DLL Member : protected Field {
         std::function<void WEBCFACE_CALL_FP(RobotModel)> callback) const;
     /*!
      * \brief funcが追加された時のイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback Func型の引数をとる関数
      *
      */
@@ -155,7 +156,7 @@ class WEBCFACE_DLL Member : protected Field {
     onFuncEntry(std::function<void WEBCFACE_CALL_FP(Func)> callback) const;
     /*!
      * \brief imageが追加されたときのイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback Image型の引数をとる関数
      *
      */
@@ -163,7 +164,7 @@ class WEBCFACE_DLL Member : protected Field {
     onImageEntry(std::function<void WEBCFACE_CALL_FP(Image)> callback) const;
     /*!
      * \brief viewが追加されたときのイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback View型の引数をとる関数
      *
      */
@@ -171,7 +172,7 @@ class WEBCFACE_DLL Member : protected Field {
     onViewEntry(std::function<void WEBCFACE_CALL_FP(View)> callback) const;
     /*!
      * \brief canvas3dが追加されたときのイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback Canvas3D型の引数をとる関数
      *
      */
@@ -179,12 +180,20 @@ class WEBCFACE_DLL Member : protected Field {
         std::function<void WEBCFACE_CALL_FP(Canvas3D)> callback) const;
     /*!
      * \brief canvas2dが追加されたときのイベント
-     *\since ver2.0
+     * \since ver2.0
      * \param callback Canvas2D型の引数をとる関数
      *
      */
     const Member &onCanvas2DEntry(
         std::function<void WEBCFACE_CALL_FP(Canvas2D)> callback) const;
+    /*!
+     * \brief logが追加されたときのイベント
+     * \since ver2.4
+     * \param callback Log型の引数をとる関数
+     *
+     */
+    const Member &
+    onLogEntry(std::function<void WEBCFACE_CALL_FP(Log)> callback) const;
 
     /*!
      * \brief Memberがsync()したときのイベント

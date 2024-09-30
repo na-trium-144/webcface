@@ -206,6 +206,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
     std::vector<Canvas3D> canvas3DEntries() const;
     std::vector<Canvas2D> canvas2DEntries() const;
     std::vector<Image> imageEntries() const;
+    /*!
+     * \since ver2.4
+     */
+    std::vector<Log> logEntries() const;
 
     /*!
      * \brief memberがselfならtrue
