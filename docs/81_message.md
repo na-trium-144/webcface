@@ -457,7 +457,42 @@ data = {
 ```
 
 ## Log
-### log (kind = 85)
+### log (kind = 8)
+\since <span class="since-c">2.4</span>
+
+```js
+data = {
+	f: string, // name
+	l: {
+		v: number, // level 0〜5
+		t: number, // time
+		m: string, // message
+	}[],
+}
+```
+* クライアント→サーバーに新しく追加されたログ差分のみ送ります
+
+### log entry (kind = 28)
+* value entryと同様
+
+### log req (kind = 48)
+* value reqと同様
+
+### log res (kind = 68)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	l: {...}[], // data
+}
+```
+* 初回はすべてのログが送られますが、2回目以降は前回送信した log res の後に追加された差分のみが送られます
+
+### log_default (kind = 85)
+* ver2.3まで使っていた古いメッセージ仕様です。
+	* 2.4以降のサーバーは、古いlog_reqメッセージを送ってきたクライアントに対してのみこの古い仕様でログを返します。
+	* またこの古いlogメッセージは新logメッセージでnameを`"default"`にしたものと同等に扱われます
+
 ```js
 data = {
 	m: number, // member id
@@ -472,8 +507,11 @@ data = {
 * リクエストがあればサーバー→各クライアントにそのまま送り返します
 * リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります
 
-### log entry (kind = 92)
+### log_entry_default (kind = 92)
 \since <span class="since-c">2.1</span>
+
+* ver2.1〜2.3まで使っていた古いメッセージ仕様です。
+	* 2.4以降のサーバーは、nameが`"default"`のLogデータに関してのみ、新旧両方のクライアントに対応できるようこのentryと新しいlog entryの両方を送信します
 
 ```js
 data = {
@@ -482,7 +520,10 @@ data = {
 ```
 * 1行以上のログデータがある場合、サーバー→各クライアントに知らせます
 
-### log req (kind = 86)
+### log_req_default (kind = 86)
+* ver2.3まで使っていた古いメッセージ仕様です。
+	* 2.4以降のサーバーは、nameが`"default"`のLogをリクエストしたものとして処理します
+
 ```js
 data = {
 	M: string // member name

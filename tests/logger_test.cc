@@ -28,36 +28,36 @@ class LoggerTest : public ::testing::Test {
 };
 
 TEST_F(LoggerTest, loggerBuf) {
-    LoggerBuf b(data_.get());
+    LoggerBuf b(data_.get(), "buf"_ss);
     std::ostream os(&b);
     os << "a\nb" << std::endl;
     auto cerr_buf = std::cerr.rdbuf();
     std::cerr.rdbuf(&b);
     std::cerr << "c" << std::endl;
-    auto ls = data_->log_store.getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 3u);
-    EXPECT_EQ((**ls)[0].level_, 2);
-    EXPECT_EQ((**ls)[0].message_.u8String(), "a");
-    EXPECT_EQ((**ls)[1].level_, 2);
-    EXPECT_EQ((**ls)[1].message_.u8String(), "b");
-    EXPECT_EQ((**ls)[2].level_, 2);
-    EXPECT_EQ((**ls)[2].message_.u8String(), "c");
+    auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
+    ASSERT_EQ((*ls)->data.size(), 3u);
+    EXPECT_EQ((*ls)->data[0].level_, 2);
+    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
+    EXPECT_EQ((*ls)->data[1].level_, 2);
+    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
+    EXPECT_EQ((*ls)->data[2].level_, 2);
+    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
-    LoggerBufW b(data_.get());
+    LoggerBufW b(data_.get(), "buf"_ss);
     std::wostream os(&b);
     os << L"a\nb" << std::endl;
     auto wcerr_buf = std::wcerr.rdbuf();
     std::wcerr.rdbuf(&b);
     std::wcerr << L"c" << std::endl;
-    auto ls = data_->log_store.getRecv(self_name);
-    ASSERT_EQ((*ls)->size(), 3u);
-    EXPECT_EQ((**ls)[0].level_, 2);
-    EXPECT_EQ((**ls)[0].message_.u8String(), "a");
-    EXPECT_EQ((**ls)[1].level_, 2);
-    EXPECT_EQ((**ls)[1].message_.u8String(), "b");
-    EXPECT_EQ((**ls)[2].level_, 2);
-    EXPECT_EQ((**ls)[2].message_.u8String(), "c");
+    auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
+    ASSERT_EQ((*ls)->data.size(), 3u);
+    EXPECT_EQ((*ls)->data[0].level_, 2);
+    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
+    EXPECT_EQ((*ls)->data[1].level_, 2);
+    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
+    EXPECT_EQ((*ls)->data[2].level_, 2);
+    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
     std::wcerr.rdbuf(wcerr_buf);
 }

@@ -36,11 +36,6 @@ internal::ClientData::ClientData(const SharedString &name,
     } else {
         logger_internal->set_level(spdlog::level::off);
     }
-    logger_buf = std::make_unique<LoggerBuf>(this);
-    logger_os = std::make_unique<std::ostream>(logger_buf.get());
-    logger_buf_w = std::make_unique<LoggerBufW>(this);
-    logger_os_w = std::make_unique<std::wostream>(logger_buf_w.get());
-    log_store.setRecv(name, std::make_shared<std::deque<LogLineData>>());
 }
 
 Client::~Client() {

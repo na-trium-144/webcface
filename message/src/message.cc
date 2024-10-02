@@ -71,9 +71,10 @@ unpack(const std::string &message,
                 MSG_PARSE_DATA(RobotModel)
                 MSG_PARSE_DATA(Canvas3D)
                 MSG_PARSE_DATA(Canvas2D)
-                MSG_PARSE(Log)
-                MSG_PARSE(LogReq)
-                MSG_PARSE(LogEntry)
+                MSG_PARSE_DATA(Log)
+                MSG_PARSE(LogDefault)
+                MSG_PARSE(LogReqDefault)
+                MSG_PARSE(LogEntryDefault)
                 MSG_PARSE(FuncInfo)
                 MSG_PARSE(Sync)
                 MSG_PARSE(SyncInitEnd)
@@ -97,5 +98,11 @@ unpack(const std::string &message,
         return std::vector<std::pair<int, std::shared_ptr<void>>>{};
     }
 }
+
+SharedString Log::defaultLogName() {
+    static SharedString default_name = SharedString::fromU8String("default");
+    return default_name;
+}
+
 } // namespace message
 WEBCFACE_NS_END

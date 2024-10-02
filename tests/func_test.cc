@@ -129,7 +129,7 @@ TEST_F(FuncTest, funcSet) {
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args.size(), 0u);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args->size(), 0u);
     EXPECT_EQ(f.args().size(), 0u);
     EXPECT_EQ(func(self_name, "a").args().size(), 0u);
 
@@ -343,6 +343,46 @@ TEST_F(FuncTest, funcAsyncRun) {
     // 引数の間違い
     EXPECT_FALSE(func(self_name, "a").runAsync().rejection().empty());
     EXPECT_TRUE(func(self_name, "a").runAsync().found());
+}
+TEST_F(FuncTest, funcHandleRun) {
+    // 引数と戻り値
+    auto main_id = std::this_thread::get_id();
+    webcface::CallHandle handle_copy;
+    func(self_name, "a")
+        .set([&](const webcface::CallHandle &h) {
+            if (h.args().at(0) == 0) {
+                throw std::invalid_argument("a == 0");
+            }
+            if (h.args().at(0) == 1) {
+                h.reject("a == 1");
+                return;
+            }
+            EXPECT_EQ(h.args().at(0).asInt(), 123);
+            EXPECT_EQ(h.args().at(1).asDouble(), 123.45);
+            EXPECT_EQ(h.args().at(2).asString(), "a");
+            EXPECT_TRUE(h.args().at(3).asBool());
+            // setしてるのでrunAsyncしてもmainスレッドで実行される
+            EXPECT_EQ(std::this_thread::get_id(), main_id);
+            handle_copy = h;
+            return;
+        }).setArgs({Arg(), Arg(), Arg(), Arg()});
+    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    EXPECT_TRUE(ret_a.isError());
+    EXPECT_EQ(ret_a.rejection(), "a == 0");
+    ret_a = func(self_name, "a").runAsync(1, 123.45, "a", true);
+    EXPECT_TRUE(ret_a.isError());
+    EXPECT_EQ(ret_a.rejection(), "a == 1");
+    ret_a = func(self_name, "a").runAsync(2);
+    EXPECT_TRUE(ret_a.isError());
+    EXPECT_FALSE(ret_a.rejection().empty());
+
+    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.finished());
+    handle_copy.respond(123.45);
+    EXPECT_TRUE(ret_a.finished());
+    EXPECT_FALSE(ret_a.isError());
+    EXPECT_EQ(static_cast<double>(ret_a.response()), 123.45);
 }
 TEST_F(FuncTest, funcRunRemote) {
     // 未接続

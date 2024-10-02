@@ -26,6 +26,7 @@ class FuncListener;
 class RobotModel;
 class Canvas2D;
 class Canvas3D;
+class Log;
 
 constexpr char field_separator = '.';
 
@@ -187,6 +188,14 @@ struct WEBCFACE_DLL Field : public FieldBase {
     Canvas3D canvas3D(std::wstring_view field) const;
     Canvas2D canvas2D(std::string_view field = "") const;
     Canvas2D canvas2D(std::wstring_view field) const;
+    /*!
+     * \since ver2.4
+     */
+    Log log(std::string_view field = "") const;
+    /*!
+     * \since ver2.4
+     */
+    Log log(std::wstring_view field) const;
 
 
     std::vector<Value> valueEntries() const;
@@ -197,6 +206,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
     std::vector<Canvas3D> canvas3DEntries() const;
     std::vector<Canvas2D> canvas2DEntries() const;
     std::vector<Image> imageEntries() const;
+    /*!
+     * \since ver2.4
+     */
+    std::vector<Log> logEntries() const;
 
     /*!
      * \brief memberがselfならtrue

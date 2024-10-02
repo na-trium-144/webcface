@@ -41,6 +41,7 @@
         * <span class="since-c">2.0</span> 代入演算子はdeprecatedになりました
     * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
     ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
+    * 関数の中で例外をthrowした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。
     * <span class="since-c">2.0</span>
     set()で登録した関数はClient::sync()時に同じスレッドで実行されます。
     そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。
@@ -91,6 +92,31 @@
     });
     ```
 
+    <span></span>
+
+    <span class="since-c">2.4</span>
+    引数に webcface::CallHandle をとる関数をセットすることもできます。
+    ```cpp
+    wcli.func("hoge").set([](webcface::CallHandle handle){
+        double arg = handle.args().at(0).asDouble();
+        handle.respond(123); // return value
+    }).setArgs({
+        webcface::Arg("a").type(webcface::ValType::double_),
+    });
+    ```
+    * 通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は setAsync() を使用してください。
+    * 関数のsetのあとに、 setArgs() で受け取りたい引数の個数分の webcface::Arg() を渡し、引数名や戻り値の型を指定します。
+        * 引数名などの情報が不要な場合でも引数の個数分 Arg() を渡す必要があります。
+    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle.args()` でFuncを呼び出した引数を取得できます。
+        * setArgs() で指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
+        (そのため登録した関数の側で引数の個数チェックをする必要はないです)
+    * 値を返すのはreturnではなくhandleを介して `handle.respond(戻り値)` を使います。
+        * 戻り値が不要な場合はrespondに何も渡さず `handle.respond();` とします。
+    * エラーメッセージを返すには `handle.reject(エラーメッセージ)` を使います。
+        * 関数の中で例外をthrowした場合もエラーメッセージが呼び出し元に返ります。
+    * respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
+        * そのためhandleを関数の外のスコープの変数に保存(コピー)したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
+    
 - <b class="tab-title">C</b>
     \since <span class="since-c">1.9</span>
 
@@ -158,6 +184,7 @@
     wcli.func("hoge").set(() => {/* ... */});
     wcli.func("hoge").set((a: number, b: string) => 3.1415);
     ```
+    * 関数の中で例外をthrowした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。
     * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
     ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
 
@@ -170,6 +197,7 @@
     wcli.func("hoge").set(hoge)
     wcli.func("lambda").set(lambda x: return x + 5) # ラムダ式なども可
     ```
+    * 関数の中で例外をraiseした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。
     * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
     ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
     * setを明示的に呼び出す代わりにfuncオブジェクトをデコレータにすると簡単に登録できます。

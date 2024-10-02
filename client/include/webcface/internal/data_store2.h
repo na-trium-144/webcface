@@ -14,6 +14,7 @@
 #include "webcface/message/message.h"
 #include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
+#include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -209,6 +210,25 @@ using Canvas3DData = std::shared_ptr<
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = ImageFrame;
 
+struct LogData {
+    std::deque<LogLineData> data;
+    std::size_t sent_lines = 0;
+
+    LogData() = default;
+    explicit LogData(const std::deque<LogLineData> &data) : data(data) {}
+
+    std::vector<LogLineData> getDiff() {
+        auto begin = data.cbegin() + static_cast<int>(sent_lines);
+        auto end = data.cend();
+        sent_lines = data.size();
+        return std::vector<LogLineData>(begin, end);
+    }
+    std::vector<LogLineData> getAll() {
+        sent_lines = data.size();
+        return std::vector<LogLineData>(data.cbegin(), data.cend());
+    }
+};
+
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore2<std::string, int>; // test用
 extern template class SyncDataStore2<ValueData, int>;
@@ -219,6 +239,7 @@ extern template class SyncDataStore2<RobotModelData, int>;
 extern template class SyncDataStore2<Canvas3DData, int>;
 extern template class SyncDataStore2<Canvas2DData, int>;
 extern template class SyncDataStore2<ImageData, message::ImageReq>;
+extern template class SyncDataStore2<std::shared_ptr<LogData>, int>;
 #endif
 
 } // namespace internal

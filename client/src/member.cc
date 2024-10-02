@@ -11,7 +11,8 @@
 
 WEBCFACE_NS_BEGIN
 
-Log Member::log() const { return Log{*this}; }
+// ver2.4〜: nameを省略した場合 "default" として送信される。
+Log Member::log() const { return Log{*this, message::Log::defaultLogName()}; }
 
 const Member &Member::onValueEntry(std::function<void(Value)> callback) const {
     std::lock_guard lock(dataLock()->event_m);
@@ -62,6 +63,12 @@ const Member &Member::onImageEntry(std::function<void(Image)> callback) const {
     std::lock_guard lock(dataLock()->event_m);
     dataLock()->image_entry_event[member_] =
         std::make_shared<std::function<void(Image)>>(std::move(callback));
+    return *this;
+}
+const Member &Member::onLogEntry(std::function<void(Log)> callback) const {
+    std::lock_guard lock(dataLock()->event_m);
+    dataLock()->log_entry_event[member_] =
+        std::make_shared<std::function<void(Log)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onSync(std::function<void(Member)> callback) const {

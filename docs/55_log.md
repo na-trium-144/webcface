@@ -18,6 +18,14 @@ trace(0), debug(1), info(2), warning(3), error(4), critical(5) の6段階のレ�
 \note
 WebCFaceはログレベルを単に数値として扱うので、-1以下や6以上のレベルも一応使用可能です。
 
+\warning
+<span class="since-c">2.4</span><span class="since-js">1.9</span><span class="since-py">2.1</span>
+でLogの送受信メッセージを仕様変更しています。
+クライアントがこれら以上のバージョンでサーバーが2.3以前の場合Logデータは送受信できません。
+(serverのログ出力に `Unknown message kind 8` というwarningが表示されます。)
+逆にサーバーが2.4以上でクライアントが古い場合は問題ありません。
+
+
 ## コマンドライン
 ```sh
 webcface-send -t log
@@ -60,6 +68,15 @@ webcface-send -t log
     wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。
     その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
     
+    <span class="since-c">2.4</span>
+    Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
+    ```cpp
+    wcli.log("hoge").append(webcface::level::info, "this is info");
+    wcli.loggerOStream("hoge") << "hello" << std::endl;
+    std::cout.rdbuf(wcli.loggerStreamBuf("hoge"));
+    ```
+
 - <b class="tab-title">JavaScript</b>
     <span class="since-js">1.8</span>
     Log.append() でログを送信することができます。
@@ -67,6 +84,13 @@ webcface-send -t log
     ```ts
     wcli.log().append(2, "this is info");
     wcli.log().append(3, "this is error");
+    ```
+
+    <span class="since-js">1.9</span>
+    Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
+    ```ts
+    wcli.log("hoge").append(2, "this is info");
     ```
 
 - <b class="tab-title">Python</b>
@@ -100,6 +124,13 @@ webcface-send -t log
     import sys
     sys.stdout = wcli.logging_io
     print("hello")
+    ```
+
+    <span class="since-py">2.1</span>
+    Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
+    ```cpp
+    wcli.log("hoge").append(2, "this is info");
     ```
 
 </div>
@@ -241,7 +272,7 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
         <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * Log::get() はstd::nulloptの代わりに空のvectorを返します。
-    
+
     \warning
     <span class="since-c">2.1</span>
     Clientはmemberごとに最大1000行までのログを保持しています。
@@ -271,6 +302,11 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
 
     <span class="since-c">2.0</span>
     tryGetW(), getW() ではstringの代わりにwstringを使った webcface::LogLineW のリストで返ります。
+
+    <span class="since-c">2.4</span>
+    Valueなど他のデータ型と同様、
+    `wcli.member("foo").log("hoge")` のように受信するLogの名前を指定できます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
 
 - <b class="tab-title">JavaScript</b>
     Member.log() でLogクラスのオブジェクトが得られ、
@@ -316,6 +352,11 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
     <span class="since-js">1.1</span>
     Log::request() で明示的にリクエストを送信することもできます。
 
+    <span class="since-js">1.9</span>
+    Valueなど他のデータ型と同様、
+    `wcli.member("foo").log("hoge")` のように受信するLogの名前を指定できます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
+
 - <b class="tab-title">Python</b>
     Member.log() でLogクラスのオブジェクトが得られ、
     Log.try_get() でデータのリクエストをするとともにログが得られます。
@@ -343,11 +384,16 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
 
     Log::request() で明示的にリクエストを送信することもできます。
 
+    <span class="since-py">2.1</span>
+    Valueなど他のデータ型と同様、
+    `wcli.member("foo").log("hoge")` のように受信するLogの名前を指定できます。
+    名前を省略した場合、および過去のバージョンから送信されたログデータは `"default"` という名前のLogとして扱われます。
+
 </div>
 
 ### Entry
 
-\since <span class="since-c">2.1</span><span class="since-js">1.8</span><span class="since-js">1.8</span>
+\since <span class="since-c">2.1</span><span class="since-js">1.8</span><span class="since-py">2.0</span>
 
 (サーバーが<span class="since-c">2.1</span>以降の場合のみ)
 
@@ -356,6 +402,12 @@ serverの起動時のオプションでこの行数は変更できます。([2-1
 Log.exists()
 はログが少なくとも1行存在する場合、trueを返します。
 tryGet() と違い、ログデータそのものを受信するリクエストは送られません。
+
+<span class="since-c">2.4</span>
+<span class="since-js">1.9</span>
+<span class="since-py">2.1</span>
+Valueなどの他の型と同様、 Memberが送信しているLogのリストを取得したり、
+LogEntry イベントも使えるようになりました。
 
 ### Event
 

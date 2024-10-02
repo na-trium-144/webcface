@@ -47,10 +47,12 @@ void Arg::mergeConfig(const Arg &other) {
 }
 
 const std::string &Arg::name() const {
-    return this->msg_data ? this->msg_data->name_.decode() : SharedString::emptyStr();
+    return this->msg_data ? this->msg_data->name_.decode()
+                          : SharedString::emptyStr();
 }
 const std::wstring &Arg::nameW() const {
-    return this->msg_data ? this->msg_data->name_.decodeW() : SharedString::emptyStrW();
+    return this->msg_data ? this->msg_data->name_.decodeW()
+                          : SharedString::emptyStrW();
 }
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {
@@ -117,17 +119,19 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
 
 internal::FuncInfo::FuncInfo(const message::FuncInfo &m)
     : return_type(m.return_type), args(), func_impl(nullptr) {
-    args.reserve(m.args.size());
+    args.emplace();
+    args->reserve(m.args.size());
     for (const auto &a : m.args) {
-        args.emplace_back(a);
+        args->emplace_back(a);
     }
 }
-message::FuncInfo
-internal::FuncInfo::toMessage(const SharedString &field) {
+message::FuncInfo internal::FuncInfo::toMessage(const SharedString &field) {
     message::FuncInfo m{0, field, return_type, {}};
-    m.args.reserve(args.size());
-    for (auto &a : args) {
-        m.args.emplace_back(a.initMsg());
+    if (args.has_value()) {
+        m.args.reserve(args->size());
+        for (auto &a : *args) {
+            m.args.emplace_back(a.initMsg());
+        }
     }
     return m;
 }

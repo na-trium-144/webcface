@@ -1,3 +1,13 @@
+## [2.4.0] - 2024-10-02
+### Changed
+* Logメッセージを仕様変更、Logに名前をつけて複数送信できるようになった (#410)
+	* ver2.3以前のサーバーと2.4以降のクライアントの間ではLogを送受信できなくなります
+* Funcに登録した引数にCallHandleをとる関数がthrowしたときそれをcatchしてrejectする
+### Added
+* Func::set() で引数にCallHandleをとる関数を渡してセットし、その後からsetArgs()などオプションを使う使い方
+* Field::logEntries()
+* Member::onLogEntry()
+
 ## [2.3.0] - 2024-09-17
 ### Fixed
 * ver2.2.1以降でserverがセグフォすることがあったバグを修正 (#407)

@@ -364,9 +364,12 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
 
     EXPECT_FALSE(m.log().exists());
-    dummy_s->send(message::LogEntry{{},10});
+    m.onLogEntry(callback<Log>());
+    dummy_s->send(message::Entry<message::Log>{{}, 10, "a"_ss});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-    EXPECT_TRUE(m.log().exists());
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    EXPECT_TRUE(m.log("a").exists());
 
     m.onSync(callback<Member>());
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
@@ -380,15 +383,15 @@ TEST_F(ClientTest, logSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    auto ls =
-        std::make_shared<std::deque<LogLineData>>(std::deque<LogLineData>{
-            {0, std::chrono::system_clock::now(),
-             SharedString::fromU8String(std::string(100000, 'a'))},
-            {1, std::chrono::system_clock::now(), "b"_ss},
-        });
-    data_->log_store.setRecv(self_name, ls);
+    auto ls = std::make_shared<internal::LogData>(std::deque<LogLineData>{
+        {0, std::chrono::system_clock::now(),
+         SharedString::fromU8String(std::string(100000, 'a'))},
+        {1, std::chrono::system_clock::now(), "b"_ss},
+    });
+    data_->log_store.setSend("a"_ss, ls);
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
+        EXPECT_EQ(obj.field, "a"_ss);
         EXPECT_EQ(obj.log->size(), 2u);
         EXPECT_EQ(obj.log->at(0).level_, 0);
         EXPECT_EQ(obj.log->at(0).message_.decode().size(), 100000u);
@@ -397,7 +400,9 @@ TEST_F(ClientTest, logSend) {
     });
 
     dummy_s->recvClear();
-    ls->push_back(LogLineData{2, std::chrono::system_clock::now(), "c"_ss});
+    ls->data.push_back(
+        LogLineData{2, std::chrono::system_clock::now(), "c"_ss});
+    data_->log_store.setSend("a"_ss, ls);
     wcli_->sync();
     dummy_s->waitRecv<message::Log>([&](const auto &obj) {
         EXPECT_EQ(obj.log->size(), 1u);
@@ -411,79 +416,95 @@ TEST_F(ClientTest, logReq) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    wcli_->member("a").log().tryGet();
-    dummy_s->waitRecv<message::LogReq>(
-        [&](const auto &obj) { EXPECT_EQ(obj.member.u8String(), "a"); });
-    wcli_->member("a").log().onChange(callback<Log>());
+    wcli_->member("a").log("b").tryGet();
+    dummy_s->waitRecv<message::Req<message::Log>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.req_id, 1u);
+    });
+    wcli_->member("a").log("b").onChange(callback<Log>());
 
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "", "", ""});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-    dummy_s->send(message::Log{
-        10, std::make_shared<std::deque<message::LogLine>>(
-                std::deque<message::LogLine>{
-                    LogLineData{
-                        0, std::chrono::system_clock::now(),
-                        SharedString::fromU8String(std::string(100000, 'a'))}
-                        .toMessage(),
-                    LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
-                        .toMessage(),
-                })});
+    dummy_s->send(message::Res<message::Log>{
+        1, ""_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{
+                    0, std::chrono::system_clock::now(),
+                    SharedString::fromU8String(std::string(100000, 'a'))}
+                    .toMessage(),
+                LogLineData{1, std::chrono::system_clock::now(), "b"_ss}
+                    .toMessage(),
+            })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 0);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss)
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
+              2u);
+    EXPECT_EQ(
+        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 0);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)
                   .value()
-                  ->at(0)
+                  ->data.at(0)
                   .message_.u8String()
                   .size(),
               100000u);
 
-    dummy_s->send(message::Log{
-        10, std::make_shared<std::deque<message::LogLine>>(
-                std::deque<message::LogLine>{
-                    LogLineData{2, std::chrono::system_clock::now(), "c"_ss}
-                        .toMessage(),
-                })});
+    dummy_s->send(message::Res<message::Log>{
+        1, ""_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{2, std::chrono::system_clock::now(), "c"_ss}
+                    .toMessage(),
+            })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 3u);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
+              3u);
 
     // keep_lines以上のログは保存しない
     webcface::Log::keepLines(2);
-    dummy_s->send(message::Log{
-        10, std::make_shared<std::deque<message::LogLine>>(
-                std::deque<message::LogLine>{
-                    LogLineData{3, std::chrono::system_clock::now(), "d"_ss}
-                        .toMessage(),
-                })});
+    dummy_s->send(message::Res<message::Log>{
+        1, ""_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{3, std::chrono::system_clock::now(), "d"_ss}
+                    .toMessage(),
+            })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 3);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 2);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 3);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
+              2u);
+    EXPECT_EQ(
+        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 2);
+    EXPECT_EQ(
+        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(1).level_, 3);
 
-    dummy_s->send(message::Log{
-        10, std::make_shared<std::deque<message::LogLine>>(
-                std::deque<message::LogLine>{
-                    LogLineData{4, std::chrono::system_clock::now(), "d"_ss}
-                        .toMessage(),
-                    LogLineData{5, std::chrono::system_clock::now(), "d"_ss}
-                        .toMessage(),
-                    LogLineData{6, std::chrono::system_clock::now(), "d"_ss}
-                        .toMessage(),
-                    LogLineData{7, std::chrono::system_clock::now(), "d"_ss}
-                        .toMessage(),
-                })});
+    dummy_s->send(message::Res<message::Log>{
+        1, ""_ss,
+        std::make_shared<std::deque<message::LogLine>>(
+            std::deque<message::LogLine>{
+                LogLineData{4, std::chrono::system_clock::now(), "d"_ss}
+                    .toMessage(),
+                LogLineData{5, std::chrono::system_clock::now(), "d"_ss}
+                    .toMessage(),
+                LogLineData{6, std::chrono::system_clock::now(), "d"_ss}
+                    .toMessage(),
+                LogLineData{7, std::chrono::system_clock::now(), "d"_ss}
+                    .toMessage(),
+            })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 4);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->size(), 2u);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(0).level_, 6);
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss).value()->at(1).level_, 7);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
+              2u);
+    EXPECT_EQ(
+        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 6);
+    EXPECT_EQ(
+        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(1).level_, 7);
 
     webcface::Log::keepLines(1000);
 }

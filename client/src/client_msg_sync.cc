@@ -1,4 +1,5 @@
 #include "webcface/client.h"
+#include "webcface/internal/logger.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/robot_link_internal.h"
@@ -98,7 +99,11 @@ std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
         }
     }
     for (const auto &v : data.log_req) {
-        message::pack(buffer, len, message::LogReq{{}, v.first});
+        for (const auto &v2 : v.second) {
+            message::pack(
+                buffer, len,
+                message::Req<message::Log>{{}, v.first, v2.first, v2.second});
+        }
     }
 
     if (data.ping_status_req) {
@@ -138,21 +143,14 @@ internal::ClientData::SyncMutexedData::syncData(internal::ClientData *this_,
     // std::lock_guard image_lock(this_->image_store.mtx);
     data.image_data = this_->image_store.transferSend(is_first);
 
-    // std::lock_guard log_lock(this_->log_store.mtx);
-    auto log_self_opt = this_->log_store.getRecv(this_->self_member_name);
-    if (!log_self_opt) {
-        throw std::runtime_error("self log data is null");
-    } else {
-        auto &log_s = *log_self_opt;
-        if ((log_s->size() > 0 && is_first) ||
-            log_s->size() > this_->log_sent_lines) {
-            auto begin = log_s->begin();
-            auto end = log_s->end();
-            if (!is_first) {
-                begin += static_cast<int>(this_->log_sent_lines);
+    {
+        std::lock_guard log_lock(this_->log_store.mtx);
+        for (const auto &ld : this_->log_store.transferSend(is_first)) {
+            if (is_first) {
+                data.log_data[ld.first] = ld.second->getAll();
+            } else {
+                data.log_data[ld.first] = ld.second->getDiff();
             }
-            this_->log_sent_lines = log_s->size();
-            data.log_data = std::vector<LogLineData>(begin, end);
         }
     }
     // std::lock_guard func_lock(this_->func_store.mtx);
@@ -234,9 +232,9 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
                       message::Image{v.first, v.second.toMessage()});
     }
 
-    if (!data.log_data.empty()) {
+    for (const auto &v : data.log_data) {
         message::pack(buffer, len,
-                      message::Log{data.log_data.begin(), data.log_data.end()});
+                      message::Log{v.first, v.second.begin(), v.second.end()});
     }
     for (const auto &v : data.func_data) {
         if (!v.first.startsWith(field_separator)) {
@@ -266,15 +264,77 @@ Client::onMemberEntry(std::function<void(Member)> callback) const {
         std::make_shared<std::function<void(Member)>>(std::move(callback));
     return *this;
 }
-std::streambuf *Client::loggerStreamBuf() const {
-    return data->logger_buf.get();
+// \private
+static std::streambuf *
+getLoggerBuf(const std::shared_ptr<internal::ClientData> &data,
+             const SharedString &field) {
+    if (!data->logger_buf.count(field)) {
+        data->logger_buf.emplace(
+            field, std::make_unique<LoggerBuf>(data.get(), field));
+    }
+    return data->logger_buf.at(field).get();
 }
-std::ostream &Client::loggerOStream() const { return *data->logger_os.get(); }
+std::streambuf *Client::loggerStreamBuf() const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerBuf(data, message::Log::defaultLogName());
+}
+std::streambuf *Client::loggerStreamBuf(std::string_view name) const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerBuf(data, SharedString::encode(name));
+}
+// \private
+static std::wstreambuf *
+getLoggerBufW(const std::shared_ptr<internal::ClientData> &data,
+              const SharedString &field) {
+    if (!data->logger_buf_w.count(field)) {
+        data->logger_buf_w.emplace(
+            field, std::make_unique<LoggerBufW>(data.get(), field));
+    }
+    return data->logger_buf_w.at(field).get();
+}
 std::wstreambuf *Client::loggerWStreamBuf() const {
-    return data->logger_buf_w.get();
+    std::lock_guard lock(data->logger_m);
+    return getLoggerBufW(data, message::Log::defaultLogName());
+}
+std::wstreambuf *Client::loggerWStreamBuf(std::wstring_view name) const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerBufW(data, SharedString::encode(name));
+}
+// \private
+static std::ostream &
+getLoggerOS(const std::shared_ptr<internal::ClientData> &data,
+            const SharedString &field) {
+    if (!data->logger_os.count(field)) {
+        data->logger_os.emplace(
+            field, std::make_unique<std::ostream>(getLoggerBuf(data, field)));
+    }
+    return *data->logger_os.at(field);
+}
+std::ostream &Client::loggerOStream() const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerOS(data, message::Log::defaultLogName());
+}
+std::ostream &Client::loggerOStream(std::string_view name) const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerOS(data, SharedString::encode(name));
+}
+// \private
+static std::wostream &
+getLoggerWOS(const std::shared_ptr<internal::ClientData> &data,
+             const SharedString &field) {
+    if (!data->logger_os_w.count(field)) {
+        data->logger_os_w.emplace(
+            field, std::make_unique<std::wostream>(getLoggerBufW(data, field)));
+    }
+    return *data->logger_os_w.at(field);
 }
 std::wostream &Client::loggerWOStream() const {
-    return *data->logger_os_w.get();
+    std::lock_guard lock(data->logger_m);
+    return getLoggerWOS(data, message::Log::defaultLogName());
+}
+std::wostream &Client::loggerWOStream(std::wstring_view name) const {
+    std::lock_guard lock(data->logger_m);
+    return getLoggerWOS(data, SharedString::encode(name));
 }
 const std::string &Client::serverVersion() const { return data->svr_version; }
 const std::string &Client::serverName() const { return data->svr_name; }

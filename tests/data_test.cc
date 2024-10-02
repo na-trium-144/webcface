@@ -48,9 +48,12 @@ class DataTest : public ::testing::Test {
     Variant variant(const T1 &member, const T2 &name) {
         return Variant{field(member, name)};
     }
-    Log log(const SharedString &member) { return Log{Field{data_, member}}; }
-    Log log(std::string_view member) {
-        return Log{Field{data_, SharedString::fromU8String(member)}};
+    Log log(const SharedString &member, const SharedString &name) {
+        return Log{Field{data_, member, name}};
+    }
+    Log log(std::string_view member, std::string_view name) {
+        return Log{Field{data_, SharedString::fromU8String(member),
+                         SharedString::fromU8String(name)}};
     }
     int callback_called;
     template <typename V>
@@ -75,7 +78,7 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").nameW(), L"b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(text("a", "b").child(L"c").name(), "b.c");
-    EXPECT_EQ(log("a").member().name(), "a");
+    EXPECT_EQ(log("a", "b").member().name(), "a");
 
     EXPECT_THROW(Value().tryGet(), std::runtime_error);
     EXPECT_THROW(Text().tryGet(), std::runtime_error);
@@ -97,8 +100,9 @@ TEST_F(DataTest, eventTarget) {
     data_->text_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    log("a").onChange(callback<Log>());
-    data_->log_append_event["a"_ss]->operator()(field("a"));
+
+    log("a", "b").onChange(callback<Log>());
+    data_->log_append_event["a"_ss]["b"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
@@ -220,45 +224,47 @@ TEST_F(DataTest, textGet) {
 TEST_F(DataTest, logGet) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::deque<LogLineData>>(std::deque<LogLineData>{
+        std::make_shared<webcface::internal::LogData>(std::deque<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
         });
-    data_->log_store.setRecv("a"_ss, logs);
-    EXPECT_EQ(log("a").tryGet().value().size(), 3u);
-    EXPECT_EQ(log("a").tryGetW().value().size(), 3u);
-    ASSERT_EQ(log("a").get().size(), 3u);
-    ASSERT_EQ(log("a").getW().size(), 3u);
-    EXPECT_EQ(log("a").get()[2].level(), 3);
-    EXPECT_EQ(log("a").getW()[2].level(), 3);
-    EXPECT_EQ(log("a").get()[2].message(), "c");
-    EXPECT_EQ(log("a").getW()[2].message(), L"c");
-    EXPECT_EQ(log("b").tryGet(), std::nullopt);
-    EXPECT_EQ(log("b").tryGetW(), std::nullopt);
-    EXPECT_EQ(log("b").get().size(), 0u);
-    EXPECT_EQ(log("b").getW().size(), 0u);
-    EXPECT_EQ(data_->log_store.transferReq().at("a"_ss), true);
-    EXPECT_EQ(data_->log_store.transferReq().at("b"_ss), true);
-    ASSERT_TRUE(log(self_name).tryGet().has_value());
-    ASSERT_TRUE(log(self_name).tryGetW().has_value());
-    EXPECT_EQ(log(self_name).tryGet()->size(), 0u);
-    EXPECT_EQ(log(self_name).tryGetW()->size(), 0u);
+    data_->log_store.setRecv("a"_ss, "b"_ss, logs);
+    EXPECT_EQ(log("a", "b").tryGet().value().size(), 3u);
+    EXPECT_EQ(log("a", "b").tryGetW().value().size(), 3u);
+    ASSERT_EQ(log("a", "b").get().size(), 3u);
+    ASSERT_EQ(log("a", "b").getW().size(), 3u);
+    EXPECT_EQ(log("a", "b").get()[2].level(), 3);
+    EXPECT_EQ(log("a", "b").getW()[2].level(), 3);
+    EXPECT_EQ(log("a", "b").get()[2].message(), "c");
+    EXPECT_EQ(log("a", "b").getW()[2].message(), L"c");
+    EXPECT_EQ(log("a", "c").tryGet(), std::nullopt);
+    EXPECT_EQ(log("a", "c").tryGetW(), std::nullopt);
+    EXPECT_EQ(log("a", "c").get().size(), 0u);
+    EXPECT_EQ(log("a", "c").getW().size(), 0u);
+    EXPECT_EQ(data_->log_store.transferReq().at("a"_ss).at("b"_ss), 1u);
+    EXPECT_EQ(data_->log_store.transferReq().at("a"_ss).at("c"_ss), 2u);
+    EXPECT_FALSE(log(self_name, "default"_ss).tryGet().has_value());
+    EXPECT_FALSE(log(self_name, "default"_ss).tryGetW().has_value());
+    EXPECT_FALSE(log(self_name, "a"_ss).tryGet().has_value());
+    EXPECT_FALSE(log(self_name, "a"_ss).tryGetW().has_value());
+    EXPECT_EQ(log(self_name, "a"_ss).get().size(), 0u);
+    EXPECT_EQ(log(self_name, "a"_ss).getW().size(), 0u);
     EXPECT_EQ(data_->log_store.transferReq().count(self_name), 0u);
-    log("d").onChange(callback<Log>());
-    EXPECT_EQ(data_->log_store.transferReq().at("d"_ss), true);
+    log("a", "d").onChange(callback<Log>());
+    EXPECT_EQ(data_->log_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 TEST_F(DataTest, logClear) {
     using namespace std::chrono;
     auto logs =
-        std::make_shared<std::deque<LogLineData>>(std::deque<LogLineData>{
+        std::make_shared<webcface::internal::LogData>(std::deque<LogLineData>{
             {1, system_clock::now(), "a"_ss},
             {2, system_clock::now(), "b"_ss},
             {3, system_clock::now(), "c"_ss},
         });
-    data_->log_store.setRecv("a"_ss, logs);
-    log("a").clear();
-    EXPECT_EQ(log("a").tryGet().value().size(), 0u);
-    EXPECT_EQ(log("a").tryGetW().value().size(), 0u);
+    data_->log_store.setRecv("a"_ss, "b"_ss, logs);
+    log("a", "b").clear();
+    EXPECT_EQ(log("a", "b").tryGet().value().size(), 0u);
+    EXPECT_EQ(log("a", "b").tryGetW().value().size(), 0u);
 }
 // todo: hidden, free

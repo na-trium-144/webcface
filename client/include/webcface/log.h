@@ -58,13 +58,19 @@ class LogLineW : private LogLineData {
 /*!
  * \brief ログの送受信データを表すクラス
  *
- * fieldを継承しているがfield名は使用していない
+ * * <del>fieldを継承しているがfield名は使用していない</del>
+ * * ver2.4〜 他のデータ型と同じようにフィールド名を指定できるようになった
  *
  */
 class WEBCFACE_DLL Log : protected Field {
   public:
     Log() = default;
     Log(const Field &base);
+    /*!
+     * \since ver2.4
+     */
+    Log(const Field &base, const SharedString &field)
+        : Log(Field{base, field}) {}
 
     using Field::member;
 
