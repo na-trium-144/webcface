@@ -1,7 +1,7 @@
 var structwebcface_1_1internal_1_1FuncInfo =
 [
     [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html#a4c1fdcd80b1a9e4362d479b5abfc2c07", null ],
-    [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html#a1906027d53bf68a532db0054c1be54f0", null ],
+    [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html#a972d4591808c88b1e3fdfe1f5cf78c6d", null ],
     [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html#a02b5c50f9a439b43e4818a51b9060fcd", null ],
     [ "canvas2D", "structwebcface_1_1internal_1_1FuncInfo.html#af9bd15e71b656e996127c88145c582ad", null ],
     [ "canvas2D", "structwebcface_1_1internal_1_1FuncInfo.html#afbcbc44742f2180482b05a552f286ddb", null ],
@@ -27,6 +27,9 @@ var structwebcface_1_1internal_1_1FuncInfo =
     [ "lastName", "structwebcface_1_1internal_1_1FuncInfo.html#ab53487c64d4c15b7a2f16a968197003c", null ],
     [ "lastName8", "structwebcface_1_1internal_1_1FuncInfo.html#a6c06b66607b91e9ae36f0688b3d108f7", null ],
     [ "lastNameW", "structwebcface_1_1internal_1_1FuncInfo.html#af4e3ae9c11a8760127d92e61cdd9e03f", null ],
+    [ "log", "structwebcface_1_1internal_1_1FuncInfo.html#a8377dda7fd8a5f35b52a67e14797dda1", null ],
+    [ "log", "structwebcface_1_1internal_1_1FuncInfo.html#a3e6e6cf94e8c6bebdbba7171ded18a7c", null ],
+    [ "logEntries", "structwebcface_1_1internal_1_1FuncInfo.html#a4c59d74c63b9cf877d54cf697f3581cd", null ],
     [ "member", "structwebcface_1_1internal_1_1FuncInfo.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "structwebcface_1_1internal_1_1FuncInfo.html#a24dcbf29c0d6cd766009a182a6484e3b", null ],
     [ "nameW", "structwebcface_1_1internal_1_1FuncInfo.html#a8c997fd30e7178c869b823143102d682", null ],
@@ -54,7 +57,7 @@ var structwebcface_1_1internal_1_1FuncInfo =
     [ "view", "structwebcface_1_1internal_1_1FuncInfo.html#a1a6e1affea60ef37fbb3118637671da0", null ],
     [ "view", "structwebcface_1_1internal_1_1FuncInfo.html#aa7adcae6ca1a5acda8eeea39c687b238", null ],
     [ "viewEntries", "structwebcface_1_1internal_1_1FuncInfo.html#a8da26fb4e605fea2f481d0bd8a1e8f9a", null ],
-    [ "args", "structwebcface_1_1internal_1_1FuncInfo.html#a4a2aac2574f402b5ca15ccc0c4fc57ed", null ],
+    [ "args", "structwebcface_1_1internal_1_1FuncInfo.html#a489fd7a3ff63108cbaf9dcc219fb9fbe", null ],
     [ "data_w", "structwebcface_1_1internal_1_1FuncInfo.html#acf663a756c76fb2936c0042257df739c", null ],
     [ "field_", "structwebcface_1_1internal_1_1FuncInfo.html#ac6ffd336e43abb201663ab9b064a0607", null ],
     [ "func_impl", "structwebcface_1_1internal_1_1FuncInfo.html#a0a31041ede0c897922e94f483c8a344f", null ],

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -231,12 +231,15 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogLine.html">LogLine</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogDefault.html">LogDefault</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client logを追加  <a href="structwebcface_1_1message_1_1LogDefault.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Log.html">Log</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client logを追加  <a href="structwebcface_1_1message_1_1Log.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogReq.html">LogReq</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogReqDefault.html">LogReqDefault</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogEntry.html">LogEntry</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1LogEntryDefault.html">LogEntryDefault</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Arg.html">Arg</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client(member)-&gt;server-&gt;client func登録  <a href="structwebcface_1_1message_1_1Arg.html#details">More...</a><br /></td></tr>
@@ -270,6 +273,8 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Image_01_4.html">Res&lt; Image &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res_3_01Log_01_4.html">Res&lt; Log &gt;</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -299,26 +304,27 @@ Enumerations</h2></td></tr>
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1f82b99b22bbc3a04f791f54c6cce572">robot_model</a> = 6
 , <br />
 &#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484af898abe3b8c22f47ff430d58cbc09a80">canvas3d</a> = 7
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">log</a> = 8
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5">entry</a> = 20
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1cbc123f91f6737e5506973f4493e91c">req</a> = 40
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a> = 60
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
+&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a85bfa236dc9fc1ac1ff923b3fdcf811f">res</a> = 60
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913">sync_init</a> = 80
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a98ab4979bd774d191f9a4642f9df392f">call</a> = 81
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad2b35349797c31395039e9dd563f0b38">call_response</a> = 82
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d">call_result</a> = 83
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">log</a> = 85
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a826514d64c34ca326c2ba1297635e9d5">log_req</a> = 86
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887">sync</a> = 87
+&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa4b6a1e8b7f7652d391a775822cb865d">call_result</a> = 83
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a2788ea84f795b0cf84dcde7488b7fd64">func_info</a> = 84
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ad5b70454bbb34d2a48912bd42af16edd">log_default</a> = 85
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0c04201494617ffecac641ac07827d91">log_req_default</a> = 86
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd">sync_init_end</a> = 88
+&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aa1bb8c0556b05e13283b2b1d6b30d887">sync</a> = 87
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd">sync_init_end</a> = 88
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f">ping</a> = 89
 , <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5">ping_status</a> = 90
-, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd">ping_status_req</a> = 91
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad4d2d623fb8588fc8b79618555384f8">log_entry</a> = 92
+&#160;&#160;<a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd">ping_status_req</a> = 91
+, <a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ab4701b841457e023ed74fd921d4c2349">log_entry_default</a> = 92
 <br />
  }</td></tr>
 <tr class="separator:a1432d06fc2e2d1f6da93d1c04dec4484"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,7 +366,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_d06cd19e7b0a7bd71ca3f88af4ac0d59.html">message</a></li><li class="navelem"><a class="el" href="dir_a6076a770b2fcf500b134dd4b5eda5a3.html">include</a></li><li class="navelem"><a class="el" href="dir_f6f3eb0f33fd584af7d3535993a573c2.html">webcface</a></li><li class="navelem"><a class="el" href="dir_b22d29bd644537694a773143f981a332.html">message</a></li><li class="navelem"><a class="el" href="message_8h.html">message.h</a></li>
-    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Oct 2 2024 12:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

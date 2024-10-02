@@ -105,6 +105,7 @@ var hierarchy =
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
+    [ "LogData", "structwebcface_1_1internal_1_1LogData.html", null ],
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", null ],
     [ "LogLineData", "structwebcface_1_1LogLineData.html", [
       [ "LogLine", "classwebcface_1_1LogLine.html", null ],
@@ -148,11 +149,17 @@ var hierarchy =
     [ "MessageBase< MessageKind::log >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Log", "structwebcface_1_1message_1_1Log.html", null ]
     ] ],
-    [ "MessageBase< MessageKind::log_entry >", "structwebcface_1_1message_1_1MessageBase.html", [
-      [ "LogEntry", "structwebcface_1_1message_1_1LogEntry.html", null ]
+    [ "MessageBase< MessageKind::log+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Res< Log >", "structwebcface_1_1message_1_1Res_3_01Log_01_4.html", null ]
     ] ],
-    [ "MessageBase< MessageKind::log_req >", "structwebcface_1_1message_1_1MessageBase.html", [
-      [ "LogReq", "structwebcface_1_1message_1_1LogReq.html", null ]
+    [ "MessageBase< MessageKind::log_default >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "LogDefault", "structwebcface_1_1message_1_1LogDefault.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::log_entry_default >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "LogEntryDefault", "structwebcface_1_1message_1_1LogEntryDefault.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::log_req_default >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "LogReqDefault", "structwebcface_1_1message_1_1LogReqDefault.html", null ]
     ] ],
     [ "MessageBase< MessageKind::ping >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Ping", "structwebcface_1_1message_1_1Ping.html", null ]
@@ -237,12 +244,12 @@ var hierarchy =
     ] ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
-    [ "SyncDataStore1< std::shared_ptr< std::deque< webcface::LogLineData > > >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< Canvas3DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< FuncData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< RobotModelData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::internal::LogData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< TextData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ValueData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< ViewData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],

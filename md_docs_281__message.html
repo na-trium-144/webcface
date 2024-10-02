@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -199,9 +199,13 @@ $(document).ready(function(){initNavTree('md_docs_281__message.html',''); initRe
 <li class="level2"><a href="#autotoc_md222">robotmodel res (kind = 66)</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md223">Log</a><ul><li class="level2"><a href="#autotoc_md224">log (kind = 85)</a></li>
-<li class="level2"><a href="#autotoc_md225">log entry (kind = 92)</a></li>
-<li class="level2"><a href="#autotoc_md226">log req (kind = 86)</a></li>
+<li class="level1"><a href="#autotoc_md223">Log</a><ul><li class="level2"><a href="#autotoc_md224">log (kind = 8)</a></li>
+<li class="level2"><a href="#autotoc_md225">log entry (kind = 28)</a></li>
+<li class="level2"><a href="#autotoc_md226">log req (kind = 48)</a></li>
+<li class="level2"><a href="#autotoc_md227">log res (kind = 68)</a></li>
+<li class="level2"><a href="#autotoc_md228">log_default (kind = 85)</a></li>
+<li class="level2"><a href="#autotoc_md229">log_entry_default (kind = 92)</a></li>
+<li class="level2"><a href="#autotoc_md230">log_req_default (kind = 86)</a></li>
 </ul>
 </li>
 </ul>
@@ -691,7 +695,48 @@ robotmodel res (kind = 66)</h2>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md223"></a>
 Log</h1>
 <h2><a class="anchor" id="autotoc_md224"></a>
-log (kind = 85)</h2>
+log (kind = 8)</h2>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c">2.4</span></dd></dl>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    f: string, // name</div>
+<div class="line">    l: {</div>
+<div class="line">        v: number, // level 0〜5</div>
+<div class="line">        t: number, // time</div>
+<div class="line">        m: string, // message</div>
+<div class="line">    }[],</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>クライアント→サーバーに新しく追加されたログ差分のみ送ります</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md225"></a>
+log entry (kind = 28)</h2>
+<ul>
+<li>value entryと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md226"></a>
+log req (kind = 48)</h2>
+<ul>
+<li>value reqと同様</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md227"></a>
+log res (kind = 68)</h2>
+<div class="fragment"><div class="line">data = {</div>
+<div class="line">    i: number, // request id</div>
+<div class="line">    f: string, // sub field name</div>
+<div class="line">    l: {...}[], // data</div>
+<div class="line">}</div>
+</div><!-- fragment --><ul>
+<li>初回はすべてのログが送られますが、2回目以降は前回送信した log res の後に追加された差分のみが送られます</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md228"></a>
+log_default (kind = 85)</h2>
+<ul>
+<li>ver2.3まで使っていた古いメッセージ仕様です。<ul>
+<li>2.4以降のサーバーは、古いlog_reqメッセージを送ってきたクライアントに対してのみこの古い仕様でログを返します。</li>
+<li>またこの古いlogメッセージは新logメッセージでnameを<code>"default"</code>にしたものと同等に扱われます</li>
+</ul>
+</li>
+</ul>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number, // member id</div>
 <div class="line">    l: {</div>
@@ -705,17 +750,29 @@ log (kind = 85)</h2>
 <li>リクエストがあればサーバー→各クライアントにそのまま送り返します</li>
 <li>リクエスト直後、サーバーが保持しているログの全履歴を1つのlogメッセージにまとめてクライアントに送ります</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md225"></a>
-log entry (kind = 92)</h2>
+<h2><a class="anchor" id="autotoc_md229"></a>
+log_entry_default (kind = 92)</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.1</span></dd></dl>
+<ul>
+<li>ver2.1〜2.3まで使っていた古いメッセージ仕様です。<ul>
+<li>2.4以降のサーバーは、nameが<code>"default"</code>のLogデータに関してのみ、新旧両方のクライアントに対応できるようこのentryと新しいlog entryの両方を送信します</li>
+</ul>
+</li>
+</ul>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    m: number // member id</div>
 <div class="line">}</div>
 </div><!-- fragment --><ul>
 <li>1行以上のログデータがある場合、サーバー→各クライアントに知らせます</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md226"></a>
-log req (kind = 86)</h2>
+<h2><a class="anchor" id="autotoc_md230"></a>
+log_req_default (kind = 86)</h2>
+<ul>
+<li>ver2.3まで使っていた古いメッセージ仕様です。<ul>
+<li>2.4以降のサーバーは、nameが<code>"default"</code>のLogをリクエストしたものとして処理します</li>
+</ul>
+</li>
+</ul>
 <div class="fragment"><div class="line">data = {</div>
 <div class="line">    M: string // member name</div>
 <div class="line">}</div>
@@ -734,7 +791,7 @@ log req (kind = 86)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Oct 2 2024 12:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -222,6 +222,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa07380adc2ce3064830b2fe998f12bf0"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#aa07380adc2ce3064830b2fe998f12bf0">set</a> (std::vector&lt; <a class="el" href="classwebcface_1_1Arg.html">Arg</a> &gt; <a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, T callback) const</td></tr>
 <tr class="memdesc:aa07380adc2ce3064830b2fe998f12bf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にCallHandleを取る関数を登録する  <br /></td></tr>
 <tr class="separator:aa07380adc2ce3064830b2fe998f12bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad55d47cb88fbcf16687a4aae045a474c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::invoke_result_t&lt; T, <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &gt;, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ad55d47cb88fbcf16687a4aae045a474c"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#ad55d47cb88fbcf16687a4aae045a474c">set</a> (T callback) const</td></tr>
+<tr class="memdesc:ad55d47cb88fbcf16687a4aae045a474c"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にCallHandleを取る関数を登録する  <br /></td></tr>
+<tr class="separator:ad55d47cb88fbcf16687a4aae045a474c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a26bed8b0ade005e877d1ae3a01d9d2b0"><td class="memTemplParams" colspan="2">template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd31c9e1babc0d7ab2e39e1d1d0e18aa">FuncObjTrait</a>&lt; T &gt;::ReturnTypeTrait::ReturnTypeSupportedByWebCFaceFunc  = TraitOk, typename <a class="el" href="namespacewebcface.html#abd31c9e1babc0d7ab2e39e1d1d0e18aa">FuncObjTrait</a>&lt; T &gt;::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc  = TraitOk&gt; </td></tr>
 <tr class="memitem:a26bed8b0ade005e877d1ae3a01d9d2b0"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a26bed8b0ade005e877d1ae3a01d9d2b0">setAsync</a> (T <a class="el" href="structwebcface_1_1Field.html#a6ae7a23d3e36930f42b466890bd38711">func</a>) const</td></tr>
 <tr class="memdesc:a26bed8b0ade005e877d1ae3a01d9d2b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">非同期に実行される関数をセットする  <br /></td></tr>
@@ -230,6 +234,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4176b9243e9bb2647ee99879061fc26e"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a4176b9243e9bb2647ee99879061fc26e">setAsync</a> (std::vector&lt; <a class="el" href="classwebcface_1_1Arg.html">Arg</a> &gt; <a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>, <a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, T callback) const</td></tr>
 <tr class="memdesc:a4176b9243e9bb2647ee99879061fc26e"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にFuncCallHandleを取り非同期に実行される関数を登録する  <br /></td></tr>
 <tr class="separator:a4176b9243e9bb2647ee99879061fc26e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2704b123ec8c42a50ea8157c97d85d8a"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::invoke_result_t&lt; T, <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &gt;, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a2704b123ec8c42a50ea8157c97d85d8a"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a2704b123ec8c42a50ea8157c97d85d8a">setAsync</a> (T callback) const</td></tr>
+<tr class="memdesc:a2704b123ec8c42a50ea8157c97d85d8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数にFuncCallHandleを取り非同期に実行される関数を登録する  <br /></td></tr>
+<tr class="separator:a2704b123ec8c42a50ea8157c97d85d8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33e24fb2d5d52fe428c37276c47ce9ba"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a33e24fb2d5d52fe428c37276c47ce9ba">hidden</a> (bool) const</td></tr>
 <tr class="memdesc:a33e24fb2d5d52fe428c37276c47ce9ba"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を関数リストで非表示にする (他clientのentryに表示されなくする)  <br /></td></tr>
 <tr class="separator:a33e24fb2d5d52fe428c37276c47ce9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,6 +274,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5284e8ec3d801480302e3b49c126e345"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a5284e8ec3d801480302e3b49c126e345">setArgs</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1Arg.html">Arg</a> &gt; &amp;<a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>) const</td></tr>
 <tr class="memdesc:a5284e8ec3d801480302e3b49c126e345"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の情報を更新する  <br /></td></tr>
 <tr class="separator:a5284e8ec3d801480302e3b49c126e345"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd0175de000e769bb28c531244ad82d2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#afd0175de000e769bb28c531244ad82d2">setReturnType</a> (<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type) const</td></tr>
+<tr class="memdesc:afd0175de000e769bb28c531244ad82d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">戻り値の型の情報を更新する  <br /></td></tr>
+<tr class="separator:afd0175de000e769bb28c531244ad82d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20b55b0402e00257754d0d80ec25cb56"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a20b55b0402e00257754d0d80ec25cb56"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a20b55b0402e00257754d0d80ec25cb56">operator==</a> (const T &amp;other) const</td></tr>
 <tr class="memdesc:a20b55b0402e00257754d0d80ec25cb56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funcの参照先を比較  <br /></td></tr>
@@ -292,6 +303,8 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:ac495d25f6992031499cac9742d799703"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a133758fa2c9434a8f195340973cc7df5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a133758fa2c9434a8f195340973cc7df5">setImpl</a> (<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, std::vector&lt; <a class="el" href="classwebcface_1_1Arg.html">Arg</a> &gt; &amp;&amp;<a class="el" href="classwebcface_1_1Func.html#a909f29d9c95a7bb90dec90183fd955fc">args</a>, std::function&lt; <a class="el" href="classwebcface_1_1Func.html#a5cbd644bf99885a63a2e72685747704c">FuncType</a> &gt; &amp;&amp;func_impl) const</td></tr>
 <tr class="separator:a133758fa2c9434a8f195340973cc7df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd8b47b1685dceaef6497c50ca224c34"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#acd8b47b1685dceaef6497c50ca224c34">setImpl</a> (<a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> return_type, std::nullopt_t, std::function&lt; <a class="el" href="classwebcface_1_1Func.html#a5cbd644bf99885a63a2e72685747704c">FuncType</a> &gt; &amp;&amp;func_impl) const</td></tr>
+<tr class="separator:acd8b47b1685dceaef6497c50ca224c34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c0b9e808dbce1b97b4e2e5847d1f455"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a0c0b9e808dbce1b97b4e2e5847d1f455">setImpl</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1FuncInfo.html">internal::FuncInfo</a> &gt; &amp;func_info) const</td></tr>
 <tr class="separator:a0c0b9e808dbce1b97b4e2e5847d1f455"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2f63920a9d0c274c8627c54d7e00d0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab2f63920a9d0c274c8627c54d7e00d0f">operator==</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;other) const</td></tr>
@@ -351,6 +364,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:af9bd15e71b656e996127c88145c582ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afbcbc44742f2180482b05a552f286ddb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#afbcbc44742f2180482b05a552f286ddb">canvas2D</a> (std::wstring_view field) const</td></tr>
 <tr class="separator:afbcbc44742f2180482b05a552f286ddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8377dda7fd8a5f35b52a67e14797dda1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a8377dda7fd8a5f35b52a67e14797dda1">log</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a8377dda7fd8a5f35b52a67e14797dda1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e6e6cf94e8c6bebdbba7171ded18a7c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a3e6e6cf94e8c6bebdbba7171ded18a7c">log</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a3e6e6cf94e8c6bebdbba7171ded18a7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3070ccf86f5a60632aee40ebc01b2b8c"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a3070ccf86f5a60632aee40ebc01b2b8c">valueEntries</a> () const</td></tr>
 <tr class="separator:a3070ccf86f5a60632aee40ebc01b2b8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56970716d867cddc9b9dfe92ad8394bb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a56970716d867cddc9b9dfe92ad8394bb">textEntries</a> () const</td></tr>
@@ -367,12 +384,17 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a99c1e26ea1fce7fbdbd4f1cb6771141b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa71834447f8b14aa597bf6add6a33749"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aa71834447f8b14aa597bf6add6a33749">imageEntries</a> () const</td></tr>
 <tr class="separator:aa71834447f8b14aa597bf6add6a33749"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c59d74c63b9cf877d54cf697f3581cd"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a4c59d74c63b9cf877d54cf697f3581cd">logEntries</a> () const</td></tr>
+<tr class="separator:a4c59d74c63b9cf877d54cf697f3581cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
 <tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
 <tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
 Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a809b5f18045061db65cdda1d49184663"><td class="memTemplParams" colspan="2">template&lt;typename F1 &gt; </td></tr>
+<tr class="memitem:a809b5f18045061db65cdda1d49184663"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#a809b5f18045061db65cdda1d49184663">catchAll</a> (F1 &amp;&amp;f_run, const <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &amp;handle)</td></tr>
+<tr class="separator:a809b5f18045061db65cdda1d49184663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf38c44472f110e17a2ebd37c106110d"><td class="memTemplParams" colspan="2">template&lt;typename F1 &gt; </td></tr>
 <tr class="memitem:abf38c44472f110e17a2ebd37c106110d"><td class="memTemplItemLeft" align="right" valign="top">static void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Func.html#abf38c44472f110e17a2ebd37c106110d">tryRun</a> (F1 &amp;&amp;f_run, const <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &amp;handle)</td></tr>
 <tr class="separator:abf38c44472f110e17a2ebd37c106110d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -771,6 +793,45 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a809b5f18045061db65cdda1d49184663" name="a809b5f18045061db65cdda1d49184663"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a809b5f18045061db65cdda1d49184663">&#9670;&#160;</a></span>catchAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F1 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void catchAll </td>
+          <td>(</td>
+          <td class="paramtype">F1 &amp;&amp;&#160;</td>
+          <td class="paramname"><em>f_run</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &amp;&#160;</td>
+          <td class="paramname"><em>handle</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>f_run()を実行し例外を投げた場合はrejectする </p>
 
 </div>
 </div>
@@ -1354,6 +1415,86 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
 <p>targetに関数を移動 </p>
 <p>(ver1.9〜) thisが未初期化の場合 std::runtime_error を投げる</p>
 <p>(ver1.9〜) 2回実行すると std::runtime_error </p>
+
+</div>
+</div>
+<a id="a8377dda7fd8a5f35b52a67e14797dda1" name="a8377dda7fd8a5f35b52a67e14797dda1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8377dda7fd8a5f35b52a67e14797dda1">&#9670;&#160;</a></span>log() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> log </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
+
+</div>
+</div>
+<a id="a3e6e6cf94e8c6bebdbba7171ded18a7c" name="a3e6e6cf94e8c6bebdbba7171ded18a7c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e6e6cf94e8c6bebdbba7171ded18a7c">&#9670;&#160;</a></span>log() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> log </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
+
+</div>
+</div>
+<a id="a4c59d74c63b9cf877d54cf697f3581cd" name="a4c59d74c63b9cf877d54cf697f3581cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c59d74c63b9cf877d54cf697f3581cd">&#9670;&#160;</a></span>logEntries()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt; logEntries </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
 
 </div>
 </div>
@@ -2076,7 +2217,7 @@ template&lt;typename... Args&gt; </div>
 </div>
 </div>
 <a id="aa07380adc2ce3064830b2fe998f12bf0" name="aa07380adc2ce3064830b2fe998f12bf0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa07380adc2ce3064830b2fe998f12bf0">&#9670;&#160;</a></span>set() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa07380adc2ce3064830b2fe998f12bf0">&#9670;&#160;</a></span>set() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2123,6 +2264,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::i
 <li>WebCFace内部でCのAPIからの呼び出しに使うためのもの</li>
 <li><del>ver1.11まで: 関数がrespond()もreject()もせず終了した場合自動でrespondする。</del></li>
 <li>ver2.0〜: 自動でrespondされることはないので、 関数が受け取ったhandleを別スレッドに渡すなどして、 ここでセットした関数の終了後にrespond()やreject()することも可能。</li>
+<li>ver2.4〜: 例外をthrowした場合catchしてreject()する。</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2135,8 +2277,50 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::i
 
 </div>
 </div>
+<a id="ad55d47cb88fbcf16687a4aae045a474c" name="ad55d47cb88fbcf16687a4aae045a474c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad55d47cb88fbcf16687a4aae045a474c">&#9670;&#160;</a></span>set() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::invoke_result_t&lt; T, <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &gt;, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数にCallHandleを取る関数を登録する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.4</dd></dl>
+<ul>
+<li>自動でrespondされることはないので、 関数が受け取ったhandleを別スレッドに渡すなどして、 ここでセットした関数の終了後にrespond()やreject()することも可能。</li>
+<li><a class="el" href="classwebcface_1_1Func.html#a5284e8ec3d801480302e3b49c126e345" title="引数の情報を更新する">setArgs()</a>, <a class="el" href="classwebcface_1_1Func.html#afd0175de000e769bb28c531244ad82d2" title="戻り値の型の情報を更新する">setReturnType()</a> で引数の個数や型と戻り値の型を指定する。 指定しない場合、引数なし戻り値なしとみなされる。</li>
+<li>例外をthrowした場合catchしてreject()する。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>セットする関数または関数オブジェクト。 引数としてCallHandleを1つ取り、戻り値はvoidで、 <a class="el" href="classwebcface_1_1CallHandle.html#a06610dc4e62e60646868638ca6f4b109">CallHandle::respond()</a> や reject() を通して値を返す </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="acc5f1d0d00b5ae8fa27ecf86cc345810" name="acc5f1d0d00b5ae8fa27ecf86cc345810"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc5f1d0d00b5ae8fa27ecf86cc345810">&#9670;&#160;</a></span>set() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acc5f1d0d00b5ae8fa27ecf86cc345810">&#9670;&#160;</a></span>set() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2206,7 +2390,7 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
 </div>
 </div>
 <a id="a4176b9243e9bb2647ee99879061fc26e" name="a4176b9243e9bb2647ee99879061fc26e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4176b9243e9bb2647ee99879061fc26e">&#9670;&#160;</a></span>setAsync() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4176b9243e9bb2647ee99879061fc26e">&#9670;&#160;</a></span>setAsync() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2252,6 +2436,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::i
 <ul>
 <li>WebCFace内部でCのAPIからの呼び出しに使うためのもの</li>
 <li>関数がrespond()もreject()もせず終了した場合自動でrespondされることはないので、 関数が受け取ったhandleを別スレッドに渡すなどして、 ここでセットした関数の終了後にrespond()やreject()することも可能。</li>
+<li>ver2.4〜: 例外をthrowした場合catchしてreject()する。</li>
 </ul>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -2264,8 +2449,50 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::i
 
 </div>
 </div>
+<a id="a2704b123ec8c42a50ea8157c97d85d8a" name="a2704b123ec8c42a50ea8157c97d85d8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2704b123ec8c42a50ea8157c97d85d8a">&#9670;&#160;</a></span>setAsync() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; std::invoke_result_t&lt; T, <a class="el" href="classwebcface_1_1CallHandle.html">CallHandle</a> &gt;, void &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; setAsync </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>引数にFuncCallHandleを取り非同期に実行される関数を登録する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.4</dd></dl>
+<ul>
+<li>自動でrespondされることはないので、 関数が受け取ったhandleを別スレッドに渡すなどして、 ここでセットした関数の終了後にrespond()やreject()することも可能。</li>
+<li><a class="el" href="classwebcface_1_1Func.html#a5284e8ec3d801480302e3b49c126e345" title="引数の情報を更新する">setArgs()</a>, <a class="el" href="classwebcface_1_1Func.html#afd0175de000e769bb28c531244ad82d2" title="戻り値の型の情報を更新する">setReturnType()</a> で引数の個数や型と戻り値の型を指定する。 指定しない場合、引数なし戻り値なしとみなされる。</li>
+<li>例外をthrowした場合catchしてreject()する。</li>
+</ul>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">func</td><td>セットする関数または関数オブジェクト。 引数としてCallHandleを1つ取り、戻り値はvoidで、 <a class="el" href="classwebcface_1_1CallHandle.html#a06610dc4e62e60646868638ca6f4b109">CallHandle::respond()</a> や reject() を通して値を返す </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a26bed8b0ade005e877d1ae3a01d9d2b0" name="a26bed8b0ade005e877d1ae3a01d9d2b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a26bed8b0ade005e877d1ae3a01d9d2b0">&#9670;&#160;</a></span>setAsync() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a26bed8b0ade005e877d1ae3a01d9d2b0">&#9670;&#160;</a></span>setAsync() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2334,7 +2561,7 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
 </div>
 </div>
 <a id="a0c0b9e808dbce1b97b4e2e5847d1f455" name="a0c0b9e808dbce1b97b4e2e5847d1f455"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0c0b9e808dbce1b97b4e2e5847d1f455">&#9670;&#160;</a></span>setImpl() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c0b9e808dbce1b97b4e2e5847d1f455">&#9670;&#160;</a></span>setImpl() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2359,8 +2586,51 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
 
 </div>
 </div>
+<a id="acd8b47b1685dceaef6497c50ca224c34" name="acd8b47b1685dceaef6497c50ca224c34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acd8b47b1685dceaef6497c50ca224c34">&#9670;&#160;</a></span>setImpl() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; setImpl </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::nullopt_t&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::function&lt; <a class="el" href="classwebcface_1_1Func.html#a5cbd644bf99885a63a2e72685747704c">FuncType</a> &gt; &amp;&amp;&#160;</td>
+          <td class="paramname"><em>func_impl</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>引数の個数不定バージョン </p>
+
+</div>
+</div>
 <a id="a133758fa2c9434a8f195340973cc7df5" name="a133758fa2c9434a8f195340973cc7df5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a133758fa2c9434a8f195340973cc7df5">&#9670;&#160;</a></span>setImpl() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a133758fa2c9434a8f195340973cc7df5">&#9670;&#160;</a></span>setImpl() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2399,6 +2669,36 @@ template&lt;typename T , typename <a class="el" href="namespacewebcface.html#abd
 </table>
 </div><div class="memdoc">
 <p>set2()で構築された関数の情報(FuncInfo)をclientにセット </p>
+
+</div>
+</div>
+<a id="afd0175de000e769bb28c531244ad82d2" name="afd0175de000e769bb28c531244ad82d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afd0175de000e769bb28c531244ad82d2">&#9670;&#160;</a></span>setReturnType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Func.html">Func</a> &amp; setReturnType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td>
+          <td class="paramname"><em>return_type</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>戻り値の型の情報を更新する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.4</dd></dl>
+<p><a class="el" href="classwebcface_1_1Func.html#acc5f1d0d00b5ae8fa27ecf86cc345810" title="関数をセットする">set()</a>やsetAsync()で通常の関数をセットした場合戻り値の型は自動的に取得されるので <a class="el" href="classwebcface_1_1Func.html#afd0175de000e769bb28c531244ad82d2" title="戻り値の型の情報を更新する">setReturnType()</a> を呼ぶ必要はない。 </p>
 
 </div>
 </div>
@@ -2779,7 +3079,7 @@ template&lt;typename F1 &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1AnonymousFunc.html">AnonymousFunc</a></li>
-    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Oct 2 2024 12:27:46 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

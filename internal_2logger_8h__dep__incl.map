@@ -1,7 +1,9 @@
 <map id="client/include/webcface/internal/logger.h" name="client/include/webcface/internal/logger.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="117,5,291,45"/>
-<area shape="rect" id="Node000002" href="$client__threading_8cc.html" title=" " alt="" coords="5,93,213,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="172,56,125,95,122,91,169,52"/>
-<area shape="rect" id="Node000003" href="$log_8cc.html" title=" " alt="" coords="237,93,360,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="239,52,286,91,283,95,236,56"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="203,5,377,45"/>
+<area shape="rect" id="Node000002" href="$client__msg__sync_8cc.html" title=" " alt="" coords="5,93,161,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="233,53,130,96,128,91,231,48"/>
+<area shape="rect" id="Node000003" href="$client__threading_8cc.html" title=" " alt="" coords="186,101,394,126"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="293,59,293,100,287,100,287,59"/>
+<area shape="rect" id="Node000004" href="$log_8cc.html" title=" " alt="" coords="418,101,541,126"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="345,49,455,98,453,103,343,53"/>
 </map>

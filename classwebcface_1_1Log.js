@@ -2,6 +2,7 @@ var classwebcface_1_1Log =
 [
     [ "Log", "classwebcface_1_1Log.html#a907ca32e5dd84f5166dd5cd8e59984e6", null ],
     [ "Log", "classwebcface_1_1Log.html#a578f408f0bba515f23b17da20c3babff", null ],
+    [ "Log", "classwebcface_1_1Log.html#a1afa438e7e40bbe5b3b94c6ec3f2d16b", null ],
     [ "append", "classwebcface_1_1Log.html#a365dbaaccd3c65423a6a80debdc1ef2f", null ],
     [ "append", "classwebcface_1_1Log.html#aa7c44bc86b47ec52de03d757ff6ae2ad", null ],
     [ "append", "classwebcface_1_1Log.html#aacc344ce6fc28caba0d63e24f49c7832", null ],
@@ -36,6 +37,9 @@ var classwebcface_1_1Log =
     [ "lastName", "classwebcface_1_1Log.html#ab53487c64d4c15b7a2f16a968197003c", null ],
     [ "lastName8", "classwebcface_1_1Log.html#a6c06b66607b91e9ae36f0688b3d108f7", null ],
     [ "lastNameW", "classwebcface_1_1Log.html#af4e3ae9c11a8760127d92e61cdd9e03f", null ],
+    [ "log", "classwebcface_1_1Log.html#a8377dda7fd8a5f35b52a67e14797dda1", null ],
+    [ "log", "classwebcface_1_1Log.html#a3e6e6cf94e8c6bebdbba7171ded18a7c", null ],
+    [ "logEntries", "classwebcface_1_1Log.html#a4c59d74c63b9cf877d54cf697f3581cd", null ],
     [ "member", "classwebcface_1_1Log.html#aa8fab40ead35fa8e761986d5f4000a5c", null ],
     [ "name", "classwebcface_1_1Log.html#a24dcbf29c0d6cd766009a182a6484e3b", null ],
     [ "nameW", "classwebcface_1_1Log.html#a8c997fd30e7178c869b823143102d682", null ],

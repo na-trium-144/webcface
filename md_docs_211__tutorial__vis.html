@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -424,8 +424,8 @@ Func</h1>
 <div class="line">    <span class="comment">// 以下略...</span></div>
 <div class="line">}</div>
 <div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> arg.h:30</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:60</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:83</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:62</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:85</div></div>
 </div><!-- fragment --></li>
 </ul>
 <p class="startli">setArgs() はそれぞれの引数の名前やオプション(初期値、最小値、最大値、選択肢など)を指定することができます。 (指定しなくてもよいです。)</p>
@@ -540,7 +540,7 @@ View</h1>
 <div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:29</div></div>
 <div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:451</div></div>
 <div class="ttc" id="anamespacewebcface_html_a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"><div class="ttname"><a href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::ViewComponentType::button</a></div><div class="ttdeci">@ button</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a1a6e1affea60ef37fbb3118637671da0"><div class="ttname"><a href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">webcface::Field::view</a></div><div class="ttdeci">View view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:73</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a1a6e1affea60ef37fbb3118637671da0"><div class="ttname"><a href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">webcface::Field::view</a></div><div class="ttdeci">View view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:74</div></div>
 <div class="ttc" id="aview_8h_html"><div class="ttname"><a href="view_8h.html">view.h</a></div></div>
 </div><!-- fragment --><p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、 画像のようにプログラムで指定したとおりの画面が表示されます。 「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、 「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。</p>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
@@ -603,7 +603,7 @@ View</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Oct 2 2024 12:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

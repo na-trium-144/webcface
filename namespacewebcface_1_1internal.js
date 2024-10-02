@@ -15,6 +15,7 @@ var namespacewebcface_1_1internal =
     [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html", "structwebcface_1_1internal_1_1FuncInfo" ],
     [ "FuncResultStore", "classwebcface_1_1internal_1_1FuncResultStore.html", "classwebcface_1_1internal_1_1FuncResultStore" ],
     [ "InputRefState", "structwebcface_1_1internal_1_1InputRefState.html", "structwebcface_1_1internal_1_1InputRefState" ],
+    [ "LogData", "structwebcface_1_1internal_1_1LogData.html", "structwebcface_1_1internal_1_1LogData" ],
     [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", "structwebcface_1_1internal_1_1PromiseData" ],
     [ "RobotLinkData", "structwebcface_1_1internal_1_1RobotLinkData.html", "structwebcface_1_1internal_1_1RobotLinkData" ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", "structwebcface_1_1internal_1_1SharedStringData" ],

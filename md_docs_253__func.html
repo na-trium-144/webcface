@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.3.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -188,6 +188,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </ul>
 </li>
 <li>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</li>
+<li>関数の中で例外をthrowした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。</li>
 <li><span class="since-c">2.0</span> set()で登録した関数はClient::sync()時に同じスレッドで実行されます。 そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。<ul>
 <li>関数を非同期(別スレッド)で実行したい場合は Func::setAsync() を使用してください。 ver1.11以前ではset()で登録した関数はすべて非同期実行されていたので、こちらが従来のset()と同じ挙動になります。</li>
 <li>ただしその場合排他制御が必要なら登録する関数内で適切に行ってください <div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).setAsync([](){</div>
@@ -212,6 +213,30 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </div><!-- fragment --></li>
 </ul>
 </dd></dl>
+<p><span></span></p>
+<p class="startli"><span class="since-c">2.4</span> 引数に <a class="el" href="classwebcface_1_1CallHandle.html" title="呼び出された関数の引数の取得と戻り値のセットをするインタフェース">webcface::CallHandle</a> をとる関数をセットすることもできます。 <code>cpp wcli.func("hoge").set([](<a class="el" href="classwebcface_1_1CallHandle.html" title="呼び出された関数の引数の取得と戻り値のセットをするインタフェース">webcface::CallHandle</a> handle){ double arg = handle.args().at(0).asDouble(); handle.respond(123); // return value }).setArgs({ <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a>("a").type(webcface::ValType::double_), }); </code></p><ul>
+<li>通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は setAsync() を使用してください。</li>
+<li>関数のsetのあとに、 setArgs() で受け取りたい引数の個数分の <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg()</a> を渡し、引数名や戻り値の型を指定します。<ul>
+<li>引数名などの情報が不要な場合でも引数の個数分 Arg() を渡す必要があります。</li>
+</ul>
+</li>
+<li>callbackが呼び出されたとき、引数に渡されたhandleを介して <code>handle.args()</code> でFuncを呼び出した引数を取得できます。<ul>
+<li>setArgs() で指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。 (そのため登録した関数の側で引数の個数チェックをする必要はないです)</li>
+</ul>
+</li>
+<li>値を返すのはreturnではなくhandleを介して <code>handle.respond(戻り値)</code> を使います。<ul>
+<li>戻り値が不要な場合はrespondに何も渡さず <code>handle.respond();</code> とします。</li>
+</ul>
+</li>
+<li>エラーメッセージを返すには <code>handle.reject(エラーメッセージ)</code> を使います。<ul>
+<li>関数の中で例外をthrowした場合もエラーメッセージが呼び出し元に返ります。</li>
+</ul>
+</li>
+<li>respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。<ul>
+<li>そのためhandleを関数の外のスコープの変数に保存(コピー)したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。</li>
+</ul>
+</li>
+</ul>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
 <p>wcfFuncSet, (<span class="since-c">2.0</span> wcfFuncSetW) で関数ポインタを登録できます。 <br  />
@@ -271,6 +296,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 <p class="startli">引数、戻り値はnumber, bool, string型であればいくつでも自由に指定できます。 </p><div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(() =&gt; {/* ... */});</div>
 <div class="line">wcli.func(&quot;hoge&quot;).set((a: number, b: string) =&gt; 3.1415);</div>
 </div><!-- fragment --><ul>
+<li>関数の中で例外をthrowした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。</li>
 <li>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</li>
 </ul>
 </li>
@@ -280,6 +306,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 <div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(hoge)</div>
 <div class="line">wcli.func(<span class="stringliteral">&quot;lambda&quot;</span>).set(<span class="keyword">lambda</span> x: <span class="keywordflow">return</span> x + 5) <span class="comment"># ラムダ式なども可</span></div>
 </div><!-- fragment --><ul>
+<li>関数の中で例外をraiseした場合WebCFace側でcatchされ、エラーメッセージが呼び出し元に返ります。</li>
 <li>同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。 ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。</li>
 <li>setを明示的に呼び出す代わりにfuncオブジェクトをデコレータにすると簡単に登録できます。 <div class="fragment"><div class="line"><span class="preprocessor">@wcli.func(&quot;hoge&quot;)</span></div>
 <div class="line"><span class="keyword">def </span>hoge(a, b):</div>
@@ -348,8 +375,8 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;b&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">option</a>({<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>}),</div>
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> arg.h:30</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:60</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:83</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_a2e31ddffe3f62572d218e8e028423cfa"><div class="ttname"><a href="classwebcface_1_1Arg.html#a2e31ddffe3f62572d218e8e028423cfa">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptor &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:62</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_ae07e02a3a02b4bd39dd61b3b7387a863"><div class="ttname"><a href="classwebcface_1_1Arg.html#ae07e02a3a02b4bd39dd61b3b7387a863">webcface::Arg::option</a></div><div class="ttdeci">const std::vector&lt; ValAdaptor &gt; &amp; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:85</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> 引数名、引数や戻り値の型、その他の引数に関する情報をset関数の引数で指定します。 引数のオプションに関しては <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(</div>
 <div class="line">    () =&gt; { /*...*/ }, // 関数</div>
@@ -751,7 +778,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 22 2024 09:21:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Oct 2 2024 12:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

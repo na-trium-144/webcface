@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['basicloggerbuf_0',['BasicLoggerBuf',['../classwebcface_1_1BasicLoggerBuf.html#a3b058aab0e16382bc37d4d8886fa7e76',1,'webcface::BasicLoggerBuf']]],
+  ['basicloggerbuf_0',['BasicLoggerBuf',['../classwebcface_1_1BasicLoggerBuf.html#ab9e4cbe56c7952b0ee0edd20f00846aa',1,'webcface::BasicLoggerBuf']]],
   ['begin_1',['begin',['../structwebcface_1_1components_1_1geometries_1_1Line.html#a413d86c5ceeffed9ea942a8768e25f4b',1,'webcface::components::geometries::Line']]],
   ['bgcolor_2',['bgColor',['../classwebcface_1_1ViewComponent.html#a0c7bbfd827dad423e8b35018263fc981',1,'webcface::ViewComponent::bgColor()'],['../classwebcface_1_1TemporalViewComponent.html#a4b16ef4ddb3d9c4e6c4ae1188578b0dd',1,'webcface::TemporalViewComponent::bgColor()'],['../structwebcface_1_1TemporalComponent.html#a8358b159287d13c8dc7f8ca920a53ff1',1,'webcface::TemporalComponent::bgColor()']]],
   ['bind_3',['bind',['../classwebcface_1_1ViewComponent.html#a89ac0883725dde7beab7de699d3dbd37',1,'webcface::ViewComponent::bind()'],['../classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d',1,'webcface::TemporalViewComponent::bind()']]],

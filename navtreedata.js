@@ -25,23 +25,23 @@
 var NAVTREE =
 [
   [ "WebCFace", "index.html", [
-    [ "WebCFace", "index.html#autotoc_md227", [
-      [ "Features", "index.html#autotoc_md228", [
-        [ "Easy to Setup", "index.html#autotoc_md229", null ],
-        [ "Inter-Process Communication", "index.html#autotoc_md230", null ],
-        [ "WebUI", "index.html#autotoc_md231", null ],
-        [ "WebCFace-Tools", "index.html#autotoc_md232", null ]
+    [ "WebCFace", "index.html#autotoc_md231", [
+      [ "Features", "index.html#autotoc_md232", [
+        [ "Easy to Setup", "index.html#autotoc_md233", null ],
+        [ "Inter-Process Communication", "index.html#autotoc_md234", null ],
+        [ "WebUI", "index.html#autotoc_md235", null ],
+        [ "WebCFace-Tools", "index.html#autotoc_md236", null ]
       ] ],
-      [ "Documentation", "index.html#autotoc_md235", null ],
-      [ "Links", "index.html#autotoc_md236", null ],
-      [ "Installation", "index.html#autotoc_md237", [
-        [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md238", null ],
-        [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md239", null ],
-        [ "macOS", "index.html#autotoc_md240", null ],
-        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md241", null ],
-        [ "Windows MSVC", "index.html#autotoc_md242", null ]
+      [ "Documentation", "index.html#autotoc_md239", null ],
+      [ "Links", "index.html#autotoc_md240", null ],
+      [ "Installation", "index.html#autotoc_md241", [
+        [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md242", null ],
+        [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md243", null ],
+        [ "macOS", "index.html#autotoc_md244", null ],
+        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md245", null ],
+        [ "Windows MSVC", "index.html#autotoc_md246", null ]
       ] ],
-      [ "License", "index.html#autotoc_md243", null ]
+      [ "License", "index.html#autotoc_md247", null ]
     ] ],
     [ "1-1. Tutorial (Visualizing)", "md_docs_211__tutorial__vis.html", [
       [ "WebCFaceのインストール", "md_docs_211__tutorial__vis.html#autotoc_md1", null ],
@@ -322,9 +322,13 @@ var NAVTREE =
         [ "robotmodel res (kind = 66)", "md_docs_281__message.html#autotoc_md222", null ]
       ] ],
       [ "Log", "md_docs_281__message.html#autotoc_md223", [
-        [ "log (kind = 85)", "md_docs_281__message.html#autotoc_md224", null ],
-        [ "log entry (kind = 92)", "md_docs_281__message.html#autotoc_md225", null ],
-        [ "log req (kind = 86)", "md_docs_281__message.html#autotoc_md226", null ]
+        [ "log (kind = 8)", "md_docs_281__message.html#autotoc_md224", null ],
+        [ "log entry (kind = 28)", "md_docs_281__message.html#autotoc_md225", null ],
+        [ "log req (kind = 48)", "md_docs_281__message.html#autotoc_md226", null ],
+        [ "log res (kind = 68)", "md_docs_281__message.html#autotoc_md227", null ],
+        [ "log_default (kind = 85)", "md_docs_281__message.html#autotoc_md228", null ],
+        [ "log_entry_default (kind = 92)", "md_docs_281__message.html#autotoc_md229", null ],
+        [ "log_req_default (kind = 86)", "md_docs_281__message.html#autotoc_md230", null ]
       ] ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
@@ -370,33 +374,34 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "classwebcface_1_1AnonymousFunc.html#a1a6e1affea60ef37fbb3118637671da0",
-"classwebcface_1_1Canvas2D.html#a07ac3b6c6f004dfeed3cc3ca8616d98b",
-"classwebcface_1_1Canvas3D.html#a8c997fd30e7178c869b823143102d682",
-"classwebcface_1_1Client.html#ab7547544036712233febe1db3149327d",
-"classwebcface_1_1FuncListener.html#a1a6e1affea60ef37fbb3118637671da0",
-"classwebcface_1_1Image.html#aa7d8623150e6d43ab4bf7493aa8cbc1a",
-"classwebcface_1_1Log.html#aadb158fa20765e342d4669e2c69dbc9e",
-"classwebcface_1_1Point.html#af5f7ee2f80e247726dd343340258d78b",
-"classwebcface_1_1RobotModel.html#ac43a5d0cff75fa531889289e62c023ca",
-"classwebcface_1_1Text.html#a2beeacf74102e3a61fe2094f332698df",
-"classwebcface_1_1Value.html#a3070ccf86f5a60632aee40ebc01b2b8c",
-"classwebcface_1_1Variant.html#a925d25447fc38f6db840d3839a2ad295",
-"classwebcface_1_1ViewComponent.html#a1f158911dbf8bb3f1090a684eceb3589",
-"classwebcface_1_1encoding_1_1ValAdaptor.html#ac8325c6c1614c634ec41954e58722a1e",
-"classwebcface_1_1internal_1_1ViewBuf.html#a02fd73d861ef2e4aabb38c0c9ff82947",
-"data__buffer_8h.html",
-"globals.html",
-"md_docs_274__ls.html#autotoc_md172",
-"namespacewebcface_1_1components.html#a131c27a1f878f83f43244cbc08633e42",
-"robot__link_8h.html#a49aea1f6f84c49764c0abea6b81e0956",
-"structwebcface_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#af7b94e81c82477f757ca55e1354b9486",
-"structwebcface_1_1components_1_1geometries_1_1Box.html#af3bacf3afa9e7caee98244adae772d76",
-"structwebcface_1_1components_1_1geometries_1_1Sphere.html",
-"structwebcface_1_1internal_1_1ClientData.html#ab6e537c63a54c56474bf3b5516e9c818",
-"structwebcface_1_1internal_1_1RobotLinkData.html#a20ffa1f6459f2af108b96d620e6392b4",
-"structwebcface_1_1message_1_1Canvas3DComponent.html#acc91bb5c698fce42c1c364cfe2531b73",
-"structwebcface_1_1message_1_1Res_3_01RobotModel_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1server_1_1MemberData.html#a8246a204deabcd35b10f0a36c1537725"
+"classwebcface_1_1CallHandle.html#a97aede2ca4cf928e4b69a08378558ac1",
+"classwebcface_1_1Canvas3D.html#a5cafb1e36981dec5ffd26873b1b0fa2e",
+"classwebcface_1_1Client.html#a915ef0684abee06830c9117847b22495",
+"classwebcface_1_1Func.html#ac43a5d0cff75fa531889289e62c023ca",
+"classwebcface_1_1Image.html#a20b55b0402e00257754d0d80ec25cb56",
+"classwebcface_1_1Log.html#a24dcbf29c0d6cd766009a182a6484e3b",
+"classwebcface_1_1Member.html#a99c1e26ea1fce7fbdbd4f1cb6771141b",
+"classwebcface_1_1RobotModel.html#a30c1e1877f59505785fd4671e585ec1f",
+"classwebcface_1_1TemporalGeometry.html#a6642dd52d402e8d614cb58679c5eae06",
+"classwebcface_1_1Text.html#ac495d25f6992031499cac9742d799703",
+"classwebcface_1_1Value.html#ae26e646e22c80ca945e437701d49b9f6",
+"classwebcface_1_1View.html#a56970716d867cddc9b9dfe92ad8394bb",
+"classwebcface_1_1encoding_1_1ValAdaptor.html#a144988dc73f4bb0cdf671b6aecc37f14",
+"classwebcface_1_1internal_1_1DataSetBuffer.html#a7228ab9feb5f80b6178213f4a7af83ad",
+"classwebcface_1_1server_1_1ServerStorage.html#aec6064f5c25334bfaa5d4f268c83daf6",
+"encoding_2include_2webcface_2encoding_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1",
+"md_docs_231__setup.html#autotoc_md39",
+"namespacemembers_func.html",
+"namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e",
+"structwebcface_1_1Field.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32",
+"structwebcface_1_1TemporalComponent.html#a5058b129d85b86ae3760bb66a29a2a27",
+"structwebcface_1_1components_1_1geometries_1_1Line.html",
+"structwebcface_1_1internal_1_1Canvas3DComponentData.html#a0c9a13deb5b2a13035c6c4e832e51667",
+"structwebcface_1_1internal_1_1FuncInfo.html#a4c59d74c63b9cf877d54cf697f3581cd",
+"structwebcface_1_1internal_1_1ViewComponentData.html#a9adf8542ac6429e89f43654ae7e6709f",
+"structwebcface_1_1message_1_1Log.html#a038a1ee92e7ea3c8aa3161056680b89a",
+"structwebcface_1_1message_1_1Res_3_01View_01_4.html#af392cfa344ec26fc98c95499f30ab4a7",
+"structwebcface_1_1server_1_1MemberData.html#ae9313ec6cb5a526764b6163a3148970b"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

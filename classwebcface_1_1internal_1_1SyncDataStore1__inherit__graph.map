@@ -1,7 +1,5 @@
 <map id="SyncDataStore1&lt; T &gt;" name="SyncDataStore1&lt; T &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,61,169,86"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1internal_1_1SyncDataStore1.html" title=" " alt="" coords="367,6,600,61"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,61,193,60,366,42,367,48,194,65,183,66"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1internal_1_1SyncDataStore1.html" title=" " alt="" coords="398,85,569,139"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="168,86,194,89,300,100,398,106,398,111,299,105,193,95,167,91"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="9,5,173,31"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1internal_1_1SyncDataStore1.html" title=" " alt="" coords="5,108,176,163"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,45,93,108,88,108,88,45"/>
 </map>

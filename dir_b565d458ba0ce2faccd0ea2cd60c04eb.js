@@ -4,7 +4,7 @@ var dir_b565d458ba0ce2faccd0ea2cd60c04eb =
     [ "canvas2d.cc", "canvas2d_8cc.html", null ],
     [ "canvas3d.cc", "canvas3d_8cc.html", null ],
     [ "client_msg_recv.cc", "client__msg__recv_8cc.html", null ],
-    [ "client_msg_sync.cc", "client__msg__sync_8cc.html", null ],
+    [ "client_msg_sync.cc", "client__msg__sync_8cc.html", "client__msg__sync_8cc" ],
     [ "client_threading.cc", "client__threading_8cc.html", null ],
     [ "client_ws.cc", "client__ws_8cc.html", "client__ws_8cc" ],
     [ "component_canvas2d.cc", "component__canvas2d_8cc.html", "component__canvas2d_8cc" ],
