@@ -244,8 +244,8 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.1/webcface_2.4.1_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.0/webcface-tools_2.1.0_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-webui_1.9.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-desktop_1.9.0_linux_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-webui_1.9.1_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-desktop_1.9.1_linux_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -256,8 +256,8 @@ rm ./webcface*.deb
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.1/webcface_2.4.1_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.0/webcface-tools_2.1.0_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-webui_1.9.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-desktop_1.9.0_linux_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-webui_1.9.1_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-desktop_1.9.1_linux_arm64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -268,8 +268,8 @@ rm ./webcface*.deb
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.1/webcface_2.4.1_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.0/webcface-tools_2.1.0_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-webui_1.9.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.0/webcface-desktop_1.9.0_linux_armv7l.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-webui_1.9.1_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.9.1/webcface-desktop_1.9.1_linux_armv7l.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
