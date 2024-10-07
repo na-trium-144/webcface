@@ -376,6 +376,9 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
 
         wcli.sync(timeout=0.1)
     ```
+    * <span class="since-py">2.1</span>
+    Client() のコンストラクタの引数に `auto_sync=秒数` を指定すると、
+    別スレッドで自動的に指定した秒数ごとに sync() が呼ばれ、データの送受信を自動で行うようになります。
 
     \warning
     * <span class="since-py">2.0</span>
