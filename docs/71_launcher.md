@@ -19,11 +19,20 @@ WebUI上ではそれぞれの設定ファイルに書かれたそれぞれのコ
 * プロセスの起動と停止には外部ライブラリの [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library/) を使用しています
 * (tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。
 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。
+
+<span></span>
+
 * (tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。
 (WebUIのFunctionsの画面からも確認できます)
-    * Startボタンは member("webcface-launcher").func("コマンド名/start").runAsync()
-    * Stopボタンは member("webcface-launcher").func("コマンド名/terminate").runAsync()  
+    * Startボタンは `member("webcface-launcher").func("コマンド名/start").runAsync()`
+    * Stopボタンは `member("webcface-launcher").func("コマンド名/stop").runAsync()`  
     などとすると呼び出すことができます。
+        * (tools ver2.1から) stop関数はコマンドが停止するまで完了しません。
+    * (tools ver2.1から) `func("コマンド名/run")` を呼び出すと、startと同様コマンドを開始し、終了するまで待機することができます。
+* (tools ver2.1から) `member("webcface-launcher").value("コマンド名.running")` でコマンドが実行中かどうかを取得できます。
+    * また、 `member("webcface-launcher").value("コマンド名.exit_status")` で終了コードも取得できます。
+* (tools ver2.1から) `member("webcface-launcher").log("コマンド名")` でログを取得できます。
+(設定ファイルの stdout_capture の説明を参照)
 
 ## サービスとして (Linuxのみ)
 配布しているdebパッケージからインストールした場合は、serverと同様に
@@ -62,7 +71,7 @@ exec = "sleep 1"
 name = "main"
 workdir = "/path/to/somewhere"
 exec = "./main"
-stdout_capture = "never"
+stdout_capture = false
 stdout_utf8 = true
 stop = 2
 # または、
@@ -93,10 +102,13 @@ initセクションは省略できます。
 * workdir
     * コマンドを実行するディレクトリです。
     * 省略時カレントディレクトリになります
-* stdout_capture (tools ver1.3.1 から)
-    * `"never"`, `"onerror"`(デフォルト), `"always"` が指定可能です
-    * alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します
-    * always,onerrorではコマンドの標準出力とエラー出力をキャプチャーするため、とくにwindowsではneverにしないとうまく動作しないプログラムもあるようです。
+* stdout_capture <del>(tools ver1.3.1 から)</del>
+    * <del>`"never"`, `"onerror"`(デフォルト), `"always"` が指定可能です</del>
+    * <del>alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します</del>
+    * (ver2.1 から) `true` の場合(デフォルト)、コマンドの標準出力とエラー出力の内容をLogデータとしてWebCFaceに送信します。
+        * WebUIではメニューからコマンド名の名前のLog画面を開くことができます。
+    * `false`にすると出力をキャプチャーしません。
+    とくにwindowsではfalseにしないとうまく動作しないプログラムもあるようです。
 * stdout_utf8 (windowsのみ、tools ver1.3.1 から)
     * falseの場合(デフォルト)、stdout_captureで取得したデータはANSIエンコーディングとみなし、UTF-8に変換してからWebCFaceに送られます。
     * trueの場合、stdout_captureで取得したデータをUTF-8とみなし、そのままWebCFaceに送ります。
