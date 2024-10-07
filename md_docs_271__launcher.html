@@ -162,14 +162,26 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <dl class="section note"><dt>Note</dt><dd><ul>
 <li>プロセスの起動と停止には外部ライブラリの <a href="https://gitlab.com/eidheim/tiny-process-library/">tiny-process-library</a> を使用しています</li>
 <li>(tools ver1.4.2から、Linux,MacOS) webcface-launcherを停止すると、実行中のコマンドにもシグナルが送られます。 SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM、SIGKILLに移行して強制的に停止します。</li>
-<li>(tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。 (WebUIのFunctionsの画面からも確認できます)<ul>
-<li>Startボタンは member("webcface-launcher").func("コマンド名/start").runAsync()</li>
-<li>Stopボタンは member("webcface-launcher").func("コマンド名/terminate").runAsync() <br  />
- などとすると呼び出すことができます。</li>
-</ul>
-</li>
 </ul>
 </dd></dl>
+<p><span></span></p>
+<ul>
+<li>(tools ver1.4.3から) Startボタン、Stopボタンの動作はViewを経由せずにFuncで呼び出すこともできます。 (WebUIのFunctionsの画面からも確認できます)<ul>
+<li>Startボタンは <code>member("webcface-launcher").func("コマンド名/start").runAsync()</code></li>
+<li>Stopボタンは <code>member("webcface-launcher").func("コマンド名/stop").runAsync()</code> <br  />
+ などとすると呼び出すことができます。<ul>
+<li>(tools ver2.1から) stop関数はコマンドが停止するまで完了しません。</li>
+</ul>
+</li>
+<li>(tools ver2.1から) <code>func("コマンド名/run")</code> を呼び出すと、startと同様コマンドを開始し、終了するまで待機することができます。</li>
+</ul>
+</li>
+<li>(tools ver2.1から) <code>member("webcface-launcher").value("コマンド名.running")</code> でコマンドが実行中かどうかを取得できます。<ul>
+<li>また、 <code>member("webcface-launcher").value("コマンド名.exit_status")</code> で終了コードも取得できます。</li>
+</ul>
+</li>
+<li>(tools ver2.1から) <code>member("webcface-launcher").log("コマンド名")</code> でログを取得できます。 (設定ファイルの stdout_capture の説明を参照)</li>
+</ul>
 <h1><a class="anchor" id="autotoc_md156"></a>
 サービスとして (Linuxのみ)</h1>
 <p>配布しているdebパッケージからインストールした場合は、serverと同様に </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
@@ -202,7 +214,7 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <div class="line">name = &quot;main&quot;</div>
 <div class="line">workdir = &quot;/path/to/somewhere&quot;</div>
 <div class="line">exec = &quot;./main&quot;</div>
-<div class="line">stdout_capture = &quot;never&quot;</div>
+<div class="line">stdout_capture = false</div>
 <div class="line">stdout_utf8 = true</div>
 <div class="line">stop = 2</div>
 <div class="line"># または、</div>
@@ -244,10 +256,14 @@ command</h2>
 <li>省略時カレントディレクトリになります</li>
 </ul>
 </li>
-<li>stdout_capture (tools ver1.3.1 から)<ul>
-<li><code>"never"</code>, <code>"onerror"</code>(デフォルト), <code>"always"</code> が指定可能です</li>
-<li>alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します</li>
-<li>always,onerrorではコマンドの標準出力とエラー出力をキャプチャーするため、とくにwindowsではneverにしないとうまく動作しないプログラムもあるようです。</li>
+<li>stdout_capture <del>(tools ver1.3.1 から)</del><ul>
+<li><del><code>"never"</code>, <code>"onerror"</code>(デフォルト), <code>"always"</code> が指定可能です</del></li>
+<li><del>alwaysではコマンド終了時、onerrorではエラーで終了時にコマンドの標準出力とエラー出力の内容をlauncherのボタンの下に表示します</del></li>
+<li>(ver2.1 から) <code>true</code> の場合(デフォルト)、コマンドの標準出力とエラー出力の内容をLogデータとしてWebCFaceに送信します。<ul>
+<li>WebUIではメニューからコマンド名の名前のLog画面を開くことができます。</li>
+</ul>
+</li>
+<li><code>false</code>にすると出力をキャプチャーしません。 とくにwindowsではfalseにしないとうまく動作しないプログラムもあるようです。</li>
 </ul>
 </li>
 <li>stdout_utf8 (windowsのみ、tools ver1.3.1 から)<ul>
@@ -304,7 +320,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Oct 2 2024 12:27:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Oct 7 2024 07:14:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
