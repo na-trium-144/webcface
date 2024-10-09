@@ -143,6 +143,9 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
     TemporalCanvas2DComponent(const TemporalCanvas2DComponent &other);
     TemporalCanvas2DComponent &
     operator=(const TemporalCanvas2DComponent &other);
+    TemporalCanvas2DComponent(TemporalCanvas2DComponent &&other) noexcept;
+    TemporalCanvas2DComponent &
+    operator=(TemporalCanvas2DComponent &&other) noexcept;
     ~TemporalCanvas2DComponent() noexcept;
 
     /*!
@@ -162,7 +165,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \brief 要素の移動・回転
      *
      */
-    TemporalCanvas2DComponent &origin(const Transform &origin);
+    TemporalCanvas2DComponent &origin(const Transform &origin) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&origin(const Transform &origin) && {
+        this->origin(origin);
+        return std::move(*this);
+    }
     /*!
      * \brief 図形の輪郭の色
      *
@@ -170,7 +180,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * デフォルト時のinheritはWebUI上ではblackとして表示されます
      *
      */
-    TemporalCanvas2DComponent &color(const ViewColor &color);
+    TemporalCanvas2DComponent &color(const ViewColor &color) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&color(const ViewColor &color) && {
+        this->color(color);
+        return std::move(*this);
+    }
     /*!
      * \brief 塗りつぶし色
      *
@@ -178,7 +195,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * デフォルト時のinheritはWebUI上では透明になります
      *
      */
-    TemporalCanvas2DComponent &fillColor(const ViewColor &color);
+    TemporalCanvas2DComponent &fillColor(const ViewColor &color) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&fillColor(const ViewColor &color) && {
+        this->fillColor(color);
+        return std::move(*this);
+    }
     /*!
      * \brief 線の太さ
      *
@@ -188,7 +212,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * 指定しない場合0となり、WebUIではその場合Canvasの拡大に関係なく1ピクセルになります
      *
      */
-    TemporalCanvas2DComponent &strokeWidth(double s);
+    TemporalCanvas2DComponent &strokeWidth(double s) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&strokeWidth(double s) && {
+        this->strokeWidth(s);
+        return std::move(*this);
+    }
     /*!
      * \brief 文字の大きさ(高さ)
      * \since ver1.9
@@ -199,7 +230,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * 内部のデータとしてはstrokeWidthのデータを使いまわしています
      *
      */
-    TemporalCanvas2DComponent &textSize(double s) { return strokeWidth(s); }
+    TemporalCanvas2DComponent &textSize(double s) & { return strokeWidth(s); }
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&textSize(double s) && {
+        this->textSize(s);
+        return std::move(*this);
+    }
     /*!
      * \brief 表示する文字列を設定
      * \since ver1.9
@@ -207,46 +245,93 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * (ver2.0からstring_viewに変更)
      *
      */
-    TemporalCanvas2DComponent &text(std::string_view text);
+    TemporalCanvas2DComponent &text(std::string_view text) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&text(std::string_view text) && {
+        this->text(text);
+        return std::move(*this);
+    }
     /*!
      * \brief 表示する文字列を設定 (wstring)
      * \since ver2.0
      */
-    TemporalCanvas2DComponent &text(std::wstring_view text);
+    TemporalCanvas2DComponent &text(std::wstring_view text) &;
+    /*!
+     * \brief 表示する文字列を設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&text(std::wstring_view text) && {
+        this->text(text);
+        return std::move(*this);
+    }
     /*!
      * \brief geometryをセット
      *
      */
-    TemporalCanvas2DComponent &geometry(const Geometry &g);
+    TemporalCanvas2DComponent &geometry(const Geometry &g) &;
     /*!
-     * \brief クリック時に実行される関数を設定
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&geometry(const Geometry &g) && {
+        this->geometry(g);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (Funcオブジェクト)
      * \since ver1.9
      * \param func 実行する関数を指すFuncオブジェクト
      *
      */
-    TemporalCanvas2DComponent &onClick(const Func &func);
+    TemporalCanvas2DComponent &onClick(const Func &func) &;
+    /*!
+     * \brief クリック時に実行される関数を設定 (Funcオブジェクト)
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&onClick(const Func &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (FuncListener)
+     * \param func 実行する関数を指すFuncListener
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &onClick(const FuncListener &func) &;
+    /*!
+     * \brief クリック時に実行される関数を設定 (FuncListener)
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &&onClick(const FuncListener &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
     /*!
      * \brief クリック時に実行される関数を設定
-     * \since ver1.9
-     * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
-     *
+     * \param func 実行する任意の関数
+     * (引数、戻り値なしでstd::functionにキャスト可能ならなんでもok)
+     * \since ver2.5
      */
-    template <typename T>
-    TemporalCanvas2DComponent &onClick(T func) {
-        return onClick(std::make_shared<AnonymousFunc>(func));
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalCanvas2DComponent &onClick(T func) & {
+        return onClick(std::make_shared<std::function<void WEBCFACE_CALL_FP()>>(
+            std::move(func)));
     }
-    TemporalCanvas2DComponent &
-    onClick(const std::shared_ptr<AnonymousFunc> &func);
     /*!
      * \brief クリック時に実行される関数を設定
-     * \since ver1.9
-     * \param func Client::func() で得られるAnonymousFuncオブジェクト
-     * (コピー不可なので、一時オブジェクトでない場合はmoveすること)
-     *
+     * \since ver2.5
      */
-    TemporalCanvas2DComponent &onClick(AnonymousFunc &&func) {
-        return onClick(std::make_shared<AnonymousFunc>(std::move(func)));
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalCanvas2DComponent &&onClick(T func) && {
+        this->onClick(std::move(func));
+        return std::move(*this);
     }
+
+    TemporalCanvas2DComponent &onClick(
+        const std::shared_ptr<std::function<void WEBCFACE_CALL_FP()>> &func);
 };
 
 WEBCFACE_NS_END
