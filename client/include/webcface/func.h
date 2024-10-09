@@ -90,7 +90,6 @@ using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
  */
 class WEBCFACE_DLL Func : protected Field {
   public:
-    friend class AnonymousFunc;
     friend class TemporalViewComponent;
     friend class TemporalCanvas2DComponent;
 
@@ -585,69 +584,6 @@ class WEBCFACE_DLL Func : protected Field {
     }
 };
 
-/*!
- * \brief 名前を指定せず先に関数を登録するFunc
- *
- */
-class WEBCFACE_DLL AnonymousFunc : public Func {
-    static SharedString WEBCFACE_CALL fieldNameTmp();
-
-    std::function<void(AnonymousFunc &)> func_setter = nullptr;
-    bool base_init = false;
-
-  public:
-    AnonymousFunc() = default;
-    /*!
-     * 一時的な名前(fieldNameTmp())をつけたFuncとしてdataに登録し、
-     * lockTmp() 呼び出し時に正式な名前のFuncに内容を移動する。
-     *
-     */
-    template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    AnonymousFunc(const Field &base, T func)
-        : Func(base, fieldNameTmp()), base_init(true) {
-        this->set(std::move(func));
-    }
-    /*!
-     * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
-     * lockTmp() 時にdataに登録する
-     *
-     */
-    template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    explicit AnonymousFunc(T func)
-        : func_setter([func = std::move(func)](AnonymousFunc &a) mutable {
-              a.set(std::move(func));
-          }) {}
-
-    AnonymousFunc(const AnonymousFunc &) = delete;
-    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
-    AnonymousFunc(AnonymousFunc &&other) noexcept { *this = std::move(other); }
-    /*!
-     * \brief otherの中身を移動し、otherは未初期化にする
-     * \since ver1.9
-     *
-     * 未初期化 == func_setterが空でbase_initがfalse
-     *
-     */
-    AnonymousFunc &operator=(AnonymousFunc &&other) noexcept;
-    /*!
-     * \brief targetに関数を移動
-     *
-     * (ver1.9〜) thisが未初期化の場合 std::runtime_error を投げる
-     *
-     * (ver1.9〜) 2回実行すると std::runtime_error
-     *
-     */
-    void lockTo(Func &target);
-};
-
 class WEBCFACE_DLL FuncListener : protected Func {
     ValType return_type_ = ValType::none_;
     std::vector<Arg> args_{};
@@ -658,6 +594,8 @@ class WEBCFACE_DLL FuncListener : protected Func {
     FuncListener(const Field &base, const SharedString &field)
         : FuncListener(Field{base, field}) {}
 
+    friend class TemporalViewComponent;
+    friend class TemporalCanvas2DComponent;
     using Field::member;
     using Field::name;
 

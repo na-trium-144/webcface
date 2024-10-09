@@ -5,7 +5,7 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace internal{
+namespace internal {
 class ViewBuf;
 }
 
@@ -48,23 +48,36 @@ struct TemporalComponent {
      * を参照
      *
      */
-    template <typename T>
-    TemporalComponent &onClick(T &&func) {
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalComponent &onClick(T func) & {
         static_assert(V || C2,
                       "onClick can be set only for View, Canvas2D components");
+        auto func_shared =
+            std::make_shared<std::function<void WEBCFACE_CALL_FP()>>(
+                std::move(func));
         if constexpr (V) {
-            component_v.onClick(std::forward<T>(func));
+            component_v.onClick(func_shared);
         }
         if constexpr (C2) {
-            component_2d.onClick(std::forward<T>(func));
+            component_2d.onClick(func_shared);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalComponent &&onClick(T func) && {
+        this->onClick(std::move(func));
+        return std::move(*this);
     }
     /*!
      * \brief 要素の移動 (2Dまたは3D)
      *
      */
-    TemporalComponent &origin(const Transform &origin) {
+    TemporalComponent &origin(const Transform &origin) & {
         static_assert(
             C2 || C3,
             "origin can be set only for Canvas2D, Canvas3D components");
@@ -77,11 +90,18 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&origin(const Transform &origin) && {
+        this->origin(origin);
+        return std::move(*this);
+    }
+    /*!
      * \brief 色
      *
      * Viewの要素では textColor として設定される
      */
-    TemporalComponent &color(ViewColor c) {
+    TemporalComponent &color(ViewColor c) & {
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -94,10 +114,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&color(ViewColor c) && {
+        this->color(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 表示する文字列 (View, Canvas2D)
      * \since ver2.0
      */
-    TemporalComponent &text(std::string_view str) {
+    TemporalComponent &text(std::string_view str) & {
         static_assert(V || C2,
                       "text can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -109,10 +136,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&text(std::string_view str) && {
+        this->text(str);
+        return std::move(*this);
+    }
+    /*!
      * \brief 表示する文字列(wstring) (View, Canvas2D)
      * \since ver2.0
      */
-    TemporalComponent &text(std::wstring_view str) {
+    TemporalComponent &text(std::wstring_view str) & {
         static_assert(V || C2,
                       "text can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -122,13 +156,20 @@ struct TemporalComponent {
             component_2d.text(str);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&text(std::wstring_view str) && {
+        this->text(str);
+        return std::move(*this);
     }
     /*!
      * \brief 文字色 (Viewまたは2D)
      *
      * Canvas2DのTextでは fillColor が文字色の代わりに使われている
      */
-    TemporalComponent &textColor(ViewColor c) {
+    TemporalComponent &textColor(ViewColor c) & {
         static_assert(
             V || C2, "textColor can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -140,10 +181,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&textColor(ViewColor c) && {
+        this->textColor(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &fillColor(ViewColor c) {
+    TemporalComponent &fillColor(ViewColor c) & {
         static_assert(
             V || C2, "fillColor can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -155,20 +203,34 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&fillColor(ViewColor c) && {
+        this->fillColor(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &bgColor(ViewColor c) {
+    TemporalComponent &bgColor(ViewColor c) & {
         static_assert(V || C2,
                       "bgColor can be set only for View, Canvas2D components");
         return fillColor(c);
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&bgColor(ViewColor c) && {
+        this->bgColor(c);
+        return std::move(*this);
     }
     /*!
      * \brief 線の太さ (2Dのみ)
      *
      * 文字の太さではない
      */
-    TemporalComponent &strokeWidth(double s) {
+    TemporalComponent &strokeWidth(double s) & {
         static_assert(C2,
                       "strokeWidth can be set only for Canvas2D components");
         if constexpr (C2) {
@@ -177,15 +239,29 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&strokeWidth(double s) && {
+        this->strokeWidth(s);
+        return std::move(*this);
+    }
+    /*!
      * \brief 文字の大きさ (2Dのみ)
      *
      */
-    TemporalComponent &textSize(double s) {
+    TemporalComponent &textSize(double s) & {
         static_assert(C2, "textSize can be set only for Canvas2D components");
         if constexpr (C2) {
             component_2d.textSize(s);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&textSize(double s) && {
+        this->textSize(s);
+        return std::move(*this);
     }
 };
 class TemporalGeometry : public TemporalComponent<false, true, true>,

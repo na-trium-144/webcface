@@ -11,7 +11,10 @@ struct ViewComponentData : message::ViewComponent {
     explicit ViewComponentData(const message::ViewComponent &vc)
         : message::ViewComponent(vc) {}
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    // TemporalViewComponentとTemporalCanvas2DComponentの間でshareされるが
+    // 同じfunctionが最終的に2つのcomponentに同時にsetされることはない
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
+    std::shared_ptr<std::function<void(ValAdaptor)>> on_change_func_tmp;
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
 
@@ -33,7 +36,7 @@ struct Canvas2DComponentData : message::Canvas2DComponent {
     explicit Canvas2DComponentData(const message::Canvas2DComponent &vc)
         : message::Canvas2DComponent(vc) {}
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
 
     bool operator==(const Canvas2DComponentData &other) const;
     bool operator!=(const Canvas2DComponentData &other) const {
