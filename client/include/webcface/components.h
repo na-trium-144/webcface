@@ -42,6 +42,58 @@ struct TemporalComponent {
     friend class internal::ViewBuf;
 
     /*!
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D, Funcオブジェクト)
+     * \since ver2.5
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
+     */
+    TemporalComponent &onClick(const Func &func) & {
+        static_assert(V || C2,
+                      "onClick can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.onClick(func);
+        }
+        if constexpr (C2) {
+            component_2d.onClick(func);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&onClick(const Func &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D, FuncListener)
+     * \since ver2.5
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
+     */
+    TemporalComponent &onClick(const FuncListener &func) & {
+        static_assert(V || C2,
+                      "onClick can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.onClick(func);
+        }
+        if constexpr (C2) {
+            component_2d.onClick(func);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&onClick(const FuncListener &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+    /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
      * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()

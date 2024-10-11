@@ -43,6 +43,14 @@ TemporalViewComponent::operator=(const TemporalViewComponent &other) {
     msg_data = std::make_unique<internal::ViewComponentData>(*other.msg_data);
     return *this;
 }
+TemporalViewComponent::TemporalViewComponent(
+    TemporalViewComponent &&other) noexcept
+    : msg_data(std::move(other.msg_data)) {}
+TemporalViewComponent &
+TemporalViewComponent::operator=(TemporalViewComponent &&other) noexcept {
+    msg_data = std::move(other.msg_data);
+    return *this;
+}
 TemporalViewComponent::~TemporalViewComponent() noexcept {}
 
 void ViewComponent::checkData() const {
