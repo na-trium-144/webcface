@@ -106,12 +106,9 @@ jobs:
     # - run: git submodule update --init
     #   if: matrix.dep == 'submodule'
 
-    - name: Install Homebrew dependencies
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
-      run: |
-        brew update --preinstall
-        brew install meson
+    - uses: ilammy/setup-nasm@v1
+    - name: Install Meson
+      run: pip install meson
 
     - name: Setup Meson
       run: >

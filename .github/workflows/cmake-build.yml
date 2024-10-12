@@ -146,12 +146,10 @@ jobs:
     name: Build on macos-12 ${{matrix.arch}}
     steps:
     - uses: actions/checkout@v4
-    - name: Install dependencies
-      env:
-        HOMEBREW_NO_AUTO_UPDATE: 1
-      run: |
-        brew update --preinstall
-        brew install meson nasm
+
+    - uses: ilammy/setup-nasm@v1
+    - name: Install Meson
+      run: pip install meson
 
     - name: Setup Meson
       run: >
