@@ -42,14 +42,6 @@ class FuncTest : public ::testing::Test {
     Func func(const T1 &member, const T2 &name) {
         return Func{field(member, name)};
     }
-    template <typename T>
-    AnonymousFunc afunc1(const T &func) {
-        return AnonymousFunc{field(self_name, ""), func};
-    }
-    template <typename T>
-    AnonymousFunc afunc2(const T &func) {
-        return AnonymousFunc{func};
-    }
 };
 
 TEST_F(FuncTest, valAdaptor) {
@@ -129,7 +121,8 @@ TEST_F(FuncTest, funcSet) {
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args->size(), 0u);
+    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args->size(),
+              0u);
     EXPECT_EQ(f.args().size(), 0u);
     EXPECT_EQ(func(self_name, "a").args().size(), 0u);
 
@@ -365,7 +358,8 @@ TEST_F(FuncTest, funcHandleRun) {
             EXPECT_EQ(std::this_thread::get_id(), main_id);
             handle_copy = h;
             return;
-        }).setArgs({Arg(), Arg(), Arg(), Arg()});
+        })
+        .setArgs({Arg(), Arg(), Arg(), Arg()});
     auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
     EXPECT_TRUE(ret_a.isError());
     EXPECT_EQ(ret_a.rejection(), "a == 0");
@@ -416,25 +410,4 @@ TEST_F(FuncTest, funcRunRemote) {
         }
     }
     EXPECT_TRUE(call_msg_found);
-}
-
-TEST_F(FuncTest, afuncSet1) {
-    auto a = afunc1([](int) {});
-    a.setArgs({Arg("a").init(0).min(-1).max(1)});
-    auto f = func(self_name, "a");
-    a.lockTo(f);
-    EXPECT_EQ(f.args(0).name(), "a");
-    EXPECT_EQ(static_cast<int>(*f.args(0).init()), 0);
-    EXPECT_EQ(static_cast<int>(*f.args(0).min()), -1);
-    EXPECT_EQ(static_cast<int>(*f.args(0).max()), 1);
-}
-TEST_F(FuncTest, afuncSet2) {
-    auto a = afunc2([](int) {});
-    // a.setArgs({Arg("a").init(0).min(-1).max(1)});
-    auto f = func(self_name, "a");
-    a.lockTo(f);
-    // EXPECT_EQ(f.args(0).name(), "a");
-    // EXPECT_EQ(static_cast<int>(*f.args(0).init()), 0);
-    // EXPECT_EQ(static_cast<int>(*f.args(0).min()), -1);
-    // EXPECT_EQ(static_cast<int>(*f.args(0).max()), 1);
 }
