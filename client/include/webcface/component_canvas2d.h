@@ -312,9 +312,11 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \param func 実行する任意の関数
      * (引数、戻り値なしでstd::functionにキャスト可能ならなんでもok)
      * \since ver2.5
+     * 
+     * MSVCのバグでエラーになってしまうので std::is_invocable_v は使えない
+     * 
      */
-    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename T, decltype(std::declval<T>()(), nullptr) = nullptr>
     TemporalCanvas2DComponent &onClick(T func) & {
         return onClick(std::make_shared<std::function<void WEBCFACE_CALL_FP()>>(
             std::move(func)));
@@ -323,8 +325,7 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \brief クリック時に実行される関数を設定
      * \since ver2.5
      */
-    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename T, decltype(std::declval<T>()(), nullptr) = nullptr>
     TemporalCanvas2DComponent &&onClick(T func) && {
         this->onClick(std::move(func));
         return std::move(*this);
