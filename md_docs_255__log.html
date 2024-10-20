@@ -143,17 +143,17 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md110">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md111">送信</a><ul><li class="level2"><a href="#autotoc_md112">外部ライブラリの利用</a></li>
+<ul><li class="level1"><a href="#autotoc_md111">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md112">送信</a><ul><li class="level2"><a href="#autotoc_md113">外部ライブラリの利用</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md113">受信</a><ul><li class="level2"><a href="#autotoc_md114">Entry</a></li>
-<li class="level2"><a href="#autotoc_md115">Event</a></li>
+<li class="level1"><a href="#autotoc_md114">受信</a><ul><li class="level2"><a href="#autotoc_md115">Entry</a></li>
+<li class="level2"><a href="#autotoc_md116">Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md109"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md110"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a> (<code><a class="el" href="log_8h.html">webcface/log.h</a></code>)</li>
@@ -165,12 +165,12 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <p>trace(0), debug(1), info(2), warning(3), error(4), critical(5) の6段階のレベルに分けたログを扱うことができます。 (外部ライブラリのspdlogをそのままインタフェースに利用していたver1の仕様を引き継いでいる)</p>
 <dl class="section note"><dt>Note</dt><dd>WebCFaceはログレベルを単に数値として扱うので、-1以下や6以上のレベルも一応使用可能です。</dd></dl>
 <dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.4</span><span class="since-js">1.9</span><span class="since-py">2.1</span> でLogの送受信メッセージを仕様変更しています。 クライアントがこれら以上のバージョンでサーバーが2.3以前の場合Logデータは送受信できません。 (serverのログ出力に <code>Unknown message kind 8</code> というwarningが表示されます。) 逆にサーバーが2.4以上でクライアントが古い場合は問題ありません。</dd></dl>
-<h1><a class="anchor" id="autotoc_md110"></a>
+<h1><a class="anchor" id="autotoc_md111"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t log</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。</p>
 <p>他のコマンドからpipeしてWebCFaceに送信するという使い方ができます。 詳細は <a class="el" href="md_docs_272__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md111"></a>
+<h1><a class="anchor" id="autotoc_md112"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> Log::append() でログを送信することができます。 時刻(std::chrono::system_clock)を指定することもできます(省略するとnow()になります) <br  />
@@ -207,7 +207,7 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <p class="startli"><span class="since-py">2.1</span> Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。 名前を省略した場合、および過去のバージョンから送信されたログデータは <code>"default"</code> という名前のLogとして扱われます。 <code>cpp wcli.log("hoge").append(2, "this is info"); </code></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md112"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md113"></a>
 外部ライブラリの利用</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">spdlog (C++)</b> spdlog: <a href="https://github.com/gabime/spdlog">https://github.com/gabime/spdlog</a></p>
@@ -302,7 +302,7 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 <p>Client::loggerSink()でログをwebcfaceに送信するsinkを取得できるので、これを他のloggerにセットして使うこともできます。 または Client.logger() の出力先のsinkを変更することもできます。</p>
 <p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md113"></a>
+<h1><a class="anchor" id="autotoc_md114"></a>
 受信</h1>
 <dl class="section note"><dt>Note</dt><dd>(サーバーが<span class="since-c">1.1.9</span>以降の場合) サーバーは各クライアントのログを1000行まで保持しています。 logの受信リクエストを送った時点から1000行より前のログは取得できません。 serverの起動時のオプションでこの行数は変更できます。(<a class="el" href="md_docs_221__server.html">2-1. Server</a>を参照)</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -378,14 +378,14 @@ spdlogライブラリとの連携(C++ 〜ver1.11)</summary>
 <p class="startli"><span class="since-py">2.1</span> Valueなど他のデータ型と同様、 <code>wcli.member("foo").log("hoge")</code> のように受信するLogの名前を指定できます。 名前を省略した場合、および過去のバージョンから送信されたログデータは <code>"default"</code> という名前のLogとして扱われます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md114"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md115"></a>
 Entry</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.1</span><span class="since-js">1.8</span><span class="since-py">2.0</span></dd></dl>
 <p>(サーバーが<span class="since-c">2.1</span>以降の場合のみ)</p>
 <p>ログをすべて受信しなくても、ログが少なくとも1行存在するかどうか(他memberが送信しているかどうか)は取得することができます。</p>
 <p>Log.exists() はログが少なくとも1行存在する場合、trueを返します。 tryGet() と違い、ログデータそのものを受信するリクエストは送られません。</p>
 <p><span class="since-c">2.4</span> <span class="since-js">1.9</span> <span class="since-py">2.1</span> Valueなどの他の型と同様、 Memberが送信しているLogのリストを取得したり、 LogEntry イベントも使えるようになりました。</p>
-<h2><a class="anchor" id="autotoc_md115"></a>
+<h2><a class="anchor" id="autotoc_md116"></a>
 Event</h2>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 コールバックを設定することでもその値はリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます</p>
@@ -402,7 +402,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 12 2024 12:14:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Oct 20 2024 12:34:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
