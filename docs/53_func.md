@@ -94,88 +94,6 @@
 
     <span></span>
 
-    <span class="since-c">2.4</span>
-    引数に webcface::CallHandle をとる関数をセットすることもできます。
-    ```cpp
-    wcli.func("hoge").set([](webcface::CallHandle handle){
-        double arg = handle.args().at(0).asDouble();
-        handle.respond(123); // return value
-    }).setArgs({
-        webcface::Arg("a").type(webcface::ValType::double_),
-    });
-    ```
-    * 通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は setAsync() を使用してください。
-    * 関数のsetのあとに、 setArgs() で受け取りたい引数の個数分の webcface::Arg() を渡し、引数名や戻り値の型を指定します。
-        * 引数名などの情報が不要な場合でも引数の個数分 Arg() を渡す必要があります。
-    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle.args()` でFuncを呼び出した引数を取得できます。
-        * setArgs() で指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
-        (そのため登録した関数の側で引数の個数チェックをする必要はないです)
-    * 値を返すのはreturnではなくhandleを介して `handle.respond(戻り値)` を使います。
-        * 戻り値が不要な場合はrespondに何も渡さず `handle.respond();` とします。
-    * エラーメッセージを返すには `handle.reject(エラーメッセージ)` を使います。
-        * 関数の中で例外をthrowした場合もエラーメッセージが呼び出し元に返ります。
-    * respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
-        * そのためhandleを関数の外のスコープの変数に保存(コピー)したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
-    
-- <b class="tab-title">C</b>
-    \since <span class="since-c">1.9</span>
-
-    wcfFuncSet, (<span class="since-c">2.0</span> wcfFuncSetW) で関数ポインタを登録できます。  
-    登録する関数の引数は wcfFuncCallHandle*, (<span class="since-c">2.0</span> wcfFuncCallHandleW*) と void* の2つで、
-    前者は引数のデータを取得したり結果を返すのに使用します。
-    後者には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
-    ```c
-    void callback(wcfFuncCallHandle *handle, void *user_data_p) {
-        struct UserData *user_data = (struct UserData *)user_data_p;
-        // do something
-        wcfMultiVal ans = wcfValI(123); // return value
-        wcfFuncRespond(handle, ans);
-    }
-    wcfValType args_type[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
-    struct UserData user_data = {...};
-    wcfFuncSet(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
-    ```
-    * set時には受け取りたい引数の型、個数、戻り値の型を指定します。
-    型は WCF_VAL_NONE, WCF_VAL_STRING, WCF_VAL_BOOL, WCF_VAL_INT, WCF_VAL_DOUBLE が指定できます。
-    * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
-    ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
-    * <span class="since-c">2.0</span>
-    wcfFuncSet(), wcfFuncSetW() で登録した関数はwcfSync()時に同じスレッドで実行されます。
-    そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。
-        * 関数を非同期(別スレッド)で実行したい場合は wcfFuncSetAsync(), wcfFuncSetAsyncW() を使用してください。
-        ver1.11以前ではwcfFuncSet()で登録した関数はすべて非同期実行されていたので、こちらが従来のwcfFuncSet()と同じ挙動になります。
-        * (ただしその場合排他制御が必要なら登録する関数内で適切に行ってください)
-    ```cpp
-    wcfFuncSetAsync(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
-    ```
-    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle->args` でFuncを呼び出した引数を取得できます。
-        * set時に指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
-        (そのため引数の個数チェックをする必要はないです)
-    * 値を返すのはreturnではなくhandleを介して wcfFuncRespond, (<span class="since-c">2.0</span> wcfFuncRespondW) を使います。
-    ```c
-    wcfMultiVal ans = wcfValD(123.45);
-    wcfFuncRespond(handle, &ans);
-    ```
-    * 戻り値が不要な場合は `wcfFuncRespond(handle, NULL);` とします。
-    * エラーメッセージを返すには wcfFuncReject, (<span class="since-c">2.0</span> wcfFuncRejectW) を使います。
-    (`wcfFuncReject(handle, NULL);` も可)
-    ```c
-    wcfFuncReject(handle, "エラーメッセージ");
-    ```
-    * <del>respondもrejectもせずにreturnした場合は自動的に空の値でrespondします。</del>
-        * <span class="since-c">2.0</span>
-        respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
-        * そのためhandleポインタを関数の外のスコープの変数に保存したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
-    
-    \warning
-    <span class="since-c">2.0</span>
-    wcfFuncSet()で登録した関数はwcfSync() の中で呼び出されるため、
-    * wcfSync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。
-    その場合はwcfSync()を呼び出す頻度を上げるか、wcfLoopSync() を使ってください ([4-1. Client](./41_client.md) 参照)
-    * wcfFuncSet()で登録した関数内で他のクライアントの関数をwcfFuncRun()やwcfFuncRunAsync()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。
-    (結果を受け取る処理も wcfSync() で行われるため)
-    その場合はwcfFuncSetAsync()を使用してください。
-
 - <b class="tab-title">JavaScript</b>
     Client.func からFuncオブジェクトを作り、 Func.set() で関数を登録し、Client.sync()することで送信されます
 
@@ -284,6 +202,128 @@ wcli.func("fuga").setRunCondNone();
 
 </details>
 
+### CallHandle
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.4</span>
+
+    引数に webcface::CallHandle をとる関数をセットすることもできます。
+    ```cpp
+    wcli.func("hoge").set([](webcface::CallHandle handle){
+        double arg = handle.args().at(0).asDouble();
+        handle.respond(123); // return value
+    }).setArgs({
+        webcface::Arg("a").type(webcface::ValType::double_),
+    });
+    ```
+    * 通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は setAsync() を使用してください。
+    * 関数のsetのあとに、 setArgs() で受け取りたい引数の個数分の webcface::Arg() を渡し、引数名や戻り値の型を指定します。
+        * 引数名などの情報が不要な場合でも引数の個数分 Arg() を渡す必要があります。
+    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle.args()` でFuncを呼び出した引数を取得できます。
+        * setArgs() で指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
+        (そのため登録した関数の側で引数の個数チェックをする必要はないです)
+    * 値を返すのはreturnではなくhandleを介して `handle.respond(戻り値)` を使います。
+        * 戻り値が不要な場合はrespondに何も渡さず `handle.respond();` とします。
+    * エラーメッセージを返すには `handle.reject(エラーメッセージ)` を使います。
+        * 関数の中で例外をthrowした場合もエラーメッセージが呼び出し元に返ります。
+    * respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
+        * そのためhandleを関数の外のスコープの変数に保存(コピー)したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
+    
+- <b class="tab-title">C</b>
+    \since <span class="since-c">1.9</span>
+
+    wcfFuncSet, (<span class="since-c">2.0</span> wcfFuncSetW) で関数ポインタを登録できます。  
+    登録する関数の引数は wcfFuncCallHandle*, (<span class="since-c">2.0</span> wcfFuncCallHandleW*) と void* の2つで、
+    前者は引数のデータを取得したり結果を返すのに使用します。
+    後者には登録時に任意のデータのポインタを渡すことができます。(使用しない場合はNULLでよいです。)
+    ```c
+    void callback(wcfFuncCallHandle *handle, void *user_data_p) {
+        struct UserData *user_data = (struct UserData *)user_data_p;
+        // do something
+        wcfMultiVal ans = wcfValI(123); // return value
+        wcfFuncRespond(handle, ans);
+    }
+    wcfValType args_type[3] = {WCF_VAL_INT, WCF_VAL_DOUBLE, WCF_VAL_STRING};
+    struct UserData user_data = {...};
+    wcfFuncSet(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
+    ```
+    * set時には受け取りたい引数の型、個数、戻り値の型を指定します。
+    型は WCF_VAL_NONE, WCF_VAL_STRING, WCF_VAL_BOOL, WCF_VAL_INT, WCF_VAL_DOUBLE が指定できます。
+    * 同じ名前のFuncに複数回関数をセットすると上書きされ、後に登録した関数のみが呼び出されます。
+    ただし引数や戻り値の型などの情報は更新されず、最初の関数のものと同じになります。
+    * <span class="since-c">2.0</span>
+    wcfFuncSet(), wcfFuncSetW() で登録した関数はwcfSync()時に同じスレッドで実行されます。
+    そのため長時間かかる関数を登録するとその間他の処理がブロックされることになります。
+        * 関数を非同期(別スレッド)で実行したい場合は wcfFuncSetAsync(), wcfFuncSetAsyncW() を使用してください。
+        ver1.11以前ではwcfFuncSet()で登録した関数はすべて非同期実行されていたので、こちらが従来のwcfFuncSet()と同じ挙動になります。
+        * (ただしその場合排他制御が必要なら登録する関数内で適切に行ってください)
+    ```cpp
+    wcfFuncSetAsync(wcli, "hoge", args_type, 3, WCF_VAL_INT, callback, &user_data);
+    ```
+    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle->args` でFuncを呼び出した引数を取得できます。
+        * set時に指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
+        (そのため引数の個数チェックをする必要はないです)
+    * 値を返すのはreturnではなくhandleを介して wcfFuncRespond, (<span class="since-c">2.0</span> wcfFuncRespondW) を使います。
+    ```c
+    wcfMultiVal ans = wcfValD(123.45);
+    wcfFuncRespond(handle, &ans);
+    ```
+    * 戻り値が不要な場合は `wcfFuncRespond(handle, NULL);` とします。
+    * エラーメッセージを返すには wcfFuncReject, (<span class="since-c">2.0</span> wcfFuncRejectW) を使います。
+    (`wcfFuncReject(handle, NULL);` も可)
+    ```c
+    wcfFuncReject(handle, "エラーメッセージ");
+    ```
+    * <del>respondもrejectもせずにreturnした場合は自動的に空の値でrespondします。</del>
+        * <span class="since-c">2.0</span>
+        respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
+        * そのためhandleポインタを関数の外のスコープの変数に保存したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
+    
+    \warning
+    <span class="since-c">2.0</span>
+    wcfFuncSet()で登録した関数はwcfSync() の中で呼び出されるため、
+    * wcfSync() が呼び出される頻度が少ない場合、呼び出されてから実際に関数を実行するまでにラグが生じます。
+    その場合はwcfSync()を呼び出す頻度を上げるか、wcfLoopSync() を使ってください ([4-1. Client](./41_client.md) 参照)
+    * wcfFuncSet()で登録した関数内で他のクライアントの関数をwcfFuncRun()やwcfFuncRunAsync()で呼び出して結果を受け取ろうとするとデッドロックしてしまいます。
+    (結果を受け取る処理も wcfSync() で行われるため)
+    その場合はwcfFuncSetAsync()を使用してください。
+
+    <span></span>
+
+- <b class="tab-title">Python</b>
+    \since <span class="since-py">2.2</span>
+
+    引数に [webcface.CallHandle](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.CallHandle) をとる関数をセットすることもできます。
+    ```py
+    def hoge(handle):
+        a = handle.args[0]
+        handle.respond(123) # return value
+
+    wcli.func("hoge").set(hoge,
+        handle=True,
+        return_type=int,
+        args=[Arg("a", type=int)]
+    )
+    ```
+    * 通常の関数との区別のため、set()の引数に `handle=True` を渡すか、または引数の型アノテーションで `CallHandle` を指定するかのどちらかが必要です。
+        * デコレータで登録する場合はset()の代わりに func() の引数に`handle=True`を渡してください。
+    * 通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は set_async() を使用してください。
+    * 関数のset時に、戻り値の型と、受け取りたい引数の個数分の [webcface.Arg](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.Arg) を渡し、引数名や型を指定してください。
+        * デコレータで登録する場合はset()の代わりに func() の引数に渡してください。
+    * callbackが呼び出されたとき、引数に渡されたhandleを介して `handle.args` でFuncを呼び出した引数を取得できます。
+        * set時に指定した引数の個数と呼び出し時の個数が一致しない場合は、callbackが実行される前に呼び出し元にエラーメッセージが投げられます。
+        (そのため登録した関数の側で引数の個数チェックをする必要はないです)
+    * 値を返すのはreturnではなくhandleを介して `handle.respond(戻り値)` を使います。
+        * 戻り値が不要な場合はrespondに何も渡さず `handle.respond()` とします。
+    * エラーメッセージを返すには `handle.reject(エラーメッセージ)` を使います。
+        * 関数の中で例外をthrowした場合もエラーメッセージが呼び出し元に返ります。
+    * respondかrejectを呼び出すまで、Funcの呼び出し元には関数呼び出しの結果は送られません。
+        * そのためhandleを関数の外のスコープの変数に保存(コピー)したり、別スレッドに持ち込むことで任意のタイミングで結果を返すことも可能です。
+
+</div>
+
 ### 引数と戻り値型
 
 <div class="tabbed">
@@ -353,6 +393,9 @@ wcli.func("fuga").setRunCondNone();
     ])
     ```
 
+    <span class="since-py">2.2</span>
+    実際の関数の引数とargsで指定した個数が一致していなければAssertionErrorになります。
+
 </div>
 
 ### 関数をWebUIから隠す
@@ -396,7 +439,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 </div>
 </details>
 
-## FuncListener
+### FuncListener
 
 呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。
 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。
@@ -404,12 +447,13 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    <span class="since-c">1.5</span>
+    \since <span class="since-c">1.5</span>
+
     ```cpp
     wcli.funcListener("hoge").listen();
     ```
     で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。
-    (listen()ではブロックはしません)
+    (listen()自体は関数呼び出しを待機することはありません)
 
     引数を受け取りたい場合は
     ```cpp
@@ -448,7 +492,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     wcfFuncListen(wcli, "hoge", args_type, 3, WCF_VAL_INT);
     ```
     で待ち受けを開始し、wcfFuncSet() と同様関数が登録され他クライアントから見られるようになります。
-    (wcfFuncListen()ではブロックはしません)
+    (wcfFuncListen()自体は関数呼び出しを待機することはありません)
 
     その後、任意のタイミングで
     ```c
@@ -471,6 +515,35 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     ```c
     wcfFuncReject(handle, "エラーメッセージ");
     ```
+
+- <b class="tab-title">Python</b>
+    \since <span class="since-py">2.2</span>
+
+    ```py
+    wcli.funcListener("hoge").listen()
+    ```
+    で待ち受けを開始し、func.set()と同様関数が登録され他クライアントから見られるようになります。
+    (listen()自体は関数呼び出しを待機することはありません)
+
+    引数を受け取りたい場合は
+    ```py
+    wcli.funcListener("hoge").listen(args=[...])
+    ```
+    のように引数の個数分の Arg を指定してください。
+    
+    その後、任意のタイミングで
+    ```py
+    handle = wcli.funcListener("hoge").fetch_call()
+    ```
+    とすることで関数が呼び出されたかどうかを調べることができます。
+    * その関数がまだ呼び出されていない場合はNoneが返ります。
+    * 関数が呼び出された場合、 handle.args で呼び出された引数を取得できます。
+        * listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetch_callで取得する前に呼び出し元に例外が投げられます
+        (そのため引数の個数チェックをする必要はないです)
+    * 通常の関数のreturnの代わりに、`handle.respond()` で関数呼び出しの終了を表し、戻り値を返すことができます。
+    * またthrowの代わりに `handle.reject()` でエラーメッセージを返すことができます。
+
+    詳細は [webcface.CallHandle](https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.CallHandle) 
 
 </div>
 

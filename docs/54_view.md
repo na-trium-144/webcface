@@ -290,7 +290,7 @@ Viewに追加する各種要素をViewComponentといいます。
 
 ボタンを表示します。
 
-クリック時の動作は、関数を登録済みの[Funcオブジェクト](./53_func.md)、または関数を直接設定できます。
+クリック時の動作は、関数を登録済みの[Funcオブジェクト](./53_func.md)かFuncListenerオブジェクトを指定するか、または関数を直接設定できます。
 
 \note 別のMemberのFuncオブジェクトを渡すこともできます
 (ボタンを押すと別のMemberに登録されている関数が実行される)
@@ -298,7 +298,7 @@ Viewに追加する各種要素をViewComponentといいます。
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    Funcオブジェクトの場合
+    Funcオブジェクト、FuncListerオブジェクトの場合
     ```cpp
     wcli.func("hoge").set(/*...*/);
     v << webcface::button("表示する文字列", wcli.func("hoge"));
@@ -346,7 +346,7 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">Python</b>
-    Funcオブジェクトの場合
+    Funcオブジェクト、FuncListenerオブジェクトの場合
     ```py
     wcli.func("hoge").set(...)
     v.add(webcface.view_components.button("表示する文字列", wcli.func("hoge")))
@@ -523,7 +523,7 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">C++</b>
     onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
-    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、AnonymousFuncオブジェクトが使用できます。
+    buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。
     ```cpp
     v << webcface::textInput("表示する文字列").onChange([](std::string val) {
         std::cout << "input changed: " << val << std::endl;
@@ -549,7 +549,7 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">Python</b>
     on_change で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
-    buttonに渡す関数と同様、関数、ラムダ式、またはFuncオブジェクトが使用できます。
+    buttonに渡す関数と同様、関数、ラムダ式、またはFuncオブジェクト、FuncListenerオブジェクトが使用できます。
     ```ts
     view_components.text_input("表示する文字列", on_change=...)
     ```
