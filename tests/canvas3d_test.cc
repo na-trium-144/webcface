@@ -77,13 +77,12 @@ TEST_F(Canvas3DTest, set) {
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3})
-              .origin(Transform::fromEuler(1, 1, 1, 0, 0, 0))
+              .origin(translate(1, 1, 1))
               .color(ViewColor::red));
-    v.add(plane({}, 10, 10)
-              .origin(Transform::fromEuler(2, 2, 2, 0, 0, 0))
-              .color(ViewColor::yellow));
+    v.add(
+        plane({}, 10, 10).origin(translate(2, 2, 2)).color(ViewColor::yellow));
     v.add(robot_model(self_name, "b")
-              .origin(Transform::fromEuler(3, 3, 3, 0, 0, 0))
+              .origin(translate(3, 3, 3))
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);

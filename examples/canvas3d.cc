@@ -18,12 +18,12 @@ int main() {
                    webcface::ViewColor::gray},
                   // line: linkの座標系で2点指定
                   {"line1",
-                   fixedJoint("plane", webcface::Transform::fromEuler(
-                                           {0, 0, 0}, {0, -M_PI / 2, 0})),
+                   fixedJoint("plane",
+                              {{0, 0, 0}, webcface::rotEuler(0, -M_PI / 2, 0)}),
                    line({0, 0, 0}, {1, 0, 0}), webcface::ViewColor::yellow},
                   {"line2",
-                   fixedJoint("line1", webcface::Transform::fromEuler(
-                                           {1, 0, 0}, {0, M_PI / 4, 0})),
+                   fixedJoint("line1",
+                              {{1, 0, 0}, webcface::rotEuler(0, M_PI / 4, 0)}),
                    line({0, 0, 0}, {1, 0, 0}), webcface::ViewColor::green},
                   {"line3", fixedJoint("line1", {0, 0, 0}),
                    line({0.5, 1, 0}, {0.5, -1, 0}), webcface::ViewColor::red},
@@ -33,15 +33,12 @@ int main() {
                    webcface::ViewColor::yellow},
                   // circle: 中心座標系と半径を指定 (指定した座標系のxy平面)
                   {"circle", fixedJoint("plane", {2, 0, 0}),
-                   circle(webcface::Transform::fromEuler(0, 0, 0.1, 0, 0, 0),
-                          0.3),
+                   circle(webcface::translate(0, 0, 0.1), 0.3),
                    webcface::ViewColor::yellow},
                   // cylinder:
                   // 1つの面の中心座標系と半径、押出長さを指定(x正方向に伸びる)
                   {"cylinder", fixedJoint("plane", {3, 0, 0}),
-                   cylinder(
-                       webcface::Transform::fromEuler(0, 0, 0, 0, -M_PI / 2, 0),
-                       0.3, 1),
+                   cylinder(webcface::rotY(-M_PI / 2), 0.3, 1),
                    webcface::ViewColor::yellow},
                   // sphere: 中心点と半径を指定
                   {"sphere", fixedJoint("plane", {4, 0, 0}),
@@ -51,43 +48,34 @@ int main() {
             .set({{"base", box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),
                    webcface::ViewColor::inherit},
                   {"wheel_lf",
-                   rotationalJoint("joint_lf", "base",
-                                   webcface::Transform::fromEuler(
-                                       0.2, 0.2, 0.05, -M_PI / 4, 0, 0)),
-                   cylinder(
-                       webcface::Transform::fromEuler(0, 0, 0, M_PI / 2, 0, 0),
-                       0.05, 0.01),
+                   rotationalJoint(
+                       "joint_lf", "base",
+                       {{0.2, 0.2, 0.05}, webcface::rotEuler(-M_PI / 4, 0, 0)}),
+                   cylinder(webcface::rotZ(M_PI / 2), 0.05, 0.01),
                    webcface::ViewColor::inherit},
                   {"wheel_rf",
-                   rotationalJoint("joint_rf", "base",
-                                   webcface::Transform::fromEuler(
-                                       0.2, -0.2, 0.05, M_PI / 4, 0, 0)),
-                   cylinder(
-                       webcface::Transform::fromEuler(0, 0, 0, M_PI / 2, 0, 0),
-                       0.05, 0.01),
+                   rotationalJoint(
+                       "joint_rf", "base",
+                       {{0.2, -0.2, 0.05}, webcface::rotEuler(M_PI / 4, 0, 0)}),
+                   cylinder(webcface::rotZ(M_PI / 2), 0.05, 0.01),
                    webcface::ViewColor::inherit},
                   {"wheel_lb",
-                   rotationalJoint("joint_lb", "base",
-                                   webcface::Transform::fromEuler(
-                                       -0.2, 0.2, 0.05, M_PI / 4, 0, 0)),
-                   cylinder(
-                       webcface::Transform::fromEuler(0, 0, 0, M_PI / 2, 0, 0),
-                       0.05, 0.01),
+                   rotationalJoint(
+                       "joint_lb", "base",
+                       {{-0.2, 0.2, 0.05}, webcface::rotEuler(M_PI / 4, 0, 0)}),
+                   cylinder(webcface::rotZ(M_PI / 2), 0.05, 0.01),
                    webcface::ViewColor::inherit},
                   {"wheel_rb",
                    rotationalJoint("joint_rb", "base",
-                                   webcface::Transform::fromEuler(
-                                       -0.2, -0.2, 0.05, -M_PI / 4, 0, 0)),
-                   cylinder(
-                       webcface::Transform::fromEuler(0, 0, 0, M_PI / 2, 0, 0),
-                       0.05, 0.01),
+                                   {{-0.2, -0.2, 0.05},
+                                    webcface::rotEuler(-M_PI / 4, 0, 0)}),
+                   cylinder(webcface::rotZ(M_PI / 2), 0.05, 0.01),
                    webcface::ViewColor::inherit},
                   {"line1", fixedJoint("base", {0, 0, 0.05}),
                    line({0, 0, 0}, {0, 0, 0.3})},
                   {"line2",
-                   rotationalJoint(
-                       "line_rotation", "line1",
-                       webcface::Transform::fromEuler(0, 0, 0.3, 0, 0, 0)),
+                   rotationalJoint("line_rotation", "line1",
+                                   webcface::translate(0, 0, 0.3)),
                    line({0, 0, 0}, {0.5, 0, 0}), webcface::ViewColor::red}});
     }
 
@@ -109,9 +97,9 @@ int main() {
             world.add(webcface::box({1.5, -1.5, 0}, {1.5, 1.5, 0.1})
                           .color(webcface::ViewColor::gray));
             world.add(wcli.robotModel("omniwheel")
-                          .origin(webcface::Transform::fromEuler(
-                              0.3 * std::sin(i / 3.0), 0.3 * std::cos(i / 3.0),
-                              0, i / 3.0, 0, 0))
+                          .origin({{-0.3 * std::sin(i / 3.0),
+                                    0.3 * std::cos(i / 3.0), 0},
+                                   webcface::rotZ(i / 3.0)})
                           .angles({{"line_rotation", -i}}));
             world.sync();
         }

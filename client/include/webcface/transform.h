@@ -94,32 +94,33 @@ enum class AxisSequence {
 };
 
 /*!
- * \brief 3次元の座標と回転
- * \since ver1.4
+ * \brief 3次元の回転を表すクラス
+ * \since ver2.5
  *
- * * 内部ではx, y, zの座標と、
- * z軸,y軸,x軸の順に回転させる系のオイラー角(Tait-Bryan角)
+ * * 内部では z軸,y軸,x軸の順に回転させる系のオイラー角(Tait-Bryan角)
  * または3x3回転行列(ver2.5〜)
  * で保持している。
  * * 送受信時にはすべてこのzyxのオイラー角に変換される。
- * * (ver1.6〜) 2次元の回転を表すのにも使われ、
+ * * 2次元の回転を表すのにも使われ、
  * その場合オイラー角 rot() の最初の要素(=z軸周りの回転)を使って回転を表し、
  * 残りの要素(x,y軸周りの回転)を0とする。
  *
  * \sa AxisSequence
  */
-class Transform : public Point {
+class Rotation {
   protected:
     // rot_とrmat_のどちらかには必ず値が入っている。
     // 両方に値が入っているなら両方とも同じ回転を表現していなければならない。
     mutable std::optional<std::array<double, 3>> rot_;
     mutable std::optional<std::array<std::array<double, 3>, 3>> rmat_;
 
-    Transform(const Point &pos, const std::optional<std::array<double, 3>> &rot,
-              const std::optional<std::array<std::array<double, 3>, 3>> &rmat)
-        : Point(pos), rot_(rot), rmat_(rmat) {}
+    Rotation(const std::optional<std::array<double, 3>> &rot,
+             const std::optional<std::array<std::array<double, 3>, 3>> &rmat)
+        : rot_(rot), rmat_(rmat) {}
 
   public:
+    friend class Transform;
+
     /*!
      * \brief オイラー角から回転行列への変換
      * \since ver2.5
@@ -134,92 +135,23 @@ class Transform : public Point {
     matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
                   AxisSequence axis);
 
-    Transform()
-        : Point(), rot_({0, 0, 0}), rmat_({{
-                                        {{1, 0, 0}},
-                                        {{0, 1, 0}},
-                                        {{0, 0, 1}},
-                                    }}) {}
+    Rotation()
+        : rot_({0, 0, 0}), rmat_({{
+                               {{1, 0, 0}},
+                               {{0, 1, 0}},
+                               {{0, 0, 1}},
+                           }}) {}
 
-    /*!
-     * \brief 3次元の座標と回転をオイラー角から初期化
-     * \param pos x, y, z 座標
-     * \param rot オイラー角
-     * 回転軸の順序は z, y, x の順
-     * \deprecated ver2.5〜 fromEuler<ZYX>() に移行
-     *
-     */
-    [[deprecated("use Transform::fromEuler<ZYX>()")]]
-    Transform(const Point &pos, const std::array<double, 3> &rot)
-        : Transform(pos, rot, std::nullopt) {}
-
-    /*!
-     * \brief 3次元の座標と回転をオイラー角から初期化
-     * \since ver2.5
-     * \tparam axis 回転軸の順序 (ver2.5〜)
-     * \param pos x, y, z 座標
-     * \param rot オイラー角
-     *
-     */
-    template <AxisSequence axis = AxisSequence::ZYX>
-    static Transform fromEuler(const Point &pos,
-                               const std::array<double, 3> &rot) {
-        if constexpr (axis == AxisSequence::ZYX) {
-            return {pos, rot, std::nullopt};
-        } else {
-            return {pos, std::nullopt, eulerToMatrix(rot, axis)};
-        }
-    }
-    /*!
-     * \brief 3次元の座標と回転を回転行列から初期化
-     * \since ver2.5
-     * \param pos x, y, z 座標
-     * \param rotMatrix 回転行列
-     *
-     */
-    static Transform
-    fromRotMatrix(const Point &pos,
-                  const std::array<std::array<double, 3>, 3> &matrix) {
-        return {pos, std::nullopt, matrix};
-    }
-
-    /*!
-     * \brief 2次元の座標と回転を初期化
-     * \since ver1.6
-     * \param pos x, y 座標
-     * \param rot 回転角(z)
-     *
-     */
-    Transform(const Point &pos, double rot)
-        : Transform(pos, std::array<double, 3>{rot, 0, 0}, std::nullopt) {};
-    /*!
-     * \brief 3次元の座標と回転をオイラー角から初期化
-     * \deprecated ver2.5〜 fromEuler<ZYX>() に移行
-     *
-     */
-    [[deprecated("use Transform::fromEuler<ZYX>()")]]
-    Transform(double x, double y, double z, double z_angle, double y_angle,
-              double x_angle)
-        : Transform(std::array<double, 3>{x, y, z},
-                    std::array<double, 3>{z_angle, y_angle, x_angle},
-                    std::nullopt) {}
-    /*!
-     * \brief 3次元の座標と回転をオイラー角から初期化
-     * \since ver2.5
-     * \tparam axis 回転軸の順序 (ver2.5〜)
-     *
-     */
-    template <AxisSequence axis = AxisSequence::ZYX>
-    static Transform fromEuler(double x, double y, double z, double angle1,
-                               double angle2, double angle3) {
-        return fromEuler<axis>(std::array<double, 3>{x, y, z},
-                               std::array<double, 3>{angle1, angle2, angle3});
-    }
-    /*!
-     * \brief 2次元の座標を初期化
-     * \since ver1.6
-     */
-    Transform(double x, double y) : Transform({x, y}, 0) {}
+    template <AxisSequence axis>
+    friend Rotation rotEuler(const std::array<double, 3> &rot);
+    template <AxisSequence axis>
+    friend Rotation rotEuler(double angle1, double angle2, double angle3);
+    friend Rotation
+    rotMatrix(const std::array<std::array<double, 3>, 3> &matrix);
+    friend Rotation rot2D(double rot);
+    friend Rotation rotX(double rot);
+    friend Rotation rotY(double rot);
+    friend Rotation rotZ(double rot);
 
     /*!
      * \brief 3次元の回転をオイラー角として取得
@@ -265,6 +197,160 @@ class Transform : public Point {
     double rotMatrix(std::size_t row, std::size_t col) const {
         return rotMatrix().at(row).at(col);
     }
+};
+
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
+ * \tparam axis 回転軸の順序
+ * \param rot オイラー角 (内的回転の順の3パラメーター)
+ *
+ */
+template <AxisSequence axis>
+inline Rotation rotEuler(const std::array<double, 3> &rot) {
+    if constexpr (axis == AxisSequence::ZYX) {
+        return {rot, std::nullopt};
+    } else {
+        return {std::nullopt, Rotation::eulerToMatrix(rot, axis)};
+    }
+}
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
+ *
+ * axisを省略した場合 AxisSequence::ZYX
+ *
+ */
+inline Rotation rotEuler(const std::array<double, 3> &rot) {
+    return rotEuler<AxisSequence::ZYX>(rot);
+}
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
+ * \tparam axis 回転軸の順序 (ver2.5〜)
+ *
+ */
+template <AxisSequence axis>
+inline Rotation rotEuler(double angle1, double angle2, double angle3) {
+    return rotEuler<axis>(std::array<double, 3>{angle1, angle2, angle3});
+}
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
+ *
+ * axisを省略した場合 AxisSequence::ZYX
+ *
+ */
+inline Rotation rotEuler(double angle1, double angle2, double angle3) {
+    return rotEuler<AxisSequence::ZYX>(
+        std::array<double, 3>{angle1, angle2, angle3});
+}
+/*!
+ * \brief 回転を回転行列から初期化
+ * \since ver2.5
+ * \param pos x, y, z 座標
+ * \param rotMatrix 回転行列
+ *
+ */
+inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
+    return {std::nullopt, matrix};
+}
+/*!
+ * \brief 2次元の回転を初期化
+ * \since ver2.5
+ * \param rot 回転角(z)
+ *
+ * rotZ() と同じ。
+ *
+ */
+inline Rotation rot2D(double rot) {
+    return {std::array<double, 3>{rot, 0, 0}, std::nullopt};
+}
+/*!
+ * \brief X軸周りの回転
+ * \since ver2.5
+ */
+inline Rotation rotX(double rot) {
+    return {std::array<double, 3>{0, 0, rot}, std::nullopt};
+}
+/*!
+ * \brief Y軸周りの回転
+ * \since ver2.5
+ */
+inline Rotation rotY(double rot) {
+    return {std::array<double, 3>{0, rot, 0}, std::nullopt};
+}
+/*!
+ * \brief Z軸周りの回転
+ * \since ver2.5
+ *
+ * rot2D() と同じ。
+ *
+ */
+inline Rotation rotZ(double rot) {
+    return {std::array<double, 3>{rot, 0, 0}, std::nullopt};
+}
+
+/*!
+ * \brief 3次元の平行移動と回転
+ * \since ver1.4
+ *
+ * \sa Point, Rotation
+ */
+class Transform : public Point, public Rotation {
+  public:
+    Transform() : Point(), Rotation() {}
+    /*!
+     * \since ver2.5
+     */
+    Transform(const Point &pos, const Rotation &rot)
+        : Point(pos), Rotation(rot) {}
+
+    /*!
+     * \brief 回転のみの場合Rotationからキャスト
+     * \since ver2.5
+     */
+    Transform(const Rotation &rot) : Point(), Rotation(rot) {}
+
+    /*!
+     * \brief オイラー角から初期化
+     * \param pos x, y, z 座標
+     * \param rot オイラー角
+     * 回転軸の順序は z, y, x の順
+     * \deprecated ver2.5〜 Transform(pos, rotEuler(rot))
+     *
+     */
+    [[deprecated("use Transform(pos, rotEuler(rot))")]]
+    Transform(const Point &pos, const std::array<double, 3> &rot)
+        : Transform(pos, Rotation{rot, std::nullopt}) {}
+
+    /*!
+     * \brief 2次元の座標と回転を初期化
+     * \since ver1.6
+     * \param pos x, y 座標
+     * \param rot 回転角(z)
+     *
+     */
+    Transform(const Point &pos, double rot) : Transform(pos, rot2D(rot)) {};
+    /*!
+     * \brief 3次元の座標と回転をオイラー角から初期化
+     * \deprecated ver2.5〜 Transform({x, y, z}, rotEuler(z, y, x))
+     *
+     */
+    [[deprecated("use Transform({x, y, z}, rotEuler(z, y, x))")]]
+    Transform(double x, double y, double z, double z_angle, double y_angle,
+              double x_angle)
+        : Transform(std::array<double, 3>{x, y, z},
+                    Rotation{std::array<double, 3>{z_angle, y_angle, x_angle},
+                             std::nullopt}) {}
+    /*!
+     * \brief 2次元の座標を初期化
+     * \since ver1.6
+     * \deprecated ver2.5〜 translate(x, y)
+     */
+    [[deprecated("use translate(x, y) for translation-only transform")]]
+    Transform(double x, double y)
+        : Transform({x, y}, 0) {}
 
     /*!
      * \brief このTransformを別のTransformに適用する
@@ -327,6 +413,23 @@ class Transform : public Point {
  * \brief 移動なし、回転なしのTransform
  * \since ver1.4
  */
-inline Transform identity() { return Transform{}; }
+inline Transform identity() { return {}; }
+/*!
+ * \brief 平行移動のみのTransform
+ * \since ver2.5
+ */
+inline Transform translate(const Point &pos) { return {pos, Rotation{}}; }
+/*!
+ * \brief 平行移動のみのTransform
+ * \since ver2.5
+ */
+inline Transform translate(double x, double y, double z) {
+    return {{x, y, z}, Rotation{}};
+}
+/*!
+ * \brief 2次元の平行移動のみのTransform
+ * \since ver2.5
+ */
+inline Transform translate(double x, double y) { return {{x, y}, 0}; }
 
 WEBCFACE_NS_END

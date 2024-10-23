@@ -7,7 +7,7 @@ WEBCFACE_NS_BEGIN
 // https://en.wikipedia.org/wiki/Euler_angles にあるものを写した
 
 std::array<std::array<double, 3>, 3>
-Transform::eulerToMatrix(const std::array<double, 3> &rot, AxisSequence axis) {
+Rotation::eulerToMatrix(const std::array<double, 3> &rot, AxisSequence axis) {
     double c0 = std::cos(rot[0]);
     double c1 = std::cos(rot[1]);
     double c2 = std::cos(rot[2]);
@@ -265,8 +265,8 @@ matrixToTaitBryanEuler(const std::array<std::array<double, 3>, 3> &rmat,
 }
 
 std::array<double, 3>
-Transform::matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
-                         AxisSequence axis) {
+Rotation::matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
+                        AxisSequence axis) {
     switch (axis) {
     case AxisSequence::XZX:
     case AxisSequence::XYX:
@@ -302,7 +302,7 @@ Transform Transform::appliedTo(const Transform &target) const {
                               this->rotMatrix(i, 2) * target.rotMatrix(2, j);
         }
     }
-    return Transform::fromRotMatrix(newPos, newMatrix);
+    return Transform(newPos, webcface::rotMatrix(newMatrix));
 }
 Point Transform::appliedTo(const Point &target) const {
     std::array<double, 3> newPos;

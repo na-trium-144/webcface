@@ -260,9 +260,10 @@ struct Plane {
         }
     }
     Transform origin() const {
-        return Transform::fromEuler(base.properties[0], base.properties[1],
-                                    base.properties[2], base.properties[3],
-                                    base.properties[4], base.properties[5]);
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotEuler(base.properties[3], base.properties[4],
+                     base.properties[5]));
     }
     double width() const { return base.properties[6]; }
     double height() const { return base.properties[7]; }
@@ -336,9 +337,10 @@ struct Circle {
         }
     }
     Transform origin() const {
-        return Transform::fromEuler(base.properties[0], base.properties[1],
-                                    base.properties[2], base.properties[3],
-                                    base.properties[4], base.properties[5]);
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotEuler(base.properties[3], base.properties[4],
+                     base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
 };
@@ -362,9 +364,10 @@ struct Cylinder {
         }
     }
     Transform origin() const {
-        return Transform::fromEuler(base.properties[0], base.properties[1],
-                                    base.properties[2], base.properties[3],
-                                    base.properties[4], base.properties[5]);
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotEuler(base.properties[3], base.properties[4],
+                     base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
     double length() const { return base.properties[7]; }

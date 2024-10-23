@@ -23,7 +23,7 @@ int main() {
                       .onClick(
                           [] { std::cout << "Canvas Clicked!!" << std::endl; });
             cv << webcface::text("Button")
-                      .origin({35, 45})
+                      .origin(webcface::translate(35, 45))
                       .textColor(webcface::ViewColor::orange)
                       .textSize(10);
             cv << webcface::circle(webcface::Point{50, 50}, 20)
