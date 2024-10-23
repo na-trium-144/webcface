@@ -1,7 +1,9 @@
+#define _USE_MATH_DEFINES // NOLINT
 #include <gtest/gtest.h>
 #include <random>
 #include "webcface/transform.h"
 #include <iostream>
+#include <cmath>
 
 using namespace webcface;
 

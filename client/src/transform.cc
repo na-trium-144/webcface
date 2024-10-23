@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES // NOLINT
 #include "webcface/transform.h"
 #include <cmath>
 #include <stdexcept>
@@ -88,8 +89,7 @@ Rotation::eulerToMatrix(const std::array<double, 3> &rot, AxisSequence axis) {
             {{-c1 * s2, s1, c1 * c2}},
         }};
     default:
-        throw std::invalid_argument("Invalid axis sequence: " +
-                                    std::to_string(static_cast<int>(axis)));
+        throw std::invalid_argument("Invalid axis sequence");
     }
 }
 
