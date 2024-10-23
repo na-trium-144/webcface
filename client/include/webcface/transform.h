@@ -100,6 +100,7 @@ enum class AxisSequence {
  * * 内部では z軸,y軸,x軸の順に回転させる系のオイラー角(Tait-Bryan角)
  * または3x3回転行列(ver2.5〜)
  * で保持している。
+ * * todo: 回転行列の代わりにクォータニオンを使うほうが良かったかも
  * * 送受信時にはすべてこのzyxのオイラー角に変換される。
  * * 2次元の回転を表すのにも使われ、
  * その場合オイラー角 rot() の最初の要素(=z軸周りの回転)を使って回転を表し、
@@ -135,6 +136,35 @@ class Rotation {
     matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
                   AxisSequence axis);
 
+    /*!
+     * \brief クォータニオンから回転行列への変換
+     * \since ver2.5
+     *
+     * クォータニオンは w, x, y, z の順で表す。
+     *
+     */
+    static WEBCFACE_DLL std::array<std::array<double, 3>, 3>
+    quaternionToMatrix(const std::array<double, 4> &quat);
+    /*!
+     * \brief 回転行列からクォータニオンへの変換
+     * \since ver2.5
+     */
+    static WEBCFACE_DLL std::array<double, 4>
+    matrixToQuaternion(const std::array<std::array<double, 3>, 3> &rmat);
+
+    /*!
+     * \brief 回転軸と角度からクォータニオンに変換
+     * \since ver2.5
+     */
+    static WEBCFACE_DLL std::array<double, 4>
+    axisAngleToQuaternion(const std::array<double, 3> &axis, double angle);
+    /*!
+     * \brief クォータニオンから回転軸と角度に変換
+     * \since ver2.5
+     */
+    static WEBCFACE_DLL std::pair<std::array<double, 3>, double>
+    quaternionToAxisAngle(const std::array<double, 4> &quat);
+
     Rotation()
         : rot_({0, 0, 0}), rmat_({{
                                {{1, 0, 0}},
@@ -144,14 +174,8 @@ class Rotation {
 
     template <AxisSequence axis>
     friend Rotation rotEuler(const std::array<double, 3> &rot);
-    template <AxisSequence axis>
-    friend Rotation rotEuler(double angle1, double angle2, double angle3);
     friend Rotation
     rotMatrix(const std::array<std::array<double, 3>, 3> &matrix);
-    friend Rotation rot2D(double rot);
-    friend Rotation rotX(double rot);
-    friend Rotation rotY(double rot);
-    friend Rotation rotZ(double rot);
 
     /*!
      * \brief 3次元の回転をオイラー角として取得
@@ -196,6 +220,21 @@ class Rotation {
      */
     double rotMatrix(std::size_t row, std::size_t col) const {
         return rotMatrix().at(row).at(col);
+    }
+
+    /*!
+     * \brief クォータニオンとして取得
+     * \since ver2.5
+     */
+    std::array<double, 4> rotQuat() const {
+        return matrixToQuaternion(rotMatrix());
+    }
+    /*!
+     * \brief 回転軸と角度として取得
+     * \since ver2.5
+     */
+    std::pair<std::array<double, 3>, double> rotAxisAngle() const {
+        return quaternionToAxisAngle(rotQuat());
     }
 };
 
@@ -256,6 +295,30 @@ inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
     return {std::nullopt, matrix};
 }
 /*!
+ * \brief 回転をクォータニオンから初期化
+ * \since ver2.5
+ * \param quat クォータニオン (w, x, y, z)
+ *
+ */
+inline Rotation rotQuat(const std::array<double, 4> &quat) {
+    return rotMatrix(Rotation::quaternionToMatrix(quat));
+}
+/*!
+ * \brief 回転をクォータニオンから初期化
+ * \since ver2.5
+ */
+inline Rotation rotQuat(double w, double x, double y, double z) {
+    return rotQuat({w, x, y, z});
+}
+/*!
+ * \brief 回転を回転軸と角度から初期化
+ * \since ver2.5
+ */
+inline Rotation rotAxisAngle(const std::array<double, 3> &axis, double angle) {
+    return rotQuat(Rotation::axisAngleToQuaternion(axis, angle));
+}
+
+/*!
  * \brief 2次元の回転を初期化
  * \since ver2.5
  * \param rot 回転角(z)
@@ -263,23 +326,17 @@ inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
  * rotZ() と同じ。
  *
  */
-inline Rotation rot2D(double rot) {
-    return {std::array<double, 3>{rot, 0, 0}, std::nullopt};
-}
+inline Rotation rot2D(double rot) { return rotEuler(rot, 0, 0); }
 /*!
  * \brief X軸周りの回転
  * \since ver2.5
  */
-inline Rotation rotX(double rot) {
-    return {std::array<double, 3>{0, 0, rot}, std::nullopt};
-}
+inline Rotation rotX(double rot) { return rotEuler(0, 0, rot); }
 /*!
  * \brief Y軸周りの回転
  * \since ver2.5
  */
-inline Rotation rotY(double rot) {
-    return {std::array<double, 3>{0, rot, 0}, std::nullopt};
-}
+inline Rotation rotY(double rot) { return rotEuler(0, rot, 0); }
 /*!
  * \brief Z軸周りの回転
  * \since ver2.5
@@ -287,9 +344,7 @@ inline Rotation rotY(double rot) {
  * rot2D() と同じ。
  *
  */
-inline Rotation rotZ(double rot) {
-    return {std::array<double, 3>{rot, 0, 0}, std::nullopt};
-}
+inline Rotation rotZ(double rot) { return rotEuler(rot, 0, 0); }
 
 /*!
  * \brief 3次元の平行移動と回転

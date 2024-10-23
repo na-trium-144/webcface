@@ -287,6 +287,77 @@ Rotation::matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
     }
 }
 
+std::array<std::array<double, 3>, 3>
+Rotation::quaternionToMatrix(const std::array<double, 4> &quat) {
+    double w = quat[0];
+    double x = quat[1];
+    double y = quat[2];
+    double z = quat[3];
+    return {{
+        {{1 - 2 * y * y - 2 * z * z, 2 * x * y - 2 * z * w,
+          2 * x * z + 2 * y * w}},
+        {{2 * x * y + 2 * z * w, 1 - 2 * x * x - 2 * z * z,
+          2 * y * z - 2 * x * w}},
+        {{2 * x * z - 2 * y * w, 2 * y * z + 2 * x * w,
+          1 - 2 * x * x - 2 * y * y}},
+    }};
+}
+std::array<double, 4>
+Rotation::matrixToQuaternion(const std::array<std::array<double, 3>, 3> &rmat) {
+    double trace = rmat[0][0] + rmat[1][1] + rmat[2][2];
+    double w, x, y, z;
+    if (trace > 0) {
+        double s = std::sqrt(trace + 1.0) * 2;
+        w = 0.25 * s;
+        x = (rmat[2][1] - rmat[1][2]) / s;
+        y = (rmat[0][2] - rmat[2][0]) / s;
+        z = (rmat[1][0] - rmat[0][1]) / s;
+    } else if (rmat[0][0] > rmat[1][1] && rmat[0][0] > rmat[2][2]) {
+        double s = std::sqrt(1.0 + rmat[0][0] - rmat[1][1] - rmat[2][2]) * 2;
+        w = (rmat[2][1] - rmat[1][2]) / s;
+        x = 0.25 * s;
+        y = (rmat[0][1] + rmat[1][0]) / s;
+        z = (rmat[0][2] + rmat[2][0]) / s;
+    } else if (rmat[1][1] > rmat[2][2]) {
+        double s = std::sqrt(1.0 + rmat[1][1] - rmat[0][0] - rmat[2][2]) * 2;
+        w = (rmat[0][2] - rmat[2][0]) / s;
+        x = (rmat[0][1] + rmat[1][0]) / s;
+        y = 0.25 * s;
+        z = (rmat[1][2] + rmat[2][1]) / s;
+    } else {
+        double s = std::sqrt(1.0 + rmat[2][2] - rmat[0][0] - rmat[1][1]) * 2;
+        w = (rmat[1][0] - rmat[0][1]) / s;
+        x = (rmat[0][2] + rmat[2][0]) / s;
+        y = (rmat[1][2] + rmat[2][1]) / s;
+        z = 0.25 * s;
+    }
+    return {w, x, y, z};
+}
+
+std::array<double, 4>
+Rotation::axisAngleToQuaternion(const std::array<double, 3> &axis,
+                                double angle) {
+    double half_angle = angle / 2;
+    double s = std::sin(half_angle);
+    double norm =
+        std::sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+    if (norm == 0) {
+        return {1, 0, 0, 0};
+    } else {
+        return {std::cos(half_angle), axis[0] / norm * s, axis[1] / norm * s,
+                axis[2] / norm * s};
+    }
+}
+std::pair<std::array<double, 3>, double>
+Rotation::quaternionToAxisAngle(const std::array<double, 4> &quat) {
+    double w = quat[0];
+    double x = quat[1];
+    double y = quat[2];
+    double z = quat[3];
+    double angle = 2 * std::acos(w);
+    return {{x, y, z}, angle};
+}
+
 Transform Transform::appliedTo(const Transform &target) const {
     std::array<double, 3> newPos;
     std::array<std::array<double, 3>, 3> newMatrix;

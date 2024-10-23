@@ -293,3 +293,30 @@ TEST(TransformTest, YXZ) {
     check(dist(engine), M_PI / 2, dist(engine));
     check(dist(engine), -M_PI / 2, dist(engine));
 }
+
+TEST(TransformTest, quat) {
+    auto check = [&](double w, double x, double y, double z) {
+        double norm = std::sqrt(w * w + x * x + y * y + z * z);
+        w /= norm;
+        x /= norm;
+        y /= norm;
+        z /= norm;
+        std::cout << "w: " << w << ", x: " << x << ", y: " << y << ", z: " << z
+                  << std::endl;
+        Transform tf2 = rotQuat(w, x, y, z);
+        Transform tf3 = rotQuat(tf2.rotQuat());
+        Transform tf4 = rotEuler(tf2.rot());
+        auto axis_angle = tf2.rotAxisAngle();
+        Transform tf5 = rotAxisAngle(axis_angle.first, axis_angle.second);
+        for (std::size_t i = 0; i < 3; i++) {
+            for (std::size_t j = 0; j < 3; j++) {
+                EXPECT_NEAR(tf2.rotMatrix(i, j), tf3.rotMatrix(i, j), 1e-8);
+                EXPECT_NEAR(tf2.rotMatrix(i, j), tf4.rotMatrix(i, j), 1e-8);
+                EXPECT_NEAR(tf2.rotMatrix(i, j), tf5.rotMatrix(i, j), 1e-8);
+            }
+        }
+    };
+    check(dist(engine), dist(engine), dist(engine), dist(engine));
+    check(dist(engine), dist(engine), dist(engine), dist(engine));
+    check(dist(engine), dist(engine), dist(engine), dist(engine));
+}
