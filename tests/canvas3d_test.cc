@@ -71,19 +71,19 @@ TEST_F(Canvas3DTest, set) {
     robot_model(self_name, "b")
         .set({
             RobotLink{"l0", Geometry{}, ViewColor::black},
-            RobotLink{"l1", rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
-                      Geometry{}, ViewColor::black},
+            RobotLink{"l1", rotationalJoint("j0", "l0", {}), Geometry{},
+                      ViewColor::black},
         });
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3})
-              .origin({1, 1, 1, 0, 0, 0})
+              .origin(Transform::fromEuler(1, 1, 1, 0, 0, 0))
               .color(ViewColor::red));
-    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10)
-              .origin({2, 2, 2, 0, 0, 0})
+    v.add(plane({}, 10, 10)
+              .origin(Transform::fromEuler(2, 2, 2, 0, 0, 0))
               .color(ViewColor::yellow));
     v.add(robot_model(self_name, "b")
-              .origin({3, 3, 3, 0, 0, 0})
+              .origin(Transform::fromEuler(3, 3, 3, 0, 0, 0))
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);

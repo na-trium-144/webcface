@@ -87,7 +87,7 @@ Canvas3DComponentType Canvas3DComponent::type() const {
 }
 Transform Canvas3DComponent::origin() const {
     checkData();
-    return Transform(msg_data->origin_pos, msg_data->origin_rot);
+    return Transform::fromEuler(msg_data->origin_pos, msg_data->origin_rot);
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::origin(const Transform &origin) {

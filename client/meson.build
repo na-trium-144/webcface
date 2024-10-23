@@ -28,6 +28,7 @@ webcface_client_src = [
   'src/component_canvas3d.cc',
   'src/component_canvas2d.cc',
   'src/component_view.cc',
+  'src/transform.cc',
   'src/unix_path.cc',
   'src/c_wcf/client.cc',
   'src/c_wcf/member.cc',
