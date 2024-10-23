@@ -121,7 +121,7 @@ RobotJointType RobotJoint::type() const {
 Transform RobotJoint::origin() const {
     if (msg_data) {
         return Transform(msg_data->joint_origin_pos,
-                         msg_data->joint_origin_rot);
+                         rotEuler(msg_data->joint_origin_rot));
     } else if (temp_data) {
         return temp_data->origin;
     } else {

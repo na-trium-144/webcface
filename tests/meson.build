@@ -11,6 +11,7 @@ test_src = [
   'member_test.cc',
   'logger_test.cc',
   'encoding_test.cc',
+  'transform_test.cc',
 ]
 test_dependencies = [
   warning_options,
