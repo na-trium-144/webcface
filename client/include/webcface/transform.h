@@ -4,6 +4,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include "array_like.h"
 #include <array>
 #include <optional>
 #include <cassert>
@@ -37,6 +38,20 @@ class Point {
      */
     Point(double x, double y, double z = 0)
         : Point(std::array<double, 3>{x, y, z}) {}
+    /*!
+     * \brief 3次元座標を初期化
+     * \since ver2.5
+     * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
+     *
+     * \todo std::array以外の要素数2の配列の場合エラーになってしまう
+     *
+     */
+    template <typename R,
+              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+              typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic =
+                  traits::TraitOk>
+    Point(const R &pos) : pos_(traits::arrayLikeToArray<3>(pos)) {}
+
     /*!
      * \brief 3次元座標を取得
      *
@@ -256,12 +271,45 @@ inline Rotation rotEuler(const std::array<double, 3> &rot) {
 /*!
  * \brief 回転をオイラー角から初期化
  * \since ver2.5
+ * \tparam axis 回転軸の順序
+ * \param rot オイラー角 (内的回転の順の3パラメーター)
+ * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
+ *
+ */
+template <
+    AxisSequence axis, typename R,
+    typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+    typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
+inline Rotation rotEuler(const R &rot) {
+    return rotEuler<axis>(traits::arrayLikeToArray<3>(rot));
+}
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
  *
  * axisを省略した場合 AxisSequence::ZYX
+ *
+ * \param rot オイラー角
  *
  */
 inline Rotation rotEuler(const std::array<double, 3> &rot) {
     return rotEuler<AxisSequence::ZYX>(rot);
+}
+/*!
+ * \brief 回転をオイラー角から初期化
+ * \since ver2.5
+ *
+ * axisを省略した場合 AxisSequence::ZYX
+ *
+ * \param rot オイラー角
+ * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
+ *
+ */
+template <
+    typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+    typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
+inline Rotation rotEuler(const R &rot) {
+    return rotEuler<AxisSequence::ZYX>(traits::arrayLikeToArray<3>(rot));
 }
 /*!
  * \brief 回転をオイラー角から初期化
@@ -290,6 +338,8 @@ inline Rotation rotEuler(double angle1, double angle2, double angle3) {
  * \param pos x, y, z 座標
  * \param rotMatrix 回転行列
  *
+ * \todo Eigenの配列とか生ポインタとか? 他の型から行列の値を渡せると良い?
+ *
  */
 inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
     return {std::nullopt, matrix};
@@ -306,6 +356,19 @@ inline Rotation rotQuat(const std::array<double, 4> &quat) {
 /*!
  * \brief 回転をクォータニオンから初期化
  * \since ver2.5
+ * \param quat クォータニオン (w, x, y, z)
+ * std::arrayに限らず任意の配列型(固定長で4要素か、またはvectorのように可変)
+ *
+ */
+template <
+    typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+    typename traits::ArraySizeTrait<R, 4>::SizeMatchOrDynamic = traits::TraitOk>
+inline Rotation rotQuat(const R &quat) {
+    return rotQuat(traits::arrayLikeToArray<4>(quat));
+}
+/*!
+ * \brief 回転をクォータニオンから初期化
+ * \since ver2.5
  */
 inline Rotation rotQuat(double w, double x, double y, double z) {
     return rotQuat({w, x, y, z});
@@ -316,6 +379,19 @@ inline Rotation rotQuat(double w, double x, double y, double z) {
  */
 inline Rotation rotAxisAngle(const std::array<double, 3> &axis, double angle) {
     return rotQuat(Rotation::axisAngleToQuaternion(axis, angle));
+}
+/*!
+ * \brief 回転を回転軸と角度から初期化
+ * \since ver2.5
+ *
+ * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
+ *
+ */
+template <
+    typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+    typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
+inline Rotation rotAxisAngle(const R &axis, double angle) {
+    return rotAxisAngle(traits::arrayLikeToArray<3>(axis), angle);
 }
 
 /*!
