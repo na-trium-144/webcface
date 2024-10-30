@@ -28,6 +28,8 @@ SIGINT(Ctrl+C)で停止しない場合は、複数回Ctrl+Cを押すとSIGTERM�
     * Stopボタンは `member("webcface-launcher").func("コマンド名/stop").runAsync()`  
     などとすると呼び出すことができます。
         * (tools ver2.1から) stop関数はコマンドが停止するまで完了しません。
+    * (tools ver2.1.1から) Killボタンを `member("webcface-launcher").func("コマンド名/kill").runAsync()`  
+    で呼び出せます。stop関数と同様コマンドが停止するまで完了しません。
     * (tools ver2.1から) `func("コマンド名/run")` を呼び出すと、startと同様コマンドを開始し、終了するまで待機することができます。
 * (tools ver2.1から) `member("webcface-launcher").value("コマンド名.running")` でコマンドが実行中かどうかを取得できます。
     * また、 `member("webcface-launcher").value("コマンド名.exit_status")` で終了コードも取得できます。
@@ -125,6 +127,13 @@ initセクションは省略できます。
     * `stop.exec`を設定するとシグナルを送る代わりに指定したコマンドを実行します。
         * Startで実行するコマンドと同様、workdirやenvなどを設定することもできます。
         * 例えばlauncherから `cmd /c` などを使って別のプロセスを起動した場合、停止ボタンを押してcmdは停止してもその内側で起動したプロセスは停止しない場合があります。その場合はtaskkillなどで停止するコマンドを別途登録しておくとよいかも
+* kill (tools ver2.1.1 から)
+    * Killボタンを押したときの挙動を設定できます。
+    * `kill = false` にするとKillボタンが無効になります。(デフォルトの挙動です)
+    * (Linux,MacOSのみ) `stop = true` または `stop = 9` とするとKillシグナルを送ります。
+    また`stop = 15` などとすると送信するシグナルを変更できます。
+        * Windowsでは指定したシグナルの番号にかかわらずTerminateProcessで停止します。(Stopボタンと同じ動作になります)
+    * stopの設定と同様、`kill.exec`を設定するとシグナルを送る代わりに指定したコマンドを実行します。
 
 ## WebUIからの設定
 WebCFace Desktop ではGUIから設定ファイルを記述することができます。
