@@ -75,6 +75,57 @@ class Point {
      */
     double &pos(std::size_t i) { return pos_.at(i); }
 
+    /*!
+     * \brief 2つのPointの x, y, z の各要素を加算したPointを返す
+     * \since ver2.5
+     *
+     * this + other と同じ。逆にしても同じ。
+     *
+     */
+    Point translated(const Point &other) const {
+        return {
+            pos_[0] + other.pos_[0],
+            pos_[1] + other.pos_[1],
+            pos_[2] + other.pos_[2],
+        };
+    }
+    /*!
+     * \brief 2つのPointの x, y, z の各要素を加算したPointを返す
+     * \since ver2.5
+     * \sa translated
+     */
+    Point operator+(const Point &other) const {
+        return this->translated(other);
+    }
+    /*!
+     * \brief x, y, z の各要素の符号を反転したPointを返す
+     * \since ver2.5
+     *
+     * -this と同じ。
+     *
+     */
+    Point negated() const { return {-pos_[0], -pos_[1], -pos_[2]}; }
+    /*!
+     * \brief x, y, z の各要素の符号を反転したPointを返す
+     * \since ver2.5
+     * \sa negated
+     */
+    Point operator-() const { return {-pos_[0], -pos_[1], -pos_[2]}; }
+    /*!
+     * \since ver2.5
+     *
+     * 何もせずthisを返す
+     *
+     */
+    Point operator+() const { return *this; }
+    /*!
+     * \since ver2.5
+     *
+     * this + (-other) と同じ。
+     *
+     */
+    Point operator-(const Point &other) const { return *this + (-other); }
+
     bool operator==(const Point &rhs) const { return pos_ == rhs.pos_; }
     bool operator!=(const Point &rhs) const { return !(*this == rhs); }
 };
