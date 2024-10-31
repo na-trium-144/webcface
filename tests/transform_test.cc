@@ -16,8 +16,8 @@ TEST(TransformTest, XZX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotZ(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -40,8 +40,8 @@ TEST(TransformTest, XYX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotY(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -64,8 +64,8 @@ TEST(TransformTest, YXY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotX(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -88,8 +88,8 @@ TEST(TransformTest, YZY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotZ(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -112,8 +112,8 @@ TEST(TransformTest, ZYZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotY(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -136,8 +136,8 @@ TEST(TransformTest, ZXZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotX(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -161,8 +161,8 @@ TEST(TransformTest, XYZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotY(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -184,8 +184,8 @@ TEST(TransformTest, YZX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotZ(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -207,8 +207,8 @@ TEST(TransformTest, ZXY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotX(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -230,8 +230,8 @@ TEST(TransformTest, XZY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotZ(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -253,8 +253,8 @@ TEST(TransformTest, ZYX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotY(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
@@ -276,8 +276,8 @@ TEST(TransformTest, YXZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotX(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler<axis>(a, b, c);
-        Transform tf3 = rotEuler<axis>(tf2.rot<axis>());
+        Transform tf2 = rotEuler(a, b, c, axis);
+        Transform tf3 = rotEuler(tf2.rot(axis), axis);
         Transform tf4 = rotEuler(tf2.rot());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {

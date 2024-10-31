@@ -238,20 +238,18 @@ class Rotation {
                                {{0, 0, 1}},
                            }}) {}
 
-    template <AxisSequence axis>
-    friend Rotation rotEuler(const std::array<double, 3> &rot);
+    friend Rotation rotEuler(const std::array<double, 3> &rot, AxisSequence axis);
     friend Rotation
     rotMatrix(const std::array<std::array<double, 3>, 3> &matrix);
 
     /*!
      * \brief 3次元の回転をオイラー角として取得
-     * \tparam axis 回転軸の順序 (ver2.5〜)
+     * \param axis 回転軸の順序 (ver2.5〜)
      *  ver2.4までは z, y, x の順しか指定できない
      *
      */
-    template <AxisSequence axis = AxisSequence::ZYX>
-    std::array<double, 3> rot() const {
-        if constexpr (axis == AxisSequence::ZYX) {
+    std::array<double, 3> rot(AxisSequence axis = AxisSequence::ZYX) const {
+        if (axis == AxisSequence::ZYX) {
             if (!rot_) {
                 assert(rmat_);
                 rot_.emplace(matrixToEuler(*rmat_, AxisSequence::ZYX));
@@ -307,13 +305,12 @@ class Rotation {
 /*!
  * \brief 回転をオイラー角から初期化
  * \since ver2.5
- * \tparam axis 回転軸の順序
  * \param rot オイラー角 (内的回転の順の3パラメーター)
+ * \param axis 回転軸の順序
  *
  */
-template <AxisSequence axis>
-inline Rotation rotEuler(const std::array<double, 3> &rot) {
-    if constexpr (axis == AxisSequence::ZYX) {
+inline Rotation rotEuler(const std::array<double, 3> &rot, AxisSequence axis = AxisSequence::ZYX) {
+    if (axis == AxisSequence::ZYX) {
         return {rot, std::nullopt};
     } else {
         return {std::nullopt, Rotation::eulerToMatrix(rot, axis)};
@@ -322,66 +319,38 @@ inline Rotation rotEuler(const std::array<double, 3> &rot) {
 /*!
  * \brief 回転をオイラー角から初期化
  * \since ver2.5
- * \tparam axis 回転軸の順序
+ * \param axis 回転軸の順序
  * \param rot オイラー角 (内的回転の順の3パラメーター)
- * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
- *
- */
-template <
-    AxisSequence axis, typename R,
-    typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
-    typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
-inline Rotation rotEuler(const R &rot) {
-    return rotEuler<axis>(traits::arrayLikeToArray<3>(rot));
-}
-/*!
- * \brief 回転をオイラー角から初期化
- * \since ver2.5
- *
- * axisを省略した場合 AxisSequence::ZYX
- *
- * \param rot オイラー角
- *
- */
-inline Rotation rotEuler(const std::array<double, 3> &rot) {
-    return rotEuler<AxisSequence::ZYX>(rot);
-}
-/*!
- * \brief 回転をオイラー角から初期化
- * \since ver2.5
- *
- * axisを省略した場合 AxisSequence::ZYX
- *
- * \param rot オイラー角
  * std::arrayに限らず任意の配列型(固定長で3要素か、またはvectorのように可変)
  *
  */
 template <
     typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
     typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
-inline Rotation rotEuler(const R &rot) {
-    return rotEuler<AxisSequence::ZYX>(traits::arrayLikeToArray<3>(rot));
+inline Rotation rotEuler(const R &rot, AxisSequence axis = AxisSequence::ZYX) {
+    return rotEuler<axis>(traits::arrayLikeToArray<3>(rot));
 }
+// /*!
+//  * \brief 回転をオイラー角から初期化
+//  * \since ver2.5
+//  *
+//  * axisを省略した場合 AxisSequence::ZYX
+//  *
+//  * \param rot オイラー角
+//  *
+//  */
+// inline Rotation rotEuler(const std::array<double, 3> &rot) {
+//     return rotEuler(AxisSequence::ZYX, rot);
+// }
 /*!
  * \brief 回転をオイラー角から初期化
  * \since ver2.5
- * \tparam axis 回転軸の順序 (ver2.5〜)
+ * \param axis 回転軸の順序
  *
  */
-template <AxisSequence axis>
-inline Rotation rotEuler(double angle1, double angle2, double angle3) {
-    return rotEuler<axis>(std::array<double, 3>{angle1, angle2, angle3});
-}
-/*!
- * \brief 回転をオイラー角から初期化
- * \since ver2.5
- *
- * axisを省略した場合 AxisSequence::ZYX
- *
- */
-inline Rotation rotEuler(double angle1, double angle2, double angle3) {
-    return rotEuler<AxisSequence::ZYX>(
-        std::array<double, 3>{angle1, angle2, angle3});
+inline Rotation rotEuler(double angle1, double angle2,
+                         double angle3, AxisSequence axis = AxisSequence::ZYX) {
+    return rotEuler(std::array<double, 3>{angle1, angle2, angle3}, axis);
 }
 /*!
  * \brief 回転を回転行列から初期化
