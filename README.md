@@ -15,7 +15,7 @@ Web-based IPC &amp; Dashboard-like UI
 
 ROS1のようなプロセス間通信と、GUIによるデータの可視化や関数呼び出しができるシステムです。
 
-C++ (C++17以上), C, Python (3.8以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
+C++ (C++17以上), C, Python (3.6以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
 
 Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
 

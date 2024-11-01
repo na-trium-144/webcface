@@ -118,7 +118,7 @@ C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名
 ## Python
 
 Pythonで利用したい場合は `pip install webcface` でライブラリをインストールしてください。
-Python3.8以上で動作します。
+Python3.6以上で動作します。
 
 importは
 ```py

@@ -7,7 +7,7 @@ WebCFaceの機能紹介・チュートリアルです。
 このチュートリアルはWebUIでデータを可視化する・WebUIからプログラムを操作するという部分をメインにしたものです。
 プロセス間通信に重点をおいたチュートリアルは [1-2. Tutorial (Communication)](./12_tutorial_comm.md)
 
-このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.8以上が必要です) を使用します。
+このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.6以上が必要です) を使用します。
 
 ## WebCFaceのインストール
 
