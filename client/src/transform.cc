@@ -339,8 +339,7 @@ Rotation::axisAngleToQuaternion(const std::array<double, 3> &axis,
                                 double angle) {
     double half_angle = angle / 2;
     double s = std::sin(half_angle);
-    double norm =
-        std::sqrt(axis[0] * axis[0] + axis[1] * axis[1] + axis[2] * axis[2]);
+    double norm = std::hypot(axis[0], axis[1], axis[2]);
     if (norm == 0) {
         return {1, 0, 0, 0};
     } else {
