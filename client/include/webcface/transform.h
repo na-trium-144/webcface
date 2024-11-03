@@ -310,7 +310,7 @@ template <
     typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
     typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
 inline Rotation rotEuler(const R &rot, AxisSequence axis = AxisSequence::ZYX) {
-    return rotEuler<axis>(traits::arrayLikeToArray<3>(rot));
+    return rotEuler(traits::arrayLikeToArray<3>(rot), axis);
 }
 // /*!
 //  * \brief 回転をオイラー角から初期化

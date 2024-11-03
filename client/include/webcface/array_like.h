@@ -89,7 +89,7 @@ std::vector<double> arrayLikeToVector(const T &array) {
 template <std::size_t Num, typename T>
 std::array<double, Num> arrayLikeToArray(const T &array) {
     std::array<double, Num> ret{};
-    int n = 0;
+    std::size_t n = 0;
     auto it = std::begin(array);
     for (; n < Num && it != std::end(array); ++it, ++n) {
         ret[n] = *it;
