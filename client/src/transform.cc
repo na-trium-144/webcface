@@ -383,5 +383,20 @@ Point Transform::appliedTo(const Point &target) const {
     }
     return Point{newPos};
 }
+Transform Transform::inversed() const {
+    std::array<std::array<double, 3>, 3> newMatrix;
+    for (std::size_t i = 0; i < 3; i++) {
+        for (std::size_t j = 0; j < 3; j++) {
+            newMatrix[i][j] = this->rotMatrix(j, i);
+        }
+    }
+    std::array<double, 3> newPos;
+    for (std::size_t i = 0; i < 3; i++) {
+        newPos[i] = -newMatrix[i][0] * this->pos(0) -
+                    newMatrix[i][1] * this->pos(1) -
+                    newMatrix[i][2] * this->pos(2);
+    }
+    return Transform(newPos, webcface::rotMatrix(newMatrix));
+}
 
 WEBCFACE_NS_END

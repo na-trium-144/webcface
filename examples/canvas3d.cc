@@ -33,7 +33,7 @@ int main() {
                    webcface::ViewColor::yellow},
                   // circle: 中心座標系と半径を指定 (指定した座標系のxy平面)
                   {"circle", fixedJoint("plane", {2, 0, 0}),
-                   circle(webcface::translate(0, 0, 0.1), 0.3),
+                   circle(webcface::translation(0, 0, 0.1), 0.3),
                    webcface::ViewColor::yellow},
                   // cylinder:
                   // 1つの面の中心座標系と半径、押出長さを指定(x正方向に伸びる)
@@ -75,7 +75,7 @@ int main() {
                    line({0, 0, 0}, {0, 0, 0.3})},
                   {"line2",
                    rotationalJoint("line_rotation", "line1",
-                                   webcface::translate(0, 0, 0.3)),
+                                   webcface::translation(0, 0, 0.3)),
                    line({0, 0, 0}, {0.5, 0, 0}), webcface::ViewColor::red}});
     }
 

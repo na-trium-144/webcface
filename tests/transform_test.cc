@@ -320,3 +320,27 @@ TEST(TransformTest, quat) {
     check(dist(engine), dist(engine), dist(engine), dist(engine));
     check(dist(engine), dist(engine), dist(engine), dist(engine));
 }
+
+TEST(TransformTest, inversed) {
+    auto check = [&](double a, double b, double c, double x, double y,
+                     double z) {
+        Transform tf1 = Transform({x, y, z}, rotEuler(a, b, c));
+        Transform tf2 = tf1 * tf1.inversed();
+        Transform tf3 = tf1.inversed() * tf1;
+        Transform id = identity();
+        for (std::size_t i = 0; i < 3; i++) {
+            EXPECT_NEAR(tf2.pos(i), id.pos(i), 1e-8);
+            EXPECT_NEAR(tf3.pos(i), id.pos(i), 1e-8);
+            for (std::size_t j = 0; j < 3; j++) {
+                EXPECT_NEAR(tf2.rotMatrix(i, j), id.rotMatrix(i, j), 1e-8);
+                EXPECT_NEAR(tf3.rotMatrix(i, j), id.rotMatrix(i, j), 1e-8);
+            }
+        }
+    };
+    check(dist(engine), dist(engine), dist(engine), dist(engine), dist(engine),
+          dist(engine));
+    check(dist(engine), dist(engine), dist(engine), dist(engine), dist(engine),
+          dist(engine));
+    check(dist(engine), dist(engine), dist(engine), dist(engine), dist(engine),
+          dist(engine));
+}

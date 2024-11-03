@@ -78,11 +78,8 @@ class Point {
     /*!
      * \brief 2つのPointの x, y, z の各要素を加算したPointを返す
      * \since ver2.5
-     *
-     * this + other と同じ。逆にしても同じ。
-     *
      */
-    Point translated(const Point &other) const {
+    Point operator+(const Point &other) const {
         return {
             pos_[0] + other.pos_[0],
             pos_[1] + other.pos_[1],
@@ -90,25 +87,8 @@ class Point {
         };
     }
     /*!
-     * \brief 2つのPointの x, y, z の各要素を加算したPointを返す
-     * \since ver2.5
-     * \sa translated
-     */
-    Point operator+(const Point &other) const {
-        return this->translated(other);
-    }
-    /*!
      * \brief x, y, z の各要素の符号を反転したPointを返す
      * \since ver2.5
-     *
-     * -this と同じ。
-     *
-     */
-    Point negated() const { return {-pos_[0], -pos_[1], -pos_[2]}; }
-    /*!
-     * \brief x, y, z の各要素の符号を反転したPointを返す
-     * \since ver2.5
-     * \sa negated
      */
     Point operator-() const { return {-pos_[0], -pos_[1], -pos_[2]}; }
     /*!
@@ -238,7 +218,8 @@ class Rotation {
                                {{0, 0, 1}},
                            }}) {}
 
-    friend Rotation rotEuler(const std::array<double, 3> &rot, AxisSequence axis);
+    friend Rotation rotEuler(const std::array<double, 3> &rot,
+                             AxisSequence axis);
     friend Rotation
     rotMatrix(const std::array<std::array<double, 3>, 3> &matrix);
 
@@ -309,7 +290,8 @@ class Rotation {
  * \param axis 回転軸の順序
  *
  */
-inline Rotation rotEuler(const std::array<double, 3> &rot, AxisSequence axis = AxisSequence::ZYX) {
+inline Rotation rotEuler(const std::array<double, 3> &rot,
+                         AxisSequence axis = AxisSequence::ZYX) {
     if (axis == AxisSequence::ZYX) {
         return {rot, std::nullopt};
     } else {
@@ -348,8 +330,8 @@ inline Rotation rotEuler(const R &rot, AxisSequence axis = AxisSequence::ZYX) {
  * \param axis 回転軸の順序
  *
  */
-inline Rotation rotEuler(double angle1, double angle2,
-                         double angle3, AxisSequence axis = AxisSequence::ZYX) {
+inline Rotation rotEuler(double angle1, double angle2, double angle3,
+                         AxisSequence axis = AxisSequence::ZYX) {
     return rotEuler(std::array<double, 3>{angle1, angle2, angle3}, axis);
 }
 /*!
@@ -499,7 +481,7 @@ class Transform : public Point, public Rotation {
      * \since ver1.6
      * \deprecated ver2.5〜 translate(x, y)
      */
-    [[deprecated("use translate(x, y) for translation-only transform")]]
+    [[deprecated("use translation(x, y) for translation-only transform")]]
     Transform(double x, double y)
         : Transform({x, y}, 0) {}
 
@@ -529,6 +511,18 @@ class Transform : public Point, public Rotation {
         return this->appliedTo(target);
     }
     /*!
+     * \brief このTransformを別のTransformに適用した結果で置き換える
+     * \since ver2.5
+     *
+     * this = this * target と同じ。
+     *
+     */
+    Transform &operator*=(const Transform &target) {
+        *this = *this * target;
+        return *this;
+    }
+
+    /*!
      * \brief このTransformをPointに適用する
      * \since ver2.5
      *
@@ -554,6 +548,12 @@ class Transform : public Point, public Rotation {
         return this->appliedTo(target);
     }
 
+    /*!
+     * \brief 逆変換を表すTransformを取得
+     * \since ver2.5
+     */
+    WEBCFACE_DLL Transform inversed() const;
+
     bool operator==(const Transform &rhs) const {
         return pos_ == rhs.pos_ && rot() == rhs.rot();
     }
@@ -569,18 +569,18 @@ inline Transform identity() { return {}; }
  * \brief 平行移動のみのTransform
  * \since ver2.5
  */
-inline Transform translate(const Point &pos) { return {pos, Rotation{}}; }
+inline Transform translation(const Point &pos) { return {pos, Rotation{}}; }
 /*!
  * \brief 平行移動のみのTransform
  * \since ver2.5
  */
-inline Transform translate(double x, double y, double z) {
+inline Transform translation(double x, double y, double z) {
     return {{x, y, z}, Rotation{}};
 }
 /*!
  * \brief 2次元の平行移動のみのTransform
  * \since ver2.5
  */
-inline Transform translate(double x, double y) { return {{x, y}, 0}; }
+inline Transform translation(double x, double y) { return {{x, y}, 0}; }
 
 WEBCFACE_NS_END

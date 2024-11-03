@@ -77,12 +77,13 @@ TEST_F(Canvas3DTest, set) {
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3})
-              .origin(translate(1, 1, 1))
+              .origin(translation(1, 1, 1))
               .color(ViewColor::red));
-    v.add(
-        plane({}, 10, 10).origin(translate(2, 2, 2)).color(ViewColor::yellow));
+    v.add(plane({}, 10, 10)
+              .origin(translation(2, 2, 2))
+              .color(ViewColor::yellow));
     v.add(robot_model(self_name, "b")
-              .origin(translate(3, 3, 3))
+              .origin(translation(3, 3, 3))
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
@@ -149,7 +150,9 @@ TEST_F(Canvas3DTest, set) {
     } // v3のデストラクタでsyncされる
     EXPECT_EQ(callback_called, 4);
 
-    { Canvas3D v5{}; } // エラーやセグフォしない
+    {
+        Canvas3D v5{};
+    } // エラーやセグフォしない
 
     Canvas3D v6{};
     v6.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});
