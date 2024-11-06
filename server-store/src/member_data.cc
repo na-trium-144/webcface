@@ -162,7 +162,8 @@ void MemberData::onRecv(const std::string &message) {
                 clients_by_id.begin(), clients_by_id.end(),
                 [&](const auto &it) { return it.second->name == this->name; });
             if (prev_cli_it != clients_by_id.end() && !this->name.empty()) {
-                // すでに同じ名前のクライアントがいたら & 名前が空でなければ そのidを使う
+                // すでに同じ名前のクライアントがいたら & 名前が空でなければ
+                // そのidを使う
                 this->member_id = v.member_id = prev_cli_it->first;
             } else {
                 // コンストラクタですでに一意のidが振られているはず

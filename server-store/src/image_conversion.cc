@@ -55,7 +55,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
             member,
             [&](auto cd) {
                 while (!cd->closing.load() && !this->closing.load()) {
-                    message::ImageFrame img;
+                    ImageFrame img;
                     {
                         std::unique_lock lock(this->image_m);
                         this->image_cv.wait(lock, [&] {
@@ -74,7 +74,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                       member.decode(), field.decode());
                         img = cd->image[field];
                     }
-                    if (img.data_->size() == 0) {
+                    if (img.empty()) {
                         break;
                     }
 
@@ -91,30 +91,30 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                                         cd->last_sync_time};
                     try {
                         std::string color_map_before =
-                            magickColorMap(img.color_mode_);
+                            magickColorMap(img.colorMode());
                         if (color_map_before.empty()) {
                             this->logger->error(
                                 "Unknown image color mode in original image: "
                                 "{}",
-                                static_cast<int>(img.color_mode_));
+                                static_cast<int>(img.colorMode()));
                             return;
                         }
-                        Magick::Image m(img.width_, img.height_,
+                        Magick::Image m(img.width(), img.height(),
                                         color_map_before, Magick::CharPixel,
-                                        img.data_->data());
+                                        img.dataPtr()->data());
 #ifdef WEBCFACE_MAGICK_VER7
                         // ImageMagick6と7で名前が異なる
                         m.type(Magick::TrueColorAlphaType);
 #else
                         m.type(Magick::TrueColorMatteType);
 #endif
-                        if (img.color_mode_ == ImageColorMode::gray) {
+                        if (img.colorMode() == ImageColorMode::gray) {
                             // K -> RGB
                             m.negate(true);
                         }
 
-                        int rows = static_cast<int>(img.height_);
-                        int cols = static_cast<int>(img.width_);
+                        int rows = static_cast<int>(img.height());
+                        int cols = static_cast<int>(img.width());
 
                         if (info.rows || info.cols) {
                             if (info.rows) {
@@ -122,16 +122,16 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                             } else {
                                 rows = static_cast<int>(
                                     static_cast<double>(*info.cols) *
-                                    static_cast<double>(img.height_) /
-                                    static_cast<double>(img.width_));
+                                    static_cast<double>(img.height()) /
+                                    static_cast<double>(img.width()));
                             }
                             if (info.cols) {
                                 cols = *info.cols;
                             } else {
                                 cols = static_cast<int>(
                                     static_cast<double>(*info.rows) *
-                                    static_cast<double>(img.width_) /
-                                    static_cast<double>(img.height_));
+                                    static_cast<double>(img.width()) /
+                                    static_cast<double>(img.height()));
                             }
 
                             if (rows <= 0 || cols <= 0) {
@@ -145,7 +145,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         }
 
                         auto color_mode =
-                            info.color_mode.value_or(img.color_mode_);
+                            info.color_mode.value_or(img.colorMode());
                         auto encoded =
                             std::make_shared<std::vector<unsigned char>>();
                         switch (info.cmp_mode) {
@@ -239,15 +239,15 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                 static_cast<int>(info.cmp_mode));
                             return;
                         }
-                        message::ImageFrame img_send{cols, rows, encoded,
-                                                     color_mode, info.cmp_mode};
+                        ImageFrame img_send{sizeWH(cols, rows), encoded,
+                                            color_mode, info.cmp_mode};
                         logger->trace("finished converting image of {}, {}",
                                       member.decode(), field.decode());
                         if (!cd->closing.load() && !this->closing.load()) {
                             std::lock_guard lock(store->server->server_mtx);
                             this->pack(sync);
                             this->pack(message::Res<webcface::message::Image>{
-                                req_id, sub_field, img_send});
+                                req_id, sub_field, img_send.toMessage()});
                             logger->trace("send image_res req_id={} + '{}'",
                                           req_id, sub_field.decode());
                             this->send();
