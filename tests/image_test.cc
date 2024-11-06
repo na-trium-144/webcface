@@ -48,11 +48,11 @@ TEST_F(ImageFrameTest, moveCtor) {
     ImageFrame img2(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
     ImageFrame img = std::move(img2);
     EXPECT_FALSE(img.empty());
-    EXPECT_TRUE(img2.empty());
+    EXPECT_TRUE(img2.empty()); // NOLINT
     EXPECT_EQ(img.rows(), 100);
     EXPECT_EQ(img.cols(), 100);
     ASSERT_NE(img.dataPtr(), nullptr);
-    ASSERT_NE(img2.dataPtr(), nullptr);
+    ASSERT_NE(img2.dataPtr(), nullptr); // NOLINT
     EXPECT_EQ(img.dataPtr()->size(), 100u * 100u * 3u);
     EXPECT_EQ(img.channels(), 3);
     EXPECT_EQ(img.color_mode(), ImageColorMode::bgr);
