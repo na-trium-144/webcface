@@ -2,6 +2,7 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"
 #include "webcface/message/canvas2d.h"
+#include "webcface/internal/component_internal.h"
 #include "webcface/internal/data_buffer.h"
 
 WEBCFACE_NS_BEGIN

@@ -11,17 +11,17 @@
 #include <spdlog/logger.h>
 #include "webcface/encoding/encoding.h"
 #include "webcface/field.h"
-#include "webcface/log.h"
 #include "queue.h"
-#include "webcface/image_frame.h"
-#include "webcface/func_result.h"
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
+#include "webcface/image_frame.h"
+#include "webcface/message/image.h"
 
 WEBCFACE_NS_BEGIN
 
 class Log;
+class Variant;
 
 namespace internal {
 
@@ -311,6 +311,41 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::string packSyncData(std::stringstream &buffer, int &len,
                              const SyncDataSnapshot &data);
 
+    void packSyncDataFirst_value(std::stringstream &buffer, int &len,
+                                 const SyncDataFirst &data);
+    void packSyncData_value(std::stringstream &buffer, int &len,
+                            const SyncDataSnapshot &data);
+    void packSyncDataFirst_text(std::stringstream &buffer, int &len,
+                                const SyncDataFirst &data);
+    void packSyncData_text(std::stringstream &buffer, int &len,
+                           const SyncDataSnapshot &data);
+    void packSyncDataFirst_view(std::stringstream &buffer, int &len,
+                                const SyncDataFirst &data);
+    void packSyncData_view(std::stringstream &buffer, int &len,
+                           const SyncDataSnapshot &data);
+    void packSyncDataFirst_canvas3d(std::stringstream &buffer, int &len,
+                                    const SyncDataFirst &data);
+    void packSyncData_canvas3d(std::stringstream &buffer, int &len,
+                               const SyncDataSnapshot &data);
+    void packSyncDataFirst_canvas2d(std::stringstream &buffer, int &len,
+                                    const SyncDataFirst &data);
+    void packSyncData_canvas2d(std::stringstream &buffer, int &len,
+                               const SyncDataSnapshot &data);
+    void packSyncDataFirst_image(std::stringstream &buffer, int &len,
+                                 const SyncDataFirst &data);
+    void packSyncData_image(std::stringstream &buffer, int &len,
+                            const SyncDataSnapshot &data);
+    void packSyncDataFirst_log(std::stringstream &buffer, int &len,
+                               const SyncDataFirst &data);
+    void packSyncData_log(std::stringstream &buffer, int &len,
+                          const SyncDataSnapshot &data);
+    void packSyncDataFirst_robot_model(std::stringstream &buffer, int &len,
+                                       const SyncDataFirst &data);
+    void packSyncData_robot_model(std::stringstream &buffer, int &len,
+                                  const SyncDataSnapshot &data);
+    void packSyncData_func(std::stringstream &buffer, int &len,
+                           const SyncDataSnapshot &data);
+
     /*!
      * \brief 通信関係のスレッドを開始する
      *
@@ -339,6 +374,18 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     void
     onRecv(const std::vector<std::pair<int, std::shared_ptr<void>>> &messages);
+
+    void onRecv_sync(int kind, const std::shared_ptr<void> &obj,
+                     std::vector<SharedString> &sync_members);
+    void onRecv_value(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_text(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_view(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_image(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_canvas3d(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_canvas2d(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_robot_model(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_log(int kind, const std::shared_ptr<void> &obj);
+    void onRecv_func(int kind, const std::shared_ptr<void> &obj);
 
     std::mutex entry_m;
     StrSet1 member_entry;
@@ -423,8 +470,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas3d_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>>
-        log_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::mutex logger_m;

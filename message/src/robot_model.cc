@@ -4,8 +4,8 @@ WEBCFACE_NS_BEGIN
 namespace message {
 
 std::shared_ptr<void>
-unpackRobot_modelSingle(int kind, const msgpack::object &obj, std::size_t index,
-                 const std::shared_ptr<spdlog::logger> &logger) {
+unpackRobotModelSingle(int kind, const msgpack::object &obj, std::size_t index,
+                       const std::shared_ptr<spdlog::logger> &logger) {
     switch (kind) {
     case MessageKind::robot_model:
         return unpackSingleT<RobotModel>(obj, index, logger);

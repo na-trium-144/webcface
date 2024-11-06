@@ -4,7 +4,7 @@ WEBCFACE_NS_BEGIN
 namespace message {
 
 std::shared_ptr<void>
-unpackTextSingle(int kind, const msgpack::object &obj, std::size_t index,
+unpackFuncSingle(int kind, const msgpack::object &obj, std::size_t index,
                  const std::shared_ptr<spdlog::logger> &logger) {
     switch (kind) {
     case MessageKind::call:

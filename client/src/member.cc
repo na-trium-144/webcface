@@ -8,6 +8,7 @@
 #include "webcface/canvas2d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/message/log.h"
 
 WEBCFACE_NS_BEGIN
 

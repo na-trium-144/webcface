@@ -1,5 +1,7 @@
 #include "webcface/internal/data_store2.h"
 #include "webcface/field.h"
+#include "webcface/message/image.h"
+#include "webcface/image_frame.h"
 #include <type_traits>
 
 WEBCFACE_NS_BEGIN
