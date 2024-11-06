@@ -1,5 +1,5 @@
 #include "webcface/component_canvas2d.h"
-#include "webcface/message/message.h"
+#include "webcface/message/canvas2d.h"
 #include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN

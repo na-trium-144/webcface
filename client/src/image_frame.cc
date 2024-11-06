@@ -1,7 +1,7 @@
 #include <cstddef>
 
 #include "webcface/image_frame.h"
-#include "webcface/message/message.h"
+#include "webcface/message/image.h"
 
 WEBCFACE_NS_BEGIN
 

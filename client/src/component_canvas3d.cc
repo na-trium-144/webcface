@@ -1,6 +1,6 @@
 #include "webcface/robot_model.h"
 #include "webcface/component_canvas3d.h"
-#include "webcface/message/message.h"
+#include "webcface/message/canvas3d.h"
 #include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN

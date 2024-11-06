@@ -1,7 +1,7 @@
 #include "webcface/view.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"
-#include "webcface/message/message.h"
+#include "webcface/message/view.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/internal/component_internal.h"
 

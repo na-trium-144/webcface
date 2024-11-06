@@ -444,5 +444,57 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     void pingStatusReq();
 };
+
+template <typename M, typename K1, typename K2>
+static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
+    -> std::optional<std::decay_t<decltype(map.at(key1).at(key2))>> {
+    auto s_it = map.find(key1);
+    if (s_it != map.end()) {
+        auto it = s_it->second.find(key2);
+        if (it != s_it->second.end()) {
+            return it->second;
+        }
+    }
+    return std::nullopt;
+}
+/// \private
+template <typename M, typename K1>
+static auto findFromMap1(const M &map, const K1 &key1)
+    -> std::optional<std::decay_t<decltype(map.at(key1))>> {
+    auto it = map.find(key1);
+    if (it != map.end()) {
+        return it->second;
+    }
+    return std::nullopt;
+}
+template <typename Msg, typename T, typename S, typename E>
+static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
+                      S &store, const E &event) {
+    auto [member, field] = store.getReq(r.req_id, r.sub_field);
+    store.setRecv(member, field, data);
+    std::decay_t<decltype(event.at(member).at(field))> cl;
+    {
+        std::lock_guard lock(this_->event_m);
+        cl = findFromMap2(event, member, field).value_or(nullptr);
+    }
+    if (cl && *cl) {
+        cl->operator()(Field{this_->shared_from_this(), member, field});
+    }
+}
+template <typename Msg, typename S, typename E>
+static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
+                        const E &event) {
+    auto member = this_->getMemberNameFromId(r.member_id);
+    store.setEntry(member, r.field);
+    std::decay_t<decltype(event.at(member))> cl;
+    {
+        std::lock_guard lock(this_->event_m);
+        cl = findFromMap1(event, member).value_or(nullptr);
+    }
+    if (cl && *cl) {
+        cl->operator()(Field{this_->shared_from_this(), member, r.field});
+    }
+}
+
 } // namespace internal
 WEBCFACE_NS_END

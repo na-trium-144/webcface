@@ -1,5 +1,5 @@
 #include "webcface/robot_link.h"
-#include "webcface/message/message.h"
+#include "webcface/message/robot_model.h"
 #include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN

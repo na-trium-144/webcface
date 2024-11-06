@@ -1,5 +1,15 @@
 webcface_message_src = [
-  'src/message.cc',
+  'src/base.cc',
+  'src/canvas2d.cc',
+  'src/canvas3d.cc',
+  'src/func.cc',
+  'src/image.cc',
+  'src/log.cc',
+  'src/robot_model.cc',
+  'src/sync.cc',
+  'src/text.cc',
+  'src/value.cc',
+  'src/view.cc',
 ]
 webcface_message_inc = include_directories('include')
 webcface_message_lib = static_library('webcface-message',

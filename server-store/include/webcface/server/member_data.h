@@ -7,10 +7,18 @@
 #include <atomic>
 #include <condition_variable>
 #include <thread>
-#include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include "webcface/encoding/encoding.h"
 #include "webcface/server/server.h"
+#include "webcface/message/image.h"
+#include "webcface/message/robot_model.h"
+#include "webcface/message/func.h"
+#include "webcface/message/view.h"
+#include "webcface/message/canvas2d.h"
+#include "webcface/message/canvas3d.h"
+#include "webcface/message/log.h"
+#include "webcface/message/sync.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
