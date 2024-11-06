@@ -11,6 +11,7 @@
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include "webcface/server/server.h"
+#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -57,7 +58,7 @@ struct MemberData {
     StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
 
-    StrMap1<message::ImageFrame> image;
+    StrMap1<ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする
