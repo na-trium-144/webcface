@@ -22,9 +22,9 @@ jobs:
           - arch: amd64
             base: ubuntu
           - arch: arm64
-            base: arm64v8/ubuntu
+            base: '--platform=linux/arm64/v8 arm64v8/ubuntu'
           - arch: armhf
-            base: arm32v7/ubuntu
+            base: '--platform=linux/arm/v7 arm32v7/ubuntu'
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
