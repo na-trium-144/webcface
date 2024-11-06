@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -227,8 +227,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a415fd25c2e27a423ab34d782a44024cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44ed14455d9511e86c9954927e1c5ebe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; <a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html">message::Canvas2DData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1server_1_1MemberData.html#a44ed14455d9511e86c9954927e1c5ebe">canvas2d</a></td></tr>
 <tr class="separator:a44ed14455d9511e86c9954927e1c5ebe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0def83d3edbdb9857716384b049d828e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; <a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1server_1_1MemberData.html#a0def83d3edbdb9857716384b049d828e">image</a></td></tr>
-<tr class="separator:a0def83d3edbdb9857716384b049d828e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e390197accbcd365d6d8dd367043753"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1server_1_1MemberData.html#a4e390197accbcd365d6d8dd367043753">image</a></td></tr>
+<tr class="separator:a4e390197accbcd365d6d8dd367043753"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a743aa291510ef3b798aa1b7cff6eb5c3"><td class="memItemLeft" align="right" valign="top">std::condition_variable&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1server_1_1MemberData.html#a743aa291510ef3b798aa1b7cff6eb5c3">image_cv</a></td></tr>
 <tr class="separator:a743aa291510ef3b798aa1b7cff6eb5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d6dce092921d8dcd3a2e09b7290caf3"><td class="memItemLeft" align="right" valign="top">std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1server_1_1MemberData.html#a0d6dce092921d8dcd3a2e09b7290caf3">image_m</a></td></tr>
@@ -756,14 +756,14 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="a0def83d3edbdb9857716384b049d828e" name="a0def83d3edbdb9857716384b049d828e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0def83d3edbdb9857716384b049d828e">&#9670;&#160;</a></span>image</h2>
+<a id="a4e390197accbcd365d6d8dd367043753" name="a4e390197accbcd365d6d8dd367043753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e390197accbcd365d6d8dd367043753">&#9670;&#160;</a></span>image</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt;<a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a>&gt; image</td>
+          <td class="memname"><a class="el" href="namespacewebcface_1_1encoding.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt;<a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a>&gt; image</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -814,7 +814,7 @@ template&lt;typename T &gt; </div>
 <li>image_req_changedを変えるときnotify</li>
 <li>image_changedが変えるとき全メンバーの中でこれをリクエストしてるやつをすべてnotify</li>
 <li><p class="startli">closingのときnotify、全メンバーの中でこれをリクエストしてるやつをすべてnotify</p>
-<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000004">Todo:</a></b></dt><dd>今後いつかマルチスレッド化したときにデッドロックする気がする </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>今後いつかマルチスレッド化したときにデッドロックする気がする </dd></dl>
 </li>
 </ul>
 
@@ -1328,7 +1328,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1server.html">server</a></li><li class="navelem"><a class="el" href="structwebcface_1_1server_1_1MemberData.html">MemberData</a></li>
-    <li class="footer">Generated on Fri Nov 1 2024 11:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Nov 6 2024 09:47:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

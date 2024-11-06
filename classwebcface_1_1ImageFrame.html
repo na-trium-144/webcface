@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -168,6 +168,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa22d5ec78bb0f58c3384a31a5d0ff2a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3b50bf1c6c36d2e6573ffc66d8a8653"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1message_1_1ImageFrame.html">message::ImageFrame</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#aa3b50bf1c6c36d2e6573ffc66d8a8653">toMessage</a> () const</td></tr>
 <tr class="separator:aa3b50bf1c6c36d2e6573ffc66d8a8653"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e">ImageFrame</a> (const <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;)</td></tr>
+<tr class="separator:ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a383960f4c6decce4d7a6279ae6f1359f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a383960f4c6decce4d7a6279ae6f1359f">operator=</a> (const <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;)</td></tr>
+<tr class="separator:a383960f4c6decce4d7a6279ae6f1359f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef0f6c2362999d67ec9f3d7b60248918"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#aef0f6c2362999d67ec9f3d7b60248918">ImageFrame</a> (<a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&amp;) noexcept</td></tr>
+<tr class="separator:aef0f6c2362999d67ec9f3d7b60248918"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ee90cca4981e912450810db360befdb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a6ee90cca4981e912450810db360befdb">operator=</a> (<a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&amp;) noexcept</td></tr>
+<tr class="separator:a6ee90cca4981e912450810db360befdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32a0ee55778ae1e6f2034f955edc098a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame</a> (int <a class="el" href="classwebcface_1_1ImageFrame.html#ad107abcacb84cbabb41b87ba81360f91">rows</a>, int <a class="el" href="classwebcface_1_1ImageFrame.html#a8509d6f7951179378f848f5f4cc37720">cols</a>, const void *<a class="el" href="classwebcface_1_1ImageFrame.html#a242f6b0ee066e79c281d265da33613bd">data</a>, <a class="el" href="namespacewebcface_1_1encoding.html#abcfd96b0be942012c2f4641b4741a31e">ImageColorMode</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a4941dd960b0e022e1b7957a8364f1fbf">color_mode</a>=ImageColorMode::bgr)</td></tr>
 <tr class="memdesc:a32a0ee55778ae1e6f2034f955edc098a"><td class="mdescLeft">&#160;</td><td class="mdescRight">生画像データの配列からImageFrameを作成  <br /></td></tr>
 <tr class="separator:a32a0ee55778ae1e6f2034f955edc098a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -239,11 +247,12 @@ Protected Attributes</h2></td></tr>
 <ul>
 <li>8bitのグレースケール, BGR, BGRAフォーマットのみを扱う</li>
 <li>画像受信時にはjpegやpngなどにエンコードされたデータが入ることもある</li>
-<li>データはshared_ptrで保持され、Imageをコピーしてもコピーされない </li>
+<li>データはshared_ptrで保持され、Imageをコピーしてもコピーされない</li>
+<li>デフォルトコンストラクタやmoveなど何をしてもdata_がnullになることはないようにする (ABIの後方互換性) </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a97481de5ef55755a41b926aa8ecf9473" name="a97481de5ef55755a41b926aa8ecf9473"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a97481de5ef55755a41b926aa8ecf9473">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a97481de5ef55755a41b926aa8ecf9473">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[1/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,7 +271,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="af79f75aaa65c8c99d2fc89978c92618c" name="af79f75aaa65c8c99d2fc89978c92618c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af79f75aaa65c8c99d2fc89978c92618c">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af79f75aaa65c8c99d2fc89978c92618c">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[2/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -302,7 +311,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="aa22d5ec78bb0f58c3384a31a5d0ff2a0" name="aa22d5ec78bb0f58c3384a31a5d0ff2a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa22d5ec78bb0f58c3384a31a5d0ff2a0">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa22d5ec78bb0f58c3384a31a5d0ff2a0">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[3/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -319,8 +328,52 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e" name="ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[4/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aef0f6c2362999d67ec9f3d7b60248918" name="aef0f6c2362999d67ec9f3d7b60248918"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef0f6c2362999d67ec9f3d7b60248918">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[5/8]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a32a0ee55778ae1e6f2034f955edc098a" name="a32a0ee55778ae1e6f2034f955edc098a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32a0ee55778ae1e6f2034f955edc098a">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a0ee55778ae1e6f2034f955edc098a">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[6/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -381,7 +434,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a4b499c3e97fe13d3bdbf45df2dc5377d" name="a4b499c3e97fe13d3bdbf45df2dc5377d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b499c3e97fe13d3bdbf45df2dc5377d">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b499c3e97fe13d3bdbf45df2dc5377d">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[7/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -428,7 +481,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a3f47f8fd1300bcaf70285ba224a0254b" name="a3f47f8fd1300bcaf70285ba224a0254b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3f47f8fd1300bcaf70285ba224a0254b">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f47f8fd1300bcaf70285ba224a0254b">&#9670;&#160;</a></span>ImageFrame() <span class="overload">[8/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -851,6 +904,50 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a383960f4c6decce4d7a6279ae6f1359f" name="a383960f4c6decce4d7a6279ae6f1359f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a383960f4c6decce4d7a6279ae6f1359f">&#9670;&#160;</a></span>operator=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6ee90cca4981e912450810db360befdb" name="a6ee90cca4981e912450810db360befdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ee90cca4981e912450810db360befdb">&#9670;&#160;</a></span>operator=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a> &amp;&amp;&#160;</td>
+          <td class="paramname"><em>m</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">noexcept</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ad107abcacb84cbabb41b87ba81360f91" name="ad107abcacb84cbabb41b87ba81360f91"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad107abcacb84cbabb41b87ba81360f91">&#9670;&#160;</a></span>rows()</h2>
 
@@ -1050,7 +1147,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a></li>
-    <li class="footer">Generated on Fri Nov 1 2024 11:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Nov 6 2024 09:47:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

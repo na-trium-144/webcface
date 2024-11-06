@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.1</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -152,17 +152,16 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md128"></a></p>
-<dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> </dd></dl>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> <span class="since-py">2.4</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="image_8h.html">webcface/image.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Image.html">Image</a></li>
-<li>Python 未実装</li>
+<li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.image.html#webcface.image.Image">webcface.Image</a></li>
 </ul>
 </dd></dl>
 <p>画像データを送受信します。 画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。</p>
 <h1><a class="anchor" id="autotoc_md130"></a>
 送信</h1>
-<p>Client::image からImageオブジェクトを作り、 Image::set() で画像データを代入し、Client::sync()することで送信されます</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="classwebcface_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
 <div class="line"> </div>
@@ -172,21 +171,29 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 <div class="line"> </div>
 <div class="line"><span class="comment">// ver1.11以前: サイズは高さ,幅の順で指定</span></div>
 <div class="line"><span class="comment">// webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);</span></div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:87</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:88</div></div>
 <div class="ttc" id="anamespacewebcface_html_a93bb9fbe0e3d47abe9f1ece5c5f90767"><div class="ttname"><a href="namespacewebcface.html#a93bb9fbe0e3d47abe9f1ece5c5f90767">webcface::sizeWH</a></div><div class="ttdeci">Size sizeWH(int width, int height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:35</div></div>
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。</p>
 <dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
- ImageFrameのコンストラクタでdataの内容がすべてコピーされます。 <br  />
+ ImageFrameのコンストラクタにdataのポインタを渡した場合、 dataの内容(width × height × channels() バイト)がすべてコピーされます。 <br  />
  ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
-<p>ImageFrameをImageにsetして送信します。 set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
+<p><span></span></p>
+<p class="startli">Client::image からImageオブジェクトを作り、 Image::set() でImageFrame型の画像データを代入し、Client::sync()することで送信されます。 set() の代わりに代入演算子(Image::operator=)でも同様のことができます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
 <div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>) = frame;</div>
-</div><!-- fragment --><p class="startli">ImageFrameの中のデータには dataPtr() (<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>型)、 data() (<code>vector&lt;unsigned char&gt;&amp;</code> 型)、at(y, x, ch) (<code>unsigned char &amp;</code>型) でアクセスできます。</p>
-</li>
+</div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-js/classes/ImageFrame.html">ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">import { ImageFrame, imageColorMode } from &quot;webcface&quot;;</div>
-<div class="line">const data: ArrayBuffer = /* ... */;</div>
-<div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb); // 画像サイズは 横, 縦 で指定</div>
-</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。 </p><dl class="todo"><dt><b><a class="el" href="todo.html#_todo000003">Todo:</a></b></dt><dd>C++とJavaScriptでImageFrameのコンストラクタのサイズ指定が違うので、そのうち仕様変更をして統一する必要がある</dd></dl>
-<p class="startli">ImageFrameをImageにsetして送信します。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
+<div class="line">const data: ArrayBuffer = /* 640 * 480 * 3 バイトのデータ... */;</div>
+<div class="line">// 画像サイズは 横, 縦 で指定</div>
+<div class="line">const frame: ImageFrame = new ImageFrame(640, 480, data, imageColorMode.rgb);</div>
+</div><!-- fragment --><p> imageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit✕3)、<code>rgba</code>(8bit✕4)、<code>bgra</code>(8bit✕4) が扱えます。</p>
+<p class="startli">Client.image からImageオブジェクトを作り、 Image.set() でImageFrame型の画像データを代入し、Client.sync()することで送信されます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame);</div>
+</div><!-- fragment --></li>
+<li><p class="startli"><b class="tab-title">Python</b> 画像データを表す型として <a href="https://na-trium-144.github.io/webcface-python/webcface.image_frame.html#webcface.image_frame.ImageFrame">webcface.ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> ImageFrame, ImageColorMode, ImageCompressMode</div>
+<div class="line"><span class="comment"># data: 640 * 480 * 3 バイトの bytes 型</span></div>
+<div class="line"><span class="comment"># 画像サイズは 横, 縦 で指定</span></div>
+<div class="line">frame = ImageFrame(640, 480, data, ImageColorMode.RGB, ImageCompressMode.RAW)</div>
+</div><!-- fragment --><p> ImageColorModeとして <code>GRAY</code>(8bitグレースケール)、<code>RGB</code>(8bit×3)、<code>BGR</code>(8bit✕3)、<code>RGBA</code>(8bit✕4)、<code>BGRA</code>(8bit✕4) が扱えます。</p>
+<p class="startli">Client.image からImageオブジェクトを作り、 Image.set() でImageFrame型の画像データを代入し、Client.sync()することで送信されます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame)</div>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md131"></a>
@@ -207,8 +214,15 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 <div class="line">                    mat.cols * mat.channels());</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a67f290272354886cea794d481da18640"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(int row, int col, int ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:237</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a67f290272354886cea794d481da18640"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(int row, int col, int ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:244</div></div>
 <div class="ttc" id="anamespacewebcface_html_a532ccd01be60db41be021d0f1b3b2e97"><div class="ttname"><a href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97">webcface::sizeHW</a></div><div class="ttdeci">Size sizeHW(int height, int width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:42</div></div>
+</div><!-- fragment --></li>
+<li><b class="tab-title">Numpy (Python)</b> ImageFrame → ndarray <div class="fragment"><div class="line">img_np = img_frame.numpy()</div>
+<div class="line"><span class="keyword">assert</span> img_np.shape == (height, width, img_frame.channels())</div>
+</div><!-- fragment --> ndarray → ImageFrame <div class="fragment"><div class="line"><span class="comment"># 例: uint8, BGR形式の場合</span></div>
+<div class="line"><span class="keyword">assert</span> img_np.dtype == np.uint8</div>
+<div class="line"><span class="keyword">assert</span> img_np.shape == (height, width, 3)</div>
+<div class="line">img_frame = ImageFrame.from_numpy(img_np, ImageColorMode.BGR)</div>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><details >
@@ -233,20 +247,26 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 </details>
 <h1><a class="anchor" id="autotoc_md132"></a>
 受信</h1>
-<p>Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
-<p>例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
+<li><p class="startli"><b class="tab-title">C++</b> Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(); <span class="comment">// 何も指定しない→元画像をそのまま受信</span></div>
 <div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    std::optional&lt;webcface::ImageFrame&gt; frame = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 <div class="line">    <span class="keywordflow">if</span>(frame){</div>
 <div class="line">        <span class="comment">//...</span></div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> request()で画像をリクエストし、画像を受信するまでの間tryGet()はstd::nulloptを返します。 get() を使うとstd::nulloptの代わりに空のImageFrameを返します。 (ImageFrame::empty() で空かどうかを判別できます) <br  />
- ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
- request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は ImageFrame::dataPtr(), ImageFrame::data() から取得できます。また、 <code>ImageFrame::at(y, x, channel)</code> で要素にアクセスすることもできます。</p>
+</div><!-- fragment --><ul>
+<li>リクエストした画像を受信するまでの間tryGet()はstd::nulloptを返します。</li>
+<li>get() を使うとstd::nulloptの代わりに空のImageFrameを返します。<ul>
+<li>(ImageFrame::empty() で空かどうかを判別できます)</li>
+</ul>
+</li>
+<li>ImageをImageFrameにキャストすることでも get() と同様に画像が得られます。 <br  />
+</li>
+<li>request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</li>
+<li>ImageFrameの中のデータには dataPtr() (<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>型)、 data() (<code>vector&lt;unsigned char&gt;&amp;</code> 型)、 at(y, x, ch) (<code>unsigned char &amp;</code>型) でアクセスできます。</li>
+</ul>
 <p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
  また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
@@ -256,23 +276,99 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <div class="line">                                         webcface::ImageColorMode::rgb);</div>
 <div class="line"><span class="comment">// サイズは元画像のままグレースケール</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(std::nullopt, webcface::ImageColorMode::gray);</div>
-</div><!-- fragment --><p> また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 詳細は webcface::Image::request() を参照 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
+</div><!-- fragment --><p class="startli">また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 詳細は webcface::Image::request() を参照 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
 <div class="line">                                         webcface::ImageCompressMode::jpeg, 50,</div>
 <div class="line">                                         5);</div>
-</div><!-- fragment --><p> 圧縮された画像の場合 tryGet() や get() で得られるImageFrameに対して dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。</p>
+</div><!-- fragment --><p class="startli">圧縮された画像の場合 dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。</p>
 </li>
-<li><p class="startli"><b class="tab-title">JavaScript</b> C++の場合と同様、requestの引数で画像のサイズや色モード、圧縮モードなどを指定することができます。 詳細は <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> を参照 </p><div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.image() でImageクラスのオブジェクトが得られ、 Image.request() で画像のリクエストをした後 Image.tryGet() で受信した画像を取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="fragment"><div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({}); // 何も指定しない→元画像をそのまま受信</div>
 <div class="line">while(true){</div>
 <div class="line">    const frame: ImageFrame | null = wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).tryGet();</div>
 <div class="line">    if(frame){</div>
 <div class="line">        //...</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><p> Image.get() はまだ受信できていない場合nullの代わりに空のImageFrameを返します。 <br  />
- request() を呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</p>
-<p class="startli">受信した画像は ImageFrame.data から取得できます。 圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できます。 <br  />
+</div><!-- fragment --><ul>
+<li>リクエストした画像を受信するまでの間tryGet()はnullを返します。</li>
+<li>Image.get() を使うとnullの代わりに空のImageFrameを返します。</li>
+<li>request() を1度も呼ばずに tryGet() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</li>
+<li>受信した画像は ImageFrame.data から取得できます。</li>
+</ul>
+<p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
+ また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 <br  />
+ request() の引数については <a href="https://na-trium-144.github.io/webcface-js/interfaces/ImageReq.html">ImageReq</a> を参照 </p><div class="fragment"><div class="line">// 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</div>
+<div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({</div>
+<div class="line">    width: 64,</div>
+<div class="line">    height: 48,</div>
+<div class="line">    colorMode: imageColorMode.rgb,</div>
+<div class="line">    frameRate: 5,</div>
+<div class="line">});</div>
+<div class="line">// 幅が64になるようリサイズ(縦横比を維持)</div>
+<div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({</div>
+<div class="line">    width: 64,</div>
+<div class="line">    colorMode: imageColorMode.rgb,</div>
+<div class="line">});</div>
+<div class="line">// サイズは元画像のままグレースケール</div>
+<div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({</div>
+<div class="line">    colorMode: imageColorMode.gray,</div>
+<div class="line">});</div>
+</div><!-- fragment --><p class="startli">また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 </p><div class="fragment"><div class="line">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</div>
+<div class="line">wcli.member(&quot;foo&quot;).image(&quot;hoge&quot;).request({</div>
+<div class="line">    width: 64,</div>
+<div class="line">    height: 48,</div>
+<div class="line">    compressMode: imageCompressMode.jpeg,</div>
+<div class="line">    quality: 50,</div>
+<div class="line">    frameRate: 5,</div>
+<div class="line">});</div>
+</div><!-- fragment --><p class="startli">圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できます。 <br  />
  また、 ImageFrame.toBase64() でbase64にエンコードすることができます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">Python</b> Member.image() でImageクラスのオブジェクトが得られ、 Image.request() で画像のリクエストをした後 Image.try_get() で受信した画像を取得できます。</p>
+<p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
+<div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request() <span class="comment"># 何も指定しない→元画像をそのまま受信</span></div>
+<div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
+<div class="line">    frame = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).try_get()</div>
+<div class="line">    <span class="keywordflow">if</span> frame <span class="keywordflow">is</span> <span class="keywordflow">not</span> <span class="keywordtype">None</span>:</div>
+<div class="line">        <span class="comment"># ...</span></div>
+</div><!-- fragment --><ul>
+<li>リクエストした画像を受信するまでの間try_get()はNoneを返します。</li>
+<li>Image.get() を使うとNoneの代わりに空のImageFrameを返します。<ul>
+<li>(ImageFrame.empty() で空かどうかを判別できます)</li>
+</ul>
+</li>
+<li>request() を1度も呼ばずに try_get() や get() した場合、デフォルトのオプションで(元画像のフォーマットで)リクエストされます。</li>
+<li>受信した画像は ImageFrame.data, ImageFrame.numpy() から取得できます。</li>
+</ul>
+<p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
+ また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 <br  />
+ </p><div class="fragment"><div class="line"><span class="comment"># 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(</div>
+<div class="line">    width=64,</div>
+<div class="line">    height=48,</div>
+<div class="line">    color_mode=ImageColorMode.RGB,</div>
+<div class="line">    frame_rate=5,</div>
+<div class="line">)</div>
+<div class="line"><span class="comment"># 幅が64になるようリサイズ(縦横比を維持)</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(</div>
+<div class="line">    width=64,</div>
+<div class="line">    color_mode=ImageColorMode.RGB,</div>
+<div class="line">)</div>
+<div class="line"><span class="comment"># サイズは元画像のままグレースケール</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(</div>
+<div class="line">    color_mode=ImageColorMode.GRAY,</div>
+<div class="line">)</div>
+</div><!-- fragment --><p class="startli">また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 </p><div class="fragment"><div class="line"><span class="comment"># 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(</div>
+<div class="line">    width=64,</div>
+<div class="line">    height=48,</div>
+<div class="line">    compress_mode=ImageCompressMode.JPEG,</div>
+<div class="line">    quality=50,</div>
+<div class="line">    frame_rate=5,</div>
+<div class="line">)</div>
+</div><!-- fragment --><p class="startli">圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できますが、 ImageFrame.numpy() は使えません。</p>
 </li>
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md133"></a>
@@ -290,7 +386,7 @@ Entry, Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Nov 1 2024 11:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Nov 6 2024 09:47:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
