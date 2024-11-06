@@ -30,6 +30,34 @@ TEST_F(ImageFrameTest, baseDefaultCtor) {
     EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
     EXPECT_EQ(img.data().size(), 0u);
 }
+TEST_F(ImageFrameTest, copyCtor) {
+    ImageFrame img2(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
+    ImageFrame img = img2; // NOLINT
+    EXPECT_FALSE(img.empty());
+    EXPECT_EQ(img.rows(), img2.rows());
+    EXPECT_EQ(img.cols(), img2.cols());
+    ASSERT_NE(img.dataPtr(), nullptr);
+    ASSERT_NE(img2.dataPtr(), nullptr);
+    ASSERT_EQ(img.dataPtr(), img2.dataPtr());
+    EXPECT_EQ(img.dataPtr()->size(), 100u * 100u * 3u);
+    EXPECT_EQ(img.channels(), img2.channels());
+    EXPECT_EQ(img.color_mode(), img2.color_mode());
+    EXPECT_EQ(img.compress_mode(), img2.compress_mode());
+}
+TEST_F(ImageFrameTest, moveCtor) {
+    ImageFrame img2(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
+    ImageFrame img = std::move(img2);
+    EXPECT_FALSE(img.empty());
+    EXPECT_TRUE(img2.empty());
+    EXPECT_EQ(img.rows(), 100);
+    EXPECT_EQ(img.cols(), 100);
+    ASSERT_NE(img.dataPtr(), nullptr);
+    ASSERT_NE(img2.dataPtr(), nullptr);
+    EXPECT_EQ(img.dataPtr()->size(), 100u * 100u * 3u);
+    EXPECT_EQ(img.channels(), 3);
+    EXPECT_EQ(img.color_mode(), ImageColorMode::bgr);
+    EXPECT_EQ(img.compress_mode(), ImageCompressMode::raw);
+}
 TEST_F(ImageFrameTest, baseRawPtrCtor) {
     ImageFrame img(sizeHW(100, 100), dp->data(), ImageColorMode::bgr);
     EXPECT_FALSE(img.empty());
