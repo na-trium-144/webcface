@@ -15,7 +15,7 @@ struct ImageFrame;
 } // namespace message
 
 class Size {
-    int w_, h_;
+    int w_ = 0, h_ = 0;
     Size(int width, int height) : w_(width), h_(height) {}
 
   public:
@@ -82,6 +82,7 @@ inline SizeOption WEBCFACE_CALL sizeHW(std::optional<int> height,
  * * 8bitのグレースケール, BGR, BGRAフォーマットのみを扱う
  * * 画像受信時にはjpegやpngなどにエンコードされたデータが入ることもある
  * * データはshared_ptrで保持され、Imageをコピーしてもコピーされない
+ * * デフォルトコンストラクタやmoveなど何をしてもdata_がnullになることはないようにする (ABIの後方互換性)
  *
  */
 class WEBCFACE_DLL ImageFrame {
@@ -103,6 +104,12 @@ class WEBCFACE_DLL ImageFrame {
                ImageCompressMode cmp_mode = ImageCompressMode::raw);
     ImageFrame(const message::ImageFrame &m);
     message::ImageFrame toMessage() const;
+
+    ImageFrame(const ImageFrame &);
+    ImageFrame &operator=(const ImageFrame &);
+    ImageFrame(ImageFrame &&) noexcept;
+    ImageFrame &operator=(ImageFrame &&) noexcept;
+
     /*!
      * \brief 生画像データの配列からImageFrameを作成
      *
