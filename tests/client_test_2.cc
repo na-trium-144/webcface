@@ -277,7 +277,7 @@ TEST_F(ClientTest, viewReq) {
     });
     wcli_->member("a").view("b").onChange(callback<View>());
 
-    std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v{
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> v{
         {"0", ViewComponents::text("a")
                   .textColor(ViewColor::yellow)
                   .bgColor(ViewColor::green)
@@ -326,7 +326,7 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b.c"_ss).has_value());
 
     // 差分だけ送る
-    std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v2{
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> v2{
         {"0", ViewComponents::text("b")
                   .textColor(ViewColor::red)
                   .bgColor(ViewColor::green)

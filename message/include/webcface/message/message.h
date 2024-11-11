@@ -38,12 +38,13 @@ enum MessageKindEnum {
     text = 1,
     binary = 2,
     view_old = 3,
-    canvas2d = 4,
+    canvas2d_old = 4,
     image = 5,
     robot_model = 6,
     canvas3d = 7,
     log = 8,
     view = 9,
+    canvas2d = 10,
     entry = 20,
     req = 40,
     res = 60,
@@ -377,12 +378,11 @@ struct ViewOld : public MessageBase<MessageKind::view_old> {
 };
 struct View : public MessageBase<MessageKind::view> {
     SharedString field;
-    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     View() = default;
     View(const SharedString &field,
-         std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
-             data_diff,
+         std::map<std::string, std::shared_ptr<ViewComponent>> data_diff,
          std::optional<std::vector<SharedString>> data_ids)
         : field(field), data_diff(std::move(data_diff)),
           data_ids(std::move(data_ids)) {}
@@ -450,22 +450,39 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
     std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff;
-    std::size_t length;
+    std::optional<std::vector<SharedString>> data_ids;
     Canvas2D() = default;
-    Canvas2D(const SharedString &field, double width, double height,
-             const std::unordered_map<int, std::shared_ptr<Canvas2DComponent>>
-                 &data_diff,
-             std::size_t length)
+    Canvas2D(
+        const SharedString &field, double width, double height,
+        std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff,
+        std::optional<std::vector<SharedString>> data_ids)
+        : field(field), width(width), height(height),
+          data_diff(std::move(data_diff)), data_ids(std::move(data_ids)) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
+                       MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", data_ids))
+};
+struct Canvas2DOld : public MessageBase<MessageKind::canvas2d_old> {
+    SharedString field;
+    double width, height;
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff;
+    std::size_t length;
+    Canvas2DOld() = default;
+    Canvas2DOld(
+        const SharedString &field, double width, double height,
+        const std::unordered_map<int, std::shared_ptr<Canvas2DComponent>>
+            &data_diff,
+        std::size_t length)
         : field(field), width(width), height(height), data_diff(),
           length(length) {
         for (const auto &vc : data_diff) {
             this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
-    Canvas2D(const SharedString &field, double width, double height,
-             const std::map<std::string, std::shared_ptr<Canvas2DComponent>>
-                 &data_diff,
-             std::size_t length)
+    Canvas2DOld(const SharedString &field, double width, double height,
+                const std::map<std::string, std::shared_ptr<Canvas2DComponent>>
+                    &data_diff,
+                std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
           length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
@@ -734,12 +751,11 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
-            &data_diff,
+        const std::map<std::string, std::shared_ptr<ViewComponent>> &data_diff,
         const std::optional<std::vector<SharedString>> &data_ids)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           data_ids(data_ids) {}
@@ -764,8 +780,8 @@ struct Res<Canvas3D>
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
 };
 template <>
-struct Res<Canvas2D>
-    : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
+struct Res<Canvas2DOld>
+    : public MessageBase<MessageKind::canvas2d_old + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
@@ -782,6 +798,26 @@ struct Res<Canvas2D>
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("w", width), MSGPACK_NVP("h", height),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
+};
+template <>
+struct Res<Canvas2D>
+    : public MessageBase<MessageKind::canvas2d + MessageKind::res> {
+    unsigned int req_id = 0;
+    SharedString sub_field;
+    double width = 0, height = 0;
+    std::map<std::string, std::shared_ptr<Canvas2DComponent>> data_diff;
+    std::optional<std::vector<SharedString>> data_ids;
+    Res() = default;
+    Res(unsigned int req_id, const SharedString &sub_field, double width,
+        double height,
+        const std::map<std::string, std::shared_ptr<Canvas2DComponent>>
+            &data_diff,
+        const std::optional<std::vector<SharedString>> &data_ids)
+        : req_id(req_id), sub_field(sub_field), width(width), height(height),
+          data_diff(data_diff), data_ids(data_ids) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("w", width), MSGPACK_NVP("h", height),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", data_ids))
 };
 
 template <>

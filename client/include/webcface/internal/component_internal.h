@@ -8,8 +8,9 @@ namespace internal {
 
 struct ViewComponentData : message::ViewComponent {
     ViewComponentData() = default;
-    explicit ViewComponentData(const message::ViewComponent &vc)
-        : message::ViewComponent(vc) {}
+    explicit ViewComponentData(const message::ViewComponent &vc,
+                               const SharedString &id)
+        : message::ViewComponent(vc), id(id) {}
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
     std::optional<InputRef> text_ref_tmp;
@@ -31,10 +32,12 @@ struct ViewComponentData : message::ViewComponent {
 
 struct Canvas2DComponentData : message::Canvas2DComponent {
     Canvas2DComponentData() = default;
-    explicit Canvas2DComponentData(const message::Canvas2DComponent &vc)
-        : message::Canvas2DComponent(vc) {}
+    explicit Canvas2DComponentData(const message::Canvas2DComponent &vc,
+                                   const SharedString &id)
+        : message::Canvas2DComponent(vc), id(id) {}
 
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    SharedString id;
 
     bool operator==(const Canvas2DComponentData &other) const;
     bool operator!=(const Canvas2DComponentData &other) const {

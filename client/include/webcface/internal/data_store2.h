@@ -200,14 +200,11 @@ struct ViewDataBase {
 };
 struct Canvas2DDataBase {
     double width = 0, height = 0;
-    std::vector<std::shared_ptr<Canvas2DComponentData>> components;
+    StrMap1<std::shared_ptr<internal::Canvas2DComponentData>> components;
+    std::vector<SharedString> data_ids;
     Canvas2DDataBase() = default;
     Canvas2DDataBase(double width, double height)
-        : width(width), height(height), components() {}
-    Canvas2DDataBase(
-        double width, double height,
-        std::vector<std::shared_ptr<Canvas2DComponentData>> &&components)
-        : width(width), height(height), components(std::move(components)) {}
+        : width(width), height(height), components(), data_ids() {}
 };
 
 using ValueData = std::shared_ptr<std::vector<double>>;

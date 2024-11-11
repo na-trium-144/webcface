@@ -89,7 +89,6 @@ enum class ViewComponentType {
 class WEBCFACE_DLL ViewComponent {
     std::shared_ptr<internal::ViewComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    SharedString id_;
 
     void checkData() const;
 
@@ -101,8 +100,7 @@ class WEBCFACE_DLL ViewComponent {
     ViewComponent();
 
     ViewComponent(const std::shared_ptr<internal::ViewComponentData> &msg_data,
-                  const std::weak_ptr<internal::ClientData> &data_w,
-                  const SharedString &id);
+                  const std::weak_ptr<internal::ClientData> &data_w);
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;

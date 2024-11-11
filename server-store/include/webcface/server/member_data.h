@@ -22,11 +22,12 @@ std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
 
 struct Canvas2DData {
     double width = 0, height = 0;
-    std::vector<std::shared_ptr<message::Canvas2DComponent>> components;
+    std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+        components;
+    std::vector<SharedString> data_ids;
 };
 struct ViewData {
-    std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>>
-        components;
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> components;
     std::vector<SharedString> data_ids;
 };
 
@@ -97,8 +98,9 @@ struct MemberData {
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    StrMap2<unsigned int> value_req, text_req, view_req, image_req, view_old_req,
-        robot_model_req, canvas3d_req, canvas2d_req, log_req;
+    StrMap2<unsigned int> value_req, text_req, view_req, image_req,
+        view_old_req, robot_model_req, canvas3d_req, canvas2d_req,
+        canvas2d_old_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド

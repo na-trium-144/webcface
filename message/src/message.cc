@@ -72,6 +72,7 @@ unpack(const std::string &message,
                 MSG_PARSE_DATA(RobotModel)
                 MSG_PARSE_DATA(Canvas3D)
                 MSG_PARSE_DATA(Canvas2D)
+                MSG_PARSE_DATA(Canvas2DOld)
                 MSG_PARSE_DATA(Log)
                 MSG_PARSE(LogDefault)
                 MSG_PARSE(LogReqDefault)

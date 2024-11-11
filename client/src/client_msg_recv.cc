@@ -172,12 +172,14 @@ void internal::ClientData::onRecv(
                 v_prev.emplace(vb_prev);
                 this->view_store.setRecv(member, field, vb_prev);
             }
-            if(r.data_ids){
+            if (r.data_ids) {
                 vb_prev->data_ids = std::move(*r.data_ids);
             }
             for (const auto &d : r.data_diff) {
-                vb_prev->components[SharedString::fromU8String(d.first)] =
-                    std::make_shared<internal::ViewComponentData>(*d.second);
+                auto id = SharedString::fromU8String(d.first);
+                vb_prev->components[id] =
+                    std::make_shared<internal::ViewComponentData>(*d.second,
+                                                                  id);
             }
             std::shared_ptr<std::function<void(View)>> cl;
             {
@@ -245,11 +247,14 @@ void internal::ClientData::onRecv(
             }
             vv_prev->width = r.width;
             vv_prev->height = r.height;
-            vv_prev->components.resize(r.length);
+            if (r.data_ids) {
+                vv_prev->data_ids = std::move(*r.data_ids);
+            }
             for (const auto &d : r.data_diff) {
-                vv_prev->components[std::stoi(d.first)] =
-                    std::make_shared<internal::Canvas2DComponentData>(
-                        *d.second);
+                auto id = SharedString::fromU8String(d.first);
+                vv_prev->components[id] =
+                    std::make_shared<internal::Canvas2DComponentData>(*d.second,
+                                                                      id);
             }
             std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {

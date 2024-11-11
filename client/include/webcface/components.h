@@ -42,24 +42,28 @@ struct TemporalComponent {
     friend class internal::ViewBuf;
 
     /*!
-     * \brief idを設定 (View)
+     * \brief idを設定
      * \since ver2.5
      */
     TemporalComponent &id(std::string_view id) {
-        static_assert(V, "id can be set only for View components");
         if constexpr (V) {
             component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
         }
         return *this;
     }
     /*!
-     * \brief idを設定(wstring) (View)
+     * \brief idを設定(wstring)
      * \since ver2.5
      */
     TemporalComponent &id(std::wstring_view id) {
-        static_assert(V, "id can be set only for View components");
         if constexpr (V) {
             component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
         }
         return *this;
     }

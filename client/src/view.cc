@@ -39,8 +39,8 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
     auto components_p = std::make_shared<internal::ViewDataBase>();
     components_p->data_ids.reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        auto msg_data = std::shared_ptr<internal::ViewComponentData>(
-            components_[i].lockTmp(data, target_.field_, &idx_next));
+        std::shared_ptr<internal::ViewComponentData> msg_data =
+            components_[i].lockTmp(data, target_.field_, &idx_next);
         components_p->components.emplace(msg_data->id, msg_data);
         components_p->data_ids.push_back(msg_data->id);
     }
@@ -149,9 +149,8 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     if (vb) {
         std::vector<ViewComponent> v;
         v.reserve((*vb)->data_ids.size());
-        std::unordered_map<ViewComponentType, int> idx_next;
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id), this->data_w, id);
+            v.emplace_back((*vb)->components.at(id), this->data_w);
         }
         return v;
     } else {

@@ -30,7 +30,6 @@ enum class Canvas2DComponentType {
 class WEBCFACE_DLL Canvas2DComponent {
     std::shared_ptr<internal::Canvas2DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    int idx_for_type = 0;
 
     void checkData() const;
 
@@ -40,27 +39,31 @@ class WEBCFACE_DLL Canvas2DComponent {
      *
      */
     Canvas2DComponent();
-    /*!
-     * \param msg_data
-     * \param data_w
-     * \param idx_next 種類ごとの要素数のmap
-     * InputRefの名前に使うidを決定するのに使う
-     *
-     */
+
     Canvas2DComponent(
         const std::shared_ptr<internal::Canvas2DComponentData> &msg_data,
-        const std::weak_ptr<internal::ClientData> &data_w,
-        std::unordered_map<Canvas2DComponentType, int> *idx_next);
+        const std::weak_ptr<internal::ClientData> &data_w);
 
     /*!
      * \brief そのcanvas2d内で一意のid
      * \since ver1.10
      *
-     * 要素が増減したり順序が変わったりしなければ、
+     * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
-     *
+     * * (ver2.5〜) canvas2d作成側でidを指定した場合その値が返る。
+     * 
      */
     std::string id() const;
+    /*!
+     * \brief そのcanvas2d内で一意のid (wstring)
+     * \since ver2.5
+     *
+     * * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     * * canvas2d作成側でidを指定した場合その値が返る。
+     * 
+     */
+    std::wstring idW() const;
 
     /*!
      * \since ver1.11
@@ -158,6 +161,16 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
             const SharedString &view_name,
             std::unordered_map<Canvas2DComponentType, int> *idx_next = nullptr);
 
+    /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &id(std::string_view id);
+    /*!
+     * \brief idを設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalCanvas2DComponent &id(std::wstring_view id);
     /*!
      * \brief 要素の移動・回転
      *
