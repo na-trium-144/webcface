@@ -510,13 +510,18 @@ void MemberData::onRecv(const std::string &message) {
             for (auto &d : v.data_diff) {
                 this_view.components[d.first] = d.second;
             }
+            std::optional<std::vector<SharedString>> prev_data_ids;
             if (v.data_ids) {
+                prev_data_ids = std::move(this_view.data_ids);
                 this_view.data_ids = std::move(*v.data_ids);
             }
             std::map<std::string, std::shared_ptr<message::ViewComponent>>
                 old_diff;
             for (std::size_t i = 0; i < this_view.data_ids.size(); i++) {
-                if (v.data_diff.count(this_view.data_ids[i].u8String())) {
+                if (v.data_diff.count(this_view.data_ids[i].u8String()) ||
+                    (prev_data_ids &&
+                     (prev_data_ids->size() <= i ||
+                      prev_data_ids->at(i) != this_view.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
                         v.data_diff[this_view.data_ids[i].u8String()];
                 }
