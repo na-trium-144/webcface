@@ -731,8 +731,9 @@ void MemberData::onRecv(const std::string &message) {
                             webcface::message::Res<webcface::message::Canvas2D>(
                                 req_id, sub_field, v.width, v.height,
                                 v.data_diff, this_canvas.data_ids));
-                        cd->logger->trace("send canvas2d_res req_id={} + '{}'",
-                                          req_id, sub_field.decode());
+                        cd->logger->trace(
+                            "send canvas2d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
                     }
                 }
                 {
@@ -747,6 +748,81 @@ void MemberData::onRecv(const std::string &message) {
                             this_canvas.data_ids.size()));
                         cd->logger->trace("send canvas2d_res req_id={} + '{}'",
                                           req_id, sub_field.decode());
+                    }
+                }
+            });
+            break;
+        }
+        case MessageKind::canvas2d_old: {
+            auto &v = *static_cast<webcface::message::Canvas2DOld *>(obj.get());
+            logger->debug("canvas2d {} diff={}, length={}", v.field.decode(),
+                          v.data_diff.size(), v.length);
+            if (!this->canvas2d.count(v.field) &&
+                !v.field.startsWith(field_separator)) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::Canvas2D>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace("send canvas2d_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::Canvas2DOld>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace(
+                            "send canvas2d_old_entry {} of member {}",
+                            v.field.decode(), this->member_id);
+                    }
+                });
+            }
+            std::unordered_map<int, int> idx_next;
+            auto &this_canvas = this->canvas2d[v.field];
+            this_canvas.width = v.width;
+            this_canvas.height = v.height;
+            std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+                new_diff;
+            for (auto &d : v.data_diff) {
+                std::size_t old_index = std::atoi(d.first.c_str());
+                int idx = idx_next[d.second->type]++;
+                std::string id =
+                    std::to_string(d.second->type) + "." + std::to_string(idx);
+                this_canvas.components[id] = d.second;
+                while (this_canvas.data_ids.size() <= old_index) {
+                    this_canvas.data_ids.push_back(SharedString());
+                }
+                this_canvas.data_ids[old_index] =
+                    SharedString::fromU8String(id);
+                new_diff[id] = d.second;
+            }
+            // このvalueをsubscribeしてるところに送り返す
+            store->forEach([&](auto cd) {
+                {
+                    auto req_field =
+                        findReqField(cd->canvas2d_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::Canvas2D>(
+                                req_id, sub_field, v.width, v.height, new_diff,
+                                this_canvas.data_ids));
+                        cd->logger->trace("send canvas2d_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
+                }
+                {
+                    auto req_field =
+                        findReqField(cd->canvas2d_old_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::Canvas2DOld>(
+                            req_id, sub_field, v.width, v.height, v.data_diff,
+                            this_canvas.data_ids.size()));
+                        cd->logger->trace(
+                            "send canvas2d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
                     }
                 }
             });

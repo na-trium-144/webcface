@@ -53,11 +53,15 @@ TemporalCanvas2DComponent::lockTmp(
         idx_for_type =
             (*idx_next)[static_cast<Canvas2DComponentType>(msg_data->type)]++;
     }
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalCanvas2DId(msg_data->type, idx_for_type));
+    }
     if (msg_data->on_click_func_tmp != nullptr) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..c2" + view_name.u8String() + "/" +
-                          internalCanvas2DId(msg_data->type, idx_for_type))};
+                      SharedString::fromU8String("..c2" + view_name.u8String() +
+                                                 "/" +
+                                                 msg_data->id.u8String())};
         msg_data->on_click_func_tmp->lockTo(on_click);
         this->onClick(on_click);
     }

@@ -586,7 +586,7 @@ TEST_F(CClientTest, viewReq) {
         EXPECT_EQ(obj.req_id, 1u);
     });
 
-    std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>> v{
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> v{
         {"0", ViewComponents::text("a")
                   .textColor(ViewColor::yellow)
                   .bgColor(ViewColor::green)

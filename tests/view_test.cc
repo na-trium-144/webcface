@@ -112,6 +112,7 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(view_data_base.components.size(), 11u);
     EXPECT_EQ(view_data_base.data_ids.size(), 11u);
     std::vector<std::shared_ptr<internal::ViewComponentData>> view_data;
+    view_data.reserve(view_data_base.components.size());
     for (const auto &id : view_data_base.data_ids) {
         view_data.push_back(view_data_base.components.at(id));
     }
