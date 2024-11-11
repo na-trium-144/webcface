@@ -10,22 +10,15 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string ViewComponent::id() const {
-    return internalViewId(static_cast<int>(type()), idx_for_type);
-}
+std::string ViewComponent::id() const { return this->id_.decode(); }
+std::wstring ViewComponent::idW() const { return this->id_.decodeW(); }
 
 ViewComponent::ViewComponent() = default;
 
 ViewComponent::ViewComponent(
     const std::shared_ptr<internal::ViewComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<ViewComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<ViewComponentType>(msg_data->type)]++;
-    }
-}
+    const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
+    : msg_data(msg_data), data_w(data_w), id_(id) {}
 
 TemporalViewComponent::TemporalViewComponent(std::nullptr_t) : msg_data() {}
 TemporalViewComponent::TemporalViewComponent(ViewComponentType type)

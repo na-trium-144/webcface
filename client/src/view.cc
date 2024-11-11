@@ -151,7 +151,7 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
         v.reserve((*vb)->data_ids.size());
         std::unordered_map<ViewComponentType, int> idx_next;
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id), this->data_w, &idx_next);
+            v.emplace_back((*vb)->components.at(id), this->data_w, id);
         }
         return v;
     } else {
