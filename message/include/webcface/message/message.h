@@ -446,10 +446,6 @@ struct Canvas2DComponent {
                        MSGPACK_NVP("L", on_click_member),
                        MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
 };
-struct Canvas2DData {
-    double width = 0, height = 0;
-    std::vector<std::shared_ptr<Canvas2DComponent>> components;
-};
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;

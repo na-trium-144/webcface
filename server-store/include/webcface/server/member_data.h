@@ -20,6 +20,16 @@ std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
                                                    const SharedString &member,
                                                    const SharedString &field);
 
+struct Canvas2DData {
+    double width = 0, height = 0;
+    std::vector<std::shared_ptr<message::Canvas2DComponent>> components;
+};
+struct ViewData {
+    std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>>
+        components;
+    std::optional<std::vector<SharedString>> data_ids;
+};
+
 struct MemberData {
     spdlog::sink_ptr sink;
     std::shared_ptr<spdlog::logger> logger;
@@ -54,9 +64,9 @@ struct MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<std::vector<std::shared_ptr<message::ViewComponent>>> view;
+    StrMap1<ViewData> view;
     StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
-    StrMap1<message::Canvas2DData> canvas2d;
+    StrMap1<Canvas2DData> canvas2d;
 
     StrMap1<ImageFrame> image;
     /*!

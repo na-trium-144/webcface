@@ -479,7 +479,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::view: {
             auto &v = *static_cast<webcface::message::View *>(obj.get());
             logger->debug("view {} diff={}, length={}", v.field.decode(),
-                          v.data_diff.size(), v.length);
+                          v.data_diff.size(),
+                          v.data_ids ? v.data_ids->size() : 0);
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](auto cd) {
@@ -492,9 +493,11 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 });
             }
-            this->view[v.field].resize(v.length);
             for (auto &d : v.data_diff) {
-                this->view[v.field][std::stoi(d.first)] = d.second;
+                this->view[v.field].components[d.first] = d.second;
+            }
+            if (v.data_ids) {
+                this->view[v.field].data_ids = std::move(v.data_ids);
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
@@ -504,7 +507,8 @@ void MemberData::onRecv(const std::string &message) {
                 auto &sub_field = req_field.second;
                 if (req_id > 0) {
                     cd->pack(webcface::message::Res<webcface::message::View>(
-                        req_id, sub_field, v.data_diff, v.length));
+                        req_id, sub_field, v.data_diff,
+                        this->view[v.field].data_ids));
                     cd->logger->trace("send view_res req_id={} + '{}'", req_id,
                                       sub_field.decode());
                 }
@@ -848,12 +852,6 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::map<std::string,
-                                 std::shared_ptr<message::ViewComponent>>
-                            diff;
-                        for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff.emplace(std::to_string(i), it.second[i]);
-                        }
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
@@ -863,7 +861,8 @@ void MemberData::onRecv(const std::string &message) {
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::View>{
-                                s.req_id, sub_field, diff, it.second.size()});
+                                s.req_id, sub_field, it.second.components,
+                                it.second.data_ids});
                         logger->trace("send view_res req_id={} + '{}'",
                                       s.req_id, sub_field.decode());
                     }
