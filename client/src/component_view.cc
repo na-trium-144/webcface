@@ -6,6 +6,7 @@
 
 WEBCFACE_NS_BEGIN
 
+/// \private
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
@@ -59,6 +60,10 @@ std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
     if (idx_next) {
         idx_for_type =
             (*idx_next)[static_cast<ViewComponentType>(msg_data->type)]++;
+    }
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalViewId(msg_data->type, idx_for_type));
     }
     if (msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
@@ -174,6 +179,14 @@ bool internal::ViewComponentData::operator==(
 ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);
+}
+TemporalViewComponent &TemporalViewComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalViewComponent &TemporalViewComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
 }
 std::string ViewComponent::text() const {
     checkData();

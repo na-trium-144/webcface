@@ -14,6 +14,7 @@ struct ViewComponentData : message::ViewComponent {
     std::shared_ptr<AnonymousFunc> on_click_func_tmp;
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
+    SharedString id;
 
     // for cData()
     mutable std::vector<wcfMultiVal> options_s;

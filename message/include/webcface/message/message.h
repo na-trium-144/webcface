@@ -37,12 +37,13 @@ enum MessageKindEnum {
     value = 0,
     text = 1,
     binary = 2,
-    view = 3,
+    view_old = 3,
     canvas2d = 4,
     image = 5,
     robot_model = 6,
     canvas3d = 7,
     log = 8,
+    view = 9,
     entry = 20,
     req = 40,
     res = 60,
@@ -352,26 +353,41 @@ struct ViewComponent {
                        MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
                        MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_))
 };
-struct View : public MessageBase<MessageKind::view> {
+struct ViewOld : public MessageBase<MessageKind::view_old> {
     SharedString field;
     std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
     std::size_t length = 0;
-    View() = default;
-    View(const SharedString &field,
-         const std::unordered_map<int, std::shared_ptr<ViewComponent>>
-             &data_diff,
-         std::size_t length)
+    ViewOld() = default;
+    ViewOld(const SharedString &field,
+            const std::unordered_map<int, std::shared_ptr<ViewComponent>>
+                &data_diff,
+            std::size_t length)
         : field(field), data_diff(), length(length) {
         for (auto &&vc : data_diff) {
             this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
-    View(const SharedString &field,
-         const std::map<std::string, std::shared_ptr<ViewComponent>> &data_diff,
-         std::size_t length)
+    ViewOld(
+        const SharedString &field,
+        const std::map<std::string, std::shared_ptr<ViewComponent>> &data_diff,
+        std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
+};
+struct View : public MessageBase<MessageKind::view> {
+    SharedString field;
+    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::optional<std::vector<SharedString>> data_ids;
+    View() = default;
+    View(const SharedString &field,
+         std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
+             data_diff,
+         std::optional<std::vector<SharedString>> data_ids)
+        : field(field), data_diff(std::move(data_diff)),
+          data_ids(std::move(data_ids)) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", data_ids))
 };
 struct Canvas3DComponent {
     int type = 0;
@@ -703,7 +719,8 @@ struct Res<RobotModel>
                        MSGPACK_NVP("d", data))
 };
 template <>
-struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
+struct Res<ViewOld>
+    : public MessageBase<MessageKind::view_old + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     std::map<std::string, std::shared_ptr<ViewComponent>> data_diff;
@@ -716,6 +733,22 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
           length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
                        MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
+};
+template <>
+struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
+    unsigned int req_id = 0;
+    SharedString sub_field;
+    std::unordered_map<std::string, std::shared_ptr<ViewComponent>> data_diff;
+    std::optional<std::vector<SharedString>> data_ids;
+    Res() = default;
+    Res(unsigned int req_id, const SharedString &sub_field,
+        const std::unordered_map<std::string, std::shared_ptr<ViewComponent>>
+            &data_diff,
+        const std::optional<std::vector<SharedString>> &data_ids)
+        : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
+          data_ids(data_ids) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", data_ids))
 };
 template <>
 struct Res<Canvas3D>

@@ -1,5 +1,6 @@
 #include "webcface/view.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/data_store2.h"
 #include "webcface/member.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
@@ -35,12 +36,13 @@ template <>
 void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
     std::unordered_map<ViewComponentType, int> idx_next;
     auto data = target_.setCheck();
-    auto components_p = std::make_shared<
-        std::vector<std::shared_ptr<internal::ViewComponentData>>>();
-    components_p->reserve(components_.size());
+    auto components_p = std::make_shared<internal::ViewDataBase>();
+    components_p->data_ids.reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        components_p->push_back(
+        auto msg_data = std::shared_ptr<internal::ViewComponentData>(
             components_[i].lockTmp(data, target_.field_, &idx_next));
+        components_p->components.emplace(msg_data->id, msg_data);
+        components_p->data_ids.push_back(msg_data->id);
     }
     data->view_store.setSend(target_, components_p);
 
@@ -145,10 +147,11 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     request();
     auto vb = dataLock()->view_store.getRecv(*this);
     if (vb) {
-        std::vector<ViewComponent> v((*vb)->size());
+        std::vector<ViewComponent> v;
+        v.reserve((*vb)->data_ids.size());
         std::unordered_map<ViewComponentType, int> idx_next;
-        for (std::size_t i = 0; i < (*vb)->size(); i++) {
-            v[i] = ViewComponent{(**vb)[i], this->data_w, &idx_next};
+        for (const auto &id : (*vb)->data_ids) {
+            v.emplace_back((*vb)->components.at(id), this->data_w, &idx_next);
         }
         return v;
     } else {

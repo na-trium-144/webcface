@@ -164,21 +164,19 @@ void internal::ClientData::onRecv(
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<
-                std::vector<std::shared_ptr<internal::ViewComponentData>>>
-                vv_prev;
+            std::shared_ptr<ViewDataBase> vb_prev;
             if (v_prev) {
-                vv_prev = *v_prev;
+                vb_prev = *v_prev;
             } else {
-                vv_prev = std::make_shared<
-                    std::vector<std::shared_ptr<internal::ViewComponentData>>>(
-                    r.length);
-                v_prev.emplace(vv_prev);
-                this->view_store.setRecv(member, field, vv_prev);
+                vb_prev = std::make_shared<ViewDataBase>();
+                v_prev.emplace(vb_prev);
+                this->view_store.setRecv(member, field, vb_prev);
             }
-            vv_prev->resize(r.length);
+            if(r.data_ids){
+                vb_prev->data_ids = std::move(*r.data_ids);
+            }
             for (const auto &d : r.data_diff) {
-                (*vv_prev)[std::stoi(d.first)] =
+                vb_prev->components[SharedString::fromU8String(d.first)] =
                     std::make_shared<internal::ViewComponentData>(*d.second);
             }
             std::shared_ptr<std::function<void(View)>> cl;
