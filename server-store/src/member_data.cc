@@ -104,6 +104,9 @@ bool MemberData::hasReq(const SharedString &member) {
            std::any_of(this->view_req[member].begin(),
                        this->view_req[member].end(),
                        [](const auto &it) { return it.second > 0; }) ||
+           std::any_of(this->view_old_req[member].begin(),
+                       this->view_old_req[member].end(),
+                       [](const auto &it) { return it.second > 0; }) ||
            std::any_of(this->canvas2d_req[member].begin(),
                        this->canvas2d_req[member].end(),
                        [](const auto &it) { return it.second > 0; });
@@ -253,6 +256,11 @@ void MemberData::onRecv(const std::string &message) {
                                        webcface::message::View>{
                                 {}, cd->member_id, f.first});
                             logger->trace("send view_entry {} of member {}",
+                                          f.first.decode(), cd->member_id);
+                            this->pack(webcface::message::Entry<
+                                       webcface::message::ViewOld>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send view_entry_old {} of member {}",
                                           f.first.decode(), cd->member_id);
                         }
                     }
@@ -490,27 +498,129 @@ void MemberData::onRecv(const std::string &message) {
                                 {}, this->member_id, v.field});
                         cd->logger->trace("send view_entry {} of member {}",
                                           v.field.decode(), this->member_id);
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::ViewOld>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace("send view_old_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
                     }
                 });
             }
+            auto &this_view = this->view[v.field];
             for (auto &d : v.data_diff) {
-                this->view[v.field].components[d.first] = d.second;
+                this_view.components[d.first] = d.second;
             }
             if (v.data_ids) {
-                this->view[v.field].data_ids = std::move(v.data_ids);
+                this_view.data_ids = std::move(*v.data_ids);
+            }
+            std::map<std::string, std::shared_ptr<message::ViewComponent>>
+                old_diff;
+            for (std::size_t i = 0; i < this_view.data_ids.size(); i++) {
+                if (v.data_diff.count(this_view.data_ids[i].u8String())) {
+                    old_diff[std::to_string(i)] =
+                        v.data_diff[this_view.data_ids[i].u8String()];
+                }
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto req_field =
-                    findReqField(cd->view_req, this->name, v.field);
-                auto &req_id = req_field.first;
-                auto &sub_field = req_field.second;
-                if (req_id > 0) {
-                    cd->pack(webcface::message::Res<webcface::message::View>(
-                        req_id, sub_field, v.data_diff,
-                        this->view[v.field].data_ids));
-                    cd->logger->trace("send view_res req_id={} + '{}'", req_id,
-                                      sub_field.decode());
+                {
+                    auto req_field =
+                        findReqField(cd->view_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::View>(
+                                req_id, sub_field, v.data_diff,
+                                this_view.data_ids));
+                        cd->logger->trace("send view_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
+                }
+                {
+                    auto req_field =
+                        findReqField(cd->view_old_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::ViewOld>(
+                                req_id, sub_field, old_diff,
+                                this_view.data_ids.size()));
+                        cd->logger->trace("send view_old_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
+                }
+            });
+            break;
+        }
+        case MessageKind::view_old: {
+            auto &v = *static_cast<webcface::message::ViewOld *>(obj.get());
+            logger->debug("view_old {} diff={}, length={}", v.field.decode(),
+                          v.data_diff.size(), v.length);
+            if (!this->view.count(v.field) &&
+                !v.field.startsWith(field_separator)) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
+                            webcface::message::Entry<webcface::message::View>{
+                                {}, this->member_id, v.field});
+                        cd->logger->trace("send view_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::ViewOld>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace("send view_old_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
+                    }
+                });
+            }
+            std::unordered_map<int, int> idx_next;
+            auto &this_view = this->view[v.field];
+            std::unordered_map<std::string,
+                               std::shared_ptr<message::ViewComponent>>
+                new_diff;
+            for (auto &d : v.data_diff) {
+                std::size_t old_index = std::atoi(d.first.c_str());
+                int idx = idx_next[d.second->type]++;
+                std::string id =
+                    std::to_string(d.second->type) + "." + std::to_string(idx);
+                this_view.components[id] = d.second;
+                while (this_view.data_ids.size() <= old_index) {
+                    this_view.data_ids.push_back(SharedString());
+                }
+                this_view.data_ids[old_index] = SharedString::fromU8String(id);
+                new_diff[id] = d.second;
+            }
+            // このvalueをsubscribeしてるところに送り返す
+            store->forEach([&](auto cd) {
+                {
+                    auto req_field =
+                        findReqField(cd->view_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::View>(
+                                req_id, sub_field, new_diff,
+                                this_view.data_ids));
+                        cd->logger->trace("send view_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
+                }
+                {
+                    auto req_field =
+                        findReqField(cd->view_old_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::ViewOld>(
+                                req_id, sub_field, v.data_diff,
+                                this_view.data_ids.size()));
+                        cd->logger->trace("send view_old_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
                 }
             });
             break;
@@ -871,6 +981,51 @@ void MemberData::onRecv(const std::string &message) {
             view_req[s.member][s.field] = s.req_id;
             break;
         }
+        case MessageKind::req + MessageKind::view_old: {
+            auto &s = *static_cast<
+                webcface::message::Req<webcface::message::ViewOld> *>(
+                obj.get());
+            logger->debug("request view_old ({}): {} from {}", s.req_id,
+                          s.field.decode(), s.member.decode());
+            // 指定した値を返す
+            store->findAndDo(s.member, [&](auto cd) {
+                if (!this->hasReq(s.member)) {
+                    this->pack(webcface::message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
+                    logger->trace("send sync {}", this->member_id);
+                }
+                for (const auto &it : cd->view) {
+                    if (it.first == s.field ||
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
+                        SharedString sub_field;
+                        if (it.first == s.field) {
+                        } else {
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
+                        }
+                        std::map<std::string,
+                                 std::shared_ptr<message::ViewComponent>>
+                            old_components;
+                        for (std::size_t i = 0; i < it.second.data_ids.size();
+                             i++) {
+                            old_components[std::to_string(i)] =
+                                it.second.components.at(
+                                    it.second.data_ids[i].u8String());
+                        }
+                        this->pack(
+                            webcface::message::Res<webcface::message::ViewOld>{
+                                s.req_id, sub_field, old_components,
+                                old_components.size()});
+                        logger->trace("send view_res req_id={} + '{}'",
+                                      s.req_id, sub_field.decode());
+                    }
+                }
+            });
+            view_old_req[s.member][s.field] = s.req_id;
+            break;
+        }
         case MessageKind::req + MessageKind::canvas3d: {
             auto &s = *static_cast<
                 webcface::message::Req<webcface::message::Canvas3D> *>(
@@ -1045,6 +1200,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::robot_model:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
+        case MessageKind::entry + MessageKind::view_old:
+        case MessageKind::res + MessageKind::view_old:
         case MessageKind::entry + MessageKind::canvas3d:
         case MessageKind::res + MessageKind::canvas3d:
         case MessageKind::entry + MessageKind::canvas2d:

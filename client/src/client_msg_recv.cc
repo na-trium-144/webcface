@@ -495,6 +495,7 @@ void internal::ClientData::onRecv(
             }
             break;
         case MessageKind::log_entry_default:
+        case MessageKind::view_old + MessageKind::entry:
         case MessageKind::unknown:
             break;
         default:

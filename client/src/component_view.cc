@@ -60,18 +60,18 @@ std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
     }
     if (msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..v" + view_name.u8String() + "/" +
-                          internalViewId(msg_data->type, idx_for_type))};
+                      SharedString::fromU8String("..v" + view_name.u8String() +
+                                                 "/" +
+                                                 msg_data->id.u8String())};
         msg_data->on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (msg_data->text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Variant text_ref{Field{data, data->self_member_name},
-                         SharedString::fromU8String(
-                             "..ir" + view_name.u8String() + "/" +
-                             internalViewId(msg_data->type, idx_for_type))};
+                         SharedString::fromU8String("..ir" +
+                                                    view_name.u8String() + "/" +
+                                                    msg_data->id.u8String())};
         msg_data->text_ref_tmp->lockTo(text_ref);
         if (msg_data->init_ && !text_ref.tryGet()) {
             text_ref.set(*msg_data->init_);

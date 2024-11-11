@@ -27,7 +27,7 @@ struct Canvas2DData {
 struct ViewData {
     std::unordered_map<std::string, std::shared_ptr<message::ViewComponent>>
         components;
-    std::optional<std::vector<SharedString>> data_ids;
+    std::vector<SharedString> data_ids;
 };
 
 struct MemberData {
@@ -97,7 +97,7 @@ struct MemberData {
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    StrMap2<unsigned int> value_req, text_req, view_req, image_req,
+    StrMap2<unsigned int> value_req, text_req, view_req, image_req, view_old_req,
         robot_model_req, canvas3d_req, canvas2d_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =

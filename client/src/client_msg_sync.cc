@@ -191,11 +191,11 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
-        if (v_prev != data.view_prev.end() &&
+        if (v_prev == data.view_prev.end() ||
             v_prev->second->data_ids != p.second->data_ids) {
             v_ids_changed.emplace(p.second->data_ids);
         }
-        if (!v_diff.empty()) {
+        if (!v_diff.empty() || v_ids_changed) {
             message::pack(buffer, len,
                           message::View{p.first, std::move(v_diff),
                                         std::move(v_ids_changed)});

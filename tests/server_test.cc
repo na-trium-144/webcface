@@ -137,7 +137,9 @@ TEST_F(ServerTest, entry) {
         0});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>(),
+        {}});
     dummy_c1->send(message::Image{
         "a"_ss,
         ImageFrame{sizeWH(100, 100),
@@ -223,7 +225,9 @@ TEST_F(ServerTest, entry) {
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
+        std::unordered_map<std::string,
+                           std::shared_ptr<message::ViewComponent>>(),
+        {}});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
