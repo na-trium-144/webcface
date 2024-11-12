@@ -30,7 +30,6 @@ enum class Canvas3DComponentType {
 class WEBCFACE_DLL Canvas3DComponent {
     std::shared_ptr<internal::Canvas3DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    int idx_for_type = 0;
 
     void checkData() const;
 
