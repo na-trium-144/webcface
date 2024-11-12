@@ -526,6 +526,9 @@ void MemberData::onRecv(const std::string &message) {
             }
             auto &this_view = this->view[v.field];
             for (auto &d : v.data_diff) {
+                if (!d.second) {
+                    d.second = std::make_shared<message::ViewComponent>();
+                }
                 this_view.components[d.first] = d.second;
             }
             bool ids_changed = false;
@@ -609,6 +612,9 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
+                if (!d.second) {
+                    d.second = std::make_shared<message::ViewComponent>();
+                }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
                     std::to_string(d.second->type) + "." + std::to_string(idx);
@@ -676,7 +682,10 @@ void MemberData::onRecv(const std::string &message) {
                 });
             }
             auto &this_canvas = this->canvas3d[v.field];
-            for (const auto &d : v.data_diff) {
+            for (auto &d : v.data_diff) {
+                if (!d.second) {
+                    d.second = std::make_shared<message::Canvas3DComponent>();
+                }
                 this_canvas.components[d.first] = d.second;
             }
             bool ids_changed = false;
@@ -765,6 +774,9 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
+                if (!d.second) {
+                    d.second = std::make_shared<message::Canvas3DComponent>();
+                }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
                     std::to_string(d.second->type) + "." + std::to_string(idx);
@@ -837,6 +849,9 @@ void MemberData::onRecv(const std::string &message) {
             this_canvas.width = v.width;
             this_canvas.height = v.height;
             for (auto &d : v.data_diff) {
+                if (!d.second) {
+                    d.second = std::make_shared<message::Canvas2DComponent>();
+                }
                 this_canvas.components[d.first] = d.second;
             }
             bool ids_changed = false;
@@ -924,6 +939,9 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
+                if (!d.second) {
+                    d.second = std::make_shared<message::Canvas2DComponent>();
+                }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
                     std::to_string(d.second->type) + "." + std::to_string(idx);

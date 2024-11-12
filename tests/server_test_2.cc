@@ -207,7 +207,7 @@ TEST_F(ServerTest, viewOld) {
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
-        EXPECT_EQ(obj.data_diff.at("0")->type,
+        EXPECT_EQ(obj.data_diff.at("0.0")->type, // id 0.0
                   static_cast<int>(ViewComponentType::text));
     });
     dummy_c2->recvClear();
@@ -218,7 +218,7 @@ TEST_F(ServerTest, viewOld) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
-        EXPECT_EQ(obj.data_diff.at("0")->type,
+        EXPECT_EQ(obj.data_diff.at("0")->type, // index 0
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ(obj.length, 3u);
     });
@@ -237,15 +237,17 @@ TEST_F(ServerTest, viewOld) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
-        EXPECT_EQ(obj.data_diff.at("0")->type,
+        EXPECT_EQ(obj.data_diff.at("0.0")->type, // id
                   static_cast<int>(ViewComponentType::text));
+        EXPECT_EQ(obj.data_ids->size(),
+                  3u); // currently always return full id list
     });
     dummy_c3->waitRecv<message::Sync>([&](auto) {});
     dummy_c3->waitRecv<message::Res<message::ViewOld>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
-        EXPECT_EQ(obj.data_diff.at("0")->type,
+        EXPECT_EQ(obj.data_diff.at("0")->type, // index
                   static_cast<int>(ViewComponentType::text));
         EXPECT_EQ(obj.length, 3u);
     });
@@ -359,7 +361,8 @@ TEST_F(ServerTest, canvas3dOld) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
-        EXPECT_EQ(obj.data_ids, std::nullopt);
+        EXPECT_EQ(obj.data_ids->size(),
+                  3u); // currently always return full id list
     });
     dummy_c3->waitRecv<message::Sync>([&](auto) {});
     dummy_c3->waitRecv<message::Res<message::Canvas3DOld>>(
@@ -479,7 +482,8 @@ TEST_F(ServerTest, canvas2dOld) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
-        EXPECT_EQ(obj.data_ids, std::nullopt);
+        EXPECT_EQ(obj.data_ids->size(),
+                  3u); // currently always return full id list
     });
     dummy_c3->waitRecv<message::Sync>([&](auto) {});
     dummy_c3->waitRecv<message::Res<message::Canvas2DOld>>(
