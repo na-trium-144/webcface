@@ -546,7 +546,7 @@ void MemberData::onRecv(const std::string &message) {
                      (prev_data_ids.size() <= i ||
                       prev_data_ids.at(i) != this_view.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
-                        v.data_diff[this_view.data_ids[i].u8String()];
+                        this_view.components[this_view.data_ids[i].u8String()];
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -703,7 +703,8 @@ void MemberData::onRecv(const std::string &message) {
                      (prev_data_ids.size() <= i ||
                       prev_data_ids.at(i) != this_canvas.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
-                        v.data_diff[this_canvas.data_ids[i].u8String()];
+                        this_canvas
+                            .components[this_canvas.data_ids[i].u8String()];
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
@@ -869,7 +870,8 @@ void MemberData::onRecv(const std::string &message) {
                      (prev_data_ids.size() <= i ||
                       prev_data_ids.at(i) != this_canvas.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
-                        v.data_diff[this_canvas.data_ids[i].u8String()];
+                        this_canvas
+                            .components[this_canvas.data_ids[i].u8String()];
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
