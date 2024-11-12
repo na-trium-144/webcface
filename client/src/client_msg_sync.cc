@@ -202,19 +202,25 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas3d_data) {
         auto v_prev = data.canvas3d_prev.find(p.first);
-        std::unordered_map<int, std::shared_ptr<message::Canvas3DComponent>>
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
             v_diff;
-        for (std::size_t i = 0; i < p.second->size(); i++) {
+        for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas3d_prev.end() ||
-                v_prev->second->size() <= i ||
-                *(*v_prev->second)[i] != *(*p.second)[i]) {
-                v_diff.emplace(static_cast<int>(i), (*p.second)[i]);
+                v_prev->second->components.count(id) == 0 ||
+                *v_prev->second->components.at(id) !=
+                    *p.second->components.at(id)) {
+                v_diff.emplace(id.u8String(), p.second->components.at(id));
             }
         }
-
-        if (!v_diff.empty()) {
+        std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
+        if (v_prev == data.canvas3d_prev.end() ||
+            v_prev->second->data_ids != p.second->data_ids) {
+            v_ids_changed.emplace(p.second->data_ids);
+        }
+        if (!v_diff.empty() || v_ids_changed) {
             message::pack(buffer, len,
-                          message::Canvas3D{p.first, v_diff, p.second->size()});
+                          message::Canvas3D{p.first, std::move(v_diff),
+                                            std::move(v_ids_changed)});
         }
     }
     for (const auto &p : data.canvas2d_data) {

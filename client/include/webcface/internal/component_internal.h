@@ -47,10 +47,12 @@ struct Canvas2DComponentData : message::Canvas2DComponent {
 
 struct Canvas3DComponentData : message::Canvas3DComponent {
     Canvas3DComponentData() = default;
-    explicit Canvas3DComponentData(const message::Canvas3DComponent &vc)
-        : message::Canvas3DComponent(vc) {}
+    explicit Canvas3DComponentData(const message::Canvas3DComponent &vc,
+                                   const SharedString &id)
+        : message::Canvas3DComponent(vc), id(id) {}
 
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id;
 
     auto &anglesAt(std::size_t i) { return angles[std::to_string(i)]; }
 

@@ -41,10 +41,11 @@ enum MessageKindEnum {
     canvas2d_old = 4,
     image = 5,
     robot_model = 6,
-    canvas3d = 7,
+    canvas3d_old = 7,
     log = 8,
     view = 9,
     canvas2d = 10,
+    canvas3d = 11,
     entry = 20,
     req = 40,
     res = 60,
@@ -408,21 +409,36 @@ struct Canvas3DComponent {
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
     std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;
-    std::size_t length = 0;
+    std::optional<std::vector<SharedString>> data_ids;
     Canvas3D() = default;
-    Canvas3D(const SharedString &field,
-             const std::unordered_map<int, std::shared_ptr<Canvas3DComponent>>
-                 &data_diff,
-             std::size_t length)
+    Canvas3D(
+        const SharedString &field,
+        std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff,
+        std::optional<std::vector<SharedString>> data_ids)
+        : field(field), data_diff(std::move(data_diff)),
+          data_ids(std::move(data_ids)) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
+                       MSGPACK_NVP("l", data_ids))
+};
+struct Canvas3DOld : public MessageBase<MessageKind::canvas3d_old> {
+    SharedString field;
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;
+    std::size_t length = 0;
+    Canvas3DOld() = default;
+    Canvas3DOld(
+        const SharedString &field,
+        const std::unordered_map<int, std::shared_ptr<Canvas3DComponent>>
+            &data_diff,
+        std::size_t length)
         : field(field), data_diff(), length(length) {
         for (const auto &vc : data_diff) {
             this->data_diff.emplace(std::to_string(vc.first), vc.second);
         }
     }
-    Canvas3D(const SharedString &field,
-             const std::map<std::string, std::shared_ptr<Canvas3DComponent>>
-                 &data_diff,
-             std::size_t length)
+    Canvas3DOld(const SharedString &field,
+                const std::map<std::string, std::shared_ptr<Canvas3DComponent>>
+                    &data_diff,
+                std::size_t length)
         : field(field), data_diff(data_diff), length(length) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
                        MSGPACK_NVP("l", length))
@@ -765,6 +781,23 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
 template <>
 struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
+    unsigned int req_id = 0;
+    SharedString sub_field;
+    std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;
+    std::optional<std::vector<SharedString>> data_ids;
+    Res() = default;
+    Res(unsigned int req_id, const SharedString &sub_field,
+        const std::map<std::string, std::shared_ptr<Canvas3DComponent>>
+            &data_diff,
+        const std::optional<std::vector<SharedString>> &data_ids)
+        : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
+          data_ids(data_ids) {}
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
+                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", data_ids))
+};
+template <>
+struct Res<Canvas3DOld>
+    : public MessageBase<MessageKind::canvas3d_old + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
     std::map<std::string, std::shared_ptr<Canvas3DComponent>> data_diff;

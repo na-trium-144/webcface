@@ -130,7 +130,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
         std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
-        0});
+        {}});
     dummy_c1->send(message::Canvas2D{
         "a"_ss,
         0,
@@ -235,7 +235,7 @@ TEST_F(ServerTest, entry) {
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
         std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
-        0});
+        {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");

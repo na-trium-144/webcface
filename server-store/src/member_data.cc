@@ -101,6 +101,9 @@ bool MemberData::hasReq(const SharedString &member) {
            std::any_of(this->canvas3d_req[member].begin(),
                        this->canvas3d_req[member].end(),
                        [](const auto &it) { return it.second > 0; }) ||
+           std::any_of(this->canvas3d_old_req[member].begin(),
+                       this->canvas3d_old_req[member].end(),
+                       [](const auto &it) { return it.second > 0; }) ||
            std::any_of(this->view_req[member].begin(),
                        this->view_req[member].end(),
                        [](const auto &it) { return it.second > 0; }) ||
@@ -242,6 +245,12 @@ void MemberData::onRecv(const std::string &message) {
                                 {}, cd->member_id, f.first});
                             logger->trace("send canvas3d_entry {} of member {}",
                                           f.first.decode(), cd->member_id);
+                            this->pack(webcface::message::Entry<
+                                       webcface::message::Canvas3DOld>{
+                                {}, cd->member_id, f.first});
+                            logger->trace(
+                                "send canvas3d_old_entry {} of member {}",
+                                f.first.decode(), cd->member_id);
                         }
                     }
                     for (const auto &f : cd->canvas2d) {
@@ -519,8 +528,10 @@ void MemberData::onRecv(const std::string &message) {
             for (auto &d : v.data_diff) {
                 this_view.components[d.first] = d.second;
             }
-            std::optional<std::vector<SharedString>> prev_data_ids;
+            bool ids_changed = false;
+            std::vector<SharedString> prev_data_ids;
             if (v.data_ids) {
+                ids_changed = true;
                 prev_data_ids = std::move(this_view.data_ids);
                 this_view.data_ids = std::move(*v.data_ids);
             }
@@ -528,9 +539,9 @@ void MemberData::onRecv(const std::string &message) {
                 old_diff;
             for (std::size_t i = 0; i < this_view.data_ids.size(); i++) {
                 if (v.data_diff.count(this_view.data_ids[i].u8String()) ||
-                    (prev_data_ids &&
-                     (prev_data_ids->size() <= i ||
-                      prev_data_ids->at(i) != this_view.data_ids[i]))) {
+                    (ids_changed &&
+                     (prev_data_ids.size() <= i ||
+                      prev_data_ids.at(i) != this_view.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
                         v.data_diff[this_view.data_ids[i].u8String()];
                 }
@@ -543,10 +554,13 @@ void MemberData::onRecv(const std::string &message) {
                     auto &req_id = req_field.first;
                     auto &sub_field = req_field.second;
                     if (req_id > 0) {
-                        cd->pack(
-                            webcface::message::Res<webcface::message::View>(
-                                req_id, sub_field, v.data_diff,
-                                this_view.data_ids));
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::View>(
+                            req_id, sub_field, v.data_diff,
+                            ids_changed
+                                ? std::make_optional<std::vector<SharedString>>(
+                                      this_view.data_ids)
+                                : std::nullopt));
                         cd->logger->trace("send view_res req_id={} + '{}'",
                                           req_id, sub_field.decode());
                     }
@@ -641,6 +655,89 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas3d: {
             auto &v = *static_cast<webcface::message::Canvas3D *>(obj.get());
             logger->debug("canvas3d {} diff={}, length={}", v.field.decode(),
+                          v.data_diff.size(),
+                          v.data_ids ? v.data_ids->size() : 0);
+            if (!this->canvas3d.count(v.field) &&
+                !v.field.startsWith(field_separator)) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::Canvas3D>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace("send canvas3d_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::Canvas3DOld>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace(
+                            "send canvas3d_old_entry {} of member {}",
+                            v.field.decode(), this->member_id);
+                    }
+                });
+            }
+            auto &this_canvas = this->canvas3d[v.field];
+            for (const auto &d : v.data_diff) {
+                this_canvas.components[d.first] = d.second;
+            }
+            bool ids_changed = false;
+            std::vector<SharedString> prev_data_ids;
+            if (v.data_ids) {
+                ids_changed = true;
+                prev_data_ids = std::move(this_canvas.data_ids);
+                this_canvas.data_ids = std::move(*v.data_ids);
+            }
+            std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
+                old_diff;
+            for (std::size_t i = 0; i < this_canvas.data_ids.size(); i++) {
+                if (v.data_diff.count(this_canvas.data_ids[i].u8String()) ||
+                    (ids_changed &&
+                     (prev_data_ids.size() <= i ||
+                      prev_data_ids.at(i) != this_canvas.data_ids[i]))) {
+                    old_diff[std::to_string(i)] =
+                        v.data_diff[this_canvas.data_ids[i].u8String()];
+                }
+            }
+            // このvalueをsubscribeしてるところに送り返す
+            store->forEach([&](auto cd) {
+                {
+                    auto req_field =
+                        findReqField(cd->canvas3d_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::Canvas3D>(
+                            req_id, sub_field, v.data_diff,
+                            ids_changed
+                                ? std::make_optional<std::vector<SharedString>>(
+                                      this_canvas.data_ids)
+                                : std::nullopt));
+                        cd->logger->trace(
+                            "send canvas3d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
+                    }
+                }
+                {
+                    auto req_field =
+                        findReqField(cd->canvas3d_old_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::Canvas3DOld>(
+                            req_id, sub_field, old_diff,
+                            this_canvas.data_ids.size()));
+                        cd->logger->trace(
+                            "send canvas3d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
+                    }
+                }
+            });
+            break;
+        }
+        case MessageKind::canvas3d_old: {
+            auto &v = *static_cast<webcface::message::Canvas3DOld *>(obj.get());
+            logger->debug("canvas3d {} diff={}, length={}", v.field.decode(),
                           v.data_diff.size(), v.length);
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
@@ -652,24 +749,63 @@ void MemberData::onRecv(const std::string &message) {
                         cd->logger->trace("send canvas3d_entry {} of member {}",
                                           v.field.decode(), this->member_id);
                     }
+                    if (cd->name != this->name) {
+                        cd->pack(webcface::message::Entry<
+                                 webcface::message::Canvas3DOld>{
+                            {}, this->member_id, v.field});
+                        cd->logger->trace(
+                            "send canvas3d_old_entry {} of member {}",
+                            v.field.decode(), this->member_id);
+                    }
                 });
             }
-            this->canvas3d[v.field].resize(v.length);
-            for (const auto &d : v.data_diff) {
-                this->canvas3d[v.field][std::stoi(d.first)] = d.second;
+            std::unordered_map<int, int> idx_next;
+            auto &this_canvas = this->canvas3d[v.field];
+            std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
+                new_diff;
+            for (auto &d : v.data_diff) {
+                std::size_t old_index = std::atoi(d.first.c_str());
+                int idx = idx_next[d.second->type]++;
+                std::string id =
+                    std::to_string(d.second->type) + "." + std::to_string(idx);
+                this_canvas.components[id] = d.second;
+                while (this_canvas.data_ids.size() <= old_index) {
+                    this_canvas.data_ids.push_back(SharedString());
+                }
+                this_canvas.data_ids[old_index] =
+                    SharedString::fromU8String(id);
+                new_diff[id] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
-                auto req_field =
-                    findReqField(cd->canvas3d_req, this->name, v.field);
-                auto &req_id = req_field.first;
-                auto &sub_field = req_field.second;
-                if (req_id > 0) {
-                    cd->pack(
-                        webcface::message::Res<webcface::message::Canvas3D>(
-                            req_id, sub_field, v.data_diff, v.length));
-                    cd->logger->trace("send canvas3d_res req_id={} + '{}'",
-                                      req_id, sub_field.decode());
+                {
+                    auto req_field =
+                        findReqField(cd->canvas3d_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(
+                            webcface::message::Res<webcface::message::Canvas3D>(
+                                req_id, sub_field, new_diff,
+                                this_canvas.data_ids));
+                        cd->logger->trace("send canvas3d_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
+                    }
+                }
+                {
+                    auto req_field =
+                        findReqField(cd->canvas3d_old_req, this->name, v.field);
+                    auto &req_id = req_field.first;
+                    auto &sub_field = req_field.second;
+                    if (req_id > 0) {
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::Canvas3DOld>(
+                            req_id, sub_field, v.data_diff,
+                            this_canvas.data_ids.size()));
+                        cd->logger->trace(
+                            "send canvas2d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
+                    }
                 }
             });
             break;
@@ -703,8 +839,10 @@ void MemberData::onRecv(const std::string &message) {
             for (auto &d : v.data_diff) {
                 this_canvas.components[d.first] = d.second;
             }
-            std::optional<std::vector<SharedString>> prev_data_ids;
+            bool ids_changed = false;
+            std::vector<SharedString> prev_data_ids;
             if (v.data_ids) {
+                ids_changed = true;
                 prev_data_ids = std::move(this_canvas.data_ids);
                 this_canvas.data_ids = std::move(*v.data_ids);
             }
@@ -712,9 +850,9 @@ void MemberData::onRecv(const std::string &message) {
                 old_diff;
             for (std::size_t i = 0; i < this_canvas.data_ids.size(); i++) {
                 if (v.data_diff.count(this_canvas.data_ids[i].u8String()) ||
-                    (prev_data_ids &&
-                     (prev_data_ids->size() <= i ||
-                      prev_data_ids->at(i) != this_canvas.data_ids[i]))) {
+                    (ids_changed &&
+                     (prev_data_ids.size() <= i ||
+                      prev_data_ids.at(i) != this_canvas.data_ids[i]))) {
                     old_diff[std::to_string(i)] =
                         v.data_diff[this_canvas.data_ids[i].u8String()];
                 }
@@ -727,13 +865,15 @@ void MemberData::onRecv(const std::string &message) {
                     auto &req_id = req_field.first;
                     auto &sub_field = req_field.second;
                     if (req_id > 0) {
-                        cd->pack(
-                            webcface::message::Res<webcface::message::Canvas2D>(
-                                req_id, sub_field, v.width, v.height,
-                                v.data_diff, this_canvas.data_ids));
-                        cd->logger->trace(
-                            "send canvas2d_old_res req_id={} + '{}'", req_id,
-                            sub_field.decode());
+                        cd->pack(webcface::message::Res<
+                                 webcface::message::Canvas2D>(
+                            req_id, sub_field, v.width, v.height, v.data_diff,
+                            ids_changed
+                                ? std::make_optional<std::vector<SharedString>>(
+                                      this_canvas.data_ids)
+                                : std::nullopt));
+                        cd->logger->trace("send canvas2d_res req_id={} + '{}'",
+                                          req_id, sub_field.decode());
                     }
                 }
                 {
@@ -746,8 +886,9 @@ void MemberData::onRecv(const std::string &message) {
                                  webcface::message::Canvas2DOld>(
                             req_id, sub_field, v.width, v.height, old_diff,
                             this_canvas.data_ids.size()));
-                        cd->logger->trace("send canvas2d_res req_id={} + '{}'",
-                                          req_id, sub_field.decode());
+                        cd->logger->trace(
+                            "send canvas2d_old_res req_id={} + '{}'", req_id,
+                            sub_field.decode());
                     }
                 }
             });
@@ -1170,12 +1311,6 @@ void MemberData::onRecv(const std::string &message) {
                     if (it.first == s.field ||
                         it.first.startsWith(s.field.u8String() +
                                             field_separator)) {
-                        std::map<std::string,
-                                 std::shared_ptr<message::Canvas3DComponent>>
-                            diff;
-                        for (std::size_t i = 0; i < it.second.size(); i++) {
-                            diff.emplace(std::to_string(i), it.second[i]);
-                        }
                         SharedString sub_field;
                         if (it.first == s.field) {
                         } else {
@@ -1185,13 +1320,59 @@ void MemberData::onRecv(const std::string &message) {
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Canvas3D>{
-                                s.req_id, sub_field, diff, it.second.size()});
+                                s.req_id, sub_field, it.second.components,
+                                it.second.data_ids});
                         logger->trace("send canvas3d_res req_id={} + '{}'",
                                       s.req_id, sub_field.decode());
                     }
                 }
             });
             canvas3d_req[s.member][s.field] = s.req_id;
+            break;
+        }
+        case MessageKind::req + MessageKind::canvas3d_old: {
+            auto &s = *static_cast<
+                webcface::message::Req<webcface::message::Canvas3DOld> *>(
+                obj.get());
+            logger->debug("request canvas3d ({}): {} from {}", s.req_id,
+                          s.field.decode(), s.member.decode());
+            // 指定した値を返す
+            store->findAndDo(s.member, [&](auto cd) {
+                if (!this->hasReq(s.member)) {
+                    this->pack(webcface::message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
+                    logger->trace("send sync {}", this->member_id);
+                }
+                for (const auto &it : cd->canvas3d) {
+                    if (it.first == s.field ||
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
+                        SharedString sub_field;
+                        if (it.first == s.field) {
+                        } else {
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
+                        }
+                        std::map<std::string,
+                                 std::shared_ptr<message::Canvas3DComponent>>
+                            old_components;
+                        for (std::size_t i = 0; i < it.second.data_ids.size();
+                             i++) {
+                            old_components[std::to_string(i)] =
+                                it.second.components.at(
+                                    it.second.data_ids[i].u8String());
+                        }
+                        this->pack(webcface::message::Res<
+                                   webcface::message::Canvas3DOld>{
+                            s.req_id, sub_field, old_components,
+                            old_components.size()});
+                        logger->trace("send canvas3d_old_res req_id={} + '{}'",
+                                      s.req_id, sub_field.decode());
+                    }
+                }
+            });
+            canvas3d_old_req[s.member][s.field] = s.req_id;
             break;
         }
         case MessageKind::req + MessageKind::canvas2d: {
@@ -1275,7 +1456,7 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 }
             });
-            canvas2d_req[s.member][s.field] = s.req_id;
+            canvas2d_old_req[s.member][s.field] = s.req_id;
             break;
         }
         case MessageKind::req + MessageKind::image: {
@@ -1370,6 +1551,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::view_old:
         case MessageKind::entry + MessageKind::canvas3d:
         case MessageKind::res + MessageKind::canvas3d:
+        case MessageKind::entry + MessageKind::canvas3d_old:
+        case MessageKind::res + MessageKind::canvas3d_old:
         case MessageKind::entry + MessageKind::canvas2d:
         case MessageKind::res + MessageKind::canvas2d:
         case MessageKind::entry + MessageKind::canvas2d_old:

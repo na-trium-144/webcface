@@ -52,6 +52,9 @@ struct TemporalComponent {
         if constexpr (C2) {
             component_2d.id(id);
         }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
         return *this;
     }
     /*!
@@ -64,6 +67,9 @@ struct TemporalComponent {
         }
         if constexpr (C2) {
             component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
         }
         return *this;
     }

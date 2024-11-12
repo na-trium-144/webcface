@@ -30,6 +30,10 @@ struct ViewData {
     std::map<std::string, std::shared_ptr<message::ViewComponent>> components;
     std::vector<SharedString> data_ids;
 };
+struct Canvas3DData {
+    std::map<std::string, std::shared_ptr<message::Canvas3DComponent>> components;
+    std::vector<SharedString> data_ids;
+};
 
 struct MemberData {
     spdlog::sink_ptr sink;
@@ -66,7 +70,7 @@ struct MemberData {
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
     StrMap1<ViewData> view;
-    StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
+    StrMap1<Canvas3DData> canvas3d;
     StrMap1<Canvas2DData> canvas2d;
 
     StrMap1<ImageFrame> image;
@@ -99,8 +103,8 @@ struct MemberData {
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
-        view_old_req, robot_model_req, canvas3d_req, canvas2d_req,
-        canvas2d_old_req, log_req;
+        view_old_req, robot_model_req, canvas3d_req, canvas3d_old_req,
+        canvas2d_req, canvas2d_old_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド

@@ -40,27 +40,32 @@ class WEBCFACE_DLL Canvas3DComponent {
      *
      */
     Canvas3DComponent();
-    /*!
-     * \param msg_data
-     * \param data_w
-     * \param idx_next 種類ごとの要素数のmap
-     * InputRefの名前に使うidを決定するのに使う
-     *
-     */
+
     Canvas3DComponent(
         const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
-        const std::weak_ptr<internal::ClientData> &data_w,
-        std::unordered_map<Canvas3DComponentType, int> *idx_next);
+        const std::weak_ptr<internal::ClientData> &data_w);
 
     /*!
      * \brief そのcanvas3d内で一意のid
      * \since ver2.0
      *
-     * 要素が増減したり順序が変わったりしなければ、
+     * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
+     * * (ver2.5〜) canvas3d作成側でidを指定した場合その値が返る。
      *
      */
     std::string id() const;
+    /*!
+     * \brief そのcanvas3d内で一意のid (wstring)
+     * \since ver2.5
+     *
+     * * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     * * canvas3d作成側でidを指定した場合その値が返る。
+     *
+     */
+    std::wstring idW() const;
+
     /*!
      * \since ver1.11
      */
@@ -139,6 +144,16 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
             const SharedString &view_name,
             std::unordered_map<Canvas3DComponentType, int> *idx_next = nullptr);
 
+    /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &id(std::string_view id);
+    /*!
+     * \brief idを設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &id(std::wstring_view id);
     /*!
      * \brief 要素の移動
      *
