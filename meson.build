@@ -266,6 +266,9 @@ if is_disabler(filesystem_dep)
 endif
 conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
 
+m_dep = cxx.find_library('m', required: false)
+summary('libm', m_dep.found(), bool_yn: true)
+
 configure_file(
   input: 'scripts' / 'config.h.in',
   output: 'webcface-config.h',
