@@ -305,7 +305,30 @@ class Rotation {
      */
     [[deprecated("use rotEuler()")]]
     double rot(std::size_t index) const {
-        return rot().at(index);
+        return rotEuler().at(index);
+    }
+    /*!
+     * \brief 3次元の回転をオイラー角として取得・変更
+     * \sa rotEuler()
+     * \deprecated ver2.5〜
+     */
+    [[deprecated("use rotEuler()")]]
+    std::array<double, 3> &rot() {
+        rotEuler();
+        rmat_ = std::nullopt;
+        return *rot_;
+    }
+    /*!
+     * \brief 3次元の回転をZYX順のオイラー角として取得・変更
+     * \since ver1.6
+     * \param index 0→z, 1→y, 2→x
+     * \deprecated ver2.5〜
+     */
+    [[deprecated("use rotEuler()")]]
+    double &rot(std::size_t index) {
+        rotEuler();
+        rmat_ = std::nullopt;
+        return rot_->at(index);
     }
 
     /*!
