@@ -94,7 +94,7 @@ Transform Canvas3DComponent::origin() const {
     return Transform(msg_data->origin_pos, msg_data->origin_rot);
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::origin(const Transform &origin) {
+TemporalCanvas3DComponent::origin(const Transform &origin) & {
     msg_data->origin_pos = origin.pos();
     msg_data->origin_rot = origin.rot();
     return *this;
@@ -103,7 +103,7 @@ ViewColor Canvas3DComponent::color() const {
     checkData();
     return static_cast<ViewColor>(msg_data->color);
 }
-TemporalCanvas3DComponent &TemporalCanvas3DComponent::color(ViewColor color) {
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::color(ViewColor color) & {
     msg_data->color = static_cast<int>(color);
     return *this;
 }
@@ -118,7 +118,7 @@ std::optional<Geometry> Canvas3DComponent::geometry() const {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::geometry(const Geometry &g) {
+TemporalCanvas3DComponent::geometry(const Geometry &g) & {
     msg_data->geometry_type = static_cast<int>(g.type);
     msg_data->geometry_properties = g.properties;
     return *this;
@@ -134,7 +134,7 @@ std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::robotModel(const RobotModel &field) {
+TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;
     msg_data->field_member = static_cast<FieldBase>(field).member_;
     msg_data->field_field = static_cast<FieldBase>(field).field_;
@@ -142,7 +142,7 @@ TemporalCanvas3DComponent::robotModel(const RobotModel &field) {
 }
 
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::string, double> &angles) {
+    const std::unordered_map<std::string, double> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -164,7 +164,7 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::wstring, double> &angles) {
+    const std::unordered_map<std::wstring, double> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -186,7 +186,8 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
+TemporalCanvas3DComponent::angle(const std::string &joint_name,
+                                 double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -207,7 +208,8 @@ TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::wstring &joint_name, double angle) {
+TemporalCanvas3DComponent::angle(const std::wstring &joint_name,
+                                 double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {

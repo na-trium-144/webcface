@@ -157,25 +157,63 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \brief 要素の移動
      *
      */
-    TemporalCanvas3DComponent &origin(const Transform &origin);
+    TemporalCanvas3DComponent &origin(const Transform &origin) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&origin(const Transform &origin) && {
+        this->origin(origin);
+        return std::move(*this);
+    }
     /*!
      * \brief 色
      *
      */
-    TemporalCanvas3DComponent &color(ViewColor color);
+    TemporalCanvas3DComponent &color(ViewColor color) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&color(ViewColor color) && {
+        this->color(color);
+        return std::move(*this);
+    }
     /*!
      * \brief geometryをセット
      *
      */
-    TemporalCanvas3DComponent &geometry(const Geometry &g);
-    TemporalCanvas3DComponent &robotModel(const RobotModel &field);
+    TemporalCanvas3DComponent &geometry(const Geometry &g) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&geometry(const Geometry &g) && {
+        this->geometry(g);
+        return std::move(*this);
+    }
+
+    TemporalCanvas3DComponent &robotModel(const RobotModel &field) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&robotModel(const RobotModel &field) && {
+        this->robotModel(field);
+        return std::move(*this);
+    }
     /*!
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::string, double> &angles);
+    angles(const std::unordered_map<std::string, double> &angles) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&
+    angles(const std::unordered_map<std::string, double> &angles) && {
+        this->angles(angles);
+        return std::move(*this);
+    }
+
     /*!
      * \brief RobotModelの関節をまとめて設定 (wstring)
      * \since ver2.0
@@ -183,7 +221,16 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::wstring, double> &angles);
+    angles(const std::unordered_map<std::wstring, double> &angles) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&
+    angles(const std::unordered_map<std::wstring, double> &angles) && {
+        this->angles(angles);
+        return std::move(*this);
+    }
+
     /*!
      * \brief RobotModelの関節を設定
      * \param joint_name RobotJointの名前
@@ -191,7 +238,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &angle(const std::string &joint_name,
-                                     double angle);
+                                     double angle) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&angle(const std::string &joint_name,
+                                      double angle) && {
+        this->angle(joint_name, angle);
+        return std::move(*this);
+    }
     /*!
      * \brief RobotModelの関節を設定 (wstring)
      * \since ver2.0
@@ -200,7 +255,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &angle(const std::wstring &joint_name,
-                                     double angle);
+                                     double angle) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&angle(const std::wstring &joint_name,
+                                      double angle) && {
+        this->angle(joint_name, angle);
+        return std::move(*this);
+    }
 };
 
 WEBCFACE_NS_END

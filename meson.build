@@ -16,8 +16,8 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 
-webcface_abi_major = '20' # ABIの破壊的変更で1増やす
-webcface_abi_minor = '4' # ABIの追加で1増やす
+webcface_abi_major = '21' # ABIの破壊的変更で1増やす
+webcface_abi_minor = '0' # ABIの追加で1増やす
 webcface_webui_version = '1.10.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
