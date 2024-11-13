@@ -723,6 +723,7 @@ webcface_lib = library(webcface_lib_name,
   sources: sources,
   dependencies: [
     filesystem_dep,
+    m_dep,
     win32folders_dep,
     msgpack_cxx_dep,
     utf8cpp_dep,
