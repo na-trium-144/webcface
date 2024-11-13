@@ -1,4 +1,5 @@
 #include "webcface/internal/data_store2.h"
+#include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
 #include <type_traits>
 

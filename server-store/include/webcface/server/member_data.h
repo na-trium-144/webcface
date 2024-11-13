@@ -1,4 +1,5 @@
 #pragma once
+#include <deque>
 #include <string>
 #include <unordered_map>
 #include <chrono>
@@ -7,9 +8,18 @@
 #include <atomic>
 #include <condition_variable>
 #include <thread>
-#include "webcface/common/internal/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include "webcface/common/encoding.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/view.h"
 #include "webcface/server/server.h"
 #include "webcface/image_frame.h"
 

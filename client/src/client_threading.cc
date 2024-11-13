@@ -1,9 +1,8 @@
+#include "webcface/common/internal/message/pack.h"
 #include "webcface/client.h"
-#include "webcface/log.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/unlock.h"
-#include "webcface/internal/logger.h"
 #include <string>
 #include <chrono>
 #include <thread>

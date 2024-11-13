@@ -1,7 +1,6 @@
 #include "webcface/server/member_data.h"
 #include "webcface/server/store.h"
 #include "webcface/server/server.h"
-#include "webcface/common/internal/message.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else

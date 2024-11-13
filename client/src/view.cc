@@ -1,8 +1,9 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/view.h"
 #include "webcface/view.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/data_store2.h"
 #include "webcface/member.h"
-#include "webcface/common/internal/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/internal/component_internal.h"
 

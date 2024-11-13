@@ -1,7 +1,8 @@
 #include "webcface/image.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/image.h"
 #include "webcface/member.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/common/internal/message.h"
 #include "webcface/common/encoding.h"
 
 WEBCFACE_NS_BEGIN

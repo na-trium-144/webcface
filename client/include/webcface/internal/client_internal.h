@@ -10,10 +10,10 @@
 #include <cstdlib>
 #include <spdlog/logger.h>
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "queue.h"
-#include "webcface/image_frame.h"
 #include "webcface/func_result.h"
 #include "data_store1.h"
 #include "data_store2.h"
