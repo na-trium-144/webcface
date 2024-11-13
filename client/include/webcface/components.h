@@ -68,7 +68,7 @@ struct TemporalComponent {
      * \brief idを設定(wstring)
      * \since ver2.5
      */
-    TemporalComponent &id(std::wstring_view id) {
+    TemporalComponent &id(std::wstring_view id) & {
         if constexpr (V) {
             component_v.id(id);
         }
@@ -87,7 +87,7 @@ struct TemporalComponent {
         this->id(id);
         return std::move(*this);
     }
-    
+
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D, Funcオブジェクト)
      * \since ver2.5
