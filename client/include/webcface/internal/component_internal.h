@@ -8,12 +8,17 @@ namespace internal {
 
 struct ViewComponentData : message::ViewComponent {
     ViewComponentData() = default;
-    explicit ViewComponentData(const message::ViewComponent &vc)
-        : message::ViewComponent(vc) {}
+    explicit ViewComponentData(const message::ViewComponent &vc,
+                               const SharedString &id)
+        : message::ViewComponent(vc), id(id) {}
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    // TemporalViewComponentとTemporalCanvas2DComponentの間でshareされるが
+    // 同じfunctionが最終的に2つのcomponentに同時にsetされることはない
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
+    std::shared_ptr<std::function<void(ValAdaptor)>> on_change_func_tmp;
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
+    SharedString id;
 
     // for cData()
     mutable std::vector<wcfMultiVal> options_s;
@@ -30,10 +35,12 @@ struct ViewComponentData : message::ViewComponent {
 
 struct Canvas2DComponentData : message::Canvas2DComponent {
     Canvas2DComponentData() = default;
-    explicit Canvas2DComponentData(const message::Canvas2DComponent &vc)
-        : message::Canvas2DComponent(vc) {}
+    explicit Canvas2DComponentData(const message::Canvas2DComponent &vc,
+                                   const SharedString &id)
+        : message::Canvas2DComponent(vc), id(id) {}
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
+    SharedString id;
 
     bool operator==(const Canvas2DComponentData &other) const;
     bool operator!=(const Canvas2DComponentData &other) const {
@@ -43,10 +50,12 @@ struct Canvas2DComponentData : message::Canvas2DComponent {
 
 struct Canvas3DComponentData : message::Canvas3DComponent {
     Canvas3DComponentData() = default;
-    explicit Canvas3DComponentData(const message::Canvas3DComponent &vc)
-        : message::Canvas3DComponent(vc) {}
+    explicit Canvas3DComponentData(const message::Canvas3DComponent &vc,
+                                   const SharedString &id)
+        : message::Canvas3DComponent(vc), id(id) {}
 
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id;
 
     auto &anglesAt(std::size_t i) { return angles[std::to_string(i)]; }
 

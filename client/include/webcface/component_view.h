@@ -99,7 +99,6 @@ enum class ViewComponentType {
 class WEBCFACE_DLL ViewComponent {
     std::shared_ptr<internal::ViewComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    int idx_for_type = 0;
 
     void checkData() const;
 
@@ -109,16 +108,9 @@ class WEBCFACE_DLL ViewComponent {
      *
      */
     ViewComponent();
-    /*!
-     * \param msg_data
-     * \param data_w
-     * \param idx_next 種類ごとの要素数のmap
-     * InputRefの名前に使うidを決定するのに使う
-     *
-     */
+
     ViewComponent(const std::shared_ptr<internal::ViewComponentData> &msg_data,
-                  const std::weak_ptr<internal::ClientData> &data_w,
-                  std::unordered_map<ViewComponentType, int> *idx_next);
+                  const std::weak_ptr<internal::ClientData> &data_w);
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
@@ -127,11 +119,22 @@ class WEBCFACE_DLL ViewComponent {
      * \brief そのview内で一意のid
      * \since ver1.10
      *
-     * 要素が増減したり順序が変わったりしなければ、
+     * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
-     *
+     * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
+     * 
      */
     std::string id() const;
+    /*!
+     * \brief そのview内で一意のid (wstring)
+     * \since ver2.5
+     *
+     * * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     * * view作成側でidを指定した場合その値が返る。
+     * 
+     */
+    std::wstring idW() const;
 
     /*!
      * \brief 要素の比較
@@ -251,6 +254,14 @@ class WEBCFACE_DLL TemporalViewComponent {
     explicit TemporalViewComponent(ViewComponentType type);
     TemporalViewComponent(const TemporalViewComponent &other);
     TemporalViewComponent &operator=(const TemporalViewComponent &other);
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent(TemporalViewComponent &&other) noexcept;
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &operator=(TemporalViewComponent &&other) noexcept;
     ~TemporalViewComponent() noexcept;
 
     friend class View;
@@ -270,44 +281,98 @@ class WEBCFACE_DLL TemporalViewComponent {
             std::unordered_map<ViewComponentType, int> *idx_next = nullptr);
 
     /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalViewComponent &id(std::string_view id);
+    /*!
+     * \brief idを設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalViewComponent &id(std::wstring_view id);
+    /*!
      * \brief 表示する文字列を設定
      *
      * (ver2.0からstring_viewに変更)
      *
      */
-    TemporalViewComponent &text(std::string_view text);
+    TemporalViewComponent &text(std::string_view text) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &&text(std::string_view text) && {
+        this->text(text);
+        return std::move(*this);
+    }
     /*!
      * \brief 表示する文字列を設定 (wstring)
      * \since ver2.0
      */
-    TemporalViewComponent &text(std::wstring_view text);
-
+    TemporalViewComponent &text(std::wstring_view text) &;
     /*!
-     * \brief クリック時に実行される関数を設定
+     * \brief 表示する文字列を設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalViewComponent &&text(std::wstring_view text) && {
+        this->text(text);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (登録済みFunc)
      * \param func 実行する関数を指すFuncオブジェクト
      *
      */
-    TemporalViewComponent &onClick(const Func &func);
+    TemporalViewComponent &onClick(const Func &func) &;
+    /*!
+     * \brief クリック時に実行される関数を設定 (登録済みFunc)
+     * \since ver2.5
+     */
+    TemporalViewComponent &&onClick(const Func &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (FuncListener)
+     * \param func 実行する関数を指すFuncListener
+     * \since ver2.5
+     */
+    TemporalViewComponent &onClick(const FuncListener &func) &;
+    /*!
+     * \brief クリック時に実行される関数を設定 (FuncListener)
+     * \since ver2.5
+     */
+    TemporalViewComponent &&onClick(const FuncListener &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
     /*!
      * \brief クリック時に実行される関数を設定
-     * \param func 実行する任意の関数(std::functionにキャスト可能ならなんでもok)
+     * \param func 実行する任意の関数
+     * (引数、戻り値なしでstd::functionにキャスト可能ならなんでもok)
+     * \since ver2.5
+     *
+     * MSVCのバグでエラーになってしまうので std::is_invocable_v は使えない
      *
      */
-    template <typename T>
-    TemporalViewComponent &onClick(T func) {
-        return onClick(std::make_shared<AnonymousFunc>(std::move(func)));
+    template <typename T, decltype(std::declval<T>()(), nullptr) = nullptr>
+    TemporalViewComponent &onClick(T func) & {
+        return onClick(std::make_shared<std::function<void WEBCFACE_CALL_FP()>>(
+            std::move(func)));
     }
-    TemporalViewComponent &onClick(const std::shared_ptr<AnonymousFunc> &func);
-
     /*!
      * \brief クリック時に実行される関数を設定
-     * \param func Client::func() で得られるAnonymousFuncオブジェクト
-     * (ver1.9からコピー不可なので、一時オブジェクトでない場合はmoveすること)
-     *
+     * \since ver2.5
      */
-    TemporalViewComponent &onClick(AnonymousFunc &&func) {
-        return onClick(std::make_shared<AnonymousFunc>(std::move(func)));
+    template <typename T, decltype(std::declval<T>()(), nullptr) = nullptr>
+    TemporalViewComponent &&onClick(T func) && {
+        this->onClick(std::move(func));
+        return std::move(*this);
     }
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &onClick(
+        const std::shared_ptr<std::function<void WEBCFACE_CALL_FP()>> &func);
 
     /*!
      * \brief 変更した値を格納するInputRefを設定
@@ -316,8 +381,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      * refの値を変更する処理が自動的にonChangeに登録される
      *
      */
-    TemporalViewComponent &bind(const InputRef &ref);
-
+    TemporalViewComponent &bind(const InputRef &ref) &;
+    /*!
+     * \brief 変更した値を格納するInputRefを設定
+     * \since ver2.5
+     */
+    TemporalViewComponent &&bind(const InputRef &ref) && {
+        this->bind(ref);
+        return std::move(*this);
+    }
     /*!
      * \brief 値が変化した時に実行される関数を設定
      * \since ver1.10
@@ -328,47 +400,57 @@ class WEBCFACE_DLL TemporalViewComponent {
      *
      */
     template <typename T>
-    TemporalViewComponent &onChange(T func) {
+    TemporalViewComponent &onChange(T func) & {
         InputRef ref;
         return onChange(
-            std::make_shared<AnonymousFunc>([ref, func](ValAdaptor val) {
-                ref.lockedField().set(val);
-                return func(val);
-            }),
+            std::make_shared<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>(
+                [ref, func = std::move(func)](ValAdaptor val) {
+                    ref.lockedField().set(val);
+                    return func(val);
+                }),
             ref);
     }
-    TemporalViewComponent &onChange(const std::shared_ptr<AnonymousFunc> &func,
-                                    const InputRef &ref);
-    // /*!
-    //  * \brief 値が変化した時に実行される関数を設定
-    //  * \since ver1.10
-    //  *
-    //  */
-    // TemporalViewComponent &onChange(AnonymousFunc &&func) {
-    //     InputRef ref;
-    //     auto func_impl = func.getImpl();
-    //     func.replaceImpl([ref, func_impl](const std::vector<ValAdaptor>
-    //     &args) {
-    //         if (args.size() >= 1) {
-    //             ref.lockedField().set(args[0]);
-    //         }
-    //         return func_impl(args);
-    //     });
-    //     on_click_func_tmp = std::make_shared<AnonymousFunc>(std::move(func));
-    //     text_ref_tmp = ref;
-    //     return *this;
-    // }
+    /*!
+     * \brief 値が変化した時に実行される関数を設定
+     * \since ver2.5
+     */
+    template <typename T>
+    TemporalViewComponent &&onChange(T func) && {
+        this->onChange(std::move(func));
+        return std::move(*this);
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &onChange(
+        const std::shared_ptr<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>
+            &func,
+        const InputRef &ref);
 
     /*!
      * \brief 文字色を設定
      *
      */
-    TemporalViewComponent &textColor(ViewColor c);
+    TemporalViewComponent &textColor(ViewColor c) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &&textColor(ViewColor c) && {
+        this->textColor(c);
+        return std::move(*this);
+    }
     /*!
      * \brief 背景色を設定
      *
      */
-    TemporalViewComponent &bgColor(ViewColor c);
+    TemporalViewComponent &bgColor(ViewColor c) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &&bgColor(ViewColor c) && {
+        this->bgColor(c);
+        return std::move(*this);
+    }
     /*!
      * \brief デフォルト値を設定する。
      * \since ver1.10
@@ -379,11 +461,23 @@ class WEBCFACE_DLL TemporalViewComponent {
      *
      */
     template <typename T>
-    TemporalViewComponent &init(const T &init) {
+    TemporalViewComponent &init(const T &init) & {
         return this->init(ValAdaptor{init});
     }
+    /*!
+     * \brief デフォルト値を設定する。
+     * \since ver2.5
+     */
+    template <typename T>
+    TemporalViewComponent &&init(const T &init) && {
+        this->init(init);
+        return std::move(*this);
+    }
+
+  protected:
     TemporalViewComponent &init(const ValAdaptor &init);
 
+  public:
     /*!
      * \brief 最小値を設定する。
      * \since ver1.10
@@ -393,7 +487,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      * * option() はクリアされる。
      *
      */
-    TemporalViewComponent &min(double min);
+    TemporalViewComponent &min(double min) &;
+    /*!
+     * \brief 最小値を設定する。
+     * \since ver2.5
+     */
+    TemporalViewComponent &&min(double min) && {
+        this->min(min);
+        return std::move(*this);
+    }
     /*!
      * \brief 最大値を設定する。
      * \since ver1.10
@@ -403,7 +505,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      * * option() はクリアされる。
      *
      */
-    TemporalViewComponent &max(double max);
+    TemporalViewComponent &max(double max) &;
+    /*!
+     * \brief 最大値を設定する。
+     * \since ver2.5
+     */
+    TemporalViewComponent &&max(double max) && {
+        this->max(max);
+        return std::move(*this);
+    }
     /*!
      * \brief 数値の刻み幅を設定する。
      * \since ver1.10
@@ -411,7 +521,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      * * 整数入力、スライダーなど以外効果がない。
      *
      */
-    TemporalViewComponent &step(double step);
+    TemporalViewComponent &step(double step) &;
+    /*!
+     * \brief 数値の刻み幅を設定する。
+     * \since ver2.5
+     */
+    TemporalViewComponent &&step(double step) && {
+        this->step(step);
+        return std::move(*this);
+    }
 
     /*!
      * \brief 引数の選択肢を設定する。
@@ -421,14 +539,31 @@ class WEBCFACE_DLL TemporalViewComponent {
      *
      */
     template <typename T>
-    TemporalViewComponent &option(std::initializer_list<T> option) {
+    TemporalViewComponent &option(std::initializer_list<T> option) & {
         std::vector<ValAdaptor> option_v;
         for (const auto &v : option) {
             option_v.emplace_back(ValAdaptor(v));
         }
         return this->option(std::move(option_v));
     }
-    TemporalViewComponent &option(std::vector<ValAdaptor> option);
+    /*!
+     * \brief 引数の選択肢を設定する。
+     * \since ver2.5
+     */
+    template <typename T>
+    TemporalViewComponent &&option(std::initializer_list<T> option) && {
+        this->option(option);
+        return std::move(*this);
+    }
+
+    TemporalViewComponent &option(std::vector<ValAdaptor> option) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalViewComponent &&option(std::vector<ValAdaptor> option) && {
+        this->option(std::move(option));
+        return std::move(*this);
+    }
 };
 
 WEBCFACE_NS_END

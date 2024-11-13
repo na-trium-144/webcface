@@ -7,21 +7,14 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas2DComponent::id() const {
-    return internalCanvas2DId(static_cast<int>(type()), idx_for_type);
-}
+std::string Canvas2DComponent::id() const { return msg_data->id.decode(); }
+std::wstring Canvas2DComponent::idW() const { return msg_data->id.decodeW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
     const std::shared_ptr<internal::Canvas2DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<Canvas2DComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<Canvas2DComponentType>(msg_data->type)]++;
-    }
-}
+    const std::weak_ptr<internal::ClientData> &data_w)
+    : msg_data(msg_data), data_w(data_w) {}
 
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(std::nullptr_t)
     : msg_data() {}
@@ -42,6 +35,14 @@ TemporalCanvas2DComponent::operator=(const TemporalCanvas2DComponent &other) {
         std::make_unique<internal::Canvas2DComponentData>(*other.msg_data);
     return *this;
 }
+TemporalCanvas2DComponent::TemporalCanvas2DComponent(
+    TemporalCanvas2DComponent &&other) noexcept
+    : msg_data(std::move(other.msg_data)) {}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::operator=(
+    TemporalCanvas2DComponent &&other) noexcept {
+    msg_data = std::move(other.msg_data);
+    return *this;
+}
 TemporalCanvas2DComponent::~TemporalCanvas2DComponent() noexcept {}
 
 void Canvas2DComponent::checkData() const {
@@ -60,12 +61,16 @@ TemporalCanvas2DComponent::lockTmp(
         idx_for_type =
             (*idx_next)[static_cast<Canvas2DComponentType>(msg_data->type)]++;
     }
-    if (msg_data->on_click_func_tmp != nullptr) {
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalCanvas2DId(msg_data->type, idx_for_type));
+    }
+    if (msg_data->on_click_func_tmp && *msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..c2" + view_name.u8String() + "/" +
-                          internalCanvas2DId(msg_data->type, idx_for_type))};
-        msg_data->on_click_func_tmp->lockTo(on_click);
+                      SharedString::fromU8String("..c2" + view_name.u8String() +
+                                                 "/" +
+                                                 msg_data->id.u8String())};
+        on_click.set(std::move(*msg_data->on_click_func_tmp));
         this->onClick(on_click);
     }
     return std::move(msg_data);
@@ -87,6 +92,15 @@ bool internal::Canvas2DComponentData::operator==(
            on_click_field == other.on_click_field && text == other.text;
 }
 
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+
 Canvas2DComponentType Canvas2DComponent::type() const {
     checkData();
     return static_cast<Canvas2DComponentType>(msg_data->type);
@@ -97,7 +111,7 @@ Transform Canvas2DComponent::origin() const {
 }
 
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::origin(const Transform &origin) {
+TemporalCanvas2DComponent::origin(const Transform &origin) & {
     msg_data->origin_pos = {origin.pos(0), origin.pos(1)};
     msg_data->origin_rot = origin.rotEuler()[0];
     return *this;
@@ -107,7 +121,7 @@ ViewColor Canvas2DComponent::color() const {
     return static_cast<ViewColor>(msg_data->color);
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::color(const ViewColor &color) {
+TemporalCanvas2DComponent::color(const ViewColor &color) & {
     msg_data->color = static_cast<int>(color);
     return *this;
 }
@@ -116,7 +130,7 @@ ViewColor Canvas2DComponent::fillColor() const {
     return static_cast<ViewColor>(msg_data->fill);
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::fillColor(const ViewColor &color) {
+TemporalCanvas2DComponent::fillColor(const ViewColor &color) & {
     msg_data->fill = static_cast<int>(color);
     return *this;
 }
@@ -124,7 +138,7 @@ double Canvas2DComponent::strokeWidth() const {
     checkData();
     return msg_data->stroke_width;
 }
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) {
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) & {
     msg_data->stroke_width = s;
     return *this;
 }
@@ -133,7 +147,7 @@ std::string Canvas2DComponent::text() const {
     return msg_data->text.decode();
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::text(std::string_view text) {
+TemporalCanvas2DComponent::text(std::string_view text) & {
     msg_data->text = SharedString::encode(text);
     return *this;
 }
@@ -142,7 +156,7 @@ std::wstring Canvas2DComponent::textW() const {
     return msg_data->text.decodeW();
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::text(std::wstring_view text) {
+TemporalCanvas2DComponent::text(std::wstring_view text) & {
     msg_data->text = SharedString::encode(text);
     return *this;
 }
@@ -157,7 +171,7 @@ std::optional<Geometry> Canvas2DComponent::geometry() const {
     }
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::geometry(const Geometry &g) {
+TemporalCanvas2DComponent::geometry(const Geometry &g) & {
     msg_data->geometry_type = static_cast<int>(g.type);
     msg_data->properties = g.properties;
     return *this;
@@ -174,13 +188,19 @@ std::optional<Func> Canvas2DComponent::onClick() const {
     }
 }
 TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::onClick(const Func &func) {
+TemporalCanvas2DComponent::onClick(const Func &func) & {
     msg_data->on_click_member = static_cast<FieldBase>(func).member_;
     msg_data->on_click_field = static_cast<FieldBase>(func).field_;
     return *this;
 }
-TemporalCanvas2DComponent &TemporalCanvas2DComponent ::onClick(
-    const std::shared_ptr<AnonymousFunc> &func) {
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::onClick(const FuncListener &func) & {
+    msg_data->on_click_member = static_cast<FieldBase>(func).member_;
+    msg_data->on_click_field = static_cast<FieldBase>(func).field_;
+    return *this;
+}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::onClick(
+    const std::shared_ptr<std::function<void WEBCFACE_CALL_FP()>> &func) {
     msg_data->on_click_func_tmp = func;
     return *this;
 }

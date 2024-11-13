@@ -87,8 +87,15 @@ TEST_F(Canvas3DTest, set) {
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b"_ss);
-    ASSERT_EQ(canvas3d_data.size(), 3u);
+    auto &canvas3d_data_base =
+        **data_->canvas3d_store.getRecv(self_name, "b"_ss);
+    ASSERT_EQ(canvas3d_data_base.components.size(), 3u);
+    ASSERT_EQ(canvas3d_data_base.data_ids.size(), 3u);
+    std::vector<std::shared_ptr<internal::Canvas3DComponentData>> canvas3d_data;
+    canvas3d_data.reserve(canvas3d_data_base.components.size());
+    for (const auto &id : canvas3d_data_base.data_ids) {
+        canvas3d_data.push_back(canvas3d_data_base.components.at(id));
+    }
     EXPECT_EQ(canvas3d_data[0]->type,
               static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(canvas3d_data[0]->origin_pos, (std::array<double, 3>{1, 1, 1}));
@@ -130,14 +137,18 @@ TEST_F(Canvas3DTest, set) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 0u);
+    EXPECT_EQ(
+        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        0u);
 
     {
         auto v2 = canvas(self_name, "b");
         v2.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 1u);
+    EXPECT_EQ(
+        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        1u);
 
     {
         Canvas3D v3;
@@ -159,11 +170,10 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(Canvas3DTest, get) {
-    auto vd = std::make_shared<
-        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>(
-        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>{
-            std::make_shared<internal::Canvas3DComponentData>(),
-        });
+    auto vd = std::make_shared<webcface::internal::Canvas3DDataBase>();
+    vd->components = {
+        {"0"_ss, std::make_shared<internal::Canvas3DComponentData>()}};
+    vd->data_ids = {"0"_ss};
     data_->canvas3d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);
     EXPECT_EQ(canvas("a", "b").get().size(), 1u);

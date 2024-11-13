@@ -5,11 +5,14 @@
 送受信されるメッセージの仕様について
 
 MessagePackで送受信されます。
-両方向の通信ともにn個のデータを長さ2nの配列で表現します。
+両方向の通信ともに、一度にn個のデータを送信する場合それを以下のように長さ2nのArrayとしてシリアライズしたものを送信します。
+kindは0以上の整数、データはMapです。
 
 ```js
 [ kind1, data1, kind2, data2, ... ]
 ```
+
+stringは常にutf-8エンコーディングとします。
 
 see also message.h
 
@@ -214,7 +217,61 @@ data = {
 * value resと同様
 
 ## View
-### view (kind = 3)
+### view (kind = 9)
+
+\since <span class="since-c">2.5</span>
+
+```js
+data = {
+	f: string, // name
+	d: {
+		id: {
+			t: number, // type
+			x: string, // text
+			L: string | null, // onClick Func.member
+			l: string | null, // onClick Func.name
+			c: number, // textColor
+			b: number, // bgColor
+			R?: string | null, // Bind Text.member
+			r?: string | null, // Bind Text.name
+			im?: number | null, // min
+			ix?: number | null, // max
+			is?: number | null, // step
+			io?: string[] | number[], // option
+		},
+		id: {...},
+		...
+	},
+	l: null | string[], // list of id
+}
+```
+* value と同様
+* 各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します
+* データは前回のsyncから変更された要素のみを送ります
+* idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります
+
+### view entry (kind = 29)
+* value entryと同様
+
+### view req (kind = 49)
+* value req と同様
+
+### view res (kind = 69)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	d: {...},
+	l: null | string[],
+}
+```
+* value resと同様
+
+### view old (kind = 3)
+
+* ver2.4まで使っていた古い仕様です
+	* 2.5以降のサーバーは、古いview_reqメッセージを送ってきたクライアントに対してのみこの古い仕様でViewを返します。
+
 ```js
 data = {
 	f: string, // name
@@ -247,13 +304,9 @@ data = {
 * <span class="since-c">1.1</span> dのindexをnumber型からstring型に変更
 * <span class="since-c">1.10</span> data内の bind,min,max,step,option 追加
 
-### view entry (kind = 23)
-* value entryと同様
-
-### view req (kind = 43)
-* value req と同様
-
-### view res (kind = 63)
+### view old entry (kind = 23)
+### view old req (kind = 43)
+### view old res (kind = 63)
 ```js
 data = {
 	i: number, // request id
@@ -262,7 +315,6 @@ data = {
 	l: number,
 }
 ```
-* value resと同様
 
 ## Image
 
@@ -314,9 +366,68 @@ data = {
 
 ## Canvas2D
 
+### canvas2d (kind = 10)
+
+\since <span class="since-c">2.5</span>
+
+```js
+data = {
+	f: string, // name
+	w: number, // width
+	h: number, // height
+	d: {
+		id: {
+			t: number, // type
+			op: number[2], // origin pos
+			or: number, // origin rot
+			c: number, // stroke color
+			f: number, // fill color / text color
+			s: number, // stroke width / font size
+			gt: number | null, // geometry type
+			gp: number[], // geometry properties
+			L?: string | null, // onclick Func.member
+			l?: string | null, // onclick Func.name
+			x?: string, // text
+		},
+		id: {},
+		...
+	},
+	l: null | string[], // list of id
+}
+```
+* viewと同様、各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します
+* データは前回のsyncから変更された要素のみを送ります
+* idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります
+* geometry propertiesの要素数と内容はgeometryの種類によって異なる
+* textの色はfillの色、textのサイズはstrokeWidthのデータを流用
+
+### canvas2d entry (kind = 30)
+* value entryと同様
+
+### canvas2d req (kind = 50)
+* value req と同様
+
+### canvas2d res (kind = 70)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	w: number, // width
+	h: number, // height
+	d: {...},
+	l: number,
+}
+```
+* value resと同様
+
+
+### canvas2d old (kind = 4)
+
 \since <span class="since-c">1.6</span>
 
-### canvas2d (kind = 4)
+* ver2.4まで使っていた古い仕様です
+	* 2.5以降のサーバーは、古いcanvas2d_reqメッセージを送ってきたクライアントに対してのみこの古い仕様でCanvas2Dを返します。
+
 ```js
 data = {
 	f: string, // name
@@ -349,13 +460,9 @@ data = {
 * <span class="since-c">1.9</span> onClickとtext追加
 * textの色はfillの色、textのサイズはstrokeWidthのデータを流用
 
-### canvas2d entry (kind = 24)
-* value entryと同様
-
-### canvas2d req (kind = 44)
-* value req と同様
-
-### canvas2d res (kind = 64)
+### canvas2d old entry (kind = 24)
+### canvas2d old req (kind = 44)
+### canvas2d old res (kind = 64)
 ```js
 data = {
 	i: number, // request id
@@ -366,14 +473,64 @@ data = {
 	l: number,
 }
 ```
-* value resと同様
-
 
 ## Canvas3D
 
+### canvas3d (kind = 11)
+
+\since <span class="since-c">2.5</span>
+
+```js
+data = {
+	f: string, // name
+	d: {
+		id: {
+			t: number, // type
+			op: number[3], // origin pos
+			or: number[3], // origin rot
+			c: number, // color
+			gt: number | null, // geometry type
+			gp: number[], // geometry properties
+			fm: string | null, // field member
+			ff: string | null, // field name
+			a: { name: angle, ... } // joint angles
+		},
+		id: {},
+		...
+	},
+	l: null | string[], // list of id
+}
+```
+* viewと同様、各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します
+* データは前回のsyncから変更された要素のみを送ります
+* idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります
+* geometry propertiesの要素数と内容はgeometryの種類によって異なる
+* robotmodelを参照する場合そのモデルのmemberとfield名をfmとffにセット
+
+### canvas3d entry (kind = 31)
+* value entryと同様
+
+### canvas3d req (kind = 51)
+* value req と同様
+
+### canvas3d res (kind = 71)
+```js
+data = {
+	i: number, // request id
+	f: string, // sub field name
+	d: {...},
+	l: null | string[],
+}
+```
+* value resと同様
+
+### canvas3d old (kind = 7)
+
 \since <span class="since-c">1.4</span>
 
-### canvas3d (kind = 7)
+* ver2.4まで使っていた古い仕様です
+	* 2.5以降のサーバーは、古いcanvas3d_reqメッセージを送ってきたクライアントに対してのみこの古い仕様でCanvas3Dを返します。
+
 ```js
 data = {
 	f: string, // name
@@ -401,13 +558,9 @@ data = {
 * geometry propertiesの要素数と内容はgeometryの種類によって異なる
 * robotmodelを参照する場合そのモデルのmemberとfield名をfmとffにセット
 
-### canvas3d entry (kind = 27)
-* value entryと同様
-
-### canvas3d req (kind = 47)
-* value req と同様
-
-### canvas3d res (kind = 67)
+### canvas3d old entry (kind = 27)
+### canvas3d old req (kind = 47)
+### canvas3d old res (kind = 67)
 ```js
 data = {
 	i: number, // request id
@@ -416,7 +569,6 @@ data = {
 	l: number,
 }
 ```
-* value resと同様
 
 ## RobotModel
 
@@ -535,6 +687,6 @@ data = {
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-5. webcface-tui](75_tui.md) | [8-2. ](82_) |
+| [7-5. webcface-tui](75_tui.md) | [8-2. Client Spec](82_client_spec.md) |
 
 </div>
