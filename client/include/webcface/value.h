@@ -4,6 +4,7 @@
 #include <optional>
 #include <chrono>
 #include "field.h"
+#include "array_like.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -126,38 +127,17 @@ class WEBCFACE_DLL Value : protected Field {
     const Value &set(std::vector<double> v) const;
     /*!
      * \brief 配列型の値をセットする
-     * \since ver1.7 (VectorOpt(std::vector<T>) を置き換え)
+     * \since ver1.7 (set(VectorOpt(std::vector<T>)) を置き換え)
      *
-     * R::value_type がdoubleに変換可能な型Rならなんでもok
+     * * <del>R::value_type がdoubleに変換可能な型Rならなんでもok</del>
+     * * (ver2.5〜) std::begin(), std::end()
+     * が使えてその値がdoubleに変換可能ならなんでもok
      *
      */
     template <typename R,
-              typename std::enable_if_t<
-                  std::is_convertible_v<typename R::value_type, double>,
-                  std::nullptr_t> = nullptr>
+              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk>
     const Value &set(const R &range) const {
-        std::vector<double> vec;
-        vec.reserve(std::size(range));
-        for (const auto &v : range) {
-            vec.push_back(static_cast<double>(v));
-        }
-        return set(std::move(vec));
-    }
-    /*!
-     * \brief 生配列の値をセットする
-     * \since ver1.7
-     *
-     */
-    template <typename V, std::size_t N,
-              typename std::enable_if_t<std::is_convertible_v<V, double>,
-                                        std::nullptr_t> = nullptr>
-    const Value &set(const V (&range)[N]) const {
-        std::vector<double> vec;
-        vec.reserve(N);
-        for (const auto &v : range) {
-            vec.push_back(static_cast<double>(v));
-        }
-        return set(std::move(vec));
+        return set(traits::arrayLikeToVector(range));
     }
     /*!
      * \brief 配列をセット、またはすでにsetされていればリサイズする

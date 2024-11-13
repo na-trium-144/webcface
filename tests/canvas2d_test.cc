@@ -71,7 +71,9 @@ TEST_F(Canvas2DTest, set) {
     v.add(line({0, 0}, {3, 3})
               .color(ViewColor::red)
               .onClick(func(self_name, "f")));
-    v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick([] {}));
+    v.add(plane(translation(0, 0), 10, 10)
+              .color(ViewColor::yellow)
+              .onClick([] {}));
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas2d_data_base =

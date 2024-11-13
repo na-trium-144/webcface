@@ -151,6 +151,43 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
 }
+// TEST_F(DataTest, ArrayLike){
+static_assert(traits::IsArrayLike<std::vector<double>>::value);
+static_assert(traits::IsArrayLike<std::vector<int>>::value);
+static_assert(
+    std::is_same_v<traits::ArrayLikeTrait<std::vector<double>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::ArrayLikeTrait<std::vector<int>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(traits::IsArrayLike<std::array<double, 5>>::value);
+static_assert(traits::IsArrayLike<std::array<int, 5>>::value);
+static_assert(
+    std::is_same_v<traits::ArrayLikeTrait<std::array<double, 5>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::ArrayLikeTrait<std::array<int, 5>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(std::is_same_v<traits::ArrayLikeTrait<double[5]>::ArrayLike,
+                             std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::ArrayLikeTrait<int[5]>::ArrayLike, std::nullptr_t>);
+
+static_assert(traits::ArraySizeMatch<std::array<double, 5>, 5>::value);
+static_assert(!traits::ArraySizeMatch<std::array<double, 5>, 10>::value);
+static_assert(std::is_same_v<traits::ArraySizeTrait<std::array<double, 5>,
+                                                    5>::SizeMatchOrDynamic,
+                             std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::ArraySizeTrait<double[5], 5>::SizeMatchOrDynamic,
+                   std::nullptr_t>);
+// vector -> always true (need runtime check)
+static_assert(traits::ArraySizeMatch<std::vector<double>, 5>::value);
+static_assert(std::is_same_v<traits::ArraySizeTrait<std::vector<double>,
+                                                    5>::SizeMatchOrDynamic,
+                             std::nullptr_t>);
+// }
+
 TEST_F(DataTest, textSet) {
     data_->text_change_event[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
