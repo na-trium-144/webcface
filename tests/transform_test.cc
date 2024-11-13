@@ -16,9 +16,9 @@ TEST(TransformTest, XZX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotZ(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -40,9 +40,9 @@ TEST(TransformTest, XYX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotY(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -64,9 +64,9 @@ TEST(TransformTest, YXY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotX(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -88,9 +88,9 @@ TEST(TransformTest, YZY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotZ(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -112,9 +112,9 @@ TEST(TransformTest, ZYZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotY(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -136,9 +136,9 @@ TEST(TransformTest, ZXZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotX(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -161,9 +161,9 @@ TEST(TransformTest, XYZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotY(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -184,9 +184,9 @@ TEST(TransformTest, YZX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotZ(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -207,9 +207,9 @@ TEST(TransformTest, ZXY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotX(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -230,9 +230,9 @@ TEST(TransformTest, XZY) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotX(a)) * Transform(rotZ(b)) * Transform(rotY(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -253,9 +253,9 @@ TEST(TransformTest, ZYX) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotZ(a)) * Transform(rotY(b)) * Transform(rotX(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -276,9 +276,9 @@ TEST(TransformTest, YXZ) {
         std::cout << "a: " << a << ", b: " << b << ", c: " << c << std::endl;
         Transform tf1 =
             Transform(rotY(a)) * Transform(rotX(b)) * Transform(rotZ(c));
-        Transform tf2 = rotEuler(a, b, c, axis);
-        Transform tf3 = rotEuler(tf2.rot(axis), axis);
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromEuler(a, b, c, axis);
+        Transform tf3 = rotFromEuler(tf2.rotEuler(axis), axis);
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf1.rotMatrix(i, j), tf2.rotMatrix(i, j), 1e-8);
@@ -303,11 +303,11 @@ TEST(TransformTest, quat) {
         z /= norm;
         std::cout << "w: " << w << ", x: " << x << ", y: " << y << ", z: " << z
                   << std::endl;
-        Transform tf2 = rotQuat(w, x, y, z);
-        Transform tf3 = rotQuat(tf2.rotQuat());
-        Transform tf4 = rotEuler(tf2.rot());
+        Transform tf2 = rotFromQuat(w, x, y, z);
+        Transform tf3 = rotFromQuat(tf2.rotQuat());
+        Transform tf4 = rotFromEuler(tf2.rotEuler());
         auto axis_angle = tf2.rotAxisAngle();
-        Transform tf5 = rotAxisAngle(axis_angle.first, axis_angle.second);
+        Transform tf5 = rotFromAxisAngle(axis_angle.first, axis_angle.second);
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf2.rotMatrix(i, j), tf3.rotMatrix(i, j), 1e-8);
@@ -324,7 +324,7 @@ TEST(TransformTest, quat) {
 TEST(TransformTest, inversed) {
     auto check = [&](double a, double b, double c, double x, double y,
                      double z) {
-        Transform tf1 = Transform({x, y, z}, rotEuler(a, b, c));
+        Transform tf1 = Transform({x, y, z}, rotFromEuler(a, b, c));
         Transform tf2 = tf1 * tf1.inversed();
         Transform tf3 = tf1.inversed() * tf1;
         Transform id = identity();

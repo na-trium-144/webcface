@@ -99,7 +99,7 @@ Transform Canvas2DComponent::origin() const {
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::origin(const Transform &origin) {
     msg_data->origin_pos = {origin.pos(0), origin.pos(1)};
-    msg_data->origin_rot = origin.rot(0);
+    msg_data->origin_rot = origin.rotEuler()[0];
     return *this;
 }
 ViewColor Canvas2DComponent::color() const {

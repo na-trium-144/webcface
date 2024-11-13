@@ -51,7 +51,7 @@ RobotLink::RobotLink(const SharedString &name, const RobotJoint &joint,
         msg_data->parent_name = joint.temp_data->parent_name;
         msg_data->joint_type = static_cast<int>(joint.temp_data->type);
         msg_data->joint_origin_pos = joint.temp_data->origin.pos();
-        msg_data->joint_origin_rot = joint.temp_data->origin.rot();
+        msg_data->joint_origin_rot = joint.temp_data->origin.rotEuler();
         msg_data->joint_angle = joint.temp_data->angle;
     }
     if (joint.msg_data) {
@@ -121,7 +121,7 @@ RobotJointType RobotJoint::type() const {
 Transform RobotJoint::origin() const {
     if (msg_data) {
         return Transform(msg_data->joint_origin_pos,
-                         rotEuler(msg_data->joint_origin_rot));
+                         rotFromEuler(msg_data->joint_origin_rot));
     } else if (temp_data) {
         return temp_data->origin;
     } else {
