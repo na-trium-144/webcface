@@ -34,10 +34,12 @@ void internal::DataSetBuffer<TemporalCanvas2DComponent>::onSync() {
     auto cb = std::make_shared<Canvas2DDataBase>(c2buf->width_, c2buf->height_);
     std::unordered_map<Canvas2DComponentType, int> idx_next;
     auto data = target_.setCheck();
-    cb->components.reserve(this->components_.size());
+    cb->data_ids.reserve(this->components_.size());
     for (std::size_t i = 0; i < this->components_.size(); i++) {
-        cb->components.push_back(
-            this->components_[i].lockTmp(data, target_.field_, &idx_next));
+        std::shared_ptr<internal::Canvas2DComponentData> msg_data =
+            this->components_[i].lockTmp(data, target_.field_, &idx_next);
+        cb->components.emplace(msg_data->id, msg_data);
+        cb->data_ids.push_back(msg_data->id);
     }
     data->canvas2d_store.setSend(target_, cb);
     std::shared_ptr<std::function<void(Canvas2D)>> change_event;
@@ -73,11 +75,10 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
     request();
     auto vb = dataLock()->canvas2d_store.getRecv(*this);
     if (vb) {
-        std::vector<Canvas2DComponent> v((*vb)->components.size());
-        std::unordered_map<Canvas2DComponentType, int> idx_next;
-        for (std::size_t i = 0; i < (*vb)->components.size(); i++) {
-            v[i] = Canvas2DComponent{(*vb)->components[i], this->data_w,
-                                     &idx_next};
+        std::vector<Canvas2DComponent> v;
+        v.reserve((*vb)->data_ids.size());
+        for (const auto &id : (*vb)->data_ids) {
+            v.emplace_back((*vb)->components.at(id), this->data_w);
         }
         return v;
     } else {

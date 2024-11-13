@@ -6,25 +6,19 @@
 
 WEBCFACE_NS_BEGIN
 
+/// \private
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string ViewComponent::id() const {
-    return internalViewId(static_cast<int>(type()), idx_for_type);
-}
+std::string ViewComponent::id() const { return msg_data->id.decode(); }
+std::wstring ViewComponent::idW() const { return msg_data->id.decodeW(); }
 
 ViewComponent::ViewComponent() = default;
 
 ViewComponent::ViewComponent(
     const std::shared_ptr<internal::ViewComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<ViewComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<ViewComponentType>(msg_data->type)]++;
-    }
-}
+    const std::weak_ptr<internal::ClientData> &data_w)
+    : msg_data(msg_data), data_w(data_w) {}
 
 TemporalViewComponent::TemporalViewComponent(std::nullptr_t) : msg_data() {}
 TemporalViewComponent::TemporalViewComponent(ViewComponentType type)
@@ -60,20 +54,24 @@ std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
         idx_for_type =
             (*idx_next)[static_cast<ViewComponentType>(msg_data->type)]++;
     }
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalViewId(msg_data->type, idx_for_type));
+    }
     if (msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..v" + view_name.u8String() + "/" +
-                          internalViewId(msg_data->type, idx_for_type))};
+                      SharedString::fromU8String("..v" + view_name.u8String() +
+                                                 "/" +
+                                                 msg_data->id.u8String())};
         msg_data->on_click_func_tmp->lockTo(on_click);
         onClick(on_click);
     }
     if (msg_data->text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Variant text_ref{Field{data, data->self_member_name},
-                         SharedString::fromU8String(
-                             "..ir" + view_name.u8String() + "/" +
-                             internalViewId(msg_data->type, idx_for_type))};
+                         SharedString::fromU8String("..ir" +
+                                                    view_name.u8String() + "/" +
+                                                    msg_data->id.u8String())};
         msg_data->text_ref_tmp->lockTo(text_ref);
         if (msg_data->init_ && !text_ref.tryGet()) {
             text_ref.set(*msg_data->init_);
@@ -174,6 +172,14 @@ bool internal::ViewComponentData::operator==(
 ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);
+}
+TemporalViewComponent &TemporalViewComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalViewComponent &TemporalViewComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
 }
 std::string ViewComponent::text() const {
     checkData();

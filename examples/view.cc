@@ -73,6 +73,16 @@ int main() {
             v << webcface::checkInput("check").bind(input_check) << " => "
               << input_check << std::endl;
 
+            // id指定
+            // 通常はなくてもいいが、inputの個数が増減する場合は指定する必要がある
+            static webcface::InputRef input_check_1, input_check_2;
+            if (input_check_2.asBool()) {
+                v << webcface::checkInput("check1").id("check1").bind(
+                    input_check_1);
+            }
+            v << webcface::checkInput("check2").id("check2").bind(
+                input_check_2);
+
             // v.sync();
         }
 

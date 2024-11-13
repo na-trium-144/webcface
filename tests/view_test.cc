@@ -90,7 +90,7 @@ TEST_F(ViewTest, viewSet) {
       << newLine();
     v << button("f", func(self_name, "f"));
     v << button("a", afunc1([]() {}));
-    v << button("a2", []() {});
+    v << button("a2", []() {}).id("hoge");
     webcface::InputRef ref1, ref2;
     v << decimalInput("i").bind(ref1).init(123).min(1).max(1000);
     v << selectInput("i2").bind(ref2).option({"a", "b", "c"});
@@ -108,32 +108,46 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(manip_called, 1);
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &view_data = **data_->view_store.getRecv(self_name, "b"_ss);
-    EXPECT_EQ(view_data.size(), 11u);
+    auto &view_data_base = **data_->view_store.getRecv(self_name, "b"_ss);
+    EXPECT_EQ(view_data_base.components.size(), 11u);
+    EXPECT_EQ(view_data_base.data_ids.size(), 11u);
+    std::vector<std::shared_ptr<internal::ViewComponentData>> view_data;
+    view_data.reserve(view_data_base.components.size());
+    for (const auto &id : view_data_base.data_ids) {
+        view_data.push_back(view_data_base.components.at(id));
+    }
+    EXPECT_EQ(view_data_base.data_ids[0].u8String(), "..0.0");
     EXPECT_EQ(view_data[0]->type, static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(view_data[0]->text.u8String(), "a");
+    EXPECT_EQ(view_data_base.data_ids[1].u8String(), "..1.0");
     EXPECT_EQ(view_data[1]->type,
               static_cast<int>(ViewComponentType::new_line));
+    EXPECT_EQ(view_data_base.data_ids[2].u8String(), "..0.1");
     EXPECT_EQ(view_data[2]->type, static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(view_data[2]->text.u8String(), "1");
 
+    EXPECT_EQ(view_data_base.data_ids[3].u8String(), "..0.2");
     EXPECT_EQ(view_data[3]->type, static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(view_data[3]->text.u8String(), "aaa");
     EXPECT_EQ(view_data[3]->text_color, static_cast<int>(ViewColor::yellow));
     EXPECT_EQ(view_data[3]->bg_color, static_cast<int>(ViewColor::green));
+    EXPECT_EQ(view_data_base.data_ids[4].u8String(), "..1.1");
     EXPECT_EQ(view_data[4]->type,
               static_cast<int>(ViewComponentType::new_line));
 
+    EXPECT_EQ(view_data_base.data_ids[5].u8String(), "..2.0");
     EXPECT_EQ(view_data[5]->type, static_cast<int>(ViewComponentType::button));
     EXPECT_EQ(view_data[5]->text.u8String(), "f");
     EXPECT_EQ(view_data[5]->on_click_member->u8String(), self_name.decode());
     EXPECT_EQ(view_data[5]->on_click_field->u8String(), "f");
 
+    EXPECT_EQ(view_data_base.data_ids[6].u8String(), "..2.1");
     EXPECT_EQ(view_data[6]->type, static_cast<int>(ViewComponentType::button));
     EXPECT_EQ(view_data[6]->text.u8String(), "a");
     EXPECT_EQ(view_data[6]->on_click_member->u8String(), self_name.decode());
     EXPECT_FALSE(view_data[6]->on_click_field->empty());
 
+    EXPECT_EQ(view_data_base.data_ids[7].u8String(), "hoge");
     EXPECT_EQ(view_data[7]->type, static_cast<int>(ViewComponentType::button));
     EXPECT_EQ(view_data[7]->text.u8String(), "a2");
     EXPECT_EQ(view_data[7]->on_click_member->u8String(), self_name.decode());
@@ -178,7 +192,8 @@ TEST_F(ViewTest, viewSet) {
     //               text(self_name, view_data[9].text_ref_->field_).get()),
     //           "a");
 
-    EXPECT_EQ(view_data[10]->type, static_cast<int>(ViewComponentType::text_input));
+    EXPECT_EQ(view_data[10]->type,
+              static_cast<int>(ViewComponentType::text_input));
     EXPECT_EQ(view_data[10]->text.u8String(), "i3");
     EXPECT_EQ(view_data[10]->on_click_member->u8String(), self_name.decode());
     EXPECT_FALSE(view_data[10]->on_click_field->empty());
@@ -193,14 +208,16 @@ TEST_F(ViewTest, viewSet) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 0u);
+    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->data_ids.size(),
+              0u);
 
     {
         auto v2 = view(self_name, "b");
         v2 << "a";
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->size(), 1u);
+    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->data_ids.size(),
+              1u);
 
     {
         View v3;
@@ -221,29 +238,32 @@ TEST_F(ViewTest, viewSet) {
 }
 TEST_F(ViewTest, viewGet) {
     std::unordered_map<ViewComponentType, int> idx_next;
-    auto vd = std::make_shared<
-        std::vector<std::shared_ptr<internal::ViewComponentData>>>(
-        std::vector<std::shared_ptr<internal::ViewComponentData>>{
-            components::text("a").component_v.lockTmp(data_, "b"_ss, &idx_next),
-            components::button("a", [] {}).lockTmp(data_, "b"_ss, &idx_next),
-            components::text("a").component_v.lockTmp(data_, "b"_ss, &idx_next),
-        });
+    auto vd = std::make_shared<internal::ViewDataBase>();
+    vd->components = {
+        {"a"_ss,
+         components::text("a").id("a").component_v.lockTmp(data_, "b"_ss, &idx_next)},
+        {"c"_ss,
+         components::text("a").id("c").component_v.lockTmp(data_, "b"_ss, &idx_next)},
+        {"b"_ss,
+         components::button("a", [] {}).id("b").lockTmp(data_, "b"_ss, &idx_next)},
+    };
+    vd->data_ids = {"a"_ss, "b"_ss, "c"_ss};
     data_->view_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(view("a", "b").tryGet().value().size(), 3u);
     EXPECT_EQ(view("a", "b").get().size(), 3u);
     auto components = view("a", "b").get();
     EXPECT_EQ(components.at(0).type(), ViewComponentType::text);
     EXPECT_EQ(components.at(0).text(), "a");
-    EXPECT_EQ(components.at(0).id(), "..0.0"); // type0, idx0
+    EXPECT_EQ(components.at(0).id(), "a");
     EXPECT_EQ(components.at(1).type(), ViewComponentType::button);
     EXPECT_EQ(components.at(1).text(), "a");
-    EXPECT_EQ(components.at(1).id(), "..2.0"); // type2, idx0
+    EXPECT_EQ(components.at(1).id(), "b");
     ASSERT_TRUE(components.at(1).onClick().has_value());
     EXPECT_EQ(components.at(1).onClick()->member().name(), self_name.decode());
-    EXPECT_EQ(components.at(1).onClick()->name(), "..vb/..2.0");
+    EXPECT_EQ(components.at(1).onClick()->name(), "..vb/b");
     EXPECT_EQ(components.at(2).type(), ViewComponentType::text);
     EXPECT_EQ(components.at(2).text(), "a");
-    EXPECT_EQ(components.at(2).id(), "..0.1"); // type0, idx1
+    EXPECT_EQ(components.at(2).id(), "c");
 
     EXPECT_EQ(view("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(view("a", "c").get().size(), 0u);

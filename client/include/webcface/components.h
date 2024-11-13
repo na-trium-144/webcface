@@ -5,7 +5,7 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace internal{
+namespace internal {
 class ViewBuf;
 }
 
@@ -40,6 +40,39 @@ struct TemporalComponent {
     friend class Canvas3D;
     friend class View;
     friend class internal::ViewBuf;
+
+    /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::string_view id) {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
+    /*!
+     * \brief idを設定(wstring)
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::wstring_view id) {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
 
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)

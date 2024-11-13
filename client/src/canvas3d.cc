@@ -32,12 +32,13 @@ template <>
 void internal::DataSetBuffer<TemporalCanvas3DComponent>::onSync() {
     std::unordered_map<Canvas3DComponentType, int> idx_next;
     auto data = target_.setCheck();
-    auto components_p = std::make_shared<
-        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>();
-    components_p->reserve(components_.size());
+    auto components_p = std::make_shared<Canvas3DDataBase>();
+    components_p->data_ids.reserve(this->components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        components_p->push_back(
-            components_[i].lockTmp(data, target_.field_, &idx_next));
+        std::shared_ptr<internal::Canvas3DComponentData> msg_data =
+            components_[i].lockTmp(data, target_.field_, &idx_next);
+        components_p->components.emplace(msg_data->id, msg_data);
+        components_p->data_ids.push_back(msg_data->id);
     }
     data->canvas3d_store.setSend(target_, components_p);
     std::shared_ptr<std::function<void(Canvas3D)>> change_event;
@@ -73,10 +74,10 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     auto vb = dataLock()->canvas3d_store.getRecv(*this);
     request();
     if (vb) {
-        std::vector<Canvas3DComponent> v((*vb)->size());
-        std::unordered_map<Canvas3DComponentType, int> idx_next;
-        for (std::size_t i = 0; i < (*vb)->size(); i++) {
-            v[i] = Canvas3DComponent{(**vb)[i], this->data_w, &idx_next};
+        std::vector<Canvas3DComponent> v;
+        v.reserve((*vb)->data_ids.size());
+        for (const auto &id : (*vb)->data_ids) {
+            v.emplace_back((*vb)->components.at(id), this->data_w);
         }
         return v;
     } else {

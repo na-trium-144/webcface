@@ -191,66 +191,76 @@ TEST_F(ClientTest, viewSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    data_->view_store.setSend(
-        "a"_ss,
-        std::make_shared<
-            std::vector<std::shared_ptr<internal::ViewComponentData>>>(
-            std::vector<std::shared_ptr<internal::ViewComponentData>>{
-                ViewComponents::text("a")
-                    .textColor(ViewColor::yellow)
-                    .bgColor(ViewColor::green)
-                    .component_v.lockTmp(data_, ""_ss),
-                ViewComponents::newLine().lockTmp(data_, ""_ss),
-                ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                    .lockTmp(data_, ""_ss),
-            }));
+    auto view_data = std::make_shared<internal::ViewDataBase>();
+    view_data->components = {
+        {"a"_ss, ViewComponents::text("a")
+                     .textColor(ViewColor::yellow)
+                     .bgColor(ViewColor::green)
+                     .component_v.lockTmp(data_, ""_ss)},
+        {"c"_ss, ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
+                     .lockTmp(data_, ""_ss)},
+        {"b"_ss, ViewComponents::newLine().lockTmp(data_, ""_ss)},
+    };
+    view_data->data_ids = {"a"_ss, "b"_ss, "c"_ss};
+    data_->view_store.setSend("a"_ss, view_data);
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](auto obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3u);
+        EXPECT_NE(obj.data_ids, std::nullopt);
+        EXPECT_EQ(obj.data_ids->size(), 3u);
         EXPECT_EQ(obj.data_diff.size(), 3u);
-        EXPECT_EQ(obj.data_diff["0"]->type,
+        EXPECT_EQ(obj.data_diff["a"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ(obj.data_diff["0"]->text, "a"_ss);
-        EXPECT_EQ(obj.data_diff["0"]->text_color,
+        EXPECT_EQ(obj.data_diff["a"]->text, "a"_ss);
+        EXPECT_EQ(obj.data_diff["a"]->text_color,
                   static_cast<int>(ViewColor::yellow));
-        EXPECT_EQ(obj.data_diff["0"]->bg_color,
+        EXPECT_EQ(obj.data_diff["a"]->bg_color,
                   static_cast<int>(ViewColor::green));
-        EXPECT_EQ(obj.data_diff["1"]->type,
+        EXPECT_EQ(obj.data_diff["b"]->type,
                   static_cast<int>(ViewComponentType::new_line));
-        EXPECT_EQ(obj.data_diff["2"]->type,
+        EXPECT_EQ(obj.data_diff["c"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ(obj.data_diff["2"]->text, "a"_ss);
-        EXPECT_EQ(obj.data_diff["2"]->on_click_member, "x"_ss);
-        EXPECT_EQ(obj.data_diff["2"]->on_click_field, "y"_ss);
+        EXPECT_EQ(obj.data_diff["c"]->text, "a"_ss);
+        EXPECT_EQ(obj.data_diff["c"]->on_click_member, "x"_ss);
+        EXPECT_EQ(obj.data_diff["c"]->on_click_field, "y"_ss);
     });
     dummy_s->recvClear();
 
-    data_->view_store.setSend(
-        "a"_ss,
-        std::make_shared<
-            std::vector<std::shared_ptr<internal::ViewComponentData>>>(
-            std::vector<std::shared_ptr<internal::ViewComponentData>>{
-                ViewComponents::text("b")
-                    .textColor(ViewColor::red)
-                    .bgColor(ViewColor::green)
-                    .component_v.lockTmp(data_, ""_ss),
-                ViewComponents::newLine().lockTmp(data_, ""_ss),
-                ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                    .lockTmp(data_, ""_ss),
-            }));
+    view_data = std::make_shared<internal::ViewDataBase>(*view_data);
+    view_data->components = {
+        {"a"_ss, ViewComponents::text("b") // ここのtextと色を変えた
+                     .textColor(ViewColor::red)
+                     .bgColor(ViewColor::green)
+                     .component_v.lockTmp(data_, ""_ss)},
+        {"b"_ss, ViewComponents::newLine().lockTmp(data_, ""_ss)},
+        {"c"_ss, ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
+                     .lockTmp(data_, ""_ss)},
+    };
+    data_->view_store.setSend("a"_ss, view_data);
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](auto obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.length, 3u);
+        EXPECT_EQ(obj.data_ids, std::nullopt);
         EXPECT_EQ(obj.data_diff.size(), 1u);
-        EXPECT_EQ(obj.data_diff["0"]->type,
+        EXPECT_EQ(obj.data_diff["a"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ(obj.data_diff["0"]->text, "b"_ss);
-        EXPECT_EQ(obj.data_diff["0"]->text_color,
+        EXPECT_EQ(obj.data_diff["a"]->text, "b"_ss);
+        EXPECT_EQ(obj.data_diff["a"]->text_color,
                   static_cast<int>(ViewColor::red));
-        EXPECT_EQ(obj.data_diff["0"]->bg_color,
+        EXPECT_EQ(obj.data_diff["a"]->bg_color,
                   static_cast<int>(ViewColor::green));
+    });
+    dummy_s->recvClear();
+
+    view_data = std::make_shared<internal::ViewDataBase>(*view_data);
+    view_data->data_ids = {"a"_ss, "b"_ss};
+    data_->view_store.setSend("a"_ss, view_data);
+    wcli_->sync();
+    dummy_s->waitRecv<message::View>([&](auto obj) {
+        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_NE(obj.data_ids, std::nullopt);
+        EXPECT_EQ(obj.data_ids->size(), 2u);
+        EXPECT_EQ(obj.data_diff.size(), 0u);
     });
 }
 TEST_F(ClientTest, viewReq) {
@@ -276,27 +286,42 @@ TEST_F(ClientTest, viewReq) {
         {"2", ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
                   .lockTmp(data_, ""_ss)},
     };
-    dummy_s->send(message::Res<message::View>{1, ""_ss, v, 3});
+    std::vector<SharedString> v_ids = {"0"_ss, "1"_ss, "2"_ss};
+    dummy_s->send(message::Res<message::View>{1, ""_ss, v, v_ids});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-    dummy_s->send(message::Res<message::View>{1, "c"_ss, v, 3});
+    dummy_s->send(message::Res<message::View>{1, "c"_ss, v, v_ids});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->type,
+    EXPECT_EQ(
+        data_->view_store.getRecv("a"_ss, "b"_ss).value()->data_ids.size(), 3u);
+    EXPECT_EQ(
+        data_->view_store.getRecv("a"_ss, "b"_ss).value()->components.size(),
+        3u);
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->type,
               static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
-                  ->at(0)
+                  ->components.at("0"_ss)
                   ->text.u8String(),
               "a");
-    EXPECT_EQ(
-        data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->text_color,
-        static_cast<int>(ViewColor::yellow));
-    EXPECT_EQ(
-        data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->bg_color,
-        static_cast<int>(ViewColor::green));
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(1)->type,
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->text_color,
+              static_cast<int>(ViewColor::yellow));
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->bg_color,
+              static_cast<int>(ViewColor::green));
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("1"_ss)
+                  ->type,
               static_cast<int>(ViewComponentType::new_line));
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b.c"_ss).has_value());
 
@@ -306,24 +331,38 @@ TEST_F(ClientTest, viewReq) {
                   .textColor(ViewColor::red)
                   .bgColor(ViewColor::green)
                   .component_v.lockTmp(data_, ""_ss)}};
-    dummy_s->send(message::Res<message::View>{1, ""_ss, v2, 3});
+    dummy_s->send(message::Res<message::View>{1, ""_ss, v2, std::nullopt});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->size(), 3u);
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->type,
+    EXPECT_EQ(
+        data_->view_store.getRecv("a"_ss, "b"_ss).value()->data_ids.size(), 3u);
+    EXPECT_EQ(
+        data_->view_store.getRecv("a"_ss, "b"_ss).value()->components.size(),
+        3u);
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->type,
               static_cast<int>(ViewComponentType::text));
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
-                  ->at(0)
+                  ->components.at("0"_ss)
                   ->text.u8String(),
               "b");
-    EXPECT_EQ(
-        data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->text_color,
-        static_cast<int>(ViewColor::red));
-    EXPECT_EQ(
-        data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(0)->bg_color,
-        static_cast<int>(ViewColor::green));
-    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss).value()->at(1)->type,
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->text_color,
+              static_cast<int>(ViewColor::red));
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("0"_ss)
+                  ->bg_color,
+              static_cast<int>(ViewColor::green));
+    EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
+                  .value()
+                  ->components.at("1"_ss)
+                  ->type,
               static_cast<int>(ViewComponentType::new_line));
 }
 TEST_F(ClientTest, funcInfo) {

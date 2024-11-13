@@ -89,7 +89,6 @@ enum class ViewComponentType {
 class WEBCFACE_DLL ViewComponent {
     std::shared_ptr<internal::ViewComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    int idx_for_type = 0;
 
     void checkData() const;
 
@@ -99,16 +98,9 @@ class WEBCFACE_DLL ViewComponent {
      *
      */
     ViewComponent();
-    /*!
-     * \param msg_data
-     * \param data_w
-     * \param idx_next 種類ごとの要素数のmap
-     * InputRefの名前に使うidを決定するのに使う
-     *
-     */
+
     ViewComponent(const std::shared_ptr<internal::ViewComponentData> &msg_data,
-                  const std::weak_ptr<internal::ClientData> &data_w,
-                  std::unordered_map<ViewComponentType, int> *idx_next);
+                  const std::weak_ptr<internal::ClientData> &data_w);
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
@@ -117,11 +109,22 @@ class WEBCFACE_DLL ViewComponent {
      * \brief そのview内で一意のid
      * \since ver1.10
      *
-     * 要素が増減したり順序が変わったりしなければ、
+     * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
-     *
+     * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
+     * 
      */
     std::string id() const;
+    /*!
+     * \brief そのview内で一意のid (wstring)
+     * \since ver2.5
+     *
+     * * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     * * view作成側でidを指定した場合その値が返る。
+     * 
+     */
+    std::wstring idW() const;
 
     /*!
      * \brief 要素の比較
@@ -259,6 +262,16 @@ class WEBCFACE_DLL TemporalViewComponent {
             const SharedString &view_name,
             std::unordered_map<ViewComponentType, int> *idx_next = nullptr);
 
+    /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalViewComponent &id(std::string_view id);
+    /*!
+     * \brief idを設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalViewComponent &id(std::wstring_view id);
     /*!
      * \brief 表示する文字列を設定
      *
