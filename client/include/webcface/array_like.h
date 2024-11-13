@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <type_traits>
+#include <string>
 #include "trait.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
