@@ -8,6 +8,35 @@ WEBCFACE_NS_BEGIN
 ImageFrame::ImageFrame()
     : size_(), data_(std::make_shared<std::vector<unsigned char>>()),
       color_mode_(ImageColorMode::gray), cmp_mode_(ImageCompressMode::raw) {}
+ImageFrame::ImageFrame(const ImageFrame &m)
+    : size_(m.size_), data_(m.data_), color_mode_(m.color_mode_),
+      cmp_mode_(m.cmp_mode_) {}
+ImageFrame &ImageFrame::operator=(const ImageFrame &m) {
+    if (this != &m) {
+        size_ = m.size_;
+        data_ = m.data_;
+        color_mode_ = m.color_mode_;
+        cmp_mode_ = m.cmp_mode_;
+    }
+    return *this;
+}
+ImageFrame::ImageFrame(ImageFrame &&m) noexcept
+    : size_(m.size_), data_(std::make_shared<std::vector<unsigned char>>()),
+      color_mode_(m.color_mode_), cmp_mode_(m.cmp_mode_) {
+    m.size_ = Size();
+    m.data_.swap(data_);
+}
+ImageFrame &ImageFrame::operator=(ImageFrame &&m) noexcept {
+    if (this != &m) {
+        size_ = m.size_;
+        m.size_ = Size();
+        data_.swap(m.data_);
+        color_mode_ = m.color_mode_;
+        cmp_mode_ = m.cmp_mode_;
+    }
+    return *this;
+}
+
 ImageFrame::ImageFrame(const Size &size,
                        const std::shared_ptr<std::vector<unsigned char>> &data,
                        ImageColorMode color_mode, ImageCompressMode cmp_mode)

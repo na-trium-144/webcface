@@ -11,6 +11,7 @@
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include "webcface/server/server.h"
+#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -18,6 +19,21 @@ namespace server {
 std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
                                                    const SharedString &member,
                                                    const SharedString &field);
+
+struct Canvas2DData {
+    double width = 0, height = 0;
+    std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+        components;
+    std::vector<SharedString> data_ids;
+};
+struct ViewData {
+    std::map<std::string, std::shared_ptr<message::ViewComponent>> components;
+    std::vector<SharedString> data_ids;
+};
+struct Canvas3DData {
+    std::map<std::string, std::shared_ptr<message::Canvas3DComponent>> components;
+    std::vector<SharedString> data_ids;
+};
 
 struct MemberData {
     spdlog::sink_ptr sink;
@@ -53,11 +69,11 @@ struct MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<std::vector<std::shared_ptr<message::ViewComponent>>> view;
-    StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
-    StrMap1<message::Canvas2DData> canvas2d;
+    StrMap1<ViewData> view;
+    StrMap1<Canvas3DData> canvas3d;
+    StrMap1<Canvas2DData> canvas2d;
 
-    StrMap1<message::ImageFrame> image;
+    StrMap1<ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする
@@ -87,7 +103,8 @@ struct MemberData {
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
-        robot_model_req, canvas3d_req, canvas2d_req, log_req;
+        view_old_req, robot_model_req, canvas3d_req, canvas3d_old_req,
+        canvas2d_req, canvas2d_old_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド

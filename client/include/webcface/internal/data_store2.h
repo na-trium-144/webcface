@@ -186,27 +186,39 @@ class SyncDataStore2 {
     StrMap2<unsigned int> transferReq();
 };
 
+/*!
+ * \since ver2.5
+ *
+ * 各要素にidを振り、id→要素のデータ の対応を components が管理し、
+ * idの並び順を data_ids が管理する
+ *
+ */
+struct ViewDataBase {
+    StrMap1<std::shared_ptr<internal::ViewComponentData>> components;
+    std::vector<SharedString> data_ids;
+    ViewDataBase() = default;
+};
 struct Canvas2DDataBase {
     double width = 0, height = 0;
-    std::vector<std::shared_ptr<Canvas2DComponentData>> components;
+    StrMap1<std::shared_ptr<internal::Canvas2DComponentData>> components;
+    std::vector<SharedString> data_ids;
     Canvas2DDataBase() = default;
     Canvas2DDataBase(double width, double height)
-        : width(width), height(height), components() {}
-    Canvas2DDataBase(
-        double width, double height,
-        std::vector<std::shared_ptr<Canvas2DComponentData>> &&components)
-        : width(width), height(height), components(std::move(components)) {}
+        : width(width), height(height), components(), data_ids() {}
+};
+struct Canvas3DDataBase {
+    StrMap1<std::shared_ptr<internal::Canvas3DComponentData>> components;
+    std::vector<SharedString> data_ids;
+    Canvas3DDataBase() = default;
 };
 
 using ValueData = std::shared_ptr<std::vector<double>>;
 using TextData = std::shared_ptr<ValAdaptor>;
 using FuncData = std::shared_ptr<FuncInfo>;
-using ViewData =
-    std::shared_ptr<std::vector<std::shared_ptr<internal::ViewComponentData>>>;
+using ViewData = std::shared_ptr<ViewDataBase>;
 using RobotModelData =
     std::shared_ptr<std::vector<std::shared_ptr<internal::RobotLinkData>>>;
-using Canvas3DData = std::shared_ptr<
-    std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>;
+using Canvas3DData = std::shared_ptr<Canvas3DDataBase>;
 using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
 using ImageData = ImageFrame;
 

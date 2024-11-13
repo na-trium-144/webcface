@@ -74,33 +74,38 @@ TEST_F(Canvas2DTest, set) {
     v.add(plane({0, 0}, 10, 10).color(ViewColor::yellow).onClick([] {}));
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &canvas2d_data = **data_->canvas2d_store.getRecv(self_name, "b"_ss);
-    EXPECT_EQ(canvas2d_data.width, 100);
-    EXPECT_EQ(canvas2d_data.height, 150);
-    ASSERT_EQ(canvas2d_data.components.size(), 2u);
-    EXPECT_EQ(canvas2d_data.components[0]->type,
+    auto &canvas2d_data_base =
+        **data_->canvas2d_store.getRecv(self_name, "b"_ss);
+    EXPECT_EQ(canvas2d_data_base.width, 100);
+    EXPECT_EQ(canvas2d_data_base.height, 150);
+    ASSERT_EQ(canvas2d_data_base.components.size(), 2u);
+    ASSERT_EQ(canvas2d_data_base.data_ids.size(), 2u);
+    std::vector<std::shared_ptr<internal::Canvas2DComponentData>> canvas2d_data;
+    canvas2d_data.reserve(canvas2d_data_base.components.size());
+    for (const auto &id : canvas2d_data_base.data_ids) {
+        canvas2d_data.push_back(canvas2d_data_base.components.at(id));
+    }
+    EXPECT_EQ(canvas2d_data[0]->type,
               static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(canvas2d_data.components[0]->color,
-              static_cast<int>(ViewColor::red));
-    EXPECT_EQ(canvas2d_data.components[0]->geometry_type,
+    EXPECT_EQ(canvas2d_data[0]->color, static_cast<int>(ViewColor::red));
+    EXPECT_EQ(canvas2d_data[0]->geometry_type,
               static_cast<int>(GeometryType::line));
-    EXPECT_EQ(canvas2d_data.components[0]->properties,
+    EXPECT_EQ(canvas2d_data[0]->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
-    EXPECT_EQ(canvas2d_data.components[0]->on_click_member->u8String(),
+    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8String(),
               self_name.decode());
-    EXPECT_EQ(canvas2d_data.components[0]->on_click_field->u8String(), "f");
+    EXPECT_EQ(canvas2d_data[0]->on_click_field->u8String(), "f");
 
-    EXPECT_EQ(canvas2d_data.components[1]->type,
+    EXPECT_EQ(canvas2d_data[1]->type,
               static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(canvas2d_data.components[1]->color,
-              static_cast<int>(ViewColor::yellow));
-    EXPECT_EQ(canvas2d_data.components[1]->geometry_type,
+    EXPECT_EQ(canvas2d_data[1]->color, static_cast<int>(ViewColor::yellow));
+    EXPECT_EQ(canvas2d_data[1]->geometry_type,
               static_cast<int>(GeometryType::plane));
-    EXPECT_EQ(canvas2d_data.components[1]->properties,
+    EXPECT_EQ(canvas2d_data[1]->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
-    EXPECT_EQ(canvas2d_data.components[0]->on_click_member->u8String(),
+    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8String(),
               self_name.decode());
-    EXPECT_NE(canvas2d_data.components[0]->on_click_field->u8String(), "");
+    EXPECT_NE(canvas2d_data[0]->on_click_field->u8String(), "");
 
     v.init(1, 1);
     v.sync();
@@ -145,7 +150,9 @@ TEST_F(Canvas2DTest, set) {
 }
 TEST_F(Canvas2DTest, get) {
     auto vd = std::make_shared<webcface::internal::Canvas2DDataBase>();
-    vd->components = {std::make_shared<internal::Canvas2DComponentData>()};
+    vd->components = {
+        {"0"_ss, std::make_shared<internal::Canvas2DComponentData>()}};
+    vd->data_ids = {"0"_ss};
     data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);
     EXPECT_EQ(canvas("a", "b").get().size(), 1u);

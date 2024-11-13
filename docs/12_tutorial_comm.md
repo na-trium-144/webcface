@@ -8,7 +8,7 @@ WebCFaceの機能紹介・チュートリアルです。
 WebUIでのデータの可視化やWebUIからのプログラム操作に重点をおいたチュートリアルは
 [1-1. Tutorial (Visualizing)](./11_tutorial_vis.md)
 
-このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.8以上が必要です) を使用します。
+このチュートリアルでは C++ (Meson または CMake)、または Python (Python3.6以上が必要です) を使用します。
 
 ## WebCFaceのインストール
 

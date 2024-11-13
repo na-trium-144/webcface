@@ -7,21 +7,14 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas2DComponent::id() const {
-    return internalCanvas2DId(static_cast<int>(type()), idx_for_type);
-}
+std::string Canvas2DComponent::id() const { return msg_data->id.decode(); }
+std::wstring Canvas2DComponent::idW() const { return msg_data->id.decodeW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
     const std::shared_ptr<internal::Canvas2DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<Canvas2DComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<Canvas2DComponentType>(msg_data->type)]++;
-    }
-}
+    const std::weak_ptr<internal::ClientData> &data_w)
+    : msg_data(msg_data), data_w(data_w) {}
 
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(std::nullptr_t)
     : msg_data() {}
@@ -68,11 +61,15 @@ TemporalCanvas2DComponent::lockTmp(
         idx_for_type =
             (*idx_next)[static_cast<Canvas2DComponentType>(msg_data->type)]++;
     }
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalCanvas2DId(msg_data->type, idx_for_type));
+    }
     if (msg_data->on_click_func_tmp && *msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String(
-                          "..c2" + view_name.u8String() + "/" +
-                          internalCanvas2DId(msg_data->type, idx_for_type))};
+                      SharedString::fromU8String("..c2" + view_name.u8String() +
+                                                 "/" +
+                                                 msg_data->id.u8String())};
         on_click.set(std::move(*msg_data->on_click_func_tmp));
         this->onClick(on_click);
     }
@@ -93,6 +90,15 @@ bool internal::Canvas2DComponentData::operator==(
            properties == other.properties &&
            on_click_member == other.on_click_member &&
            on_click_field == other.on_click_field && text == other.text;
+}
+
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
 }
 
 Canvas2DComponentType Canvas2DComponent::type() const {

@@ -8,22 +8,15 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas3DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas3DComponent::id() const {
-    return internalCanvas3DId(static_cast<int>(type()), idx_for_type);
-}
+std::string Canvas3DComponent::id() const { return msg_data->id.decode(); }
+std::wstring Canvas3DComponent::idW() const { return msg_data->id.decodeW(); }
 
 Canvas3DComponent::Canvas3DComponent() = default;
 
 Canvas3DComponent::Canvas3DComponent(
     const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<Canvas3DComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
-    }
-}
+    const std::weak_ptr<internal::ClientData> &data_w)
+    : msg_data(msg_data), data_w(data_w) {}
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
     : msg_data() {}
@@ -57,14 +50,16 @@ std::unique_ptr<internal::Canvas3DComponentData>
 TemporalCanvas3DComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> & /*data*/,
     const SharedString & /*view_name*/,
-    std::unordered_map<Canvas3DComponentType, int> * /*idx_next*/) {
-    /*
+    std::unordered_map<Canvas3DComponentType, int> *idx_next) {
     int idx_for_type = 0;
     if (idx_next) {
         idx_for_type =
             (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
     }
-    */
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalCanvas3DId(msg_data->type, idx_for_type));
+    }
     return std::move(msg_data);
 }
 bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
@@ -79,6 +74,15 @@ bool internal::Canvas3DComponentData::operator==(
            geometry_properties == other.geometry_properties &&
            field_member == other.field_member &&
            field_field == other.field_field && angles == other.angles;
+}
+
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
 }
 
 Canvas3DComponentType Canvas3DComponent::type() const {

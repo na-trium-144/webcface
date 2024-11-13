@@ -42,6 +42,53 @@ struct TemporalComponent {
     friend class internal::ViewBuf;
 
     /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::string_view id) & {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&id(std::string_view id) && {
+        this->id(id);
+        return std::move(*this);
+    }
+    /*!
+     * \brief idを設定(wstring)
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::wstring_view id) {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&id(std::wstring_view id) && {
+        this->id(id);
+        return std::move(*this);
+    }
+    
+    /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D, Funcオブジェクト)
      * \since ver2.5
      *
@@ -60,6 +107,7 @@ struct TemporalComponent {
         }
         return *this;
     }
+
     /*!
      * \since ver2.5
      */
@@ -93,6 +141,7 @@ struct TemporalComponent {
         this->onClick(func);
         return std::move(*this);
     }
+
     /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
