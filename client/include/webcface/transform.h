@@ -10,6 +10,9 @@
 #include <cassert>
 
 WEBCFACE_NS_BEGIN
+
+class Transform;
+
 /*!
  * \brief 3次元 or 2次元の座標を表すクラス。
  * \since ver1.4
@@ -105,9 +108,70 @@ class Point {
      *
      */
     Point operator-(const Point &other) const { return *this + (-other); }
+    /*!
+     * \since ver2.5
+     */
+    Point &operator+=(const Point &other) {
+        pos_[0] += other.pos_[0];
+        pos_[1] += other.pos_[1];
+        pos_[2] += other.pos_[2];
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    Point &operator-=(const Point &other) { return *this += (-other); }
 
-    bool operator==(const Point &rhs) const { return pos_ == rhs.pos_; }
-    bool operator!=(const Point &rhs) const { return !(*this == rhs); }
+    /*!
+     * \brief x, y, z の各要素をスカラー倍したPointを返す
+     * \since ver2.5
+     */
+    Point operator*(double scalar) const {
+        return {pos_[0] * scalar, pos_[1] * scalar, pos_[2] * scalar};
+    }
+    /*!
+     * \brief x, y, z の各要素をスカラー倍したPointを返す
+     * \since ver2.5
+     */
+    friend Point operator*(double scalar, const Point &point) {
+        return point * scalar;
+    }
+    /*!
+     * \since ver2.5
+     */
+    Point &operator*=(double scalar) {
+        pos_[0] *= scalar;
+        pos_[1] *= scalar;
+        pos_[2] *= scalar;
+        return *this;
+    }
+    /*!
+     * \brief x, y, z の各要素をスカラーで割ったPointを返す
+     * \since ver2.5
+     */
+    Point operator/(double scalar) const {
+        return {pos_[0] / scalar, pos_[1] / scalar, pos_[2] / scalar};
+    }
+    /*!
+     * \since ver2.5
+     */
+    Point &operator/=(double scalar) {
+        pos_[0] /= scalar;
+        pos_[1] /= scalar;
+        pos_[2] /= scalar;
+        return *this;
+    }
+
+    /*!
+     * * (ver2.5〜) x, y, z の各要素の差が 1e-8 未満のときtrue
+     * * (ver2.5〜) Transformとの比較は禁止
+     *
+     */
+    WEBCFACE_DLL bool operator==(const Point &other) const;
+    bool operator!=(const Point &other) const { return !(*this == other); }
+
+    bool operator==(const Transform &) = delete;
+    bool operator!=(const Transform &) = delete;
 };
 
 /*!
@@ -218,18 +282,41 @@ class Rotation {
                                {{0, 0, 1}},
                            }}) {}
 
-    friend Rotation rotEuler(const std::array<double, 3> &rot,
-                             AxisSequence axis);
+    friend Rotation rotFromEuler(const std::array<double, 3> &rot,
+                                 AxisSequence axis);
     friend Rotation
-    rotMatrix(const std::array<std::array<double, 3>, 3> &matrix);
+    rotFromMatrix(const std::array<std::array<double, 3>, 3> &matrix);
 
     /*!
      * \brief 3次元の回転をオイラー角として取得
+     * \sa rotEuler()
+     * \deprecated ver2.5〜
+     */
+    [[deprecated("use rotEuler()")]]
+    std::array<double, 3> rot() const {
+        return rotEuler();
+    }
+
+    /*!
+     * \brief 3次元の回転をZYX順のオイラー角として取得
+     * \since ver1.6
+     * \param index 0→z, 1→y, 2→x
+     * \deprecated ver2.5〜
+     */
+    [[deprecated("use rotEuler()")]]
+    double rot(std::size_t index) const {
+        return rot().at(index);
+    }
+
+    /*!
+     * \brief 3次元の回転をオイラー角として取得
+     * \since ver2.5
      * \param axis 回転軸の順序 (ver2.5〜)
      *  ver2.4までは z, y, x の順しか指定できない
      *
      */
-    std::array<double, 3> rot(AxisSequence axis = AxisSequence::ZYX) const {
+    std::array<double, 3>
+    rotEuler(AxisSequence axis = AxisSequence::ZYX) const {
         if (axis == AxisSequence::ZYX) {
             if (!rot_) {
                 assert(rmat_);
@@ -240,13 +327,6 @@ class Rotation {
             return matrixToEuler(rotMatrix(), axis);
         }
     }
-
-    /*!
-     * \brief 3次元の回転をZYX順のオイラー角として取得
-     * \since ver1.6
-     * \param index 0→z, 1→y, 2→x
-     */
-    double rot(std::size_t index) const { return rot().at(index); }
 
     /*!
      * \brief 回転行列を取得
@@ -281,6 +361,84 @@ class Rotation {
     std::pair<std::array<double, 3>, double> rotAxisAngle() const {
         return quaternionToAxisAngle(rotQuat());
     }
+
+    /*!
+     * \brief この回転をTransformに適用する
+     * \since ver2.5
+     *
+     * * this * target と同じ。
+     * * thisもtargetも変更されない。
+     *
+     */
+    WEBCFACE_DLL Transform appliedTo(const Transform &target) const;
+    /*!
+     * \brief この回転をTransformに適用する
+     * \since ver2.5
+     * \sa appliedTo
+     */
+    WEBCFACE_DLL Transform operator*(const Transform &target) const;
+    /*!
+     * \brief この回転をRotationに適用する
+     * \since ver2.5
+     *
+     * * this * target と同じ。
+     * * thisもtargetも変更されない。
+     *
+     */
+    WEBCFACE_DLL Rotation appliedTo(const Rotation &target) const;
+    /*!
+     * \brief この回転をRotationに適用する
+     * \since ver2.5
+     * \sa appliedTo
+     */
+    WEBCFACE_DLL Rotation operator*(const Rotation &target) const;
+    /*!
+     * \brief この回転をPointに適用する
+     * \since ver2.5
+     *
+     * * this * target と同じ。
+     * * thisもtargetも変更されない。
+     *
+     */
+    WEBCFACE_DLL Point appliedTo(const Point &target) const;
+    /*!
+     * \brief この回転をPointに適用する
+     * \since ver2.5
+     * \sa appliedTo
+     */
+    WEBCFACE_DLL Point operator*(const Point &target) const;
+
+    /*!
+     * \brief 逆回転を取得
+     * \since ver2.5
+     *
+     * thisは変更されない。
+     *
+     */
+    WEBCFACE_DLL Rotation inversed() const;
+
+    /*!
+     * \brief このRotationを別のRotationに適用した結果で置き換える
+     * \since ver2.5
+     *
+     * this = this * target と同じ。
+     *
+     */
+    Rotation &operator*=(const Rotation &target) {
+        *this = *this * target;
+        return *this;
+    }
+
+    /*!
+     * * 回転行列の各要素の差が 1e-8 未満のときtrue
+     * * Transformと比較することもできる (平行移動0のTransformとして扱う)
+     *
+     */
+    WEBCFACE_DLL bool operator==(const Rotation &other) const;
+    bool operator!=(const Rotation &other) const { return !(*this == other); }
+
+    WEBCFACE_DLL bool operator==(const Transform &other) const;
+    bool operator!=(const Transform &other) const { return !(*this == other); }
 };
 
 /*!
@@ -290,8 +448,8 @@ class Rotation {
  * \param axis 回転軸の順序
  *
  */
-inline Rotation rotEuler(const std::array<double, 3> &rot,
-                         AxisSequence axis = AxisSequence::ZYX) {
+inline Rotation rotFromEuler(const std::array<double, 3> &rot,
+                             AxisSequence axis = AxisSequence::ZYX) {
     if (axis == AxisSequence::ZYX) {
         return {rot, std::nullopt};
     } else {
@@ -309,30 +467,19 @@ inline Rotation rotEuler(const std::array<double, 3> &rot,
 template <
     typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
     typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
-inline Rotation rotEuler(const R &rot, AxisSequence axis = AxisSequence::ZYX) {
-    return rotEuler(traits::arrayLikeToArray<3>(rot), axis);
+inline Rotation rotFromEuler(const R &rot,
+                             AxisSequence axis = AxisSequence::ZYX) {
+    return rotFromEuler(traits::arrayLikeToArray<3>(rot), axis);
 }
-// /*!
-//  * \brief 回転をオイラー角から初期化
-//  * \since ver2.5
-//  *
-//  * axisを省略した場合 AxisSequence::ZYX
-//  *
-//  * \param rot オイラー角
-//  *
-//  */
-// inline Rotation rotEuler(const std::array<double, 3> &rot) {
-//     return rotEuler(AxisSequence::ZYX, rot);
-// }
 /*!
  * \brief 回転をオイラー角から初期化
  * \since ver2.5
  * \param axis 回転軸の順序
  *
  */
-inline Rotation rotEuler(double angle1, double angle2, double angle3,
-                         AxisSequence axis = AxisSequence::ZYX) {
-    return rotEuler(std::array<double, 3>{angle1, angle2, angle3}, axis);
+inline Rotation rotFromEuler(double angle1, double angle2, double angle3,
+                             AxisSequence axis = AxisSequence::ZYX) {
+    return rotFromEuler(std::array<double, 3>{angle1, angle2, angle3}, axis);
 }
 /*!
  * \brief 回転を回転行列から初期化
@@ -343,7 +490,8 @@ inline Rotation rotEuler(double angle1, double angle2, double angle3,
  * \todo Eigenの配列とか生ポインタとか? 他の型から行列の値を渡せると良い?
  *
  */
-inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
+inline Rotation
+rotFromMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
     return {std::nullopt, matrix};
 }
 /*!
@@ -352,8 +500,8 @@ inline Rotation rotMatrix(const std::array<std::array<double, 3>, 3> &matrix) {
  * \param quat クォータニオン (w, x, y, z)
  *
  */
-inline Rotation rotQuat(const std::array<double, 4> &quat) {
-    return rotMatrix(Rotation::quaternionToMatrix(quat));
+inline Rotation rotFromQuat(const std::array<double, 4> &quat) {
+    return rotFromMatrix(Rotation::quaternionToMatrix(quat));
 }
 /*!
  * \brief 回転をクォータニオンから初期化
@@ -365,22 +513,23 @@ inline Rotation rotQuat(const std::array<double, 4> &quat) {
 template <
     typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
     typename traits::ArraySizeTrait<R, 4>::SizeMatchOrDynamic = traits::TraitOk>
-inline Rotation rotQuat(const R &quat) {
-    return rotQuat(traits::arrayLikeToArray<4>(quat));
+inline Rotation rotFromQuat(const R &quat) {
+    return rotFromQuat(traits::arrayLikeToArray<4>(quat));
 }
 /*!
  * \brief 回転をクォータニオンから初期化
  * \since ver2.5
  */
-inline Rotation rotQuat(double w, double x, double y, double z) {
-    return rotQuat({w, x, y, z});
+inline Rotation rotFromQuat(double w, double x, double y, double z) {
+    return rotFromQuat({w, x, y, z});
 }
 /*!
  * \brief 回転を回転軸と角度から初期化
  * \since ver2.5
  */
-inline Rotation rotAxisAngle(const std::array<double, 3> &axis, double angle) {
-    return rotQuat(Rotation::axisAngleToQuaternion(axis, angle));
+inline Rotation rotFromAxisAngle(const std::array<double, 3> &axis,
+                                 double angle) {
+    return rotFromQuat(Rotation::axisAngleToQuaternion(axis, angle));
 }
 /*!
  * \brief 回転を回転軸と角度から初期化
@@ -392,8 +541,8 @@ inline Rotation rotAxisAngle(const std::array<double, 3> &axis, double angle) {
 template <
     typename R, typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
     typename traits::ArraySizeTrait<R, 3>::SizeMatchOrDynamic = traits::TraitOk>
-inline Rotation rotAxisAngle(const R &axis, double angle) {
-    return rotAxisAngle(traits::arrayLikeToArray<3>(axis), angle);
+inline Rotation rotFromAxisAngle(const R &axis, double angle) {
+    return rotFromAxisAngle(traits::arrayLikeToArray<3>(axis), angle);
 }
 
 /*!
@@ -404,17 +553,17 @@ inline Rotation rotAxisAngle(const R &axis, double angle) {
  * rotZ() と同じ。
  *
  */
-inline Rotation rot2D(double rot) { return rotEuler(rot, 0, 0); }
+inline Rotation rot2D(double rot) { return rotFromEuler(rot, 0, 0); }
 /*!
  * \brief X軸周りの回転
  * \since ver2.5
  */
-inline Rotation rotX(double rot) { return rotEuler(0, 0, rot); }
+inline Rotation rotX(double rot) { return rotFromEuler(0, 0, rot); }
 /*!
  * \brief Y軸周りの回転
  * \since ver2.5
  */
-inline Rotation rotY(double rot) { return rotEuler(0, rot, 0); }
+inline Rotation rotY(double rot) { return rotFromEuler(0, rot, 0); }
 /*!
  * \brief Z軸周りの回転
  * \since ver2.5
@@ -422,15 +571,17 @@ inline Rotation rotY(double rot) { return rotEuler(0, rot, 0); }
  * rot2D() と同じ。
  *
  */
-inline Rotation rotZ(double rot) { return rotEuler(rot, 0, 0); }
+inline Rotation rotZ(double rot) { return rotFromEuler(rot, 0, 0); }
 
 /*!
  * \brief 3次元の平行移動と回転
  * \since ver1.4
  *
+ * * ver2.5〜 publicではなくprivate継承に変更
+ *
  * \sa Point, Rotation
  */
-class Transform : public Point, public Rotation {
+class Transform : private Point, private Rotation {
   public:
     Transform() : Point(), Rotation() {}
     /*!
@@ -485,6 +636,15 @@ class Transform : public Point, public Rotation {
     Transform(double x, double y)
         : Transform({x, y}, 0) {}
 
+    friend class Point;
+    friend class Rotation;
+    using Point::pos;
+    using Rotation::rot;
+    using Rotation::rotAxisAngle;
+    using Rotation::rotEuler;
+    using Rotation::rotMatrix;
+    using Rotation::rotQuat;
+
     /*!
      * \brief このTransformを別のTransformに適用する
      * \since ver2.5
@@ -508,6 +668,29 @@ class Transform : public Point, public Rotation {
      * \sa appliedTo
      */
     Transform operator*(const Transform &target) const {
+        return this->appliedTo(target);
+    }
+    /*!
+     * \brief このTransformをRotationに適用する
+     * \since ver2.5
+     *
+     * targetを (このTransformの座標系で)
+     * 回転&平行移動した結果のTransformを返す。
+     * 結果はRotationではない。
+     * (thisもtargetも変更されない)
+     *
+     * this * target と同じ。
+     *
+     */
+    Transform appliedTo(const Rotation &target) const {
+        return this->appliedTo(Transform(target));
+    }
+    /*!
+     * \brief このTransformをRotationに適用する
+     * \since ver2.5
+     * \sa appliedTo
+     */
+    Transform operator*(const Rotation &target) const {
         return this->appliedTo(target);
     }
     /*!
@@ -554,10 +737,21 @@ class Transform : public Point, public Rotation {
      */
     WEBCFACE_DLL Transform inversed() const;
 
-    bool operator==(const Transform &rhs) const {
-        return pos_ == rhs.pos_ && rot() == rhs.rot();
+    /*!
+     * * (ver2.5〜) x, y, z の各要素と、回転行列の各要素の差が 1e-8
+     * 未満のときtrue
+     *
+     */
+    bool operator==(const Transform &other) const {
+        return Point(*this) == Point(other) &&
+               Rotation(*this) == Rotation(other);
     }
-    bool operator!=(const Transform &rhs) const { return !(*this == rhs); }
+    bool operator!=(const Transform &other) const { return !(*this == other); }
+
+    bool operator==(const Rotation &other) const {
+        return *this == Transform(other);
+    }
+    bool operator!=(const Rotation &other) const { return !(*this == other); }
 };
 
 /*!

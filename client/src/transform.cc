@@ -357,14 +357,36 @@ Rotation::quaternionToAxisAngle(const std::array<double, 4> &quat) {
     return {{x, y, z}, angle};
 }
 
-Transform Transform::appliedTo(const Transform &target) const {
+bool Point::operator==(const Point &other) const {
+    return std::abs(pos_[0] - other.pos_[0]) < 1e-8 &&
+           std::abs(pos_[1] - other.pos_[1]) < 1e-8 &&
+           std::abs(pos_[2] - other.pos_[2]) < 1e-8;
+}
+bool Rotation::operator==(const Rotation &other) const {
+    for (std::size_t i = 0; i < 3; i++) {
+        for (std::size_t j = 0; j < 3; j++) {
+            if (std::abs(rotMatrix(i, j) - other.rotMatrix(i, j)) >= 1e-8) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+bool Rotation::operator==(const Transform &other) const {
+    return Transform(*this) == other;
+}
+
+Point Rotation::appliedTo(const Point &target) const {
     std::array<double, 3> newPos;
-    std::array<std::array<double, 3>, 3> newMatrix;
     for (std::size_t i = 0; i < 3; i++) {
         newPos[i] = this->rotMatrix(i, 0) * target.pos(0) +
                     this->rotMatrix(i, 1) * target.pos(1) +
-                    this->rotMatrix(i, 2) * target.pos(2) + this->pos(i);
+                    this->rotMatrix(i, 2) * target.pos(2);
     }
+    return Point{newPos};
+}
+Rotation Rotation::appliedTo(const Rotation &target) const {
+    std::array<std::array<double, 3>, 3> newMatrix;
     for (std::size_t i = 0; i < 3; i++) {
         for (std::size_t j = 0; j < 3; j++) {
             newMatrix[i][j] = this->rotMatrix(i, 0) * target.rotMatrix(0, j) +
@@ -372,17 +394,42 @@ Transform Transform::appliedTo(const Transform &target) const {
                               this->rotMatrix(i, 2) * target.rotMatrix(2, j);
         }
     }
-    return Transform(newPos, webcface::rotMatrix(newMatrix));
+    return rotFromMatrix(newMatrix);
+}
+Transform Rotation::appliedTo(const Transform &target) const {
+    return Transform{this->appliedTo(Point{target}),
+                     this->appliedTo(Rotation{target})};
+}
+
+Point Rotation::operator*(const Point &target) const {
+    return appliedTo(target);
+}
+Rotation Rotation::operator*(const Rotation &target) const {
+    return appliedTo(target);
+}
+Transform Rotation::operator*(const Transform &target) const {
+    return appliedTo(target);
+}
+
+Rotation Rotation::inversed() const {
+    std::array<std::array<double, 3>, 3> newMatrix;
+    for (std::size_t i = 0; i < 3; i++) {
+        for (std::size_t j = 0; j < 3; j++) {
+            newMatrix[i][j] = this->rotMatrix(j, i);
+        }
+    }
+    return rotFromMatrix(newMatrix);
+}
+
+
+Transform Transform::appliedTo(const Transform &target) const {
+    return Transform{this->Rotation::appliedTo(target) + Point(*this),
+                     this->Rotation::appliedTo(Rotation(target))};
 }
 Point Transform::appliedTo(const Point &target) const {
-    std::array<double, 3> newPos;
-    for (std::size_t i = 0; i < 3; i++) {
-        newPos[i] = this->rotMatrix(i, 0) * target.pos(0) +
-                    this->rotMatrix(i, 1) * target.pos(1) +
-                    this->rotMatrix(i, 2) * target.pos(2) + this->pos(i);
-    }
-    return Point{newPos};
+    return this->Rotation::appliedTo(target) + Point(*this);
 }
+
 Transform Transform::inversed() const {
     std::array<std::array<double, 3>, 3> newMatrix;
     for (std::size_t i = 0; i < 3; i++) {
@@ -396,7 +443,7 @@ Transform Transform::inversed() const {
                     newMatrix[i][1] * this->pos(1) -
                     newMatrix[i][2] * this->pos(2);
     }
-    return Transform(newPos, webcface::rotMatrix(newMatrix));
+    return Transform(newPos, rotFromMatrix(newMatrix));
 }
 
 WEBCFACE_NS_END
