@@ -1,5 +1,5 @@
 #pragma once
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include "webcface/robot_link.h"
 
 WEBCFACE_NS_BEGIN

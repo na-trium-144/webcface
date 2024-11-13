@@ -1,7 +1,7 @@
 #pragma once
 #include "webcface/component_canvas2d.h"
 #include "webcface/component_canvas3d.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

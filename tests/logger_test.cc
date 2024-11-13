@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <thread>
 #include <chrono>
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 
 using namespace webcface;
 

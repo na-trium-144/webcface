@@ -7,7 +7,7 @@
 #include <atomic>
 #include <condition_variable>
 #include <thread>
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include "webcface/server/server.h"

@@ -1,7 +1,7 @@
 #include "webcface/canvas3d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/common/encoding.h"
 #include "webcface/internal/component_internal.h"

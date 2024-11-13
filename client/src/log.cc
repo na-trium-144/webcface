@@ -1,7 +1,7 @@
 #include "webcface/log.h"
 #include "webcface/internal/logger.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 
 WEBCFACE_NS_BEGIN
 

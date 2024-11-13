@@ -17,7 +17,6 @@ test_dependencies = [
   # webcface_dep,
   webcface_config_dep,
   webcface_common_dep,
-  webcface_message_dep,
   webcface_client_dep,
   gtest_dep,
   msgpack_cxx_dep,
@@ -26,7 +25,6 @@ test_dependencies = [
 ]
 test_link_libs = [
   webcface_common_lib,
-  webcface_message_lib,
   webcface_client_lib,
 ]
 if build_server

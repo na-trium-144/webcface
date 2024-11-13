@@ -7,7 +7,7 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/wcf.h>
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>

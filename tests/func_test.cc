@@ -4,7 +4,7 @@
 #include <webcface/func.h>
 #include <stdexcept>
 #include <thread>
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10

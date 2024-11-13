@@ -6,7 +6,7 @@
 #include "webcface/func.h"
 #include "webcface/canvas3d.h"
 #include "webcface/canvas2d.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/robot_link_internal.h"
 

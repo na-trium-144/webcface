@@ -1,6 +1,7 @@
 webcface_common_src = [
   'src/encoding.cc',
   'src/val_adaptor.cc',
+  'src/message.cc',
 ]
 webcface_common_inc = include_directories('include')
 webcface_common_lib = static_library('webcface-common',
@@ -11,6 +12,8 @@ webcface_common_lib = static_library('webcface-common',
   dependencies: [
     webcface_config_dep,
     warning_options,
+    msgpack_cxx_dep,
+    spdlog_dep,
     utf8cpp_dep,
   ],
   build_by_default: false,
@@ -22,5 +25,8 @@ webcface_common_dep = declare_dependency(
     webcface_common_inc,
   ],
   dependencies: [
+    msgpack_cxx_dep,
+    spdlog_dep,
+    utf8cpp_dep,
   ],
 )

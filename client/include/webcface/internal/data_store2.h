@@ -11,7 +11,7 @@
 #include "webcface/component_canvas3d.h"
 #include "webcface/component_view.h"
 #include "webcface/robot_link.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
 #include "webcface/log.h"

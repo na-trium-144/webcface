@@ -26,7 +26,6 @@ executable('webcface-server',
   cpp_args: ['-DWEBCFACE_BUILDING'],
   link_with: [
     webcface_common_lib,
-    webcface_message_lib,
     webcface_client_lib,
     webcface_server_store_lib,
   ],

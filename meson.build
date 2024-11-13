@@ -684,7 +684,6 @@ summary('Build tests',
 )
 
 subdir('common')
-subdir('message')
 subdir('client')
 
 sources = []
@@ -714,7 +713,6 @@ webcface_lib = library(webcface_lib_name,
   # それぞれのlibに追加したcpp_argsとかが含まれないようにする
   objects: [
     webcface_common_lib.extract_all_objects(recursive: false),
-    webcface_message_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
   sources: sources,

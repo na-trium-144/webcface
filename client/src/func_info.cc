@@ -1,5 +1,5 @@
 #include "webcface/internal/func_internal.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 
 WEBCFACE_NS_BEGIN
 

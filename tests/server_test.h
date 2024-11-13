@@ -3,7 +3,7 @@
 #include <webcface/server/server.h>
 #include "webcface/server/member_data.h"
 #include "webcface/server/store.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
 #include <webcface/image.h>
