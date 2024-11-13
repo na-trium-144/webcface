@@ -4,15 +4,6 @@
 #include <optional>
 #include "webcface/field.h"
 #include "webcface/common/val_adaptor.h"
-#include "webcface/internal/func_internal.h"
-#include "webcface/image_frame.h"
-#include "webcface/component_canvas2d.h"
-#include "webcface/component_canvas3d.h"
-#include "webcface/component_view.h"
-#include "webcface/robot_link.h"
-#include "webcface/internal/component_internal.h"
-#include "webcface/internal/robot_link_internal.h"
-#include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -184,6 +175,16 @@ class SyncDataStore2 {
     StrMap2<unsigned int> transferReq();
 };
 
+struct ViewComponentData;
+struct Canvas2DComponentData;
+struct Canvas3DComponentData;
+struct FuncInfo;
+struct RobotLinkData;
+} // namespace internal
+class ImageFrame;
+struct LogLineData;
+
+namespace internal {
 /*!
  * \since ver2.5
  *

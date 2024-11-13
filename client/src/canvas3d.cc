@@ -1,4 +1,5 @@
 #include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"

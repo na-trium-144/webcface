@@ -1,8 +1,10 @@
 #include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/canvas2d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"
 #include "webcface/internal/data_buffer.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 

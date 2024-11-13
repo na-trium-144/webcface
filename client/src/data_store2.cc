@@ -2,6 +2,15 @@
 #include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
 #include <type_traits>
+#include "webcface/internal/func_internal.h"
+#include "webcface/image_frame.h"
+#include "webcface/component_canvas2d.h"
+#include "webcface/component_canvas3d.h"
+#include "webcface/component_view.h"
+#include "webcface/robot_link.h"
+#include "webcface/internal/component_internal.h"
+#include "webcface/internal/robot_link_internal.h"
+#include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

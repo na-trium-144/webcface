@@ -4,6 +4,10 @@
 #include "webcface/common/internal/message/sync.h"
 #include "webcface/common/internal/message/text.h"
 #include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/image.h"
 #include "webcface/log.h"
 #include "webcface/member.h"
 #include "webcface/view.h"
@@ -14,6 +18,7 @@
 #include "webcface/canvas3d.h"
 #include "webcface/canvas2d.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
