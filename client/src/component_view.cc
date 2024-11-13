@@ -37,6 +37,14 @@ TemporalViewComponent::operator=(const TemporalViewComponent &other) {
     msg_data = std::make_unique<internal::ViewComponentData>(*other.msg_data);
     return *this;
 }
+TemporalViewComponent::TemporalViewComponent(
+    TemporalViewComponent &&other) noexcept
+    : msg_data(std::move(other.msg_data)) {}
+TemporalViewComponent &
+TemporalViewComponent::operator=(TemporalViewComponent &&other) noexcept {
+    msg_data = std::move(other.msg_data);
+    return *this;
+}
 TemporalViewComponent::~TemporalViewComponent() noexcept {}
 
 void ViewComponent::checkData() const {
@@ -58,12 +66,25 @@ std::unique_ptr<internal::ViewComponentData> TemporalViewComponent::lockTmp(
         msg_data->id = SharedString::fromU8String(
             internalViewId(msg_data->type, idx_for_type));
     }
-    if (msg_data->on_click_func_tmp) {
+    if (msg_data->on_click_func_tmp && !*msg_data->on_click_func_tmp) {
+        msg_data->on_click_func_tmp.reset();
+    }
+    if (msg_data->on_change_func_tmp && !*msg_data->on_change_func_tmp) {
+        msg_data->on_change_func_tmp.reset();
+    }
+    if (msg_data->on_click_func_tmp || msg_data->on_change_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
                       SharedString::fromU8String("..v" + view_name.u8String() +
                                                  "/" +
                                                  msg_data->id.u8String())};
-        msg_data->on_click_func_tmp->lockTo(on_click);
+        if (msg_data->on_click_func_tmp && !msg_data->on_change_func_tmp) {
+            on_click.set(std::move(*msg_data->on_click_func_tmp));
+        } else if (msg_data->on_change_func_tmp &&
+                   !msg_data->on_click_func_tmp) {
+            on_click.set(std::move(*msg_data->on_change_func_tmp));
+        } else {
+            throw std::runtime_error("Both onClick and onChange are set");
+        }
         onClick(on_click);
     }
     if (msg_data->text_ref_tmp) {
@@ -189,11 +210,11 @@ std::wstring ViewComponent::textW() const {
     checkData();
     return msg_data->text.decodeW();
 }
-TemporalViewComponent &TemporalViewComponent::text(std::string_view text) {
+TemporalViewComponent &TemporalViewComponent::text(std::string_view text) & {
     msg_data->text = SharedString::encode(text);
     return *this;
 }
-TemporalViewComponent &TemporalViewComponent::text(std::wstring_view text) {
+TemporalViewComponent &TemporalViewComponent::text(std::wstring_view text) & {
     msg_data->text = SharedString::encode(text);
     return *this;
 }
@@ -208,19 +229,26 @@ std::optional<Func> ViewComponent::onClick() const {
         return std::nullopt;
     }
 }
-TemporalViewComponent &TemporalViewComponent::onClick(const Func &func) {
+TemporalViewComponent &TemporalViewComponent::onClick(const Func &func) & {
     msg_data->on_click_member.emplace(static_cast<FieldBase>(func).member_);
     msg_data->on_click_field.emplace(static_cast<FieldBase>(func).field_);
     return *this;
 }
 TemporalViewComponent &
-TemporalViewComponent::onClick(const std::shared_ptr<AnonymousFunc> &func) {
+TemporalViewComponent::onClick(const FuncListener &func) & {
+    msg_data->on_click_member.emplace(static_cast<FieldBase>(func).member_);
+    msg_data->on_click_field.emplace(static_cast<FieldBase>(func).field_);
+    return *this;
+}
+TemporalViewComponent &TemporalViewComponent::onClick(
+    const std::shared_ptr<std::function<void WEBCFACE_CALL_FP()>> &func) {
     msg_data->on_click_func_tmp = func;
     return *this;
 }
-TemporalViewComponent &TemporalViewComponent::bind(const InputRef &ref) {
-    msg_data->on_click_func_tmp = std::make_shared<AnonymousFunc>(
-        [ref](const ValAdaptor &val) { ref.lockedField().set(val); });
+TemporalViewComponent &TemporalViewComponent::bind(const InputRef &ref) & {
+    msg_data->on_change_func_tmp =
+        std::make_shared<std::function<void(ValAdaptor)>>(
+            [ref](const ValAdaptor &val) { ref.lockedField().set(val); });
     msg_data->text_ref_tmp = ref;
     return *this;
 }
@@ -234,10 +262,11 @@ std::optional<Variant> ViewComponent::bind() const {
     }
 }
 
-TemporalViewComponent &
-TemporalViewComponent::onChange(const std::shared_ptr<AnonymousFunc> &func,
-                                const InputRef &ref) {
-    msg_data->on_click_func_tmp = func;
+TemporalViewComponent &TemporalViewComponent::onChange(
+    const std::shared_ptr<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>
+        &func,
+    const InputRef &ref) {
+    msg_data->on_change_func_tmp = func;
     msg_data->text_ref_tmp = ref;
     return *this;
 }
@@ -246,7 +275,7 @@ ViewColor ViewComponent::textColor() const {
     checkData();
     return static_cast<ViewColor>(msg_data->text_color);
 }
-TemporalViewComponent &TemporalViewComponent::textColor(ViewColor c) {
+TemporalViewComponent &TemporalViewComponent::textColor(ViewColor c) & {
     msg_data->text_color = static_cast<int>(c);
     return *this;
 }
@@ -254,7 +283,7 @@ ViewColor ViewComponent::bgColor() const {
     checkData();
     return static_cast<ViewColor>(msg_data->bg_color);
 }
-TemporalViewComponent &TemporalViewComponent::bgColor(ViewColor c) {
+TemporalViewComponent &TemporalViewComponent::bgColor(ViewColor c) & {
     msg_data->bg_color = static_cast<int>(c);
     return *this;
 }
@@ -266,7 +295,7 @@ std::optional<double> ViewComponent::min() const {
     checkData();
     return msg_data->min_;
 }
-TemporalViewComponent &TemporalViewComponent::min(double min) {
+TemporalViewComponent &TemporalViewComponent::min(double min) & {
     msg_data->min_ = min;
     msg_data->option_.clear();
     return *this;
@@ -275,7 +304,7 @@ std::optional<double> ViewComponent::max() const {
     checkData();
     return msg_data->max_;
 }
-TemporalViewComponent &TemporalViewComponent::max(double max) {
+TemporalViewComponent &TemporalViewComponent::max(double max) & {
     msg_data->max_ = max;
     msg_data->option_.clear();
     return *this;
@@ -284,7 +313,7 @@ std::optional<double> ViewComponent::step() const {
     checkData();
     return msg_data->step_;
 }
-TemporalViewComponent &TemporalViewComponent::step(double step) {
+TemporalViewComponent &TemporalViewComponent::step(double step) & {
     msg_data->step_ = step;
     return *this;
 }
@@ -293,7 +322,7 @@ std::vector<ValAdaptor> ViewComponent::option() const {
     return msg_data->option_;
 }
 TemporalViewComponent &
-TemporalViewComponent::option(std::vector<ValAdaptor> option) {
+TemporalViewComponent::option(std::vector<ValAdaptor> option) & {
     msg_data->option_ = std::move(option);
     msg_data->min_ = msg_data->max_ = std::nullopt;
     return *this;

@@ -137,36 +137,4 @@ const Func &Func::setReturnType(ValType return_type) const {
     }
 }
 
-SharedString AnonymousFunc::fieldNameTmp() {
-    static int id = 0;
-    return SharedString::fromU8String("..tmp" + std::to_string(id++));
-}
-AnonymousFunc &AnonymousFunc::operator=(AnonymousFunc &&other) noexcept {
-    this->func_setter = std::move(other.func_setter);
-    this->base_init = other.base_init;
-    this->Func::operator=(std::move(static_cast<Func &>(other)));
-    other.base_init = false;
-    return *this;
-}
-void AnonymousFunc::lockTo(Func &target) {
-    if (!base_init) {
-        if (!func_setter) {
-            throw std::runtime_error("Cannot lock empty AnonymousFunc");
-        }
-        this->data_w = target.data_w;
-        this->member_ = target.member_;
-        this->field_ = fieldNameTmp();
-        func_setter(*this);
-    }
-    auto func_info = dataLock()->func_store.getRecv(*this);
-    if (!func_info) {
-        throw std::runtime_error("AnonymousFunc not set");
-    } else {
-        target.setImpl(std::make_shared<internal::FuncInfo>(**func_info));
-        this->free();
-        func_setter = nullptr;
-        base_init = false;
-    }
-}
-
 WEBCFACE_NS_END

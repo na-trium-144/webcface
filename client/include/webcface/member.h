@@ -8,7 +8,6 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "func.h"
 #include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
@@ -67,17 +66,6 @@ class WEBCFACE_DLL Member : protected Field {
      *
      */
     Log log() const;
-    /*!
-     * \brief AnonymousFuncオブジェクトを作成しfuncをsetする
-     *
-     */
-    template <typename T, typename std::enable_if_t<
-                              !std::is_convertible_v<T, std::string_view> &&
-                                  !std::is_convertible_v<T, std::wstring_view>,
-                              std::nullptr_t> = nullptr>
-    AnonymousFunc func(const T &func) const {
-        return AnonymousFunc{*this, func};
-    }
 
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;

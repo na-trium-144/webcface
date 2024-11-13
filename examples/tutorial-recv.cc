@@ -3,6 +3,7 @@
 #include <webcface/client.h>
 #include <webcface/value.h>
 #include <webcface/text.h>
+#include <webcface/func.h>
 
 webcface::Client wcli("tutorial-recv");
 

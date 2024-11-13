@@ -50,14 +50,6 @@ class ViewTest : public ::testing::Test {
     Func func(const T1 &member, const T2 &name) {
         return Func{field(member, name)};
     }
-    template <typename T>
-    AnonymousFunc afunc1(const T &func) {
-        return AnonymousFunc{field(self_name, ""), func};
-    }
-    template <typename T>
-    AnonymousFunc afunc2(const T &func) {
-        return AnonymousFunc{func};
-    }
     int callback_called;
     template <typename V = View>
     auto callback() {
@@ -89,7 +81,7 @@ TEST_F(ViewTest, viewSet) {
              .bgColor(ViewColor::green)
       << newLine();
     v << button("f", func(self_name, "f"));
-    v << button("a", afunc1([]() {}));
+    v << button("a", []() {});
     v << button("a2", []() {}).id("hoge");
     webcface::InputRef ref1, ref2;
     v << decimalInput("i").bind(ref1).init(123).min(1).max(1000);
