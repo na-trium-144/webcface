@@ -13,7 +13,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-inline namespace encoding {
+
 /*!
  * \brief 引数や戻り値の型を表すenum
  *
@@ -165,8 +165,8 @@ class WEBCFACE_DLL ValAdaptor {
 
     ValType valType() const { return type; }
 
-    static const ValAdaptor& emptyVal();
-    
+    static const ValAdaptor &emptyVal();
+
     /*!
      * \brief 値が空かどうか調べる
      * \since ver1.11
@@ -336,5 +336,23 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
         argToTuple<n + 1>(args, tuple);
     }
 }
+
+namespace [[deprecated("symbols in webcface::encoding namespace are "
+                       "now directly in webcface namespace")]] encoding {
+using ValType = webcface::ValType;
+template <typename T>
+webcface::ValType valTypeOf() {
+    return webcface::valTypeOf<T>();
+}
+inline std::string valTypeStr(webcface::ValType a) {
+    return webcface::valTypeStr(a);
+}
+using ValAdaptor = webcface::ValAdaptor;
+
+template <int n = 0, typename T>
+void argToTuple(const std::vector<webcface::ValAdaptor> &args, T &tuple) {
+    webcface::argToTuple<n>(args, tuple);
+}
+
 } // namespace encoding
 WEBCFACE_NS_END

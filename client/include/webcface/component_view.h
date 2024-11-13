@@ -8,7 +8,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 #include "webcface/func.h"
 #include "webcface/text.h"
 

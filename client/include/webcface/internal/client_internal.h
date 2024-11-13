@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <cstdlib>
 #include <spdlog/logger.h>
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "queue.h"

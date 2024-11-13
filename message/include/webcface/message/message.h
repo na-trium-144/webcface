@@ -20,11 +20,11 @@
 #include <spdlog/logger.h>
 #include "webcface/message/u8string.h"
 #include "webcface/message/val_adaptor.h"
-#include "webcface/encoding/image_mode.h"
+#include "webcface/common/image_mode.h"
 
-MSGPACK_ADD_ENUM(webcface::encoding::ValType)
-MSGPACK_ADD_ENUM(webcface::encoding::ImageColorMode)
-MSGPACK_ADD_ENUM(webcface::encoding::ImageCompressMode)
+MSGPACK_ADD_ENUM(webcface::ValType)
+MSGPACK_ADD_ENUM(webcface::ImageColorMode)
+MSGPACK_ADD_ENUM(webcface::ImageCompressMode)
 
 WEBCFACE_NS_BEGIN
 namespace message {

@@ -6,7 +6,6 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-inline namespace encoding {
 enum class ImageColorMode {
     gray = 0,
     bgr = 1,
@@ -21,5 +20,9 @@ enum class ImageCompressMode {
     png = 3,
 };
 
+namespace [[deprecated("symbols in webcface::encoding namespace are "
+                       "now directly in webcface namespace")]] encoding {
+using ImageColorMode = webcface::ImageColorMode;
+using ImageCompressMode = webcface::ImageCompressMode;
 } // namespace encoding
 WEBCFACE_NS_END

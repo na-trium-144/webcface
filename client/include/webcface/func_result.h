@@ -10,7 +10,7 @@
 #include <memory>
 #include <stdexcept>
 #include "field.h"
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 #include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN

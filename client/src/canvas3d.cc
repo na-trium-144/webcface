@@ -3,7 +3,7 @@
 #include "webcface/member.h"
 #include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN

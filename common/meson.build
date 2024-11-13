@@ -1,12 +1,12 @@
-webcface_encoding_src = [
+webcface_common_src = [
   'src/encoding.cc',
   'src/val_adaptor.cc',
 ]
-webcface_encoding_inc = include_directories('include')
-webcface_encoding_lib = static_library('webcface-encoding',
-  sources: webcface_encoding_src,
+webcface_common_inc = include_directories('include')
+webcface_common_lib = static_library('webcface-common',
+  sources: webcface_common_src,
   include_directories: [
-    webcface_encoding_inc,
+    webcface_common_inc,
   ],
   dependencies: [
     webcface_config_dep,
@@ -17,9 +17,9 @@ webcface_encoding_lib = static_library('webcface-encoding',
   cpp_args: ['-DWEBCFACE_BUILDING'],
   gnu_symbol_visibility: 'inlineshidden',
 )
-webcface_encoding_dep = declare_dependency(
+webcface_common_dep = declare_dependency(
   include_directories: [
-    webcface_encoding_inc,
+    webcface_common_inc,
   ],
   dependencies: [
   ],

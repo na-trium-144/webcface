@@ -1,6 +1,6 @@
 #pragma once
 #include "webcface/component_view.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/geometry.h"
 #include "webcface/transform.h"
 #ifdef WEBCFACE_MESON

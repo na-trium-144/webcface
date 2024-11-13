@@ -4,7 +4,7 @@
 #include <optional>
 #include <functional>
 #include "webcface/field.h"
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 #include "webcface/internal/func_internal.h"
 #include "webcface/image_frame.h"
 #include "webcface/component_canvas2d.h"

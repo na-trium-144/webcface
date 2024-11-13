@@ -1,6 +1,6 @@
 #pragma once
 #include "utf8.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include <msgpack.hpp>
 #include <string>
 

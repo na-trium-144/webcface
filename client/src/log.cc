@@ -74,7 +74,7 @@ int BasicLoggerBuf<CharT>::sync() {
         if constexpr (std::is_same_v<CharT, char>) {
             std::fputs(message.c_str(), stderr);
         } else if constexpr (std::is_same_v<CharT, wchar_t>) {
-            std::fputs(encoding::toNarrow(message).c_str(), stderr);
+            std::fputs(toNarrow(message).c_str(), stderr);
         }
         std::fputc('\n', stderr);
         overflow_buf = overflow_buf.substr(n + 1);

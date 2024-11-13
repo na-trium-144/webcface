@@ -1,7 +1,7 @@
 #include "webcface/component_view.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/field.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN

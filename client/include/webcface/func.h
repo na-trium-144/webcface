@@ -1,5 +1,5 @@
 #pragma once
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 #include "func_result.h"
 #include "arg.h"
 

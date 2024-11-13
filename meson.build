@@ -683,7 +683,7 @@ summary('Build tests',
   list_sep: ' ',
 )
 
-subdir('encoding')
+subdir('common')
 subdir('message')
 subdir('client')
 
@@ -713,7 +713,7 @@ webcface_lib = library(webcface_lib_name,
   # link_wholeではなくobjectsにすることで、
   # それぞれのlibに追加したcpp_argsとかが含まれないようにする
   objects: [
-    webcface_encoding_lib.extract_all_objects(recursive: false),
+    webcface_common_lib.extract_all_objects(recursive: false),
     webcface_message_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
@@ -737,7 +737,7 @@ webcface_lib = library(webcface_lib_name,
 webcface_dep = declare_dependency(
   link_with: [webcface_lib],
   include_directories: [
-    webcface_encoding_inc,
+    webcface_common_inc,
     webcface_client_inc,
   ],
   dependencies: [

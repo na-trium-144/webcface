@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <webcface/encoding/encoding.h>
+#include <webcface/common/encoding.h>
 
 using namespace webcface;
 using namespace webcface::encoding;

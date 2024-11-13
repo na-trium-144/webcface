@@ -52,7 +52,7 @@ webcface_client_lib = static_library('webcface-client',
     warning_options,
     filesystem_dep,
     win32folders_dep,
-    webcface_encoding_dep,
+    webcface_common_dep,
     webcface_message_dep,
     spdlog_dep,
     curl_dep,
@@ -67,6 +67,6 @@ webcface_client_dep = declare_dependency(
   ],
   dependencies: [
     filesystem_dep,
-    webcface_encoding_dep,
+    webcface_common_dep,
   ],
 )

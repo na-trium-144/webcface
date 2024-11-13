@@ -1,4 +1,4 @@
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
@@ -24,7 +24,6 @@ struct SharedStringData {
 
 } // namespace internal
 
-inline namespace encoding {
 /// \private
 static bool using_utf8 = true;
 
@@ -227,5 +226,4 @@ const std::string &SharedString::decode() const {
     }
 }
 
-} // namespace encoding
 WEBCFACE_NS_END
