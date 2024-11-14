@@ -1,14 +1,13 @@
 #include "webcface/internal/data_store2.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/field.h"
 #include <type_traits>
 #include "webcface/internal/func_internal.h"
 #include "webcface/image_frame.h"
-#include "webcface/component_canvas2d.h"
-#include "webcface/component_canvas3d.h"
-#include "webcface/component_view.h"
 #include "webcface/robot_link.h"
-#include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
 #include "webcface/log.h"
 
@@ -20,11 +19,12 @@ namespace internal {
  */
 template <typename T>
 static bool shouldSend(const T &prev, const T &current) {
-    if constexpr (std::is_same_v<T, ValueData> || std::is_same_v<T, TextData>) {
+    if constexpr (std::is_same_v<T, std::shared_ptr<ValueData>> ||
+                  std::is_same_v<T, std::shared_ptr<TextData>>) {
         return *prev != *current;
     } else if constexpr (std::is_same_v<T, std::string>) {
         return prev != current;
-    } else if constexpr (std::is_same_v<T, FuncData>) {
+    } else if constexpr (std::is_same_v<T, std::shared_ptr<FuncData>>) {
         // Funcは内容が変更されても2回目以降送信しない
         return false;
     } else {
