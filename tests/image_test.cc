@@ -3,7 +3,6 @@
 #include <webcface/member.h>
 #include <webcface/image.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 

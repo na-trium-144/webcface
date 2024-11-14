@@ -1,4 +1,6 @@
-#include "webcface/common/internal/message.h"
+#include "webcface/common/internal/message/pack.h"
+#include <spdlog/logger.h>
+#include <memory>
 #include <vector>
 #include <utility>
 #include <thread>
@@ -14,7 +16,7 @@ struct DummyServer {
         std::lock_guard lock(server_m);
         for (const auto &m : recv_data) {
             if (m.first == T::kind) {
-                on_ok(*static_cast<T*>(m.second.get()));
+                on_ok(*static_cast<T *>(m.second.get()));
                 return;
             }
         }
@@ -28,7 +30,7 @@ struct DummyServer {
                 std::lock_guard lock(server_m);
                 for (const auto &m : recv_data) {
                     if (m.first == T::kind) {
-                        on_ok(*static_cast<T*>(m.second.get()));
+                        on_ok(*static_cast<T *>(m.second.get()));
                         return;
                     }
                 }

@@ -1,4 +1,13 @@
 #include "server_test.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/internal/component_internal.h"
+#include "webcface/internal/robot_link_internal.h"
 
 TEST_F(ServerTest, value) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -74,7 +83,8 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(message::RobotModel{
         "a"_ss,
         std::vector<std::shared_ptr<message::RobotLink>>{
-            RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({})}});
+            std::static_pointer_cast<message::RobotLink>(
+                RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({}))}});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::RobotModel>{{}, "c1"_ss, "a"_ss, 1});
@@ -92,15 +102,19 @@ TEST_F(ServerTest, robotModel) {
     dummy_c1->send(message::RobotModel{
         "a"_ss,
         std::vector<std::shared_ptr<message::RobotLink>>{
-            RobotLink{"a", {}, Geometry{}, ViewColor::black}.lockJoints({}),
-            RobotLink{"b", {}, Geometry{}, ViewColor::black}.lockJoints(
-                {SharedString::fromU8String("a")}),
-            RobotLink{"c",
-                      {"j"_ss, "a"_ss, RobotJointType::fixed, {}, 0},
-                      Geometry{},
-                      ViewColor::black}
-                .lockJoints({SharedString::fromU8String("a"),
-                             SharedString::fromU8String("b")}),
+            std::static_pointer_cast<message::RobotLink>(
+                RobotLink{"a", {}, Geometry{}, ViewColor::black}.lockJoints(
+                    {})),
+            std::static_pointer_cast<message::RobotLink>(
+                RobotLink{"b", {}, Geometry{}, ViewColor::black}.lockJoints(
+                    {SharedString::fromU8String("a")})),
+            std::static_pointer_cast<message::RobotLink>(
+                RobotLink{"c",
+                          {"j"_ss, "a"_ss, RobotJointType::fixed, {}, 0},
+                          Geometry{},
+                          ViewColor::black}
+                    .lockJoints({SharedString::fromU8String("a"),
+                                 SharedString::fromU8String("b")})),
         }});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
@@ -120,13 +134,20 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
-            {"0", ViewComponents::text("a").component_v.lockTmp(data_, ""_ss)},
-            {"1", ViewComponents::newLine().lockTmp(data_, ""_ss)},
-            {"2", ViewComponents::button(
-                      "f", Func{Field{std::weak_ptr<internal::ClientData>(),
-                                      "p"_ss, "q"_ss}})
-                      .lockTmp(data_, ""_ss)}},
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+            {"0", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(ViewComponents::text("a")
+                                          .component_v.lockTmp(data_, ""_ss)))},
+            {"1", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(
+                          ViewComponents::newLine().lockTmp(data_, ""_ss)))},
+            {"2",
+             std::static_pointer_cast<message::ViewComponentData>(
+                 std::shared_ptr(
+                     ViewComponents::button(
+                         "f", Func{Field{std::weak_ptr<internal::ClientData>(),
+                                         "p"_ss, "q"_ss}})
+                         .lockTmp(data_, ""_ss)))}},
         std::vector<SharedString>{"0"_ss, "1"_ss, "2"_ss}});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -159,8 +180,10 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
-            {"0", ViewComponents::text("b").component_v.lockTmp(data_, ""_ss)},
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+            {"0", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(ViewComponents::text("b")
+                                          .component_v.lockTmp(data_, ""_ss)))},
         },
         std::nullopt});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
@@ -189,13 +212,20 @@ TEST_F(ServerTest, viewOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::ViewOld{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
-            {"0", ViewComponents::text("a").component_v.lockTmp(data_, ""_ss)},
-            {"1", ViewComponents::newLine().lockTmp(data_, ""_ss)},
-            {"2", ViewComponents::button(
-                      "f", Func{Field{std::weak_ptr<internal::ClientData>(),
-                                      "p"_ss, "q"_ss}})
-                      .lockTmp(data_, ""_ss)}},
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+            {"0", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(ViewComponents::text("a")
+                                          .component_v.lockTmp(data_, ""_ss)))},
+            {"1", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(
+                          ViewComponents::newLine().lockTmp(data_, ""_ss)))},
+            {"2",
+             std::static_pointer_cast<message::ViewComponentData>(
+                 std::shared_ptr(
+                     ViewComponents::button(
+                         "f", Func{Field{std::weak_ptr<internal::ClientData>(),
+                                         "p"_ss, "q"_ss}})
+                         .lockTmp(data_, ""_ss)))}},
         3});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -228,8 +258,10 @@ TEST_F(ServerTest, viewOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::ViewOld{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>{
-            {"0", ViewComponents::text("b").component_v.lockTmp(data_, ""_ss)},
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+            {"0", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(ViewComponents::text("b")
+                                          .component_v.lockTmp(data_, ""_ss)))},
         },
         3});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
@@ -260,7 +292,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         std::vector<SharedString>{"0"_ss, "1"_ss, "2"_ss}});
     wait();
@@ -292,7 +324,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
             {"0", {}},
         },
         std::nullopt});
@@ -320,7 +352,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3DOld{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
@@ -352,7 +384,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3DOld{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
             {"0", {}},
         },
         3});
@@ -381,7 +413,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         std::vector<SharedString>{"0"_ss, "1"_ss, "2"_ss}});
     wait();
@@ -413,7 +445,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
             {"0", {}},
         },
         std::nullopt});
@@ -441,7 +473,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2DOld{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
             {"0", {}}, {"1", {}}, {"2", {}}},
         3});
     wait();
@@ -473,7 +505,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2DOld{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
             {"0", {}},
         },
         3});

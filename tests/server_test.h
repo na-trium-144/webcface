@@ -1,9 +1,7 @@
+#include "dummy_client.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/server/server.h>
-#include "webcface/server/member_data.h"
-#include "webcface/server/store.h"
-#include "webcface/common/internal/message.h"
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <webcface/view.h>
 #include <webcface/image.h>
@@ -12,8 +10,6 @@
 #include <webcface/canvas2d.h>
 #include <thread>
 #include <iostream>
-#include "dummy_client.h"
-#include "webcface/image_frame.h"
 
 using namespace webcface;
 

@@ -1,10 +1,11 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/func.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
 #include <webcface/func.h>
 #include <stdexcept>
 #include <thread>
-#include "webcface/common/internal/message.h"
 
 #ifndef WEBCFACE_TEST_TIMEOUT
 #define WEBCFACE_TEST_TIMEOUT 10

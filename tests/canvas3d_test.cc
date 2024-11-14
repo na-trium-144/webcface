@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include <webcface/member.h>
 #include <webcface/canvas3d.h>
 #include <webcface/func.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -91,10 +92,11 @@ TEST_F(Canvas3DTest, set) {
         **data_->canvas3d_store.getRecv(self_name, "b"_ss);
     ASSERT_EQ(canvas3d_data_base.components.size(), 3u);
     ASSERT_EQ(canvas3d_data_base.data_ids.size(), 3u);
-    std::vector<std::shared_ptr<internal::Canvas3DComponentData>> canvas3d_data;
+    std::vector<std::shared_ptr<message::Canvas3DComponentData>> canvas3d_data;
     canvas3d_data.reserve(canvas3d_data_base.components.size());
     for (const auto &id : canvas3d_data_base.data_ids) {
-        canvas3d_data.push_back(canvas3d_data_base.components.at(id));
+        canvas3d_data.push_back(
+            canvas3d_data_base.components.at(id.u8String()));
     }
     EXPECT_EQ(canvas3d_data[0]->type,
               static_cast<int>(Canvas3DComponentType::geometry));
@@ -168,9 +170,9 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(Canvas3DTest, get) {
-    auto vd = std::make_shared<webcface::internal::Canvas3DDataBase>();
+    auto vd = std::make_shared<message::Canvas3DData>();
     vd->components = {
-        {"0"_ss, std::make_shared<internal::Canvas3DComponentData>()}};
+        {"0", std::make_shared<message::Canvas3DComponentData>()}};
     vd->data_ids = {"0"_ss};
     data_->canvas3d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);

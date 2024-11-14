@@ -1,4 +1,3 @@
-#include "webcface/common/internal/message.h"
 #include <curl/curl.h>
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>

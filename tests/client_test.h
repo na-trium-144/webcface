@@ -1,3 +1,4 @@
+#include "webcface/common/internal/message/pack.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
@@ -11,7 +12,6 @@
 #include <webcface/canvas3d.h>
 #include <webcface/canvas2d.h>
 #include <webcface/robot_model.h>
-#include "webcface/common/internal/message.h"
 #include <chrono>
 #include <thread>
 #include <iostream>
