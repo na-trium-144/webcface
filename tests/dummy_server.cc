@@ -3,13 +3,7 @@
 #include <thread>
 #include "dummy_server.h"
 #include <crow.h>
-#include "webcface/internal/unix_path.h"
-#ifdef _WIN32
-#include <fileapi.h>
-#else
-#include <unistd.h>
-#include <sys/stat.h>
-#endif
+#include "webcface/common/internal/unix_path.h"
 
 static void wait() {
     std::this_thread::sleep_for(

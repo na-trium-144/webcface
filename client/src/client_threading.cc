@@ -2,7 +2,7 @@
 #include "webcface/client.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
-#include "webcface/internal/unlock.h"
+#include "webcface/common/internal/unlock.h"
 #include <string>
 #include <chrono>
 #include <thread>

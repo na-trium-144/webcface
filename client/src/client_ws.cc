@@ -1,7 +1,7 @@
 #include "webcface/internal/client_ws.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/client.h"
-#include "webcface/internal/unix_path.h"
+#include "webcface/common/internal/unix_path.h"
 #include <curl/curl.h>
 #include <string>
 #include <cstdlib>

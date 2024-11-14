@@ -2,6 +2,7 @@ webcface_common_src = [
   'src/encoding.cc',
   'src/val_adaptor.cc',
   'src/message.cc',
+  'src/unix_path.cc',
 ]
 webcface_common_inc = include_directories('include')
 webcface_common_lib = static_library('webcface-common',
@@ -15,6 +16,7 @@ webcface_common_lib = static_library('webcface-common',
     msgpack_cxx_dep,
     spdlog_dep,
     utf8cpp_dep,
+    win32folders_dep,
   ],
   build_by_default: false,
   cpp_args: ['-DWEBCFACE_BUILDING'],

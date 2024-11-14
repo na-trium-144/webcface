@@ -8,7 +8,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/internal/unix_path.h"
+#include "webcface/common/internal/unix_path.h"
 #include <memory>
 #include <thread>
 #include "webcface/server/server_ws.h"

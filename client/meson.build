@@ -28,7 +28,6 @@ webcface_client_src = [
   'src/component_canvas3d.cc',
   'src/component_canvas2d.cc',
   'src/component_view.cc',
-  'src/unix_path.cc',
   'src/c_wcf/client.cc',
   'src/c_wcf/member.cc',
   'src/c_wcf/value.cc',
@@ -37,11 +36,6 @@ webcface_client_src = [
   'src/c_wcf/view.cc',
 ]
 webcface_client_inc = include_directories('include')
-if webcface_system_path_windows
-  win32folders_dep = [cxx.find_library('uuid')]
-else
-  win32folders_dep = []
-endif
 webcface_client_lib = static_library('webcface-client',
   sources: webcface_client_src,
   include_directories: [
@@ -51,7 +45,6 @@ webcface_client_lib = static_library('webcface-client',
     webcface_config_dep,
     warning_options,
     filesystem_dep,
-    win32folders_dep,
     webcface_common_dep,
     spdlog_dep,
     curl_dep,

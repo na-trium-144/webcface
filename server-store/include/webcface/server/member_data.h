@@ -21,7 +21,6 @@
 #include "webcface/common/internal/message/sync.h"
 #include "webcface/common/internal/message/view.h"
 #include "webcface/server/server.h"
-#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -68,7 +67,7 @@ struct MemberData {
     StrMap1<message::Canvas3DData> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
 
-    StrMap1<ImageFrame> image;
+    StrMap1<message::ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする

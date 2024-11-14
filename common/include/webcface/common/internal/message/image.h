@@ -17,6 +17,14 @@ struct ImageFrame {
     std::shared_ptr<std::vector<unsigned char>> data_;
     ImageColorMode color_mode_ = ImageColorMode::gray;
     ImageCompressMode cmp_mode_ = ImageCompressMode::raw;
+
+    bool empty() const { return !data_ || data_->empty(); }
+    unsigned char *rawPtr() const {
+        if (!data_) {
+            throw "ImageFrame data is empty";
+        }
+        return data_->data();
+    }
 };
 struct Image : public MessageBase<MessageKind::image>, public ImageFrame {
     SharedString field;
@@ -80,5 +88,5 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
                        MSGPACK_NVP("p", cmp_mode_))
 };
 
-}
+} // namespace message
 WEBCFACE_NS_END

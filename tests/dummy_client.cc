@@ -3,7 +3,7 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_client.h"
-#include "webcface/internal/unix_path.h"
+#include "webcface/common/internal/unix_path.h"
 
 using namespace webcface;
 DummyClient::~DummyClient() {

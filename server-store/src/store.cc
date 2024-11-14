@@ -1,6 +1,6 @@
 #include "webcface/server/store.h"
 #include "webcface/server/member_data.h"
-#include "webcface/internal/unlock.h"
+#include "webcface/common/internal/unlock.h"
 #include <algorithm>
 
 WEBCFACE_NS_BEGIN

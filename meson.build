@@ -162,7 +162,7 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = declare_dependency()
+  warning_options = []
 endif
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
@@ -265,6 +265,22 @@ if is_disabler(filesystem_dep)
   error('Neither std::filesystem or std::experimental::filesystem available')
 endif
 conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
+
+if webcface_system_path_windows
+  win32folders_dep = cxx.find_library('uuid')
+else
+  win32folders_dep = []
+endif
+
+if webcface_system_win32socket
+  win32socket_deps = [
+    cxx.find_library('iphlpapi'),
+    cxx.find_library('ws2_32'),
+    cxx.find_library('wsock32'), # asioの依存ライブラリなのでasioに追加されているべきでは?
+  ]
+else
+  win32socket_deps = []
+endif
 
 configure_file(
   input: 'scripts' / 'config.h.in',
