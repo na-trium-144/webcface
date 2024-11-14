@@ -22,17 +22,17 @@ void initMagick() {
     }
 }
 
-static std::string magickColorMap(ImageColorMode mode) {
+static std::string magickColorMap(message::ImageColorMode mode) {
     switch (mode) {
-    case ImageColorMode::gray:
+    case message::ImageColorMode::gray:
         return "K";
-    case ImageColorMode::bgr:
+    case message::ImageColorMode::bgr:
         return "BGR";
-    case ImageColorMode::bgra:
+    case message::ImageColorMode::bgra:
         return "BGRA";
-    case ImageColorMode::rgb:
+    case message::ImageColorMode::rgb:
         return "RGB";
-    case ImageColorMode::rgba:
+    case message::ImageColorMode::rgba:
         return "RGBA";
     default:
         return "";
@@ -107,7 +107,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
 #else
                         m.type(Magick::TrueColorMatteType);
 #endif
-                        if (img.color_mode_ == ImageColorMode::gray) {
+                        if (img.color_mode_ == message::ImageColorMode::gray) {
                             // K -> RGB
                             m.negate(true);
                         }
@@ -148,21 +148,21 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         auto encoded =
                             std::make_shared<std::vector<unsigned char>>();
                         switch (info.cmp_mode) {
-                        case ImageCompressMode::raw: {
+                        case message::ImageCompressMode::raw: {
                             std::size_t channels = 1;
                             std::string color_map = magickColorMap(color_mode);
                             switch (color_mode) {
-                            case ImageColorMode::gray:
+                            case message::ImageColorMode::gray:
                                 m.type(Magick::GrayscaleType);
                                 color_map = "R";
                                 channels = 1;
                                 break;
-                            case ImageColorMode::bgr:
-                            case ImageColorMode::rgb:
+                            case message::ImageColorMode::bgr:
+                            case message::ImageColorMode::rgb:
                                 channels = 3;
                                 break;
-                            case ImageColorMode::bgra:
-                            case ImageColorMode::rgba:
+                            case message::ImageColorMode::bgra:
+                            case message::ImageColorMode::rgba:
                                 channels = 4;
                                 break;
                             default:
@@ -178,7 +178,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     Magick::CharPixel, encoded->data());
                             break;
                         }
-                        case ImageCompressMode::jpeg: {
+                        case message::ImageCompressMode::jpeg: {
                             if (info.quality < 0 || info.quality > 100) {
                                 this->logger->error(
                                     "Invalid image conversion request "
@@ -196,7 +196,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     b.length());
                             break;
                         }
-                        case ImageCompressMode::webp: {
+                        case message::ImageCompressMode::webp: {
                             if (info.quality < 1 || info.quality > 100) {
                                 this->logger->error(
                                     "Invalid image conversion request "
@@ -214,7 +214,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     b.length());
                             break;
                         }
-                        case ImageCompressMode::png: {
+                        case message::ImageCompressMode::png: {
                             if (info.quality < 0 || info.quality > 100) {
                                 this->logger->error(
                                     "Invalid image conversion request "

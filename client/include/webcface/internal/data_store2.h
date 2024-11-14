@@ -3,6 +3,7 @@
 #include <mutex>
 #include <optional>
 #include "webcface/field.h"
+#include "webcface/log.h"
 #include "webcface/common/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
@@ -179,11 +180,11 @@ struct FuncInfo;
 struct RobotLinkData;
 } // namespace internal
 class ImageFrame;
-struct LogLineData;
 namespace message {
 struct ViewData;
 struct Canvas2DData;
 struct Canvas3DData;
+struct ImageReq;
 } // namespace message
 namespace internal {
 using ValueData = std::vector<double>;

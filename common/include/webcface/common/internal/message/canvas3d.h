@@ -4,6 +4,7 @@
 #include <optional>
 #include <unordered_map>
 #include <vector>
+#include <array>
 
 #ifndef MSGPACK_DEFINE_MAP
 #define MSGPACK_DEFINE_MAP(...)

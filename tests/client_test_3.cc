@@ -567,9 +567,9 @@ TEST_F(ClientTest, imageReq) {
         EXPECT_EQ(obj.member.u8String(), "a");
         EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj,
-                  (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                     ImageCompressMode::raw, 0, std::nullopt}));
+        EXPECT_EQ(obj, (message::ImageReq{
+                           std::nullopt, std::nullopt, std::nullopt,
+                           message::ImageCompressMode::raw, 0, std::nullopt}));
     });
     wcli_->member("a").image("b").onChange(callback<Image>());
     ImageFrame img(sizeWH(100, 100),

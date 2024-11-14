@@ -1,5 +1,6 @@
 #include "webcface/robot_link.h"
 #include "webcface/internal/robot_link_internal.h"
+#include <algorithm>
 
 WEBCFACE_NS_BEGIN
 

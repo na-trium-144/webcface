@@ -549,7 +549,7 @@ TEST_F(ServerTest, image) {
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
-        EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
+        EXPECT_EQ(obj.color_mode_, message::ImageColorMode::bgr);
     });
     dummy_c2->recvClear();
 
@@ -562,7 +562,7 @@ TEST_F(ServerTest, image) {
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_EQ(obj.width_, 15);
-        EXPECT_EQ(obj.color_mode_, ImageColorMode::bgr);
+        EXPECT_EQ(obj.color_mode_, message::ImageColorMode::bgr);
     });
     dummy_c2->recvClear();
 
@@ -570,7 +570,8 @@ TEST_F(ServerTest, image) {
     dummy_c2->send(message::Req<message::Image>{
         "c1"_ss, "a"_ss, 1,
         message::ImageReq{
-            5, 8, ImageColorMode::gray, ImageCompressMode::raw, 0,
+            5, 8, message::ImageColorMode::gray,
+            message::ImageCompressMode::raw, 0,
             1000.0 / WEBCFACE_TEST_TIMEOUT /
                 3 // wait()のtimeoutに間に合わないようにする
         }});
@@ -581,7 +582,7 @@ TEST_F(ServerTest, image) {
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
-        EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
+        EXPECT_EQ(obj.color_mode_, message::ImageColorMode::gray);
     });
     dummy_c2->recvClear();
 
@@ -596,7 +597,7 @@ TEST_F(ServerTest, image) {
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
-        EXPECT_EQ(obj.color_mode_, ImageColorMode::gray);
+        EXPECT_EQ(obj.color_mode_, message::ImageColorMode::gray);
     });
     dummy_c2->recvClear();
 
@@ -604,7 +605,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->send(message::Req<message::Image>{
         "c1"_ss, "a"_ss, 1,
         message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                          ImageCompressMode::png, 5, std::nullopt}});
+                          message::ImageCompressMode::png, 5, std::nullopt}});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
@@ -612,7 +613,7 @@ TEST_F(ServerTest, image) {
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_GT(obj.data_->size(), 0u);
-        EXPECT_EQ(obj.cmp_mode_, ImageCompressMode::png);
+        EXPECT_EQ(obj.cmp_mode_, message::ImageCompressMode::png);
     });
     dummy_c2->recvClear();
 
@@ -632,8 +633,9 @@ TEST_F(ServerTest, image) {
                                            std::to_string(t_type)),
                 1,
                 message::ImageReq{std::nullopt, std::nullopt,
-                                  static_cast<ImageColorMode>(t_type),
-                                  ImageCompressMode::raw, 0, std::nullopt}});
+                                  static_cast<message::ImageColorMode>(t_type),
+                                  message::ImageCompressMode::raw, 0,
+                                  std::nullopt}});
             dummy_c2->waitRecv<message::Res<message::Image>>(
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1u);
@@ -641,7 +643,7 @@ TEST_F(ServerTest, image) {
                     EXPECT_EQ(obj.height_, 10);
                     EXPECT_EQ(obj.width_, 15);
                     EXPECT_EQ(obj.color_mode_,
-                              static_cast<ImageColorMode>(t_type));
+                              static_cast<message::ImageColorMode>(t_type));
                 });
             dummy_c2->recvClear();
         }
