@@ -76,15 +76,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     struct SyncDataSnapshot {
         std::chrono::system_clock::time_point time;
-        StrMap1<ValueData> value_data;
-        StrMap1<TextData> text_data;
-        StrMap1<RobotModelData> robot_model_data;
-        StrMap1<ViewData> view_prev, view_data;
-        StrMap1<Canvas3DData> canvas3d_prev, canvas3d_data;
-        StrMap1<Canvas2DData> canvas2d_prev, canvas2d_data;
+        StrMap1<std::shared_ptr<ValueData>> value_data;
+        StrMap1<std::shared_ptr<TextData>> text_data;
+        StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
+        StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
+        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev, canvas3d_data;
+        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev, canvas2d_data;
         StrMap1<ImageData> image_data;
         StrMap1<std::vector<LogLineData>> log_data;
-        StrMap1<FuncData> func_data;
+        StrMap1<std::shared_ptr<FuncData>> func_data;
     };
 
     struct SyncDataFirst {
@@ -344,14 +344,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     std::mutex entry_m;
     StrSet1 member_entry;
-    SyncDataStore2<ValueData> value_store;
-    SyncDataStore2<TextData> text_store;
-    SyncDataStore2<FuncData> func_store;
-    SyncDataStore2<ViewData> view_store;
+    SyncDataStore2<std::shared_ptr<ValueData>> value_store;
+    SyncDataStore2<std::shared_ptr<TextData>> text_store;
+    SyncDataStore2<std::shared_ptr<FuncData>> func_store;
+    SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
-    SyncDataStore2<RobotModelData> robot_model_store;
-    SyncDataStore2<Canvas3DData> canvas3d_store;
-    SyncDataStore2<Canvas2DData> canvas2d_store;
+    SyncDataStore2<std::shared_ptr<RobotModelData> >robot_model_store;
+    SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
+    SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
     SyncDataStore2<std::shared_ptr<LogData>> log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;

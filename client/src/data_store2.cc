@@ -260,13 +260,13 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 }
 
 template class SyncDataStore2<std::string, int>; // test用
-template class SyncDataStore2<ValueData, int>;
-template class SyncDataStore2<TextData, int>;
-template class SyncDataStore2<FuncData, int>;
-template class SyncDataStore2<ViewData, int>;
-template class SyncDataStore2<RobotModelData, int>;
-template class SyncDataStore2<Canvas3DData, int>;
-template class SyncDataStore2<Canvas2DData, int>;
+template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+template class SyncDataStore2<std::shared_ptr<TextData>, int>;
+template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
+template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>, int>;
 template class SyncDataStore2<ImageData, message::ImageReq>;
 template class SyncDataStore2<std::shared_ptr<LogData>, int>;
 } // namespace internal

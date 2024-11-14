@@ -529,7 +529,7 @@ void MemberData::onRecv(const std::string &message) {
             auto &this_view = this->view[v.field];
             for (auto &d : v.data_diff) {
                 if (!d.second) {
-                    d.second = std::make_shared<message::ViewComponent>();
+                    d.second = std::make_shared<message::ViewComponentData>();
                 }
                 this_view.components[d.first] = d.second;
             }
@@ -540,7 +540,7 @@ void MemberData::onRecv(const std::string &message) {
                 prev_data_ids = std::move(this_view.data_ids);
                 this_view.data_ids = std::move(*v.data_ids);
             }
-            std::map<std::string, std::shared_ptr<message::ViewComponent>>
+            std::map<std::string, std::shared_ptr<message::ViewComponentData>>
                 old_diff;
             for (std::size_t i = 0; i < this_view.data_ids.size(); i++) {
                 if (v.data_diff.count(this_view.data_ids[i].u8String()) ||
@@ -610,12 +610,12 @@ void MemberData::onRecv(const std::string &message) {
             }
             std::unordered_map<int, int> idx_next;
             auto &this_view = this->view[v.field];
-            std::map<std::string, std::shared_ptr<message::ViewComponent>>
+            std::map<std::string, std::shared_ptr<message::ViewComponentData>>
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
                 if (!d.second) {
-                    d.second = std::make_shared<message::ViewComponent>();
+                    d.second = std::make_shared<message::ViewComponentData>();
                 }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
@@ -686,7 +686,8 @@ void MemberData::onRecv(const std::string &message) {
             auto &this_canvas = this->canvas3d[v.field];
             for (auto &d : v.data_diff) {
                 if (!d.second) {
-                    d.second = std::make_shared<message::Canvas3DComponent>();
+                    d.second =
+                        std::make_shared<message::Canvas3DComponentData>();
                 }
                 this_canvas.components[d.first] = d.second;
             }
@@ -697,7 +698,8 @@ void MemberData::onRecv(const std::string &message) {
                 prev_data_ids = std::move(this_canvas.data_ids);
                 this_canvas.data_ids = std::move(*v.data_ids);
             }
-            std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
+            std::map<std::string,
+                     std::shared_ptr<message::Canvas3DComponentData>>
                 old_diff;
             for (std::size_t i = 0; i < this_canvas.data_ids.size(); i++) {
                 if (v.data_diff.count(this_canvas.data_ids[i].u8String()) ||
@@ -773,12 +775,14 @@ void MemberData::onRecv(const std::string &message) {
             }
             std::unordered_map<int, int> idx_next;
             auto &this_canvas = this->canvas3d[v.field];
-            std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
+            std::map<std::string,
+                     std::shared_ptr<message::Canvas3DComponentData>>
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
                 if (!d.second) {
-                    d.second = std::make_shared<message::Canvas3DComponent>();
+                    d.second =
+                        std::make_shared<message::Canvas3DComponentData>();
                 }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
@@ -853,7 +857,8 @@ void MemberData::onRecv(const std::string &message) {
             this_canvas.height = v.height;
             for (auto &d : v.data_diff) {
                 if (!d.second) {
-                    d.second = std::make_shared<message::Canvas2DComponent>();
+                    d.second =
+                        std::make_shared<message::Canvas2DComponentData>();
                 }
                 this_canvas.components[d.first] = d.second;
             }
@@ -864,7 +869,8 @@ void MemberData::onRecv(const std::string &message) {
                 prev_data_ids = std::move(this_canvas.data_ids);
                 this_canvas.data_ids = std::move(*v.data_ids);
             }
-            std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+            std::map<std::string,
+                     std::shared_ptr<message::Canvas2DComponentData>>
                 old_diff;
             for (std::size_t i = 0; i < this_canvas.data_ids.size(); i++) {
                 if (v.data_diff.count(this_canvas.data_ids[i].u8String()) ||
@@ -939,12 +945,14 @@ void MemberData::onRecv(const std::string &message) {
             auto &this_canvas = this->canvas2d[v.field];
             this_canvas.width = v.width;
             this_canvas.height = v.height;
-            std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+            std::map<std::string,
+                     std::shared_ptr<message::Canvas2DComponentData>>
                 new_diff;
             for (auto &d : v.data_diff) {
                 std::size_t old_index = std::atoi(d.first.c_str());
                 if (!d.second) {
-                    d.second = std::make_shared<message::Canvas2DComponent>();
+                    d.second =
+                        std::make_shared<message::Canvas2DComponentData>();
                 }
                 int idx = idx_next[d.second->type]++;
                 std::string id =
@@ -1296,7 +1304,7 @@ void MemberData::onRecv(const std::string &message) {
                                     s.field.u8String().size() + 1));
                         }
                         std::map<std::string,
-                                 std::shared_ptr<message::ViewComponent>>
+                                 std::shared_ptr<message::ViewComponentData>>
                             old_components;
                         for (std::size_t i = 0; i < it.second.data_ids.size();
                              i++) {
@@ -1376,8 +1384,9 @@ void MemberData::onRecv(const std::string &message) {
                                 it.first.u8String().substr(
                                     s.field.u8String().size() + 1));
                         }
-                        std::map<std::string,
-                                 std::shared_ptr<message::Canvas3DComponent>>
+                        std::map<
+                            std::string,
+                            std::shared_ptr<message::Canvas3DComponentData>>
                             old_components;
                         for (std::size_t i = 0; i < it.second.data_ids.size();
                              i++) {
@@ -1458,8 +1467,9 @@ void MemberData::onRecv(const std::string &message) {
                                 it.first.u8String().substr(
                                     s.field.u8String().size() + 1));
                         }
-                        std::map<std::string,
-                                 std::shared_ptr<message::Canvas2DComponent>>
+                        std::map<
+                            std::string,
+                            std::shared_ptr<message::Canvas2DComponentData>>
                             old_components;
                         for (std::size_t i = 0; i < it.second.data_ids.size();
                              i++) {

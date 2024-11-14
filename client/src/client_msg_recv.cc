@@ -175,11 +175,11 @@ void internal::ClientData::onRecv(
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<ViewDataBase> vb_prev;
+            std::shared_ptr<message::ViewData> vb_prev;
             if (v_prev) {
                 vb_prev = *v_prev;
             } else {
-                vb_prev = std::make_shared<ViewDataBase>();
+                vb_prev = std::make_shared<message::ViewData>();
                 v_prev.emplace(vb_prev);
                 this->view_store.setRecv(member, field, vb_prev);
             }
@@ -188,9 +188,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vb_prev->components[id] =
-                    std::make_shared<internal::ViewComponentData>(*d.second,
-                                                                  id);
+                vb_prev->components[id.u8String()] = d.second;
             }
             std::shared_ptr<std::function<void(View)>> cl;
             {
@@ -211,11 +209,11 @@ void internal::ClientData::onRecv(
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            std::shared_ptr<Canvas3DDataBase> vv_prev;
+            std::shared_ptr<message::Canvas3DData> vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev = std::make_shared<Canvas3DDataBase>();
+                vv_prev = std::make_shared<message::Canvas3DData>();
                 v_prev.emplace(vv_prev);
                 this->canvas3d_store.setRecv(member, field, vv_prev);
             }
@@ -224,9 +222,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id] =
-                    std::make_shared<internal::Canvas3DComponentData>(*d.second,
-                                                                      id);
+                vv_prev->components[id.u8String()] = d.second;
             }
             std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
@@ -247,11 +243,11 @@ void internal::ClientData::onRecv(
             auto [member, field] =
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
-            std::shared_ptr<Canvas2DDataBase> vv_prev;
+            std::shared_ptr<message::Canvas2DData> vv_prev;
             if (v_prev) {
                 vv_prev = *v_prev;
             } else {
-                vv_prev = std::make_shared<Canvas2DDataBase>();
+                vv_prev = std::make_shared<message::Canvas2DData>();
                 v_prev.emplace(vv_prev);
                 this->canvas2d_store.setRecv(member, field, vv_prev);
             }
@@ -262,9 +258,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id] =
-                    std::make_shared<internal::Canvas2DComponentData>(*d.second,
-                                                                      id);
+                vv_prev->components[id.u8String()] = d.second;
             }
             std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {

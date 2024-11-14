@@ -7,20 +7,20 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas3DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas3DComponent::id() const { return msg_data->id.decode(); }
-std::wstring Canvas3DComponent::idW() const { return msg_data->id.decodeW(); }
+std::string Canvas3DComponent::id() const { return id_.decode(); }
+std::wstring Canvas3DComponent::idW() const { return id_.decodeW(); }
 
 Canvas3DComponent::Canvas3DComponent() = default;
 
 Canvas3DComponent::Canvas3DComponent(
-    const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w)
-    : msg_data(msg_data), data_w(data_w) {}
+    const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+    const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
+    : msg_data(msg_data), data_w(data_w) , id_(id){}
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
     : msg_data() {}
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
-    : msg_data(std::make_unique<internal::Canvas3DComponentData>()) {
+    : msg_data(std::make_unique<internal::TemporalCanvas3DComponentData>()) {
     this->msg_data->type = static_cast<int>(type);
 }
 
@@ -28,13 +28,13 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(
     const TemporalCanvas3DComponent &other) {
     if (other.msg_data) {
         msg_data =
-            std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+            std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
     }
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
     msg_data =
-        std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+        std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
     return *this;
 }
 TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}
@@ -45,7 +45,7 @@ void Canvas3DComponent::checkData() const {
     }
 }
 
-std::unique_ptr<internal::Canvas3DComponentData>
+std::unique_ptr<internal::TemporalCanvas3DComponentData>
 TemporalCanvas3DComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> & /*data*/,
     const SharedString & /*view_name*/,
@@ -64,15 +64,6 @@ TemporalCanvas3DComponent::lockTmp(
 bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
     return msg_data && other.msg_data && /*id() == other.id() && */
            *msg_data == *other.msg_data;
-}
-bool internal::Canvas3DComponentData::operator==(
-    const Canvas3DComponentData &other) const {
-    return type == other.type && origin_pos == other.origin_pos &&
-           origin_rot == other.origin_rot && color == other.color &&
-           geometry_type == other.geometry_type &&
-           geometry_properties == other.geometry_properties &&
-           field_member == other.field_member &&
-           field_field == other.field_field && angles == other.angles;
 }
 
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::string_view id) {

@@ -1,15 +1,14 @@
 #pragma once
+#include <functional>
 #include <optional>
 #include <unordered_map>
 #include <vector>
-#include "field.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
 #include "webcface/common/webcface-config.h"
 #endif
 #include "webcface/common/val_adaptor.h"
-#include "webcface/func.h"
 #include "webcface/text.h"
 
 #ifdef min
@@ -20,11 +19,23 @@
 #undef max
 #endif
 
+extern "C" {
+typedef struct wcfViewComponent wcfViewComponent;
+typedef struct wcfViewComponentW wcfViewComponentW;
+typedef struct wcfMultiVal wcfMultiVal;
+typedef struct wcfMultiValW wcfMultiValW;
+}
 WEBCFACE_NS_BEGIN
-namespace internal {
+namespace message {
 struct ViewComponentData;
+}
+namespace internal {
+struct TemporalViewComponentData;
+struct ClientData;
 class ViewBuf;
 } // namespace internal
+class Func;
+class FuncListener;
 
 enum class ViewColor {
     inherit = 0,
@@ -87,10 +98,18 @@ enum class ViewComponentType {
  *
  */
 class WEBCFACE_DLL ViewComponent {
-    std::shared_ptr<internal::ViewComponentData> msg_data;
+    std::shared_ptr<message::ViewComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id_;
+
+    // for cData()
+    mutable std::unique_ptr<wcfMultiVal[]> options_s;
+    mutable std::unique_ptr<wcfMultiValW[]> options_sw;
 
     void checkData() const;
+
+    template <typename CComponent, typename CVal, std::size_t v_index>
+    CComponent cDataT() const;
 
   public:
     /*!
@@ -99,8 +118,15 @@ class WEBCFACE_DLL ViewComponent {
      */
     ViewComponent();
 
-    ViewComponent(const std::shared_ptr<internal::ViewComponentData> &msg_data,
-                  const std::weak_ptr<internal::ClientData> &data_w);
+    ViewComponent(const std::shared_ptr<message::ViewComponentData> &msg_data,
+                  const std::weak_ptr<internal::ClientData> &data_w,
+                  const SharedString &id);
+
+    ViewComponent(const ViewComponent &);
+    ViewComponent &operator=(const ViewComponent &);
+    ViewComponent(ViewComponent &&) noexcept;
+    ViewComponent &operator=(ViewComponent &&) noexcept;
+    ~ViewComponent() noexcept;
 
     wcfViewComponent cData() const;
     wcfViewComponentW cDataW() const;
@@ -112,7 +138,7 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
-     * 
+     *
      */
     std::string id() const;
     /*!
@@ -122,7 +148,7 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * view作成側でidを指定した場合その値が返る。
-     * 
+     *
      */
     std::wstring idW() const;
 
@@ -174,7 +200,7 @@ class WEBCFACE_DLL ViewComponent {
      * 内部データはonClickと共通
      *
      */
-    std::optional<Func> onChange() const { return onClick(); }
+    std::optional<Func> onChange() const;
     /*!
      * \brief inputの現在の値を取得
      * \since ver1.10
@@ -229,7 +255,7 @@ class WEBCFACE_DLL ViewComponent {
  *
  */
 class WEBCFACE_DLL TemporalViewComponent {
-    std::unique_ptr<internal::ViewComponentData> msg_data;
+    std::unique_ptr<internal::TemporalViewComponentData> msg_data;
 
   public:
     /*!
@@ -265,7 +291,7 @@ class WEBCFACE_DLL TemporalViewComponent {
      * InputRefの名前に使うidを決定するのに使う
      *
      */
-    std::unique_ptr<internal::ViewComponentData>
+    std::unique_ptr<internal::TemporalViewComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<ViewComponentType, int> *idx_next = nullptr);
