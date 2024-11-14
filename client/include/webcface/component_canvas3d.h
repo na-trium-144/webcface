@@ -10,8 +10,11 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace internal {
+namespace message {
 struct Canvas3DComponentData;
+}
+namespace internal {
+struct TemporalCanvas3DComponentData;
 }
 
 enum class Canvas3DComponentType {
@@ -28,8 +31,9 @@ enum class Canvas3DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas3DComponent {
-    std::shared_ptr<internal::Canvas3DComponentData> msg_data;
+    std::shared_ptr<message::Canvas3DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id_;
 
     void checkData() const;
 
@@ -41,8 +45,9 @@ class WEBCFACE_DLL Canvas3DComponent {
     Canvas3DComponent();
 
     Canvas3DComponent(
-        const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
-        const std::weak_ptr<internal::ClientData> &data_w);
+        const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+        const std::weak_ptr<internal::ClientData> &data_w,
+        const SharedString &id);
 
     /*!
      * \brief そのcanvas3d内で一意のid
@@ -109,7 +114,7 @@ class WEBCFACE_DLL Canvas3DComponent {
  *
  */
 class WEBCFACE_DLL TemporalCanvas3DComponent {
-    std::unique_ptr<internal::Canvas3DComponentData> msg_data;
+    std::unique_ptr<internal::TemporalCanvas3DComponentData> msg_data;
 
   public:
     /*!
@@ -138,7 +143,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * InputRefの名前に使うidを決定するのに使う
      *
      */
-    std::unique_ptr<internal::Canvas3DComponentData>
+    std::unique_ptr<internal::TemporalCanvas3DComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<Canvas3DComponentType, int> *idx_next = nullptr);

@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
 #include <optional>
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 
 #ifdef min
 // clang-format off

@@ -1,5 +1,5 @@
 #pragma once
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/robot_model.h"
 #include "webcface/robot_link.h"
 
 WEBCFACE_NS_BEGIN
@@ -18,8 +18,9 @@ struct RobotLinkData : message::RobotLink {
     /*!
      * jointのparentをid指定から名前指定に変換
      */
-    explicit RobotLinkData(const message::RobotLink &data,
-                           const std::vector<std::shared_ptr<RobotLinkData>> &links)
+    explicit RobotLinkData(
+        const message::RobotLink &data,
+        const std::vector<std::shared_ptr<RobotLinkData>> &links)
         : message::RobotLink(data) {
         if (this->joint_parent >= 0 &&
             static_cast<std::size_t>(this->joint_parent) < links.size()) {

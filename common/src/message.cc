@@ -1,4 +1,15 @@
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/base.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
 #include <sstream>
 
 WEBCFACE_NS_BEGIN

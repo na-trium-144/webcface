@@ -82,7 +82,7 @@ foreach(target webcface wcf)
     add_dependencies(${target} webcface-build)
     target_compile_definitions(${target} INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
     target_include_directories(${target} INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/encoding/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/common/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
     )

@@ -1,7 +1,6 @@
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
-inline namespace encoding {
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
 
 const ValAdaptor &ValAdaptor::emptyVal() {
@@ -179,5 +178,4 @@ bool ValAdaptor::operator==(const ValAdaptor &other) const {
         return this->as_str == other.as_str;
     }
 }
-} // namespace encoding
 WEBCFACE_NS_END

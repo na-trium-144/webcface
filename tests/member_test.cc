@@ -6,7 +6,6 @@
 #include <webcface/text.h>
 #include <webcface/func.h>
 #include <webcface/view.h>
-#include <stdexcept>
 #include <chrono>
 
 using namespace webcface;

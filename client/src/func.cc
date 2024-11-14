@@ -1,7 +1,8 @@
+#include "webcface/common/internal/message/pack.h"
 #include "webcface/func.h"
 #include <stdexcept>
+#include "webcface/common/internal/message/func.h"
 #include "webcface/internal/func_internal.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"

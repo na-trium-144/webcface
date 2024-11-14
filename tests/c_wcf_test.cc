@@ -1,3 +1,5 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/func.h"
 #include <gtest/gtest.h>
 #include <webcface/member.h>
 #include <webcface/client.h>
@@ -7,7 +9,9 @@
 #include <webcface/view.h>
 #include <webcface/func.h>
 #include <webcface/wcf.h>
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>
@@ -586,7 +590,7 @@ TEST_F(CClientTest, viewReq) {
         EXPECT_EQ(obj.req_id, 1u);
     });
 
-    std::map<std::string, std::shared_ptr<message::ViewComponent>> v{
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>> v{
         {"0", ViewComponents::text("a")
                   .textColor(ViewColor::yellow)
                   .bgColor(ViewColor::green)

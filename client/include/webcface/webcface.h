@@ -6,8 +6,8 @@
 #include "webcface/common/webcface-config.h"
 #endif
 
-#include "webcface/encoding/encoding.h"
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/encoding.h"
+#include "webcface/common/val_adaptor.h"
 
 #include "wcf.h"
 

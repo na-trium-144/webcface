@@ -1,8 +1,9 @@
 #include "webcface/image.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/image.h"
 #include "webcface/member.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/message/message.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -24,8 +25,10 @@ const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
     message::ImageReq req{
         rows,
         cols,
-        color_mode ? std::make_optional(*color_mode) : std::nullopt,
-        cmp_mode,
+        color_mode ? std::make_optional(
+                         static_cast<message::ImageColorMode>(*color_mode))
+                   : std::nullopt,
+        static_cast<message::ImageCompressMode>(cmp_mode),
         quality,
         frame_rate};
     auto req_id = dataLock()->image_store.addReq(member_, field_, req);

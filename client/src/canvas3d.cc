@@ -1,9 +1,10 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/member.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
@@ -32,12 +33,14 @@ template <>
 void internal::DataSetBuffer<TemporalCanvas3DComponent>::onSync() {
     std::unordered_map<Canvas3DComponentType, int> idx_next;
     auto data = target_.setCheck();
-    auto components_p = std::make_shared<Canvas3DDataBase>();
+    auto components_p = std::make_shared<message::Canvas3DData>();
     components_p->data_ids.reserve(this->components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        std::shared_ptr<internal::Canvas3DComponentData> msg_data =
+        std::shared_ptr<internal::TemporalCanvas3DComponentData> msg_data =
             components_[i].lockTmp(data, target_.field_, &idx_next);
-        components_p->components.emplace(msg_data->id, msg_data);
+        components_p->components.emplace(
+            msg_data->id.u8String(),
+            std::static_pointer_cast<message::Canvas3DComponentData>(msg_data));
         components_p->data_ids.push_back(msg_data->id);
     }
     data->canvas3d_store.setSend(target_, components_p);
@@ -77,7 +80,8 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
         std::vector<Canvas3DComponent> v;
         v.reserve((*vb)->data_ids.size());
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id), this->data_w);
+            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
+                           id);
         }
         return v;
     } else {

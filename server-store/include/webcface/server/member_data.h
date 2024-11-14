@@ -1,4 +1,5 @@
 #pragma once
+#include <deque>
 #include <string>
 #include <unordered_map>
 #include <chrono>
@@ -7,11 +8,19 @@
 #include <atomic>
 #include <condition_variable>
 #include <thread>
-#include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include "webcface/common/encoding.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/view.h"
 #include "webcface/server/server.h"
-#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -19,21 +28,6 @@ namespace server {
 std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
                                                    const SharedString &member,
                                                    const SharedString &field);
-
-struct Canvas2DData {
-    double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
-        components;
-    std::vector<SharedString> data_ids;
-};
-struct ViewData {
-    std::map<std::string, std::shared_ptr<message::ViewComponent>> components;
-    std::vector<SharedString> data_ids;
-};
-struct Canvas3DData {
-    std::map<std::string, std::shared_ptr<message::Canvas3DComponent>> components;
-    std::vector<SharedString> data_ids;
-};
 
 struct MemberData {
     spdlog::sink_ptr sink;
@@ -69,11 +63,11 @@ struct MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<ViewData> view;
-    StrMap1<Canvas3DData> canvas3d;
-    StrMap1<Canvas2DData> canvas2d;
+    StrMap1<message::ViewData> view;
+    StrMap1<message::Canvas3DData> canvas3d;
+    StrMap1<message::Canvas2DData> canvas2d;
 
-    StrMap1<ImageFrame> image;
+    StrMap1<message::ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする

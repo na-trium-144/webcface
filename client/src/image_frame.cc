@@ -1,7 +1,8 @@
 #include <cstddef>
+#include <stdexcept>
 
 #include "webcface/image_frame.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/image.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -77,11 +78,14 @@ int ImageFrame::channels() const {
 
 ImageFrame::ImageFrame(const message::ImageFrame &m)
     : size_(sizeWH(m.width_, m.height_)), data_(m.data_),
-      color_mode_(m.color_mode_), cmp_mode_(m.cmp_mode_) {}
+      color_mode_(static_cast<ImageColorMode>(m.color_mode_)),
+      cmp_mode_(static_cast<ImageCompressMode>(m.cmp_mode_)) {}
 
 message::ImageFrame ImageFrame::toMessage() const {
-    return message::ImageFrame{width(), height(), data_, color_mode_,
-                               cmp_mode_};
+    return message::ImageFrame{
+        width(), height(), data_,
+        static_cast<message::ImageColorMode>(color_mode_),
+        static_cast<message::ImageCompressMode>(cmp_mode_)};
 }
 
 WEBCFACE_NS_END

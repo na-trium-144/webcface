@@ -66,7 +66,7 @@ webcface-send -t log
     
     <span class="since-c">2.0</span>
     wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。
-    その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
+    その際Windowsでは出力文字列は usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。
     
     <span class="since-c">2.4</span>
     Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。

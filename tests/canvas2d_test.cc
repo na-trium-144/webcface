@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+#include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include <webcface/member.h>
 #include <webcface/canvas2d.h>
 #include <webcface/func.h>
@@ -82,10 +84,11 @@ TEST_F(Canvas2DTest, set) {
     EXPECT_EQ(canvas2d_data_base.height, 150);
     ASSERT_EQ(canvas2d_data_base.components.size(), 2u);
     ASSERT_EQ(canvas2d_data_base.data_ids.size(), 2u);
-    std::vector<std::shared_ptr<internal::Canvas2DComponentData>> canvas2d_data;
+    std::vector<std::shared_ptr<message::Canvas2DComponentData>> canvas2d_data;
     canvas2d_data.reserve(canvas2d_data_base.components.size());
     for (const auto &id : canvas2d_data_base.data_ids) {
-        canvas2d_data.push_back(canvas2d_data_base.components.at(id));
+        canvas2d_data.push_back(
+            canvas2d_data_base.components.at(id.u8String()));
     }
     EXPECT_EQ(canvas2d_data[0]->type,
               static_cast<int>(Canvas2DComponentType::geometry));
@@ -151,9 +154,9 @@ TEST_F(Canvas2DTest, set) {
         std::invalid_argument);
 }
 TEST_F(Canvas2DTest, get) {
-    auto vd = std::make_shared<webcface::internal::Canvas2DDataBase>();
+    auto vd = std::make_shared<message::Canvas2DData>();
     vd->components = {
-        {"0"_ss, std::make_shared<internal::Canvas2DComponentData>()}};
+        {"0", std::make_shared<message::Canvas2DComponentData>()}};
     vd->data_ids = {"0"_ss};
     data_->canvas2d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);

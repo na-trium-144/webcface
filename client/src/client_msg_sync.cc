@@ -1,7 +1,18 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/log.h"
 #include "webcface/client.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/robot_model.h"
 #include "webcface/internal/logger.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
 
 WEBCFACE_NS_BEGIN
@@ -180,13 +191,15 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::ViewComponent>> v_diff;
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>
+            v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.view_prev.end() ||
-                v_prev->second->components.count(id) == 0 ||
-                *v_prev->second->components.at(id) !=
-                    *p.second->components.at(id)) {
-                v_diff.emplace(id.u8String(), p.second->components.at(id));
+                v_prev->second->components.count(id.u8String()) == 0 ||
+                *v_prev->second->components.at(id.u8String()) !=
+                    *p.second->components.at(id.u8String())) {
+                v_diff.emplace(id.u8String(),
+                               p.second->components.at(id.u8String()));
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
@@ -202,14 +215,15 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas3d_data) {
         auto v_prev = data.canvas3d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas3d_prev.end() ||
-                v_prev->second->components.count(id) == 0 ||
-                *v_prev->second->components.at(id) !=
-                    *p.second->components.at(id)) {
-                v_diff.emplace(id.u8String(), p.second->components.at(id));
+                v_prev->second->components.count(id.u8String()) == 0 ||
+                *v_prev->second->components.at(id.u8String()) !=
+                    *p.second->components.at(id.u8String())) {
+                v_diff.emplace(id.u8String(),
+                               p.second->components.at(id.u8String()));
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
@@ -225,14 +239,15 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas2d_data) {
         auto v_prev = data.canvas2d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas2d_prev.end() ||
-                v_prev->second->components.count(id) == 0 ||
-                *v_prev->second->components.at(id) !=
-                    *p.second->components.at(id)) {
-                v_diff.emplace(id.u8String(), p.second->components.at(id));
+                v_prev->second->components.count(id.u8String()) == 0 ||
+                *v_prev->second->components.at(id.u8String()) !=
+                    *p.second->components.at(id.u8String())) {
+                v_diff.emplace(id.u8String(),
+                               p.second->components.at(id.u8String()));
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed;

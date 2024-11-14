@@ -7,12 +7,25 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/encoding/image_mode.h"
 
 WEBCFACE_NS_BEGIN
 namespace message {
 struct ImageFrame;
 } // namespace message
+
+enum class ImageColorMode {
+    gray = 0,
+    bgr = 1,
+    bgra = 2,
+    rgb = 3,
+    rgba = 4,
+};
+enum class ImageCompressMode {
+    raw = 0,
+    jpeg = 1,
+    webp = 2,
+    png = 3,
+};
 
 class Size {
     int w_ = 0, h_ = 0;

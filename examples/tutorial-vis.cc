@@ -4,6 +4,7 @@
 #include <webcface/value.h>
 #include <webcface/text.h>
 #include <webcface/view.h>
+#include <webcface/func.h>
 
 webcface::Client wcli("tutorial");
 // loggerOStream() は std::cout と同様に文字列を出力して使うことができる

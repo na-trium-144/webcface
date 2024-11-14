@@ -10,7 +10,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 

@@ -12,8 +12,11 @@
 #include "webcface/geometry.h"
 
 WEBCFACE_NS_BEGIN
-namespace internal {
+namespace message {
 struct Canvas2DComponentData;
+}
+namespace internal {
+struct TemporalCanvas2DComponentData;
 }
 
 enum class Canvas2DComponentType {
@@ -28,8 +31,9 @@ enum class Canvas2DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas2DComponent {
-    std::shared_ptr<internal::Canvas2DComponentData> msg_data;
+    std::shared_ptr<message::Canvas2DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id_;
 
     void checkData() const;
 
@@ -41,8 +45,9 @@ class WEBCFACE_DLL Canvas2DComponent {
     Canvas2DComponent();
 
     Canvas2DComponent(
-        const std::shared_ptr<internal::Canvas2DComponentData> &msg_data,
-        const std::weak_ptr<internal::ClientData> &data_w);
+        const std::shared_ptr<message::Canvas2DComponentData> &msg_data,
+        const std::weak_ptr<internal::ClientData> &data_w,
+        const SharedString &id);
 
     /*!
      * \brief そのcanvas2d内で一意のid
@@ -51,7 +56,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) canvas2d作成側でidを指定した場合その値が返る。
-     * 
+     *
      */
     std::string id() const;
     /*!
@@ -61,7 +66,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * canvas2d作成側でidを指定した場合その値が返る。
-     * 
+     *
      */
     std::wstring idW() const;
 
@@ -130,7 +135,7 @@ class WEBCFACE_DLL Canvas2DComponent {
 };
 
 class WEBCFACE_DLL TemporalCanvas2DComponent {
-    std::unique_ptr<internal::Canvas2DComponentData> msg_data;
+    std::unique_ptr<internal::TemporalCanvas2DComponentData> msg_data;
 
   public:
     /*!
@@ -159,7 +164,7 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * Funcの名前に使うidを決定するのに使う
      *
      */
-    std::unique_ptr<internal::Canvas2DComponentData>
+    std::unique_ptr<internal::TemporalCanvas2DComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<Canvas2DComponentType, int> *idx_next = nullptr);
@@ -325,9 +330,9 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \param func 実行する任意の関数
      * (引数、戻り値なしでstd::functionにキャスト可能ならなんでもok)
      * \since ver2.5
-     * 
+     *
      * MSVCのバグでエラーになってしまうので std::is_invocable_v は使えない
-     * 
+     *
      */
     template <typename T, decltype(std::declval<T>()(), nullptr) = nullptr>
     TemporalCanvas2DComponent &onClick(T func) & {

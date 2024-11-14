@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
+#include "webcface/common/internal/message/view.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include <webcface/member.h>
 #include <webcface/view.h>
 #include <webcface/func.h>
@@ -103,10 +105,10 @@ TEST_F(ViewTest, viewSet) {
     auto &view_data_base = **data_->view_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(view_data_base.components.size(), 11u);
     EXPECT_EQ(view_data_base.data_ids.size(), 11u);
-    std::vector<std::shared_ptr<internal::ViewComponentData>> view_data;
+    std::vector<std::shared_ptr<message::ViewComponentData>> view_data;
     view_data.reserve(view_data_base.components.size());
     for (const auto &id : view_data_base.data_ids) {
-        view_data.push_back(view_data_base.components.at(id));
+        view_data.push_back(view_data_base.components.at(id.u8String()));
     }
     EXPECT_EQ(view_data_base.data_ids[0].u8String(), "..0.0");
     EXPECT_EQ(view_data[0]->type, static_cast<int>(ViewComponentType::text));
@@ -230,14 +232,20 @@ TEST_F(ViewTest, viewSet) {
 }
 TEST_F(ViewTest, viewGet) {
     std::unordered_map<ViewComponentType, int> idx_next;
-    auto vd = std::make_shared<internal::ViewDataBase>();
+    auto vd = std::make_shared<message::ViewData>();
     vd->components = {
-        {"a"_ss,
-         components::text("a").id("a").component_v.lockTmp(data_, "b"_ss, &idx_next)},
-        {"c"_ss,
-         components::text("a").id("c").component_v.lockTmp(data_, "b"_ss, &idx_next)},
-        {"b"_ss,
-         components::button("a", [] {}).id("b").lockTmp(data_, "b"_ss, &idx_next)},
+        {"a",
+         std::static_pointer_cast<message::ViewComponentData>(
+             std::shared_ptr(components::text("a").id("a").component_v.lockTmp(
+                 data_, "b"_ss, &idx_next)))},
+        {"c",
+         std::static_pointer_cast<message::ViewComponentData>(
+             std::shared_ptr(components::text("a").id("c").component_v.lockTmp(
+                 data_, "b"_ss, &idx_next)))},
+        {"b", std::static_pointer_cast<message::ViewComponentData>(
+                  std::shared_ptr(components::button("a", [] {})
+                                      .id("b")
+                                      .lockTmp(data_, "b"_ss, &idx_next)))},
     };
     vd->data_ids = {"a"_ss, "b"_ss, "c"_ss};
     data_->view_store.setRecv("a"_ss, "b"_ss, vd);

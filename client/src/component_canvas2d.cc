@@ -1,38 +1,38 @@
 #include "webcface/component_canvas2d.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
 
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas2DComponent::id() const { return msg_data->id.decode(); }
-std::wstring Canvas2DComponent::idW() const { return msg_data->id.decodeW(); }
+std::string Canvas2DComponent::id() const { return id_.decode(); }
+std::wstring Canvas2DComponent::idW() const { return id_.decodeW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
-    const std::shared_ptr<internal::Canvas2DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w)
-    : msg_data(msg_data), data_w(data_w) {}
+    const std::shared_ptr<message::Canvas2DComponentData> &msg_data,
+    const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
+    : msg_data(msg_data), data_w(data_w), id_(id) {}
 
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(std::nullptr_t)
     : msg_data() {}
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(Canvas2DComponentType type)
-    : msg_data(std::make_unique<internal::Canvas2DComponentData>()) {
+    : msg_data(std::make_unique<internal::TemporalCanvas2DComponentData>()) {
     this->msg_data->type = static_cast<int>(type);
 }
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(
     const TemporalCanvas2DComponent &other) {
     if (other.msg_data) {
-        msg_data =
-            std::make_unique<internal::Canvas2DComponentData>(*other.msg_data);
+        msg_data = std::make_unique<internal::TemporalCanvas2DComponentData>(
+            *other.msg_data);
     }
 }
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::operator=(const TemporalCanvas2DComponent &other) {
-    msg_data =
-        std::make_unique<internal::Canvas2DComponentData>(*other.msg_data);
+    msg_data = std::make_unique<internal::TemporalCanvas2DComponentData>(
+        *other.msg_data);
     return *this;
 }
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(
@@ -51,7 +51,7 @@ void Canvas2DComponent::checkData() const {
     }
 }
 
-std::unique_ptr<internal::Canvas2DComponentData>
+std::unique_ptr<internal::TemporalCanvas2DComponentData>
 TemporalCanvas2DComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> &data,
     const SharedString &view_name,
@@ -80,16 +80,6 @@ TemporalCanvas2DComponent::lockTmp(
 bool Canvas2DComponent::operator==(const Canvas2DComponent &other) const {
     return msg_data && other.msg_data && id() == other.id() &&
            *msg_data == *other.msg_data;
-}
-bool internal::Canvas2DComponentData::operator==(
-    const Canvas2DComponentData &other) const {
-    return type == other.type && origin_pos == other.origin_pos &&
-           origin_rot == other.origin_rot && color == other.color &&
-           fill == other.fill && stroke_width == other.stroke_width &&
-           geometry_type == other.geometry_type &&
-           properties == other.properties &&
-           on_click_member == other.on_click_member &&
-           on_click_field == other.on_click_field && text == other.text;
 }
 
 TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::string_view id) {
