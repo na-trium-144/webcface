@@ -8,13 +8,10 @@
 #include <cstdint>
 #include <spdlog/logger.h>
 #include <utf8.h>
-#include "webcface/common/image_mode.h"
 #include "webcface/common/val_adaptor.h"
 #include "./base.h"
 
 MSGPACK_ADD_ENUM(webcface::ValType)
-MSGPACK_ADD_ENUM(webcface::ImageColorMode)
-MSGPACK_ADD_ENUM(webcface::ImageCompressMode)
 
 WEBCFACE_NS_BEGIN
 namespace message {

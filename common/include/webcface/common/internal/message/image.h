@@ -1,12 +1,36 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
-#include "webcface/common/image_mode.h"
 #include <optional>
 #include <vector>
 
 #ifndef MSGPACK_DEFINE_MAP
 #define MSGPACK_DEFINE_MAP(...)
+#endif
+
+WEBCFACE_NS_BEGIN
+namespace message {
+
+enum class ImageColorMode {
+    gray = 0,
+    bgr = 1,
+    bgra = 2,
+    rgb = 3,
+    rgba = 4,
+};
+enum class ImageCompressMode {
+    raw = 0,
+    jpeg = 1,
+    webp = 2,
+    png = 3,
+};
+
+}
+WEBCFACE_NS_END
+
+#ifdef MSGPACK_ADD_ENUM
+MSGPACK_ADD_ENUM(webcface::message::ImageColorMode)
+MSGPACK_ADD_ENUM(webcface::message::ImageCompressMode)
 #endif
 
 WEBCFACE_NS_BEGIN

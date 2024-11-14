@@ -17,6 +17,52 @@ class ImageFrameTest : public ::testing::Test {
     }
     std::shared_ptr<std::vector<unsigned char>> dp;
 };
+
+[[maybe_unused]] void imageEnumTest(ImageColorMode color,
+                                    ImageCompressMode comp) {
+    // 新しいcolorを追加してここに書き忘れたらwarningが出る
+    switch (color) {
+    case ImageColorMode::gray:
+        static_assert(static_cast<int>(ImageColorMode::gray) ==
+                      static_cast<int>(message::ImageColorMode::gray));
+        break;
+    case ImageColorMode::bgr:
+        static_assert(static_cast<int>(ImageColorMode::bgr) ==
+                      static_cast<int>(message::ImageColorMode::bgr));
+        break;
+    case ImageColorMode::bgra:
+        static_assert(static_cast<int>(ImageColorMode::bgra) ==
+                      static_cast<int>(message::ImageColorMode::bgra));
+        break;
+    case ImageColorMode::rgb:
+        static_assert(static_cast<int>(ImageColorMode::rgb) ==
+                      static_cast<int>(message::ImageColorMode::rgb));
+        break;
+    case ImageColorMode::rgba:
+        static_assert(static_cast<int>(ImageColorMode::rgba) ==
+                      static_cast<int>(message::ImageColorMode::rgba));
+        break;
+    }
+    switch (comp) {
+    case ImageCompressMode::raw:
+        static_assert(static_cast<int>(ImageCompressMode::raw) ==
+                      static_cast<int>(message::ImageCompressMode::raw));
+        break;
+    case ImageCompressMode::jpeg:
+        static_assert(static_cast<int>(ImageCompressMode::jpeg) ==
+                      static_cast<int>(message::ImageCompressMode::jpeg));
+        break;
+    case ImageCompressMode::webp:
+        static_assert(static_cast<int>(ImageCompressMode::webp) ==
+                      static_cast<int>(message::ImageCompressMode::webp));
+        break;
+    case ImageCompressMode::png:
+        static_assert(static_cast<int>(ImageCompressMode::png) ==
+                      static_cast<int>(message::ImageCompressMode::png));
+        break;
+    }
+}
+
 TEST_F(ImageFrameTest, baseDefaultCtor) {
     ImageFrame img;
     EXPECT_TRUE(img.empty());
