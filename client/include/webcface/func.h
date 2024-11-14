@@ -2,12 +2,14 @@
 #include "webcface/common/val_adaptor.h"
 #include "func_result.h"
 #include "arg.h"
+#include "trait.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
 struct FuncInfo;
 }
 
+namespace traits {
 template <typename T>
 constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
     return &T::operator();
@@ -24,7 +26,7 @@ template <bool>
 struct FuncArgTypeCheck {};
 template <>
 struct FuncArgTypeCheck<true> {
-    using ArgTypesSupportedByWebCFaceFunc = std::nullptr_t;
+    using ArgTypesSupportedByWebCFaceFunc = TraitOkType;
 };
 template <typename... Args>
 struct FuncArgTypesTrait
@@ -34,7 +36,7 @@ template <bool>
 struct FuncReturnTypeCheck {};
 template <>
 struct FuncReturnTypeCheck<true> {
-    using ReturnTypeSupportedByWebCFaceFunc = std::nullptr_t;
+    using ReturnTypeSupportedByWebCFaceFunc = TraitOkType;
 };
 template <typename Ret>
 struct FuncReturnTypeTrait
@@ -83,6 +85,8 @@ struct FuncSignatureTrait<Ret (*)(Args...)> : FuncSignatureTrait<Ret(Args...)> {
  */
 template <typename T>
 using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
+
+} // namespace traits
 
 /*!
  * \brief 関数1つを表すクラス
@@ -202,8 +206,6 @@ class WEBCFACE_DLL Func : protected Field {
         catchAll([&] { handle.respond(f_run()); }, handle);
     }
 
-    static constexpr std::nullptr_t TraitOk = nullptr;
-
   public:
     /*!
      * \brief 関数をセットする
@@ -219,21 +221,22 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
+              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::
+                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
     const Func &set(T func) const {
         return setImpl(
-            valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
-            FuncObjTrait<T>::argsInfo(),
+            valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
+            traits::FuncObjTrait<T>::argsInfo(),
             [func = std::move(func)](const CallHandle &handle) {
-                if (FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename FuncObjTrait<T>::ArgsTuple args_tuple;
+                if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
+                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
                     argToTuple(handle.args(), args_tuple);
                     tryRun(
                         [&] {
-                            if constexpr (FuncObjTrait<T>::return_void) {
+                            if constexpr (traits::FuncObjTrait<
+                                              T>::return_void) {
                                 std::apply(func, args_tuple);
                                 return ValAdaptor::emptyVal();
                             } else {
@@ -259,24 +262,24 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
+              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::
+                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
     const Func &setAsync(T func) const {
         return setImpl(
-            valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
-            FuncObjTrait<T>::argsInfo(),
+            valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
+            traits::FuncObjTrait<T>::argsInfo(),
             [func_p = std::make_shared<T>(std::move(func))](
                 const CallHandle &handle) {
-                if (FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename FuncObjTrait<T>::ArgsTuple args_tuple;
+                if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
+                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
                     argToTuple(handle.args(), args_tuple);
                     std::thread(
                         [func_p, handle](auto args_tuple) {
                             tryRun(
                                 [&] {
-                                    if constexpr (FuncObjTrait<
+                                    if constexpr (traits::FuncObjTrait<
                                                       T>::return_void) {
                                         std::apply(*func_p, args_tuple);
                                         return ValAdaptor::emptyVal();

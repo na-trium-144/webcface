@@ -72,19 +72,19 @@ TEST_F(Canvas3DTest, set) {
     robot_model(self_name, "b")
         .set({
             RobotLink{"l0", Geometry{}, ViewColor::black},
-            RobotLink{"l1", rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
-                      Geometry{}, ViewColor::black},
+            RobotLink{"l1", rotationalJoint("j0", "l0", {}), Geometry{},
+                      ViewColor::black},
         });
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3})
-              .origin({1, 1, 1, 0, 0, 0})
+              .origin(translation(1, 1, 1))
               .color(ViewColor::red));
-    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10)
-              .origin({2, 2, 2, 0, 0, 0})
+    v.add(plane({}, 10, 10)
+              .origin(translation(2, 2, 2))
               .color(ViewColor::yellow));
     v.add(robot_model(self_name, "b")
-              .origin({3, 3, 3, 0, 0, 0})
+              .origin(translation(3, 3, 3))
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
@@ -163,7 +163,9 @@ TEST_F(Canvas3DTest, set) {
     } // v3のデストラクタでsyncされる
     EXPECT_EQ(callback_called, 4);
 
-    { Canvas3D v5{}; } // エラーやセグフォしない
+    {
+        Canvas3D v5{};
+    } // エラーやセグフォしない
 
     Canvas3D v6{};
     v6.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});

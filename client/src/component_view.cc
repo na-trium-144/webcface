@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES // NOLINT
+#include <cmath>
 #include "webcface/component_view.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/field.h"
@@ -6,6 +8,45 @@
 #include "webcface/c_wcf/def_types.h"
 
 WEBCFACE_NS_BEGIN
+
+ViewColor colorFromRGB(double r, double g, double b) {
+    double alpha = (2 * r - g - b) / 2;
+    double beta = (g - b) * 0.866;
+    double h = std::atan2(beta, alpha) / M_PI * 180;
+    double c2 = alpha * alpha + beta * beta;
+    double i = (r + g + b) / 3;
+    if (c2 < 1.0 / 9) {
+        if (i < 1.0 / 3) {
+            return ViewColor::black;
+        } else if (i < 2.0 / 3) {
+            return ViewColor::gray;
+        } else {
+            return ViewColor::white;
+        }
+    } else {
+        if (h > 330 || h < 15) {
+            return ViewColor::red;
+        } else if (h < 35) {
+            return ViewColor::orange;
+        } else if (h < 60) {
+            return ViewColor::yellow;
+        } else if (h < 150) {
+            return ViewColor::green;
+        } else if (h < 180) {
+            return ViewColor::teal;
+        } else if (h < 195) {
+            return ViewColor::cyan;
+        } else if (h < 225) {
+            return ViewColor::blue;
+        } else if (h < 250) {
+            return ViewColor::indigo;
+        } else if (h < 295) {
+            return ViewColor::purple;
+        } else {
+            return ViewColor::pink;
+        }
+    }
+}
 
 /// \private
 static inline std::string internalViewId(int type, int idx) {

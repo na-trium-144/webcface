@@ -437,9 +437,10 @@ struct Plane {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double width() const { return base.properties[6]; }
     double height() const { return base.properties[7]; }
@@ -460,8 +461,8 @@ inline TemporalGeometry plane(const Transform &origin, double width,
                               double height) {
     return TemporalGeometry(GeometryType::plane,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             width, height});
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], width, height});
 }
 using Rect = Plane;
 inline TemporalGeometry rect(const Point &origin, double width, double height) {
@@ -478,8 +479,8 @@ inline TemporalGeometry rect(const Point &p1, const Point &p2) {
     double height = std::abs(p1.pos(0) - p2.pos(0));
     return TemporalGeometry{GeometryType::plane,
                             {origin.pos(0), origin.pos(1), origin.pos(2),
-                             origin.rot(0), origin.rot(1), origin.rot(2), width,
-                             height}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], width, height}};
 }
 
 struct Box {
@@ -513,17 +514,18 @@ struct Circle {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
 };
 inline TemporalGeometry circle(const Transform &origin, double radius) {
     return TemporalGeometry{GeometryType::circle,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             radius}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], radius}};
 }
 inline TemporalGeometry circle(const Point &origin, double radius) {
     return TemporalGeometry{
@@ -539,9 +541,10 @@ struct Cylinder {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
     double length() const { return base.properties[7]; }
@@ -550,8 +553,8 @@ inline TemporalGeometry cylinder(const Transform &origin, double radius,
                                  double length) {
     return TemporalGeometry{GeometryType::cylinder,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             radius, length}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], radius, length}};
 }
 
 struct Sphere {

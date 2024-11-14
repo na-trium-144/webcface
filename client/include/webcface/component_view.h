@@ -64,6 +64,16 @@ enum class ViewColor {
     pink = 23,
     // rose = 24,
 };
+/*!
+ * \brief ViewColorのenumの中からRGBで指定した色に近いものを返す
+ * \since ver2.5
+ *
+ * * r, g, b はそれぞれ 0.0〜1.0 で指定
+ * * 主観に基づいており、わりとてきとうです
+ *
+ */
+WEBCFACE_DLL ViewColor colorFromRGB(double r, double g, double b);
+
 enum class ViewComponentType {
     text = 0,
     new_line = 1,
