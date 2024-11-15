@@ -289,10 +289,10 @@ class Rotation {
 
     /*!
      * \brief 3次元の回転をオイラー角として取得
-     * \sa rotEuler()
+     * \sa rotEuler(), rot2D()
      * \deprecated ver2.5〜
      */
-    [[deprecated("use rotEuler()")]]
+    [[deprecated("use rotEuler() or rot2D()")]]
     std::array<double, 3> rot() const {
         return rotEuler();
     }
@@ -303,7 +303,7 @@ class Rotation {
      * \param index 0→z, 1→y, 2→x
      * \deprecated ver2.5〜
      */
-    [[deprecated("use rotEuler()")]]
+    [[deprecated("use rotEuler() or rot2D()")]]
     double rot(std::size_t index) const {
         return rotEuler().at(index);
     }
@@ -312,7 +312,7 @@ class Rotation {
      * \sa rotEuler()
      * \deprecated ver2.5〜
      */
-    [[deprecated("use rotEuler()")]]
+    [[deprecated("use rotEuler() or rot2D()")]]
     std::array<double, 3> &rot() {
         rotEuler();
         rmat_ = std::nullopt;
@@ -324,13 +324,21 @@ class Rotation {
      * \param index 0→z, 1→y, 2→x
      * \deprecated ver2.5〜
      */
-    [[deprecated("use rotEuler()")]]
+    [[deprecated("use rotEuler() or rot2D()")]]
     double &rot(std::size_t index) {
         rotEuler();
         rmat_ = std::nullopt;
         return rot_->at(index);
     }
 
+    /*!
+     * \brief 2次元の回転を取得
+     * \since ver2.5
+     *
+     * 内部処理としては rotEuler()[0] と同じ。
+     *
+     */
+    double rot2D() const { return rotEuler()[0]; }
     /*!
      * \brief 3次元の回転をオイラー角として取得
      * \since ver2.5
@@ -638,7 +646,8 @@ class Transform : private Point, private Rotation {
      * \param rot 回転角(z)
      *
      */
-    Transform(const Point &pos, double rot) : Transform(pos, rot2D(rot)) {};
+    Transform(const Point &pos, double rot)
+        : Transform(pos, webcface::rot2D(rot)) {};
     /*!
      * \brief 3次元の座標と回転をオイラー角から初期化
      * \deprecated ver2.5〜 Transform({x, y, z}, rotEuler(z, y, x))
@@ -663,6 +672,7 @@ class Transform : private Point, private Rotation {
     friend class Rotation;
     using Point::pos;
     using Rotation::rot;
+    using Rotation::rot2D;
     using Rotation::rotAxisAngle;
     using Rotation::rotEuler;
     using Rotation::rotMatrix;
