@@ -21,15 +21,27 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    Point, Transformオブジェクトからは`pos()`, `rot()`で座標と回転角を取得できます。
+    Point, Transformオブジェクトからは`pos()`, <del>`rot()`</del> <span class="since-c">2.5</span> `rot2D()` で座標と回転角を取得できます。
     ```cpp
     Point p{1, 2};
-    std::cout << p.pos(0); // 1 (x座標)
+    std::cout << p.pos(0) << ", " << p.pos(1); // 1, 2 (x, y 座標)
     Transform r{{1, 2}, std::numbers::pi / 2};
-    std::cout << r.pos(0); // 1 (x座標)
-    std::cout << r.rot(0); // pi / 2 (z軸回り)
+    std::cout << r.pos(0) << ", " << p.pos(1); // 1, 2 (x, y 座標)
+    std::cout << r.rot2D(); // pi / 2
     ```
-    webcface::identity() は原点、回転なしのTransformを返します。
+    
+    * webcface::identity() は原点、回転なしのTransformを返します。
+    * <span class="since-c">2.5</span>
+    Point同士は加算、減算ができます。
+    また、実数の乗算、除算ができます。
+    * <span class="since-c">2.5</span>
+    Transform \* Transform, Transform \* Point の乗算ができます。
+    右辺の座標系全体を、左辺の値の分だけ回転移動してから平行移動したものになります。
+        * 同じ効果を持つ関数として Transform::appliedTo() があります。
+    * <span class="since-c">2.5</span>
+    Transform::inversed() で逆変換が得られます。
+    * <span class="since-c">2.5</span> Point同士、Transform同士は `==`, `!=`での比較ができます。
+        * 完全一致での判定ではなく、各要素の差がそれぞれ 1e-8 未満であればtrueになります。
 
 - <b class="tab-title">JavaScript</b>
     [Point](https://na-trium-144.github.io/webcface-js/classes/Point.html), [Transform](https://na-trium-144.github.io/webcface-js/classes/Transform.html) オブジェクトからは`pos`, `rot`で座標と回転角を取得できます。
@@ -43,27 +55,37 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
     ```
 
 - <b class="tab-title">Python</b>
-    [webcface.Point](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point), [webcface.Transform](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform) オブジェクトからは`pos`, `rot`で座標と回転角を取得できます。
+    [webcface.Point](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point), [webcface.Transform](https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform) オブジェクトからは`pos`, <del>`rot`</del> <span class="since-py">3.0</span> `rot_2d()` で座標と回転角を取得できます。
     ```py
     p = webcface.Point([1, 2])
-    print(p.pos[0]) # 1 (x座標)
+    print(p.pos) # (1, 2) (x, y 座標)
     r = webcface.Transform([1, 2], math.pi / 2)
-    print(r.pos[0]) # 1 (x座標)
-    print(r.rot[0]) # pi / 2 (z軸回り)
+    print(r.pos) # (1, 2) (x, y 座標)
+    print(r.rot_2d()) # pi / 2
     ```
-    webcface.identity() は原点、回転なしのTransformを返します。
-
-    Point同士は加算、減算、`==`, `!=`での比較ができます。
+    
+    * webcface.identity() は原点、回転なしのTransformを返します。
+    * Point同士は加算、減算ができます。
     また、int,floatと乗算、除算ができます。
-
-    引数にPointやTransformをとる関数では、webcface.Point に変換することなく
-    `[1, 2]`のようなリストのままでも使えるものもあります。
+    * <span class="since-py">3.0</span>
+    Transform \* Transform, Transform \* Point の乗算ができます。
+    右辺の座標系全体を、左辺の値の分だけ回転移動してから平行移動したものになります。
+        * 同じ効果を持つ関数として Transform.applied_to_point(), applied_to_transform() があります。
+    * <span class="since-py">3.0</span>
+    Transform.inversed() で逆変換が得られます。
+    * Point同士、Transform同士は `==`, `!=`での比較ができます。
+        * <span class="since-py">3.0</span> 完全一致での判定ではなく、各要素の差がそれぞれ 1e-8 未満であればtrueになります。
+    * 引数にPointやTransformをとる関数では、webcface.Point に変換することなく
+    `[1, 2]` や `[[1, 2], pi / 2]` のようなリストのままでも使えるものもあります。
 
 </div>
 
 ## 送信
 
 使い方は[View](54_view.md)とだいたい同じになっています。
+
+\note
+Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます
 
 <div class="tabbed">
 
@@ -173,38 +195,34 @@ Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) 
 
 </div>
 
-\note
-Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます
-
 ### Geometry (2次元)
 
 2次元の図形を表示するにはGeometryを指定します。
+
+座標系は 右方向がx座標正、下方向がy座標正です。
+(したがって回転角は右回りが正になります。)
+
+描画したものが重なる場合、後にaddした要素が上に描画されます。
 
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
     \since <span class="since-c">1.9</span>
 
-    `webcface::Geometries` 名前空間に定義されています。
+    `webcface::geometries` 名前空間に定義されています。
     ```cpp
-    using namespace webcface::Geometries;
+    using namespace webcface::geometries;
     ```
     をすると便利かもしれません
-    \note namespace Geometries はinlineなので、 `webcface::` の名前空間でもアクセス可能です
+    \note namespace geometries はinlineなので、 `webcface::` の名前空間でもアクセス可能です
 
     各要素はそれぞれの関数から webcface::Canvas2DComponent または webcface::TemporalComponent のオブジェクトとして得られます。
-    `rect(...).color(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
-
-    色、線の太さ、クリック時に実行する関数などを設定できます。
-    使用可能なオプションは webcface::Canvas2DComponent のそれぞれのメソッドの説明を参照してください。
-    関数の実行については[Func](./53_func.md)も参照してください
 
 - <b class="tab-title">JavaScript</b>
     JavaScriptでは [`geometries`](https://na-trium-144.github.io/webcface-js/variables/geometries.html) オブジェクト内にそれぞれの要素を表す関数があります
     ```ts
     import { geometries } from "webcface";
     ```
-    オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。
 
 - <b class="tab-title">Python</b>
     Pythonでは [`webcface.geometries`](https://na-trium-144.github.io/webcface-python/webcface.geometries.html) モジュール内にあり、
@@ -232,14 +250,6 @@ addの引数に表示したいgeometryと、表示する位置の平行移動or�
 
 </details>
 
-
-座標系は 右方向がx座標正、下方向がy座標正です。
-(したがって回転角は右回りが正になります。)
-
-描画したものが重なる場合、後にaddした要素が上に描画されます。
-
-Geometryは以下のものが用意されています。
-
 #### Line
 指定した2点間に直線を引きます
 ```cpp
@@ -262,9 +272,8 @@ originを中心として半径radiusの円を描画します
 circle(Point origin, double radius)
 ```
 
-\warning
-PythonではCanvas3Dとの兼ね合いで第1引数はTransform
-(使いにくいのでなんとかならないか?)
+<del>PythonではCanvas3Dとの兼ね合いで第1引数はTransform(使いにくいのでなんとかならないか?)</del>
+<span class="since-py">3.0</span> で修正
 
 #### Polygon
 指定した点をつなげた図形を描画します
@@ -289,6 +298,58 @@ polygon(std::vector<Point> points)
     ```
 
 </div>
+
+### オプション
+
+各要素には以下のオプションを指定することができます。
+(要素の種類によっては効果がないものもあります)
+
+* origin: 図形の位置を移動・回転します。
+    * それぞれのgeometryに対しても位置を指定することができますが、
+    それに加えてoriginを指定した場合最終的な座標は origin \* 図形の座標 になります
+* color: 図形の枠線の色を変更します。
+* fillColor(C++), fill(Python): 背景色を変更します。
+* strokeWidth: 線の太さを変更します。
+    * 太さ1はCanvas2Dの座標系で1の長さ分の太さになります(拡大縮小で太さが変わる)
+    * 指定しない場合0となります
+        * WebUIではその場合Canvasの拡大に関係なく1ピクセルで表示します
+* textSize: <span class="since-c">1.9</span> 文字のサイズ
+    * 大きさ1は文字の高さがCanvas2Dの座標系で1の長さ分になります(拡大縮小で大きさが変わる)
+* onClick: <span class="since-c">1.9</span> クリックされたときに実行する処理を指定できます。
+    * Viewのbuttonと同様、 Funcオブジェクト、 <span class="since-c">2.5</span> FuncListerオブジェクト、 または関数を直接指定できます。
+* id: <span class="since-c">2.5</span><span class="since-py">3.0</span> Viewのbuttonなどと同様です。
+    * 指定する場合は一意な文字列を指定してください。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    `rect(...).color(...)` などのようにメソッドチェーンすることで各要素にオプションを設定できます。
+    詳細は webcface::TemporalCanvas2DComponent のリファレンスを参照してください。
+
+    色はViewと同様 webcface::ViewColor のenumで指定します。
+
+<!-- 
+- <b class="tab-title">C</b>
+    wcfViewComponent 構造体のメンバーでオプションを指定することができます。
+
+    ```c
+    wcfViewComponent vc[10];
+    vc[0] = wcfText("hello world\n");
+    vc[0].text_color = WCF_COLOR_RED;
+    ```
+ -->
+
+- <b class="tab-title">JavaScript</b>
+    `rect(..., { color: ..., }))`
+    などのように、オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。
+
+- <b class="tab-title">Python</b>
+    `canvas2d.add(rect(...), color=...)` などのように、add() の引数にキーワード引数を渡すことでオプションを設定できます。
+
+    色はViewと同様 ViewColor のenumで指定します。
+
+</div>
+
 
 ## 受信
 Viewなどと同様、Member::canvas2D() でCanvas2Dクラスのオブジェクトが得られ、
