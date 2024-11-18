@@ -1,0 +1,8 @@
+<map id="TemporalViewComponentData" name="TemporalViewComponentData">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,168,225,193"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1ViewComponentData.html" title=" " alt="" coords="118,93,278,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,130,131,170,127,166,173,126"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="45,5,151,31"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="94,45,89,80,91,118,100,144,111,167,106,169,95,147,86,119,84,80,89,44"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="124,38,186,91,182,95,120,42"/>
+</map>

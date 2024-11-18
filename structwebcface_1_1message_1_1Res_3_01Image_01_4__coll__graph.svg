@@ -77,7 +77,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="classwebcface_1_1encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
+<g id="a_Node000005"><a xlink:href="classwebcface_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
 <polygon fill="white" stroke="#666666" points="355,-90.5 276,-90.5 276,-71.5 355,-71.5 355,-90.5"/>
 <text text-anchor="middle" x="315.5" y="-78.5" font-family="Helvetica,sans-Serif" font-size="10.00">SharedString</text>
 </a>

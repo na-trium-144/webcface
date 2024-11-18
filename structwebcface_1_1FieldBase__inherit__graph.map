@@ -10,30 +10,28 @@
 <area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="169,287,192,215,211,175,238,139,253,127,256,132,242,143,216,178,196,217,174,288"/>
 <area shape="rect" id="Node000006" href="$classwebcface_1_1Func.html" title="関数1つを表すクラス" alt="" coords="264,153,316,179"/>
 <area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="174,287,199,238,217,212,238,188,262,173,265,177,242,192,221,215,204,241,179,290"/>
-<area shape="rect" id="Node000009" href="$classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="259,203,321,228"/>
-<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="184,289,209,263,238,237,258,226,260,230,242,241,212,266,188,292"/>
-<area shape="rect" id="Node000010" href="$classwebcface_1_1Log.html" title="ログの送受信データを表すクラス" alt="" coords="267,252,313,277"/>
-<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="204,296,266,271,268,276,206,301"/>
-<area shape="rect" id="Node000011" href="$classwebcface_1_1Member.html" title="Memberを指すクラス" alt="" coords="252,301,328,327"/>
-<area shape="poly" id="edge10_Node000002_Node000011" title=" " alt="" coords="206,311,252,311,252,317,206,317"/>
-<area shape="rect" id="Node000013" href="$classwebcface_1_1Promise.html" title="非同期で実行した関数の実行結果を取得するインタフェース。" alt="" coords="253,351,327,376"/>
-<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="206,327,258,348,256,353,204,332"/>
-<area shape="rect" id="Node000014" href="$classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス" alt="" coords="240,400,340,425"/>
-<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="189,336,213,361,242,385,262,398,259,402,238,389,209,365,185,339"/>
-<area shape="rect" id="Node000015" href="$classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="261,449,319,475"/>
-<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="179,338,204,386,221,412,242,435,262,448,259,453,238,439,217,415,200,389,175,341"/>
-<area shape="rect" id="Node000016" href="$classwebcface_1_1Variant.html" title="文字列、数値などの型を送受信するクラス" alt="" coords="256,499,324,524"/>
-<area shape="poly" id="edge15_Node000002_Node000016" title=" " alt="" coords="174,339,197,410,216,449,242,484,258,496,254,501,238,488,212,452,192,412,169,341"/>
-<area shape="rect" id="Node000018" href="$classwebcface_1_1View.html" title="Viewの送受信データを表すクラス" alt="" coords="263,548,317,573"/>
-<area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="172,340,178,381,191,432,211,486,242,534,264,549,261,554,238,537,206,488,185,434,173,382,166,341"/>
-<area shape="rect" id="Node000019" href="$structwebcface_1_1internal_1_1FuncInfo.html" title="関数1つの情報を表す。関数の実体も持つ" alt="" coords="251,597,329,623"/>
-<area shape="poly" id="edge18_Node000002_Node000019" title=" " alt="" coords="170,340,174,390,185,454,206,522,222,554,242,583,257,595,253,599,238,586,218,556,201,524,179,455,168,391,164,341"/>
-<area shape="rect" id="Node000007" href="$classwebcface_1_1AnonymousFunc.html" title="名前を指定せず先に関数を登録するFunc" alt="" coords="388,129,517,155"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="330,158,387,149,388,154,330,163"/>
-<area shape="rect" id="Node000008" href="$classwebcface_1_1FuncListener.html" title=" " alt="" coords="401,179,505,204"/>
-<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="330,169,400,181,400,186,330,175"/>
-<area shape="rect" id="Node000012" href="$classwebcface_1_1Client.html" title="サーバーに接続するクライアント。" alt="" coords="423,301,483,327"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="341,311,422,311,422,317,341,317"/>
-<area shape="rect" id="Node000017" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="428,499,477,524"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="338,509,428,509,428,514,338,514"/>
+<area shape="rect" id="Node000008" href="$classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス" alt="" coords="259,203,321,228"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="184,289,209,263,238,237,258,226,260,230,242,241,212,266,188,292"/>
+<area shape="rect" id="Node000009" href="$classwebcface_1_1Log.html" title="ログの送受信データを表すクラス" alt="" coords="267,252,313,277"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="204,296,266,271,268,276,206,301"/>
+<area shape="rect" id="Node000010" href="$classwebcface_1_1Member.html" title="Memberを指すクラス" alt="" coords="252,301,328,327"/>
+<area shape="poly" id="edge9_Node000002_Node000010" title=" " alt="" coords="206,311,252,311,252,317,206,317"/>
+<area shape="rect" id="Node000012" href="$classwebcface_1_1Promise.html" title="非同期で実行した関数の実行結果を取得するインタフェース。" alt="" coords="253,351,327,376"/>
+<area shape="poly" id="edge11_Node000002_Node000012" title=" " alt="" coords="206,327,258,348,256,353,204,332"/>
+<area shape="rect" id="Node000013" href="$classwebcface_1_1RobotModel.html" title="RobotModelの送受信データを表すクラス" alt="" coords="240,400,340,425"/>
+<area shape="poly" id="edge12_Node000002_Node000013" title=" " alt="" coords="189,336,213,361,242,385,262,398,259,402,238,389,209,365,185,339"/>
+<area shape="rect" id="Node000014" href="$classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス" alt="" coords="261,449,319,475"/>
+<area shape="poly" id="edge13_Node000002_Node000014" title=" " alt="" coords="179,338,204,386,221,412,242,435,262,448,259,453,238,439,217,415,200,389,175,341"/>
+<area shape="rect" id="Node000015" href="$classwebcface_1_1Variant.html" title="文字列、数値などの型を送受信するクラス" alt="" coords="256,499,324,524"/>
+<area shape="poly" id="edge14_Node000002_Node000015" title=" " alt="" coords="174,339,197,410,216,449,242,484,258,496,254,501,238,488,212,452,192,412,169,341"/>
+<area shape="rect" id="Node000017" href="$classwebcface_1_1View.html" title="Viewの送受信データを表すクラス" alt="" coords="263,548,317,573"/>
+<area shape="poly" id="edge16_Node000002_Node000017" title=" " alt="" coords="172,340,178,381,191,432,211,486,242,534,264,549,261,554,238,537,206,488,185,434,173,382,166,341"/>
+<area shape="rect" id="Node000018" href="$structwebcface_1_1internal_1_1FuncInfo.html" title="関数1つの情報を表す。関数の実体も持つ" alt="" coords="251,597,329,623"/>
+<area shape="poly" id="edge17_Node000002_Node000018" title=" " alt="" coords="170,340,174,390,185,454,206,522,222,554,242,583,257,595,253,599,238,586,218,556,201,524,179,455,168,391,164,341"/>
+<area shape="rect" id="Node000007" href="$classwebcface_1_1FuncListener.html" title=" " alt="" coords="388,153,492,179"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="330,163,388,163,388,169,330,169"/>
+<area shape="rect" id="Node000011" href="$classwebcface_1_1Client.html" title="サーバーに接続するクライアント。" alt="" coords="410,301,470,327"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="342,311,410,311,410,317,342,317"/>
+<area shape="rect" id="Node000016" href="$classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス" alt="" coords="415,499,465,524"/>
+<area shape="poly" id="edge15_Node000015_Node000016" title=" " alt="" coords="338,509,415,509,415,514,338,514"/>
 </map>

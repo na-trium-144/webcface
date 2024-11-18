@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -152,7 +152,7 @@ $(document).ready(function(){initNavTree('structwebcface_1_1message_1_1Call.html
 <p>関数呼び出し (client(caller)-&gt;server-&gt;client(receiver))  
  <a href="structwebcface_1_1message_1_1Call.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="message_8h_source.html">webcface/message/message.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="common_2include_2webcface_2common_2internal_2message_2func_8h_source.html">webcface/common/internal/message/func.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Call:</div>
 <div class="dyncontent">
@@ -175,7 +175,7 @@ Public Types</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6b7bfc86c9b4f640679feb6dd1efd3f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#ad6b7bfc86c9b4f640679feb6dd1efd3f">Call</a> ()=default</td></tr>
 <tr class="separator:ad6b7bfc86c9b4f640679feb6dd1efd3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4986836da87901ecb4cfca71d1464ecc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a4986836da87901ecb4cfca71d1464ecc">Call</a> (<a class="el" href="structwebcface_1_1message_1_1Call.html#a41255aedc47f0b467058053e2046a5eb">CallerId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#aa64e7eb60ec2268a955e58dc5b294c4e">caller_id</a>, <a class="el" href="structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf">MemberId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#a19dc12f292cc045ff2f435de052506a7">caller_member_id</a>, <a class="el" href="structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf">MemberId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#a95625f142c50ed75880305ad923dea48">target_member_id</a>, const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;<a class="el" href="structwebcface_1_1message_1_1Call.html#a93f7b0e006da417a088ac06725272753">field</a>, const std::vector&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;<a class="el" href="structwebcface_1_1message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee">args</a>)</td></tr>
+<tr class="memitem:a4986836da87901ecb4cfca71d1464ecc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a4986836da87901ecb4cfca71d1464ecc">Call</a> (<a class="el" href="structwebcface_1_1message_1_1Call.html#a41255aedc47f0b467058053e2046a5eb">CallerId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#aa64e7eb60ec2268a955e58dc5b294c4e">caller_id</a>, <a class="el" href="structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf">MemberId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#a19dc12f292cc045ff2f435de052506a7">caller_member_id</a>, <a class="el" href="structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf">MemberId</a> <a class="el" href="structwebcface_1_1message_1_1Call.html#a95625f142c50ed75880305ad923dea48">target_member_id</a>, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;<a class="el" href="structwebcface_1_1message_1_1Call.html#a93f7b0e006da417a088ac06725272753">field</a>, const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;<a class="el" href="structwebcface_1_1message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee">args</a>)</td></tr>
 <tr class="separator:a4986836da87901ecb4cfca71d1464ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -186,9 +186,9 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a19dc12f292cc045ff2f435de052506a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95625f142c50ed75880305ad923dea48"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf">MemberId</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a95625f142c50ed75880305ad923dea48">target_member_id</a> = 0</td></tr>
 <tr class="separator:a95625f142c50ed75880305ad923dea48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a93f7b0e006da417a088ac06725272753"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a93f7b0e006da417a088ac06725272753">field</a></td></tr>
+<tr class="memitem:a93f7b0e006da417a088ac06725272753"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a93f7b0e006da417a088ac06725272753">field</a></td></tr>
 <tr class="separator:a93f7b0e006da417a088ac06725272753"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a632dba4003495b0fa39d2b205142ee"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee">args</a></td></tr>
+<tr class="memitem:a0a632dba4003495b0fa39d2b205142ee"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee">args</a></td></tr>
 <tr class="separator:a0a632dba4003495b0fa39d2b205142ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
@@ -285,13 +285,13 @@ Static Public Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
           <td class="paramname"><em>field</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>args</em>&#160;</td>
         </tr>
         <tr>
@@ -317,7 +317,7 @@ Static Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;<a class="el" href="classwebcface_1_1encoding_1_1ValAdaptor.html">webcface::ValAdaptor</a>&gt; args</td>
+          <td class="memname">std::vector&lt;<a class="el" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a>&gt; args</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -359,7 +359,7 @@ Static Public Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1encoding_1_1SharedString.html">SharedString</a> field</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> field</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -403,7 +403,7 @@ Static Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>message/include/webcface/message/<a class="el" href="message_8h_source.html">message.h</a></li>
+<li>common/include/webcface/common/internal/message/<a class="el" href="common_2include_2webcface_2common_2internal_2message_2func_8h_source.html">func.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -411,7 +411,7 @@ Static Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1message.html">message</a></li><li class="navelem"><a class="el" href="structwebcface_1_1message_1_1Call.html">Call</a></li>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

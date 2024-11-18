@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -319,8 +319,8 @@ Value, Text</h1>
 <li>main.cc <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;iostream&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;thread&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_8h.html">webcface/client.h</a>&gt;</span></div>
-<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="value_8h.html">webcface/value.h</a>&gt;</span> <span class="comment">// ← value() を使うのに必要</span></div>
-<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="text_8h.html">webcface/text.h</a>&gt;</span> <span class="comment">// ← text() を使うのに必要</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_2include_2webcface_2value_8h.html">webcface/value.h</a>&gt;</span> <span class="comment">// ← value() を使うのに必要</span></div>
+<div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_2include_2webcface_2text_8h.html">webcface/text.h</a>&gt;</span> <span class="comment">// ← text() を使うのに必要</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_class" href="classwebcface_1_1Client.html">webcface::Client</a> wcli(<span class="stringliteral">&quot;tutorial&quot;</span>);</div>
 <div class="line">std::ostream &amp;logger = wcli.loggerOStream();</div>
@@ -345,8 +345,8 @@ Value, Text</h1>
 <div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="atext_8h_html"><div class="ttname"><a href="text_8h.html">text.h</a></div></div>
-<div class="ttc" id="avalue_8h_html"><div class="ttname"><a href="value_8h.html">value.h</a></div></div>
+<div class="ttc" id="aclient_2include_2webcface_2text_8h_html"><div class="ttname"><a href="client_2include_2webcface_2text_8h.html">text.h</a></div></div>
+<div class="ttc" id="aclient_2include_2webcface_2value_8h_html"><div class="ttname"><a href="client_2include_2webcface_2value_8h.html">value.h</a></div></div>
 </div><!-- fragment --></li>
 </ul>
 <p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。</p>
@@ -390,7 +390,7 @@ Func</h1>
 <p>プログラムからWebUIに情報を送信するだけでなく、WebUIからプログラムを操作することも可能です。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b></p><ul>
-<li>引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="func_8h.html">webcface/func.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
+<li>引数なしの関数hogeを作り、これをクライアントに登録します。 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_2include_2webcface_2func_8h.html">webcface/func.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> hoge() {</div>
 <div class="line">    logger &lt;&lt; <span class="stringliteral">&quot;Function hoge started&quot;</span> &lt;&lt; std::endl;</div>
@@ -402,7 +402,7 @@ Func</h1>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 以下略...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="afunc_8h_html"><div class="ttname"><a href="func_8h.html">func.h</a></div></div>
+<div class="ttc" id="aclient_2include_2webcface_2func_8h_html"><div class="ttname"><a href="client_2include_2webcface_2func_8h.html">func.h</a></div></div>
 </div><!-- fragment --></li>
 </ul>
 <p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「Functions」をクリックすると hoge() を実行するボタンが現れると思います。 「Run」をクリックすると実行され、「Function hoge started」のログが追加されます。 また、画面右下に関数の戻り値の42が表示されています。</p>
@@ -507,7 +507,7 @@ Func</h1>
 View</h1>
 <p>Funcに登録した関数は一覧表示させることしかできませんが、 Viewではテキストや入力欄を任意に並べて表示させることができます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="view_8h.html">webcface/view.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
+<li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line"><span class="preprocessor">#include &lt;<a class="code" href="client_2include_2webcface_2view_8h.html">webcface/view.h</a>&gt;</span> <span class="comment">// ←追加</span></div>
 <div class="line"> </div>
 <div class="line"><span class="keywordtype">int</span> main() {</div>
 <div class="line">    <span class="comment">// 省略</span></div>
@@ -520,7 +520,7 @@ View</h1>
 <div class="line">        v &lt;&lt; <span class="stringliteral">&quot;i = &quot;</span> &lt;&lt; i &lt;&lt; std::endl;</div>
 <div class="line">        v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;hoge&quot;</span>, hoge) &lt;&lt; std::endl; <span class="comment">// ボタン</span></div>
 <div class="line">        <span class="keyword">static</span> <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> ref_str;</div>
-<div class="line">        v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;str&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">bind</a>(ref_str); <span class="comment">// 文字列入力</span></div>
+<div class="line">        v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;str&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">bind</a>(ref_str); <span class="comment">// 文字列入力</span></div>
 <div class="line">        v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;print&quot;</span>, []{</div>
 <div class="line">            <span class="comment">// クリックすると、入力した文字列を表示</span></div>
 <div class="line">            logger &lt;&lt; <span class="stringliteral">&quot;str = &quot;</span> &lt;&lt; ref_str.<a class="code hl_function" href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">asString</a>() &lt;&lt; std::endl;</div>
@@ -535,13 +535,13 @@ View</h1>
 <div class="line">}</div>
 <div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:439</div></div>
 <div class="ttc" id="aclasswebcface_1_1InputRef_html_a21aed6732ef1c8a17601d42e53959781"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">webcface::InputRef::asString</a></div><div class="ttdeci">std::string asString() const</div><div class="ttdoc">文字列として返す(コピー)</div><div class="ttdef"><b>Definition</b> text.h:506</div></div>
-<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_aaaae04287c268ecb48a67a7c7939d40d"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#aaaae04287c268ecb48a67a7c7939d40d">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref)</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:215</div></div>
+<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7fe27f33a23d228ef1a701ba30cc6cbb"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref) &amp;</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:302</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:26</div></div>
-<div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:29</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:451</div></div>
+<div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:31</div></div>
+<div class="ttc" id="aclient_2include_2webcface_2view_8h_html"><div class="ttname"><a href="client_2include_2webcface_2view_8h.html">view.h</a></div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:631</div></div>
 <div class="ttc" id="anamespacewebcface_html_a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"><div class="ttname"><a href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::ViewComponentType::button</a></div><div class="ttdeci">@ button</div></div>
 <div class="ttc" id="astructwebcface_1_1Field_html_a1a6e1affea60ef37fbb3118637671da0"><div class="ttname"><a href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">webcface::Field::view</a></div><div class="ttdeci">View view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:74</div></div>
-<div class="ttc" id="aview_8h_html"><div class="ttname"><a href="view_8h.html">view.h</a></div></div>
 </div><!-- fragment --><p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、 画像のようにプログラムで指定したとおりの画面が表示されます。 「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、 「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。</p>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
 <p class="startli">上のプログラム例のように、 テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。 ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。 またtextInputなどを使って入力欄を表示させることもできます。 詳細は <a class="el" href="md_docs_254__view.html">5-4. View</a> を参照</p>
@@ -603,7 +603,7 @@ View</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

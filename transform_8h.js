@@ -1,6 +1,37 @@
 var transform_8h =
 [
     [ "Point", "classwebcface_1_1Point.html", "classwebcface_1_1Point" ],
+    [ "Rotation", "classwebcface_1_1Rotation.html", "classwebcface_1_1Rotation" ],
     [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
-    [ "identity", "transform_8h.html#a9cc7119f63c09d929d8218008d2bb386", null ]
+    [ "AxisSequence", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850", [
+      [ "ZXZ", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850abeb48dd84f8c9fa0f7b96e0b37efa3f3", null ],
+      [ "XYX", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a14f73cdf715a90c270fef41c547860b8", null ],
+      [ "YZY", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850af7d8b12e260d275d8dcdcc7f004167ad", null ],
+      [ "ZYZ", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a2d833306e15c1d8968f7e4dc5dccad22", null ],
+      [ "XZX", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850ae9f4ff7864d967a3681087a897854647", null ],
+      [ "YXY", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850ab664ca578deb43362e8f24f15291ed40", null ],
+      [ "XYZ", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850ae65075d550f9b5bf9992fa1d71a131be", null ],
+      [ "YZX", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850ac7c57bc52d896f142cae9c01bc84b6fe", null ],
+      [ "ZXY", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a07bb28478030fc8b86da84000c9860d3", null ],
+      [ "XZY", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a76e608e99423bcdeb143368913e78f1c", null ],
+      [ "ZYX", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a6811254e01b3550bdb2dc46f204730dc", null ],
+      [ "YXZ", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a4c15872a8be8098b60ba0892bc42ee6d", null ]
+    ] ],
+    [ "identity", "transform_8h.html#a9cc7119f63c09d929d8218008d2bb386", null ],
+    [ "rot2D", "transform_8h.html#aed75afef04fc7284b31be4aaa5d7d6d4", null ],
+    [ "rotFromAxisAngle", "transform_8h.html#a738094c1b1b1317c5ae9cb807d5fc916", null ],
+    [ "rotFromAxisAngle", "transform_8h.html#a8b9a29f8ce78b2b4faf17319c3e72283", null ],
+    [ "rotFromEuler", "transform_8h.html#a8e3099062074bc4b87358b977ff1ebbb", null ],
+    [ "rotFromEuler", "transform_8h.html#a6ae55214b268ed22b9dbee7b9b99e91d", null ],
+    [ "rotFromEuler", "transform_8h.html#a7a1ffbad9d152e152375d0b5e575b935", null ],
+    [ "rotFromMatrix", "transform_8h.html#a2ca7ff13a28554aff0c1d1c1136bdc8b", null ],
+    [ "rotFromQuat", "transform_8h.html#a15aea21b661b1214f14525864996e76a", null ],
+    [ "rotFromQuat", "transform_8h.html#a10bbd17197fa30248df6ffa59ce0a588", null ],
+    [ "rotFromQuat", "transform_8h.html#a8d19e84da1f18b1ccda8809159f52030", null ],
+    [ "rotX", "transform_8h.html#a2b1e6106372a8b8ec3c3023572f06b35", null ],
+    [ "rotY", "transform_8h.html#a62abc488933df585d0d6796347086440", null ],
+    [ "rotZ", "transform_8h.html#ab7e58a48a65b5489a655569aa7436e33", null ],
+    [ "translation", "transform_8h.html#ac984a3b7451087c5a7d1e0d6ee73c165", null ],
+    [ "translation", "transform_8h.html#a0b3edc0ec9da2e528054749bac373467", null ],
+    [ "translation", "transform_8h.html#a50e96d3661a444f0c944e65cda002b43", null ]
 ];

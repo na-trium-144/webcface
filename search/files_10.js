@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['member_2ecc_0',['member.cc',['../c__wcf_2member_8cc.html',1,'(Global Namespace)'],['../member_8cc.html',1,'(Global Namespace)']]],
-  ['member_2eh_1',['member.h',['../c__wcf_2member_8h.html',1,'(Global Namespace)'],['../member_8h.html',1,'(Global Namespace)']]],
-  ['member_5fdata_2ecc_2',['member_data.cc',['../member__data_8cc.html',1,'']]],
-  ['member_5fdata_2eh_3',['member_data.h',['../member__data_8h.html',1,'']]],
-  ['message_2ecc_4',['message.cc',['../message_8cc.html',1,'']]],
-  ['message_2eh_5',['message.h',['../message_8h.html',1,'']]]
+  ['log_2ecc_0',['log.cc',['../log_8cc.html',1,'']]],
+  ['log_2eh_1',['log.h',['../client_2include_2webcface_2log_8h.html',1,'(Global Namespace)'],['../common_2include_2webcface_2common_2internal_2message_2log_8h.html',1,'(Global Namespace)']]],
+  ['logger_2eh_2',['logger.h',['../internal_2logger_8h.html',1,'(Global Namespace)'],['../logger_8h.html',1,'(Global Namespace)']]]
 ];

@@ -4,5 +4,5 @@ var searchData=
   ['indigo_1',['indigo',['../namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa8a99d28c3c43cafed58cdbac5f4e9201',1,'webcface']]],
   ['info_2',['info',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66aa4abb266e72efba828327b605b2ab0f4',1,'webcface::level']]],
   ['inherit_3',['inherit',['../namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0',1,'webcface']]],
-  ['int_5f_4',['int_',['../namespacewebcface_1_1encoding.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53',1,'webcface::encoding']]]
+  ['int_5f_4',['int_',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53',1,'webcface']]]
 ];

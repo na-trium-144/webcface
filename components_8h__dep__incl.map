@@ -1,16 +1,16 @@
 <map id="client/include/webcface/components.h" name="client/include/webcface/components.h">
 <area shape="rect" id="Node000001" title=" " alt="" coords="624,5,799,45"/>
-<area shape="rect" id="Node000002" href="$canvas2d_8h.html" title=" " alt="" coords="624,181,799,221"/>
+<area shape="rect" id="Node000002" href="$client_2include_2webcface_2canvas2d_8h.html" title=" " alt="" coords="624,181,799,221"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="714,59,714,181,709,181,709,59"/>
 <area shape="rect" id="Node000003" href="$webcface_8h.html" title=" " alt="" coords="63,269,238,309"/>
 <area shape="poly" id="edge34_Node000001_Node000003" title=" " alt="" coords="611,36,453,51,272,79,187,99,112,122,53,150,31,166,15,183,9,196,9,208,15,219,25,231,56,251,92,267,90,272,53,255,22,235,10,222,4,209,4,195,11,180,27,162,50,146,110,117,185,94,271,74,452,46,610,31"/>
-<area shape="rect" id="Node000008" href="$canvas3d_8h.html" title=" " alt="" coords="426,181,600,221"/>
+<area shape="rect" id="Node000008" href="$client_2include_2webcface_2canvas3d_8h.html" title=" " alt="" coords="426,181,600,221"/>
 <area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="682,56,536,183,533,179,678,52"/>
 <area shape="rect" id="Node000010" href="$data__buffer_8h.html" title=" " alt="" coords="976,181,1151,221"/>
 <area shape="poly" id="edge13_Node000001_Node000010" title=" " alt="" coords="813,31,857,39,903,51,948,68,989,91,1012,111,1032,135,1058,180,1053,182,1027,138,1008,115,986,96,945,73,901,56,856,44,812,36"/>
-<area shape="rect" id="Node000013" href="$robot__model_8h.html" title=" " alt="" coords="300,93,475,133"/>
+<area shape="rect" id="Node000013" href="$client_2include_2webcface_2robot__model_8h.html" title=" " alt="" coords="300,93,475,133"/>
 <area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="628,51,459,96,458,91,627,46"/>
-<area shape="rect" id="Node000015" href="$view_8h.html" title=" " alt="" coords="800,93,975,133"/>
+<area shape="rect" id="Node000015" href="$client_2include_2webcface_2view_8h.html" title=" " alt="" coords="800,93,975,133"/>
 <area shape="poly" id="edge25_Node000001_Node000015" title=" " alt="" coords="764,49,850,91,848,96,761,54"/>
 <area shape="rect" id="Node000018" href="$c__wcf__internal_8h.html" title=" " alt="" coords="1672,93,1805,133"/>
 <area shape="poly" id="edge35_Node000001_Node000018" title=" " alt="" coords="813,32,1672,104,1671,109,812,38"/>

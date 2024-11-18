@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: encoding/src/encoding.cc File Reference</title>
+<title>WebCFace: common/src/encoding.cc File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -146,14 +146,14 @@ $(document).ready(function(){initNavTree('encoding_8cc.html',''); initResizable(
   <div class="headertitle"><div class="title">encoding.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><code>#include &quot;<a class="el" href="encoding_8h_source.html">webcface/encoding/encoding.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="common_2encoding_8h_source.html">webcface/common/encoding.h</a>&quot;</code><br />
 <code>#include &lt;utf8.h&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;mutex&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for encoding.cc:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="encoding_8cc__incl.svg" width="607" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="encoding_8cc__incl.svg" width="606" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
@@ -167,21 +167,19 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacewebcface_1_1internal"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html">webcface::internal</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1encoding"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html">webcface::encoding</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a478748a436d45cac26bdb4c4af55f54b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b">usingUTF8</a> (bool flag)</td></tr>
+<tr class="memitem:a478748a436d45cac26bdb4c4af55f54b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a478748a436d45cac26bdb4c4af55f54b">usingUTF8</a> (bool flag)</td></tr>
 <tr class="memdesc:a478748a436d45cac26bdb4c4af55f54b"><td class="mdescLeft">&#160;</td><td class="mdescRight">webcfaceが使用するエンコーディングを設定する  <br /></td></tr>
 <tr class="separator:a478748a436d45cac26bdb4c4af55f54b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae57423f1244b067999069f20f73eb166"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#ae57423f1244b067999069f20f73eb166">usingUTF8</a> ()</td></tr>
+<tr class="memitem:ae57423f1244b067999069f20f73eb166"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ae57423f1244b067999069f20f73eb166">usingUTF8</a> ()</td></tr>
 <tr class="memdesc:ae57423f1244b067999069f20f73eb166"><td class="mdescLeft">&#160;</td><td class="mdescRight">webcfaceが使用するエンコーディングを取得する  <br /></td></tr>
 <tr class="separator:ae57423f1244b067999069f20f73eb166"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14b83a27bbb7c55bc9725de209613066"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a14b83a27bbb7c55bc9725de209613066">toNarrow</a> (std::wstring_view name_ref)</td></tr>
+<tr class="memitem:a14b83a27bbb7c55bc9725de209613066"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a14b83a27bbb7c55bc9725de209613066">toNarrow</a> (std::wstring_view name_ref)</td></tr>
 <tr class="memdesc:a14b83a27bbb7c55bc9725de209613066"><td class="mdescLeft">&#160;</td><td class="mdescRight">wstringをstringに変換する  <br /></td></tr>
 <tr class="separator:a14b83a27bbb7c55bc9725de209613066"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54e0d3d7c5de948abb1cacf599743264"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a54e0d3d7c5de948abb1cacf599743264">toWide</a> (std::string_view name_ref)</td></tr>
+<tr class="memitem:a54e0d3d7c5de948abb1cacf599743264"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a54e0d3d7c5de948abb1cacf599743264">toWide</a> (std::string_view name_ref)</td></tr>
 <tr class="memdesc:a54e0d3d7c5de948abb1cacf599743264"><td class="mdescLeft">&#160;</td><td class="mdescRight">stringをwstringに変換する  <br /></td></tr>
 <tr class="separator:a54e0d3d7c5de948abb1cacf599743264"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -190,8 +188,8 @@ Functions</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_7f2982da9d43e0d7c25a6e4522b21798.html">encoding</a></li><li class="navelem"><a class="el" href="dir_26ec350ff5e8757955d5c8d10c3eb84f.html">src</a></li><li class="navelem"><a class="el" href="encoding_8cc.html">encoding.cc</a></li>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="navelem"><a class="el" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html">common</a></li><li class="navelem"><a class="el" href="dir_4e4d22e38ca4e2e8207825ee2d00bc54.html">src</a></li><li class="navelem"><a class="el" href="encoding_8cc.html">encoding.cc</a></li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

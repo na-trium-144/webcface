@@ -1,5 +1,13 @@
-<map id="encoding/include/webcface/encoding/image_mode.h" name="encoding/include/webcface/encoding/image_mode.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,204,45"/>
-<area shape="rect" id="Node000002" href="$webcface-config_8h.html" title=" " alt="" coords="35,93,175,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,46,107,79,102,79,102,46"/>
+<map id="common/include/webcface/encoding/image_mode.h" name="common/include/webcface/encoding/image_mode.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="85,5,281,45"/>
+<area shape="rect" id="Node000002" href="$image__frame_8h.html" title=" " alt="" coords="89,93,276,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="185,46,185,79,180,79,180,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="5,167,80,192"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="161,121,79,163,76,158,159,116"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="105,167,167,192"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="177,120,153,157,149,154,173,118"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="192,167,269,192"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="193,118,218,154,213,157,188,121"/>
+<area shape="rect" id="Node000006" href="$webcface-config_8h.html" title=" " alt="" coords="294,167,434,192"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="213,116,323,159,321,164,211,121"/>
 </map>

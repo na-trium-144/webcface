@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['wcfcolor_0',['wcfColor',['../def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7',1,'def_types.h']]],
-  ['wcfstatus_1',['wcfStatus',['../def__types_8h.html#a17252b935b26f94752dff94f4c5942e5',1,'def_types.h']]],
-  ['wcfvaltype_2',['wcfValType',['../def__types_8h.html#a63f17e27abb8bed3e9f595a6ba892e95',1,'def_types.h']]],
-  ['wcfviewcomponenttype_3',['wcfViewComponentType',['../def__types_8h.html#a0101c883fa22fd0a6d81c999098b18e8',1,'def_types.h']]]
+  ['valtype_0',['ValType',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185',1,'webcface']]],
+  ['viewcolor_1',['ViewColor',['../namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a',1,'webcface']]],
+  ['viewcomponenttype_2',['ViewComponentType',['../namespacewebcface.html#a11040d82967b60182816ddc035d07c28',1,'webcface']]]
 ];

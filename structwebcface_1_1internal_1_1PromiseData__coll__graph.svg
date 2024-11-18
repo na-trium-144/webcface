@@ -39,7 +39,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classwebcface_1_1encoding_1_1ValAdaptor.html" target="_top" xlink:title="数値、文字列などの値を相互変換するクラス">
+<g id="a_Node000003"><a xlink:href="classwebcface_1_1ValAdaptor.html" target="_top" xlink:title="数値、文字列などの値を相互変換するクラス">
 <polygon fill="white" stroke="#666666" points="213.5,-101.5 143.5,-101.5 143.5,-82.5 213.5,-82.5 213.5,-101.5"/>
 <text text-anchor="middle" x="178.5" y="-89.5" font-family="Helvetica,sans-Serif" font-size="10.00">ValAdaptor</text>
 </a>
@@ -96,7 +96,7 @@
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classwebcface_1_1encoding_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
+<g id="a_Node000006"><a xlink:href="classwebcface_1_1SharedString.html" target="_top" xlink:title="u8stringとstringとwstringをshared_ptrで持ち共有する">
 <polygon fill="white" stroke="#666666" points="291,-240 212,-240 212,-221 291,-221 291,-240"/>
 <text text-anchor="middle" x="251.5" y="-228" font-family="Helvetica,sans-Serif" font-size="10.00">SharedString</text>
 </a>

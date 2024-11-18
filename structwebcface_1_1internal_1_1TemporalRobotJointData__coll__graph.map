@@ -1,9 +1,11 @@
 <map id="TemporalRobotJointData" name="TemporalRobotJointData">
 <area shape="rect" id="Node000001" title=" " alt="" coords="27,183,207,208"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1encoding_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="5,80,111,105"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="5,80,111,105"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="56,119,57,139,63,157,74,170,89,180,86,185,71,174,58,160,52,139,51,119"/>
-<area shape="rect" id="Node000003" href="$classwebcface_1_1Transform.html" title="3次元の座標と回転" alt="" coords="135,80,221,105"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1Transform.html" title="3次元の平行移動と回転" alt="" coords="135,80,221,105"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="171,119,150,160,130,184,126,181,145,157,166,117"/>
-<area shape="rect" id="Node000004" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。" alt="" coords="151,5,205,31"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="181,45,181,80,175,80,175,45"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。" alt="" coords="105,5,160,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="150,41,173,78,168,81,145,44"/>
+<area shape="rect" id="Node000005" href="$classwebcface_1_1Rotation.html" title="3次元の回転を表すクラス" alt="" coords="185,5,262,31"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="211,44,188,81,183,78,206,41"/>
 </map>

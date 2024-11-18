@@ -2,6 +2,10 @@ var component__view_8h =
 [
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ],
     [ "TemporalViewComponent", "classwebcface_1_1TemporalViewComponent.html", "classwebcface_1_1TemporalViewComponent" ],
+    [ "wcfMultiVal", "component__view_8h.html#a568ed45b4dde95e33d4c9ea3bbbdfdd9", null ],
+    [ "wcfMultiValW", "component__view_8h.html#a16bae331da81a80681dd8a7977afd478", null ],
+    [ "wcfViewComponent", "component__view_8h.html#a8605c7530fcff7a67cbb1906bb696de4", null ],
+    [ "wcfViewComponentW", "component__view_8h.html#a37d71b5bff6faa035dc11a6398fc0e5c", null ],
     [ "ViewColor", "component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124a", [
       [ "inherit", "component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0", null ],
       [ "black", "component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89", null ],
@@ -29,5 +33,6 @@ var component__view_8h =
       [ "select_input", "component__view_8h.html#a11040d82967b60182816ddc035d07c28a89f781ccef3f98e802fafa7b5deb87c5", null ],
       [ "slider_input", "component__view_8h.html#a11040d82967b60182816ddc035d07c28a21f62314e8bff96c523fbcb2eaf79cd6", null ],
       [ "check_input", "component__view_8h.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77", null ]
-    ] ]
+    ] ],
+    [ "colorFromRGB", "component__view_8h.html#adc5895f73dced19e991a5f97fd3b33d0", null ]
 ];

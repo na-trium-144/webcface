@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -156,7 +156,7 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <div class="textblock"><p><a class="anchor" id="autotoc_md110"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a> (<code><a class="el" href="log_8h.html">webcface/log.h</a></code>)</li>
+<li>C++ <a class="el" href="classwebcface_1_1Log.html" title="ログの送受信データを表すクラス">webcface::Log</a> (<code><a class="el" href="client_2include_2webcface_2log_8h.html">webcface/log.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Log.html">Log</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.log.html#webcface.log.Log">webcface.Log</a></li>
 </ul>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 </div><!-- fragment --><p> のように出力したり、 </p><div class="fragment"><div class="line">std::cout.rdbuf(wcli.loggerStreamBuf());</div>
 <div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 </div><!-- fragment --><p> のようにcoutやcerrの出力先を置き換えることができます。 これらはWebCFaceに出力すると同時に標準エラー出力にも出力します。 (<del>spdlogのstderr_sinkを使って</del> <span class="since-c">2.0</span>fputs,fputcを使って 直接stderrに出力されます) またこの場合はログレベルが設定できず、常にinfoになります。</p>
-<p class="startli"><span class="since-c">2.0</span> wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。 その際Windowsでは出力文字列は Encoding::usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。</p>
+<p class="startli"><span class="since-c">2.0</span> wostreamを使用したい場合は wcli.loggerWOStream(), wcli.loggerWStreamBuf() を使用するとWebCFaceに出力すると同時にstderrにも出力されます。 その際Windowsでは出力文字列は usingUTF8() の設定に従いUTF-8またはANSIに変換されるため、出力したいコンソールのコードページに設定を合わせてください。</p>
 <p class="startli"><span class="since-c">2.4</span> Valueなど他のデータ型と同様名前をつけて複数のLogを送信することができます。 名前を省略した場合、および過去のバージョンから送信されたログデータは <code>"default"</code> という名前のLogとして扱われます。 </p><div class="fragment"><div class="line">wcli.log(<span class="stringliteral">&quot;hoge&quot;</span>).append(<a class="code hl_enumvalue" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66aa4abb266e72efba828327b605b2ab0f4">webcface::level::info</a>, <span class="stringliteral">&quot;this is info&quot;</span>);</div>
 <div class="line">wcli.loggerOStream(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; <span class="stringliteral">&quot;hello&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">std::cout.rdbuf(wcli.loggerStreamBuf(<span class="stringliteral">&quot;hoge&quot;</span>));</div>
@@ -239,7 +239,7 @@ $(document).ready(function(){initNavTree('md_docs_255__log.html',''); initResiza
 <div class="line">};</div>
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:18</div></div>
 <div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:65</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3"><div class="ttname"><a href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">webcface::message::MessageKind::log</a></div><div class="ttdeci">@ log</div><div class="ttdef"><b>Definition</b> message.h:45</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_1_1MessageKind_html_a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3"><div class="ttname"><a href="namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aaac8d4ee23e2d305f0b0a575cda066f3">webcface::message::MessageKind::log</a></div><div class="ttdeci">@ log</div><div class="ttdef"><b>Definition</b> base.h:24</div></div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">log4js (JavaScript)</b> log4js: <a href="https://www.npmjs.com/package/log4js">https://www.npmjs.com/package/log4js</a></p>
 <p class="startli">log4js→webcfaceにログを送信するappenderの例(ver1.7までwebcfaceに含まれていた実装): </p><div class="fragment"><div class="line">import { Level, Levels, LoggingEvent, AppenderModule } from &quot;log4js&quot;;</div>
@@ -402,7 +402,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

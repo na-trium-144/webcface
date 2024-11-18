@@ -1,9 +1,9 @@
-<map id="client/include/webcface/internal/unix_path.h" name="client/include/webcface/internal/unix_path.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="143,5,317,45"/>
-<area shape="rect" id="Node000002" href="$webcface-config_8h.html" title=" " alt="" coords="5,93,145,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,48,111,89,109,85,192,43"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="169,93,291,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,46,233,79,227,79,227,46"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="315,93,406,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="263,43,331,84,328,88,260,48"/>
+<map id="common/include/webcface/common/internal/unix_path.h" name="common/include/webcface/common/internal/unix_path.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="132,5,328,60"/>
+<area shape="rect" id="Node000002" href="$webcface-config_8h.html" title=" " alt="" coords="5,108,145,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,62,109,104,107,99,181,58"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="169,108,291,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="233,60,233,94,227,94,227,60"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="315,108,406,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="271,58,333,98,330,103,268,62"/>
 </map>

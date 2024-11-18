@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,36 +143,37 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md130">送信</a><ul><li class="level2"><a href="#autotoc_md131">外部ライブラリの利用</a></li>
+<ul><li class="level1"><a href="#autotoc_md131">送信</a><ul><li class="level2"><a href="#autotoc_md132">外部ライブラリの利用</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md132">受信</a><ul><li class="level2"><a href="#autotoc_md133">Entry, Event</a></li>
+<li class="level1"><a href="#autotoc_md133">受信</a><ul><li class="level2"><a href="#autotoc_md134">Entry, Event</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md128"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md129"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> <span class="since-py">2.4</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="image_8h.html">webcface/image.h</a></code>)</li>
+<li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="client_2include_2webcface_2image_8h.html">webcface/image.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Image.html">Image</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.image.html#webcface.image.Image">webcface.Image</a></li>
 </ul>
 </dd></dl>
 <p>画像データを送受信します。 画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。</p>
-<h1><a class="anchor" id="autotoc_md130"></a>
+<h1><a class="anchor" id="autotoc_md131"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="classwebcface_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// dataの中身がImageFrameにコピーされる</span></div>
 <div class="line"><span class="comment">// sizeWH で幅と高さを指定、または sizeHW で高さと幅を指定</span></div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a> frame(<a class="code hl_function" href="namespacewebcface.html#a93bb9fbe0e3d47abe9f1ece5c5f90767">webcface::sizeWH</a>(640, 480), data, webcface::ImageColorMode::rgb);</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a> frame(<a class="code hl_function" href="namespacewebcface.html#a93bb9fbe0e3d47abe9f1ece5c5f90767">webcface::sizeWH</a>(640, 480), data, <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">webcface::ImageColorMode::rgb</a>);</div>
 <div class="line"> </div>
 <div class="line"><span class="comment">// ver1.11以前: サイズは高さ,幅の順で指定</span></div>
 <div class="line"><span class="comment">// webcface::ImageFrame frame(480, 640, data, webcface::ImageColorMode::rgb);</span></div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:88</div></div>
-<div class="ttc" id="anamespacewebcface_html_a93bb9fbe0e3d47abe9f1ece5c5f90767"><div class="ttname"><a href="namespacewebcface.html#a93bb9fbe0e3d47abe9f1ece5c5f90767">webcface::sizeWH</a></div><div class="ttdeci">Size sizeWH(int width, int height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:35</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a></div><div class="ttdoc">(ver1.3から追加) 画像データ</div><div class="ttdef"><b>Definition</b> image_frame.h:101</div></div>
+<div class="ttc" id="anamespacewebcface_html_a93bb9fbe0e3d47abe9f1ece5c5f90767"><div class="ttname"><a href="namespacewebcface.html#a93bb9fbe0e3d47abe9f1ece5c5f90767">webcface::sizeWH</a></div><div class="ttdeci">Size sizeWH(int width, int height)</div><div class="ttdoc">幅 × 高さ でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:48</div></div>
+<div class="ttc" id="anamespacewebcface_html_abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e"><div class="ttname"><a href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">webcface::ImageColorMode::rgb</a></div><div class="ttdeci">@ rgb</div></div>
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) が扱えます。</p>
 <dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタにdataのポインタを渡した場合、 dataの内容(width × height × channels() バイト)がすべてコピーされます。 <br  />
@@ -196,7 +197,7 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 <p class="startli">Client.image からImageオブジェクトを作り、 Image.set() でImageFrame型の画像データを代入し、Client.sync()することで送信されます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md131"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md132"></a>
 外部ライブラリの利用</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">OpenCV (C++)</b> ImageFrame → cv::Mat <div class="fragment"><div class="line">cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());</div>
@@ -205,17 +206,18 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 <div class="line"><span class="comment">// https://stackoverflow.com/questions/26681713/convert-mat-to-array-vector-in-opencv</span></div>
 <div class="line"><span class="keywordflow">if</span> (img_mat.isContinuous()) {</div>
 <div class="line">    img_frame = <a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a>(<a class="code hl_function" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97">webcface::sizeHW</a>(img_mat.rows, img_mat.cols),</div>
-<div class="line">                                     img_mat.data, webcface::ImageColorMode::bgr);</div>
+<div class="line">                                     img_mat.data, <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">webcface::ImageColorMode::bgr</a>);</div>
 <div class="line">} <span class="keywordflow">else</span> {</div>
 <div class="line">    img_frame = <a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a>(<a class="code hl_function" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97">webcface::sizeHW</a>(img_mat.rows, img_mat.cols),</div>
-<div class="line">                                     webcface::ImageColorMode::bgr);</div>
+<div class="line">                                     <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">webcface::ImageColorMode::bgr</a>);</div>
 <div class="line">    <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; mat.rows; ++i) {</div>
 <div class="line">        std::memcpy(&amp;img_frame.<a class="code hl_function" href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">at</a>(i, 0, 0), mat.ptr&lt;<span class="keywordtype">unsigned</span> <span class="keywordtype">char</span>&gt;(i),</div>
 <div class="line">                    mat.cols * mat.channels());</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a67f290272354886cea794d481da18640"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(int row, int col, int ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:244</div></div>
-<div class="ttc" id="anamespacewebcface_html_a532ccd01be60db41be021d0f1b3b2e97"><div class="ttname"><a href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97">webcface::sizeHW</a></div><div class="ttdeci">Size sizeHW(int height, int width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:42</div></div>
+<div class="ttc" id="aclasswebcface_1_1ImageFrame_html_a67f290272354886cea794d481da18640"><div class="ttname"><a href="classwebcface_1_1ImageFrame.html#a67f290272354886cea794d481da18640">webcface::ImageFrame::at</a></div><div class="ttdeci">const unsigned char &amp; at(int row, int col, int ch=0) const</div><div class="ttdoc">画像の要素にアクセス</div><div class="ttdef"><b>Definition</b> image_frame.h:257</div></div>
+<div class="ttc" id="anamespacewebcface_html_a532ccd01be60db41be021d0f1b3b2e97"><div class="ttname"><a href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97">webcface::sizeHW</a></div><div class="ttdeci">Size sizeHW(int height, int width)</div><div class="ttdoc">高さ × 幅 でサイズを指定</div><div class="ttdef"><b>Definition</b> image_frame.h:55</div></div>
+<div class="ttc" id="anamespacewebcface_html_abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59"><div class="ttname"><a href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">webcface::ImageColorMode::bgr</a></div><div class="ttdeci">@ bgr</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">Numpy (Python)</b> ImageFrame → ndarray <div class="fragment"><div class="line">img_np = img_frame.numpy()</div>
 <div class="line"><span class="keyword">assert</span> img_np.shape == (height, width, img_frame.channels())</div>
@@ -230,7 +232,7 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <p></p>
 <p>画像データを表す型として <a class="el" href="classwebcface_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 cv::Mat形式 (<code>CV_8UC1</code>,<code>CV_8UC3</code>,<code>CV_8UC4</code> フォーマットのみ) の画像データをImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line">cv::Mat data;</div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a> frame(data, webcface::ImageColorMode::rgb);</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1ImageFrame.html">webcface::ImageFrame</a> frame(data, <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">webcface::ImageColorMode::rgb</a>);</div>
 </div><!-- fragment --><p> ImageColorModeとしては <code>gray</code>(8bitグレースケール)、<code>rgb</code>(8bit×3)、<code>bgr</code>(8bit×3)、<code>rgba</code>(8bit×4)、<code>bgra</code>(8bit×4) から元の画像データのフォーマットを指定してください。 </p><dl class="section note"><dt>Note</dt><dd>ImageFrameオブジェクト内部では画像データは<code>shared_ptr&lt;vector&lt;unsigned char&gt;&gt;</code>で保持されます。 <br  />
  ImageFrameのコンストラクタでcv::Mat内部の画像データがすべてコピーされます。 <br  />
  ImageFrameをコピーした場合は画像データが共有されます(コピーされません)。</dd></dl>
@@ -245,7 +247,7 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:20</div></div>
 </div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
 </details>
-<h1><a class="anchor" id="autotoc_md132"></a>
+<h1><a class="anchor" id="autotoc_md133"></a>
 受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
@@ -270,16 +272,18 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <p class="startli">request() の引数に画像のサイズと色モードを指定すると、サーバー側で指定したフォーマットに変換されたものが取得できます。 <br  />
  また送信側が高頻度で画像を更新する場合、フレームレートを指定するとそれより遅い頻度で受信させることもできます。 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらに要素をRGBの順にし、1秒に5枚まで受信する</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
-<div class="line">                                         webcface::ImageColorMode::rgb, 5);</div>
+<div class="line">                                         <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">webcface::ImageColorMode::rgb</a>, 5);</div>
 <div class="line"><span class="comment">// 幅が64になるようリサイズ(縦横比を維持)</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, std::nullopt),</div>
-<div class="line">                                         webcface::ImageColorMode::rgb);</div>
+<div class="line">                                         <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eaef70a6546536ccd835479f6cddc0188e">webcface::ImageColorMode::rgb</a>);</div>
 <div class="line"><span class="comment">// サイズは元画像のままグレースケール</span></div>
-<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(std::nullopt, webcface::ImageColorMode::gray);</div>
+<div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(std::nullopt, <a class="code hl_enumvalue" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">webcface::ImageColorMode::gray</a>);</div>
+<div class="ttc" id="anamespacewebcface_html_abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825">webcface::ImageColorMode::gray</a></div><div class="ttdeci">@ gray</div></div>
 </div><!-- fragment --><p class="startli">また jpeg, png, webp に圧縮した画像をリクエストすることでも通信量を減らすことができます。 詳細は webcface::Image::request() を参照 </p><div class="fragment"><div class="line"><span class="comment">// 64x48にリサイズ、さらにjpeg圧縮、1秒に5枚まで受信する</span></div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).image(<span class="stringliteral">&quot;hoge&quot;</span>).request(sizeWH(64, 48),</div>
-<div class="line">                                         webcface::ImageCompressMode::jpeg, 50,</div>
+<div class="line">                                         <a class="code hl_enumvalue" href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">webcface::ImageCompressMode::jpeg</a>, 50,</div>
 <div class="line">                                         5);</div>
+<div class="ttc" id="anamespacewebcface_html_ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1"><div class="ttname"><a href="namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1">webcface::ImageCompressMode::jpeg</a></div><div class="ttdeci">@ jpeg</div></div>
 </div><!-- fragment --><p class="startli">圧縮された画像の場合 dataPtr() または data() を使ってバイナリデータとして取得できますが、 at() での要素アクセスはできません。</p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> Member.image() でImageクラスのオブジェクトが得られ、 Image.request() で画像のリクエストをした後 Image.tryGet() で受信した画像を取得できます。</p>
@@ -371,7 +375,7 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 </div><!-- fragment --><p class="startli">圧縮された画像の場合も ImageFrame.data からバイナリデータとして取得できますが、 ImageFrame.numpy() は使えません。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md133"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md134"></a>
 Entry, Event</h2>
 <p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
@@ -386,7 +390,7 @@ Entry, Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

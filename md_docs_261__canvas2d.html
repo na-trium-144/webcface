@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -151,9 +151,10 @@ $(document).ready(function(){initNavTree('md_docs_261__canvas2d.html',''); initR
 </ul>
 </li>
 <li class="level2"><a href="#autotoc_md125">文字列の表示</a></li>
+<li class="level2"><a href="#autotoc_md126">オプション</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md126">受信</a><ul><li class="level2"><a href="#autotoc_md127">Entry, Event</a></li>
+<li class="level1"><a href="#autotoc_md127">受信</a><ul><li class="level2"><a href="#autotoc_md128">Entry, Event</a></li>
 </ul>
 </li>
 </ul>
@@ -161,7 +162,7 @@ $(document).ready(function(){initNavTree('md_docs_261__canvas2d.html',''); initR
 <div class="textblock"><p><a class="anchor" id="autotoc_md117"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.6</span> <span class="since-js">1.4</span> <span class="since-py">1.1</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
-<li>C++ <a class="el" href="classwebcface_1_1Canvas2D.html" title="Canvas2Dの送受信データを表すクラス">webcface::Canvas2D</a> (<code><a class="el" href="canvas2d_8h.html">webcface/canvas2d.h</a></code>)</li>
+<li>C++ <a class="el" href="classwebcface_1_1Canvas2D.html" title="Canvas2Dの送受信データを表すクラス">webcface::Canvas2D</a> (<code><a class="el" href="client_2include_2webcface_2canvas2d_8h.html">webcface/canvas2d.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas2D.html">Canvas2D</a></li>
 <li>Python <a href="https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2D">webcface.Canvas2D</a></li>
 </ul>
@@ -169,15 +170,28 @@ $(document).ready(function(){initNavTree('md_docs_261__canvas2d.html',''); initR
 <p>2Dの図形の描画データを送受信する型です。</p>
 <h1><a class="anchor" id="autotoc_md118"></a>
 Point, Transform</h1>
-<p>WebCFaceでは座標を表すクラスとして <a class="el" href="classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。">webcface::Point</a>, 座標変換(平行移動してから回転)を表すクラスとして <a class="el" href="classwebcface_1_1Transform.html" title="3次元の座標と回転">webcface::Transform</a> があります。</p>
+<p>WebCFaceでは座標を表すクラスとして <a class="el" href="classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。">webcface::Point</a>, 座標変換(平行移動してから回転)を表すクラスとして <a class="el" href="classwebcface_1_1Transform.html" title="3次元の平行移動と回転">webcface::Transform</a> があります。</p>
 <p>Pointでは x, y 座標、Transformでは回転角(radianで、 (x, y) = (1, 0) から (0, 1) に回る向きが正)を指定します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> Point, Transformオブジェクトからは<code>pos()</code>, <code>rot()</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line">Point p{1, 2};</div>
-<div class="line">std::cout &lt;&lt; p.pos(0); <span class="comment">// 1 (x座標)</span></div>
+<li><b class="tab-title">C++</b> Point, Transformオブジェクトからは<code>pos()</code>, <del><code>rot()</code></del> <span class="since-c">2.5</span> <code>rot2D()</code> で座標と回転角を取得できます。 <div class="fragment"><div class="line">Point p{1, 2};</div>
+<div class="line">std::cout &lt;&lt; p.pos(0) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; p.pos(1); <span class="comment">// 1, 2 (x, y 座標)</span></div>
 <div class="line">Transform r{{1, 2}, std::numbers::pi / 2};</div>
-<div class="line">std::cout &lt;&lt; r.pos(0); <span class="comment">// 1 (x座標)</span></div>
-<div class="line">std::cout &lt;&lt; r.rot(0); <span class="comment">// pi / 2 (z軸回り)</span></div>
-</div><!-- fragment --> <a class="el" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386" title="移動なし、回転なしのTransform">webcface::identity()</a> は原点、回転なしのTransformを返します。</li>
+<div class="line">std::cout &lt;&lt; r.pos(0) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; p.pos(1); <span class="comment">// 1, 2 (x, y 座標)</span></div>
+<div class="line">std::cout &lt;&lt; r.rot2D(); <span class="comment">// pi / 2</span></div>
+</div><!-- fragment --><ul>
+<li><a class="el" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386" title="移動なし、回転なしのTransform">webcface::identity()</a> は原点、回転なしのTransformを返します。</li>
+<li><span class="since-c">2.5</span> Point同士は加算、減算ができます。 また、実数の乗算、除算ができます。</li>
+<li><span class="since-c">2.5</span> Transform * Transform, Transform * Point の乗算ができます。 右辺の座標系全体を、左辺の値の分だけ回転移動してから平行移動したものになります。<ul>
+<li>同じ効果を持つ関数として Transform::appliedTo() があります。</li>
+</ul>
+</li>
+<li><span class="since-c">2.5</span> Transform::inversed() で逆変換が得られます。</li>
+<li><span class="since-c">2.5</span> Point同士、Transform同士は <code>==</code>, <code>!=</code>での比較ができます。<ul>
+<li>完全一致での判定ではなく、各要素の差がそれぞれ 1e-8 未満であればtrueになります。</li>
+</ul>
+</li>
+</ul>
+</li>
 <li><b class="tab-title">JavaScript</b> <a href="https://na-trium-144.github.io/webcface-js/classes/Point.html">Point</a>, <a href="https://na-trium-144.github.io/webcface-js/classes/Transform.html">Transform</a> オブジェクトからは<code>pos</code>, <code>rot</code>で座標と回転角を取得できます。 <div class="fragment"><div class="line">import { Point, Transform } from &quot;webcface&quot;;</div>
 <div class="line">const p = new Point([1, 2]);</div>
 <div class="line">console.log(p.pos[0]); // 1 (x座標)</div>
@@ -185,21 +199,33 @@ Point, Transform</h1>
 <div class="line">console.log(r.pos[0]); // 1 (x座標)</div>
 <div class="line">console.log(r.rot[0]); // pi / 2 (z軸回り)</div>
 </div><!-- fragment --></li>
-<li><p class="startli"><b class="tab-title">Python</b> <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point">webcface.Point</a>, <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform">webcface.Transform</a> オブジェクトからは<code>pos</code>, <code>rot</code>で座標と回転角を取得できます。 </p><div class="fragment"><div class="line">p = <a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>([1, 2])</div>
-<div class="line">print(p.pos[0]) <span class="comment"># 1 (x座標)</span></div>
+<li><b class="tab-title">Python</b> <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Point">webcface.Point</a>, <a href="https://na-trium-144.github.io/webcface-python/webcface.transform.html#webcface.transform.Transform">webcface.Transform</a> オブジェクトからは<code>pos</code>, <del><code>rot</code></del> <span class="since-py">3.0</span> <code>rot_2d()</code> で座標と回転角を取得できます。 <div class="fragment"><div class="line">p = <a class="code hl_class" href="classwebcface_1_1Point.html">webcface.Point</a>([1, 2])</div>
+<div class="line">print(p.pos) <span class="comment"># (1, 2) (x, y 座標)</span></div>
 <div class="line">r = <a class="code hl_class" href="classwebcface_1_1Transform.html">webcface.Transform</a>([1, 2], math.pi / 2)</div>
-<div class="line">print(r.pos[0]) <span class="comment"># 1 (x座標)</span></div>
-<div class="line">print(r.rot[0]) <span class="comment"># pi / 2 (z軸回り)</span></div>
-<div class="ttc" id="aclasswebcface_1_1Point_html"><div class="ttname"><a href="classwebcface_1_1Point.html">webcface::Point</a></div><div class="ttdoc">3次元 or 2次元の座標を表すクラス。</div><div class="ttdef"><b>Definition</b> transform.h:17</div></div>
-<div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の座標と回転</div><div class="ttdef"><b>Definition</b> transform.h:72</div></div>
-</div><!-- fragment --><p> <a class="el" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386" title="移動なし、回転なしのTransform">webcface.identity()</a> は原点、回転なしのTransformを返します。</p>
-<p class="startli">Point同士は加算、減算、<code>==</code>, <code>!=</code>での比較ができます。 また、int,floatと乗算、除算ができます。</p>
-<p class="startli">引数にPointやTransformをとる関数では、webcface.Point に変換することなく <code>[1, 2]</code>のようなリストのままでも使えるものもあります。</p>
+<div class="line">print(r.pos) <span class="comment"># (1, 2) (x, y 座標)</span></div>
+<div class="line">print(r.rot_2d()) <span class="comment"># pi / 2</span></div>
+<div class="ttc" id="aclasswebcface_1_1Point_html"><div class="ttname"><a href="classwebcface_1_1Point.html">webcface::Point</a></div><div class="ttdoc">3次元 or 2次元の座標を表すクラス。</div><div class="ttdef"><b>Definition</b> transform.h:23</div></div>
+<div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の平行移動と回転</div><div class="ttdef"><b>Definition</b> transform.h:615</div></div>
+</div><!-- fragment --><ul>
+<li><a class="el" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386" title="移動なし、回転なしのTransform">webcface.identity()</a> は原点、回転なしのTransformを返します。</li>
+<li>Point同士は加算、減算ができます。 また、int,floatと乗算、除算ができます。</li>
+<li><span class="since-py">3.0</span> Transform * Transform, Transform * Point の乗算ができます。 右辺の座標系全体を、左辺の値の分だけ回転移動してから平行移動したものになります。<ul>
+<li>同じ効果を持つ関数として Transform.applied_to_point(), applied_to_transform() があります。</li>
+</ul>
+</li>
+<li><span class="since-py">3.0</span> Transform.inversed() で逆変換が得られます。</li>
+<li>Point同士、Transform同士は <code>==</code>, <code>!=</code>での比較ができます。<ul>
+<li><span class="since-py">3.0</span> 完全一致での判定ではなく、各要素の差がそれぞれ 1e-8 未満であればtrueになります。</li>
+</ul>
+</li>
+<li>引数にPointやTransformをとる関数では、webcface.Point に変換することなく <code>[1, 2]</code> や <code>[[1, 2], pi / 2]</code> のようなリストのままでも使えるものもあります。</li>
+</ul>
 </li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md119"></a>
 送信</h1>
 <p>使い方は<a class="el" href="md_docs_254__view.html">View</a>とだいたい同じになっています。</p>
+<dl class="section note"><dt>Note</dt><dd>Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::canvas2d からCanvas2Dオブジェクトを作り、 Canvas2D::init() でCanvasのサイズを指定し、 <a class="el" href="md_docs_254__view.html">View</a>と同様に Canvas2D::add() または operator&lt;&lt; で要素を追加し、 最後にCanvas2D::sync()をしてからClient::sync()をすることで送信されます。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.9</span> add関数の仕様を変更し &lt;&lt; 演算子も実装して、Viewと同じ使い方になりました</dd></dl>
@@ -219,8 +245,8 @@ Point, Transform</h1>
 <div class="line">canvas.<a class="code hl_function" href="classwebcface_1_1Canvas2D.html#a6168010def7261aa0d136ef01405fa64">sync</a>(); <span class="comment">// ここまでにcanvasに追加したものをクライアントに反映</span></div>
 <div class="line">wcli.<a class="code hl_function" href="classwebcface_1_1Canvas2D.html#a6168010def7261aa0d136ef01405fa64">sync</a>();</div>
 <div class="ttc" id="aclasswebcface_1_1Canvas2D_html"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html">webcface::Canvas2D</a></div><div class="ttdoc">Canvas2Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas2d.h:24</div></div>
-<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_a6168010def7261aa0d136ef01405fa64"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#a6168010def7261aa0d136ef01405fa64">webcface::Canvas2D::sync</a></div><div class="ttdeci">const Canvas2D &amp; sync() const</div><div class="ttdoc">内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> canvas2d.cc:17</div></div>
-<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_ab16d0f860fe05579f1c90cdf261e5c5e"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#ab16d0f860fe05579f1c90cdf261e5c5e">webcface::Canvas2D::init</a></div><div class="ttdeci">const Canvas2D &amp; init(double width, double height) const</div><div class="ttdoc">Canvasのサイズを指定 &amp; このCanvas2Dに追加した内容を初期化する</div><div class="ttdef"><b>Definition</b> canvas2d.cc:13</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_a6168010def7261aa0d136ef01405fa64"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#a6168010def7261aa0d136ef01405fa64">webcface::Canvas2D::sync</a></div><div class="ttdeci">const Canvas2D &amp; sync() const</div><div class="ttdoc">内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> canvas2d.cc:19</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_ab16d0f860fe05579f1c90cdf261e5c5e"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#ab16d0f860fe05579f1c90cdf261e5c5e">webcface::Canvas2D::init</a></div><div class="ttdeci">const Canvas2D &amp; init(double width, double height) const</div><div class="ttdoc">Canvasのサイズを指定 &amp; このCanvas2Dに追加した内容を初期化する</div><div class="ttdef"><b>Definition</b> canvas2d.cc:15</div></div>
 <div class="ttc" id="anamespacewebcface_html_a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01"><div class="ttname"><a href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01">webcface::GeometryType::rect</a></div><div class="ttdeci">@ rect</div></div>
 <div class="ttc" id="anamespacewebcface_html_a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072"><div class="ttname"><a href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a9b6ddeba5b33e577c07c35d8505c6072">webcface::GeometryType::circle</a></div><div class="ttdeci">@ circle</div></div>
 <div class="ttc" id="anamespacewebcface_html_a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608"><div class="ttname"><a href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6ae4fdf3290654756def4e6816fddce608">webcface::GeometryType::polygon</a></div><div class="ttdeci">@ polygon</div></div>
@@ -276,30 +302,29 @@ Point, Transform</h1>
 <div class="line"><span class="comment"># ... 省略</span></div>
 <div class="line">canvas.sync() <span class="comment"># ここまでにcanvasに追加したものをクライアントに反映</span></div>
 <div class="line">wcli.sync()<span class="comment">#</span></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface::components::geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> components.h:290</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface::components::geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> components.h:345</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface::components::geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> components.h:245</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface::components::geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> components.h:468</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface::components::geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> components.h:524</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface::components::geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> components.h:422</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png" alt="example_canvas2d.png" class="inline"/></p>
 <p class="startli">init() で指定するキャンバスのサイズを canvas2d() 時に指定することもできます。(init() は不要になります) </p><div class="fragment"><div class="line">canvas = wcli.canvas2d(<span class="stringliteral">&quot;canvas&quot;</span>, 100, 100)</div>
 </div><!-- fragment --><p> また、with構文を使って <code>with wcli.canvas2d("hoge", width, height) as canvas:</code> などとするとwithを抜けるときに自動でcanvas.sync()がされます。</p>
 <p class="startli">WebUIで表示するときには、initで指定したサイズの中で図を描画したものが画面の大きさに合わせて拡大縮小されます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><dl class="section note"><dt>Note</dt><dd>Viewと同様、Canvas3Dの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されます</dd></dl>
-<h2><a class="anchor" id="autotoc_md120"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md120"></a>
 Geometry (2次元)</h2>
 <p>2次元の図形を表示するにはGeometryを指定します。</p>
+<p>座標系は 右方向がx座標正、下方向がy座標正です。 (したがって回転角は右回りが正になります。)</p>
+<p>描画したものが重なる場合、後にaddした要素が上に描画されます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
-<p><code>webcface::Geometries</code> 名前空間に定義されています。 </p><div class="fragment"><div class="line"><span class="keyword">using namespace </span>webcface::Geometries;</div>
-</div><!-- fragment --><p> をすると便利かもしれません </p><dl class="section note"><dt>Note</dt><dd>namespace Geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
-<p>各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> または <a class="el" href="structwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。 <code>rect(...).color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。</p>
-<p class="startli">色、線の太さ、クリック時に実行する関数などを設定できます。 使用可能なオプションは <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> のそれぞれのメソッドの説明を参照してください。 関数の実行については<a class="el" href="md_docs_253__func.html">Func</a>も参照してください</p>
-</li>
+<li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
+<code><a class="el" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></code> 名前空間に定義されています。 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a>;</div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:381</div></div>
+</div><!-- fragment --> をすると便利かもしれません <dl class="section note"><dt>Note</dt><dd>namespace geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
+各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> または <a class="el" href="structwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。</li>
 <li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
-</div><!-- fragment --> オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。</li>
+</div><!-- fragment --></li>
 <li><b class="tab-title">Python</b> Pythonでは <a href="https://na-trium-144.github.io/webcface-python/webcface.geometries.html"><code>webcface.geometries</code></a> モジュール内にあり、 <div class="fragment"><div class="line"><span class="keyword">from</span> <a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface.geometries</a> <span class="keyword">import</span> *</div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:204</div></div>
 </div><!-- fragment --> とすることもできます</li>
 </ul>
 </div><div class="tabbed"></div><details >
@@ -317,24 +342,21 @@ ver1.8以前のC++</summary>
 <div class="ttc" id="aclasswebcface_1_1Canvas2D_html_a5d912265a5bbc4228fb8cf84ceb4ca3f"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#a5d912265a5bbc4228fb8cf84ceb4ca3f">webcface::Canvas2D::add</a></div><div class="ttdeci">const Canvas2D &amp; add(T &amp;&amp;cc) const</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> canvas2d.h:192</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a></div><div class="ttdeci">@ gray</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a></div><div class="ttdeci">@ white</div></div>
-<div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:141</div></div>
+<div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:794</div></div>
 </div><!-- fragment --><p> addの引数に表示したいgeometryと、表示する位置の平行移動or回転、枠線の色、塗りつぶしの色、枠線の太さを指定します。 詳細は <a class="el" href="classwebcface_1_1Canvas2D.html#a5d912265a5bbc4228fb8cf84ceb4ca3f" title="コンポーネントなどを追加">webcface::Canvas2D::add</a> を参照してください</p>
 <p></p>
 </details>
-<p>座標系は 右方向がx座標正、下方向がy座標正です。 (したがって回転角は右回りが正になります。)</p>
-<p>描画したものが重なる場合、後にaddした要素が上に描画されます。</p>
-<p>Geometryは以下のものが用意されています。</p>
 <h3><a class="anchor" id="autotoc_md121"></a>
 Line</h3>
-<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(Point begin, Point end)</div>
+<p>指定した2点間に直線を引きます </p><div class="fragment"><div class="line">line(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> begin, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> end)</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md122"></a>
 Rect</h3>
-<p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line">rect(Point vertex1, Point vertex2)</div>
-</div><!-- fragment --><p> またはoriginを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">rect(Point origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
+<p>指定した2点を頂点としx軸,y軸に平行な辺をもつ長方形を描画します </p><div class="fragment"><div class="line">rect(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex1, <a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> vertex2)</div>
+</div><!-- fragment --><p> またはoriginを中心として幅(x方向の長さ)がwidth, 高さ(y方向の長さ)がheightの長方形を描画します </p><div class="fragment"><div class="line">rect(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> width, <span class="keywordtype">double</span> height)</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md123"></a>
 Circle</h3>
-<p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(Point origin, <span class="keywordtype">double</span> radius)</div>
-</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>PythonではCanvas3Dとの兼ね合いで第1引数はTransform (使いにくいのでなんとかならないか?)</dd></dl>
+<p>originを中心として半径radiusの円を描画します </p><div class="fragment"><div class="line">circle(<a class="code hl_class" href="classwebcface_1_1Point.html">Point</a> origin, <span class="keywordtype">double</span> radius)</div>
+</div><!-- fragment --><p><del>PythonではCanvas3Dとの兼ね合いで第1引数はTransform(使いにくいのでなんとかならないか?)</del> <span class="since-py">3.0</span> で修正</p>
 <h3><a class="anchor" id="autotoc_md124"></a>
 Polygon</h3>
 <p>指定した点をつなげた図形を描画します </p><div class="fragment"><div class="line">polygon(std::vector&lt;Point&gt; points)</div>
@@ -350,12 +372,52 @@ Polygon</h3>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aafe01d67a002dfa0f3ac084298142eccd">webcface::ViewColor::orange</a></div><div class="ttdeci">@ orange</div></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md126"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md126"></a>
+オプション</h2>
+<p>各要素には以下のオプションを指定することができます。 (要素の種類によっては効果がないものもあります)</p>
+<ul>
+<li>origin: 図形の位置を移動・回転します。<ul>
+<li>それぞれのgeometryに対しても位置を指定することができますが、 それに加えてoriginを指定した場合最終的な座標は origin * 図形の座標 になります</li>
+</ul>
+</li>
+<li>color: 図形の枠線の色を変更します。</li>
+<li>fillColor(C++), fill(Python): 背景色を変更します。</li>
+<li>strokeWidth: 線の太さを変更します。<ul>
+<li>太さ1はCanvas2Dの座標系で1の長さ分の太さになります(拡大縮小で太さが変わる)</li>
+<li>指定しない場合0となります<ul>
+<li>WebUIではその場合Canvasの拡大に関係なく1ピクセルで表示します</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>textSize: <span class="since-c">1.9</span> 文字のサイズ<ul>
+<li>大きさ1は文字の高さがCanvas2Dの座標系で1の長さ分になります(拡大縮小で大きさが変わる)</li>
+</ul>
+</li>
+<li>onClick: <span class="since-c">1.9</span> クリックされたときに実行する処理を指定できます。<ul>
+<li>Viewのbuttonと同様、 Funcオブジェクト、 <span class="since-c">2.5</span> FuncListerオブジェクト、 または関数を直接指定できます。</li>
+</ul>
+</li>
+<li>id: <span class="since-c">2.5</span><span class="since-py">3.0</span> Viewのbuttonなどと同様です。<ul>
+<li>指定する場合は一意な文字列を指定してください。</li>
+</ul>
+</li>
+</ul>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> <code>rect(...).color(...)</code> などのようにメソッドチェーンすることで各要素にオプションを設定できます。 詳細は <a class="el" href="classwebcface_1_1TemporalCanvas2DComponent.html">webcface::TemporalCanvas2DComponent</a> のリファレンスを参照してください。</p>
+<p class="startli">色はViewと同様 <a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">webcface::ViewColor</a> のenumで指定します。</p>
+</li>
+<li><b class="tab-title">JavaScript</b> <code>rect(..., { color: ..., }))</code> などのように、オプションはそれぞれ関数の引数にオブジェクトで渡すことができます。</li>
+<li><p class="startli"><b class="tab-title">Python</b> <code>canvas2d.add(rect(...), color=...)</code> などのように、add() の引数にキーワード引数を渡すことでオプションを設定できます。</p>
+<p class="startli">色はViewと同様 ViewColor のenumで指定します。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md127"></a>
 受信</h1>
 <p>Viewなどと同様、Member::canvas2D() でCanvas2Dクラスのオブジェクトが得られ、 Canvas2D::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p>Canvas2Dデータは <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> (JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Canvas3DComponent.html">Canvas2DComponent</a>), Python <a href="https://na-trium-144.github.io/webcface-python/webcface.canvas2d.html#webcface.canvas2d.Canvas2DComponent">webcface.Canvas2DComponent</a>) のリストとして得られ、 Canvas2DComponentオブジェクトから各種プロパティを取得できます。</p>
 <p>また、Canvasの幅と高さも取得できます。</p>
-<h2><a class="anchor" id="autotoc_md127"></a>
+<h2><a class="anchor" id="autotoc_md128"></a>
 Entry, Event</h2>
 <p>いずれも使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
@@ -370,7 +432,7 @@ Entry, Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

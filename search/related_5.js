@@ -1,5 +1,7 @@
 var searchData=
 [
-  ['sizehw_0',['sizeHW',['../classwebcface_1_1Size.html#a532ccd01be60db41be021d0f1b3b2e97',1,'webcface::Size::sizeHW'],['../classwebcface_1_1SizeOption.html#a14a2487bf55838b210fb14cd86387a52',1,'webcface::SizeOption::sizeHW']]],
-  ['sizewh_1',['sizeWH',['../classwebcface_1_1Size.html#a93bb9fbe0e3d47abe9f1ece5c5f90767',1,'webcface::Size::sizeWH'],['../classwebcface_1_1SizeOption.html#a28c03ee1b2497489150d00781c32ebb6',1,'webcface::SizeOption::sizeWH']]]
+  ['robotlink_0',['RobotLink',['../classwebcface_1_1RobotJoint.html#ab8baad48f502926029b91c8eb1d1f51f',1,'webcface::RobotJoint']]],
+  ['rotation_1',['Rotation',['../classwebcface_1_1Transform.html#aa9d2bf0f1d1d2655fb37b513d3159be3',1,'webcface::Transform']]],
+  ['rotfromeuler_2',['rotFromEuler',['../classwebcface_1_1Rotation.html#a6d377b747208bc0fc43b72993680598a',1,'webcface::Rotation']]],
+  ['rotfrommatrix_3',['rotFromMatrix',['../classwebcface_1_1Rotation.html#a2ca7ff13a28554aff0c1d1c1136bdc8b',1,'webcface::Rotation']]]
 ];

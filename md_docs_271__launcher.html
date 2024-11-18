@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -143,16 +143,16 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md157">サービスとして (Linuxのみ)</a></li>
-<li class="level1"><a href="#autotoc_md158">コマンドライン引数</a></li>
-<li class="level1"><a href="#autotoc_md159">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md160">init</a></li>
-<li class="level2"><a href="#autotoc_md161">command</a></li>
+<ul><li class="level1"><a href="#autotoc_md159">サービスとして (Linuxのみ)</a></li>
+<li class="level1"><a href="#autotoc_md160">コマンドライン引数</a></li>
+<li class="level1"><a href="#autotoc_md161">設定ファイル</a><ul><li class="level2"><a href="#autotoc_md162">init</a></li>
+<li class="level2"><a href="#autotoc_md163">command</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md162">WebUIからの設定</a></li>
+<li class="level1"><a href="#autotoc_md164">WebUIからの設定</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md156"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md158"></a></p>
 <dl class="section since"><dt>Since</dt><dd>tools ver1.0</dd></dl>
 <p>設定ファイルにしたがってコマンドの実行、停止をするボタンをWebUIに表示します。</p>
 <p>tomlファイルに設定を記述し、 </p><div class="fragment"><div class="line">webcface-launcher ./webcface-launcher.toml</div>
@@ -184,12 +184,12 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 </li>
 <li>(tools ver2.1から) <code>member("webcface-launcher").log("コマンド名")</code> でログを取得できます。 (設定ファイルの stdout_capture の説明を参照)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md157"></a>
+<h1><a class="anchor" id="autotoc_md159"></a>
 サービスとして (Linuxのみ)</h1>
 <p>配布しているdebパッケージからインストールした場合は、serverと同様に </p><div class="fragment"><div class="line">sudo systemctl enable webcface-launcher</div>
 <div class="line">sudo systemctl start webcface-launcher</div>
 </div><!-- fragment --><p> でwebcface-launcherをサービスとして自動起動することができます。 ただしその場合は設定ファイルを /etc/webcface/webcface-launcher.toml として置いてください。</p>
-<h1><a class="anchor" id="autotoc_md158"></a>
+<h1><a class="anchor" id="autotoc_md160"></a>
 コマンドライン引数</h1>
 <div class="fragment"><div class="line">Usage: webcface-launcher [OPTIONS] [config_path]</div>
 </div><!-- fragment --><ul>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <li><code>-m name</code>: (tools ver1.1から) WebCFaceでのメンバー名(WebUIで表示される名前)です。省略時は設定ファイル内の記述を参照し、それもなければ webcface-launcher になります。</li>
 <li><code>-s</code>: (tools ver1.2から) 設定ファイルを読み込む代わりに、標準入力から入力された文字列をtomlとしてパースします。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md159"></a>
+<h1><a class="anchor" id="autotoc_md161"></a>
 設定ファイル</h1>
 <p>tomlファイルの例</p>
 <div class="fragment"><div class="line">[init]</div>
@@ -226,7 +226,7 @@ $(document).ready(function(){initNavTree('md_docs_271__launcher.html',''); initR
 <div class="line">[command.env]</div>
 <div class="line">FOO = &quot;foo&quot;</div>
 <div class="line">BAR = &quot;bar&quot;</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md160"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md162"></a>
 init</h2>
 <p>initセクションは省略できます。</p>
 <ul>
@@ -241,7 +241,7 @@ init</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md161"></a>
+<h2><a class="anchor" id="autotoc_md163"></a>
 command</h2>
 <ul>
 <li>name (必須)<ul>
@@ -307,7 +307,7 @@ command</h2>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md162"></a>
+<h1><a class="anchor" id="autotoc_md164"></a>
 WebUIからの設定</h1>
 <p>WebCFace Desktop ではGUIから設定ファイルを記述することができます。</p>
 <ul>
@@ -332,7 +332,7 @@ WebUIからの設定</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -144,11 +144,15 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <div class="contents">
 <div class="textblock"><dl class="reflist">
 <dt>Page <a class="el" href="md_docs_251__value.html">5-1. Value</a>  </dt>
-<dd><a class="anchor" id="_todo000002"></a> Pythonの辞書型への対応は未実装 </dd>
+<dd><a class="anchor" id="_todo000004"></a> Pythonの辞書型への対応は未実装 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="structwebcface_1_1server_1_1MemberData.html#a743aa291510ef3b798aa1b7cff6eb5c3">MemberData::image_cv</a>  </dt>
-<dd><a class="anchor" id="_todo000003"></a>今後いつかマルチスレッド化したときにデッドロックする気がする  </dd>
+<dd><a class="anchor" id="_todo000005"></a>今後いつかマルチスレッド化したときにデッドロックする気がする  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Point.html#a034caaa0b0544f0025de7ad756f27348">Point::Point</a>  (const R &amp;pos)</dt>
+<dd><a class="anchor" id="_todo000003"></a>std::array以外の要素数2の配列の場合エラーになってしまう </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="c__wcf_2member_8cc.html#a8541e5fd81f466ca6f4152ae0eccd1bc">wcfMemberLibName</a>  (wcfClient *wcli, const char *member)</dt>
-<dd><a class="anchor" id="_todo000001"></a>wstringバージョンも用意したほうがいいかも </dd>
+<dd><a class="anchor" id="_todo000001"></a>wstringバージョンも用意したほうがいいかも  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="namespacewebcface.html#a2ca7ff13a28554aff0c1d1c1136bdc8b">webcface::rotFromMatrix</a>  (const std::array&lt; std::array&lt; double, 3 &gt;, 3 &gt; &amp;matrix)</dt>
+<dd><a class="anchor" id="_todo000002"></a>Eigenの配列とか生ポインタとか? 他の型から行列の値を渡せると良い?</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
@@ -156,7 +160,7 @@ $(document).ready(function(){initNavTree('todo.html',''); initResizable(); });
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -170,7 +170,7 @@ C/C++</h1>
 </ul>
 <p class="startli">subprojectにする場合は以下のようなwrapを書き、 </p><div class="fragment"><div class="line">[wrap-git]</div>
 <div class="line">url = https://github.com/na-trium-144/webcface.git</div>
-<div class="line">revision = v2.4.2</div>
+<div class="line">revision = v2.5.0</div>
 <div class="line">depth = 1</div>
 <div class="line">[provide]</div>
 <div class="line">dependency_names = webcface</div>
@@ -192,7 +192,7 @@ C/C++</h1>
 <dl class="section note"><dt>Note</dt><dd>webcface::webcface ターゲットには cpp_std_17 が、 webcface::wcf ターゲットには c_std_99 の指定がそれぞれ含まれています。</dd></dl>
 <p>FetchContentを使う場合 </p><div class="fragment"><div class="line">FetchContent_Declare(webcface</div>
 <div class="line">  GIT_REPOSITORY https://github.com/na-trium-144/webcface.git</div>
-<div class="line">  GIT_TAG        v2.4.2</div>
+<div class="line">  GIT_TAG        v2.5.0</div>
 <div class="line">)</div>
 <div class="line">FetchContent_MakeAvailable(webcface)</div>
 </div><!-- fragment --><p> またはwebcfaceのgitリポジトリ(<a href="https://github.com/na-trium-144/webcface.git">https://github.com/na-trium-144/webcface.git</a> )を直接どこかのディレクトリに置いて<code>add_subdirectory()</code>でも使えると思います。</p>
@@ -227,7 +227,7 @@ C/C++</h1>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md39"></a>
 API</h2>
 <p>C++のソースコードでは<code>&lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code>をincludeするとwebcfaceのすべての機能が使用できます。</p>
-<p><span class="since-c">1.10</span> <code>&lt;<a class="el" href="client_8h.html">webcface/client.h</a>&gt;</code>, <code>&lt;<a class="el" href="value_8h.html">webcface/value.h</a>&gt;</code>など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。</p>
+<p><span class="since-c">1.10</span> <code>&lt;<a class="el" href="client_8h.html">webcface/client.h</a>&gt;</code>, <code>&lt;<a class="el" href="client_2include_2webcface_2value_8h.html">webcface/value.h</a>&gt;</code>など必要なヘッダファイルだけincludeして使うこともでき、コンパイル時間を短縮できます。</p>
 <p><span class="since-c">1.5</span> C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名前の関数やstructが用意されています。 (C++ライブラリのうちの一部の機能しかまだ実装していませんが)</p>
 <p><strike>&lt;<a class="el" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt; をincludeすることで使えます。</strike> <br  />
  <span class="since-c">1.7</span> &lt;<a class="el" href="wcf_8h.html">webcface/wcf.h</a>&gt; をincludeすることで使えます。(c_wcf.hも一応使えます) <br  />
@@ -259,7 +259,7 @@ JavaScript/TypeScript</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

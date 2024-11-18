@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -145,11 +145,25 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Point.html',''); init
 
 <p>This is the complete list of members for <a class="el" href="classwebcface_1_1Point.html">Point</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ac4892ae24952069b671fa63f58eb8d9a">operator!=</a>(const Point &amp;rhs) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#af5f7ee2f80e247726dd343340258d78b">operator==</a>(const Point &amp;rhs) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a82f158725c2ac6ab958b31e055a8ee78">Point</a>(const std::array&lt; double, 3 &gt; &amp;pos={0, 0, 0})</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ad4eb54f5b9f9b2a3a5f48aac6c561e9c">Point</a>(const std::array&lt; double, 2 &gt; &amp;pos)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ae474d0c70bb5ef2faa4582872384d9c9">Point</a>(double x, double y, double z=0)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a270aafb0f9c0793d51ea43bf3e3c1a07">operator!=</a>(const Point &amp;other) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a4af3ebb217631599633d112a9e64926f">operator!=</a>(const Transform &amp;)=delete</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#add725a9dbc5574864819bd497d90c3dc">operator*</a>(double scalar) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a271a68e1f77fba9bfeb2e8e09f839277">operator*</a></td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">friend</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a9e8d53818180fe407b20f13c42cd5d8e">operator*=</a>(double scalar)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a7c6e01a1503da19c6e6e6ca65d7ce9d9">operator+</a>(const Point &amp;other) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ad87b7d817266f1e69fb510bbad6c3a5c">operator+</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ace89b6f5480f89aa3e0165e563f35952">operator+=</a>(const Point &amp;other)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a2db556feb8013b54a7b1691995013606">operator-</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a9f6b452f15f4d36eb774e9aa34052a6c">operator-</a>(const Point &amp;other) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ad4bb8f94154354f959597d6c72df8869">operator-=</a>(const Point &amp;other)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a190e5947f3e44d21040d60881918444d">operator/</a>(double scalar) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a2d50dbb76d5d7054635e7f12beef1d64">operator/=</a>(double scalar)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ae30c03fc3e617a039c36242ccd3b8f12">operator==</a>(const Point &amp;other) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ae50469570e05111ad76f93d27a7e7504">operator==</a>(const Transform &amp;)=delete</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a82f158725c2ac6ab958b31e055a8ee78">Point</a>(const std::array&lt; double, 3 &gt; &amp;pos={0, 0, 0})</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ad4eb54f5b9f9b2a3a5f48aac6c561e9c">Point</a>(const std::array&lt; double, 2 &gt; &amp;pos)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#ae474d0c70bb5ef2faa4582872384d9c9">Point</a>(double x, double y, double z=0)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a034caaa0b0544f0025de7ad756f27348">Point</a>(const R &amp;pos)</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>() const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#af5e99aef593af120f66172ca1a7a7caa">pos</a>()</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
   <tr class="odd"><td class="entry"><a class="el" href="classwebcface_1_1Point.html#a1a29d15bfe9d64f7ad9754b30129b946">pos</a>(std::size_t index) const</td><td class="entry"><a class="el" href="classwebcface_1_1Point.html">Point</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
@@ -160,7 +174,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Point.html',''); init
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

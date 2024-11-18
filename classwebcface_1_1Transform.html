@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -141,90 +141,160 @@ $(document).ready(function(){initNavTree('classwebcface_1_1Transform.html',''); 
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#friends">Friends</a> &#124;
 <a href="classwebcface_1_1Transform-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Transform Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p>3次元の座標と回転  
+<p>3次元の平行移動と回転  
  <a href="classwebcface_1_1Transform.html#details">More...</a></p>
 
 <p><code>#include &lt;<a class="el" href="transform_8h_source.html">webcface/transform.h</a>&gt;</code></p>
 <div class="dynheader">
 Inheritance diagram for Transform:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Transform__inherit__graph.svg" width="98" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Transform__inherit__graph.svg" width="168" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <div class="dynheader">
 Collaboration diagram for Transform:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Transform__coll__graph.svg" width="98" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1Transform__coll__graph.svg" width="168" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a9de68ec1c9b7809129814a3233ae4655"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a9de68ec1c9b7809129814a3233ae4655">Transform</a> ()</td></tr>
 <tr class="separator:a9de68ec1c9b7809129814a3233ae4655"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc93d26012f58adc9c7aee2ddeac8eb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#acc93d26012f58adc9c7aee2ddeac8eb9">Transform</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;<a class="el" href="classwebcface_1_1Point.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>, const std::array&lt; double, 3 &gt; &amp;<a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
-<tr class="memdesc:acc93d26012f58adc9c7aee2ddeac8eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の座標と回転を初期化  <br /></td></tr>
+<tr class="memitem:a741f795bfc5f7647b5b84ec04753bb9a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a741f795bfc5f7647b5b84ec04753bb9a">Transform</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;<a class="el" href="classwebcface_1_1Transform.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>, const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;<a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
+<tr class="separator:a741f795bfc5f7647b5b84ec04753bb9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab974828bf05b4eb405cd0a3db6651b7a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ab974828bf05b4eb405cd0a3db6651b7a">Transform</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;<a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
+<tr class="memdesc:ab974828bf05b4eb405cd0a3db6651b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転のみの場合Rotationからキャスト  <br /></td></tr>
+<tr class="separator:ab974828bf05b4eb405cd0a3db6651b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc93d26012f58adc9c7aee2ddeac8eb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#acc93d26012f58adc9c7aee2ddeac8eb9">Transform</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;<a class="el" href="classwebcface_1_1Transform.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>, const std::array&lt; double, 3 &gt; &amp;<a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
+<tr class="memdesc:acc93d26012f58adc9c7aee2ddeac8eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">オイラー角から初期化  <br /></td></tr>
 <tr class="separator:acc93d26012f58adc9c7aee2ddeac8eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a928c36f4c8fa912889e247d524e8b030"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a928c36f4c8fa912889e247d524e8b030">Transform</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;<a class="el" href="classwebcface_1_1Point.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>, double <a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
+<tr class="memitem:a928c36f4c8fa912889e247d524e8b030"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a928c36f4c8fa912889e247d524e8b030">Transform</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;<a class="el" href="classwebcface_1_1Transform.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a>, double <a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a>)</td></tr>
 <tr class="memdesc:a928c36f4c8fa912889e247d524e8b030"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元の座標と回転を初期化  <br /></td></tr>
 <tr class="separator:a928c36f4c8fa912889e247d524e8b030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ab06d5d80286d4e62aecd5d50127853"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a3ab06d5d80286d4e62aecd5d50127853">Transform</a> (double x, double y, double z, double z_angle, double y_angle, double x_angle)</td></tr>
-<tr class="memdesc:a3ab06d5d80286d4e62aecd5d50127853"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の座標と回転を初期化  <br /></td></tr>
+<tr class="memdesc:a3ab06d5d80286d4e62aecd5d50127853"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の座標と回転をオイラー角から初期化  <br /></td></tr>
 <tr class="separator:a3ab06d5d80286d4e62aecd5d50127853"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1c5ac1e39a1e665a0c60e3bed5d75b85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a1c5ac1e39a1e665a0c60e3bed5d75b85">Transform</a> (double x, double y)</td></tr>
 <tr class="memdesc:a1c5ac1e39a1e665a0c60e3bed5d75b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元の座標を初期化  <br /></td></tr>
 <tr class="separator:a1c5ac1e39a1e665a0c60e3bed5d75b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e923e02816412b7f4448dc29fc463ab"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a> () const</td></tr>
-<tr class="memdesc:a9e923e02816412b7f4448dc29fc463ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転を取得  <br /></td></tr>
-<tr class="separator:a9e923e02816412b7f4448dc29fc463ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a0d48a5fb9f1e2156994fcd3a0277207f">rot</a> ()</td></tr>
-<tr class="memdesc:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転を取得・変更  <br /></td></tr>
-<tr class="separator:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3b72e791356cc624883b083fc905ebb7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a3b72e791356cc624883b083fc905ebb7">rot</a> (std::size_t index) const</td></tr>
-<tr class="memdesc:a3b72e791356cc624883b083fc905ebb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転を取得  <br /></td></tr>
-<tr class="separator:a3b72e791356cc624883b083fc905ebb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2846fe47152dd1c13ae6dac2e28c380f"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a2846fe47152dd1c13ae6dac2e28c380f">rot</a> (std::size_t index)</td></tr>
-<tr class="memdesc:a2846fe47152dd1c13ae6dac2e28c380f"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転を取得・変更  <br /></td></tr>
-<tr class="separator:a2846fe47152dd1c13ae6dac2e28c380f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21a28a013f4cadd42b0ddb6c0652240a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a21a28a013f4cadd42b0ddb6c0652240a">operator==</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;rhs) const</td></tr>
-<tr class="separator:a21a28a013f4cadd42b0ddb6c0652240a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65659788e5d6946bf85ff570d17ec538"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a65659788e5d6946bf85ff570d17ec538">operator!=</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;rhs) const</td></tr>
-<tr class="separator:a65659788e5d6946bf85ff570d17ec538"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82be71fc0efcaed4fdb76c20a4f9ac19"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a> () const</td></tr>
+<tr class="memitem:a76b7cbceaacd574a753a06116e011c9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a76b7cbceaacd574a753a06116e011c9f">appliedTo</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;target) const</td></tr>
+<tr class="memdesc:a76b7cbceaacd574a753a06116e011c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformを別のTransformに適用する  <br /></td></tr>
+<tr class="separator:a76b7cbceaacd574a753a06116e011c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab16f11dd073e058293472e6848f58cbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ab16f11dd073e058293472e6848f58cbd">operator*</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;target) const</td></tr>
+<tr class="memdesc:ab16f11dd073e058293472e6848f58cbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformを別のTransformに適用する  <br /></td></tr>
+<tr class="separator:ab16f11dd073e058293472e6848f58cbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab59e2c80e64272bf134b45d6bc5382be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ab59e2c80e64272bf134b45d6bc5382be">appliedTo</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;target) const</td></tr>
+<tr class="memdesc:ab59e2c80e64272bf134b45d6bc5382be"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformをRotationに適用する  <br /></td></tr>
+<tr class="separator:ab59e2c80e64272bf134b45d6bc5382be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae409b59019363bfcc4104e3235fe0153"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ae409b59019363bfcc4104e3235fe0153">operator*</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;target) const</td></tr>
+<tr class="memdesc:ae409b59019363bfcc4104e3235fe0153"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformをRotationに適用する  <br /></td></tr>
+<tr class="separator:ae409b59019363bfcc4104e3235fe0153"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11c023ce8e1589b0b4f38ae873f9a15d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a11c023ce8e1589b0b4f38ae873f9a15d">operator*=</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;target)</td></tr>
+<tr class="memdesc:a11c023ce8e1589b0b4f38ae873f9a15d"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformを別のTransformに適用した結果で置き換える  <br /></td></tr>
+<tr class="separator:a11c023ce8e1589b0b4f38ae873f9a15d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2a1c770e58817ca6c993d6f484af3d9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ad2a1c770e58817ca6c993d6f484af3d9">appliedTo</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;target) const</td></tr>
+<tr class="memdesc:ad2a1c770e58817ca6c993d6f484af3d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformをPointに適用する  <br /></td></tr>
+<tr class="separator:ad2a1c770e58817ca6c993d6f484af3d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1142cbc22f194496a1ae6746e4718bf0"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a1142cbc22f194496a1ae6746e4718bf0">operator*</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;target) const</td></tr>
+<tr class="memdesc:a1142cbc22f194496a1ae6746e4718bf0"><td class="mdescLeft">&#160;</td><td class="mdescRight">このTransformをPointに適用する  <br /></td></tr>
+<tr class="separator:a1142cbc22f194496a1ae6746e4718bf0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a334b531482526d5b6e474e606d2d3958"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a334b531482526d5b6e474e606d2d3958">inversed</a> () const</td></tr>
+<tr class="memdesc:a334b531482526d5b6e474e606d2d3958"><td class="mdescLeft">&#160;</td><td class="mdescRight">逆変換を表すTransformを取得  <br /></td></tr>
+<tr class="separator:a334b531482526d5b6e474e606d2d3958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2e0a59b0f6516820e3d6dd66203393c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ab2e0a59b0f6516820e3d6dd66203393c">operator==</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;other) const</td></tr>
+<tr class="separator:ab2e0a59b0f6516820e3d6dd66203393c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a021ff4aa723ef7e0bab5de9449f9aa1b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a021ff4aa723ef7e0bab5de9449f9aa1b">operator!=</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;other) const</td></tr>
+<tr class="separator:a021ff4aa723ef7e0bab5de9449f9aa1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88138ec92b9c7d93592c672bd1cb13e6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a88138ec92b9c7d93592c672bd1cb13e6">operator==</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;other) const</td></tr>
+<tr class="separator:a88138ec92b9c7d93592c672bd1cb13e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f1e030b195b21a61bdf59493cb5d1fc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a4f1e030b195b21a61bdf59493cb5d1fc">operator!=</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;other) const</td></tr>
+<tr class="separator:a4f1e030b195b21a61bdf59493cb5d1fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82be71fc0efcaed4fdb76c20a4f9ac19"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a82be71fc0efcaed4fdb76c20a4f9ac19">pos</a> () const</td></tr>
 <tr class="memdesc:a82be71fc0efcaed4fdb76c20a4f9ac19"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元座標を取得  <br /></td></tr>
 <tr class="separator:a82be71fc0efcaed4fdb76c20a4f9ac19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5e99aef593af120f66172ca1a7a7caa"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#af5e99aef593af120f66172ca1a7a7caa">pos</a> ()</td></tr>
+<tr class="memitem:af5e99aef593af120f66172ca1a7a7caa"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#af5e99aef593af120f66172ca1a7a7caa">pos</a> ()</td></tr>
 <tr class="memdesc:af5e99aef593af120f66172ca1a7a7caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元座標を取得・変更  <br /></td></tr>
 <tr class="separator:af5e99aef593af120f66172ca1a7a7caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1a29d15bfe9d64f7ad9754b30129b946"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#a1a29d15bfe9d64f7ad9754b30129b946">pos</a> (std::size_t index) const</td></tr>
+<tr class="memitem:a1a29d15bfe9d64f7ad9754b30129b946"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a1a29d15bfe9d64f7ad9754b30129b946">pos</a> (std::size_t index) const</td></tr>
 <tr class="memdesc:a1a29d15bfe9d64f7ad9754b30129b946"><td class="mdescLeft">&#160;</td><td class="mdescRight">座標を取得  <br /></td></tr>
 <tr class="separator:a1a29d15bfe9d64f7ad9754b30129b946"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7604b6cdcde08b46608321d1dcb6d8e"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#aa7604b6cdcde08b46608321d1dcb6d8e">pos</a> (std::size_t i)</td></tr>
+<tr class="memitem:aa7604b6cdcde08b46608321d1dcb6d8e"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#aa7604b6cdcde08b46608321d1dcb6d8e">pos</a> (std::size_t i)</td></tr>
 <tr class="memdesc:aa7604b6cdcde08b46608321d1dcb6d8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">座標を取得・変更  <br /></td></tr>
 <tr class="separator:aa7604b6cdcde08b46608321d1dcb6d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af5f7ee2f80e247726dd343340258d78b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#af5f7ee2f80e247726dd343340258d78b">operator==</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;rhs) const</td></tr>
-<tr class="separator:af5f7ee2f80e247726dd343340258d78b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4892ae24952069b671fa63f58eb8d9a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#ac4892ae24952069b671fa63f58eb8d9a">operator!=</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;rhs) const</td></tr>
-<tr class="separator:ac4892ae24952069b671fa63f58eb8d9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e923e02816412b7f4448dc29fc463ab"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a9e923e02816412b7f4448dc29fc463ab">rot</a> () const</td></tr>
+<tr class="memdesc:a9e923e02816412b7f4448dc29fc463ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をオイラー角として取得  <br /></td></tr>
+<tr class="separator:a9e923e02816412b7f4448dc29fc463ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b72e791356cc624883b083fc905ebb7"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a3b72e791356cc624883b083fc905ebb7">rot</a> (std::size_t index) const</td></tr>
+<tr class="memdesc:a3b72e791356cc624883b083fc905ebb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をZYX順のオイラー角として取得  <br /></td></tr>
+<tr class="separator:a3b72e791356cc624883b083fc905ebb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a0d48a5fb9f1e2156994fcd3a0277207f">rot</a> ()</td></tr>
+<tr class="memdesc:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をオイラー角として取得・変更  <br /></td></tr>
+<tr class="separator:a0d48a5fb9f1e2156994fcd3a0277207f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2846fe47152dd1c13ae6dac2e28c380f"><td class="memItemLeft" align="right" valign="top">double &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a2846fe47152dd1c13ae6dac2e28c380f">rot</a> (std::size_t index)</td></tr>
+<tr class="memdesc:a2846fe47152dd1c13ae6dac2e28c380f"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をZYX順のオイラー角として取得・変更  <br /></td></tr>
+<tr class="separator:a2846fe47152dd1c13ae6dac2e28c380f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadc5c63fcfef3c23abfba965f429a76a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#aadc5c63fcfef3c23abfba965f429a76a">rot2D</a> () const</td></tr>
+<tr class="memdesc:aadc5c63fcfef3c23abfba965f429a76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元の回転を取得  <br /></td></tr>
+<tr class="separator:aadc5c63fcfef3c23abfba965f429a76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a24581f27fd1c3a590f47b6f5e4fe6d3c">rotAxisAngle</a> () const</td></tr>
+<tr class="memdesc:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度として取得  <br /></td></tr>
+<tr class="separator:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104">rotEuler</a> (<a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850">AxisSequence</a> axis=<a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850a6811254e01b3550bdb2dc46f204730dc">AxisSequence::ZYX</a>) const</td></tr>
+<tr class="memdesc:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をオイラー角として取得  <br /></td></tr>
+<tr class="separator:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c04abee1a63b70eed7aa5174e93833"><td class="memItemLeft" align="right" valign="top">const std::array&lt; std::array&lt; double, 3 &gt;, 3 &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a53c04abee1a63b70eed7aa5174e93833">rotMatrix</a> () const</td></tr>
+<tr class="memdesc:a53c04abee1a63b70eed7aa5174e93833"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転行列を取得  <br /></td></tr>
+<tr class="separator:a53c04abee1a63b70eed7aa5174e93833"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4ef8d6b50abfe077d6bdf5ef6817ba4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#ac4ef8d6b50abfe077d6bdf5ef6817ba4">rotMatrix</a> (std::size_t row, std::size_t col) const</td></tr>
+<tr class="memdesc:ac4ef8d6b50abfe077d6bdf5ef6817ba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転行列の要素を取得  <br /></td></tr>
+<tr class="separator:ac4ef8d6b50abfe077d6bdf5ef6817ba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afce06530354c23bce4800b603598231f"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#afce06530354c23bce4800b603598231f">rotQuat</a> () const</td></tr>
+<tr class="memdesc:afce06530354c23bce4800b603598231f"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンとして取得  <br /></td></tr>
+<tr class="separator:afce06530354c23bce4800b603598231f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
-Protected Attributes</h2></td></tr>
-<tr class="memitem:a1d9c840af4d4c13a29822440ea5640a9"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a1d9c840af4d4c13a29822440ea5640a9">rot_</a></td></tr>
-<tr class="separator:a1d9c840af4d4c13a29822440ea5640a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab014b6d294b9bc55f5b53f09e27647db"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#ab014b6d294b9bc55f5b53f09e27647db">pos_</a></td></tr>
-<tr class="separator:ab014b6d294b9bc55f5b53f09e27647db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pri-methods" name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:add725a9dbc5574864819bd497d90c3dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Point.html">Point</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#add725a9dbc5574864819bd497d90c3dc">operator*</a> (double scalar) const</td></tr>
+<tr class="memdesc:add725a9dbc5574864819bd497d90c3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">x, y, z の各要素をスカラー倍したPointを返す  <br /></td></tr>
+<tr class="separator:add725a9dbc5574864819bd497d90c3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e8d53818180fe407b20f13c42cd5d8e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#a9e8d53818180fe407b20f13c42cd5d8e">operator*=</a> (double scalar)</td></tr>
+<tr class="separator:a9e8d53818180fe407b20f13c42cd5d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae30c03fc3e617a039c36242ccd3b8f12"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#ae30c03fc3e617a039c36242ccd3b8f12">operator==</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;other) const</td></tr>
+<tr class="separator:ae30c03fc3e617a039c36242ccd3b8f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae50469570e05111ad76f93d27a7e7504"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#ae50469570e05111ad76f93d27a7e7504">operator==</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;)=delete</td></tr>
+<tr class="separator:ae50469570e05111ad76f93d27a7e7504"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a270aafb0f9c0793d51ea43bf3e3c1a07"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#a270aafb0f9c0793d51ea43bf3e3c1a07">operator!=</a> (const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;other) const</td></tr>
+<tr class="separator:a270aafb0f9c0793d51ea43bf3e3c1a07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4af3ebb217631599633d112a9e64926f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Point.html#a4af3ebb217631599633d112a9e64926f">operator!=</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;)=delete</td></tr>
+<tr class="separator:a4af3ebb217631599633d112a9e64926f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aefdf17442700b3f648696bf5d6d846dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#aefdf17442700b3f648696bf5d6d846dd">operator*=</a> (const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;target)</td></tr>
+<tr class="memdesc:aefdf17442700b3f648696bf5d6d846dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">このRotationを別のRotationに適用した結果で置き換える  <br /></td></tr>
+<tr class="separator:aefdf17442700b3f648696bf5d6d846dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="friends" name="friends"></a>
+Friends</h2></td></tr>
+<tr class="memitem:aa238d52f825b8ea8da6a5c4ae1b8d482"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#aa238d52f825b8ea8da6a5c4ae1b8d482">Point</a></td></tr>
+<tr class="separator:aa238d52f825b8ea8da6a5c4ae1b8d482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9d2bf0f1d1d2655fb37b513d3159be3"><td class="memItemLeft" align="right" valign="top">class&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#aa9d2bf0f1d1d2655fb37b513d3159be3">Rotation</a></td></tr>
+<tr class="separator:aa9d2bf0f1d1d2655fb37b513d3159be3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>3次元の座標と回転 </p>
+<div class="textblock"><p>3次元の平行移動と回転 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.4</dd></dl>
-<p>内部ではx, y, zの座標とz-y-x系のオイラー角で保持している。 </p>
+<ul>
+<li>ver2.5〜 publicではなくprivate継承に変更</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。">Point</a>, <a class="el" href="classwebcface_1_1Rotation.html" title="3次元の回転を表すクラス">Rotation</a> </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a9de68ec1c9b7809129814a3233ae4655" name="a9de68ec1c9b7809129814a3233ae4655"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9de68ec1c9b7809129814a3233ae4655">&#9670;&#160;</a></span>Transform() <span class="overload">[1/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9de68ec1c9b7809129814a3233ae4655">&#9670;&#160;</a></span>Transform() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -248,8 +318,74 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a741f795bfc5f7647b5b84ec04753bb9a" name="a741f795bfc5f7647b5b84ec04753bb9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a741f795bfc5f7647b5b84ec04753bb9a">&#9670;&#160;</a></span>Transform() <span class="overload">[2/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<a id="ab974828bf05b4eb405cd0a3db6651b7a" name="ab974828bf05b4eb405cd0a3db6651b7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab974828bf05b4eb405cd0a3db6651b7a">&#9670;&#160;</a></span>Transform() <span class="overload">[3/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>rot</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>回転のみの場合Rotationからキャスト </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
 <a id="acc93d26012f58adc9c7aee2ddeac8eb9" name="acc93d26012f58adc9c7aee2ddeac8eb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc93d26012f58adc9c7aee2ddeac8eb9">&#9670;&#160;</a></span>Transform() <span class="overload">[2/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#acc93d26012f58adc9c7aee2ddeac8eb9">&#9670;&#160;</a></span>Transform() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -282,19 +418,20 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>3次元の座標と回転を初期化 </p>
+<p>オイラー角から初期化 </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">pos</td><td>x, y, z 座標 </td></tr>
-    <tr><td class="paramname">rot</td><td>オイラー角 (z, y, x の順) </td></tr>
+    <tr><td class="paramname">rot</td><td>オイラー角 回転軸の順序は z, y, x の順 </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000036">Deprecated:</a></b></dt><dd>ver2.5〜 <a class="el" href="classwebcface_1_1Rotation.html#af851b4d9aacd1a871da33592334b8d72">Transform(pos, rotEuler(rot))</a></dd></dl>
 
 </div>
 </div>
 <a id="a928c36f4c8fa912889e247d524e8b030" name="a928c36f4c8fa912889e247d524e8b030"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a928c36f4c8fa912889e247d524e8b030">&#9670;&#160;</a></span>Transform() <span class="overload">[3/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a928c36f4c8fa912889e247d524e8b030">&#9670;&#160;</a></span>Transform() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,7 +477,7 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a3ab06d5d80286d4e62aecd5d50127853" name="a3ab06d5d80286d4e62aecd5d50127853"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3ab06d5d80286d4e62aecd5d50127853">&#9670;&#160;</a></span>Transform() <span class="overload">[4/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ab06d5d80286d4e62aecd5d50127853">&#9670;&#160;</a></span>Transform() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -397,12 +534,13 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>3次元の座標と回転を初期化 </p>
+<p>3次元の座標と回転をオイラー角から初期化 </p>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000037">Deprecated:</a></b></dt><dd>ver2.5〜 <a class="el" href="classwebcface_1_1Transform.html" title="3次元の平行移動と回転">Transform</a>({x, y, z}, rotEuler(z, y, x))</dd></dl>
 
 </div>
 </div>
 <a id="a1c5ac1e39a1e665a0c60e3bed5d75b85" name="a1c5ac1e39a1e665a0c60e3bed5d75b85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1c5ac1e39a1e665a0c60e3bed5d75b85">&#9670;&#160;</a></span>Transform() <span class="overload">[5/5]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c5ac1e39a1e665a0c60e3bed5d75b85">&#9670;&#160;</a></span>Transform() <span class="overload">[7/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -437,12 +575,36 @@ Protected Attributes</h2></td></tr>
 
 <p>2次元の座標を初期化 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000038">Deprecated:</a></b></dt><dd>ver2.5〜 translate(x, y) </dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac4892ae24952069b671fa63f58eb8d9a" name="ac4892ae24952069b671fa63f58eb8d9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4892ae24952069b671fa63f58eb8d9a">&#9670;&#160;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
+<a id="ad2a1c770e58817ca6c993d6f484af3d9" name="ad2a1c770e58817ca6c993d6f484af3d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2a1c770e58817ca6c993d6f484af3d9">&#9670;&#160;</a></span>appliedTo() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Point.html">Point</a> appliedTo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>このTransformをPointに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>targetを (このTransformの座標系で) 回転&amp;平行移動した結果のPointを返す。 (thisもtargetも変更されない)</p>
+<p>this * target と同じ。 </p>
+
+</div>
+</div>
+<a id="ab59e2c80e64272bf134b45d6bc5382be" name="ab59e2c80e64272bf134b45d6bc5382be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab59e2c80e64272bf134b45d6bc5382be">&#9670;&#160;</a></span>appliedTo() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -451,24 +613,72 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool operator!= </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> appliedTo </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>このTransformをRotationに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>targetを (このTransformの座標系で) 回転&amp;平行移動した結果のTransformを返す。 結果はRotationではない。 (thisもtargetも変更されない)</p>
+<p>this * target と同じ。 </p>
+
 </div>
 </div>
-<a id="a65659788e5d6946bf85ff570d17ec538" name="a65659788e5d6946bf85ff570d17ec538"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a65659788e5d6946bf85ff570d17ec538">&#9670;&#160;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+<a id="a76b7cbceaacd574a753a06116e011c9f" name="a76b7cbceaacd574a753a06116e011c9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76b7cbceaacd574a753a06116e011c9f">&#9670;&#160;</a></span>appliedTo() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> appliedTo </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>このTransformを別のTransformに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>targetを (このTransformの座標系で) 回転&amp;平行移動した結果のTransformを返す。 (thisもtargetも変更されない)</p>
+<p>this * target と同じ。 </p>
+
+</div>
+</div>
+<a id="a334b531482526d5b6e474e606d2d3958" name="a334b531482526d5b6e474e606d2d3958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a334b531482526d5b6e474e606d2d3958">&#9670;&#160;</a></span>inversed()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> inversed </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>逆変換を表すTransformを取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<a id="a4f1e030b195b21a61bdf59493cb5d1fc" name="a4f1e030b195b21a61bdf59493cb5d1fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f1e030b195b21a61bdf59493cb5d1fc">&#9670;&#160;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -479,8 +689,8 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">bool operator!= </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -493,8 +703,156 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="af5f7ee2f80e247726dd343340258d78b" name="af5f7ee2f80e247726dd343340258d78b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af5f7ee2f80e247726dd343340258d78b">&#9670;&#160;</a></span>operator==() <span class="overload">[1/2]</span></h2>
+<a id="a021ff4aa723ef7e0bab5de9449f9aa1b" name="a021ff4aa723ef7e0bab5de9449f9aa1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a021ff4aa723ef7e0bab5de9449f9aa1b">&#9670;&#160;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1142cbc22f194496a1ae6746e4718bf0" name="a1142cbc22f194496a1ae6746e4718bf0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1142cbc22f194496a1ae6746e4718bf0">&#9670;&#160;</a></span>operator*() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Point.html">Point</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このTransformをPointに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>同次変換行列とベクトルの積を計算する。 結果はtargetを (このTransformの座標系で) 回転&amp;平行移動した結果 (this-&gt;appliedTo(target)) と同じ。</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Transform.html#a76b7cbceaacd574a753a06116e011c9f" title="このTransformを別のTransformに適用する">appliedTo</a> </dd></dl>
+
+</div>
+</div>
+<a id="ae409b59019363bfcc4104e3235fe0153" name="ae409b59019363bfcc4104e3235fe0153"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae409b59019363bfcc4104e3235fe0153">&#9670;&#160;</a></span>operator*() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このTransformをRotationに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Transform.html#a76b7cbceaacd574a753a06116e011c9f" title="このTransformを別のTransformに適用する">appliedTo</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab16f11dd073e058293472e6848f58cbd" name="ab16f11dd073e058293472e6848f58cbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab16f11dd073e058293472e6848f58cbd">&#9670;&#160;</a></span>operator*() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> operator* </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このTransformを別のTransformに適用する </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>同次変換行列の積を計算する。 結果はtargetを (このTransformの座標系で) 回転&amp;平行移動した結果 (this-&gt;appliedTo(target)) と同じ。</p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Transform.html#a76b7cbceaacd574a753a06116e011c9f" title="このTransformを別のTransformに適用する">appliedTo</a> </dd></dl>
+
+</div>
+</div>
+<a id="a11c023ce8e1589b0b4f38ae873f9a15d" name="a11c023ce8e1589b0b4f38ae873f9a15d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11c023ce8e1589b0b4f38ae873f9a15d">&#9670;&#160;</a></span>operator*=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp; operator*= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
+          <td class="paramname"><em>target</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このTransformを別のTransformに適用した結果で置き換える </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>this = this * target と同じ。 </p>
+
+</div>
+</div>
+<a id="a88138ec92b9c7d93592c672bd1cb13e6" name="a88138ec92b9c7d93592c672bd1cb13e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a88138ec92b9c7d93592c672bd1cb13e6">&#9670;&#160;</a></span>operator==() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -505,22 +863,22 @@ Protected Attributes</h2></td></tr>
         <tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1Point.html">Point</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<a id="a21a28a013f4cadd42b0ddb6c0652240a" name="a21a28a013f4cadd42b0ddb6c0652240a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a21a28a013f4cadd42b0ddb6c0652240a">&#9670;&#160;</a></span>operator==() <span class="overload">[2/2]</span></h2>
+<a id="ab2e0a59b0f6516820e3d6dd66203393c" name="ab2e0a59b0f6516820e3d6dd66203393c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2e0a59b0f6516820e3d6dd66203393c">&#9670;&#160;</a></span>operator==() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -532,7 +890,7 @@ Protected Attributes</h2></td></tr>
           <td class="memname">bool operator== </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;&#160;</td>
-          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
@@ -542,6 +900,9 @@ Protected Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<ul>
+<li>(ver2.5〜) x, y, z の各要素と、回転行列の各要素の差が 1e-8 未満のときtrue </li>
+</ul>
 
 </div>
 </div>
@@ -563,7 +924,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -591,7 +952,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -619,7 +980,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -654,7 +1015,7 @@ Protected Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -693,8 +1054,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>3次元の回転を取得・変更 </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<p>3次元の回転をオイラー角として取得・変更 </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104" title="3次元の回転をオイラー角として取得">rotEuler()</a> </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000034">Deprecated:</a></b></dt><dd>ver2.5〜 </dd></dl>
 
 </div>
 </div>
@@ -721,7 +1083,9 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>3次元の回転を取得 </p>
+<p>3次元の回転をオイラー角として取得 </p>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104" title="3次元の回転をオイラー角として取得">rotEuler()</a>, <a class="el" href="classwebcface_1_1Transform.html#aadc5c63fcfef3c23abfba965f429a76a" title="2次元の回転を取得">rot2D()</a> </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000032">Deprecated:</a></b></dt><dd>ver2.5〜 </dd></dl>
 
 </div>
 </div>
@@ -749,7 +1113,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>回転を取得・変更 </p>
+<p>3次元の回転をZYX順のオイラー角として取得・変更 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -757,6 +1121,7 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000035">Deprecated:</a></b></dt><dd>ver2.5〜 </dd></dl>
 
 </div>
 </div>
@@ -784,7 +1149,7 @@ Protected Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>回転を取得 </p>
+<p>3次元の回転をZYX順のオイラー角として取得 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -792,34 +1157,12 @@ Protected Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000033">Deprecated:</a></b></dt><dd>ver2.5〜 </dd></dl>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab014b6d294b9bc55f5b53f09e27647db" name="ab014b6d294b9bc55f5b53f09e27647db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab014b6d294b9bc55f5b53f09e27647db">&#9670;&#160;</a></span>pos_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::array&lt;double, 3&gt; pos_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1d9c840af4d4c13a29822440ea5640a9" name="a1d9c840af4d4c13a29822440ea5640a9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d9c840af4d4c13a29822440ea5640a9">&#9670;&#160;</a></span>rot_</h2>
+<a id="aadc5c63fcfef3c23abfba965f429a76a" name="aadc5c63fcfef3c23abfba965f429a76a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadc5c63fcfef3c23abfba965f429a76a">&#9670;&#160;</a></span>rot2D()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -828,20 +1171,231 @@ Protected Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::array&lt;double, 3&gt; rot_</td>
+          <td class="memname">double rot2D </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>2次元の回転を取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<p>内部処理としては <a class="el" href="classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104" title="3次元の回転をオイラー角として取得">rotEuler()</a>[0] と同じ。 </p>
+
+</div>
+</div>
+<a id="a24581f27fd1c3a590f47b6f5e4fe6d3c" name="a24581f27fd1c3a590f47b6f5e4fe6d3c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24581f27fd1c3a590f47b6f5e4fe6d3c">&#9670;&#160;</a></span>rotAxisAngle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt; rotAxisAngle </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>回転軸と角度として取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<a id="af1fceb7b1ad8ae634dc1f57609cbf104" name="af1fceb7b1ad8ae634dc1f57609cbf104"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1fceb7b1ad8ae634dc1f57609cbf104">&#9670;&#160;</a></span>rotEuler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; double, 3 &gt; rotEuler </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850">AxisSequence</a>&#160;</td>
+          <td class="paramname"><em>axis</em> = <code><a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850a6811254e01b3550bdb2dc46f204730dc">AxisSequence::ZYX</a></code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>3次元の回転をオイラー角として取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">axis</td><td>回転軸の順序 (ver2.5〜) ver2.4までは z, y, x の順しか指定できない </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a53c04abee1a63b70eed7aa5174e93833" name="a53c04abee1a63b70eed7aa5174e93833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53c04abee1a63b70eed7aa5174e93833">&#9670;&#160;</a></span>rotMatrix() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::array&lt; std::array&lt; double, 3 &gt;, 3 &gt; &amp; rotMatrix </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>回転行列を取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<a id="ac4ef8d6b50abfe077d6bdf5ef6817ba4" name="ac4ef8d6b50abfe077d6bdf5ef6817ba4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4ef8d6b50abfe077d6bdf5ef6817ba4">&#9670;&#160;</a></span>rotMatrix() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double rotMatrix </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>row</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>回転行列の要素を取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<a id="afce06530354c23bce4800b603598231f" name="afce06530354c23bce4800b603598231f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afce06530354c23bce4800b603598231f">&#9670;&#160;</a></span>rotQuat()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::array&lt; double, 4 &gt; rotQuat </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>クォータニオンとして取得 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Friends And Related Symbol Documentation</h2>
+<a id="aa238d52f825b8ea8da6a5c4ae1b8d482" name="aa238d52f825b8ea8da6a5c4ae1b8d482"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa238d52f825b8ea8da6a5c4ae1b8d482">&#9670;&#160;</a></span>Point</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classwebcface_1_1Point.html">Point</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a id="aa9d2bf0f1d1d2655fb37b513d3159be3" name="aa9d2bf0f1d1d2655fb37b513d3159be3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9d2bf0f1d1d2655fb37b513d3159be3">&#9670;&#160;</a></span>Rotation</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">friend class <a class="el" href="classwebcface_1_1Rotation.html">Rotation</a></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">friend</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>client/include/webcface/<a class="el" href="transform_8h_source.html">transform.h</a></li>
+<li>client/src/<a class="el" href="transform_8cc.html">transform.cc</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -849,7 +1403,7 @@ Protected Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Transform.html">Transform</a></li>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

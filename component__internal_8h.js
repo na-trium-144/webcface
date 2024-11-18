@@ -1,6 +1,6 @@
 var component__internal_8h =
 [
-    [ "ViewComponentData", "structwebcface_1_1internal_1_1ViewComponentData.html", "structwebcface_1_1internal_1_1ViewComponentData" ],
-    [ "Canvas2DComponentData", "structwebcface_1_1internal_1_1Canvas2DComponentData.html", "structwebcface_1_1internal_1_1Canvas2DComponentData" ],
-    [ "Canvas3DComponentData", "structwebcface_1_1internal_1_1Canvas3DComponentData.html", "structwebcface_1_1internal_1_1Canvas3DComponentData" ]
+    [ "TemporalViewComponentData", "structwebcface_1_1internal_1_1TemporalViewComponentData.html", "structwebcface_1_1internal_1_1TemporalViewComponentData" ],
+    [ "TemporalCanvas2DComponentData", "structwebcface_1_1internal_1_1TemporalCanvas2DComponentData.html", "structwebcface_1_1internal_1_1TemporalCanvas2DComponentData" ],
+    [ "TemporalCanvas3DComponentData", "structwebcface_1_1internal_1_1TemporalCanvas3DComponentData.html", "structwebcface_1_1internal_1_1TemporalCanvas3DComponentData" ]
 ];

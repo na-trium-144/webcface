@@ -3,6 +3,26 @@ var hierarchy =
     [ "AppWrapper", "classwebcface_1_1server_1_1AppWrapper.html", null ],
     [ "Arg", "classwebcface_1_1Arg.html", null ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", null ],
+    [ "ArrayLikeTraitCheck< bool >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck.html", null ],
+    [ "ArrayLikeTraitCheck< IsArrayLike< T >::value >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck.html", [
+      [ "ArrayLikeTrait< T >", "structwebcface_1_1traits_1_1ArrayLikeTrait.html", null ]
+    ] ],
+    [ "ArrayLikeTraitCheck< std::is_convertible_v< T, double > >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck.html", [
+      [ "ArrayLikeTrait< T[N]>", "structwebcface_1_1traits_1_1ArrayLikeTrait_3_01T_0fN_0e_4.html", [
+        [ "ArrayLikeTrait< T(&)[N]>", "structwebcface_1_1traits_1_1ArrayLikeTrait_3_01T_07_6_08_0fN_0e_4.html", null ]
+      ] ]
+    ] ],
+    [ "ArrayLikeTraitCheck< true >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck_3_01true_01_4.html", null ],
+    [ "ArraySizeTraitCheck< bool >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck.html", null ],
+    [ "ArraySizeTraitCheck< ArraySizeMatch< T, Num >::value >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck.html", [
+      [ "ArraySizeTrait< T, Num >", "structwebcface_1_1traits_1_1ArraySizeTrait.html", null ]
+    ] ],
+    [ "ArraySizeTraitCheck< N==Num >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck.html", [
+      [ "ArraySizeTrait< T[N], Num >", "structwebcface_1_1traits_1_1ArraySizeTrait_3_01T_0fN_0e_00_01Num_01_4.html", [
+        [ "ArraySizeTrait< T(&)[N], Num >", "structwebcface_1_1traits_1_1ArraySizeTrait_3_01T_07_6_08_0fN_0e_00_01Num_01_4.html", null ]
+      ] ]
+    ] ],
+    [ "ArraySizeTraitCheck< true >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html", null ],
     [ "basic_streambuf", null, [
       [ "BasicLoggerBuf< CharT >", "classwebcface_1_1BasicLoggerBuf.html", null ]
     ] ],
@@ -10,15 +30,15 @@ var hierarchy =
     [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", null ],
     [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", null ],
     [ "Canvas2DComponent", "classwebcface_1_1Canvas2DComponent.html", null ],
-    [ "Canvas2DComponent", "structwebcface_1_1message_1_1Canvas2DComponent.html", [
-      [ "Canvas2DComponentData", "structwebcface_1_1internal_1_1Canvas2DComponentData.html", null ]
+    [ "Canvas2DComponentData", "structwebcface_1_1message_1_1Canvas2DComponentData.html", [
+      [ "TemporalCanvas2DComponentData", "structwebcface_1_1internal_1_1TemporalCanvas2DComponentData.html", null ]
     ] ],
     [ "Canvas2DData", "structwebcface_1_1message_1_1Canvas2DData.html", null ],
-    [ "Canvas2DDataBase", "structwebcface_1_1internal_1_1Canvas2DDataBase.html", null ],
     [ "Canvas3DComponent", "classwebcface_1_1Canvas3DComponent.html", null ],
-    [ "Canvas3DComponent", "structwebcface_1_1message_1_1Canvas3DComponent.html", [
-      [ "Canvas3DComponentData", "structwebcface_1_1internal_1_1Canvas3DComponentData.html", null ]
+    [ "Canvas3DComponentData", "structwebcface_1_1message_1_1Canvas3DComponentData.html", [
+      [ "TemporalCanvas3DComponentData", "structwebcface_1_1internal_1_1TemporalCanvas3DComponentData.html", null ]
     ] ],
+    [ "Canvas3DData", "structwebcface_1_1message_1_1Canvas3DData.html", null ],
     [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
     [ "CharType< CharT >", "structwebcface_1_1c__wcf_1_1CharType.html", null ],
     [ "CharType< char >", "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html", null ],
@@ -48,7 +68,6 @@ var hierarchy =
         [ "Canvas2D", "classwebcface_1_1Canvas2D.html", null ],
         [ "Canvas3D", "classwebcface_1_1Canvas3D.html", null ],
         [ "Func", "classwebcface_1_1Func.html", [
-          [ "AnonymousFunc", "classwebcface_1_1AnonymousFunc.html", null ],
           [ "FuncListener", "classwebcface_1_1FuncListener.html", null ]
         ] ],
         [ "Image", "classwebcface_1_1Image.html", null ],
@@ -66,28 +85,28 @@ var hierarchy =
         [ "FuncInfo", "structwebcface_1_1internal_1_1FuncInfo.html", null ]
       ] ]
     ] ],
-    [ "FuncArgTypeCheck< bool >", "structwebcface_1_1FuncArgTypeCheck.html", null ],
-    [ "FuncArgTypeCheck< true >", "structwebcface_1_1FuncArgTypeCheck_3_01true_01_4.html", null ],
-    [ "FuncArgTypeCheck<(std::is_convertible_v< ValAdaptor, Args > &&...)>", "structwebcface_1_1FuncArgTypeCheck.html", [
-      [ "FuncArgTypesTrait< Args >", "structwebcface_1_1FuncArgTypesTrait.html", null ]
+    [ "FuncArgTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncArgTypeCheck.html", null ],
+    [ "FuncArgTypeCheck< true >", "structwebcface_1_1traits_1_1FuncArgTypeCheck_3_01true_01_4.html", null ],
+    [ "FuncArgTypeCheck<(std::is_convertible_v< ValAdaptor, Args > &&...)>", "structwebcface_1_1traits_1_1FuncArgTypeCheck.html", [
+      [ "FuncArgTypesTrait< Args >", "structwebcface_1_1traits_1_1FuncArgTypesTrait.html", null ]
     ] ],
     [ "FuncResultStore", "classwebcface_1_1internal_1_1FuncResultStore.html", null ],
-    [ "FuncReturnTypeCheck< bool >", "structwebcface_1_1FuncReturnTypeCheck.html", null ],
-    [ "FuncReturnTypeCheck< std::is_same_v< Ret, void >||std::is_constructible_v< ValAdaptor, Ret > >", "structwebcface_1_1FuncReturnTypeCheck.html", [
-      [ "FuncReturnTypeTrait< Ret >", "structwebcface_1_1FuncReturnTypeTrait.html", null ]
+    [ "FuncReturnTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck.html", null ],
+    [ "FuncReturnTypeCheck< std::is_same_v< Ret, void >||std::is_constructible_v< ValAdaptor, Ret > >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck.html", [
+      [ "FuncReturnTypeTrait< Ret >", "structwebcface_1_1traits_1_1FuncReturnTypeTrait.html", null ]
     ] ],
-    [ "FuncReturnTypeCheck< true >", "structwebcface_1_1FuncReturnTypeCheck_3_01true_01_4.html", null ],
-    [ "FuncSignatureTrait< T >", "structwebcface_1_1FuncSignatureTrait.html", null ],
-    [ "FuncSignatureTrait< Ret(Args...)>", "structwebcface_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [
-      [ "FuncSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", null ],
-      [ "FuncSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
-      [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", null ]
+    [ "FuncReturnTypeCheck< true >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html", null ],
+    [ "FuncSignatureTrait< T >", "structwebcface_1_1traits_1_1FuncSignatureTrait.html", null ],
+    [ "FuncSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [
+      [ "FuncSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", null ],
+      [ "FuncSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
+      [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", null ]
     ] ],
     [ "Geometry", "structwebcface_1_1Geometry.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]
     ] ],
     [ "hash", null, [
-      [ "Hash", "structwebcface_1_1encoding_1_1SharedString_1_1Hash.html", null ]
+      [ "Hash", "structwebcface_1_1SharedString_1_1Hash.html", null ]
     ] ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1server_1_1CustomLogger.html", null ]
@@ -128,11 +147,23 @@ var hierarchy =
     [ "MessageBase< MessageKind::canvas2d+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Res< Canvas2D >", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html", null ]
     ] ],
+    [ "MessageBase< MessageKind::canvas2d_old >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Canvas2DOld", "structwebcface_1_1message_1_1Canvas2DOld.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas2d_old+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Res< Canvas2DOld >", "structwebcface_1_1message_1_1Res_3_01Canvas2DOld_01_4.html", null ]
+    ] ],
     [ "MessageBase< MessageKind::canvas3d >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Canvas3D", "structwebcface_1_1message_1_1Canvas3D.html", null ]
     ] ],
     [ "MessageBase< MessageKind::canvas3d+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Res< Canvas3D >", "structwebcface_1_1message_1_1Res_3_01Canvas3D_01_4.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas3d_old >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Canvas3DOld", "structwebcface_1_1message_1_1Canvas3DOld.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::canvas3d_old+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Res< Canvas3DOld >", "structwebcface_1_1message_1_1Res_3_01Canvas3DOld_01_4.html", null ]
     ] ],
     [ "MessageBase< MessageKind::func_info >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "FuncInfo", "structwebcface_1_1message_1_1FuncInfo.html", null ]
@@ -203,6 +234,12 @@ var hierarchy =
     [ "MessageBase< MessageKind::view+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Res< View >", "structwebcface_1_1message_1_1Res_3_01View_01_4.html", null ]
     ] ],
+    [ "MessageBase< MessageKind::view_old >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "ViewOld", "structwebcface_1_1message_1_1ViewOld.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::view_old+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Res< ViewOld >", "structwebcface_1_1message_1_1Res_3_01ViewOld_01_4.html", null ]
+    ] ],
     [ "MessageBase< T::kind+MessageKind::entry >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Entry< T >", "structwebcface_1_1message_1_1Entry.html", null ]
     ] ],
@@ -225,14 +262,16 @@ var hierarchy =
       [ "RobotLinkData", "structwebcface_1_1internal_1_1RobotLinkData.html", null ]
     ] ],
     [ "RobotLink", "classwebcface_1_1RobotLink.html", null ],
+    [ "Rotation", "classwebcface_1_1Rotation.html", [
+      [ "Transform", "classwebcface_1_1Transform.html", null ]
+    ] ],
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
     ] ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1server_1_1Server.html", null ],
     [ "ServerStorage", "classwebcface_1_1server_1_1ServerStorage.html", null ],
-    [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
-    [ "SharedString", "classwebcface_1_1encoding_1_1SharedString.html", null ],
+    [ "SharedString", "classwebcface_1_1SharedString.html", null ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", null ],
     [ "Size", "classwebcface_1_1Size.html", null ],
     [ "SizeOption", "classwebcface_1_1SizeOption.html", null ],
@@ -245,14 +284,14 @@ var hierarchy =
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< Canvas2DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< Canvas3DData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< FuncData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< RobotModelData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< RobotModelData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< ValueData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::internal::FuncInfo > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::internal::LogData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< TextData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< ValueData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< ViewData >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::message::Canvas2DData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::message::Canvas3DData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::message::ViewData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< std::shared_ptr< webcface::ValAdaptor > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::ImageFrame, webcface::message::ImageReq >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData.html", null ],
     [ "TemporalCanvas2DComponent", "classwebcface_1_1TemporalCanvas2DComponent.html", null ],
@@ -267,12 +306,12 @@ var hierarchy =
       [ "ScopedSyncLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock.html", null ],
       [ "ScopedWsLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock.html", null ]
     ] ],
-    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
-    [ "ValAdaptor", "classwebcface_1_1encoding_1_1ValAdaptor.html", null ],
-    [ "ViewComponent", "structwebcface_1_1message_1_1ViewComponent.html", [
-      [ "ViewComponentData", "structwebcface_1_1internal_1_1ViewComponentData.html", null ]
-    ] ],
+    [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ],
+    [ "ViewComponentData", "structwebcface_1_1message_1_1ViewComponentData.html", [
+      [ "TemporalViewComponentData", "structwebcface_1_1internal_1_1TemporalViewComponentData.html", null ]
+    ] ],
+    [ "ViewData", "structwebcface_1_1message_1_1ViewData.html", null ],
     [ "wcfFuncCallHandle", "structwcfFuncCallHandle.html", null ],
     [ "wcfFuncCallHandleW", "structwcfFuncCallHandleW.html", null ],
     [ "wcfMultiVal", "structwcfMultiVal.html", null ],

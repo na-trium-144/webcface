@@ -1,0 +1,275 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: 8-2. Client Spec</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
+   </div>
+   <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('md_docs_282__client__spec.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">8-2. Client Spec</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="toc"><h3>Table of Contents</h3>
+<ul><li class="level1"><a href="#autotoc_md247">接続</a></li>
+<li class="level1"><a href="#autotoc_md248">切断</a></li>
+<li class="level1"><a href="#autotoc_md249">ping</a></li>
+<li class="level1"><a href="#autotoc_md250">データの送信 (Sync)</a></li>
+<li class="level1"><a href="#autotoc_md251">データの一覧 (Entry)</a></li>
+<li class="level1"><a href="#autotoc_md252">データのリクエスト (req)</a></li>
+<li class="level1"><a href="#autotoc_md253">Funcの定義</a></li>
+<li class="level1"><a href="#autotoc_md254">Funcの呼び出し (Call)</a></li>
+</ul>
+</div>
+<div class="textblock"><p><a class="anchor" id="autotoc_md246"></a></p>
+<p>WebCFace Client の動作仕様についてです。 各メッセージのデータ型の説明 <a class="el" href="md_docs_281__message.html">8-1. Message</a> も参照しながら読んでください。</p>
+<h1><a class="anchor" id="autotoc_md247"></a>
+接続</h1>
+<ul>
+<li>サーバーのアドレス(デフォルトでは7530ポート)にWebSocketで接続します。</li>
+<li>接続できたら、まずクライアント側が sync init (80) のメッセージを送信します</li>
+<li>その後サーバー側から 他のクライアント(=member)に関する sync init (80), 各種データ型の entry (20〜) と、最後に sync init end (88) が送られてくることで接続は完了です。</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md248"></a>
+切断</h1>
+<ul>
+<li>切断時に送信するべきメッセージは特にありません。そのままWebSocketを切断すればよいです。</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md249"></a>
+ping</h1>
+<ul>
+<li>サーバーから一定時間おきに ping (89) が送られてきたら、クライアントは ping (89) を送り返してください。</li>
+<li>ping値の情報を取得したい場合は、 ping status req (91) を送ってください。 その後一定時間おきに ping status (90) が送られてきます。</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md250"></a>
+データの送信 (Sync)</h1>
+<ul>
+<li>データを送信する場合、同時刻のデータとして送信したいものをすべてまとめて1回のArrayで送ります</li>
+<li>それに加えて、そのArrayの最初に sync (87) を追加してください</li>
+<li>value (0), text (1), image (5), robot_model (6) は名前とデータをそのまま送信します。</li>
+<li>view (9), canvas2d (10), canvas3d (11) は名前と前回からの差分データのみを送ります。<ul>
+<li>これらは複数の要素(component)からなりますが、それぞれの要素に id (文字列) を割り当て、 idごとに前回のSync時から変化したもののみを送信します。</li>
+<li>また各要素のデータと別にその要素idの並び順も送ります。これも前回のSync時から変化した場合のみでよいです。</li>
+<li>id はそのView/Canvas2D/Canvas3D内で要素ごとに一意なutf-8文字列であれば、命名規則は自由です。</li>
+</ul>
+</li>
+<li>log (8) は前回送信時から追加された行のみを送信します。<ul>
+<li>また他のデータ型と異なりデータ内に時刻の情報も含まれています。</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md251"></a>
+データの一覧 (Entry)</h1>
+<ul>
+<li>サーバーに新しく他の(無名でない)member(クライアント)が接続したとき、そのmemberの情報が sync init (80) としてサーバーから送られてきます。</li>
+<li>また、新しいデータがサーバーに届いたタイミングで、サーバーから各種データのEntryが送られてきます。<ul>
+<li>Entryのメッセージ型はそれぞれのデータ型のkindに20を足したものになっています。</li>
+</ul>
+</li>
+<li>クライアントが接続したときすでにサーバーに存在していた他のmemberの情報やデータの情報は sync init end (88) の前にまとめて送られてきます。</li>
+<li>クライアントがデータを送信する際にはサーバーにEntryを送る必要はないです。</li>
+<li>名前が半角ピリオドから始まるデータについては、Entryは送られてきません。 (Reqを送ることでデータを受信することはできます)</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md252"></a>
+データのリクエスト (req)</h1>
+<ul>
+<li>データを受信するには、まず各種データ型のリクエスト (Req) を送る必要があります。<ul>
+<li>Reqのメッセージ型はそれぞれのデータ型のkindに40を足したものになっています。</li>
+<li>Reqには受信したい相手のmember id, データの名前, リクエストidを指定します。</li>
+<li>リクエストidは、クライアントがリクエストを区別するために任意に指定する1以上の整数です。</li>
+</ul>
+</li>
+<li>リクエストを送った直後と、その後そのデータが変更されたときに、サーバーから sync (87) と各種データ (Res) が送られてきます。<ul>
+<li>sync には member id と時刻が含まれており、そのsyncと同時にまとめて送られてきたデータはすべてそのmemberのその時刻のものです。</li>
+<li>Resのメッセージ型はそれぞれのデータ型のkindに60を足したものになっています。</li>
+<li>基本的には送信時のデータ型とほぼ同じ仕様になっていますが、データ名の代わりにリクエストidとサブフィールド名が含まれています。</li>
+<li>リクエストidはReqで指定したものです。毎回データ名が送られてくる代わりにidを使うことで通信量を削減しています。</li>
+<li>サブフィールド名はReqで指定したデータ名に追加されるデータ名です。<ul>
+<li>例えば <code>foo</code> という名前のデータをリクエストして、 <code>foo</code> の代わりに <code>foo.bar</code> という名前のデータがサーバーに存在した場合、 <code>foo</code> のリクエストidと サブフィールド名 <code>bar</code> とともに <code>foo.bar</code> のデータが送られてきます。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md253"></a>
+Funcの定義</h1>
+<ul>
+<li>クライアントはFuncを定義した場合、 func info (84) を送信することができます。<ul>
+<li>func info は必ずしも送信しなくてもよいです。 (WebUIなどでFuncの一覧に表示されなくなります)</li>
+</ul>
+</li>
+<li>また逆に他のmemberがFuncを定義したとき、サーバーからクライアントに func info (84) が送られてきます。</li>
+<li>他のMemberによってFuncが呼び出されたとき、 call (81) が送られてきます。<ul>
+<li>callを受け取ったクライアントは、まず指定された名前のFuncが存在するかどうかをチェックし、 call response (82) として送り返す必要があります。</li>
+<li>call response でtrueを送った場合、指定された名前のFuncの処理を実行し、完了したときに結果を call result (83) として送信してください。</li>
+<li>call response でfalseを送った場合は call result を送信する必要はありません</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md254"></a>
+Funcの呼び出し (Call)</h1>
+<ul>
+<li>Funcを呼び出したい場合、 call (81) を送信します。<ul>
+<li>呼び出したい相手のmember id とFuncの名前に加えて、 caller id を指定します。</li>
+<li>caller id は実行結果が返ってくるときに判別できるよう、呼び出し側クライアントが任意に決めて良い数値(0以上の整数)です</li>
+</ul>
+</li>
+<li>callメッセージが相手memberに到達したら、 call response (82) が送られてきます。<ul>
+<li>相手memberが存在しなかった場合、サーバーによって call response がfalseで送られてきます。</li>
+</ul>
+</li>
+<li>call response がtrueの場合、呼び出したFuncの処理が完了したあとに結果が call result (83) として送られてきます。<ul>
+<li>処理中に相手memberが切断した場合には、サーバーが call result を生成して返します。</li>
+</ul>
+</li>
+<li>call response がfalseの場合 call result は送られてきません。</li>
+</ul>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><a class="el" href="md_docs_281__message.html">8-1. Message</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_283__server__spec.html">8-3. Server Spec</a>   </td></tr>
+</table>
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

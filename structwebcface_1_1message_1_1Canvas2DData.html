@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.4.2</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.0</span>
    </div>
    <div id="projectbrief">Web-based IPC &amp; Dashboard-like UI</div>
   </td>
@@ -140,32 +140,118 @@ $(document).ready(function(){initNavTree('structwebcface_1_1message_1_1Canvas2DD
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="structwebcface_1_1message_1_1Canvas2DData-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Canvas2DData Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
-<p><code>#include &lt;<a class="el" href="message_8h_source.html">webcface/message/message.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="common_2include_2webcface_2common_2internal_2message_2canvas2d_8h_source.html">webcface/common/internal/message/canvas2d.h</a>&gt;</code></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:afaff3348d13261ad14ea76b61282d92a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#afaff3348d13261ad14ea76b61282d92a">Canvas2DData</a> ()=default</td></tr>
+<tr class="separator:afaff3348d13261ad14ea76b61282d92a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a6361b4463fcf798399f33568bdba04"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a5a6361b4463fcf798399f33568bdba04">Canvas2DData</a> (double <a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a9df23e056f5d1a0388cd8190431c0e03">width</a>, double <a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a89f6abd564014faeff7cd20c340a9c7d">height</a>)</td></tr>
+<tr class="separator:a5a6361b4463fcf798399f33568bdba04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a9df23e056f5d1a0388cd8190431c0e03"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a9df23e056f5d1a0388cd8190431c0e03">width</a> = 0</td></tr>
 <tr class="separator:a9df23e056f5d1a0388cd8190431c0e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89f6abd564014faeff7cd20c340a9c7d"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a89f6abd564014faeff7cd20c340a9c7d">height</a> = 0</td></tr>
 <tr class="separator:a89f6abd564014faeff7cd20c340a9c7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac320a4cdff9132b96f0b0457c23ff809"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::shared_ptr&lt; <a class="el" href="structwebcface_1_1message_1_1Canvas2DComponent.html">Canvas2DComponent</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#ac320a4cdff9132b96f0b0457c23ff809">components</a></td></tr>
-<tr class="separator:ac320a4cdff9132b96f0b0457c23ff809"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a093b420f6d8c2c5ae6ce499220ca8487"><td class="memItemLeft" align="right" valign="top">std::map&lt; std::string, std::shared_ptr&lt; <a class="el" href="structwebcface_1_1message_1_1Canvas2DComponentData.html">Canvas2DComponentData</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a093b420f6d8c2c5ae6ce499220ca8487">components</a></td></tr>
+<tr class="separator:a093b420f6d8c2c5ae6ce499220ca8487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c0fd3db314f8c52c9251b7200849a54"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html#a2c0fd3db314f8c52c9251b7200849a54">data_ids</a></td></tr>
+<tr class="separator:a2c0fd3db314f8c52c9251b7200849a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="afaff3348d13261ad14ea76b61282d92a" name="afaff3348d13261ad14ea76b61282d92a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afaff3348d13261ad14ea76b61282d92a">&#9670;&#160;</a></span>Canvas2DData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html">Canvas2DData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">default</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5a6361b4463fcf798399f33568bdba04" name="a5a6361b4463fcf798399f33568bdba04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a6361b4463fcf798399f33568bdba04">&#9670;&#160;</a></span>Canvas2DData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html">Canvas2DData</a> </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>height</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ac320a4cdff9132b96f0b0457c23ff809" name="ac320a4cdff9132b96f0b0457c23ff809"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac320a4cdff9132b96f0b0457c23ff809">&#9670;&#160;</a></span>components</h2>
+<a id="a093b420f6d8c2c5ae6ce499220ca8487" name="a093b420f6d8c2c5ae6ce499220ca8487"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a093b420f6d8c2c5ae6ce499220ca8487">&#9670;&#160;</a></span>components</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt;std::shared_ptr&lt;<a class="el" href="structwebcface_1_1message_1_1Canvas2DComponent.html">Canvas2DComponent</a>&gt; &gt; components</td>
+          <td class="memname">std::map&lt;std::string, std::shared_ptr&lt;<a class="el" href="structwebcface_1_1message_1_1Canvas2DComponentData.html">Canvas2DComponentData</a>&gt; &gt; components</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c0fd3db314f8c52c9251b7200849a54" name="a2c0fd3db314f8c52c9251b7200849a54"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c0fd3db314f8c52c9251b7200849a54">&#9670;&#160;</a></span>data_ids</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&gt; data_ids</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -201,7 +287,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>message/include/webcface/message/<a class="el" href="message_8h_source.html">message.h</a></li>
+<li>common/include/webcface/common/internal/message/<a class="el" href="common_2include_2webcface_2common_2internal_2message_2canvas2d_8h_source.html">canvas2d.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -209,7 +295,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1message.html">message</a></li><li class="navelem"><a class="el" href="structwebcface_1_1message_1_1Canvas2DData.html">Canvas2DData</a></li>
-    <li class="footer">Generated on Wed Nov 6 2024 11:13:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Nov 18 2024 11:39:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -1,5 +1,7 @@
 <map id="Transform" name="Transform">
-<area shape="rect" id="Node000001" title="3次元の座標と回転" alt="" coords="5,79,92,104"/>
-<area shape="rect" id="Node000002" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。" alt="" coords="21,5,76,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,44,51,79,46,79,46,44"/>
+<area shape="rect" id="Node000001" title="3次元の平行移動と回転" alt="" coords="35,79,121,104"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。" alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="50,41,73,77,68,80,45,44"/>
+<area shape="rect" id="Node000003" href="$classwebcface_1_1Rotation.html" title="3次元の回転を表すクラス" alt="" coords="85,5,162,31"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="111,44,88,80,83,77,106,41"/>
 </map>

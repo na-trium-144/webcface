@@ -20,7 +20,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classwebcface_1_1Transform.html" target="_top" xlink:title="3次元の座標と回転">
+<g id="a_Node000002"><a xlink:href="classwebcface_1_1Transform.html" target="_top" xlink:title="3次元の平行移動と回転">
 <polygon fill="white" stroke="#666666" points="65,-19 0,-19 0,0 65,0 65,-19"/>
 <text text-anchor="middle" x="32.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Transform</text>
 </a>
@@ -30,8 +30,8 @@
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M32.5,-44.66C32.5,-35.93 32.5,-25.99 32.5,-19.09"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="29,-44.75 32.5,-54.75 36,-44.75 29,-44.75"/>
+<path fill="none" stroke="#8b1a1a" d="M32.5,-44.66C32.5,-35.93 32.5,-25.99 32.5,-19.09"/>
+<polygon fill="#8b1a1a" stroke="#8b1a1a" points="29,-44.75 32.5,-54.75 36,-44.75 29,-44.75"/>
 </a>
 </g>
 </g>
