@@ -135,6 +135,8 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
       '-Wno-error=deprecated-enum-enum-conversion',
       # inside magick
       '-Wno-error=ignored-qualifiers',
+      # inside msgpack
+      '-Wno-error=maybe-uninitialized',
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
