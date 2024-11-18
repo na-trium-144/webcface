@@ -8,7 +8,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 
 WEBCFACE_NS_BEGIN
 

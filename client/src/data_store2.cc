@@ -1,6 +1,15 @@
 #include "webcface/internal/data_store2.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/field.h"
 #include <type_traits>
+#include "webcface/internal/func_internal.h"
+#include "webcface/image_frame.h"
+#include "webcface/robot_link.h"
+#include "webcface/internal/robot_link_internal.h"
+#include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -10,11 +19,12 @@ namespace internal {
  */
 template <typename T>
 static bool shouldSend(const T &prev, const T &current) {
-    if constexpr (std::is_same_v<T, ValueData> || std::is_same_v<T, TextData>) {
+    if constexpr (std::is_same_v<T, std::shared_ptr<ValueData>> ||
+                  std::is_same_v<T, std::shared_ptr<TextData>>) {
         return *prev != *current;
     } else if constexpr (std::is_same_v<T, std::string>) {
         return prev != current;
-    } else if constexpr (std::is_same_v<T, FuncData>) {
+    } else if constexpr (std::is_same_v<T, std::shared_ptr<FuncData>>) {
         // Funcは内容が変更されても2回目以降送信しない
         return false;
     } else {
@@ -250,13 +260,13 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 }
 
 template class SyncDataStore2<std::string, int>; // test用
-template class SyncDataStore2<ValueData, int>;
-template class SyncDataStore2<TextData, int>;
-template class SyncDataStore2<FuncData, int>;
-template class SyncDataStore2<ViewData, int>;
-template class SyncDataStore2<RobotModelData, int>;
-template class SyncDataStore2<Canvas3DData, int>;
-template class SyncDataStore2<Canvas2DData, int>;
+template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+template class SyncDataStore2<std::shared_ptr<TextData>, int>;
+template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
+template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>, int>;
+template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>, int>;
 template class SyncDataStore2<ImageData, message::ImageReq>;
 template class SyncDataStore2<std::shared_ptr<LogData>, int>;
 } // namespace internal

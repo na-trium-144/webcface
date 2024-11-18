@@ -1,13 +1,15 @@
 #pragma once
-#include "webcface/encoding/val_adaptor.h"
+#include "webcface/common/val_adaptor.h"
 #include "func_result.h"
 #include "arg.h"
+#include "trait.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
 struct FuncInfo;
 }
 
+namespace traits {
 template <typename T>
 constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
     return &T::operator();
@@ -24,7 +26,7 @@ template <bool>
 struct FuncArgTypeCheck {};
 template <>
 struct FuncArgTypeCheck<true> {
-    using ArgTypesSupportedByWebCFaceFunc = std::nullptr_t;
+    using ArgTypesSupportedByWebCFaceFunc = TraitOkType;
 };
 template <typename... Args>
 struct FuncArgTypesTrait
@@ -34,7 +36,7 @@ template <bool>
 struct FuncReturnTypeCheck {};
 template <>
 struct FuncReturnTypeCheck<true> {
-    using ReturnTypeSupportedByWebCFaceFunc = std::nullptr_t;
+    using ReturnTypeSupportedByWebCFaceFunc = TraitOkType;
 };
 template <typename Ret>
 struct FuncReturnTypeTrait
@@ -84,13 +86,14 @@ struct FuncSignatureTrait<Ret (*)(Args...)> : FuncSignatureTrait<Ret(Args...)> {
 template <typename T>
 using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
 
+} // namespace traits
+
 /*!
  * \brief 関数1つを表すクラス
  *
  */
 class WEBCFACE_DLL Func : protected Field {
   public:
-    friend class AnonymousFunc;
     friend class TemporalViewComponent;
     friend class TemporalCanvas2DComponent;
 
@@ -203,8 +206,6 @@ class WEBCFACE_DLL Func : protected Field {
         catchAll([&] { handle.respond(f_run()); }, handle);
     }
 
-    static constexpr std::nullptr_t TraitOk = nullptr;
-
   public:
     /*!
      * \brief 関数をセットする
@@ -220,21 +221,22 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
+              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::
+                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
     const Func &set(T func) const {
         return setImpl(
-            valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
-            FuncObjTrait<T>::argsInfo(),
+            valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
+            traits::FuncObjTrait<T>::argsInfo(),
             [func = std::move(func)](const CallHandle &handle) {
-                if (FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename FuncObjTrait<T>::ArgsTuple args_tuple;
+                if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
+                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
                     argToTuple(handle.args(), args_tuple);
                     tryRun(
                         [&] {
-                            if constexpr (FuncObjTrait<T>::return_void) {
+                            if constexpr (traits::FuncObjTrait<
+                                              T>::return_void) {
                                 std::apply(func, args_tuple);
                                 return ValAdaptor::emptyVal();
                             } else {
@@ -260,24 +262,24 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
+              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
+                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::
+                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
     const Func &setAsync(T func) const {
         return setImpl(
-            valTypeOf<typename FuncObjTrait<T>::ReturnType>(),
-            FuncObjTrait<T>::argsInfo(),
+            valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
+            traits::FuncObjTrait<T>::argsInfo(),
             [func_p = std::make_shared<T>(std::move(func))](
                 const CallHandle &handle) {
-                if (FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename FuncObjTrait<T>::ArgsTuple args_tuple;
+                if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
+                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
                     argToTuple(handle.args(), args_tuple);
                     std::thread(
                         [func_p, handle](auto args_tuple) {
                             tryRun(
                                 [&] {
-                                    if constexpr (FuncObjTrait<
+                                    if constexpr (traits::FuncObjTrait<
                                                       T>::return_void) {
                                         std::apply(*func_p, args_tuple);
                                         return ValAdaptor::emptyVal();
@@ -585,69 +587,6 @@ class WEBCFACE_DLL Func : protected Field {
     }
 };
 
-/*!
- * \brief 名前を指定せず先に関数を登録するFunc
- *
- */
-class WEBCFACE_DLL AnonymousFunc : public Func {
-    static SharedString WEBCFACE_CALL fieldNameTmp();
-
-    std::function<void(AnonymousFunc &)> func_setter = nullptr;
-    bool base_init = false;
-
-  public:
-    AnonymousFunc() = default;
-    /*!
-     * 一時的な名前(fieldNameTmp())をつけたFuncとしてdataに登録し、
-     * lockTmp() 呼び出し時に正式な名前のFuncに内容を移動する。
-     *
-     */
-    template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    AnonymousFunc(const Field &base, T func)
-        : Func(base, fieldNameTmp()), base_init(true) {
-        this->set(std::move(func));
-    }
-    /*!
-     * コンストラクタでdataが渡されなかった場合は関数を内部で保持し(func_setter)、
-     * lockTmp() 時にdataに登録する
-     *
-     */
-    template <typename T,
-              typename FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = TraitOk,
-              typename FuncObjTrait<
-                  T>::ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc = TraitOk>
-    explicit AnonymousFunc(T func)
-        : func_setter([func = std::move(func)](AnonymousFunc &a) mutable {
-              a.set(std::move(func));
-          }) {}
-
-    AnonymousFunc(const AnonymousFunc &) = delete;
-    AnonymousFunc &operator=(const AnonymousFunc &) = delete;
-    AnonymousFunc(AnonymousFunc &&other) noexcept { *this = std::move(other); }
-    /*!
-     * \brief otherの中身を移動し、otherは未初期化にする
-     * \since ver1.9
-     *
-     * 未初期化 == func_setterが空でbase_initがfalse
-     *
-     */
-    AnonymousFunc &operator=(AnonymousFunc &&other) noexcept;
-    /*!
-     * \brief targetに関数を移動
-     *
-     * (ver1.9〜) thisが未初期化の場合 std::runtime_error を投げる
-     *
-     * (ver1.9〜) 2回実行すると std::runtime_error
-     *
-     */
-    void lockTo(Func &target);
-};
-
 class WEBCFACE_DLL FuncListener : protected Func {
     ValType return_type_ = ValType::none_;
     std::vector<Arg> args_{};
@@ -658,6 +597,8 @@ class WEBCFACE_DLL FuncListener : protected Func {
     FuncListener(const Field &base, const SharedString &field)
         : FuncListener(Field{base, field}) {}
 
+    friend class TemporalViewComponent;
+    friend class TemporalCanvas2DComponent;
     using Field::member;
     using Field::name;
 

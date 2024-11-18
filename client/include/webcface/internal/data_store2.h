@@ -1,20 +1,10 @@
 #pragma once
+#include <deque>
 #include <mutex>
-#include <unordered_map>
 #include <optional>
-#include <functional>
 #include "webcface/field.h"
-#include "webcface/encoding/val_adaptor.h"
-#include "webcface/internal/func_internal.h"
-#include "webcface/image_frame.h"
-#include "webcface/component_canvas2d.h"
-#include "webcface/component_canvas3d.h"
-#include "webcface/component_view.h"
-#include "webcface/robot_link.h"
-#include "webcface/message/message.h"
-#include "webcface/internal/component_internal.h"
-#include "webcface/internal/robot_link_internal.h"
 #include "webcface/log.h"
+#include "webcface/common/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -186,28 +176,21 @@ class SyncDataStore2 {
     StrMap2<unsigned int> transferReq();
 };
 
-struct Canvas2DDataBase {
-    double width = 0, height = 0;
-    std::vector<std::shared_ptr<Canvas2DComponentData>> components;
-    Canvas2DDataBase() = default;
-    Canvas2DDataBase(double width, double height)
-        : width(width), height(height), components() {}
-    Canvas2DDataBase(
-        double width, double height,
-        std::vector<std::shared_ptr<Canvas2DComponentData>> &&components)
-        : width(width), height(height), components(std::move(components)) {}
-};
-
-using ValueData = std::shared_ptr<std::vector<double>>;
-using TextData = std::shared_ptr<ValAdaptor>;
-using FuncData = std::shared_ptr<FuncInfo>;
-using ViewData =
-    std::shared_ptr<std::vector<std::shared_ptr<internal::ViewComponentData>>>;
-using RobotModelData =
-    std::shared_ptr<std::vector<std::shared_ptr<internal::RobotLinkData>>>;
-using Canvas3DData = std::shared_ptr<
-    std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>;
-using Canvas2DData = std::shared_ptr<Canvas2DDataBase>;
+struct FuncInfo;
+struct RobotLinkData;
+} // namespace internal
+class ImageFrame;
+namespace message {
+struct ViewData;
+struct Canvas2DData;
+struct Canvas3DData;
+struct ImageReq;
+} // namespace message
+namespace internal {
+using ValueData = std::vector<double>;
+using TextData = ValAdaptor;
+using FuncData = FuncInfo;
+using RobotModelData = std::vector<std::shared_ptr<internal::RobotLinkData>>;
 using ImageData = ImageFrame;
 
 struct LogData {
@@ -231,13 +214,15 @@ struct LogData {
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<ValueData, int>;
-extern template class SyncDataStore2<TextData, int>;
-extern template class SyncDataStore2<FuncData, int>;
-extern template class SyncDataStore2<ViewData, int>;
-extern template class SyncDataStore2<RobotModelData, int>;
-extern template class SyncDataStore2<Canvas3DData, int>;
-extern template class SyncDataStore2<Canvas2DData, int>;
+extern template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+extern template class SyncDataStore2<std::shared_ptr<TextData>, int>;
+extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
+extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
+extern template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
+extern template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>,
+                                     int>;
+extern template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>,
+                                     int>;
 extern template class SyncDataStore2<ImageData, message::ImageReq>;
 extern template class SyncDataStore2<std::shared_ptr<LogData>, int>;
 #endif

@@ -1,4 +1,5 @@
 #pragma once
+#include <deque>
 #include <string>
 #include <unordered_map>
 #include <chrono>
@@ -7,11 +8,19 @@
 #include <atomic>
 #include <condition_variable>
 #include <thread>
-#include "webcface/message/message.h"
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
+#include "webcface/common/encoding.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/view.h"
 #include "webcface/server/server.h"
-#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 namespace server {
@@ -54,11 +63,11 @@ struct MemberData {
     StrMap1<std::shared_ptr<std::vector<double>>> value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<std::vector<std::shared_ptr<message::ViewComponent>>> view;
-    StrMap1<std::vector<std::shared_ptr<message::Canvas3DComponent>>> canvas3d;
+    StrMap1<message::ViewData> view;
+    StrMap1<message::Canvas3DData> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
 
-    StrMap1<ImageFrame> image;
+    StrMap1<message::ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする
@@ -88,7 +97,8 @@ struct MemberData {
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
-        robot_model_req, canvas3d_req, canvas2d_req, log_req;
+        view_old_req, robot_model_req, canvas3d_req, canvas3d_old_req,
+        canvas2d_req, canvas2d_old_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド

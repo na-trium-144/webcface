@@ -1,4 +1,15 @@
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/base.h"
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
 #include <sstream>
 
 WEBCFACE_NS_BEGIN
@@ -67,10 +78,13 @@ unpack(const std::string &message,
                 MSG_PARSE_DATA(Value)
                 MSG_PARSE_DATA(Text)
                 MSG_PARSE_DATA(View)
+                MSG_PARSE_DATA(ViewOld)
                 MSG_PARSE_DATA(Image)
                 MSG_PARSE_DATA(RobotModel)
                 MSG_PARSE_DATA(Canvas3D)
+                MSG_PARSE_DATA(Canvas3DOld)
                 MSG_PARSE_DATA(Canvas2D)
+                MSG_PARSE_DATA(Canvas2DOld)
                 MSG_PARSE_DATA(Log)
                 MSG_PARSE(LogDefault)
                 MSG_PARSE(LogReqDefault)

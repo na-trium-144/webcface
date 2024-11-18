@@ -1,59 +1,44 @@
 #pragma once
-#include "webcface/component_canvas2d.h"
-#include "webcface/component_canvas3d.h"
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/text.h"
+#include <functional>
+#ifdef WEBCFACE_MESON
+#include "webcface-config.h"
+#else
+#include "webcface/common/webcface-config.h"
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace internal {
 
-struct ViewComponentData : message::ViewComponent {
-    ViewComponentData() = default;
-    explicit ViewComponentData(const message::ViewComponent &vc)
-        : message::ViewComponent(vc) {}
+struct TemporalViewComponentData : message::ViewComponentData {
+    TemporalViewComponentData() = default;
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
+    // TemporalViewComponentとTemporalCanvas2DComponentの間でshareされるが
+    // 同じfunctionが最終的に2つのcomponentに同時にsetされることはない
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
+    std::shared_ptr<std::function<void(ValAdaptor)>> on_change_func_tmp;
     std::optional<InputRef> text_ref_tmp;
     std::optional<ValAdaptor> init_;
-
-    // for cData()
-    mutable std::vector<wcfMultiVal> options_s;
-    mutable std::vector<wcfMultiValW> options_sw;
-
-    template <typename CComponent, typename CVal, std::size_t v_index>
-    CComponent cDataT() const;
-
-    bool operator==(const ViewComponentData &other) const;
-    bool operator!=(const ViewComponentData &other) const {
-        return !(*this == other);
-    }
+    SharedString id;
 };
 
-struct Canvas2DComponentData : message::Canvas2DComponent {
-    Canvas2DComponentData() = default;
-    explicit Canvas2DComponentData(const message::Canvas2DComponent &vc)
-        : message::Canvas2DComponent(vc) {}
+struct TemporalCanvas2DComponentData : message::Canvas2DComponentData {
+    TemporalCanvas2DComponentData() = default;
 
-    std::shared_ptr<AnonymousFunc> on_click_func_tmp;
-
-    bool operator==(const Canvas2DComponentData &other) const;
-    bool operator!=(const Canvas2DComponentData &other) const {
-        return !(*this == other);
-    }
+    std::shared_ptr<std::function<void()>> on_click_func_tmp;
+    SharedString id;
 };
 
-struct Canvas3DComponentData : message::Canvas3DComponent {
-    Canvas3DComponentData() = default;
-    explicit Canvas3DComponentData(const message::Canvas3DComponent &vc)
-        : message::Canvas3DComponent(vc) {}
+struct TemporalCanvas3DComponentData : message::Canvas3DComponentData {
+    TemporalCanvas3DComponentData() = default;
 
     std::weak_ptr<internal::ClientData> data_w;
+    SharedString id;
 
     auto &anglesAt(std::size_t i) { return angles[std::to_string(i)]; }
-
-    bool operator==(const Canvas3DComponentData &other) const;
-    bool operator!=(const Canvas3DComponentData &other) const {
-        return !(*this == other);
-    }
 };
 
 } // namespace internal

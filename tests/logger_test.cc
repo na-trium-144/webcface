@@ -1,10 +1,6 @@
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/internal/logger.h>
-#include <stdexcept>
-#include <thread>
-#include <chrono>
-#include "webcface/message/message.h"
 
 using namespace webcface;
 

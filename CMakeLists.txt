@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(webcface VERSION 2.4.2)
+project(webcface VERSION 2.5.0)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)
@@ -82,7 +82,7 @@ foreach(target webcface wcf)
     add_dependencies(${target} webcface-build)
     target_compile_definitions(${target} INTERFACE $<BUILD_INTERFACE:WEBCFACE_MESON>)
     target_include_directories(${target} INTERFACE
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/encoding/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/common/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/client/include>
         $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/meson>
     )

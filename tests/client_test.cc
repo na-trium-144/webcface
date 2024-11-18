@@ -1,4 +1,13 @@
 #include "client_test.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/view.h"
 
 TEST_F(ClientTest, unixSocketConnection) {
     auto dummy_tcp_s = std::make_shared<DummyServer>(false);

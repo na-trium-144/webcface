@@ -48,7 +48,7 @@ PROJECT_NAME           = "WebCFace"
 # could be handy for archiving the generated documentation or if some version
 # control system is used.
 
-PROJECT_NUMBER         = "2.4.2"
+PROJECT_NUMBER         = "2.5.0"
 
 # Using the PROJECT_BRIEF tag one can provide an optional one line description
 # for a project that appears at the top of each page and should give viewer a
@@ -193,7 +193,7 @@ STRIP_FROM_PATH        =
 # specify the list of include paths that are normally passed to the compiler
 # using the -I flag.
 
-STRIP_FROM_INC_PATH    = build/ client/include/ encoding/include/ message/include/ server-store/include/
+STRIP_FROM_INC_PATH    = build/ client/include/ common/include/ message/include/ server-store/include/
 
 # If the SHORT_NAMES tag is set to YES, doxygen will generate much shorter (but
 # less readable) file names. This can be useful is your file systems doesn't
@@ -2372,7 +2372,7 @@ SEARCH_INCLUDES        = YES
 # RECURSIVE has no effect here.
 # This tag requires that the tag SEARCH_INCLUDES is set to YES.
 
-INCLUDE_PATH           = build/ client/include/ encoding/include/ message/include/ server-internal/include/ server-store/include/
+INCLUDE_PATH           = build/ client/include/ common/include/ message/include/ server-internal/include/ server-store/include/
 
 # You can use the INCLUDE_FILE_PATTERNS tag to specify one or more wildcard
 # patterns (like *.h and *.hpp) to filter out the header-files in the

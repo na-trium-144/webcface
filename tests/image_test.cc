@@ -3,7 +3,6 @@
 #include <webcface/member.h>
 #include <webcface/image.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -18,6 +17,52 @@ class ImageFrameTest : public ::testing::Test {
     }
     std::shared_ptr<std::vector<unsigned char>> dp;
 };
+
+[[maybe_unused]] void imageEnumTest(ImageColorMode color,
+                                    ImageCompressMode comp) {
+    // 新しいcolorを追加してここに書き忘れたらwarningが出る
+    switch (color) {
+    case ImageColorMode::gray:
+        static_assert(static_cast<int>(ImageColorMode::gray) ==
+                      static_cast<int>(message::ImageColorMode::gray));
+        break;
+    case ImageColorMode::bgr:
+        static_assert(static_cast<int>(ImageColorMode::bgr) ==
+                      static_cast<int>(message::ImageColorMode::bgr));
+        break;
+    case ImageColorMode::bgra:
+        static_assert(static_cast<int>(ImageColorMode::bgra) ==
+                      static_cast<int>(message::ImageColorMode::bgra));
+        break;
+    case ImageColorMode::rgb:
+        static_assert(static_cast<int>(ImageColorMode::rgb) ==
+                      static_cast<int>(message::ImageColorMode::rgb));
+        break;
+    case ImageColorMode::rgba:
+        static_assert(static_cast<int>(ImageColorMode::rgba) ==
+                      static_cast<int>(message::ImageColorMode::rgba));
+        break;
+    }
+    switch (comp) {
+    case ImageCompressMode::raw:
+        static_assert(static_cast<int>(ImageCompressMode::raw) ==
+                      static_cast<int>(message::ImageCompressMode::raw));
+        break;
+    case ImageCompressMode::jpeg:
+        static_assert(static_cast<int>(ImageCompressMode::jpeg) ==
+                      static_cast<int>(message::ImageCompressMode::jpeg));
+        break;
+    case ImageCompressMode::webp:
+        static_assert(static_cast<int>(ImageCompressMode::webp) ==
+                      static_cast<int>(message::ImageCompressMode::webp));
+        break;
+    case ImageCompressMode::png:
+        static_assert(static_cast<int>(ImageCompressMode::png) ==
+                      static_cast<int>(message::ImageCompressMode::png));
+        break;
+    }
+}
+
 TEST_F(ImageFrameTest, baseDefaultCtor) {
     ImageFrame img;
     EXPECT_TRUE(img.empty());
@@ -146,17 +191,18 @@ TEST_F(ImageTest, imageSet) {
 }
 TEST_F(ImageTest, imageRequest) {
     image("a", "1").request();
-    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
-              (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 ImageCompressMode::raw, 0, std::nullopt}));
+    EXPECT_EQ(
+        data_->image_store.getReqInfo("a"_ss, "1"_ss),
+        (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                           message::ImageCompressMode::raw, 0, std::nullopt}));
     image("a", "1").request(sizeHW(100, 100), ImageColorMode::rgba, 12.3);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
-              (message::ImageReq{100, 100, ImageColorMode::rgba,
-                                 ImageCompressMode::raw, 0, 12.3}));
+              (message::ImageReq{100, 100, message::ImageColorMode::rgba,
+                                 message::ImageCompressMode::raw, 0, 12.3}));
     image("a", "1").request(sizeHW(100, 100), ImageCompressMode::png, 9, 12.3);
     EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "1"_ss),
-              (message::ImageReq{100, 100, std::nullopt, ImageCompressMode::png,
-                                 9, 12.3}));
+              (message::ImageReq{100, 100, std::nullopt,
+                                 message::ImageCompressMode::png, 9, 12.3}));
 }
 TEST_F(ImageTest, imageGet) {
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
@@ -168,19 +214,22 @@ TEST_F(ImageTest, imageGet) {
     EXPECT_EQ(image("a", "c").tryGet(), std::nullopt);
     EXPECT_TRUE(image("a", "c").get().empty());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("b"_ss), 1u);
-    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "b"_ss),
-              (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 ImageCompressMode::raw, 0, std::nullopt}));
+    EXPECT_EQ(
+        data_->image_store.getReqInfo("a"_ss, "b"_ss),
+        (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                           message::ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("c"_ss), 2u);
-    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "c"_ss),
-              (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 ImageCompressMode::raw, 0, std::nullopt}));
+    EXPECT_EQ(
+        data_->image_store.getReqInfo("a"_ss, "c"_ss),
+        (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                           message::ImageCompressMode::raw, 0, std::nullopt}));
     EXPECT_EQ(image(self_name, "b").tryGet(), std::nullopt);
     EXPECT_EQ(data_->image_store.transferReq().count(self_name), 0u);
     image("a", "d").onChange(callback<Image>());
     EXPECT_EQ(data_->image_store.transferReq().at("a"_ss).at("d"_ss), 3u);
-    EXPECT_EQ(data_->image_store.getReqInfo("a"_ss, "d"_ss),
-              (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
-                                 ImageCompressMode::raw, 0, std::nullopt}));
+    EXPECT_EQ(
+        data_->image_store.getReqInfo("a"_ss, "d"_ss),
+        (message::ImageReq{std::nullopt, std::nullopt, std::nullopt,
+                           message::ImageCompressMode::raw, 0, std::nullopt}));
 }
 // todo: hidden, free

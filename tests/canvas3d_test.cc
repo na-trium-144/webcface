@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
+#include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/component_internal.h"
 #include <webcface/member.h>
 #include <webcface/canvas3d.h>
 #include <webcface/func.h>
 #include <stdexcept>
-#include <chrono>
 
 using namespace webcface;
 
@@ -71,24 +72,32 @@ TEST_F(Canvas3DTest, set) {
     robot_model(self_name, "b")
         .set({
             RobotLink{"l0", Geometry{}, ViewColor::black},
-            RobotLink{"l1", rotationalJoint("j0", "l0", {0, 0, 0, 0, 0, 0}),
-                      Geometry{}, ViewColor::black},
+            RobotLink{"l1", rotationalJoint("j0", "l0", {}), Geometry{},
+                      ViewColor::black},
         });
 
     auto v = canvas(self_name, "b");
     v.add(line({0, 0, 0}, {3, 3, 3})
-              .origin({1, 1, 1, 0, 0, 0})
+              .origin(translation(1, 1, 1))
               .color(ViewColor::red));
-    v.add(plane({0, 0, 0, 0, 0, 0}, 10, 10)
-              .origin({2, 2, 2, 0, 0, 0})
+    v.add(plane({}, 10, 10)
+              .origin(translation(2, 2, 2))
               .color(ViewColor::yellow));
     v.add(robot_model(self_name, "b")
-              .origin({3, 3, 3, 0, 0, 0})
+              .origin(translation(3, 3, 3))
               .angle("j0", 123));
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &canvas3d_data = **data_->canvas3d_store.getRecv(self_name, "b"_ss);
-    ASSERT_EQ(canvas3d_data.size(), 3u);
+    auto &canvas3d_data_base =
+        **data_->canvas3d_store.getRecv(self_name, "b"_ss);
+    ASSERT_EQ(canvas3d_data_base.components.size(), 3u);
+    ASSERT_EQ(canvas3d_data_base.data_ids.size(), 3u);
+    std::vector<std::shared_ptr<message::Canvas3DComponentData>> canvas3d_data;
+    canvas3d_data.reserve(canvas3d_data_base.components.size());
+    for (const auto &id : canvas3d_data_base.data_ids) {
+        canvas3d_data.push_back(
+            canvas3d_data_base.components.at(id.u8String()));
+    }
     EXPECT_EQ(canvas3d_data[0]->type,
               static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(canvas3d_data[0]->origin_pos, (std::array<double, 3>{1, 1, 1}));
@@ -130,14 +139,18 @@ TEST_F(Canvas3DTest, set) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 0u);
+    EXPECT_EQ(
+        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        0u);
 
     {
         auto v2 = canvas(self_name, "b");
         v2.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->canvas3d_store.getRecv(self_name, "b"_ss))->size(), 1u);
+    EXPECT_EQ(
+        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        1u);
 
     {
         Canvas3D v3;
@@ -150,18 +163,19 @@ TEST_F(Canvas3DTest, set) {
     } // v3のデストラクタでsyncされる
     EXPECT_EQ(callback_called, 4);
 
-    { Canvas3D v5{}; } // エラーやセグフォしない
+    {
+        Canvas3D v5{};
+    } // エラーやセグフォしない
 
     Canvas3D v6{};
     v6.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});
     EXPECT_THROW(v6.sync(), std::runtime_error);
 }
 TEST_F(Canvas3DTest, get) {
-    auto vd = std::make_shared<
-        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>>(
-        std::vector<std::shared_ptr<internal::Canvas3DComponentData>>{
-            std::make_shared<internal::Canvas3DComponentData>(),
-        });
+    auto vd = std::make_shared<message::Canvas3DData>();
+    vd->components = {
+        {"0", std::make_shared<message::Canvas3DComponentData>()}};
+    vd->data_ids = {"0"_ss};
     data_->canvas3d_store.setRecv("a"_ss, "b"_ss, vd);
     EXPECT_EQ(canvas("a", "b").tryGet().value().size(), 1u);
     EXPECT_EQ(canvas("a", "b").get().size(), 1u);

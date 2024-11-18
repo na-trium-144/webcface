@@ -3,7 +3,7 @@
 #include <webcface/member.h>
 #include <webcface/robot_model.h>
 #include <stdexcept>
-#include <chrono>
+#include "webcface/internal/robot_link_internal.h"
 
 using namespace webcface;
 

@@ -1,6 +1,5 @@
 #include "webcface/robot_model.h"
 #include "webcface/component_canvas3d.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/component_internal.h"
 
 WEBCFACE_NS_BEGIN
@@ -8,27 +7,20 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas3DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas3DComponent::id() const {
-    return internalCanvas3DId(static_cast<int>(type()), idx_for_type);
-}
+std::string Canvas3DComponent::id() const { return id_.decode(); }
+std::wstring Canvas3DComponent::idW() const { return id_.decodeW(); }
 
 Canvas3DComponent::Canvas3DComponent() = default;
 
 Canvas3DComponent::Canvas3DComponent(
-    const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
-    const std::weak_ptr<internal::ClientData> &data_w,
-    std::unordered_map<Canvas3DComponentType, int> *idx_next)
-    : msg_data(msg_data), data_w(data_w) {
-    if (idx_next) {
-        idx_for_type =
-            (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
-    }
-}
+    const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+    const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
+    : msg_data(msg_data), data_w(data_w) , id_(id){}
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
     : msg_data() {}
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
-    : msg_data(std::make_unique<internal::Canvas3DComponentData>()) {
+    : msg_data(std::make_unique<internal::TemporalCanvas3DComponentData>()) {
     this->msg_data->type = static_cast<int>(type);
 }
 
@@ -36,13 +28,13 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(
     const TemporalCanvas3DComponent &other) {
     if (other.msg_data) {
         msg_data =
-            std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+            std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
     }
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
     msg_data =
-        std::make_unique<internal::Canvas3DComponentData>(*other.msg_data);
+        std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
     return *this;
 }
 TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}
@@ -53,32 +45,34 @@ void Canvas3DComponent::checkData() const {
     }
 }
 
-std::unique_ptr<internal::Canvas3DComponentData>
+std::unique_ptr<internal::TemporalCanvas3DComponentData>
 TemporalCanvas3DComponent::lockTmp(
     const std::shared_ptr<internal::ClientData> & /*data*/,
     const SharedString & /*view_name*/,
-    std::unordered_map<Canvas3DComponentType, int> * /*idx_next*/) {
-    /*
+    std::unordered_map<Canvas3DComponentType, int> *idx_next) {
     int idx_for_type = 0;
     if (idx_next) {
         idx_for_type =
             (*idx_next)[static_cast<Canvas3DComponentType>(msg_data->type)]++;
     }
-    */
+    if (msg_data->id.empty()) {
+        msg_data->id = SharedString::fromU8String(
+            internalCanvas3DId(msg_data->type, idx_for_type));
+    }
     return std::move(msg_data);
 }
 bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
     return msg_data && other.msg_data && /*id() == other.id() && */
            *msg_data == *other.msg_data;
 }
-bool internal::Canvas3DComponentData::operator==(
-    const Canvas3DComponentData &other) const {
-    return type == other.type && origin_pos == other.origin_pos &&
-           origin_rot == other.origin_rot && color == other.color &&
-           geometry_type == other.geometry_type &&
-           geometry_properties == other.geometry_properties &&
-           field_member == other.field_member &&
-           field_field == other.field_field && angles == other.angles;
+
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::string_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
+}
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::wstring_view id) {
+    msg_data->id = SharedString::encode(id);
+    return *this;
 }
 
 Canvas3DComponentType Canvas3DComponent::type() const {
@@ -87,19 +81,19 @@ Canvas3DComponentType Canvas3DComponent::type() const {
 }
 Transform Canvas3DComponent::origin() const {
     checkData();
-    return Transform(msg_data->origin_pos, msg_data->origin_rot);
+    return Transform(msg_data->origin_pos, rotFromEuler(msg_data->origin_rot));
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::origin(const Transform &origin) {
+TemporalCanvas3DComponent::origin(const Transform &origin) & {
     msg_data->origin_pos = origin.pos();
-    msg_data->origin_rot = origin.rot();
+    msg_data->origin_rot = origin.rotEuler();
     return *this;
 }
 ViewColor Canvas3DComponent::color() const {
     checkData();
     return static_cast<ViewColor>(msg_data->color);
 }
-TemporalCanvas3DComponent &TemporalCanvas3DComponent::color(ViewColor color) {
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::color(ViewColor color) & {
     msg_data->color = static_cast<int>(color);
     return *this;
 }
@@ -114,7 +108,7 @@ std::optional<Geometry> Canvas3DComponent::geometry() const {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::geometry(const Geometry &g) {
+TemporalCanvas3DComponent::geometry(const Geometry &g) & {
     msg_data->geometry_type = static_cast<int>(g.type);
     msg_data->geometry_properties = g.properties;
     return *this;
@@ -130,7 +124,7 @@ std::optional<RobotModel> Canvas3DComponent::robotModel() const {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::robotModel(const RobotModel &field) {
+TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;
     msg_data->field_member = static_cast<FieldBase>(field).member_;
     msg_data->field_field = static_cast<FieldBase>(field).field_;
@@ -138,7 +132,7 @@ TemporalCanvas3DComponent::robotModel(const RobotModel &field) {
 }
 
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::string, double> &angles) {
+    const std::unordered_map<std::string, double> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -160,7 +154,7 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::wstring, double> &angles) {
+    const std::unordered_map<std::wstring, double> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -182,7 +176,8 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
+TemporalCanvas3DComponent::angle(const std::string &joint_name,
+                                 double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -203,7 +198,8 @@ TemporalCanvas3DComponent::angle(const std::string &joint_name, double angle) {
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::wstring &joint_name, double angle) {
+TemporalCanvas3DComponent::angle(const std::wstring &joint_name,
+                                 double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {

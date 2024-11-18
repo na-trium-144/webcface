@@ -73,10 +73,12 @@ Image型データは送受信の過程で画像を縮小したりJPEGやPNGに�
 表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
 
 WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。
-つまり、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
-(C++のver1.1.6以前を除く)  
+つまり、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。  
 ただしそれぞれのクライアントのバージョンよりサーバーの方が新しいバージョンである必要があります。
 サーバーよりクライアントのほうが新しい場合の動作は保証しません。
+詳細は
+[8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html)
+を参照してください。
 
 ### WebUI
 
@@ -195,9 +197,9 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.4.2/webcface_2.4.2_linux_amd64.zip
-sudo unzip webcface_2.4.2_linux_amd64.zip -d /opt/webcface
-rm webcface_2.4.2_linux_amd64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.0/webcface_2.5.0_linux_amd64.zip
+sudo unzip webcface_2.5.0_linux_amd64.zip -d /opt/webcface
+rm webcface_2.5.0_linux_amd64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -207,9 +209,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.4.2/webcface_2.4.2_linux_arm64.zip
-sudo unzip webcface_2.4.2_linux_arm64.zip -d /opt/webcface
-rm webcface_2.4.2_linux_arm64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.0/webcface_2.5.0_linux_arm64.zip
+sudo unzip webcface_2.5.0_linux_arm64.zip -d /opt/webcface
+rm webcface_2.5.0_linux_arm64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -219,9 +221,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.4.2/webcface_2.4.2_linux_armhf.zip
-sudo unzip webcface_2.4.2_linux_armhf.zip -d /opt/webcface
-rm webcface_2.4.2_linux_armhf.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.0/webcface_2.5.0_linux_armhf.zip
+sudo unzip webcface_2.5.0_linux_armhf.zip -d /opt/webcface
+rm webcface_2.5.0_linux_armhf.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -242,7 +244,7 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.2/webcface_2.4.2_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-webui_1.10.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-desktop_1.10.0_linux_amd64.deb
@@ -254,7 +256,7 @@ rm ./webcface*.deb
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.2/webcface_2.4.2_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-webui_1.10.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-desktop_1.10.0_linux_arm64.deb
@@ -266,7 +268,7 @@ rm ./webcface*.deb
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.4.2/webcface_2.4.2_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-webui_1.10.0_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.0/webcface-desktop_1.10.0_linux_armv7l.deb
@@ -288,16 +290,16 @@ Universalバイナリになっており、IntelMacもAppleシリコンも共通�
 macOS 12 (Monterey) でビルドしているので、それより古いMacでは動かないかもしれません。
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.4.2/webcface_2.4.2_macos_universal.zip
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.4.2/webcface-desktop_2.4.2_macos_app.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.0/webcface_2.5.0_macos_universal.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.0/webcface-desktop_2.5.0_macos_app.zip
 ```
 
 sudo権限が使用できれば以下のように webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開するのがおすすめです。
 ```sh
-sudo unzip webcface_2.4.2_macos_universal.zip -d /opt/webcface
-sudo unzip webcface-desktop_2.4.2_macos_app.zip -d /Applications
-rm webcface_2.4.2_macos_universal.zip
-rm webcface-desktop_2.4.2_macos_app.zip
+sudo unzip webcface_2.5.0_macos_universal.zip -d /opt/webcface
+sudo unzip webcface-desktop_2.5.0_macos_app.zip -d /Applications
+rm webcface_2.5.0_macos_universal.zip
+rm webcface-desktop_2.5.0_macos_app.zip
 ```
 
 また、展開したディレクトリ内の bin/ をPATHに、 lib/pkgconfig/ をPKG_CONFIG_PATHに追加してください。

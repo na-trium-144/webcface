@@ -1,7 +1,7 @@
 #pragma once
 #include <mutex>
 #include <optional>
-#include "webcface/encoding/encoding.h"
+#include "webcface/common/encoding.h"
 #include "webcface/field.h"
 
 WEBCFACE_NS_BEGIN

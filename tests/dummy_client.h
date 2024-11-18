@@ -1,4 +1,5 @@
-#include "webcface/message/message.h"
+#include "webcface/common/internal/message/pack.h"
+#include <atomic>
 #include <vector>
 #include <utility>
 #include <thread>

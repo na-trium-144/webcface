@@ -1,7 +1,8 @@
+#include "webcface/common/internal/message/pack.h"
 #include "webcface/text.h"
+#include "webcface/common/internal/message/text.h"
 #include "webcface/member.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/message/message.h"
 
 WEBCFACE_NS_BEGIN
 

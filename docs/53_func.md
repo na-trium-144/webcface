@@ -398,6 +398,31 @@ wcli.func("fuga").setRunCondNone();
 
 </div>
 
+
+#### 型変換
+
+* 関数登録時に指定した型と呼び出したときに渡した引数の型が違う場合、呼び出された側のライブラリが自動的に変換してから関数に渡します。
+* (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)
+* 変換規則は基本的には呼び出された側の言語仕様の標準に従います。
+    * 文字列→数値は10進数で変換されます。小数点以下の桁数や、指数表記にするかどうかは未規定です
+    * 数値→文字列も10進数としてパースされます。数値でない文字列が渡された場合の処理は未規定です
+* bool→文字列
+    * C++: 0, 1
+    * Python: <del>False, True</del>
+    <span class="since-py">3.0</span> 0, 1
+    * JavaScript: false, true
+* 文字列→bool
+    * C++: <del>`"1"` のみtrue</del>
+    <span class="since-c">1.9.1</span> 空文字列でないときtrue
+    * Python: 空文字列でないときTrue
+    * JavaScript: 空文字列でないときtrue
+* (C++) 引数を webcface::ValAdaptor 型にすると型変換を行わずに値を受け取ることができます。
+* (C) set時に指定した引数の型によらず、callHandleからは常にint,double,文字列のいずれでも値を受け取ることができます。
+* (JavaScript) set時に引数の型の情報を指定しなかった場合、型変換を行わず送られてきた値をそのまま関数に渡します。
+* (Python) <span class="since-py">3.0</span>
+関数登録時に指定した型が int,float,bool,str のいずれでもないもしくは未指定の場合、
+型変換を行わず送られてきた値をそのまま関数に渡します。
+
 ### 関数をWebUIから隠す
 
 (serverが<span class="since-c">1.10</span>以降の場合)
@@ -936,13 +961,6 @@ res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
 </div>
 
 </details>
-
-### 型変換
-
-* 引数の型が違う場合、関数登録時に指定した型に自動的に変換されてから呼び出されます。
-* (ver1.5.3〜1.9.0のserverではすべて文字列型に置き換えられてしまうバグあり、ver1.9.1で修正)
-* 変換は受信側のライブラリで行われ、基本的にその言語仕様に従って変換します
-* c++ではstring→boolの変換は文字列が"1"のみtrueだったが <span class="since-c">1.9.1</span> 空文字列でないときtrueに変更
 
 <div class="section_buttons">
 

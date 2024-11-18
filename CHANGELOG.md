@@ -1,3 +1,23 @@
+## [2.5.0] - 2024-11-18
+### Changed
+* ABIバージョン: 21
+* AnonymousFuncクラスを削除、 Member::func(T) 削除 (#415)
+* TemporalViewComponent::onClick() にFuncListenerを渡せるようにした
+* 各種TemporalComponentのlvalueのメソッドチェーンにそれぞれrvalueのオーバーロードを追加
+* encoding/ と message/ ディレクトリを common/ に移動、統一 (#425)
+	* webcface::encoding をdeprecatedにした
+	* internal::ViewDataBase, server::ViewData を message::ViewData に統一 (Canvas2Dと3Dも同様)
+	* ヘッダーを分割・コンパイル時間削減
+### Added
+* view,canvas2d,3dメッセージ型の変更 & view,canvas2d,3dの要素のidを指定・取得する機能を追加。(#424)
+* 各種オイラー角、回転行列、クォータニオン、axisAngleの変換を実装 (#418)
+	* TransformクラスとRotationクラスを分離
+	* Transform同士、Point同士の演算子を実装 (Transform::appliedTo() など)
+* ArrayLikeTrait追加、PointやRotationの引数に任意の配列型を使えるようにした (Value::set()と共通化)
+	* ArrayLikeTraitとFuncTraitsを traits:: 名前空間に移動
+* colorFromRGB() を追加
+* ドキュメントにクライアント・サーバーの通信仕様のページ(8-2章〜)を追加
+
 ## [2.4.2] - 2024-11-06
 ### Fixed
 * Imageデータをリクエストするとサーバーがセグフォすることがある / ImageFrameをstd::moveするとムーブ後のImageFrameがnullptrになってセグフォするバグを修正 (#421)

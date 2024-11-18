@@ -5,7 +5,7 @@
 
 WEBCFACE_NS_BEGIN
 
-namespace internal{
+namespace internal {
 class ViewBuf;
 }
 
@@ -42,29 +42,143 @@ struct TemporalComponent {
     friend class internal::ViewBuf;
 
     /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::string_view id) & {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&id(std::string_view id) && {
+        this->id(id);
+        return std::move(*this);
+    }
+    /*!
+     * \brief idを設定(wstring)
+     * \since ver2.5
+     */
+    TemporalComponent &id(std::wstring_view id) & {
+        if constexpr (V) {
+            component_v.id(id);
+        }
+        if constexpr (C2) {
+            component_2d.id(id);
+        }
+        if constexpr (C3) {
+            component_3d.id(id);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&id(std::wstring_view id) && {
+        this->id(id);
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D, Funcオブジェクト)
+     * \since ver2.5
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
+     */
+    TemporalComponent &onClick(const Func &func) & {
+        static_assert(V || C2,
+                      "onClick can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.onClick(func);
+        }
+        if constexpr (C2) {
+            component_2d.onClick(func);
+        }
+        return *this;
+    }
+
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&onClick(const Func &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+    /*!
+     * \brief クリック時に実行される関数を設定 (Viewまたは2D, FuncListener)
+     * \since ver2.5
+     *
+     * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
+     * を参照
+     *
+     */
+    TemporalComponent &onClick(const FuncListener &func) & {
+        static_assert(V || C2,
+                      "onClick can be set only for View, Canvas2D components");
+        if constexpr (V) {
+            component_v.onClick(func);
+        }
+        if constexpr (C2) {
+            component_2d.onClick(func);
+        }
+        return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&onClick(const FuncListener &func) && {
+        this->onClick(func);
+        return std::move(*this);
+    }
+
+    /*!
      * \brief クリック時に実行される関数を設定 (Viewまたは2D)
      *
      * 引数については ViewComponent::onClick(), Canvas2DComponent::onClick()
      * を参照
      *
      */
-    template <typename T>
-    TemporalComponent &onClick(T &&func) {
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalComponent &onClick(T func) & {
         static_assert(V || C2,
                       "onClick can be set only for View, Canvas2D components");
+        auto func_shared =
+            std::make_shared<std::function<void WEBCFACE_CALL_FP()>>(
+                std::move(func));
         if constexpr (V) {
-            component_v.onClick(std::forward<T>(func));
+            component_v.onClick(func_shared);
         }
         if constexpr (C2) {
-            component_2d.onClick(std::forward<T>(func));
+            component_2d.onClick(func_shared);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    template <typename T, typename std::enable_if_t<std::is_invocable_v<T>,
+                                                    std::nullptr_t> = nullptr>
+    TemporalComponent &&onClick(T func) && {
+        this->onClick(std::move(func));
+        return std::move(*this);
     }
     /*!
      * \brief 要素の移動 (2Dまたは3D)
      *
      */
-    TemporalComponent &origin(const Transform &origin) {
+    TemporalComponent &origin(const Transform &origin) & {
         static_assert(
             C2 || C3,
             "origin can be set only for Canvas2D, Canvas3D components");
@@ -77,11 +191,18 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&origin(const Transform &origin) && {
+        this->origin(origin);
+        return std::move(*this);
+    }
+    /*!
      * \brief 色
      *
      * Viewの要素では textColor として設定される
      */
-    TemporalComponent &color(ViewColor c) {
+    TemporalComponent &color(ViewColor c) & {
         if constexpr (V) {
             component_v.textColor(c);
         }
@@ -94,10 +215,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&color(ViewColor c) && {
+        this->color(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 表示する文字列 (View, Canvas2D)
      * \since ver2.0
      */
-    TemporalComponent &text(std::string_view str) {
+    TemporalComponent &text(std::string_view str) & {
         static_assert(V || C2,
                       "text can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -109,10 +237,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&text(std::string_view str) && {
+        this->text(str);
+        return std::move(*this);
+    }
+    /*!
      * \brief 表示する文字列(wstring) (View, Canvas2D)
      * \since ver2.0
      */
-    TemporalComponent &text(std::wstring_view str) {
+    TemporalComponent &text(std::wstring_view str) & {
         static_assert(V || C2,
                       "text can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -122,13 +257,20 @@ struct TemporalComponent {
             component_2d.text(str);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&text(std::wstring_view str) && {
+        this->text(str);
+        return std::move(*this);
     }
     /*!
      * \brief 文字色 (Viewまたは2D)
      *
      * Canvas2DのTextでは fillColor が文字色の代わりに使われている
      */
-    TemporalComponent &textColor(ViewColor c) {
+    TemporalComponent &textColor(ViewColor c) & {
         static_assert(
             V || C2, "textColor can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -140,10 +282,17 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&textColor(ViewColor c) && {
+        this->textColor(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &fillColor(ViewColor c) {
+    TemporalComponent &fillColor(ViewColor c) & {
         static_assert(
             V || C2, "fillColor can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -155,20 +304,34 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&fillColor(ViewColor c) && {
+        this->fillColor(c);
+        return std::move(*this);
+    }
+    /*!
      * \brief 背景色 (Viewまたは2D)
      *
      */
-    TemporalComponent &bgColor(ViewColor c) {
+    TemporalComponent &bgColor(ViewColor c) & {
         static_assert(V || C2,
                       "bgColor can be set only for View, Canvas2D components");
         return fillColor(c);
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&bgColor(ViewColor c) && {
+        this->bgColor(c);
+        return std::move(*this);
     }
     /*!
      * \brief 線の太さ (2Dのみ)
      *
      * 文字の太さではない
      */
-    TemporalComponent &strokeWidth(double s) {
+    TemporalComponent &strokeWidth(double s) & {
         static_assert(C2,
                       "strokeWidth can be set only for Canvas2D components");
         if constexpr (C2) {
@@ -177,15 +340,29 @@ struct TemporalComponent {
         return *this;
     }
     /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&strokeWidth(double s) && {
+        this->strokeWidth(s);
+        return std::move(*this);
+    }
+    /*!
      * \brief 文字の大きさ (2Dのみ)
      *
      */
-    TemporalComponent &textSize(double s) {
+    TemporalComponent &textSize(double s) & {
         static_assert(C2, "textSize can be set only for Canvas2D components");
         if constexpr (C2) {
             component_2d.textSize(s);
         }
         return *this;
+    }
+    /*!
+     * \since ver2.5
+     */
+    TemporalComponent &&textSize(double s) && {
+        this->textSize(s);
+        return std::move(*this);
     }
 };
 class TemporalGeometry : public TemporalComponent<false, true, true>,
@@ -260,9 +437,10 @@ struct Plane {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double width() const { return base.properties[6]; }
     double height() const { return base.properties[7]; }
@@ -283,8 +461,8 @@ inline TemporalGeometry plane(const Transform &origin, double width,
                               double height) {
     return TemporalGeometry(GeometryType::plane,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             width, height});
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], width, height});
 }
 using Rect = Plane;
 inline TemporalGeometry rect(const Point &origin, double width, double height) {
@@ -301,8 +479,8 @@ inline TemporalGeometry rect(const Point &p1, const Point &p2) {
     double height = std::abs(p1.pos(0) - p2.pos(0));
     return TemporalGeometry{GeometryType::plane,
                             {origin.pos(0), origin.pos(1), origin.pos(2),
-                             origin.rot(0), origin.rot(1), origin.rot(2), width,
-                             height}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], width, height}};
 }
 
 struct Box {
@@ -336,17 +514,18 @@ struct Circle {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
 };
 inline TemporalGeometry circle(const Transform &origin, double radius) {
     return TemporalGeometry{GeometryType::circle,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             radius}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], radius}};
 }
 inline TemporalGeometry circle(const Point &origin, double radius) {
     return TemporalGeometry{
@@ -362,9 +541,10 @@ struct Cylinder {
         }
     }
     Transform origin() const {
-        return Transform{base.properties[0], base.properties[1],
-                         base.properties[2], base.properties[3],
-                         base.properties[4], base.properties[5]};
+        return Transform(
+            {base.properties[0], base.properties[1], base.properties[2]},
+            rotFromEuler(base.properties[3], base.properties[4],
+                         base.properties[5]));
     }
     double radius() const { return base.properties[6]; }
     double length() const { return base.properties[7]; }
@@ -373,8 +553,8 @@ inline TemporalGeometry cylinder(const Transform &origin, double radius,
                                  double length) {
     return TemporalGeometry{GeometryType::cylinder,
                             {origin.pos()[0], origin.pos()[1], origin.pos()[2],
-                             origin.rot()[0], origin.rot()[1], origin.rot()[2],
-                             radius, length}};
+                             origin.rotEuler()[0], origin.rotEuler()[1],
+                             origin.rotEuler()[2], radius, length}};
 }
 
 struct Sphere {

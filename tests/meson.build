@@ -11,13 +11,13 @@ test_src = [
   'member_test.cc',
   'logger_test.cc',
   'encoding_test.cc',
+  'transform_test.cc',
 ]
 test_dependencies = [
   warning_options,
   # webcface_dep,
   webcface_config_dep,
-  webcface_encoding_dep,
-  webcface_message_dep,
+  webcface_common_dep,
   webcface_client_dep,
   gtest_dep,
   msgpack_cxx_dep,
@@ -25,8 +25,7 @@ test_dependencies = [
   spdlog_dep,
 ]
 test_link_libs = [
-  webcface_encoding_lib,
-  webcface_message_lib,
+  webcface_common_lib,
   webcface_client_lib,
 ]
 if build_server

@@ -10,8 +10,11 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace internal {
+namespace message {
 struct Canvas3DComponentData;
+}
+namespace internal {
+struct TemporalCanvas3DComponentData;
 }
 
 enum class Canvas3DComponentType {
@@ -28,9 +31,9 @@ enum class Canvas3DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas3DComponent {
-    std::shared_ptr<internal::Canvas3DComponentData> msg_data;
+    std::shared_ptr<message::Canvas3DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-    int idx_for_type = 0;
+    SharedString id_;
 
     void checkData() const;
 
@@ -40,27 +43,33 @@ class WEBCFACE_DLL Canvas3DComponent {
      *
      */
     Canvas3DComponent();
-    /*!
-     * \param msg_data
-     * \param data_w
-     * \param idx_next 種類ごとの要素数のmap
-     * InputRefの名前に使うidを決定するのに使う
-     *
-     */
+
     Canvas3DComponent(
-        const std::shared_ptr<internal::Canvas3DComponentData> &msg_data,
+        const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
         const std::weak_ptr<internal::ClientData> &data_w,
-        std::unordered_map<Canvas3DComponentType, int> *idx_next);
+        const SharedString &id);
 
     /*!
      * \brief そのcanvas3d内で一意のid
      * \since ver2.0
      *
-     * 要素が増減したり順序が変わったりしなければ、
+     * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
+     * * (ver2.5〜) canvas3d作成側でidを指定した場合その値が返る。
      *
      */
     std::string id() const;
+    /*!
+     * \brief そのcanvas3d内で一意のid (wstring)
+     * \since ver2.5
+     *
+     * * 要素が増減したり順序が変わったりしなければ、
+     * 同じ要素には常に同じidが振られる。
+     * * canvas3d作成側でidを指定した場合その値が返る。
+     *
+     */
+    std::wstring idW() const;
+
     /*!
      * \since ver1.11
      */
@@ -105,7 +114,7 @@ class WEBCFACE_DLL Canvas3DComponent {
  *
  */
 class WEBCFACE_DLL TemporalCanvas3DComponent {
-    std::unique_ptr<internal::Canvas3DComponentData> msg_data;
+    std::unique_ptr<internal::TemporalCanvas3DComponentData> msg_data;
 
   public:
     /*!
@@ -134,34 +143,82 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * InputRefの名前に使うidを決定するのに使う
      *
      */
-    std::unique_ptr<internal::Canvas3DComponentData>
+    std::unique_ptr<internal::TemporalCanvas3DComponentData>
     lockTmp(const std::shared_ptr<internal::ClientData> &data,
             const SharedString &view_name,
             std::unordered_map<Canvas3DComponentType, int> *idx_next = nullptr);
 
     /*!
+     * \brief idを設定
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &id(std::string_view id);
+    /*!
+     * \brief idを設定 (wstring)
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &id(std::wstring_view id);
+    /*!
      * \brief 要素の移動
      *
      */
-    TemporalCanvas3DComponent &origin(const Transform &origin);
+    TemporalCanvas3DComponent &origin(const Transform &origin) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&origin(const Transform &origin) && {
+        this->origin(origin);
+        return std::move(*this);
+    }
     /*!
      * \brief 色
      *
      */
-    TemporalCanvas3DComponent &color(ViewColor color);
+    TemporalCanvas3DComponent &color(ViewColor color) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&color(ViewColor color) && {
+        this->color(color);
+        return std::move(*this);
+    }
     /*!
      * \brief geometryをセット
      *
      */
-    TemporalCanvas3DComponent &geometry(const Geometry &g);
-    TemporalCanvas3DComponent &robotModel(const RobotModel &field);
+    TemporalCanvas3DComponent &geometry(const Geometry &g) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&geometry(const Geometry &g) && {
+        this->geometry(g);
+        return std::move(*this);
+    }
+
+    TemporalCanvas3DComponent &robotModel(const RobotModel &field) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&robotModel(const RobotModel &field) && {
+        this->robotModel(field);
+        return std::move(*this);
+    }
     /*!
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::string, double> &angles);
+    angles(const std::unordered_map<std::string, double> &angles) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&
+    angles(const std::unordered_map<std::string, double> &angles) && {
+        this->angles(angles);
+        return std::move(*this);
+    }
+
     /*!
      * \brief RobotModelの関節をまとめて設定 (wstring)
      * \since ver2.0
@@ -169,7 +226,16 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::wstring, double> &angles);
+    angles(const std::unordered_map<std::wstring, double> &angles) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&
+    angles(const std::unordered_map<std::wstring, double> &angles) && {
+        this->angles(angles);
+        return std::move(*this);
+    }
+
     /*!
      * \brief RobotModelの関節を設定
      * \param joint_name RobotJointの名前
@@ -177,7 +243,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &angle(const std::string &joint_name,
-                                     double angle);
+                                     double angle) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&angle(const std::string &joint_name,
+                                      double angle) && {
+        this->angle(joint_name, angle);
+        return std::move(*this);
+    }
     /*!
      * \brief RobotModelの関節を設定 (wstring)
      * \since ver2.0
@@ -186,7 +260,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      *
      */
     TemporalCanvas3DComponent &angle(const std::wstring &joint_name,
-                                     double angle);
+                                     double angle) &;
+    /*!
+     * \since ver2.5
+     */
+    TemporalCanvas3DComponent &&angle(const std::wstring &joint_name,
+                                      double angle) && {
+        this->angle(joint_name, angle);
+        return std::move(*this);
+    }
 };
 
 WEBCFACE_NS_END

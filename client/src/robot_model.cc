@@ -1,7 +1,7 @@
 #include "webcface/robot_model.h"
+#include "webcface/common/internal/message/pack.h"
 #include "webcface/member.h"
 #include "webcface/internal/client_internal.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/internal/robot_link_internal.h"
 

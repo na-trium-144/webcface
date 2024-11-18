@@ -1,7 +1,9 @@
+#include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/view.h"
 #include "webcface/view.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/data_store2.h"
 #include "webcface/member.h"
-#include "webcface/message/message.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/internal/component_internal.h"
 
@@ -35,12 +37,15 @@ template <>
 void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
     std::unordered_map<ViewComponentType, int> idx_next;
     auto data = target_.setCheck();
-    auto components_p = std::make_shared<
-        std::vector<std::shared_ptr<internal::ViewComponentData>>>();
-    components_p->reserve(components_.size());
+    auto components_p = std::make_shared<message::ViewData>();
+    components_p->data_ids.reserve(components_.size());
     for (std::size_t i = 0; i < components_.size(); i++) {
-        components_p->push_back(
-            components_[i].lockTmp(data, target_.field_, &idx_next));
+        std::shared_ptr<internal::TemporalViewComponentData> msg_data =
+            components_[i].lockTmp(data, target_.field_, &idx_next);
+        components_p->components.emplace(
+            msg_data->id.u8String(),
+            std::static_pointer_cast<message::ViewComponentData>(msg_data));
+        components_p->data_ids.push_back(msg_data->id);
     }
     data->view_store.setSend(target_, components_p);
 
@@ -145,10 +150,11 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     request();
     auto vb = dataLock()->view_store.getRecv(*this);
     if (vb) {
-        std::vector<ViewComponent> v((*vb)->size());
-        std::unordered_map<ViewComponentType, int> idx_next;
-        for (std::size_t i = 0; i < (*vb)->size(); i++) {
-            v[i] = ViewComponent{(**vb)[i], this->data_w, &idx_next};
+        std::vector<ViewComponent> v;
+        v.reserve((*vb)->data_ids.size());
+        for (const auto &id : (*vb)->data_ids) {
+            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
+                           id);
         }
         return v;
     } else {

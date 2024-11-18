@@ -1,4 +1,10 @@
 #include "server_test.h"
+#include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/server/store.h"
+#include "webcface/server/member_data.h"
 
 TEST_F(ServerTest, connection) {
     dummy_c1 = std::make_shared<DummyClient>();
@@ -129,15 +135,18 @@ TEST_F(ServerTest, entry) {
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>(),
+        {}});
     dummy_c1->send(message::Canvas2D{
-        "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
-        0});
+        "a"_ss,
+        0,
+        0,
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>(),
+        {}});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>(),
+        {}});
     dummy_c1->send(message::Image{
         "a"_ss,
         ImageFrame{sizeWH(100, 100),
@@ -223,23 +232,26 @@ TEST_F(ServerTest, entry) {
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponent>>(), 0});
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>>(),
+        {}});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponent>>(),
-        0});
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>(),
+        {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
     });
     dummy_c1->send(message::Canvas2D{
-        "b"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponent>>(),
-        0});
+        "b"_ss,
+        0,
+        0,
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>(),
+        {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");

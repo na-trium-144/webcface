@@ -15,6 +15,9 @@
 
 ## 送信
 
+\note
+Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -107,7 +110,7 @@
     # v.init() ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要
     v.add("hello world\n")
     v.add(i, "\n") # i は適当な変数とか
-    v.add(webcface.view_components.button("a", lambda: print("hello")))
+    v.add(webcface.components.button("a", lambda: print("hello")))
     v.sync()
     ```
     add() にはコンマ区切りで複数の要素を渡すこともできます(1つずつadd()するのと同じです)
@@ -123,9 +126,6 @@
     ```
 
 </div>
-
-\note
-Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます
 
 ## ViewComponent
 Viewに追加する各種要素をViewComponentといいます。
@@ -171,9 +171,10 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
 
 - <b class="tab-title">Python</b>
-    Pythonでは [`webcface.view_components`](https://na-trium-144.github.io/webcface-python/webcface.view_components.html) モジュール内にそれぞれの要素を表す関数があります
+    Pythonでは <del>`webcface.view_components`</del>
+    <span class="since-c">3.0</span> [`webcface.components`](https://na-trium-144.github.io/webcface-python/webcface.components.html) モジュール内にそれぞれの要素を表す関数があります
     ```python
-    from webcface.view_components import *
+    from webcface.components import *
     ```
     とすることもできます
 
@@ -230,8 +231,15 @@ Viewに追加する各種要素をViewComponentといいます。
     ```
     文字列を直接渡す代わりに `text(文字列)` でViewComponentに変換すると、text_colorなど後述のオプションを指定することもできるようになります。
     ```python
-    v.add(view_components.text("hello", text_color=webcface.view_components.view_color.RED))
+    v.add(components.text("hello", text_color=webcface.ViewColor.RED))
     ```
+    
+    <span class="since-c">3.0</span>
+    オプションはadd()の引数としても渡すことができます。
+    ```python
+    v.add("hello", text_color=webcface.ViewColor.RED)
+    ```
+    
 
 </div>
 
@@ -295,29 +303,38 @@ Viewに追加する各種要素をViewComponentといいます。
 \note 別のMemberのFuncオブジェクトを渡すこともできます
 (ボタンを押すと別のMemberに登録されている関数が実行される)
 
+\warning
+<span class="since-c">2.5</span>
+<span class="since-py">3.0</span>
+buttonや、このあと説明するinputなど、インタラクティブな動作を伴う要素には id として一意な文字列を指定してください。
+通常は指定しなくても動作しますが、
+次の例のようにview内に要素が出現したり消滅したりするようなものを書いた場合
+その切り替わりのタイミングで要素の内容がずれる場合があります。
+```cpp
+auto v = wcli.view("a");
+if(some_condition){
+    // some_conditionによって表示されたりされなかったりする
+    v << webcface::button(...);
+}
+v << webcface::button(...);
+v.sync();
+```
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    Funcオブジェクト、FuncListerオブジェクトの場合
+    Funcオブジェクト、 <span class="since-c">2.5</span> FuncListerオブジェクト の場合
     ```cpp
     wcli.func("hoge").set(/*...*/);
-    v << webcface::button("表示する文字列", wcli.func("hoge"));
+    v << webcface::button("表示する文字列", wcli.func("hoge")).id("button1");
     // v.add(...) でも同様
     ```
+    
     関数を直接渡す場合
     (非表示のFuncとして登録され、他のFuncと同様に扱われます。
     WebUIや他MemberからはFuncの存在は見えません)
     ```cpp
-    v << webcface::button("表示する文字列", [](){ /* ... */ });
-    ```
-    <span class="since-c">1.6</span> AnonymousFunc  
-    関数を直接渡す場合と同様Funcの存在は見えません  
-    Funcオブジェクトと同様実行条件などのオプションを設定することができます。
-    ```cpp
-    v << webcface::button(
-        "表示する文字列",
-        wcli.func([](){ /* ... */ })/*.setRunCond...*/
-    );
+    v << webcface::button("表示する文字列", [](){ /* ... */ }).id("button1");
     ```
 
 - <b class="tab-title">C</b>
@@ -349,35 +366,17 @@ Viewに追加する各種要素をViewComponentといいます。
     Funcオブジェクト、FuncListenerオブジェクトの場合
     ```py
     wcli.func("hoge").set(...)
-    v.add(webcface.view_components.button("表示する文字列", wcli.func("hoge")))
+    v.add(components.button("表示する文字列", wcli.func("hoge"), id="button1"))
     ```
     関数を直接渡す場合
     (WebUIや他MemberからはFuncの存在は見えません)
     ```py
     def hoge():
         pass
-    v.add(webcface.view_components.button("表示する文字列", hoge));
+    v.add(components.button("表示する文字列", hoge, id="button1"));
     ```
 
 </div>
-
-\warning
-次の例のようにview内にbuttonが出現したり消滅したりする実装は非推奨です。
-その切り替わりのタイミングでbuttonから呼び出される関数の設定が前後のbuttonとずれる場合があります。
-```cpp
-while (true){
-    auto v = wcli.view("a");
-    if(some_condition){
-        // some_conditionによって、button1が表示されたりされなかったりする
-        v << webcface::button("button1", ...);
-    }
-    v << webcface::button("button2", ...);
-    v.sync();
-    wcli.sync();
-}
-```
-この後説明するinput要素についても同様です。  
-インタラクティブな動作を伴わないtextやnewLineに関しては追加・削除しても問題ありません。
 
 ### input
 \since <span class="since-c">1.10</span><span class="since-js">1.6</span><span class="since-py">2.0</span>
@@ -403,7 +402,8 @@ viewに入力欄を表示します。
     static webcface::InputRef input_val;
     v << webcface::button("cout ",
                           [=] { std::cout << input_val << std::endl; })
-      << webcface::textInput("表示する文字列").bind(input_val)
+        .id("button1")
+      << webcface::textInput("表示する文字列").bind(input_val).id("input1")
       << std::endl;
     ```
 
@@ -416,7 +416,8 @@ viewに入力欄を表示します。
         webcface::InputRef input_val;
         v << webcface::button("cout ",
                               [=] { std::cout << input_val << std::endl; })
-          << webcface::textInput("表示する文字列").bind(input_val)
+            .id("button1")
+          << webcface::textInput("表示する文字列").bind(input_val).id("input1")
           << std::endl;
         // std::cout << "input_val = " << input_val.get(); この場合ここでは使えない
         v.sync();
@@ -485,8 +486,8 @@ viewに入力欄を表示します。
     input_val = InputRef()
     def print_val():
         print(str(input_val.get()))
-    v.add(view_components.button("print", print_val))
-    v.add(view_components.text_input("表示する文字列", bind=input_val)
+    v.add(components.button("print", print_val, id="button1"))
+    v.add(components.text_input("表示する文字列", bind=input_val, id="input1")
     ```
 
     \warning
@@ -500,8 +501,8 @@ viewに入力欄を表示します。
         def print_val():
             print(str(input_val.get()))
         with wcli.view("hoge") as v:
-            v.add(view_components.button("print", print_val))
-            v.add(view_components.text_input("表示する文字列", bind=input_val)
+            v.add(components.button("print", print_val, id="button1"))
+            v.add(components.text_input("表示する文字列", bind=input_val, id="input1")
             # print(input_val.get()) # ここでは使えない
             # v.sync()
         wcli.sync()
@@ -525,7 +526,7 @@ viewに入力欄を表示します。
     onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
     buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。
     ```cpp
-    v << webcface::textInput("表示する文字列").onChange([](std::string val) {
+    v << webcface::textInput("表示する文字列").id("input1").onChange([](std::string val) {
         std::cout << "input changed: " << val << std::endl;
     });
     ```
@@ -551,7 +552,7 @@ viewに入力欄を表示します。
     on_change で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
     buttonに渡す関数と同様、関数、ラムダ式、またはFuncオブジェクト、FuncListenerオブジェクトが使用できます。
     ```ts
-    view_components.text_input("表示する文字列", on_change=...)
+    components.text_input("表示する文字列", id="input1", on_change=...)
     ```
 
     \note bindとonChangeを両方設定することはできません。
@@ -604,6 +605,9 @@ viewに入力欄を表示します。
 
 - <b class="tab-title">Python</b>
     `button("text", text_color=...)` などのように、それぞれ関数のキーワード引数でオプションを設定できます。
+
+    <span class="since-c">3.0</span>
+    add() の引数にキーワード引数を追加しても同様に要素にオプションが追加されます。
 
 </div>
 
@@ -719,11 +723,11 @@ onChangeに設定された関数を実行すると同時にbindの値も変更�
 ### id
 <span class="since-c">1.10</span>
 <span class="since-js">1.6</span>
+<span class="since-py">3.0</span>
 
 ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。
 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ)
 同じbutton、同じinputには常に同じidが振られます。
-(実際はそのview内で種類ごとに分けて要素に連番を振っているだけです)
 
 ### 時刻
 

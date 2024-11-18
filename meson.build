@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.4.2',
+  version: '2.5.0',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -16,8 +16,8 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 
-webcface_abi_major = '20' # ABIの破壊的変更で1増やす
-webcface_abi_minor = '4' # ABIの追加で1増やす
+webcface_abi_major = '21' # ABIの破壊的変更で1増やす
+webcface_abi_minor = '0' # ABIの追加で1増やす
 webcface_webui_version = '1.10.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
@@ -122,6 +122,7 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
+      '-Wno-attributes',
       '-Wno-error=psabi', # refer to PR#9
       # crow
       '-Wno-error=type-limits',
@@ -134,6 +135,8 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
       '-Wno-error=deprecated-enum-enum-conversion',
       # inside magick
       '-Wno-error=ignored-qualifiers',
+      # inside msgpack
+      '-Wno-error=maybe-uninitialized',
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
@@ -162,7 +165,7 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = declare_dependency()
+  warning_options = []
 endif
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
@@ -265,6 +268,25 @@ if is_disabler(filesystem_dep)
   error('Neither std::filesystem or std::experimental::filesystem available')
 endif
 conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
+
+m_dep = cxx.find_library('m', required: false)
+summary('libm', m_dep.found(), bool_yn: true)
+
+if webcface_system_path_windows
+  win32folders_dep = cxx.find_library('uuid')
+else
+  win32folders_dep = []
+endif
+
+if webcface_system_win32socket
+  win32socket_deps = [
+    cxx.find_library('iphlpapi'),
+    cxx.find_library('ws2_32'),
+    cxx.find_library('wsock32'), # asioの依存ライブラリなのでasioに追加されているべきでは?
+  ]
+else
+  win32socket_deps = []
+endif
 
 configure_file(
   input: 'scripts' / 'config.h.in',
@@ -683,8 +705,7 @@ summary('Build tests',
   list_sep: ' ',
 )
 
-subdir('encoding')
-subdir('message')
+subdir('common')
 subdir('client')
 
 sources = []
@@ -713,13 +734,13 @@ webcface_lib = library(webcface_lib_name,
   # link_wholeではなくobjectsにすることで、
   # それぞれのlibに追加したcpp_argsとかが含まれないようにする
   objects: [
-    webcface_encoding_lib.extract_all_objects(recursive: false),
-    webcface_message_lib.extract_all_objects(recursive: false),
+    webcface_common_lib.extract_all_objects(recursive: false),
     webcface_client_lib.extract_all_objects(recursive: false),
   ],
   sources: sources,
   dependencies: [
     filesystem_dep,
+    m_dep,
     win32folders_dep,
     msgpack_cxx_dep,
     utf8cpp_dep,
@@ -737,7 +758,7 @@ webcface_lib = library(webcface_lib_name,
 webcface_dep = declare_dependency(
   link_with: [webcface_lib],
   include_directories: [
-    webcface_encoding_inc,
+    webcface_common_inc,
     webcface_client_inc,
   ],
   dependencies: [
