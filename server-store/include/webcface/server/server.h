@@ -46,6 +46,7 @@ class Server {
            std::shared_ptr<spdlog::logger> logger = nullptr);
     ~Server();
     void join();
+    void stop();
 
     Server(const Server &) = delete;
     Server &operator=(const Server &) = delete;
