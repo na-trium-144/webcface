@@ -16,7 +16,6 @@ using LoggerCallback = std::function<void(const char *, std::size_t, int)>;
 using OpenCallback = std::function<void(void *, const char *)>;
 using CloseCallback = std::function<void(void *, const char *)>;
 using MessageCallback = std::function<void(void *, const char *, std::size_t)>;
-using StartCallback = std::function<void()>;
 
 class AppWrapper {
     void *app = nullptr;
@@ -28,8 +27,7 @@ class AppWrapper {
     AppWrapper(const LoggerCallback &callback, const char *static_dir,
                std::uint16_t port, const char *unix_path,
                const OpenCallback &on_open, const CloseCallback &on_close,
-               const MessageCallback &on_message,
-               const StartCallback &on_start) noexcept;
+               const MessageCallback &on_message) noexcept;
     ~AppWrapper() noexcept;
     static void send(wsConnPtr conn, const char *msg,
                      std::size_t size) noexcept;

@@ -3,6 +3,7 @@
 #include "webcface/server/dir.h"
 #include "webcface/server/ip.h"
 #include "webcface/server/server.h"
+#include <future>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -79,7 +80,7 @@ void Server::join() {
         }
     }
 }
-Server::~Server() {
+void Server::stop() {
     {
         std::lock_guard lock(server_mtx);
         server_stop.store(true);
@@ -93,6 +94,9 @@ Server::~Server() {
     for (auto &app : apps) {
         static_cast<AppWrapper *>(app)->stop();
     }
+}
+Server::~Server() {
+    stop();
     ping_thread.join();
     this->join();
     store.reset();
@@ -106,6 +110,8 @@ Server::Server(std::uint16_t port, int level, int keep_log,
     : server_stop(false), apps(), apps_running(), server_ping_wait(),
       store(std::make_unique<ServerStorage>(this, keep_log)),
       ping_thread([this] { pingThreadMain(); }) {
+
+    std::lock_guard lock(server_mtx);
 
     if (!sink) {
         sink = std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
@@ -158,47 +164,82 @@ Server::Server(std::uint16_t port, int level, int keep_log,
         }
     };
 
-    auto *app_tcp = new AppWrapper(
-        crow_logger_callback, static_dir.c_str(), port, nullptr, open_callback,
-        close_callback, message_callback, [logger, port]() {
-            for (const auto &addr : getIpAddresses(logger)) {
-                logger->info("http://{}:{}/index.html", addr, port);
+    {
+        auto *app_tcp = new AppWrapper(crow_logger_callback, static_dir.c_str(),
+                                       port, nullptr, open_callback,
+                                       close_callback, message_callback);
+        apps.push_back(app_tcp);
+        apps_running.emplace_back([this, app_tcp, logger, port] {
+            std::promise<void> failed;
+            std::thread([logger, port, failed = failed.get_future()] {
+                if (failed.wait_for(std::chrono::seconds(1)) ==
+                    std::future_status::timeout) {
+                    for (const auto &addr : getIpAddresses(logger)) {
+                        logger->info("http://{}:{}/index.html", addr, port);
+                    }
+                }
+            }).detach();
+            app_tcp->run();
+            failed.set_value();
+            if (app_tcp->exception()) {
+                logger->error("{}", app_tcp->exception());
             }
+            this->stop();
         });
-    apps.push_back(app_tcp);
-
-    internal::initUnixSocket(unix_path, logger);
-    auto *app_unix = new AppWrapper(
-        crow_logger_callback, static_dir.c_str(), port,
-        unix_path.string().c_str(), open_callback, close_callback,
-        message_callback, [unix_path, logger]() {
-            internal::updateUnixSocketPerms(unix_path, logger);
-            logger->info("unix domain socket at {}", unix_path.string());
-        });
-    apps.push_back(app_unix);
-
-    AppWrapper *app_wsl = nullptr;
-    if (internal::detectWSL1()) {
-        internal::initUnixSocket(wsl_path, logger);
-        app_wsl = new AppWrapper(
-            crow_logger_callback, static_dir.c_str(), port,
-            wsl_path.string().c_str(), open_callback, close_callback,
-            message_callback, [wsl_path, logger]() {
-                internal::updateUnixSocketPerms(wsl_path, logger);
-                logger->info("win32 socket at {}", wsl_path.string());
-            });
-        apps.push_back(app_wsl);
     }
-
-    for (auto &app_v : apps) {
-        auto app = static_cast<AppWrapper *>(app_v);
-
-        apps_running.emplace_back([app, logger] {
-            app->run();
-            if (app->exception()) {
-                logger->error("{}", app->exception());
+    {
+        internal::initUnixSocket(unix_path, logger);
+        auto *app_unix =
+            new AppWrapper(crow_logger_callback, static_dir.c_str(), port,
+                           unix_path.string().c_str(), open_callback,
+                           close_callback, message_callback);
+        apps.push_back(app_unix);
+        apps_running.emplace_back([app_unix, unix_path, logger] {
+            // wait_for_server_start() を使うと無限に待機してしまう
+            // https://github.com/CrowCpp/Crow/issues/885
+            std::promise<void> failed;
+            std::thread([logger, unix_path, failed = failed.get_future()] {
+                if (failed.wait_for(std::chrono::seconds(1)) ==
+                    std::future_status::timeout) {
+                    internal::updateUnixSocketPerms(unix_path, logger);
+                    logger->info("unix domain socket at {}",
+                                 unix_path.string());
+                }
+            }).detach();
+            app_unix->run();
+            failed.set_value();
+            if (app_unix->exception()) {
+                logger->error("{}", app_unix->exception());
             }
+            // this->stop();
         });
+    }
+    {
+        AppWrapper *app_wsl = nullptr;
+        if (internal::detectWSL1()) {
+            internal::initUnixSocket(wsl_path, logger);
+            app_wsl =
+                new AppWrapper(crow_logger_callback, static_dir.c_str(), port,
+                               wsl_path.string().c_str(), open_callback,
+                               close_callback, message_callback);
+            apps.push_back(app_wsl);
+            apps_running.emplace_back([app_wsl, wsl_path, logger] {
+                std::promise<void> failed;
+                std::thread([logger, wsl_path, failed = failed.get_future()] {
+                    if (failed.wait_for(std::chrono::seconds(1)) ==
+                        std::future_status::timeout) {
+                        internal::updateUnixSocketPerms(wsl_path, logger);
+                        logger->info("win32 socket at {}", wsl_path.string());
+                    }
+                }).detach();
+                app_wsl->run();
+                failed.set_value();
+                if (app_wsl->exception()) {
+                    logger->error("{}", app_wsl->exception());
+                }
+                // this->stop();
+            });
+        }
     }
 }
 } // namespace server

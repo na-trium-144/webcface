@@ -63,8 +63,7 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
                        std::uint16_t port, const char *unix_path,
                        const OpenCallback &on_open,
                        const CloseCallback &on_close,
-                       const MessageCallback &on_message,
-                       const StartCallback &on_start) noexcept {
+                       const MessageCallback &on_message) noexcept {
     try {
         crow_custom_logger = std::make_unique<CustomLogger>(callback);
         crow::logger::setHandler(crow_custom_logger.get());
@@ -105,10 +104,6 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
                 on_message(&conn, data.data(), data.size());
             });
 
-        std::thread([crow_app, on_start] {
-            crow_app->wait_for_server_start();
-            on_start();
-        }).detach();
     } catch (const std::exception &e) {
         setException(e.what());
     }
