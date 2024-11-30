@@ -79,9 +79,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         StrMap1<std::shared_ptr<ValueData>> value_data;
         StrMap1<std::shared_ptr<TextData>> text_data;
         StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
+        StrMap1<PlotData> plot_data;
         StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
-        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev, canvas3d_data;
-        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev, canvas2d_data;
+        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev,
+            canvas3d_data;
+        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev,
+            canvas2d_data;
         StrMap1<ImageData> image_data;
         StrMap1<std::vector<LogLineData>> log_data;
         StrMap1<std::shared_ptr<FuncData>> func_data;
@@ -349,7 +352,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
-    SyncDataStore2<std::shared_ptr<RobotModelData> >robot_model_store;
+    SyncDataStore2<std::shared_ptr<RobotModelData>> robot_model_store;
+    SyncDataStore2<PlotData> plot_store;
     SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
     SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
     SyncDataStore2<std::shared_ptr<LogData>> log_store;
@@ -406,6 +410,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     StrMap2<std::shared_ptr<std::function<void(Image)>>> image_change_event;
     StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>
         robot_model_change_event;
+    StrMap2<std::shared_ptr<std::function<void(Plot)>>> plot_change_event;
     StrMap2<std::shared_ptr<std::function<void(View)>>> view_change_event;
     StrMap2<std::shared_ptr<std::function<void(Canvas3D)>>>
         canvas3d_change_event;
@@ -421,12 +426,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     StrMap1<std::shared_ptr<std::function<void(Image)>>> image_entry_event;
     StrMap1<std::shared_ptr<std::function<void(RobotModel)>>>
         robot_model_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Plot)>>> plot_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas3D)>>>
         canvas3d_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>>
-        log_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::mutex logger_m;

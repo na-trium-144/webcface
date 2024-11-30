@@ -22,7 +22,7 @@ internal::ClientData::ClientData(const SharedString &name,
     : std::enable_shared_from_this<ClientData>(), self_member_name(name),
       host(host), port(port), current_curl_path(), current_ws_buf(),
       value_store(name), text_store(name), func_store(name), view_store(name),
-      image_store(name), robot_model_store(name), canvas3d_store(name),
+      image_store(name), robot_model_store(name), plot_store(name), canvas3d_store(name),
       canvas2d_store(name), log_store(name), sync_time_store(name) {
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
