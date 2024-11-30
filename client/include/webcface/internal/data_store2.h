@@ -131,11 +131,11 @@ class SyncDataStore2 {
     bool unsetRecv(const FieldBase &base);
 
     /*!
-     * \brief memberのentryをクリア
+     * \brief memberのentryとデータをクリア
      *
      * ambiguousなので引数にFieldBaseは使わない (そもそも必要ない)
      */
-    void clearEntry(const SharedString &from);
+    void initMember(const SharedString &from);
     /*!
      * \brief 受信したentryを追加
      *
