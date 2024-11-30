@@ -839,7 +839,15 @@ foreach h: headers
 endforeach
 
 if host_machine.system() == 'linux'
-  install_data('scripts' / 'webcface-server.service',
+  conf_data = configuration_data({
+    'prefix': get_option('prefix'),
+    'bindir': get_option('bindir'),
+  })
+  configure_file(
+    input: 'scripts' / 'webcface-server.service.in',
+    output: 'webcface-server.service',
+    configuration: conf_data,
+    install: true,
     install_dir: 'lib' / 'systemd' / 'system', # lib/x86_64-linux-gnu/ ではない
   )
 endif
