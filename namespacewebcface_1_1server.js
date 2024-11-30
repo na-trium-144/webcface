@@ -10,7 +10,6 @@ var namespacewebcface_1_1server =
     [ "MemberDataPtr", "namespacewebcface_1_1server.html#ad019b4eb6d72c43cff3b61c599e4476d", null ],
     [ "MessageCallback", "namespacewebcface_1_1server.html#a22ebf9910fd529496227745a1636713f", null ],
     [ "OpenCallback", "namespacewebcface_1_1server.html#abf362a0e446342a3dab1292f40a8eef1", null ],
-    [ "StartCallback", "namespacewebcface_1_1server.html#a41cc1046f6fc2d4bff827b03826153ea", null ],
     [ "wsConnPtr", "namespacewebcface_1_1server.html#a5ecc25311d903fa549abddc796aee4ee", null ],
     [ "convertLevel", "namespacewebcface_1_1server.html#aa7132eb6525527e4747e7c8ab7131d09", null ],
     [ "findReqField", "namespacewebcface_1_1server.html#aed28322feeecfdd4846624f8235d2719", null ],
