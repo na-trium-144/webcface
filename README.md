@@ -245,7 +245,7 @@ Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.2/webcface-tools_2.1.2_amd64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-webui_1.10.2_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-desktop_1.10.2_linux_amd64.deb
 sudo apt install ./webcface*.deb
@@ -257,7 +257,7 @@ rm ./webcface*.deb
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.2/webcface-tools_2.1.2_arm64.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-webui_1.10.2_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-desktop_1.10.2_linux_arm64.deb
 sudo apt install ./webcface*.deb
@@ -269,7 +269,7 @@ rm ./webcface*.deb
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.5.0/webcface_2.5.0_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.1/webcface-tools_2.1.1_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.1.2/webcface-tools_2.1.2_armhf.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-webui_1.10.2_all.deb
 curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.10.2/webcface-desktop_1.10.2_linux_armv7l.deb
 sudo apt install ./webcface*.deb
