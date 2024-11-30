@@ -6,6 +6,9 @@
 #include <memory>
 
 WEBCFACE_NS_BEGIN
+
+class PlotSeries;
+
 namespace internal {
 /*!
  * \brief View,Canvasなどで送信用にaddされたデータを管理する
@@ -99,6 +102,8 @@ template <>
 void DataSetBuffer<TemporalCanvas2DComponent>::onSync();
 template <>
 void DataSetBuffer<TemporalCanvas3DComponent>::onSync();
+template <>
+void DataSetBuffer<PlotSeries>::onSync();
 
 /*!
  * \brief Viewの送信用データを保持する

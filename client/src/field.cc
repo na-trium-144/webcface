@@ -9,6 +9,7 @@
 #include "webcface/canvas2d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/log.h"
+#include "webcface/plot.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
 #ifdef WEBCFACE_MESON
@@ -61,6 +62,8 @@ RobotModel Field::robotModel(std::string_view field) const {
 RobotModel Field::robotModel(std::wstring_view field) const {
     return child(field);
 }
+Plot Field::plot(std::string_view field) const { return child(field); }
+Plot Field::plot(std::wstring_view field) const { return child(field); }
 Image Field::image(std::string_view field) const { return child(field); }
 Image Field::image(std::wstring_view field) const { return child(field); }
 Func Field::func(std::string_view field) const { return child(field); }
@@ -101,6 +104,9 @@ std::vector<Text> Field::textEntries() const {
 }
 std::vector<RobotModel> Field::robotModelEntries() const {
     return entries<RobotModel>(this, dataLock()->robot_model_store);
+}
+std::vector<Plot> Field::plotEntries() const {
+    return entries<Plot>(this, dataLock()->plot_store);
 }
 std::vector<Func> Field::funcEntries() const {
     return entries<Func>(this, dataLock()->func_store);
