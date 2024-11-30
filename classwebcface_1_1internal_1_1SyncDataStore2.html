@@ -194,9 +194,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a2d592fe1ce0fe80c99623dffd9463ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0">unsetRecv</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa760b59a37300561cbb8a59c9987df7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#aaa760b59a37300561cbb8a59c9987df7">clearEntry</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
-<tr class="memdesc:aaa760b59a37300561cbb8a59c9987df7"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberのentryをクリア  <br /></td></tr>
-<tr class="separator:aaa760b59a37300561cbb8a59c9987df7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a59dcc32b58cee54859e0cb30e9ec86bd">initMember</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
+<tr class="memdesc:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberのentryとデータをクリア  <br /></td></tr>
+<tr class="separator:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe416b3d8ccf9684ccae4f695160d175"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#abe416b3d8ccf9684ccae4f695160d175">setEntry</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;e)</td></tr>
 <tr class="memdesc:abe416b3d8ccf9684ccae4f695160d175"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
 <tr class="separator:abe416b3d8ccf9684ccae4f695160d175"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -332,29 +332,6 @@ template&lt;typename T , typename ReqT &gt; </div>
 <p>req_infoが前回と異なっていればすでにリクエストされていても上書きする</p>
 <p>memberがselfの場合無効</p>
 <dl class="section return"><dt>Returns</dt><dd>追加した場合req_idを返し、すでにリクエストされていた場合 or selfの場合 0を返す </dd></dl>
-
-</div>
-</div>
-<a id="aaa760b59a37300561cbb8a59c9987df7" name="aaa760b59a37300561cbb8a59c9987df7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa760b59a37300561cbb8a59c9987df7">&#9670;&#160;</a></span>clearEntry()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void clearEntry </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
-          <td class="paramname"><em>from</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>memberのentryをクリア </p>
-<p>ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
 
 </div>
 </div>
@@ -585,6 +562,29 @@ template&lt;typename T , typename ReqT &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a59dcc32b58cee54859e0cb30e9ec86bd" name="a59dcc32b58cee54859e0cb30e9ec86bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59dcc32b58cee54859e0cb30e9ec86bd">&#9670;&#160;</a></span>initMember()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename ReqT &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void initMember </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>from</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>memberのentryとデータをクリア </p>
+<p>ambiguousなので引数にFieldBaseは使わない (そもそも必要ない) </p>
 
 </div>
 </div>
@@ -891,7 +891,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a></li>
-    <li class="footer">Generated on Sat Nov 30 2024 03:59:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sat Nov 30 2024 09:05:54 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
