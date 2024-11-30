@@ -32,7 +32,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```
     [wrap-git]
     url = https://github.com/na-trium-144/webcface.git
-    revision = v2.5.0
+    revision = v2.5.1
     depth = 1
     [provide]
     dependency_names = webcface
@@ -66,7 +66,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```cmake
     FetchContent_Declare(webcface
       GIT_REPOSITORY https://github.com/na-trium-144/webcface.git
-      GIT_TAG        v2.5.0
+      GIT_TAG        v2.5.1
     )
     FetchContent_MakeAvailable(webcface)
     ```
@@ -113,7 +113,7 @@ C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名
 ~~&lt;webcface/c_wcf.h&gt; をincludeすることで使えます。~~  
 <span class="since-c">1.7</span> &lt;webcface/wcf.h&gt; をincludeすることで使えます。(c_wcf.hも一応使えます)  
 ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c">2.0</span> enum wcfStatus 型で、
-成功した場合 0 (= <del>WCF_OK</del> <span class="since-c">2.0</span> WCF_OK)、例外が発生した場合正の値を返します。
+成功した場合 0 (= WCF_OK)、例外が発生した場合正の値を返します。
 
 ## Python
 
@@ -148,7 +148,7 @@ CommonJSで`requires("webcface")`のように使うこともできると思い�
 <span class="since-js">1.7</span>
 ブラウザー上で使う場合はCDNも利用できます。
 ```html
-<script src="https://cdn.jsdelivr.net/npm/webcface@1.7.0/dist/webcface.bundle.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/webcface@1.9.1/dist/webcface.bundle.js"></script>
 ```
 で読み込むとグローバルに `webcface.Client` などが使用できるようになります。
 

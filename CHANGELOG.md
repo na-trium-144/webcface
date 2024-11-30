@@ -1,3 +1,11 @@
+## [2.5.1] - 2024-11-30
+### Changed
+* subprojectのspdlogをstaticライブラリにしビルドを高速化 (#427)
+### Fixed
+* syncInit受信時にそのメンバーの過去のデータを消す (#433)
+* address already in use などでサーバーが起動できなかったときの終了処理を修正 (#434)
+* webcface-server.service から呼び出すserverコマンドを絶対パスに変更 (#435)
+
 ## [2.5.0] - 2024-11-18
 ### Changed
 * ABIバージョン: 21
