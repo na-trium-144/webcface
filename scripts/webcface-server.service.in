@@ -4,7 +4,7 @@ Description=WebCFace Server
 [Service]
 Type=exec
 Restart=always
-ExecStart=webcface-server
+ExecStart=@prefix@/@bindir@/webcface-server
 
 [Install]
 WantedBy=multi-user.target

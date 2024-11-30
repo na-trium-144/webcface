@@ -384,15 +384,15 @@ void internal::ClientData::onRecv(
                 std::lock_guard lock(this->entry_m);
                 this->member_entry.emplace(r.member_name);
             }
-            this->value_store.clearEntry(r.member_name);
-            this->text_store.clearEntry(r.member_name);
-            this->func_store.clearEntry(r.member_name);
-            this->view_store.clearEntry(r.member_name);
-            this->image_store.clearEntry(r.member_name);
-            this->robot_model_store.clearEntry(r.member_name);
-            this->canvas3d_store.clearEntry(r.member_name);
-            this->canvas2d_store.clearEntry(r.member_name);
-            this->log_store.clearEntry(r.member_name);
+            this->value_store.initMember(r.member_name);
+            this->text_store.initMember(r.member_name);
+            this->func_store.initMember(r.member_name);
+            this->view_store.initMember(r.member_name);
+            this->image_store.initMember(r.member_name);
+            this->robot_model_store.initMember(r.member_name);
+            this->canvas3d_store.initMember(r.member_name);
+            this->canvas2d_store.initMember(r.member_name);
+            this->log_store.initMember(r.member_name);
             this->member_ids[r.member_name] = r.member_id;
             this->member_lib_name[r.member_id] = r.lib_name;
             this->member_lib_ver[r.member_id] = r.lib_ver;

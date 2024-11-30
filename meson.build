@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.5.0',
+  version: '2.5.1',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -18,7 +18,7 @@ py = find_program('python3')
 
 webcface_abi_major = '21' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.10.1'
+webcface_webui_version = '1.10.3'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
@@ -352,14 +352,43 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'std_variant=false', # msvcでなんかエラーになる
   ],
 )
-spdlog_dep = dependency('spdlog',
-  default_options: [
-    'tests=disabled',
-    'compile_library=false',
-    'external_fmt=disabled',
-    'std_format=disabled',
-  ],
-)
+spdlog_link_depends = []
+if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('spdlog')
+  spdlog_dep = dependency('spdlog', required: false)
+else
+  spdlog_dep = dependency('', required: false)
+endif
+if not spdlog_dep.found()
+  spdlog_proj = subproject('spdlog',
+    default_options: [
+      'tests=disabled',
+      'compile_library=true',
+      'default_library=static',
+      'external_fmt=disabled',
+      'std_format=disabled',
+    ],
+  )
+  spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
+  spdlog_lib = spdlog_proj.get_variable('spdlog_lib', dependency('', required: false))  # disabler() は使えない
+  # webcfaceがsharedで、spdlogがstaticの場合にのみオプションを指定
+  if get_option('default_library') == 'shared' and spdlog_lib.found() and spdlog_lib.full_path().endswith('.a')
+    if webcface_system_exclude_libs
+      spdlog_dep = declare_dependency(
+        dependencies: [spdlog_dep],
+        link_args: ['-Wl,--exclude-libs,' + fs.name(spdlog_lib.full_path())],
+      )
+    elif webcface_system_hidden_l
+      spdlog_link_depends += spdlog_lib
+      spdlog_dep = declare_dependency(
+        dependencies: [spdlog_dep.partial_dependency(compile_args: true, includes: true)],
+        link_args: [
+          '-L' + fs.parent(spdlog_lib.full_path()),
+          '-Wl,-hidden-l' + spdlog_lib.name(),
+        ],
+      )
+    endif
+  endif
+endif
 utf8cpp_dep = dependency('utf8cpp')
 
 if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
@@ -387,6 +416,7 @@ if curl_dep.found()
     )
   endif
 else
+  # curlはvisibilityがhiddenになっている
   curl_dep = subproject('curl',
     default_options: [
       'warning_level=0',
@@ -724,12 +754,6 @@ if webcface_system_version_rc
   )
 endif
 
-# 外部ライブラリのシンボルを公開しないようにするために
-# 以前は -Wl,--exclude-libs や -Wl,-hidden-l オプションが必要だったが、
-# spdlogはヘッダーオンリーにし、
-# curlはvisibilityがhiddenになっており、
-# magickppとasioはserverのみにしかリンクしないようにしたので
-# 特殊なリンクオプションは一切不要
 webcface_lib = library(webcface_lib_name,
   # link_wholeではなくobjectsにすることで、
   # それぞれのlibに追加したcpp_argsとかが含まれないようにする
@@ -746,6 +770,9 @@ webcface_lib = library(webcface_lib_name,
     utf8cpp_dep,
     spdlog_dep,
     curl_dep,
+  ],
+  link_depends: [
+    spdlog_link_depends,
   ],
   version: meson.project_version(),
   soversion: webcface_abi_major,
@@ -812,7 +839,15 @@ foreach h: headers
 endforeach
 
 if host_machine.system() == 'linux'
-  install_data('scripts' / 'webcface-server.service',
+  conf_data = configuration_data({
+    'prefix': get_option('prefix'),
+    'bindir': get_option('bindir'),
+  })
+  configure_file(
+    input: 'scripts' / 'webcface-server.service.in',
+    output: 'webcface-server.service',
+    configuration: conf_data,
+    install: true,
     install_dir: 'lib' / 'systemd' / 'system', # lib/x86_64-linux-gnu/ ではない
   )
 endif

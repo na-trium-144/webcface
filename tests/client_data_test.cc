@@ -104,6 +104,13 @@ TEST_F(SyncDataStore2Test, setEntry) {
     EXPECT_EQ(s2.getEntry("a"_ss).size(), 1u);
     EXPECT_EQ(s2.getEntry("a"_ss).count("b"_ss), 1u);
 }
+TEST_F(SyncDataStore2Test, initMember) {
+    s2.setEntry("a"_ss, "b"_ss);
+    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.initMember("a"_ss);
+    EXPECT_TRUE(s2.getEntry("a"_ss).empty());
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
+}
 
 class SyncDataStore1Test : public ::testing::Test {
   protected:

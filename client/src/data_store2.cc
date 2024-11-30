@@ -92,9 +92,10 @@ StrSet1 SyncDataStore2<T, ReqT>::getEntry(const SharedString &name) {
     }
 }
 template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::clearEntry(const SharedString &from) {
+void SyncDataStore2<T, ReqT>::initMember(const SharedString &from) {
     std::lock_guard lock(mtx);
     entry[from].clear();
+    data_recv[from].clear();
 }
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setEntry(const SharedString &from,
