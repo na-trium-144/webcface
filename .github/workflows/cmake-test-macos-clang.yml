@@ -107,6 +107,7 @@ jobs:
     #   if: matrix.dep == 'submodule'
 
     - uses: ilammy/setup-nasm@v1
+    - uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Install Meson
       run: pip install meson
 
