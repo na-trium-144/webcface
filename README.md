@@ -179,65 +179,14 @@ DoxygenでAPIリファレンスとともにチュートリアル、ドキュメ�
 WebCFace ver1については [v1ブランチ](https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation) を参照してください。
 
 ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。
-
-### Ubuntu (x86_64, arm64, armhf)
-
-[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
-linux用のzipファイルをダウンロードし、任意の場所に展開してください。
-* sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。
-* また、展開したディレクトリ内の bin/ をPATHに、 lib/\*-linux-gnu\*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
-* さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。
-
-Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作しません(ソースからビルドする必要があります)。
-また、Ubuntu以外のディストリビューションで動作するかはわかりません。
-
-ダウンロードと展開をコマンドラインでやるなら以下のようにします。
-(/opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。)
-
-<details open><summary>x86_64</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_amd64.zip
-sudo unzip webcface_2.5.2_linux_amd64.zip -d /opt/webcface
-rm webcface_2.5.2_linux_amd64.zip
-echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
-echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
-sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
-```
-</details>
-
-<details><summary>arm64</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_arm64.zip
-sudo unzip webcface_2.5.2_linux_arm64.zip -d /opt/webcface
-rm webcface_2.5.2_linux_arm64.zip
-echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
-echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
-sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
-```
-</details>
-
-<details><summary>armhf</summary>
-
-```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_armhf.zip
-sudo unzip webcface_2.5.2_linux_armhf.zip -d /opt/webcface
-rm webcface_2.5.2_linux_armhf.zip
-echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
-echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
-sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
-```
-</details>
-
+自分でソースからビルドする場合は [3-2. Building from Source](https://na-trium-144.github.io/webcface/md_docs_232__building.html) を参照してください。
 
 ### Deb Package (Ubuntu x86_64, arm64, armhf)
 
 Debパッケージとしてビルドしたものを [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からダウンロードしてインストールできます。
 内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。
 
-Ubuntu20.04でビルドしているため、それより古いUbuntuでは動作しません(ソースからビルドする必要があります)。
-また、Ubuntu以外のディストリビューションで動作するかはわかりません。
+Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
 
 ダウンロードと展開をコマンドラインでやるなら以下のようにします。
 
@@ -277,17 +226,67 @@ rm ./webcface*.deb
 ```
 </details>
 
+### Unzip manually (Ubuntu x86_64, arm64, armhf)
+
+aptを使う代わりに、
+[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+linux用のzipファイルをダウンロードし、任意の場所に展開して使うこともできます。
+* sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。
+* また、展開したディレクトリ内の bin/ をPATHに、 lib/\*-linux-gnu\*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
+* さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。
+    * /opt/webcface 以外の場所に展開した場合はserviceファイルに書かれているパスを手動で書き換える必要があります。
+
+Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
+
+ダウンロードと展開をコマンドラインでやるなら以下のようにします。
+(以下のコマンドは /opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。)
+
+<details open><summary>x86_64</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_amd64.zip
+sudo unzip webcface_2.5.2_linux_amd64.zip -d /opt/webcface
+rm webcface_2.5.2_linux_amd64.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
+```
+</details>
+
+<details><summary>arm64</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_arm64.zip
+sudo unzip webcface_2.5.2_linux_arm64.zip -d /opt/webcface
+rm webcface_2.5.2_linux_arm64.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
+```
+</details>
+
+<details><summary>armhf</summary>
+
+```sh
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_linux_armhf.zip
+sudo unzip webcface_2.5.2_linux_armhf.zip -d /opt/webcface
+rm webcface_2.5.2_linux_armhf.zip
+echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
+echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
+sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
+```
+</details>
+
 ### macOS
 
 [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
 macos用のzipファイルをダウンロードできますが、
 署名や公証をしていないためブラウザーからダウンロードするとGatekeeperにブロックされてしまいます。
 (開発元を検証できないため開けません。の画面になります)
-
-以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。
+その代わり、以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。
 
 Universalバイナリになっており、IntelMacもAppleシリコンも共通です。
-macOS 12 (Monterey) でビルドしているので、それより古いMacでは動かないかもしれません。
+macOS 13 (Ventura) でビルドしているので、それより古いMacでは動かないかもしれません。
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2/webcface_2.5.2_macos_universal.zip

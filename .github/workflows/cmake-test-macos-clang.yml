@@ -100,7 +100,7 @@ jobs:
     strategy:
       matrix:
         dep: ["source"]
-    runs-on: macos-12
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v4
     # - run: git submodule update --init
