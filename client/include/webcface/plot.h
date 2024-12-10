@@ -67,6 +67,8 @@ class WEBCFACE_DLL Plot : protected Field {
     ~Plot();
 
     friend internal::DataSetBuffer<PlotSeries>;
+    friend TemporalCanvas2DComponent;
+    friend TemporalCanvas3DComponent;
 
     using Field::lastName;
     using Field::member;

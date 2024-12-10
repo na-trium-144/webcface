@@ -21,6 +21,7 @@ struct Canvas3DComponentData {
     std::vector<double> geometry_properties;
     std::optional<SharedString> field_member, field_field;
     std::map<std::string, double> angles;
+    double scale_x = 1, scale_y = 1;
     Canvas3DComponentData() = default;
     bool operator==(const Canvas3DComponentData &other) const {
         return type == other.type && origin_pos == other.origin_pos &&
@@ -28,7 +29,8 @@ struct Canvas3DComponentData {
                geometry_type == other.geometry_type &&
                geometry_properties == other.geometry_properties &&
                field_member == other.field_member &&
-               field_field == other.field_field && angles == other.angles;
+               field_field == other.field_field && angles == other.angles &&
+               scale_x == other.scale_x && scale_y == other.scale_y;
     }
     bool operator!=(const Canvas3DComponentData &other) const {
         return !(*this == other);
@@ -38,7 +40,8 @@ struct Canvas3DComponentData {
                        MSGPACK_NVP("gt", geometry_type),
                        MSGPACK_NVP("gp", geometry_properties),
                        MSGPACK_NVP("fm", field_member),
-                       MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
+                       MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles),
+                       MSGPACK_NVP("sx", scale_x), MSGPACK_NVP("sy", scale_y))
 };
 struct Canvas3DData {
     std::map<std::string, std::shared_ptr<Canvas3DComponentData>> components;
