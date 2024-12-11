@@ -35,8 +35,8 @@ var NAVTREE =
       [ "Documentation", "index.html#autotoc_md271", null ],
       [ "Links", "index.html#autotoc_md272", null ],
       [ "Installation", "index.html#autotoc_md273", [
-        [ "Ubuntu (x86_64, arm64, armhf)", "index.html#autotoc_md274", null ],
-        [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md275", null ],
+        [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md274", null ],
+        [ "Unzip manually (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md275", null ],
         [ "macOS", "index.html#autotoc_md276", null ],
         [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md277", null ],
         [ "Windows MSVC", "index.html#autotoc_md278", null ]
