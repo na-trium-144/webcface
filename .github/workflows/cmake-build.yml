@@ -142,12 +142,13 @@ jobs:
     strategy:
       matrix:
         arch: [x86_64, arm64]
-    runs-on: macos-12
-    name: Build on macos-12 ${{matrix.arch}}
+    runs-on: macos-13
+    name: Build on macos-13 ${{matrix.arch}}
     steps:
     - uses: actions/checkout@v4
 
     - uses: ilammy/setup-nasm@v1
+    - uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Install Meson
       run: pip install meson
 
@@ -174,7 +175,7 @@ jobs:
         path: ${{github.workspace}}/*.zip
 
   lipo-macos:
-    runs-on: macos-12
+    runs-on: macos-13
     name: Create universal binary
     needs: [build-macos]
     steps:

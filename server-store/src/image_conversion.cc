@@ -69,13 +69,15 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                         }
                         last_image_flag = cd->image_changed[field];
                         last_req_flag = this->image_req_changed[member][field];
-                        logger->trace("converting image of {}, {}",
-                                      member.decode(), field.decode());
-                        img = cd->image[field];
+                        if (cd->image.count(field)) {
+                            img = cd->image[field];
+                        }
                     }
                     if (img.empty()) {
                         break;
                     }
+                    logger->trace("converting image of {}, {}", member.decode(),
+                                  field.decode());
 
 
                     auto last_frame = std::chrono::steady_clock::now();
@@ -274,6 +276,8 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
             break;
         }
     }
+    logger->trace("imageConvertThreadMain for {}, {} stopped", member.decode(),
+                  field.decode());
 }
 
 } // namespace server

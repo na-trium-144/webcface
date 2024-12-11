@@ -10,13 +10,15 @@ webcface ver1 をソースからビルドしたい場合は、[v1](https://githu
 ## Server & Library
 ### Requirements
 
-* C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja が必要です
+* C++17に対応したコンパイラと、CMake, Meson(1.3.0以上), Ninja, make, pkg-config(pkgconf) が必要です
     * ver1.11まではC++20が必要でしたが、ver2からC++17に移行しました
-    * ビルドにはMesonを使用しますが、依存ライブラリにCMakeを使うものがあるのでそれもインストールする必要があります
-    * MSVC以外では make と pkg-config も必要です
+    * ビルドにはMesonを使用しますが、依存ライブラリにCMakeを使うものがあるのでCMakeも必要です
+    * MSVCでは make と pkg-config は不要です
 * Linuxはgcc-7以上とclang-7以上、MacはmacOS12(Monterey)以上、Visual Studioは2019以上でビルドできることを確認しています。
 それ以前のバージョンでも動くかもしれません。
 * MinGWでもビルドできます。MSYS2のUCRT64環境でテストしていますがMINGW64やCLANG64環境でもビルドできると思います。
+    * 現在MesonのバグによりMSYS2でインストールできる最新のMesonとPythonではサーバーのビルドができません。(`-Dserver=disabled`で無効化できます)
+    または手動でPython3.11以下とMeson1.6.0以下をインストールすればサーバーもビルドできると思います。
 * CygwinやMSYS2のMSYS環境ではasioがビルドできない([chriskohlhoff/asio#518](https://github.com/chriskohlhoff/asio/issues/518))ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。
     * asioはCygwin32bitでビルドできると主張しているが、32bitでもなぜかビルドできない<del>がissueを建てるのはめんどくさい</del>
     * 仮にビルドできたとしても、curlが使用するCygwinのsocketとasioが使用するWin32のsocketが干渉して動かない気もします
