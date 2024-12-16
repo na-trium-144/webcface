@@ -200,7 +200,8 @@ WebCFace ver1 (WebUI ver1.3〜1.6)まで (WebUI Server Mode)</summary>
 <h2><a class="anchor" id="autotoc_md28"></a>
 Value</h2>
 <p>数値データ、または1次元数値配列を送受信する型です。</p>
-<p>WebUI では受信したデータがグラフとして表示されます。 (グラフの画面を表示させた時点より前のデータにはアクセスできません)</p>
+<p><del>WebUI では受信したデータがグラフとして表示されます。 (グラフの画面を表示させた時点より前のデータにはアクセスできません)</del></p>
+<p>(ver1.11から) デフォルトではグラフではなく受信した最新の数値のみが表示されます。 右下のグラフマークのボタンを押すと、グラフ表示に切り替わります。</p>
 <p><del>マウスドラッグで移動、Ctrl+スクロール・Ctrl+Alt+スクロールでそれぞれx, y方向の拡大縮小ができます。</del> <br  />
  (ver1.7から)右下の手のアイコンをクリックすると、移動・ズームができる状態になり、</p>
 <ul>
@@ -218,6 +219,8 @@ Value</h2>
 Text</h2>
 <p>文字列データを送受信する型です。</p>
 <p>WebUI では図のように文字列が表示されます。</p>
+<p>(ver1.11から)Valueと同様、データごとに別々のウィンドウになります。</p>
+<p>(↓スクショは過去のバージョン)</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_text.png" alt="example_text" class="inline"/></p>
 <h2><a class="anchor" id="autotoc_md30"></a>
 View</h2>
@@ -265,7 +268,7 @@ Log</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Dec 11 2024 03:13:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Dec 16 2024 11:18:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
