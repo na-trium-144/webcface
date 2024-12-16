@@ -18,7 +18,7 @@ py = find_program('python3')
 
 webcface_abi_major = '21' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.10.4'
+webcface_webui_version = '1.11.0'
 
 webcface_description = 'Web-based IPC & Dashboard-like UI'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
