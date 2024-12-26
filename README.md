@@ -282,7 +282,7 @@ rm ./webcface*.deb
 
 ### Unzip manually (Ubuntu x86_64, arm64, armhf)
 
-Instead of using apt, you can download the zip file for Linux from the [webcface-package repository]](https://github.com/na-trium-144/webcface-package/releases) and extract it to a location of your choice.
+Instead of using apt, you can download the zip file for Linux from the [webcface-package repository](https://github.com/na-trium-144/webcface-package/releases) and extract it to a location of your choice.
 
 * If you have sudo privileges, we recommend extracting it to /usr/local or /opt/webcface.
 * Also, add bin/ in the extracted directory to PATH and lib/\*-linux-gnu\*/pkgconfig/ to PKG_CONFIG_PATH.
