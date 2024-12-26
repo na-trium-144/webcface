@@ -39,12 +39,8 @@ The library itself is a single file:
 
 so you can also manually link to this library.
 
-Although WebCFace uses many external libraries internally, all symbols are hidden, so it does not interfere with the libraries used by the user (except when building WebCFace from source or installing via brew).
-
 For Python and JavaScript, simply install the `webcface` package from PyPI / npm.
 Since it uses WebSocket for communication, it works directly in web browsers.
-
-It is a bit more challenging, but it can also be used from other languages via the C API.
 
 >WebCFaceはサーバー側のプログラム `webcface-server` と、
 >クライアントライブラリで構成されています。
@@ -64,22 +60,14 @@ pkg-config なら`pkg-config --cflags --libs webcface`
 >
 >の1つのみであり、手動でこのライブラリにリンクして使うこともできます。
 >
->WebCFace内部では外部ライブラリを多数使用していますが、それらはシンボルをすべて非公開にしているのでユーザーが使用するライブラリとは干渉しません。
-(WebCFaceをソースからビルドした場合と、brewでインストールした場合を除く)
->
 >Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
->
->少し難易度は上がりますが、CのAPIを経由することで他の言語からも使用できると思います。
 
 ### Inter-Process Communication
 
 WebCFace uses WebSocket and MessagePack for communication.
 This allows communication not only between processes but also with web browsers.
 Additionally, if available, it uses Unix domain sockets instead of TCP for communication on the same machine or via Docker, WSL, etc.
-
-It is also possible to communicate between multiple PCs (regardless of OS) via Wi-Fi or Ethernet.
-Automatic connection is established between Windows and WSL1/2.
 
 The data types that can be sent and received with WebCFace include:
 
@@ -95,20 +83,15 @@ For code examples, refer to the documentation [1-2. Tutorial (Communication)](ht
 Image data can be resized or compressed to JPEG or PNG during transmission on the server side, reducing communication volume if compressed images are sufficient for display purposes.
 
 The communication data format of WebCFace is common regardless of OS or library language, and it is backward compatible between versions.
-This means that communication is possible between clients of different versions and different OS versions without any issues.
-
-However, the server version must be newer than the client version.
-The behavior when the client is newer than the server is not guaranteed.
+This means that communication is possible between clients of different versions and different OS versions without any issues, as long as the server is newer than the client.
 For details, refer to [8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html).
 
 >WebCFaceの通信にはWebSocketとMessagePackを使っています。
 このためプロセス間だけでなくWebブラウザーとの通信が可能になっています。
 さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用します。
 >
->Wi-FiやEtherNet経由で複数のPC間(OS問わず)で通信することも可能です。
-WindowsとWSL1/2の間の相互通信も自動的に接続されます。
->
 >WebCFaceで送受信できるデータ型として
+>
 >* 数値型・数値配列型(Value)
 >* 文字列型(Text)
 >* 画像(Image)
@@ -126,10 +109,7 @@ WindowsとWSL1/2の間の相互通信も自動的に接続されます。
 >表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
 >
 >WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。
->つまり、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
->
->ただしそれぞれのクライアントのバージョンよりサーバーの方が新しいバージョンである必要があります。
->サーバーよりクライアントのほうが新しい場合の動作は保証しません。
+>つまり、サーバーがクライアントより新しいバージョンでさえあれば、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
 >詳細は
 >[8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html)
 >を参照してください。
@@ -143,11 +123,9 @@ This allows you to create simple UIs without knowledge of HTML or CSS.
 For code examples, refer to the documentation [1-1. Tutorial (Visualizing)](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html).
 
 Similarly, 2D and 3D shapes can also be drawn in the WebUI with only descriptions on the side of programs using WebCFace.
-These drawing data exist as View, Canvas2D, Canvas3D communication data types within WebCFace, and it is possible to create applications that receive and display these data outside of the WebUI.
 
 >WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
 >WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
->
 >さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++,Pythonなどのプログラムの側で定義してそれをWebUIに表示>させることができ、
 >これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
 >コード例はドキュメントの
@@ -155,11 +133,8 @@ These drawing data exist as View, Canvas2D, Canvas3D communication data types wi
 >を参照してください。
 >
 >また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
->これらの描画データは View, Canvas2D, Canvas3D として他のデータ型(数値や文字列など)と同様にWebCFace内の通信データとして存在しており、
->WebUI以外でもこれらのデータを受信して表示するアプリを作成することは可能です。
 
 ![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
-
 
 ### WebCFace-Tools
 
