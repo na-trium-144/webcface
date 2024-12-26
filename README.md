@@ -17,9 +17,10 @@ Web-based Communication Framework &amp; Dashboard-like UI
 * It allows sending and receiving data such as numbers, strings, and images, as well as calling functions between C++ (C++17 or later), C, Python (3.6 or later), and JavaScript/TypeScript.
 * Works on Linux, MacOS, and Windows (MSVC, MinGW, MSYS2, Cygwin).
 
->* ROS1のようなプロセス間通信と、GUIによるデータの可視化や関数呼び出し、また Immediate-Mode でのシンプルなUIの作成ができます。
->* C++ (C++17以上), C, Python (3.6以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
->* Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
+> 
+> * ROS1のようなプロセス間通信と、GUIによるデータの可視化や関数呼び出し、また Immediate-Mode でのシンプルなUIの作成ができます。
+> * C++ (C++17以上), C, Python (3.6以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
+> * Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
 
 ## Features
 
@@ -42,25 +43,25 @@ so you can also manually link to this library.
 For Python and JavaScript, simply install the `webcface` package from PyPI / npm.
 Since it uses WebSocket for communication, it works directly in web browsers.
 
->WebCFaceはサーバー側のプログラム `webcface-server` と、
->クライアントライブラリで構成されています。
->使い方はサーバーを起動し、クライアントライブラリを利用したプログラムを起動するだけです。
->ROSのようなワークスペース管理機能はなく、どんなフレームワークのプロジェクトにも簡単に組み込むことができます。
->
->C / C++ の場合、WebCFaceのライブラリは
-CMake を使っていれば `find_package(webcface)`、
-pkg-config なら`pkg-config --cflags --libs webcface`
-で簡単に利用できます。
->
->またライブラリ本体は
->
->* Linux: `libwebcface.so.<version>`
->* Mac: `libwebcface.<version>.dylib`
->* Windows: `webcface-<version>.dll` (Release) or `webcfaced-<version>.dll` (Debug)
->
->の1つのみであり、手動でこのライブラリにリンクして使うこともできます。
->
->Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
+> WebCFaceはサーバー側のプログラム `webcface-server` と、
+> クライアントライブラリで構成されています。
+> 使い方はサーバーを起動し、クライアントライブラリを利用したプログラムを起動するだけです。
+> ROSのようなワークスペース管理機能はなく、どんなフレームワークのプロジェクトにも簡単に組み込むことができます。
+> 
+> C / C++ の場合、WebCFaceのライブラリは
+> CMake を使っていれば `find_package(webcface)`、
+> pkg-config なら`pkg-config --cflags --libs webcface`
+> で簡単に利用できます。
+> 
+> またライブラリ本体は
+> 
+> * Linux: `libwebcface.so.<version>`
+> * Mac: `libwebcface.<version>.dylib`
+> * Windows: `webcface-<version>.dll` (Release) or `webcfaced-<version>.dll` (Debug)
+> 
+> の1つのみであり、手動でこのライブラリにリンクして使うこともできます。
+> 
+> Python, JavaScript には PyPI / npm に `webcface` パッケージを用意しているのでそれをインストールするだけで使えます。
 通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。
 
 ### Inter-Process Communication
@@ -86,33 +87,33 @@ The communication data format of WebCFace is common regardless of OS or library 
 This means that communication is possible between clients of different versions and different OS versions without any issues, as long as the server is newer than the client.
 For details, refer to [8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html).
 
->WebCFaceの通信にはWebSocketとMessagePackを使っています。
+> WebCFaceの通信にはWebSocketとMessagePackを使っています。
 このためプロセス間だけでなくWebブラウザーとの通信が可能になっています。
 さらに同一マシン上やDocker,WSL経由など使用可能な場合はTCPの代わりにUnixドメインソケットを使用します。
->
->WebCFaceで送受信できるデータ型として
->
->* 数値型・数値配列型(Value)
->* 文字列型(Text)
->* 画像(Image)
->* 関数呼び出し(Func)
->* テキストログ(Log)
->
->などの型が用意されています。
-ユーザーがメッセージ型を定義できるROSやgRPCと比べると自由度は低いかもしれませんが、
-これらのデータ型の組み合わせであれば簡単に送受信させることができます。
-コード例についてはドキュメントの
-[1-2. Tutorial (Communication)](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
-を参照してください。
->
->Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。
->表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
->
->WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。
->つまり、サーバーがクライアントより新しいバージョンでさえあれば、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
->詳細は
->[8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html)
->を参照してください。
+> 
+> WebCFaceで送受信できるデータ型として
+> 
+> * 数値型・数値配列型(Value)
+> * 文字列型(Text)
+> * 画像(Image)
+> * 関数呼び出し(Func)
+> * テキストログ(Log)
+> 
+> などの型が用意されています。
+> ユーザーがメッセージ型を定義できるROSやgRPCと比べると自由度は低いかもしれませんが、
+> これらのデータ型の組み合わせであれば簡単に送受信させることができます。
+> コード例についてはドキュメントの
+> [1-2. Tutorial (Communication)](https://na-trium-144.github.io/webcface/md_docs_212__tutorial__comm.html)
+> を参照してください。
+> 
+> Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。
+> 表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。
+> 
+> WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。
+> つまり、サーバーがクライアントより新しいバージョンでさえあれば、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。
+> 詳細は
+> [8-4. Versioning](https://na-trium-144.github.io/webcface/md_docs_284__versioning.html)
+> を参照してください。
 
 ### WebUI
 
@@ -124,15 +125,16 @@ For code examples, refer to the documentation [1-1. Tutorial (Visualizing)](http
 
 Similarly, 2D and 3D shapes can also be drawn in the WebUI with only descriptions on the side of programs using WebCFace.
 
->WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
->WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
->さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++,Pythonなどのプログラムの側で定義してそれをWebUIに表示>させることができ、
->これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
->コード例はドキュメントの
->[1-1. Tutorial (Visualizing)](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html)
->を参照してください。
->
->また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
+> WebCFaceではプログラム間でデータの送受信ができるAPIだけでなく、
+> WebブラウザーからWebCFaceで通信されているデータを可視化したり関数を呼び出したりできるUI(WebUI)を提供します。
+> 
+> さらにボタンや入力欄などの並べ方をWebCFaceを使ったC++,Pythonなどのプログラムの側で定義してそれをWebUIに表示させることができ、
+> これによりHTMLやCSSの知識がなくても簡易なUIを作成することができます。
+> コード例はドキュメントの
+> [1-1. Tutorial (Visualizing)](https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html)
+> を参照してください。
+> 
+> また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。
 
 ![webcface-webui](https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png)
 
@@ -147,14 +149,14 @@ You can keep only the server and launcher running at all times and remotely cont
 [webcface-tui](https://na-trium-144.github.io/webcface/md_docs_275__tui.html)
 is a TUI application that can be operated on the terminal, allowing you to check data in real-time and operate the View without opening a web browser.
 
->コマンドラインからWebCFaceのデータにアクセスできるコマンドもいくつか用意しています。
->
->[webcface-launcher](https://na-trium-144.github.io/webcface/md_docs_271__launcher.html)
->は事前に登録しておいたコマンドの起動・停止をWebCFaceのViewから操作することができる機能です。
->serverとlauncherだけを常時起動しておき、WebUIを使ってプログラムをリモートに操作するという使い方ができます。
->
->[webcface-tui](https://na-trium-144.github.io/webcface/md_docs_275__tui.html)
-はターミナル上で操作できるTUIアプリで、Webブラウザを開かなくてもデータをリアルタイムで確認したり、Viewの操作もできます。
+> コマンドラインからWebCFaceのデータにアクセスできるコマンドもいくつか用意しています。
+> 
+> [webcface-launcher](https://na-trium-144.github.io/webcface/md_docs_271__launcher.html)
+> は事前に登録しておいたコマンドの起動・停止をWebCFaceのViewから操作することができる機能です。
+> serverとlauncherだけを常時起動しておき、WebUIを使ってプログラムをリモートに操作するという使い方ができます。
+> 
+> [webcface-tui](https://na-trium-144.github.io/webcface/md_docs_275__tui.html)
+> はターミナル上で操作できるTUIアプリで、Webブラウザを開かなくてもデータをリアルタイムで確認したり、Viewの操作もできます。
 
 ![tui_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_value.gif)
 
@@ -224,10 +226,10 @@ For WebCFace ver1, refer to the [v1 branch](https://github.com/na-trium-144/webc
 For ver2, you can download built archives for Linux, Windows, and MacOS as follows.
 If you want to build from source, refer to [3-2. Building from Source](https://na-trium-144.github.io/webcface/md_docs_232__building.html).
 
->WebCFace ver1については [v1ブランチ](https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation) を参照してください。
->
->ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。
->自分でソースからビルドする場合は [3-2. Building from Source](https://na-trium-144.github.io/webcface/md_docs_232__building.html) を参照してください。
+> WebCFace ver1については [v1ブランチ](https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation) を参照してください。
+> 
+> ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。
+> 自分でソースからビルドする場合は [3-2. Building from Source](https://na-trium-144.github.io/webcface/md_docs_232__building.html) を参照してください。
 
 ### Deb Package (Ubuntu x86_64, arm64, armhf)
 
@@ -238,11 +240,11 @@ To download and extract using the command line, copy and paste the following com
 It is built on Ubuntu 20.04, so it may not work on older versions of Ubuntu or other distributions.
 
 
->Debパッケージとしてビルドしたものを [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からダウンロードしてインストールできます。
->内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。
->ダウンロードと展開をコマンドラインでやるなら以下のようにします。
->
->Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
+> Debパッケージとしてビルドしたものを [WebCFaceのReleases](https://github.com/na-trium-144/webcface/releases) と [webuiのReleases](https://github.com/na-trium-144/webcface-webui/releases) 、[toolsのReleases](https://github.com/na-trium-144/webcface-tools/releases) からダウンロードしてインストールできます。
+> 内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。
+> ダウンロードと展開をコマンドラインでやるなら以下のようにします。
+> 
+> Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
 
 <details open><summary>x86_64</summary>
 
@@ -293,17 +295,17 @@ Instead of using apt, you can download the zip file for Linux from the [webcface
 If you want to download and extract from the command line, use the following.
 (The following command extracts to /opt/webcface and writes the environment variables to ~/.bashrc. If you are using a different environment, please change it accordingly.)
 
->aptを使う代わりに、
->[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
->linux用のzipファイルをダウンロードし、任意の場所に展開して使うこともできます。
->* sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。
->* また、展開したディレクトリ内の bin/ をPATHに、 lib/\*-linux-gnu\*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
->* さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。
->    * /opt/webcface 以外の場所に展開した場合はserviceファイルに書かれているパスを手動で書き換える必要があります。
->* Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
->
->ダウンロードと展開をコマンドラインでやるなら以下のようにします。
->(以下のコマンドは /opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。)
+> aptを使う代わりに、
+> [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+> linux用のzipファイルをダウンロードし、任意の場所に展開して使うこともできます。
+> * sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。
+> * また、展開したディレクトリ内の bin/ をPATHに、 lib/\*-linux-gnu\*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。
+> * さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。
+>     * /opt/webcface 以外の場所に展開した場合はserviceファイルに書かれているパスを手動で書き換える必要があります。
+> * Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。
+> 
+> ダウンロードと展開をコマンドラインでやるなら以下のようにします。
+> (以下のコマンドは /opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。)
 
 <details open><summary>x86_64</summary>
 
@@ -356,19 +358,19 @@ Instead, you can avoid Gatekeeper by downloading and extracting it from the comm
 `export DYLD_LIBRARY_PATH="(webcface directory path)/lib:$DYLD_LIBRARY_PATH"`
 .
 
->[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
->macos用のzipファイルをダウンロードできますが、
->署名や公証をしていないためブラウザーからダウンロードするとGatekeeperにブロックされてしまいます。
->(開発元を検証できないため開けません。の画面になります)
->
->その代わり、以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。
->(以下のコマンドは webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開し、環境変数をzshrcに書き込みます。それ以外の環境の場合は適宜読み替えてください)
->
->* Universalバイナリになっており、IntelMacもAppleシリコンも共通です。
->* macOS 13 (Ventura) でビルドしているので、それより古いMacでは動かないかもしれません。
->* webcfaceライブラリはinstall_nameが /opt/webcface/lib のパスになっているため、それ以外の場所に展開した場合は
->`export DYLD_LIBRARY_PATH="(webcfaceディレクトリのパス)/lib:$DYLD_LIBRARY_PATH"`
->も必要になるかもしれません。
+> [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+> macos用のzipファイルをダウンロードできますが、
+> 署名や公証をしていないためブラウザーからダウンロードするとGatekeeperにブロックされてしまいます。
+> (開発元を検証できないため開けません。の画面になります)
+> 
+> その代わり、以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。
+> (以下のコマンドは webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開し、環境変数をzshrcに書き込みます。それ以外の環境の場合は適宜読み替えてください)
+> 
+> * Universalバイナリになっており、IntelMacもAppleシリコンも共通です。
+> * macOS 13 (Ventura) でビルドしているので、それより古いMacでは動かないかもしれません。
+> * webcfaceライブラリはinstall_nameが /opt/webcface/lib のパスになっているため、それ以外の場所に展開した場合は
+> `export DYLD_LIBRARY_PATH="(webcfaceディレクトリのパス)/lib:$DYLD_LIBRARY_PATH"`
+> も必要になるかもしれません。
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.5.2-1/webcface_2.5.2-1_macos_universal.zip
@@ -387,10 +389,10 @@ You can install from [na-trium-144/webcface tap](https://github.com/na-trium-144
 
 Also, if you install with brew, the WebCFace Desktop app is not included.
 
->[na-trium-144/webcface のtap](https://github.com/na-trium-144/homebrew-webcface) からインストールできますが、
->brewでビルドしたwebcfaceはsharedライブラリとして多数の依存ライブラリが必要になるのであまりおすすめしません。
->
->また、brewでインストールした場合 WebCFace Desktop アプリは付属しません。
+> [na-trium-144/webcface のtap](https://github.com/na-trium-144/homebrew-webcface) からインストールできますが、
+> brewでビルドしたwebcfaceはsharedライブラリとして多数の依存ライブラリが必要になるのであまりおすすめしません。
+> 
+> また、brewでインストールした場合 WebCFace Desktop アプリは付属しません。
 
 ```sh
 brew tap na-trium-144/webcface
@@ -418,25 +420,25 @@ There are x86 and x64 versions.
 MinGW binaries are not distributed at this time (please build from source)
 
 
->[webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
->windows用のexeファイルまたはzipファイルをダウンロードできます。
->x86バージョンとx64バージョンがあります。
->(ただしインストーラーと WebCFace Desktop アプリはどちらも32bitになっています)
->
->* exeファイルは実行するとインストーラーが起動します。
->    * 署名していないため Windows Defender にブロックされるかもしれません。
->    その場合は「詳細情報」→「実行」をクリックして実行してください。
->    * インストール場所はデフォルトで C:\Program Files\webcface になります。(変更可能です)
->    * また、自動的に環境変数のPATHが設定され、スタートメニューにも WebCFace Desktop のショートカットが追加されます。
->    * アンインストールはコントロールパネルや設定アプリから他のアプリと同様にできます。
->* インストーラーを使う代わりに、zipファイルを任意の場所に展開して使用することもできます。
->    * コマンドラインツールやライブラリを使う(Meson,CMakeでインポートする)には、展開したwebcfaceディレクトリの中の bin/ を手動で環境変数のPATHに追加する必要があります。
->* [最新の Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
->がインストールされていない場合はインストールする必要があります。
->* 比較的新しいWindows10以上であれば動作するはずです。古いWindowsでは動作確認していません。
->* いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
->
->MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
+> [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
+> windows用のexeファイルまたはzipファイルをダウンロードできます。
+> x86バージョンとx64バージョンがあります。
+> (ただしインストーラーと WebCFace Desktop アプリはどちらも32bitになっています)
+> 
+> * exeファイルは実行するとインストーラーが起動します。
+>     * 署名していないため Windows Defender にブロックされるかもしれません。
+>     その場合は「詳細情報」→「実行」をクリックして実行してください。
+>     * インストール場所はデフォルトで C:\Program Files\webcface になります。(変更可能です)
+>     * また、自動的に環境変数のPATHが設定され、スタートメニューにも WebCFace Desktop のショートカットが追加されます。
+>     * アンインストールはコントロールパネルや設定アプリから他のアプリと同様にできます。
+> * インストーラーを使う代わりに、zipファイルを任意の場所に展開して使用することもできます。
+>     * コマンドラインツールやライブラリを使う(Meson,CMakeでインポートする)には、展開したwebcfaceディレクトリの中の bin/ を手動で環境変数のPATHに追加する必要があります。
+> * [最新の Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
+> がインストールされていない場合はインストールする必要があります。
+> * 比較的新しいWindows10以上であれば動作するはずです。古いWindowsでは動作確認していません。
+> * いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
+> 
+> MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
 ## License
 
@@ -444,9 +446,9 @@ WebCFace and related programs are all released under the MIT license. For detail
 
 Third-party libraries used by WebCFace itself and tools are licensed as follows:
 
->WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は [LICENSE](https://github.com/na-trium-144/webcface/blob/main/LICENSE) を参照してください。
->
->WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
+> WebCFaceと関連するプログラムはすべてMITライセンスで公開しています。詳細は [LICENSE](https://github.com/na-trium-144/webcface/blob/main/LICENSE) を参照してください。
+> 
+> WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
 
 * msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
 * eventpp (Apache 2.0) : https://github.com/wqking/eventpp
