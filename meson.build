@@ -65,7 +65,6 @@ webcface_system_win32socket = false
 webcface_system_path_windows = false
 webcface_system_add_debug = false
 webcface_system_version_rc = false
-magick_vs = false
 relative_rpath = ''
 if host_machine.system() == 'linux'
   summary('System', 'linux')
@@ -86,7 +85,6 @@ elif host_machine.system() == 'windows'
   if cxx.get_argument_syntax() == 'msvc'
     summary('System', 'windows msvc ' + host_machine.cpu_family())
     webcface_system_add_debug = true
-    magick_vs = true
   else
     summary('System', 'windows mingw')
   endif
@@ -133,8 +131,6 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
       '-Wno-error=dangling-reference',
       # inside opencv
       '-Wno-error=deprecated-enum-enum-conversion',
-      # inside magick
-      '-Wno-error=ignored-qualifiers',
       # inside msgpack
       '-Wno-error=maybe-uninitialized',
     )
@@ -146,7 +142,7 @@ elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
     '--system-header-prefix=spdlog/',
     '--system-header-prefix=curl/',
     '--system-header-prefix=crow.h',
-    '--system-header-prefix=Magick++.h',
+    '--system-header-prefix=vips/',
     '--system-header-prefix=opencv2/',
     '--system-header-prefix=utf8.h',
     '--system-header-prefix=CLI/',
@@ -501,179 +497,94 @@ if build_server
     crow_dep = subproject('crow').get_variable('crow_dep')
   endif
 
-  if magick_vs
-    if debug_crt
-      magick_libtype = 'DB'
-    else
-      magick_libtype = 'RL'
-    endif
-    magickpp_dep = dependency('', required: false)
-
-    if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
-      magick = find_program('magick',
-        required: get_option('wrap_mode') == 'nofallback',
-      )
-      if magick.found()
-        find_magick = run_command(py,
-          meson.project_source_root() / 'scripts' / 'magick_msvc_find.py',
-          fs.parent(magick.full_path()),
-          magick_libtype,
-          check: true,
-        ).stdout().strip().split('\n')
-        if find_magick[0] == '' or find_magick[1] == '' or find_magick.length() < 3
-          warning('ImageMagick found but its ' + \
-            (debug_crt ? 'debug' : 'release') + \
-            ' libraries and headers was not found.',
-          )
-        else
-          magick_ver = run_command('magick', '-version', check: false)
-          if magick_ver.returncode() != 0
-            error('Failed to get version information from installed ImageMagick.\n' + \
-              'Set "-Dforce_fallback_for=[\'Magick++\']".\n\n' + \
-              'output:\n' + \
-              magick_ver.stderr(),
-            )
-          elif magick_ver.stdout().contains('OpenMP')
-            error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
-              'Set "-Dforce_fallback_for=[\'Magick++\']".',
-            )
-          endif
-
-          magick_libs = []
-          foreach lib: find_magick
-            if lib.endswith('_.lib')
-              magick_libs += cxx.find_library(
-                lib.strip('.lib'),
-                dirs: [find_magick[1]],
-              )
-            endif
-          endforeach
-          magickpp_dep = declare_dependency(
-            include_directories: include_directories(find_magick[0]),
-            dependencies: magick_libs,
-          )
-        endif
-      endif
-    endif
-
-    if not magickpp_dep.found()
-      message('running magick_msvc_configure.py...')
-      magick_script_args = [
-        meson.project_source_root(),
-        meson.current_build_dir(),
-        magick_libtype,
-        cxx.version(),
-        host_machine.cpu_family(),
-      ]
-      config_magick = run_command(py,
-        meson.project_source_root() / 'scripts' / 'magick_msvc_configure.py',
-        magick_script_args,
-        check: false,
-      )
-      if config_magick.returncode() != 0
-        error('Failed to configure ImageMagick-Windows\n\n' + \
-          'stdout:\n' + \
-          config_magick.stdout() + \
-          '\nstderr:\n' + \
-          config_magick.stderr(),
-        )
-      endif
-      find_magick = run_command(py,
-        meson.project_source_root() / 'scripts' / 'magick_msvc_dep.py',
-        magick_script_args,
-        check: true,
-      ).stdout().strip().split('\n')
-      magick_libs = []
-      foreach lib: find_magick
-        if lib.endswith('_.lib')
-          # must not contain a path segment.
-          magick_libs += lib
-        endif
-      endforeach
-      magickpp_dep = declare_dependency(
-        compile_args: ['-DSTATIC_MAGICK'],
-        include_directories: include_directories(find_magick[0].split(',')),
-        sources: custom_target('imagemagick-windows',
-          build_always_stale: true,
-          command: [py,
-            meson.project_source_root() / 'scripts' / 'magick_msvc_build.py',
-            magick_script_args,
-          ],
-          console: true,
-          output: magick_libs,
-        ),
-      )
-    endif
-
-  else
-    if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
-      magickpp_dep = dependency('Magick++', method: 'pkg-config', required: false)
-    else
-      magickpp_dep = dependency('', required: false)
-    endif
-    if magickpp_dep.found()
-      pkg_config = find_program('pkg-config')
-      magickcore_cflags = run_command(
-        pkg_config, '--cflags', 'MagickCore',
-        env: {
-          'PKG_CONFIG_PATH': get_option('pkg_config_path'),
-        },
-        check: true,
-      )
-      if magickcore_cflags.stdout().contains('fopenmp')
-        error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
-          'Set "-Dforce_fallback_for=[\'Magick++\']".',
-        )
-      endif
-    else
-      dependency('libjpeg',
-        default_options: [
-          'default_library=static',
-          'jpeg-turbo=disabled',
-          'tests=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('zlib',
-        default_options: [
-          'default_library=static',
-          'tests=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('libpng',
-        default_options: [
-          'default_library=static',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('libwebp',
-        default_options: [
-          'default_library=static',
-          'cwebp=disabled',
-          'dwebp=disabled',
-          'webpinfo=disabled',
-          'webpmux=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
-    endif
-  endif
-  # if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
-  # msvcでなぜか version() = '2.0.0' が返るので一旦チェックを無効にしている
-  # (どうせver6以下でビルドすることはほぼない)
-  magickpp_dep = declare_dependency(
-    compile_args: ['-DWEBCFACE_MAGICK_VER7'],
-    dependencies: [magickpp_dep],
+  dependency('libjpeg',
+    default_options: [
+      'default_library=static',
+      'jpeg-turbo=disabled',
+      'tests=disabled',
+      'warning_level=0',
+      'werror=false',
+    ]
   )
-  # endif
+  dependency('zlib',
+    default_options: [
+      'default_library=static',
+      'tests=disabled',
+      'warning_level=0',
+      'werror=false',
+    ]
+  )
+  dependency('libpng',
+    default_options: [
+      'default_library=static',
+      'warning_level=0',
+      'werror=false',
+    ]
+  )
+  dependency('libwebp',
+    default_options: [
+      'default_library=static',
+      'cwebp=disabled',
+      'dwebp=disabled',
+      'webpinfo=disabled',
+      'webpmux=disabled',
+      'warning_level=0',
+      'werror=false',
+    ]
+  )
+  libvips_cpp_dep = dependency('vips-cpp',
+    default_options: [
+      'default_library=static',
+      'warning_level=0',
+      'werror=false',
+      'jpeg=enabled',
+      'png=enabled',
+      'webp=enabled',
+      'zlib=enabled',
+      # disabled options:
+        'examples=false',
+        'modules=disabled',
+        'introspection=disabled',
+        'vapi=false',
+        'cfitsio=disabled',
+        'cgif=disabled',
+        'exif=disabled',
+        'fftw=disabled',
+        'fontconfig=disabled',
+        'archive=disabled',
+        'heif=disabled',
+        'heif-module=disabled',
+        'imagequant=disabled',
+        'jpeg-xl=disabled',
+        'jpeg-xl-module=disabled',
+        'lcms=disabled',
+        'magick=disabled',
+        'magick-package=',
+        'magick-module=disabled',
+        'matio=disabled',
+        'nifti=disabled',
+        'openexr=disabled',
+        'openjpeg=disabled',
+        'openslide=disabled',
+        'openslide-module=disabled',
+        'highway=disabled',
+        'orc=disabled',
+        'pangocairo=disabled',
+        'pdfium=disabled',
+        'poppler=disabled',
+        'poppler-module=disabled',
+        'quantizr=disabled',
+        'rsvg=disabled',
+        'spng=disabled',
+        'tiff=disabled',
+        'nsgif=false',
+        'ppm=false',
+        'analyze=false',
+        'radiance=false',
+    ],
+  )
 else
-  magickpp_dep = disabler()
+  libvips_cpp_dep = disabler()
 endif
 
 if build_examples and build_cv_examples

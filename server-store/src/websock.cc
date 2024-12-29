@@ -126,7 +126,7 @@ Server::Server(std::uint16_t port, int level, int keep_log,
         logger->warn("Initialization of webcface::Server::Server should be "
                      "called in the main thread (to initialize ImageMagick).");
     }
-    initMagick();
+    initVips();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);

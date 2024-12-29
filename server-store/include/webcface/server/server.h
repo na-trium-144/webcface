@@ -20,7 +20,7 @@ struct MemberData;
 
 using wsConnPtr = void *;
 
-void initMagick();
+void initVips();
 
 class Server {
     std::atomic<bool> server_stop;

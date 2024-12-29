@@ -49,6 +49,12 @@ struct ImageFrame {
         }
         return data_->data();
     }
+    std::size_t rawSize() const {
+        if (!data_) {
+            throw "ImageFrame data is empty";
+        }
+        return data_->size();
+    }
 };
 struct Image : public MessageBase<MessageKind::image>, public ImageFrame {
     SharedString field;
