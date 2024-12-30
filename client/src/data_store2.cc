@@ -24,11 +24,11 @@ static bool shouldSend(const T &prev, const T &current) {
                   std::is_same_v<T, std::shared_ptr<TextData>>) {
         return *prev != *current;
     } else if constexpr (std::is_same_v<T, PlotData>) {
-        if (prev->size() != current->size()) {
+        if (prev.size() != current.size()) {
             return true;
         }
-        for (std::size_t i = 0; i < prev->size(); i++) {
-            if (*prev->at(i) != *current->at(i)) {
+        for (std::size_t i = 0; i < prev.size(); i++) {
+            if (*prev.at(i) != *current.at(i)) {
                 return true;
             }
         }

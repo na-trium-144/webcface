@@ -364,6 +364,42 @@ struct TemporalComponent {
         this->textSize(s);
         return std::move(*this);
     }
+    /*!
+     * \since ver2.6
+     */
+    TemporalComponent &plot(const Plot &plot) &{
+        static_assert(C2 || C3, "plot can be set only for Canvas2D, 3D components");
+        if constexpr (C2) {
+            component_2d.plot(plot);
+        }
+        if constexpr (C3) {
+            component_3d.plot(plot);
+        }
+        return *this;
+    }
+    TemporalComponent &&plot(const Plot &plot) && {
+        this->plot(plot);
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief Plotの表示サイズを指定
+     * \since ver2.6
+     */
+    TemporalComponent &scale(double scale_x, double scale_y) &{
+        static_assert(C2 || C3, "scale can be set only for Canvas2D, 3D components");
+        if constexpr (C2) {
+            component_2d.scale(scale_x, scale_y);
+        }
+        if constexpr (C3) {
+            component_3d.scale(scale_x, scale_y);
+        }
+        return *this;
+    }
+    TemporalComponent &&scale(double scale_x, double scale_y) &&{
+        this->scale(scale_x, scale_y);
+        return std::move(*this);
+    }
 };
 class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {

@@ -28,6 +28,26 @@ Plot::Plot()
 Plot::Plot(const Field &base)
     : Field(base),
       sb(std::make_shared<internal::DataSetBuffer<PlotSeries>>(base)) {}
+Plot::~Plot() {}
+
+Plot &Plot::operator=(const Plot &rhs) {
+    if (this == &rhs) {
+        return *this;
+    }
+    this->Field::operator=(rhs);
+    this->sb = rhs.sb;
+    return *this;
+}
+Plot &Plot::operator=(Plot &&rhs) noexcept {
+    if (this == &rhs) {
+        return *this;
+    }
+    this->Field::operator=(std::move(static_cast<Field &>(rhs)));
+    this->sb = std::move(rhs.sb);
+    return *this;
+}
+
+
 const Plot &Plot::init() const {
     sb->init();
     return *this;
