@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.5.1',
+  version: '2.5.2',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -18,9 +18,9 @@ py = find_program('python3')
 
 webcface_abi_major = '21' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.10.3'
+webcface_webui_version = '1.11.0'
 
-webcface_description = 'Web-based IPC & Dashboard-like UI'
+webcface_description = 'Web-based Communication Framework'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
 webcface_url = 'https://github.com/na-trium-144/webcface'
 

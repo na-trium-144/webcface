@@ -71,7 +71,6 @@ void MemberData::onClose() {
             }
         }
     }
-    logger->trace("image_convert_thread stopped");
 }
 void MemberData::send() {
     if (connected() && send_len > 0) {

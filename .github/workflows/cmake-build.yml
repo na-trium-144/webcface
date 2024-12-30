@@ -132,7 +132,7 @@ jobs:
           maintainer: "na-trium-144 <na-trium-144@users.noreply.github.com>"
           version: ${{ github.ref }} # refs/tags/v*.*.*
           arch: ${{matrix.arch}}
-          desc: 'Web-based IPC & Dashboard-like UI'
+          desc: 'Web-based Communication Framework & Dashboard-like UI'
       - uses: actions/upload-artifact@v3
         with:
           name: linux-deb-${{ matrix.arch }}
@@ -142,12 +142,13 @@ jobs:
     strategy:
       matrix:
         arch: [x86_64, arm64]
-    runs-on: macos-12
-    name: Build on macos-12 ${{matrix.arch}}
+    runs-on: macos-13
+    name: Build on macos-13 ${{matrix.arch}}
     steps:
     - uses: actions/checkout@v4
 
     - uses: ilammy/setup-nasm@v1
+    - uses: seanmiddleditch/gha-setup-ninja@v5
     - name: Install Meson
       run: pip install meson
 
@@ -174,7 +175,7 @@ jobs:
         path: ${{github.workspace}}/*.zip
 
   lipo-macos:
-    runs-on: macos-12
+    runs-on: macos-13
     name: Create universal binary
     needs: [build-macos]
     steps:

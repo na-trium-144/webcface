@@ -315,7 +315,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     これを実行し、WebUI右上のメニューから「tutorial」を開き「hoge」をクリックするとグラフが表示され、リアルタイムにtestの値(ここでは1秒ごとに1ずつ増える値)を確認できます。
 
-    また、「Text Variables」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
+    また、「fuga」をクリックすると文字列で送信したデータもリアルタイムに確認することができます。
 
     ![tutorial_value](https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_value.png)
 
