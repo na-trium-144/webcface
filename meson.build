@@ -9,6 +9,58 @@ project('webcface', 'c', 'cpp',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'wrap_mode=forcefallback',
+    'default_library=shared',
+
+    # options for subproject in subproject
+    'libjpeg-turbo:default_library=static',
+    'libjpeg-turbo:jpeg-turbo=disabled',
+    'libjpeg-turbo:tests=disabled',
+    'libjpeg-turbo:warning_level=0',
+    'libjpeg-turbo:werror=false',
+    'zlib:default_library=static',
+    'zlib:tests=disabled',
+    'zlib:warning_level=0',
+    'zlib:werror=false',
+    'spng:default_library=static',
+    'spng:warning_level=0',
+    'spng:werror=false',
+    'spng:build_examples=false',
+    'libwebp:default_library=static',
+    'libwebp:cwebp=disabled',
+    'libwebp:dwebp=disabled',
+    'libwebp:webpinfo=disabled',
+    'libwebp:webpmux=disabled',
+    'libwebp:warning_level=0',
+    'libwebp:werror=false',
+    'glib:default_library=static',
+    'glib:warning_level=0',
+    'glib:werror=false',
+    'glib:xattr=false',
+    'glib:selinux=disabled',
+    'glib:libmount=disabled',
+    'glib:man-pages=disabled',
+    'glib:dtrace=disabled',
+    'glib:systemtap=disabled',
+    'glib:sysprof=disabled',
+    'glib:tests=false',
+    'glib:nls=disabled',
+    'glib:glib_debug=disabled',
+    'glib:glib_assert=false',
+    'glib:glib_checks=false',
+    'glib:libelf=disabled',
+    'glib:introspection=disabled',
+    'expat:default_library=static',
+    'expat:warning_level=0',
+    'expat:werror=false',
+    'pcre2:default_library=static',
+    'pcre2:warning_level=0',
+    'pcre2:werror=false',
+    'proxy-libintl:default_library=static',
+    'proxy-libintl:warning_level=0',
+    'proxy-libintl:werror=false',
+    'libffi:default_library=static',
+    'libffi:warning_level=0',
+    'libffi:werror=false',
   ],
 )
 fs = import('fs')
@@ -497,48 +549,13 @@ if build_server
     crow_dep = subproject('crow').get_variable('crow_dep')
   endif
 
-  dependency('libjpeg',
-    default_options: [
-      'default_library=static',
-      'jpeg-turbo=disabled',
-      'tests=disabled',
-      'warning_level=0',
-      'werror=false',
-    ]
-  )
-  dependency('zlib',
-    default_options: [
-      'default_library=static',
-      'tests=disabled',
-      'warning_level=0',
-      'werror=false',
-    ]
-  )
-  dependency('libpng',
-    default_options: [
-      'default_library=static',
-      'warning_level=0',
-      'werror=false',
-    ]
-  )
-  dependency('libwebp',
-    default_options: [
-      'default_library=static',
-      'cwebp=disabled',
-      'dwebp=disabled',
-      'webpinfo=disabled',
-      'webpmux=disabled',
-      'warning_level=0',
-      'werror=false',
-    ]
-  )
   libvips_cpp_dep = dependency('vips-cpp',
     default_options: [
       'default_library=static',
       'warning_level=0',
       'werror=false',
       'jpeg=enabled',
-      'png=enabled',
+      'spng=enabled',
       'webp=enabled',
       'zlib=enabled',
       # disabled options:
@@ -571,11 +588,11 @@ if build_server
         'orc=disabled',
         'pangocairo=disabled',
         'pdfium=disabled',
+        'png=disabled',
         'poppler=disabled',
         'poppler-module=disabled',
         'quantizr=disabled',
         'rsvg=disabled',
-        'spng=disabled',
         'tiff=disabled',
         'nsgif=false',
         'ppm=false',

@@ -1,6 +1,6 @@
 [wrap-git]
-url = https://github.com/libvips/libvips.git
-revision = v8.16.0
+url = https://github.com/na-trium-144/libvips.git
+revision = skip-dep-check
 depth = 1
 
 [provide]
