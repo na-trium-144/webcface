@@ -89,7 +89,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                                  vips::VImage::option()->set(
                                                      "source_space",
                                                      VIPS_INTERPRETATION_B_W))
-                                    .addalpha();
+                                    .bandjoin(255);
                             break;
                         case message::ImageColorMode::bgr:
                             m_original = vips::VImage::new_from_memory(
@@ -98,13 +98,13 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                             m_rgba = m_original[2]
                                          .bandjoin(m_original[1])
                                          .bandjoin(m_original[0])
-                                         .addalpha();
+                                         .bandjoin(255);
                             break;
                         case message::ImageColorMode::rgb:
                             m_original = vips::VImage::new_from_memory(
                                 img.rawPtr(), img.rawSize(), img.width_,
                                 img.height_, 3, VIPS_FORMAT_UCHAR);
-                            m_rgba = m_original.addalpha();
+                            m_rgba = m_original.bandjoin(255);
                             break;
                         case message::ImageColorMode::bgra:
                             m_original = vips::VImage::new_from_memory(
