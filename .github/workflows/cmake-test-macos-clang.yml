@@ -61,6 +61,7 @@ jobs:
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep crow"
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep asio"
         bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep utf8"
+        bash -c "! nm -g --defined-only build/libwebcface.dylib | grep -v webcface | grep -v wcf | grep vips"
 
     - name: install
       run: meson install -C build

@@ -32,7 +32,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y ninja-build
-        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev libopencv-dev; fi
+        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libvips-dev libopencv-dev; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-22.04 ]]; then sudo apt-get install -y libcli11-dev; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-24.04 ]]; then sudo apt-get install -y libcli11-dev libmsgpack-cxx-dev; fi
     - name: Install meson
@@ -50,6 +50,7 @@ jobs:
         --buildtype=debug
         $([[ ${{matrix.dep}} = apt ]] && echo "-Dwrap_mode=default")
         -Dtest_wait=200
+        "-Dforce_fallback_for=['libcurl']"
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
