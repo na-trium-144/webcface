@@ -2,10 +2,12 @@
 #include "webcface/robot_link.h"
 #include "webcface/view.h"
 #include "webcface/components.h"
+#include "webcface/plot.h"
 #include <sstream>
 #include <memory>
 
 WEBCFACE_NS_BEGIN
+
 namespace internal {
 /*!
  * \brief View,Canvasなどで送信用にaddされたデータを管理する
@@ -99,6 +101,8 @@ template <>
 void DataSetBuffer<TemporalCanvas2DComponent>::onSync();
 template <>
 void DataSetBuffer<TemporalCanvas3DComponent>::onSync();
+template <>
+void DataSetBuffer<PlotSeries>::onSync();
 
 /*!
  * \brief Viewの送信用データを保持する

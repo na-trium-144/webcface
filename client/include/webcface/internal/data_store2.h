@@ -185,6 +185,7 @@ struct ViewData;
 struct Canvas2DData;
 struct Canvas3DData;
 struct ImageReq;
+struct PlotSeriesData;
 } // namespace message
 namespace internal {
 using ValueData = std::vector<double>;
@@ -192,6 +193,7 @@ using TextData = ValAdaptor;
 using FuncData = FuncInfo;
 using RobotModelData = std::vector<std::shared_ptr<internal::RobotLinkData>>;
 using ImageData = ImageFrame;
+using PlotData = std::vector<std::shared_ptr<message::PlotSeriesData>>;
 
 struct LogData {
     std::deque<LogLineData> data;
@@ -225,6 +227,7 @@ extern template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>,
                                      int>;
 extern template class SyncDataStore2<ImageData, message::ImageReq>;
 extern template class SyncDataStore2<std::shared_ptr<LogData>, int>;
+extern template class SyncDataStore2<PlotData, int>;
 #endif
 
 } // namespace internal
