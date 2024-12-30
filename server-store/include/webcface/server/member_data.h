@@ -20,6 +20,7 @@
 #include "webcface/common/internal/message/robot_model.h"
 #include "webcface/common/internal/message/sync.h"
 #include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/plot.h"
 #include "webcface/server/server.h"
 
 WEBCFACE_NS_BEGIN
@@ -64,6 +65,7 @@ struct MemberData {
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
     StrMap1<message::ViewData> view;
+    StrMap1<std::vector<std::shared_ptr<message::PlotSeriesData>>> plot;
     StrMap1<message::Canvas3DData> canvas3d;
     StrMap1<message::Canvas2DData> canvas2d;
 
@@ -98,7 +100,7 @@ struct MemberData {
     //! リクエストしているmember,nameのペア
     StrMap2<unsigned int> value_req, text_req, view_req, image_req,
         view_old_req, robot_model_req, canvas3d_req, canvas3d_old_req,
-        canvas2d_req, canvas2d_old_req, log_req;
+        canvas2d_req, canvas2d_old_req, plot_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
