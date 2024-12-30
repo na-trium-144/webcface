@@ -564,6 +564,7 @@ if build_server
         'tools=false',
         'test=false',
         'fuzz=false',
+        'deprecated=false',
         'examples=false',
         'modules=disabled',
         'introspection=disabled',
