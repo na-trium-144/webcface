@@ -8,3 +8,4 @@ wrapdb_version = 0.7.4-1
 
 [provide]
 spng = spng_dep
+libspng = spng_dep
