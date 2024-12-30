@@ -11,12 +11,14 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        gcc-ver: [7, 9, 11, 13]
+        gcc-ver: [7, 9, 10, 11, 13]
         include:
         - os: ubuntu-20.04
           gcc_ver: 7
         - os: ubuntu-20.04
           gcc_ver: 9
+        - os: ubuntu-20.04
+          gcc_ver: 10
         - os: ubuntu-22.04
           gcc_ver: 11
         - os: ubuntu-24.04
@@ -58,7 +60,8 @@ jobs:
       run: meson test -C build --print-errorlog
 
     - name: Check Exported Symbol
-      if: matrix.dep == 'source'
+      # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=47877
+      if: matrix.dep == 'source' && matrix.gcc_ver >= 10
       run: |
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"

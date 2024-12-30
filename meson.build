@@ -352,43 +352,15 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'std_variant=false', # msvcでなんかエラーになる
   ],
 )
-spdlog_link_depends = []
-if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('spdlog')
-  spdlog_dep = dependency('spdlog', required: false)
-else
-  spdlog_dep = dependency('', required: false)
-endif
-if not spdlog_dep.found()
-  spdlog_proj = subproject('spdlog',
-    default_options: [
-      'tests=disabled',
-      'compile_library=true',
-      'default_library=static',
-      'external_fmt=disabled',
-      'std_format=disabled',
-    ],
-  )
-  spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
-  spdlog_lib = spdlog_proj.get_variable('spdlog_lib', dependency('', required: false))  # disabler() は使えない
-  # webcfaceがsharedで、spdlogがstaticの場合にのみオプションを指定
-  if get_option('default_library') == 'shared' and spdlog_lib.found() and spdlog_lib.full_path().endswith('.a')
-    if webcface_system_exclude_libs
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep],
-        link_args: ['-Wl,--exclude-libs,' + fs.name(spdlog_lib.full_path())],
-      )
-    elif webcface_system_hidden_l
-      spdlog_link_depends += spdlog_lib
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep.partial_dependency(compile_args: true, includes: true)],
-        link_args: [
-          '-L' + fs.parent(spdlog_lib.full_path()),
-          '-Wl,-hidden-l' + spdlog_lib.name(),
-        ],
-      )
-    endif
-  endif
-endif
+spdlog_dep = dependency('spdlog',
+  default_options: [
+    'tests=disabled',
+    'compile_library=true',
+    'default_library=static',
+    'external_fmt=disabled',
+    'std_format=disabled',
+  ],
+)
 utf8cpp_dep = dependency('utf8cpp')
 
 if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
@@ -770,9 +742,6 @@ webcface_lib = library(webcface_lib_name,
     utf8cpp_dep,
     spdlog_dep,
     curl_dep,
-  ],
-  link_depends: [
-    spdlog_link_depends,
   ],
   version: meson.project_version(),
   soversion: webcface_abi_major,

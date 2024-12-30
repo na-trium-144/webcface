@@ -18,6 +18,7 @@ jobs:
       matrix:
         arch: [amd64, arm64, armhf]
         distro: ["20.04"]
+        gcc_ver: [10]
         include:
           - arch: amd64
             base: ubuntu
@@ -53,6 +54,8 @@ jobs:
           # armv7のubuntu20.04でなぜかSSL周りがエラーになり、これでなぜか直る
           env: |
             SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+            CC: gcc-${{matrix.gcc_ver}}
+            CXX: g++-${{matrix.gcc_ver}}
 
           # The shell to run commands with in the container
           shell: /bin/sh
@@ -69,7 +72,7 @@ jobs:
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
             echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
             apt-get update -q -y
-            apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config
+            apt-get install -q -y build-essential gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}} cmake file git python3-pip ninja-build zip pkg-config
             pip3 install meson
 
           # Produce a binary artifact and place it in the mounted volume
