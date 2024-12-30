@@ -559,6 +559,11 @@ if build_server
       'webp=enabled',
       'zlib=enabled',
       # disabled options:
+        'man=false',
+        'po=false',
+        'tools=false',
+        'test=false',
+        'fuzz=false',
         'examples=false',
         'modules=disabled',
         'introspection=disabled',
