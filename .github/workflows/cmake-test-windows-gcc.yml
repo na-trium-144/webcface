@@ -44,7 +44,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = pacman ]] && echo -Dwrap_mode=default)
+        $([[ ${{matrix.dep}} != pacman ]] && echo -Dwrap_mode=forcefallback)
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -m '${{github.workspace}}/build/install')

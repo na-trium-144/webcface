@@ -3,12 +3,10 @@ project('webcface', 'c', 'cpp',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
-    'buildtype=release',
     'warning_level=3', # everythingは現在たぶん通らない
     'werror=true',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
-    'wrap_mode=forcefallback',
     'default_library=shared',
 
     # options for subproject in subproject

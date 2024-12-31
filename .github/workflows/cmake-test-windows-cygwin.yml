@@ -46,6 +46,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
+        -Dwrap_mode=forcefallback
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -u '${{github.workspace}}/build/install')
