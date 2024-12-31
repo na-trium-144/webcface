@@ -24,8 +24,8 @@ webcface ver1 をソースからビルドしたい場合は、[v1](https://githu
 
 <!-- subprojects/ 以下のファイル名順 -->
 * webcfaceは外部ライブラリとして
-[asio](https://github.com/chriskohlhoff/asio),
-[cli11](https://github.com/CLIUtils/CLI11.git),
+[Asio](https://github.com/chriskohlhoff/asio),
+[CLI11](https://github.com/CLIUtils/CLI11.git),
 [Crow](https://github.com/CrowCpp/Crow),
 [curl](https://github.com/curl/curl),
 [libvips](https://github.com/libvips/libvips),

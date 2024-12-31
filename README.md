@@ -450,15 +450,14 @@ Third-party libraries used by WebCFace itself and tools are licensed as follows:
 > 
 > WebCFace本体とtoolsが使用しているサードパーティーのライブラリのライセンスはそれぞれ以下を参照してください。
 
-* msgpack-c (Boost Software License) : https://github.com/msgpack/msgpack-c
-* eventpp (Apache 2.0) : https://github.com/wqking/eventpp
-* spdlog (MIT) : https://github.com/gabime/spdlog
-* curl : https://curl.se/docs/copyright.html
-* Asio (Boost Software License) : http://think-async.com/Asio/
-* Crow (BSD 3-Clause) : https://github.com/CrowCpp/Crow
-* CLI11 (BSD 3-Clause) : https://github.com/CLIUtils/CLI11
-* UTF8-CPP (BSD 1.0) : https://github.com/nemtrif/utfcpp
-* ImageMagick: https://imagemagick.org/script/license.php
-* tiny-process-library (MIT) : https://gitlab.com/eidheim/tiny-process-library
-* toml++ (MIT) : https://github.com/marzer/tomlplusplus
-* FTXUI (MIT) : https://github.com/ArthurSonzogni/FTXUI
+* Asio (Boost Software License): http://think-async.com/Asio/
+* CLI11 (BSD 3-Clause): https://github.com/CLIUtils/CLI11
+* Crow (BSD 3-Clause): https://github.com/CrowCpp/Crow
+* curl: https://curl.se/docs/copyright.html
+* libvips (LGPL-2.1): https://github.com/libvips/libvips
+* msgpack-cxx (Boost Software License): https://github.com/msgpack/msgpack-c
+* spdlog (MIT): https://github.com/gabime/spdlog
+* UTF8-CPP (BSD 1.0): https://github.com/nemtrif/utfcpp
+* FTXUI (MIT): https://github.com/ArthurSonzogni/FTXUI
+* tiny-process-library (MIT): https://gitlab.com/eidheim/tiny-process-library
+* toml++ (MIT): https://github.com/marzer/tomlplusplus
