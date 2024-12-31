@@ -1,10 +1,9 @@
 #include <webcface/client.h>
 #include <webcface/image.h>
-#include <thread>
 #include <iostream>
-#include <Magick++.h>
 #include <fstream>
 #include <cassert>
+#include <vips/vips8>
 
 webcface::Client wcli;
 
@@ -15,7 +14,7 @@ void img_update4(const webcface::Image &img);
 void img_update5(const webcface::Image &img);
 
 int main() {
-    Magick::InitializeMagick(nullptr);
+    VIPS_INIT("");
     wcli.waitConnection();
 
     // image_sendを5回起動して終了すると5通りのリクエストをして表示するサンプル
@@ -32,10 +31,10 @@ void img_update1(const webcface::Image &img) {
         std::cout << "1. Normal" << std::endl;
         assert(img_frame.channels() == 3);
         assert(img_frame.color_mode() == webcface::ImageColorMode::rgb);
-        Magick::Image m(img_frame.rows(), img_frame.cols(), "RGB",
-                        Magick::CharPixel, img_frame.data().data());
-        // m.display();
-        m.write("webcface-example-image-recv-1.png");
+        vips::VImage::new_from_memory(img_frame.data().data(),
+                                      img_frame.data().size(), img_frame.cols(),
+                                      img_frame.rows(), 3, VIPS_FORMAT_UCHAR)
+            .write_to_file("webcface-example-image-recv-1.jpg");
 
         img.request(webcface::sizeWH(300, 300));
         img.onChange(img_update2);
@@ -48,10 +47,10 @@ void img_update2(const webcface::Image &img) {
         std::cout << "2. Resized to 300x300" << std::endl;
         assert(img_frame.channels() == 3);
         assert(img_frame.color_mode() == webcface::ImageColorMode::rgb);
-        Magick::Image m(img_frame.rows(), img_frame.cols(), "RGB",
-                        Magick::CharPixel, img_frame.data().data());
-        // m.display();
-        m.write("webcface-example-image-recv-2.png");
+        vips::VImage::new_from_memory(img_frame.data().data(),
+                                      img_frame.data().size(), img_frame.cols(),
+                                      img_frame.rows(), 3, VIPS_FORMAT_UCHAR)
+            .write_to_file("webcface-example-image-recv-2.jpg");
 
         img.request(std::nullopt, webcface::ImageColorMode::gray);
         img.onChange(img_update3);
@@ -64,12 +63,11 @@ void img_update3(const webcface::Image &img) {
         std::cout << "3. Grayscale" << std::endl;
         assert(img_frame.channels() == 1);
         assert(img_frame.color_mode() == webcface::ImageColorMode::gray);
-        Magick::Image m(img_frame.rows(), img_frame.cols(), "K",
-                        Magick::CharPixel, img_frame.data().data());
-        m.type(Magick::TrueColorType);
-        m.negate(true);
-        // m.display();
-        m.write("webcface-example-image-recv-3.jpg");
+        vips::VImage image = vips::VImage::new_from_memory(img_frame.data().data(),
+                                      img_frame.data().size(), img_frame.cols(),
+                                      img_frame.rows(), 1, VIPS_FORMAT_UCHAR);
+        image = image.bandjoin(image).bandjoin(image);
+        image.write_to_file("webcface-example-image-recv-3.jpg");
 
         img.request(std::nullopt, webcface::ImageCompressMode::jpeg, 20);
         img.onChange(img_update4);

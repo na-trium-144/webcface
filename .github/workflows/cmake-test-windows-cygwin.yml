@@ -56,7 +56,7 @@ jobs:
 
     - name: Test
       shell: C:\cygwin\bin\bash.exe '{0}'
-      run: meson test -C build --print-errorlog
+      run: meson test -C build --print-errorlog --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'

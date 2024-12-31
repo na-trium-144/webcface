@@ -2,28 +2,31 @@
 #include <webcface/image.h>
 #include <string>
 #include <iostream>
-#include <Magick++.h>
+#include <vips/vips8>
 
 int main() {
-    Magick::InitializeMagick(nullptr);
-    webcface::Client wcli("example_image_send");
+    try {
+        VIPS_INIT("");
+        webcface::Client wcli("example_image_send");
 
-    Magick::Image image("100x100", {255, 255, 255});
-    for (int x = -10; x < 10; x++) {
-        for (int y = -10; y < 10; y++) {
-            if (x * x + y * y < 100) {
-                image.pixelColor(50 + x, 50 + y, {255, 0, 0});
-            }
-        }
+        vips::VImage image =
+            vips::VImage::new_matrix(100, 100).scale().new_from_image(
+                {255, 255, 255});
+        image.draw_circle({255, 0, 0}, 50, 50, 10);
+
+        std::size_t data_size;
+        void *data = image.write_to_memory(&data_size);
+        std::cout << data_size << std::endl;
+        webcface::ImageFrame img_frame(webcface::sizeWH(100, 100), data,
+                                       webcface::ImageColorMode::rgb);
+        g_free(data);
+
+        wcli.image("sample").set(img_frame);
+        wcli.sync();
+        std::cout << "Press Enter to Exit" << std::endl;
+        std::string wait;
+        std::getline(std::cin, wait);
+    } catch (const std::exception &e) {
+        std::cerr << "Unhandled exception:" << e.what() << std::endl;
     }
-
-    webcface::ImageFrame img_frame(webcface::sizeWH(100, 100),
-                                   webcface::ImageColorMode::rgb);
-    image.write(0, 0, 100, 100, "RGB", Magick::CharPixel,
-                img_frame.data().data());
-    wcli.image("sample").set(img_frame);
-    wcli.sync();
-    std::cout << "Press Enter to Exit" << std::endl;
-    std::string wait;
-    std::getline(std::cin, wait);
 }

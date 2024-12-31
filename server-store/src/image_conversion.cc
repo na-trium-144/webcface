@@ -6,38 +6,24 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include <Magick++.h>
+#include <vips/vips8>
 
 WEBCFACE_NS_BEGIN
 namespace server {
 
 // メインのスレッドで呼ばれるべき (server側でチェック)
-void initMagick() {
+void initVips() {
     static std::mutex m;
     std::lock_guard lock(m);
     static bool initialized = false;
     if (!initialized) {
-        Magick::InitializeMagick(nullptr);
+        if (VIPS_INIT("")) {
+            throw std::runtime_error("Failed to initialize libvips");
+        }
         initialized = true;
     }
 }
 
-static std::string magickColorMap(message::ImageColorMode mode) {
-    switch (mode) {
-    case message::ImageColorMode::gray:
-        return "K";
-    case message::ImageColorMode::bgr:
-        return "BGR";
-    case message::ImageColorMode::bgra:
-        return "BGRA";
-    case message::ImageColorMode::rgb:
-        return "RGB";
-    case message::ImageColorMode::rgba:
-        return "RGBA";
-    default:
-        return "";
-    }
-}
 /*!
  * \brief cdの画像を変換しthisに送信
  *
@@ -91,28 +77,57 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                     auto sync = webcface::message::Sync{cd->member_id,
                                                         cd->last_sync_time};
                     try {
-                        std::string color_map_before =
-                            magickColorMap(img.color_mode_);
-                        if (color_map_before.empty()) {
-                            this->logger->error(
-                                "Unknown image color mode in original image: "
-                                "{}",
-                                static_cast<int>(img.color_mode_));
-                            return;
+                        vips::VImage m_original, m_rgba, m_output;
+                        switch (img.color_mode_) {
+                        case message::ImageColorMode::gray:
+                            m_original = vips::VImage::new_from_memory(
+                                img.rawPtr(), img.rawSize(), img.width_,
+                                img.height_, 1, VIPS_FORMAT_UCHAR);
+                            m_rgba =
+                                m_original
+                                    .colourspace(VIPS_INTERPRETATION_sRGB,
+                                                 vips::VImage::option()->set(
+                                                     "source_space",
+                                                     VIPS_INTERPRETATION_B_W))
+                                    .bandjoin(255);
+                            break;
+                        case message::ImageColorMode::bgr:
+                            m_original = vips::VImage::new_from_memory(
+                                img.rawPtr(), img.rawSize(), img.width_,
+                                img.height_, 3, VIPS_FORMAT_UCHAR);
+                            m_rgba = m_original[2]
+                                         .bandjoin(m_original[1])
+                                         .bandjoin(m_original[0])
+                                         .bandjoin(255);
+                            break;
+                        case message::ImageColorMode::rgb:
+                            m_original = vips::VImage::new_from_memory(
+                                img.rawPtr(), img.rawSize(), img.width_,
+                                img.height_, 3, VIPS_FORMAT_UCHAR);
+                            m_rgba = m_original.bandjoin(255);
+                            break;
+                        case message::ImageColorMode::bgra:
+                            m_original = vips::VImage::new_from_memory(
+                                img.rawPtr(), img.rawSize(), img.width_,
+                                img.height_, 4, VIPS_FORMAT_UCHAR);
+                            m_rgba = m_original[2]
+                                         .bandjoin(m_original[1])
+                                         .bandjoin(m_original[0])
+                                         .bandjoin(m_original[3]);
+                            break;
+                        case message::ImageColorMode::rgba:
+                            m_original = vips::VImage::new_from_memory(
+                                img.rawPtr(), img.rawSize(), img.width_,
+                                img.height_, 4, VIPS_FORMAT_UCHAR);
+                            m_rgba = m_original;
+                            break;
+                        default:
+                            throw std::invalid_argument(
+                                "Unknown image color mode in original image: " +
+                                std::to_string(
+                                    static_cast<int>(img.color_mode_)));
                         }
-                        Magick::Image m(img.width_, img.height_,
-                                        color_map_before, Magick::CharPixel,
-                                        img.rawPtr());
-#ifdef WEBCFACE_MAGICK_VER7
-                        // ImageMagick6と7で名前が異なる
-                        m.type(Magick::TrueColorAlphaType);
-#else
-                        m.type(Magick::TrueColorMatteType);
-#endif
-                        if (img.color_mode_ == message::ImageColorMode::gray) {
-                            // K -> RGB
-                            m.negate(true);
-                        }
+                        assert(m_rgba.bands() == 4);
 
                         int rows = static_cast<int>(img.height_);
                         int cols = static_cast<int>(img.width_);
@@ -142,8 +157,11 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     rows, cols);
                                 return;
                             }
-                            m.resize(Magick::Geometry(cols, rows));
+                            m_rgba = m_rgba.thumbnail_image(
+                                cols,
+                                vips::VImage::option()->set("width", rows));
                         }
+                        assert(m_rgba.bands() == 4);
 
                         auto color_mode =
                             info.color_mode.value_or(img.color_mode_);
@@ -151,33 +169,60 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                             std::make_shared<std::vector<unsigned char>>();
                         switch (info.cmp_mode) {
                         case message::ImageCompressMode::raw: {
-                            std::size_t channels = 1;
-                            std::string color_map = magickColorMap(color_mode);
                             switch (color_mode) {
                             case message::ImageColorMode::gray:
-                                m.type(Magick::GrayscaleType);
-                                color_map = "R";
-                                channels = 1;
+                                m_output = m_rgba.colourspace(
+                                    VIPS_INTERPRETATION_B_W,
+                                    vips::VImage::option()->set(
+                                        "source_space",
+                                        VIPS_INTERPRETATION_sRGB));
+                                m_output = m_output[0];
+                                assert(m_output.bands() == 1);
                                 break;
                             case message::ImageColorMode::bgr:
+                                m_output =
+                                    m_rgba[2].bandjoin(m_rgba[1]).bandjoin(
+                                        m_rgba[0]);
+                                assert(m_output.bands() == 3);
+                                break;
                             case message::ImageColorMode::rgb:
-                                channels = 3;
+                                m_output =
+                                    m_rgba[0].bandjoin(m_rgba[1]).bandjoin(
+                                        m_rgba[2]);
+                                assert(m_output.bands() == 3);
                                 break;
                             case message::ImageColorMode::bgra:
+                                m_output = m_rgba[2]
+                                               .bandjoin(m_rgba[1])
+                                               .bandjoin(m_rgba[0])
+                                               .bandjoin(m_rgba[3]);
+                                assert(m_output.bands() == 4);
+                                break;
                             case message::ImageColorMode::rgba:
-                                channels = 4;
+                                m_output = m_rgba[0]
+                                               .bandjoin(m_rgba[1])
+                                               .bandjoin(m_rgba[2])
+                                               .bandjoin(m_rgba[3]);
+                                assert(m_output.bands() == 4);
                                 break;
                             default:
-                                this->logger->error(
-                                    "Unknown image color mode requested: {}",
-                                    static_cast<int>(color_mode));
+                                throw std::invalid_argument(
+                                    "Unknown image color mode requested: " +
+                                    std::to_string(
+                                        static_cast<int>(color_mode)));
                                 return;
                             }
-                            encoded->resize(
-                                static_cast<std::size_t>(cols * rows) *
-                                channels);
-                            m.write(0, 0, cols, rows, color_map,
-                                    Magick::CharPixel, encoded->data());
+                            std::size_t data_size;
+                            unsigned char *data = static_cast<unsigned char *>(
+                                m_output.write_to_memory(&data_size));
+                            assert(m_output.width() == cols);
+                            assert(m_output.height() == rows);
+                            assert(data_size ==
+                                   static_cast<std::size_t>(m_output.width() *
+                                                            m_output.height() *
+                                                            m_output.bands()));
+                            encoded->assign(data, data + data_size);
+                            g_free(data);
                             break;
                         }
                         case message::ImageCompressMode::jpeg: {
@@ -188,14 +233,15 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     info.quality);
                                 return;
                             }
-                            m.magick("JPEG");
-                            m.quality(info.quality);
-                            Magick::Blob b;
-                            m.write(&b);
-                            encoded->assign(
-                                static_cast<const unsigned char *>(b.data()),
-                                static_cast<const unsigned char *>(b.data()) +
-                                    b.length());
+                            std::size_t data_size;
+                            void *data;
+                            m_rgba.write_to_buffer(
+                                ".jpg", &data, &data_size,
+                                vips::VImage::option()->set("Q", info.quality));
+                            encoded->assign(static_cast<unsigned char *>(data),
+                                            static_cast<unsigned char *>(data) +
+                                                data_size);
+                            g_free(data);
                             break;
                         }
                         case message::ImageCompressMode::webp: {
@@ -206,14 +252,15 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     info.quality);
                                 return;
                             }
-                            m.magick("WEBP");
-                            m.quality(info.quality);
-                            Magick::Blob b;
-                            m.write(&b);
-                            encoded->assign(
-                                static_cast<const unsigned char *>(b.data()),
-                                static_cast<const unsigned char *>(b.data()) +
-                                    b.length());
+                            std::size_t data_size;
+                            void *data;
+                            m_rgba.write_to_buffer(
+                                ".webp", &data, &data_size,
+                                vips::VImage::option()->set("Q", info.quality));
+                            encoded->assign(static_cast<unsigned char *>(data),
+                                            static_cast<unsigned char *>(data) +
+                                                data_size);
+                            g_free(data);
                             break;
                         }
                         case message::ImageCompressMode::png: {
@@ -224,14 +271,16 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                                     info.quality);
                                 return;
                             }
-                            m.magick("PNG");
-                            m.quality(info.quality);
-                            Magick::Blob b;
-                            m.write(&b);
-                            encoded->assign(
-                                static_cast<const unsigned char *>(b.data()),
-                                static_cast<const unsigned char *>(b.data()) +
-                                    b.length());
+                            std::size_t data_size;
+                            void *data;
+                            m_rgba.write_to_buffer(
+                                ".png", &data, &data_size,
+                                vips::VImage::option()->set("compression",
+                                                            info.quality));
+                            encoded->assign(static_cast<unsigned char *>(data),
+                                            static_cast<unsigned char *>(data) +
+                                                data_size);
+                            g_free(data);
                             break;
                         }
                         default:

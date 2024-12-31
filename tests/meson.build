@@ -41,7 +41,7 @@ if build_server
   ]
   test_dependencies += [
     webcface_server_store_dep,
-    magickpp_dep,
+    libvips_cpp_dep,
     crow_dep,
     curl_dep,
   ]

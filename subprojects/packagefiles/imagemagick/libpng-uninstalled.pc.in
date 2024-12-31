@@ -1,9 +1,0 @@
-prefix=@prefix@
-
-Name: libpng
-Description: Loads and saves PNG files
-Version: @PNGLIB_VERSION@
-Requires.private: zlib
-Libs: -L@builddir@ -lpng@PNGLIB_MAJOR@@PNGLIB_MINOR@
-Libs.private: @LIBS@
-Cflags: -I@srcdir@ -I@builddir@
