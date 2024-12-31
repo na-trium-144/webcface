@@ -4,6 +4,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include <mpack.h>
 
 WEBCFACE_NS_BEGIN
 namespace message {

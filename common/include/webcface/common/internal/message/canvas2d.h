@@ -6,20 +6,16 @@
 #include <vector>
 #include <array>
 
-#ifndef MSGPACK_DEFINE_MAP
-#define MSGPACK_DEFINE_MAP(...)
-#endif
-
 WEBCFACE_NS_BEGIN
 namespace message {
 
 struct Canvas2DComponentData {
-    int type = 0;
+    std::int8_t type = 0;
     std::array<double, 2> origin_pos;
     double origin_rot;
-    int color = 0, fill = 0;
+    std::int8_t color = 0, fill = 0;
     double stroke_width;
-    std::optional<int> geometry_type;
+    std::optional<std::int8_t> geometry_type;
     std::vector<double> properties;
     std::optional<SharedString> on_click_member, on_click_field;
     SharedString text;
@@ -36,13 +32,9 @@ struct Canvas2DComponentData {
     bool operator!=(const Canvas2DComponentData &other) const {
         return !(*this == other);
     }
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("t", type), MSGPACK_NVP("op", origin_pos),
-                       MSGPACK_NVP("or", origin_rot), MSGPACK_NVP("c", color),
-                       MSGPACK_NVP("f", fill), MSGPACK_NVP("s", stroke_width),
-                       MSGPACK_NVP("gt", geometry_type),
-                       MSGPACK_NVP("gp", properties),
-                       MSGPACK_NVP("L", on_click_member),
-                       MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
+
+    void write(mpack_writer_t *writer) const;
+    static Canvas2DComponentData parse(const mpack_node_t &writer);
 };
 struct Canvas2DData {
     double width = 0, height = 0;
@@ -65,9 +57,9 @@ struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
         std::optional<std::vector<SharedString>> data_ids)
         : field(field), width(width), height(height),
           data_diff(std::move(data_diff)), data_ids(std::move(data_ids)) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
-                       MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
-                       MSGPACK_NVP("l", data_ids))
+
+    void write(mpack_writer_t *writer) const;
+    static Canvas2D parse(const mpack_node_t &writer);
 };
 struct Canvas2DOld : public MessageBase<MessageKind::canvas2d_old> {
     SharedString field;
@@ -93,9 +85,9 @@ struct Canvas2DOld : public MessageBase<MessageKind::canvas2d_old> {
         std::size_t length)
         : field(field), width(width), height(height), data_diff(data_diff),
           length(length) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
-                       MSGPACK_NVP("h", height), MSGPACK_NVP("d", data_diff),
-                       MSGPACK_NVP("l", length))
+
+    void write(mpack_writer_t *writer) const;
+    static Canvas2DOld parse(const mpack_node_t &writer);
 };
 template <>
 struct Res<Canvas2DOld>
@@ -113,9 +105,9 @@ struct Res<Canvas2DOld>
         std::size_t length)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), length(length) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("w", width), MSGPACK_NVP("h", height),
-                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", length))
+
+    void write(mpack_writer_t *writer) const;
+    static Res<Canvas2DOld> parse(const mpack_node_t &writer);
 };
 template <>
 struct Res<Canvas2D>
@@ -133,9 +125,9 @@ struct Res<Canvas2D>
         const std::optional<std::vector<SharedString>> &data_ids)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), data_ids(data_ids) {}
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("f", sub_field),
-                       MSGPACK_NVP("w", width), MSGPACK_NVP("h", height),
-                       MSGPACK_NVP("d", data_diff), MSGPACK_NVP("l", data_ids))
+
+    void write(mpack_writer_t *writer) const;
+    static Res<Canvas2D> parse(const mpack_node_t &writer);
 };
 
 } // namespace message

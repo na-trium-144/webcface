@@ -183,14 +183,12 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
       '-Wno-error=dangling-reference',
       # inside opencv
       '-Wno-error=deprecated-enum-enum-conversion',
-      # inside msgpack
-      '-Wno-error=maybe-uninitialized',
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
     '-Wno-inline',
-    '--system-header-prefix=msgpack.hpp',
+    '--system-header-prefix=mpack.h',
     '--system-header-prefix=spdlog/',
     '--system-header-prefix=curl/',
     '--system-header-prefix=crow.h',
@@ -394,11 +392,9 @@ build_cv_examples = get_option('cv_examples').enabled() \
 build_tests = get_option('tests').enabled() \
   or (get_option('tests').allowed() and not meson.is_subproject())
 
-msgpack_cxx_dep = dependency('msgpack-cxx',
+mpack_dep = dependency('mpack', 'ludocode-mpack',
   default_options: [
-    'boost=disabled',
-    'tests=disabled',
-    'std_variant=false', # msvcでなんかエラーになる
+    'default_library=static',
   ],
 )
 spdlog_dep = dependency('spdlog',
@@ -661,7 +657,7 @@ webcface_lib = library(webcface_lib_name,
     filesystem_dep,
     m_dep,
     win32folders_dep,
-    msgpack_cxx_dep,
+    mpack_dep,
     utf8cpp_dep,
     spdlog_dep,
     curl_dep,

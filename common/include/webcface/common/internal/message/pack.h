@@ -1,17 +1,10 @@
 #pragma once
-#ifdef MSGPACK_DEFINE_MAP
-#error "webcface/common/internal/pack.h must be included first"
-#endif
-
-#include <msgpack.hpp>
 #include <string>
 #include <cstdint>
 #include <spdlog/logger.h>
 #include <utf8.h>
 #include "webcface/common/val_adaptor.h"
 #include "./base.h"
-
-MSGPACK_ADD_ENUM(webcface::ValType)
 
 WEBCFACE_NS_BEGIN
 namespace message {
@@ -89,111 +82,3 @@ inline std::string packDone(std::stringstream &buffer, int len) {
 
 } // namespace message
 WEBCFACE_NS_END
-
-namespace msgpack {
-MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
-    namespace adaptor {
-
-    template <>
-    struct convert<webcface::SharedString> {
-        msgpack::object const &operator()(msgpack::object const &o,
-                                          webcface::SharedString &v) const {
-            v = webcface::SharedString::fromU8String(utf8::replace_invalid(
-                std::string(o.via.bin.ptr, o.via.bin.size)));
-            return o;
-        }
-    };
-    template <>
-    struct pack<webcface::SharedString> {
-        template <typename Stream>
-        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const webcface::SharedString &v) {
-            o.pack(v.u8String());
-            return o;
-        }
-    };
-
-    template <>
-    struct convert<webcface::ValAdaptor> {
-        msgpack::object const &operator()(msgpack::object const &o,
-                                          webcface::ValAdaptor &v) const {
-            switch (o.type) {
-            case msgpack::type::FLOAT32:
-            case msgpack::type::FLOAT64:
-                v = o.via.f64;
-                break;
-            case msgpack::type::POSITIVE_INTEGER:
-                v = o.via.u64;
-                break;
-            case msgpack::type::NEGATIVE_INTEGER:
-                v = o.via.i64;
-                break;
-            case msgpack::type::BOOLEAN:
-                v = o.via.boolean;
-                break;
-            case msgpack::type::BIN:
-            case msgpack::type::STR:
-                v = webcface::SharedString::fromU8String(utf8::replace_invalid(
-                    std::string(o.via.bin.ptr, o.via.bin.size)));
-                break;
-            default:
-                throw msgpack::type_error();
-            }
-            return o;
-        }
-    };
-    template <>
-    struct pack<webcface::ValAdaptor> {
-        template <typename Stream>
-        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const webcface::ValAdaptor &v) {
-            switch (v.valType()) {
-            case webcface::ValType::bool_:
-                o.pack(static_cast<bool>(v));
-                break;
-            case webcface::ValType::int_:
-                o.pack(static_cast<std::int64_t>(v));
-                break;
-            case webcface::ValType::float_:
-                o.pack(static_cast<double>(v));
-                break;
-            case webcface::ValType::string_:
-            default:
-                o.pack(v.asU8StringRef());
-                break;
-            }
-            return o;
-        }
-    };
-
-    template <typename T>
-    struct EmptyConvert {
-        msgpack::object const &operator()(msgpack::object const &o, T &) const {
-            return o;
-        }
-    };
-    template <typename T>
-    struct EmptyPack {
-        template <typename Stream>
-        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const T &) {
-            o.pack_map(0);
-            return o;
-        }
-    };
-    template <>
-    struct convert<webcface::message::Ping>
-        : public EmptyConvert<webcface::message::Ping> {};
-    template <>
-    struct convert<webcface::message::PingStatusReq>
-        : public EmptyConvert<webcface::message::PingStatusReq> {};
-    template <>
-    struct pack<webcface::message::Ping>
-        : public EmptyPack<webcface::message::Ping> {};
-    template <>
-    struct pack<webcface::message::PingStatusReq>
-        : public EmptyPack<webcface::message::PingStatusReq> {};
-
-    } // namespace adaptor
-}
-} // namespace msgpack

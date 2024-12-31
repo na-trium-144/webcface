@@ -1,0 +1,13 @@
+[wrap-file]
+directory = mpack-1.1.1
+source_url = https://github.com/ludocode/mpack/archive/v1.1.1.tar.gz
+source_filename = ludocode-mpack-1.1.1.tar.gz
+source_hash = 7e8dfc95266ac3e1a1a87383c01eb3bf66a61ae06374cf040b3383644bc8d2e6
+patch_filename = ludocode-mpack_1.1.1-1_patch.zip
+patch_url = https://wrapdb.mesonbuild.com/v2/ludocode-mpack_1.1.1-1/get_patch
+patch_hash = bd98b7fde63e54ada37a4c2251ed97d1b504f5469b127eb6162acfa7360a29e2
+source_fallback_url = https://github.com/mesonbuild/wrapdb/releases/download/ludocode-mpack_1.1.1-1/ludocode-mpack-1.1.1.tar.gz
+wrapdb_version = 1.1.1-1
+
+[provide]
+ludocode-mpack = ludocode_mpack_dep

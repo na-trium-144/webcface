@@ -20,7 +20,7 @@ test_dependencies = [
   webcface_common_dep,
   webcface_client_dep,
   gtest_dep,
-  msgpack_cxx_dep,
+  mpack_dep,
   utf8cpp_dep,
   spdlog_dep,
 ]

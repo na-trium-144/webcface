@@ -3,6 +3,7 @@ webcface_common_src = [
   'src/val_adaptor.cc',
   'src/message.cc',
   'src/unix_path.cc',
+  'src/message/canvas2d.cc',
 ]
 webcface_common_inc = include_directories('include')
 webcface_common_lib = static_library('webcface-common',
@@ -13,7 +14,7 @@ webcface_common_lib = static_library('webcface-common',
   dependencies: [
     webcface_config_dep,
     warning_options,
-    msgpack_cxx_dep,
+    mpack_dep,
     spdlog_dep,
     utf8cpp_dep,
     win32folders_dep,
@@ -27,7 +28,7 @@ webcface_common_dep = declare_dependency(
     webcface_common_inc,
   ],
   dependencies: [
-    msgpack_cxx_dep,
+    mpack_dep,
     spdlog_dep,
     utf8cpp_dep,
   ],
