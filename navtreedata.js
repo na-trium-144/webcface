@@ -426,19 +426,19 @@ var NAVTREEINDEX =
 "classwebcface_1_1internal_1_1SyncDataStore1.html#ac78011f32e7f62acb2801e68c5675634",
 "client_2include_2webcface_2canvas2d_8h_source.html",
 "data__store2_8h.html#a22c693261d3f39842ecb4f56e8604cf1",
-"index.html#autotoc_md263",
-"md_docs_281__message.html#autotoc_md223",
-"namespacewebcface_1_1components.html#a131c27a1f878f83f43244cbc08633e42",
-"robot__link_8h.html#ac0c9b491ef42c518e3f850aa9ea1cece",
-"structwebcface_1_1ScopedUnlock.html",
+"index.html#autotoc_md264",
+"md_docs_281__message.html#autotoc_md224",
+"namespacewebcface_1_1components.html#a1658b4ae8a9e2860456fa65485862808",
+"robot__link_8h.html#af888dd203afb5bdf79dc950d618bcad9",
+"structwebcface_1_1ScopedUnlock.html#a07994b29f1f81dbbed93ad5eb9f4cb3d",
 "structwebcface_1_1components_1_1geometries_1_1Circle.html#ab06166d764882e2648ea38f617c9bc15",
-"structwebcface_1_1internal_1_1ClientData.html#a033268534fb70c182c9279306d8b2329",
-"structwebcface_1_1internal_1_1FuncInfo.html#a8c997fd30e7178c869b823143102d682",
-"structwebcface_1_1internal_1_1TemporalRobotJointData.html#a79dea7ed146af26ff4a0ba4bf5c83eee",
-"structwebcface_1_1message_1_1Canvas3DOld.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1message_1_1View.html#a30a9f2e809c26263132b4afd8ea98562",
-"structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html#a187a077b8c6557d8129024de88da0ae4"
+"structwebcface_1_1internal_1_1ClientData.html#a0b8842f12b1c667641f59877aad4d031",
+"structwebcface_1_1internal_1_1FuncInfo.html#a8da26fb4e605fea2f481d0bd8a1e8f9a",
+"structwebcface_1_1internal_1_1TemporalRobotJointData.html#aa07b689d69aaaf24720b0c2b782ad518",
+"structwebcface_1_1message_1_1Canvas3DOld.html#ae04df573912b5ca4f2b2c006d38e654d",
+"structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#abcd38a81d32328da2291500c40893c51",
+"structwebcface_1_1message_1_1View.html",
+"structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#af7b94e81c82477f757ca55e1354b9486"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
