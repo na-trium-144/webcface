@@ -40,7 +40,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = brew ]] && echo "-Dwrap_mode=default")
+        $([[ ${{matrix.dep}} != brew ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
@@ -116,6 +116,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
+        -Dwrap_mode=forcefallback
         -Dtest_wait=1000
         --prefix=${{github.workspace}}/build/install
         --cross-file scripts/cross/macos_arm64

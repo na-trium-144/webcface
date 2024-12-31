@@ -48,7 +48,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = apt ]] && echo "-Dwrap_mode=default")
+        $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=200
         "-Dforce_fallback_for=['libcurl']"
     - name: Compile
