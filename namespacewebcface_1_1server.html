@@ -188,12 +188,10 @@ Functions</h2></td></tr>
 <tr class="separator:ab052d93bb7568174c380132b046aa463"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aed28322feeecfdd4846624f8235d2719"><td class="memItemLeft" align="right" valign="top">std::pair&lt; unsigned int, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#aed28322feeecfdd4846624f8235d2719">findReqField</a> (<a class="el" href="namespacewebcface.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a>&lt; unsigned int &gt; &amp;req, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field)</td></tr>
 <tr class="separator:aed28322feeecfdd4846624f8235d2719"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e548cd3eb542d0e3329684ead7bcd0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a3e548cd3eb542d0e3329684ead7bcd0a">initMagick</a> ()</td></tr>
-<tr class="separator:a3e548cd3eb542d0e3329684ead7bcd0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5a299fd43c4dfb534c71d1789b904e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#ab5a299fd43c4dfb534c71d1789b904e0">initVips</a> ()</td></tr>
+<tr class="separator:ab5a299fd43c4dfb534c71d1789b904e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53cb72fc0d35c47739006d57f1fbcb2a"><td class="memItemLeft" align="right" valign="top">std_fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#a53cb72fc0d35c47739006d57f1fbcb2a">getExeDir</a> (const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
 <tr class="separator:a53cb72fc0d35c47739006d57f1fbcb2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa768769cb279842f5a0fb75a13be709c"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#aa768769cb279842f5a0fb75a13be709c">magickColorMap</a> (<a class="el" href="namespacewebcface_1_1message.html#abcfd96b0be942012c2f4641b4741a31e">message::ImageColorMode</a> mode)</td></tr>
-<tr class="separator:aa768769cb279842f5a0fb75a13be709c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa7132eb6525527e4747e7c8ab7131d09"><td class="memItemLeft" align="right" valign="top">static spdlog::level::level_enum&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1server.html#aa7132eb6525527e4747e7c8ab7131d09">convertLevel</a> (int level)</td></tr>
 <tr class="separator:aa7132eb6525527e4747e7c8ab7131d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -444,45 +442,19 @@ Variables</h2></td></tr>
 
 </div>
 </div>
-<a id="a3e548cd3eb542d0e3329684ead7bcd0a" name="a3e548cd3eb542d0e3329684ead7bcd0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e548cd3eb542d0e3329684ead7bcd0a">&#9670;&#160;</a></span>initMagick()</h2>
+<a id="ab5a299fd43c4dfb534c71d1789b904e0" name="ab5a299fd43c4dfb534c71d1789b904e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab5a299fd43c4dfb534c71d1789b904e0">&#9670;&#160;</a></span>initVips()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void initMagick </td>
+          <td class="memname">void initVips </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="aa768769cb279842f5a0fb75a13be709c" name="aa768769cb279842f5a0fb75a13be709c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa768769cb279842f5a0fb75a13be709c">&#9670;&#160;</a></span>magickColorMap()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static std::string magickColorMap </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="namespacewebcface_1_1message.html#abcfd96b0be942012c2f4641b4741a31e">message::ImageColorMode</a>&#160;</td>
-          <td class="paramname"><em>mode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 </div>
@@ -582,7 +554,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1server.html">server</a></li>
-    <li class="footer">Generated on Fri Dec 27 2024 05:53:51 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Dec 31 2024 08:34:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
