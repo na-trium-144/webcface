@@ -429,16 +429,16 @@ var NAVTREEINDEX =
 "index.html#autotoc_md263",
 "md_docs_281__message.html#autotoc_md223",
 "namespacewebcface_1_1components.html#a131c27a1f878f83f43244cbc08633e42",
-"robot__link_8h.html#aeeebe21c504e824f60e09e4b53f566b6",
+"robot__link_8h.html#ac0c9b491ef42c518e3f850aa9ea1cece",
 "structwebcface_1_1ScopedUnlock.html",
 "structwebcface_1_1components_1_1geometries_1_1Circle.html#ab06166d764882e2648ea38f617c9bc15",
 "structwebcface_1_1internal_1_1ClientData.html#a033268534fb70c182c9279306d8b2329",
 "structwebcface_1_1internal_1_1FuncInfo.html#a8c997fd30e7178c869b823143102d682",
 "structwebcface_1_1internal_1_1TemporalRobotJointData.html#a79dea7ed146af26ff4a0ba4bf5c83eee",
 "structwebcface_1_1message_1_1Canvas3DOld.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#aa22bc17c0d20ee3553902e62814df6b4",
-"structwebcface_1_1message_1_1Value.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#af7250a6482c19cfa0c3ac85f9b1c67b9"
+"structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
+"structwebcface_1_1message_1_1View.html#a30a9f2e809c26263132b4afd8ea98562",
+"structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html#a187a077b8c6557d8129024de88da0ae4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -197,8 +197,7 @@ var menudata={children:[
 {text:"p",url:"globals_p.html#index_p"},
 {text:"w",url:"globals_w.html#index_w"}]},
 {text:"Functions",url:"globals_func.html",children:[
-{text:"_",url:"globals_func.html#index__5F"},
-{text:"w",url:"globals_func_w.html#index_w"}]},
+{text:"w",url:"globals_func.html#index_w"}]},
 {text:"Typedefs",url:"globals_type.html"},
 {text:"Enumerations",url:"globals_enum.html"},
 {text:"Enumerator",url:"globals_eval.html",children:[
