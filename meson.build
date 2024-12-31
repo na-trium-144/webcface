@@ -352,51 +352,70 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'std_variant=false', # msvcでなんかエラーになる
   ],
 )
-spdlog_link_depends = []
-if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('spdlog')
-  spdlog_dep = dependency('spdlog', required: false)
-else
-  spdlog_dep = dependency('', required: false)
-endif
-if not spdlog_dep.found()
-  spdlog_proj = subproject('spdlog',
-    default_options: [
-      'tests=disabled',
-      'compile_library=true',
-      'default_library=static',
-      'external_fmt=disabled',
-      'std_format=disabled',
-    ],
-  )
-  spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
-  spdlog_lib = spdlog_proj.get_variable('spdlog_lib', dependency('', required: false))  # disabler() は使えない
-  # webcfaceがsharedで、spdlogがstaticの場合にのみオプションを指定
-  if get_option('default_library') == 'shared' and spdlog_lib.found() and spdlog_lib.full_path().endswith('.a')
-    if webcface_system_exclude_libs
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep],
-        link_args: ['-Wl,--exclude-libs,' + fs.name(spdlog_lib.full_path())],
-      )
-    elif webcface_system_hidden_l
-      spdlog_link_depends += spdlog_lib
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep.partial_dependency(compile_args: true, includes: true)],
-        link_args: [
-          '-L' + fs.parent(spdlog_lib.full_path()),
-          '-Wl,-hidden-l' + spdlog_lib.name(),
-        ],
-      )
-    endif
-  endif
-endif
+spdlog_dep = dependency('spdlog',
+  default_options: [
+    'tests=disabled',
+    'compile_library=true',
+    'default_library=static',
+    'external_fmt=disabled',
+    'std_format=disabled',
+  ],
+)
 utf8cpp_dep = dependency('utf8cpp')
 
-if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
-  curl_dep = dependency('libcurl', required: false)
-else
-  curl_dep = dependency('', required: false)
-endif
-if curl_dep.found()
+# curlはvisibilityがhiddenになっている
+curl_dep = dependency('libcurl',
+  default_options: [
+    'warning_level=0',
+    'werror=false',
+    'websockets=enabled',
+    'default_library=static',
+    'tool=disabled',
+    'tests=disabled',
+    'unittests=disabled',
+    'bindlocal=disabled',
+    'brotli=disabled',
+    'doh=disabled',
+    'form-api=disabled',
+    'getoptions=disabled',
+    'gsasl=disabled',
+    'http2=disabled',
+    'ipv6=disabled',
+    'libcurl-option=disabled',
+    'libz=disabled',
+    'netrc=disabled',
+    'parsedate=disabled',
+    'progress-meter=disabled',
+    'psl=disabled',
+    'sspi=disabled',
+    'zstd=disabled',
+    'gss-api=disabled',
+    'idn=disabled',
+    'ntlm=disabled',
+    'ssh=disabled',
+    'ssl=disabled',
+    'tls-srp=disabled',
+    'openssl=disabled',
+    'schannel=disabled',
+    'secure-transport=disabled',
+    'dict=disabled',
+    'file=disabled',
+    'ftp=disabled',
+    'gopher=disabled',
+    'imap=disabled',
+    'ldap=disabled',
+    'ldaps=disabled',
+    'mqtt=disabled',
+    'pop3=disabled',
+    'rtmp=disabled',
+    'rtsp=disabled',
+    'smb=disabled',
+    'smtp=disabled',
+    'telnet=disabled',
+    'tftp=disabled',
+  ],
+)
+if curl_dep.type_name() != 'internal'
   curl_has_ws_support = cxx.run('''
     #include <curl/curl.h>
     #include <cassert>
@@ -415,70 +434,13 @@ if curl_dep.found()
       'Set "-Dforce_fallback_for=[\'libcurl\']".',
     )
   endif
-else
-  # curlはvisibilityがhiddenになっている
-  curl_dep = subproject('curl',
-    default_options: [
-      'warning_level=0',
-      'werror=false',
-      'websockets=enabled',
-      'default_library=static',
-      'tool=disabled',
-      'tests=disabled',
-      'unittests=disabled',
-      'bindlocal=disabled',
-      'brotli=disabled',
-      'doh=disabled',
-      'form-api=disabled',
-      'getoptions=disabled',
-      'gsasl=disabled',
-      'http2=disabled',
-      'ipv6=disabled',
-      'libcurl-option=disabled',
-      'libz=disabled',
-      'netrc=disabled',
-      'parsedate=disabled',
-      'progress-meter=disabled',
-      'psl=disabled',
-      'sspi=disabled',
-      'zstd=disabled',
-      'gss-api=disabled',
-      'idn=disabled',
-      'ntlm=disabled',
-      'ssh=disabled',
-      'ssl=disabled',
-      'tls-srp=disabled',
-      'openssl=disabled',
-      'schannel=disabled',
-      'secure-transport=disabled',
-      'dict=disabled',
-      'file=disabled',
-      'ftp=disabled',
-      'gopher=disabled',
-      'imap=disabled',
-      'ldap=disabled',
-      'ldaps=disabled',
-      'mqtt=disabled',
-      'pop3=disabled',
-      'rtmp=disabled',
-      'rtsp=disabled',
-      'smb=disabled',
-      'smtp=disabled',
-      'telnet=disabled',
-      'tftp=disabled',
-    ],
-  ).get_variable('curl_dep')
 endif
 
 if build_server
   cli11_dep = dependency('cli11', 'CLI11')
 
-  if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
-    crow_dep = dependency('Crow', required: false)
-  else
-    crow_dep = dependency('', required: false)
-  endif
-  if crow_dep.found()
+  crow_dep = dependency('Crow')
+  if crow_dep.type_name() != 'internal'
     crow_has_unix_socket_support = cxx.compiles('''
       #include <crow.h>
       int main(){
@@ -497,8 +459,6 @@ if build_server
         'Set "-Dforce_fallback_for=[\'Crow\']".',
       )
     endif
-  else
-    crow_dep = subproject('crow').get_variable('crow_dep')
   endif
 
   if magick_vs
@@ -770,9 +730,6 @@ webcface_lib = library(webcface_lib_name,
     utf8cpp_dep,
     spdlog_dep,
     curl_dep,
-  ],
-  link_depends: [
-    spdlog_link_depends,
   ],
   version: meson.project_version(),
   soversion: webcface_abi_major,
