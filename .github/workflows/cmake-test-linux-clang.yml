@@ -50,7 +50,7 @@ jobs:
         --buildtype=debug
         $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=200
-        "-Dforce_fallback_for=['libcurl']"
+        --force-fallback-for=libcurl
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
