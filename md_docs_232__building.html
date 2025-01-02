@@ -277,59 +277,70 @@ Build</h2>
 </ul>
 </li>
 <li><span class="since-c">2.6</span> それぞれの依存ライブラリはまずシステムにインストールされているものを探し、見つからなければsubprojectにフォールバックします。<ul>
-<li>ただしlibcurlやCrowはインストールされているものが使用できない場合エラーになるため、その場合は &lsquo;"-Dforce_fallback_for=['libcurl&amp;rsquo;,'Crow']"<code> などとして除外する必要があります。 *</code>-Dwrap_mode=forcefallback<code>とするとインストールされたものを探さずすべてソースビルドします。</code></li>
-<li><code>インストールされているのに見つからない場合は環境変数の</code>PKG_CONFIG_PATH<code>か、引数で</code>-Dpkg_config_path<code>や</code>-Dcmake_prefix_path<code>などを設定してください *</code>cpp_std<code>はc++17以上が必要です。またcygwinではgnu++17が必要です。 (WebCFaceがsubprojectでない場合デフォルトはgnu++17,c++17) *</code>warning_level<code>は3以下であればビルドできるはずです (WebCFaceがsubprojectでない場合デフォルトで3)。 *</code>warning_level=everything<code>でビルドできるかは未確認です。 *</code>-Dserver=disabled<code>でserverのビルドをオフ、</code>enabled<code>でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない and cygwinでない 場合のみenabledになります) *</code>-Dexamples=disabled<code>でexampleのビルドをオフ、</code>enabled<code>でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります) *</code>-Dcv_examples=disabled<code>にするとexamplesのうちOpenCVを使うもののみをオフにすることもできます *</code>-Dtests=disabled<code>でexampleのビルドをオフ、</code>enabled<code>でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)</code></li>
-<li><code>テストが通らない場合テスト中の通信の待機時間を</code>-Dtest_wait=100<code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</code></li>
+<li>ただしlibcurlやCrowはインストールされているものが使用できない場合エラーになるため、その場合は <code>--force-fallback-for=libcurl,Crow</code> などとして除外する必要があります。</li>
+<li><code>-Dwrap_mode=forcefallback</code> とするとインストールされたものを探さずすべてソースビルドします。</li>
+<li>インストールされているのに見つからない場合は環境変数の <code>PKG_CONFIG_PATH</code> か、引数で <code>-Dpkg_config_path</code> や <code>-Dcmake_prefix_path</code> などを設定してください</li>
 </ul>
 </li>
-<li><code>インストール先はデフォルトで /usr/local ですが、</code>&ndash;prefix=~/.webcface<code>などと指定すると変更することができます *</code>-Dversion_suffix<code>でバージョン表記を変更できます<ul>
-<li>例えばバージョンが1.2.0のとき *-Dversion_suffix=git<code>なら</code>git describe &ndash;tags<code>コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト) *</code>git<code>以外の任意の文字列の場合</code>-Dversion_suffix=hoge<code>で 1.2.0-hoge になります *</code>-Dversion_suffix=<code>で 1.2.0 だけになります</code></li>
+<li><code>cpp_std</code>はc++17以上が必要です。またcygwinではgnu++17が必要です。 (WebCFaceがsubprojectでない場合デフォルトはgnu++17,c++17)</li>
+<li><code>warning_level</code>は3以下であればビルドできるはずです (WebCFaceがsubprojectでない場合デフォルトで3)。<ul>
+<li><code>warning_level=everything</code> でビルドできるかは未確認です。</li>
 </ul>
-</code></li>
-<li><code><code>デフォルトでは最新のWebUIがbuildディレクトリにダウンロードされます。 </code>-Ddownload_webui=enabled<code>とするとダウンロードできなかった場合エラーになり、 </code>disabled` にするとダウンロードしません。</code></li>
+</li>
+<li><code>-Dserver=disabled</code> でserverのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない and cygwinでない 場合のみenabledになります)</li>
+<li><code>-Dexamples=disabled</code> でexampleのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)<ul>
+<li><code>-Dcv_examples=disabled</code> にするとexamplesのうちOpenCVを使うもののみをオフにすることもできます</li>
 </ul>
-<p><code>setupが成功したら </p><div class="fragment"><div class="line">meson compile -C build</div>
-</div><!-- fragment --><p> でビルドします。</code></p>
-<p><code></p><div class="fragment"><div class="line">meson test -C build --suite webcface</div>
-</div><!-- fragment --><p> でテストを実行できます。</code></p>
-<p><code></p><div class="fragment"><div class="line">meson install -C build --skip-subprojects</div>
-</div><!-- fragment --><p> でsetup時に指定したディレクトリにインストールできます。 (staticライブラリの場合は <code>--skip-subprojects</code> を使用せず、依存ライブラリもインストールした方がいいかも)</code></p>
-<p><code></code></p>
+</li>
+<li><code>-Dtests=disabled</code> でexampleのビルドをオフ、 <code>enabled</code> でオンにできます (デフォルト(auto)はWebCFaceがsubprojectでない場合のみenabledになります)<ul>
+<li>テストが通らない場合テスト中の通信の待機時間を <code>-Dtest_wait=100</code>などと伸ばすとうまく行く場合があります(デフォルト=10(ms))</li>
+</ul>
+</li>
+<li>インストール先はデフォルトで /usr/local ですが、 <code>--prefix=~/.webcface</code> などと指定すると変更することができます</li>
+<li><code>-Dversion_suffix</code>でバージョン表記を変更できます<ul>
+<li>例えばバージョンが1.2.0のとき</li>
+<li><code>-Dversion_suffix=git</code> なら <code>git describe --tags</code> コマンドを使用して取得した文字列 (1.2.0-x-gxxxxxxx) になります(未指定の場合のデフォルト)</li>
+<li><code>git</code>以外の任意の文字列の場合 <code>-Dversion_suffix=hoge</code> で 1.2.0-hoge になります</li>
+<li><code>-Dversion_suffix=</code> で 1.2.0 だけになります</li>
+</ul>
+</li>
+<li>デフォルトでは最新のWebUIがbuildディレクトリにダウンロードされます。 <code>-Ddownload_webui=enabled</code> とするとダウンロードできなかった場合エラーになり、 <code>disabled</code> にするとダウンロードしません。</li>
+</ul>
+<p>setupが成功したら </p><div class="fragment"><div class="line">meson compile -C build</div>
+</div><!-- fragment --><p> でビルドします。</p>
+<div class="fragment"><div class="line">meson test -C build --suite webcface</div>
+</div><!-- fragment --><p> でテストを実行できます。</p>
+<div class="fragment"><div class="line">meson install -C build --skip-subprojects</div>
+</div><!-- fragment --><p> でsetup時に指定したディレクトリにインストールできます。 (staticライブラリの場合は <code>--skip-subprojects</code> を使用せず、依存ライブラリもインストールした方がいいかも)</p>
 <h1><a class="anchor" id="autotoc_md47"></a>
 WebUI</h1>
-<p><code></code></p>
-<p><code>デフォルトではビルド済みのものが meson setup 時にダウンロードされますが、 <code>-Ddownload_webui=disabled</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</code></p>
-<p><code>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 <br  />
- installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</code></p>
-<p><code>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</code></p>
-<p><code>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</code></p>
-<p><code></code></p>
+<p>デフォルトではビルド済みのものが meson setup 時にダウンロードされますが、 <code>-Ddownload_webui=disabled</code> を指定した場合はダウンロードしません。 その場合は <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> からビルド済みのtar.gzのアーカイブをダウンロードしてください。</p>
+<p>インストールする場合は (webcfaceのインストール場所)/share/webcface/dist として展開してください。 <br  />
+ installせずに実行する場合は webcface-server のバイナリと同じディレクトリか、その1, 2, 3階層上のどこかにdistディレクトリを配置してください。</p>
+<p>Ubuntuの場合は<a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a>にあるdebパッケージで、またhomebrewでは <code>webcface-webui</code> パッケージとしてWebUIだけを単体でインストールすることもできます。</p>
+<p>または自分でビルドすることも可能です。(node.jsが必要) <a href="https://github.com/na-trium-144/webcface-webui">webcface-webui</a> のREADMEを参照してください。</p>
 <h1><a class="anchor" id="autotoc_md48"></a>
 tools</h1>
-<p><code></code></p>
-<p><code><a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールします。 WebCFaceライブラリのビルドと同様、Mesonを使って </p><div class="fragment"><div class="line">meson setup build</div>
+<p><a href="https://github.com/na-trium-144/webcface-tools.git">https://github.com/na-trium-144/webcface-tools.git</a> をcloneしてビルド、インストールします。 WebCFaceライブラリのビルドと同様、Mesonを使って </p><div class="fragment"><div class="line">meson setup build</div>
 <div class="line">meson compile -Cbuild</div>
 <div class="line">meson install -C build --skip-subprojects</div>
-</div><!-- fragment --><p> のようにビルド、インストールできます。</code></p>
-<p><code>toolsのビルド時にWebCFaceライブラリが見つからないとなる場合は 環境変数<code>PKG_CONFIG_PATH</code>(またはmesonの引数<code>-Dpkg_config_path</code>)に (webcfaceのパス)/lib/pkgconfig を追加するか、 環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 mesonの引数<code>-Dcmake_prefix_path</code>にwebcfaceのパスを追加するなどすればビルドできるはずです。</code></p>
-<p><code>webcface-toolsは外部ライブラリとして <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://gitlab.com/eidheim/tiny-process-library">tiny-process-library</a>, <a href="https://github.com/marzer/tomlplusplus">toml++</a> を使用します。 システムにインストールされてなければ自動的にソースからビルドします。 <br  />
-</code></p>
-<p><code></p><div class="section_buttons"></div><p></code></p>
-<p><code></p><div class="section_buttons"><table class="markdownTable">
+</div><!-- fragment --><p> のようにビルド、インストールできます。</p>
+<p>toolsのビルド時にWebCFaceライブラリが見つからないとなる場合は 環境変数<code>PKG_CONFIG_PATH</code>(またはmesonの引数<code>-Dpkg_config_path</code>)に (webcfaceのパス)/lib/pkgconfig を追加するか、 環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 mesonの引数<code>-Dcmake_prefix_path</code>にwebcfaceのパスを追加するなどすればビルドできるはずです。</p>
+<p>webcface-toolsは外部ライブラリとして <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://gitlab.com/eidheim/tiny-process-library">tiny-process-library</a>, <a href="https://github.com/marzer/tomlplusplus">toml++</a> を使用します。 システムにインストールされてなければ自動的にソースからビルドします。 <br  />
+</p>
+<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><a class="el" href="md_docs_231__setup.html">3-1. Setup WebCFace Library</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_241__client.html">4-1. Client</a>   </td></tr>
 </table>
-</div><p></code></p>
-<p><code></p><div class="section_buttons"></div><p> </code></p>
-</div></div><!-- contents -->
+</div><div class="section_buttons"></div> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 31 2024 10:11:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 2 2025 04:54:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
