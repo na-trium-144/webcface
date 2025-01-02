@@ -478,7 +478,7 @@ if curl_dep.type_name() != 'internal'
   )
   if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
     error('The installed curl has no websocket support, so WebCFace cannot use it.\n' + \
-      'Set "-Dforce_fallback_for=[\'libcurl\']".',
+      'Set "--force-fallback-for=libcurl".',
     )
   endif
 endif
@@ -503,7 +503,7 @@ if build_server
     )
     if not crow_has_unix_socket_support
       error('The installed Crow has no unix socket support, so WebCFace cannot use it.\n' + \
-        'Set "-Dforce_fallback_for=[\'Crow\']".',
+        'Set "--force-fallback-for=Crow".',
       )
     endif
   endif
