@@ -63,7 +63,11 @@ std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
         for (const auto &v2 : v.second) {
             message::pack(
                 buffer, len,
-                message::Req<message::Value>{{}, v.first, v2.first, v2.second});
+                message::Req<message::Value>{{},
+                                             v.first,
+                                             v2.first,
+                                             v2.second,
+                                             data.value_entry_data[v2.first]});
         }
     }
     for (const auto &v : data.text_req) {
@@ -130,8 +134,12 @@ internal::ClientData::SyncMutexedData::syncData(internal::ClientData *this_,
     SyncDataSnapshot data;
     data.time = std::chrono::system_clock::now();
 
-    // std::lock_guard value_lock(this_->value_store.mtx);
-    data.value_data = this_->value_store.transferSend(is_first);
+    {
+        std::lock_guard value_lock(this_->value_store.mtx);
+        data.value_data = this_->value_store.transferSend(is_first);
+        data.value_entry_data =
+            this_->value_store.getEntry(this_->self_member_name);
+    }
     // std::lock_guard text_lock(this_->text_store.mtx);
     data.text_data = this_->text_store.transferSend(is_first);
     // std::lock_guard robot_model_lock(this_->robot_model_store.mtx);

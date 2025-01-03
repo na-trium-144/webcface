@@ -215,7 +215,7 @@ void MemberData::onRecv(const std::string &message) {
                         if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Value>{
-                                {}, cd->member_id, f.first});
+                                {}, cd->member_id, f.first, f.second.first});
                             logger->trace("send value_entry {} of member {}",
                                           f.first.decode(), cd->member_id);
                         }
@@ -415,13 +415,14 @@ void MemberData::onRecv(const std::string &message) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::Value>{
-                                {}, this->member_id, v.field});
+                                {}, this->member_id, v.field, v.size});
                         cd->logger->trace("send value_entry {} of member {}",
                                           v.field.decode(), this->member_id);
                     }
                 });
             }
-            this->value[v.field] = v.data;
+            this->value[v.field].first = std::move(v.size);
+            this->value[v.field].second = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
                 auto req_field =

@@ -2,6 +2,7 @@
 #include "./base.h"
 #include "webcface/common/encoding.h"
 #include <vector>
+#include <optional>
 
 #ifndef MSGPACK_DEFINE_MAP
 #define MSGPACK_DEFINE_MAP(...)
@@ -13,7 +14,9 @@ namespace message {
 struct Value : public MessageBase<MessageKind::value> {
     SharedString field;
     std::shared_ptr<std::vector<double>> data;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data))
+    std::optional<std::vector<std::size_t>> size;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data),
+                       MSGPACK_NVP("s", size))
 };
 /*!
  * \brief server->client  Value,Textなどのfieldをreqidに変えただけのもの
@@ -35,5 +38,16 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
                        MSGPACK_NVP("d", data))
 };
 
-}
+template <typename T>
+struct Entry;
+template <>
+struct Entry<Value> : public MessageBase<Value::kind + MessageKind::entry> {
+    unsigned int member_id = 0;
+    SharedString field;
+    std::optional<std::vector<std::size_t>> size;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
+                       MSGPACK_NVP("s", size))
+};
+
+} // namespace message
 WEBCFACE_NS_END
