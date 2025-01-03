@@ -48,6 +48,7 @@ var hierarchy =
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
     [ "Circle", "structwebcface_1_1components_1_1geometries_1_1Circle.html", null ],
+    [ "CurlInitializer", "structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],
     [ "Cylinder", "structwebcface_1_1components_1_1geometries_1_1Cylinder.html", null ],

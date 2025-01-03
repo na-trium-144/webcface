@@ -28,6 +28,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "canvas3d_entry_event", "structwebcface_1_1internal_1_1ClientData.html#acdf0c22569910e99a88ffcc27e80d82e", null ],
     [ "canvas3d_store", "structwebcface_1_1internal_1_1ClientData.html#a1511347691a9c3bd8ddba455b7aa35c4", null ],
     [ "closing", "structwebcface_1_1internal_1_1ClientData.html#ac12c0189fb9871dca59ac653ce95b4cf", null ],
+    [ "curl_initializer", "structwebcface_1_1internal_1_1ClientData.html#ace575e50d22b2fb342184815fb2cc2aa", null ],
     [ "current_curl_connected", "structwebcface_1_1internal_1_1ClientData.html#a29052a9bd8573a795ebe2adcdaf1ea1e", null ],
     [ "current_curl_handle", "structwebcface_1_1internal_1_1ClientData.html#a43fca706caab179cb5698e001d3ce3d1", null ],
     [ "current_curl_path", "structwebcface_1_1internal_1_1ClientData.html#a591e347c290dd1030675c7f56a13ed98", null ],

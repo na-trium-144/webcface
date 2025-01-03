@@ -30,8 +30,9 @@ var searchData=
   ['cond_27',['cond',['../structwebcface_1_1internal_1_1PromiseData.html#a0ee0b6cec162cd216cb26acab58d4a39',1,'webcface::internal::PromiseData']]],
   ['connected_28',['connected',['../structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html#ab36823025f12a809217f7771125658c2',1,'webcface::internal::ClientData::WsMutexedData']]],
   ['crow_5fcustom_5flogger_29',['crow_custom_logger',['../namespacewebcface_1_1server.html#af04c40d65b7df8a8bbf0c6298240eb7e',1,'webcface::server']]],
-  ['current_5fcurl_5fconnected_30',['current_curl_connected',['../structwebcface_1_1internal_1_1ClientData.html#a29052a9bd8573a795ebe2adcdaf1ea1e',1,'webcface::internal::ClientData']]],
-  ['current_5fcurl_5fhandle_31',['current_curl_handle',['../structwebcface_1_1internal_1_1ClientData.html#a43fca706caab179cb5698e001d3ce3d1',1,'webcface::internal::ClientData']]],
-  ['current_5fcurl_5fpath_32',['current_curl_path',['../structwebcface_1_1internal_1_1ClientData.html#a591e347c290dd1030675c7f56a13ed98',1,'webcface::internal::ClientData']]],
-  ['current_5fws_5fbuf_33',['current_ws_buf',['../structwebcface_1_1internal_1_1ClientData.html#a2405d3888727e8b9d81e466db15fa725',1,'webcface::internal::ClientData']]]
+  ['curl_5finitializer_30',['curl_initializer',['../structwebcface_1_1internal_1_1ClientData.html#ace575e50d22b2fb342184815fb2cc2aa',1,'webcface::internal::ClientData']]],
+  ['current_5fcurl_5fconnected_31',['current_curl_connected',['../structwebcface_1_1internal_1_1ClientData.html#a29052a9bd8573a795ebe2adcdaf1ea1e',1,'webcface::internal::ClientData']]],
+  ['current_5fcurl_5fhandle_32',['current_curl_handle',['../structwebcface_1_1internal_1_1ClientData.html#a43fca706caab179cb5698e001d3ce3d1',1,'webcface::internal::ClientData']]],
+  ['current_5fcurl_5fpath_33',['current_curl_path',['../structwebcface_1_1internal_1_1ClientData.html#a591e347c290dd1030675c7f56a13ed98',1,'webcface::internal::ClientData']]],
+  ['current_5fws_5fbuf_34',['current_ws_buf',['../structwebcface_1_1internal_1_1ClientData.html#a2405d3888727e8b9d81e466db15fa725',1,'webcface::internal::ClientData']]]
 ];
