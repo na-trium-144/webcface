@@ -55,6 +55,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     void *current_curl_handle = nullptr;
     std::string current_curl_path;
     std::string current_ws_buf = "";
+    std::shared_ptr<void> curl_initializer;
 
     /*!
      * \brief websocket接続、通信するスレッド
