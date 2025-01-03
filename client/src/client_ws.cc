@@ -5,12 +5,23 @@
 #include <curl/curl.h>
 #include <string>
 #include <cstdlib>
+#include <thread>
 
 WEBCFACE_NS_BEGIN
 namespace internal {
 namespace WebSocket {
 
+struct CurlInitializer {
+    CurlInitializer() {
+        curl_global_init(CURL_GLOBAL_ALL);
+        curl_global_trace("+ws");
+    }
+    ~CurlInitializer() { curl_global_cleanup(); }
+};
+
 void init(const std::shared_ptr<internal::ClientData> &data) {
+    data->curl_initializer = std::make_shared<CurlInitializer>();
+
     if (data->host.empty()) {
         data->host = SharedString::fromU8String("127.0.0.1");
     }
@@ -154,19 +165,24 @@ void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {
     // std::lock_guard ws_lock(data->curl_m);
     data->logger_internal->trace("sending message {} bytes", msg.size());
-    std::size_t sent;
+    std::size_t sent = 0;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
-    auto ret =
-        curl_ws_send(handle, msg.c_str(), msg.size(), &sent, 0, CURLWS_BINARY);
-    if (ret != CURLE_OK) {
-        data->logger_internal->error("error sending message {}",
-                                     static_cast<int>(ret));
+    while (true) {
+        auto ret = curl_ws_send(handle, msg.c_str() + sent, msg.size() - sent,
+                                &sent, 0, CURLWS_BINARY);
+        if (ret == CURLE_AGAIN) {
+            std::this_thread::sleep_for(std::chrono::microseconds(10));
+            continue;
+        } else if (ret == CURLE_OK) {
+            // data->logger_internal->trace("sending done");
+            break;
+        } else {
+            data->logger_internal->error("error sending message {}",
+                                         static_cast<int>(ret));
+            WebSocket::close(data);
+            break;
+        }
     }
-    if (sent != msg.size()) {
-        data->logger_internal->error("failed to send message (sent = {} bytes)",
-                                     sent);
-    }
-    // data->logger_internal->trace("sending done");
 }
 
 } // namespace WebSocket
