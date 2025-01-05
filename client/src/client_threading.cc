@@ -7,15 +7,86 @@
 #include <chrono>
 #include <thread>
 #include <spdlog/sinks/stdout_color_sinks.h>
+#include "./c_wcf/c_wcf_internal.h"
 
 WEBCFACE_NS_BEGIN
 
-Client::Client(const SharedString &name, const SharedString &host, int port)
-    : Client(name, std::make_shared<internal::ClientData>(name, host, port)) {}
-
-Client::Client(const SharedString &name,
-               const std::shared_ptr<internal::ClientData> &data)
-    : Member(data, name), data(data) {}
+extern "C" wcfClient *wcfInit(const char *name, const char *host, int port) {
+    auto wcli =
+        new std::shared_ptr<internal::ClientData>(new internal::ClientData(
+            strOrEmpty(name), SharedString::encode(host ? host : "127.0.0.1"),
+            port));
+    wcli_list.push_back(wcli);
+    return wcli;
+}
+extern "C" wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host,
+                               int port) {
+    auto wcli =
+        new std::shared_ptr<internal::ClientData>(new internal::ClientData(
+            strOrEmpty(name), SharedString::encode(host ? host : L"127.0.0.1"),
+            port));
+    wcli_list.push_back(wcli);
+    return wcli;
+}
+extern "C" wcfClient *wcfInitDefault(const char *name) {
+    return wcfInit(name, "127.0.0.1", WEBCFACE_DEFAULT_PORT);
+}
+extern "C" wcfClient *wcfInitDefaultW(const wchar_t *name) {
+    return wcfInitW(name, L"127.0.0.1", WEBCFACE_DEFAULT_PORT);
+}
+extern "C" int wcfIsValid(wcfClient *wcli) {
+    WCF_GET_WCLI(0);
+    return 1;
+}
+extern "C" wcfStatus wcfDestroy(void *ptr) {
+    {
+        auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
+        auto f_it = func_val_list.find(f_ptr);
+        if (f_it != func_val_list.end()) {
+            func_val_list.erase(f_it);
+            delete f_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto fw_ptr = static_cast<const wcfMultiValW *>(ptr);
+        auto fw_it = func_val_list_w.find(fw_ptr);
+        if (fw_it != func_val_list_w.end()) {
+            func_val_list_w.erase(fw_it);
+            delete fw_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
+        auto v_it = view_list.find(v_ptr);
+        if (v_it != view_list.end()) {
+            view_list.erase(v_it);
+            delete[] v_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto vw_ptr = static_cast<const wcfViewComponentW *>(ptr);
+        auto vw_it = view_list_w.find(vw_ptr);
+        if (vw_it != view_list_w.end()) {
+            view_list_w.erase(vw_it);
+            delete[] vw_ptr;
+            return WCF_OK;
+        }
+    }
+    {
+        auto res = static_cast<Promise *>(ptr);
+        auto res_it =
+            std::find(func_result_list.begin(), func_result_list.end(), res);
+        if (res_it != func_result_list.end()) {
+            func_result_list.erase(res_it);
+            delete res;
+            return WCF_OK;
+        }
+    }
+    return WCF_BAD_HANDLE;
+}
 
 internal::ClientData::ClientData(const SharedString &name,
                                  const SharedString &host, int port)
@@ -37,10 +108,6 @@ internal::ClientData::ClientData(const SharedString &name,
     }
 }
 
-Client::~Client() {
-    data->close();
-    data->join();
-}
 void internal::ClientData::join() {
     if (ws_thread.joinable()) {
         ws_thread.join();
@@ -62,17 +129,23 @@ void internal::ClientData::start() {
     //     shared_from_this());
     // }
 }
-const Client &Client::close() const {
-    data->close();
-    return *this;
+
+wcfStatus wcfClose(wcfClient *wcli) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcli_->close();
+    wcli_->join();
+    wcli_list.erase(std::find(wcli_list.begin(), wcli_list.end(), wcli));
+    delete &wcli_;
+    return WCF_OK;
 }
 void internal::ClientData::close() {
     ScopedWsLock lock_ws(this);
     this->closing.store(true);
     this->ws_cond.notify_all();
 }
-bool Client::connected() const {
-    internal::ClientData::ScopedWsLock lock_ws(data);
+extern "C" int wcfIsConnected(wcfClient *wcli) {
+    WCF_GET_WCLI(0);
+    internal::ClientData::ScopedWsLock lock_ws(wcli_);
     return lock_ws.getData().connected;
 }
 void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
@@ -208,12 +281,26 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
         }
     }
 }
-const Client &
-Client::syncImpl(std::optional<std::chrono::microseconds> timeout) const {
-    start();
-    data->syncImpl(true, true, timeout);
-    return *this;
+
+extern "C" wcfStatus wcfSync(wcfClient *wcli) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcfStart(wcli);
+    wcli_->syncImpl(true, true, std::chrono::microseconds(0));
+    return WCF_OK;
 }
+extern "C" wcfStatus wcfLoopSyncFor(wcfClient *wcli, long long timeout) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcfStart(wcli);
+    wcli_->syncImpl(true, true, std::chrono::microseconds(timeout));
+    return WCF_OK;
+}
+extern "C" wcfStatus wcfLoopSync(wcfClient *wcli) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcfStart(wcli);
+    wcli_->syncImpl(true, true, std::nullopt);
+    return WCF_OK;
+}
+
 void internal::ClientData::syncImpl(
     bool sync, bool forever, std::optional<std::chrono::microseconds> timeout) {
     auto start_t = std::chrono::steady_clock::now();
@@ -323,62 +410,61 @@ void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
 }
 */
 
-const Client &Client::start() const {
-    data->start();
-    return *this;
+extern "C" wcfStatus wcfStart(wcfClient *wcli) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcli_->start();
+    return WCF_OK;
 }
-const Client &Client::waitConnection() const {
-    data->start();
+extern "C" wcfStatus wcfWaitConnection(wcfClient *wcli) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcli_->start();
     bool first_loop = true;
-    while (!data->closing.load()) {
-        internal::ClientData::ScopedWsLock lock_ws(data);
+    while (!wcli_->closing.load()) {
+        internal::ClientData::ScopedWsLock lock_ws(wcli_);
         if (!lock_ws.getData().connected) {
             // 初回またはautoReconnectが有効なら接続完了まで待機
-            if (first_loop || data->auto_reconnect.load()) {
+            if (first_loop || wcli_->auto_reconnect.load()) {
                 lock_ws.getData().do_ws_init = true;
-                data->ws_cond.notify_all();
-                data->ws_cond.wait(lock_ws, [this, &lock_ws] {
-                    return data->closing.load() ||
+                wcli_->ws_cond.notify_all();
+                wcli_->ws_cond.wait(lock_ws, [wcli_, &lock_ws] {
+                    return wcli_->closing.load() ||
                            lock_ws.getData().connected ||
                            !lock_ws.getData().do_ws_init;
                 });
             } else {
-                return *this;
+                return WCF_OK;
             }
         } else {
             if (lock_ws.getData().sync_init_end) {
-                return *this;
+                return WCF_OK;
             } else {
                 // autoRecvならsyncInit完了まで待機
                 // そうでなければrecvを呼ぶ
-                // if (data->auto_sync.load()) {
-                //     data->ws_cond.wait(lock, [this] {
-                //         return data->closing.load() || !data->connected ||
-                //                data->sync_init_end;
+                // if (wcli_->auto_sync.load()) {
+                //     wcli_->ws_cond.wait(lock, [this] {
+                //         return wcli_->closing.load() || !wcli_->connected ||
+                //                wcli_->sync_init_end;
                 //     });
                 // } else {
                 ScopedUnlock un(lock_ws);
-                data->syncImpl(false, false, std::nullopt);
+                wcli_->syncImpl(false, false, std::nullopt);
                 // }
             }
         }
         first_loop = false;
     }
-    return *this;
+    return WCF_OK;
 }
-// void Client::autoSync(bool enabled) {
-//     if (enabled /* && interval.count() > 0 */) {
-//         data->auto_sync.store(true);
-//     } else {
-//         data->auto_sync.store(false);
-//     }
-// }
 
-const Client &Client::autoReconnect(bool enabled) const {
-    data->auto_reconnect.store(enabled);
-    return *this;
+extern "C" wcfStatus wcfAutoReconnect(wcfClient *wcli, int enabled) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    wcli_->auto_reconnect.store(enabled);
+    return WCF_OK;
 }
-bool Client::autoReconnect() const { return data->auto_reconnect.load(); }
+extern "C" int wcfAutoReconnectEnabled(wcfClient *wcli) {
+    WCF_GET_WCLI(0);
+    return wcli_->auto_reconnect.load();
+}
 
 
 WEBCFACE_NS_END

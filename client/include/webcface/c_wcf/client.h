@@ -103,6 +103,13 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfWaitConnection(wcfClient *wcli);
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfAutoReconnect(wcfClient *wcli,
                                                       int enabled);
+/*!
+ * \brief 通信が切断されたときに自動で再試行するかどうかを取得する。
+ * \since ver3.0
+ * \return 有効になっていれば0
+ * \sa wcfAutoReconnect()
+ */
+WEBCFACE_DLL int WEBCFACE_CALL wcfAutoReconnectEnabled(wcfClient *wcli);
 
 /*!
  * \brief
@@ -133,12 +140,12 @@ WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfSync(wcfClient *wcli);
  * (deadlock回避)
  *
  * \param wcli
- * \param timeout (μs単位)
+ * \param timeout (μs単位) (ver3.0から long long 型に変更)
  * \return wcliが無効ならWCF_BAD_WCLI
  * \sa wcfSync(), wcfLoopSync()
  */
 WEBCFACE_DLL wcfStatus WEBCFACE_CALL wcfLoopSyncFor(wcfClient *wcli,
-                                                    int timeout);
+                                                    long long timeout);
 /*!
  * \brief
  * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する

@@ -3,6 +3,7 @@
 #include <memory>
 #include <vector>
 #include "member.h"
+#include "webcface/c_wcf/client.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -16,7 +17,8 @@ WEBCFACE_NS_BEGIN
  *
  */
 class WEBCFACE_DLL Client : public Member {
-    std::shared_ptr<internal::ClientData> data;
+    wcfClient *data;
+    std::function<void WEBCFACE_CALL_FP(Member)> on_member_entry_;
 
   public:
     Client(const Client &) = delete;
@@ -28,7 +30,7 @@ class WEBCFACE_DLL Client : public Member {
      * サーバーのホストとポートはlocalhost:7530になる
      *
      */
-    Client() : Client("") {}
+    Client() : data(wcfInitDefault("")) {}
     /*!
      * \brief 名前を指定しサーバーに接続する
      *
@@ -42,8 +44,7 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::string &name,
                     const std::string &host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(SharedString::encode(name), SharedString::encode(host), port) {
-    }
+        : data(wcfInit(name.c_str(), host.c_str(), port)) {}
     /*!
      * \brief 名前を指定しサーバーに接続する (wstring)
      * \since ver2.0
@@ -58,29 +59,26 @@ class WEBCFACE_DLL Client : public Member {
     explicit Client(const std::wstring &name,
                     const std::wstring &host = L"127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(SharedString::encode(name), SharedString::encode(host), port) {
-    }
-
-    explicit Client(const SharedString &name, const SharedString &host,
-                    int port);
-    explicit Client(const SharedString &name,
-                    const std::shared_ptr<internal::ClientData> &data);
+        : data(wcfInitW(name.c_str(), host.c_str(), port)) {}
 
     /*!
      * \brief サーバーに接続できているときtrueを返す
      *
      */
-    bool connected() const;
+    bool connected() const { return wcfIsConnected(data); }
     /*!
      * \brief 接続を切りClientを破棄
      *
      */
-    ~Client();
+    ~Client() { wcfClose(data); }
     /*!
      * \brief 接続を切り、今後再接続しない
      *
      */
-    const Client &close() const;
+    const Client &close() const {
+        wcfClose(data);
+        return *this;
+    }
 
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを設定する。
@@ -90,19 +88,25 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa start(), waitConnection()
      */
-    const Client &autoReconnect(bool enabled) const;
+    const Client &autoReconnect(bool enabled) const {
+        wcfAutoReconnect(data, enabled);
+        return *this
+    }
     /*!
      * \brief 通信が切断されたときに自動で再試行するかどうかを取得する。
      * \since ver1.11.1
      */
-    bool autoReconnect() const;
+    bool autoReconnect() const { return wcfAutoReconnectEnabled(data); }
 
     /*!
      * \brief サーバーへの接続を別スレッドで開始する。
      * \since ver1.2
      * \sa waitConnection(), autoReconnect()
      */
-    const Client &start() const;
+    const Client &start() const {
+        wcfStart(data);
+        return *this;
+    }
     /*!
      * \brief サーバーへの接続を別スレッドで開始し、成功するまで待機する。
      * \since ver1.2
@@ -115,13 +119,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa start(), autoReconnect()
      */
-    const Client &waitConnection() const;
+    const Client &waitConnection() const {
+        wcfWaitConnection(data);
+        return *this;
+    }
 
-  private:
-    const Client &
-    syncImpl(std::optional<std::chrono::microseconds> timeout) const;
-
-  public:
     /*!
      * \brief
      * 送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する。
@@ -137,7 +139,8 @@ class WEBCFACE_DLL Client : public Member {
      * \sa start(), loopSyncFor(), loopSyncUntil(), loopSync()
      */
     const Client &sync() const {
-        return syncImpl(std::chrono::microseconds(0));
+        wcfSync(data);
+        return *this;
     }
     /*!
      * \brief
@@ -153,7 +156,8 @@ class WEBCFACE_DLL Client : public Member {
      * \sa sync(), loopSyncUntil(), loopSync()
      */
     const Client &loopSyncFor(std::chrono::microseconds timeout) const {
-        return syncImpl(timeout);
+        wcfLoopSyncFor(data, timeout.count());
+        return *this;
     }
     /*!
      * \brief
@@ -167,8 +171,9 @@ class WEBCFACE_DLL Client : public Member {
     template <typename Clock, typename Duration>
     const Client &
     loopSyncUntil(std::chrono::time_point<Clock, Duration> timeout) const {
-        return syncImpl(std::chrono::duration_cast<std::chrono::microseconds>(
-            timeout - Clock::now()));
+        return loopSyncFor(
+            std::chrono::duration_cast<std::chrono::microseconds>(
+                timeout - Clock::now()));
     }
     /*!
      * \brief
@@ -181,35 +186,11 @@ class WEBCFACE_DLL Client : public Member {
      *
      * \sa sync(), loopSyncFor(), loopSyncUntil()
      */
-    const Client &loopSync() const { return syncImpl(std::nullopt); }
-
-    // /*!
-    //  * \brief 別スレッドでsync()を自動的に呼び出す間隔を設定する。
-    //  * \since ver2.0
-    //  *
-    //  * * start() や waitConnection() より前に設定する必要がある。
-    //  * *
-    //  autoSyncが有効の場合、別スレッドで一定間隔(100μs)ごとにsync()が呼び出され、
-    //  * 各種コールバック (onEntry, onChange, Func::run()など)
-    //  * も別のスレッドで呼ばれることになる
-    //  * (そのためmutexなどを適切に設定すること)
-    //  * * デフォルトでは無効なので、手動でsync()などを呼び出す必要がある
-    //  *
-    //  * \param enabled trueにすると自動でsync()が呼び出されるようになる
-    //  * \sa sync(), loopSyncFor(), loopSyncUntil(), loopSync()
-    //  */
-    // void autoSync(bool enabled);
-
-  private:
-    Member member(const SharedString &name) const {
-        if (name.empty()) {
-            return *this;
-        } else {
-            return Member{data, name};
-        }
+    const Client &loopSync() const {
+        wcfLoopSync(data);
+        return *this;
     }
 
-  public:
     /*!
      * \brief 他のmemberにアクセスする
      *
@@ -218,7 +199,11 @@ class WEBCFACE_DLL Client : public Member {
      * \sa members(), onMemberEntry()
      */
     Member member(std::string_view name) const {
-        return member(SharedString::encode(name));
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, SharedString::encode(name)};
+        }
     }
     /*!
      * \brief 他のmemberにアクセスする (wstring)
@@ -228,7 +213,11 @@ class WEBCFACE_DLL Client : public Member {
      * \sa members(), onMemberEntry()
      */
     Member member(std::wstring_view name) const {
-        return member(SharedString::encode(name));
+        if (name.empty()) {
+            return *this;
+        } else {
+            return Member{data, SharedString::encode(name)};
+        }
     }
     /*!
      * \brief サーバーに接続されている他のmemberのリストを得る。
@@ -236,15 +225,17 @@ class WEBCFACE_DLL Client : public Member {
      * 自分自身と、無名のmemberを除く。
      * \sa member(), onMemberEntry()
      */
-    std::vector<Member> members();
-    /*!
-     * \brief サーバーに接続されている他のmemberのリストを得る。
-     * \since ver2.0.2 (constつけ忘れ)
-     *
-     * 自分自身と、無名のmemberを除く。
-     * \sa member(), onMemberEntry()
-     */
-    std::vector<Member> members() const;
+    std::vector<Member> members() const {
+        int members_num;
+        wcfMemberList(data, nullptr, 0, &members_num);
+        std::vector<const char *> member_names(members_num);
+        wcfMemberList(data, member_names.data(), members_num, nullptr);
+        std::vector<Member> members;
+        for (auto name : member_names) {
+            members.push_back(member(name));
+        }
+        return members;
+    }
     /*!
      * \brief Memberが追加された時のイベント
      *
@@ -253,7 +244,18 @@ class WEBCFACE_DLL Client : public Member {
      * \sa member(), members()
      */
     const Client &
-    onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
+    onMemberEntry(std::function<void WEBCFACE_CALL_FP(Member)> callback) {
+        on_member_entry_ = std::move(callback);
+        wcfMemberEntryEvent(
+            data,
+            [](const char *name, void *this_v) {
+                auto this_ = static_cast<Client *>(this_v);
+                this_->on_member_entry_(
+                    Member{this_->data, SharedString::encode(name)});
+            },
+            this);
+        return *this;
+    }
 
     /*!
      * \brief webcfaceに出力するstreambuf
@@ -333,7 +335,9 @@ class WEBCFACE_DLL Client : public Member {
      * \brief WebCFaceサーバーのバージョン情報
      *
      */
-    const std::string &serverVersion() const;
+    std::string_view serverVersion() const{
+        return wcfServerVersion(data);
+    }
     /*!
      * \brief WebCFaceサーバーの識別情報
      *
@@ -341,12 +345,16 @@ class WEBCFACE_DLL Client : public Member {
      * \sa serverVersion()
      *
      */
-    const std::string &serverName() const;
+    std::string_view serverName() const{
+        return wcfServerName(data);
+    }
     /*!
      * \brief サーバーのホスト名
      * \since ver2.0
      */
-    const std::string &serverHostName() const;
+    std::string_view serverHostName() const{
+        return wcfServerHostName(data);
+    }
 };
 
 WEBCFACE_NS_END

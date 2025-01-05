@@ -1,3 +1,4 @@
+#include "src/c_wcf/c_wcf_internal.h"
 #include "webcface/common/internal/message/pack.h"
 #include "webcface/common/internal/message/func.h"
 #include "webcface/common/internal/message/log.h"
@@ -280,25 +281,61 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     return message::packDone(buffer, len);
 }
 
-std::vector<Member> Client::members() {
-    return static_cast<const Client *>(this)->members();
-}
-std::vector<Member> Client::members() const {
-    std::lock_guard lock(data->entry_m);
-    std::vector<Member> ret;
-    ret.reserve(data->member_entry.size());
-    for (const auto &m : data->member_entry) {
-        ret.push_back(member(m));
+extern "C" wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size,
+                                   int *members_num) {
+    *members_num = 0;
+    if (size < 0) {
+        return WCF_INVALID_ARGUMENT;
     }
-    return ret;
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    std::lock_guard lock(wcli_->entry_m);
+    *members_num = static_cast<int>(wcli_->member_entry.size());
+    std::size_t i = 0;
+    for (const auto &m : wcli_->member_entry) {
+        if (i >= static_cast<std::size_t>(size)) {
+            break;
+        }
+        list[i++] = m.decode().c_str();
+    }
+    return WCF_OK;
 }
-const Client &
-Client::onMemberEntry(std::function<void(Member)> callback) const {
-    std::lock_guard lock(data->event_m);
-    data->member_entry_event =
-        std::make_shared<std::function<void(Member)>>(std::move(callback));
-    return *this;
+extern "C" wcfStatus wcfMemberListW(wcfClient *wcli, const wchar_t **list,
+                                    int size, int *members_num) {
+    *members_num = 0;
+    if (size < 0) {
+        return WCF_INVALID_ARGUMENT;
+    }
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    std::lock_guard lock(wcli_->entry_m);
+    *members_num = static_cast<int>(wcli_->member_entry.size());
+    std::size_t i = 0;
+    for (const auto &m : wcli_->member_entry) {
+        if (i >= static_cast<std::size_t>(size)) {
+            break;
+        }
+        list[i++] = m.decodeW().c_str();
+    }
+    return WCF_OK;
 }
+extern "C" wcfStatus wcfMemberEntryEvent(wcfClient *wcli,
+                                         wcfEventCallback1 callback,
+                                         void *user_data) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    std::lock_guard lock(wcli_->event_m);
+    wcli_->member_entry_event =
+        std::make_shared<internal::ClientData::CCallback1>(callback, user_data);
+    return WCF_OK;
+}
+extern "C" wcfStatus wcfMemberEntryEventW(wcfClient *wcli,
+                                          wcfEventCallback1W callback,
+                                          void *user_data) {
+    WCF_GET_WCLI(WCF_BAD_WCLI);
+    std::lock_guard lock(wcli_->event_m);
+    wcli_->member_entry_event =
+        std::make_shared<internal::ClientData::CCallback1>(callback, user_data);
+    return WCF_OK;
+}
+
 // \private
 static std::streambuf *
 getLoggerBuf(const std::shared_ptr<internal::ClientData> &data,
@@ -371,8 +408,18 @@ std::wostream &Client::loggerWOStream(std::wstring_view name) const {
     std::lock_guard lock(data->logger_m);
     return getLoggerWOS(data, SharedString::encode(name));
 }
-const std::string &Client::serverVersion() const { return data->svr_version; }
-const std::string &Client::serverName() const { return data->svr_name; }
-const std::string &Client::serverHostName() const { return data->svr_hostname; }
+
+extern "C" const char *wcfServerVersion(wcfClient *wcli) {
+    WCF_GET_WCLI("");
+    return wcli_->svr_version.c_str();
+}
+extern "C" const char *wcfServerName(wcfClient *wcli) {
+    WCF_GET_WCLI("");
+    return wcli_->svr_name.c_str();
+}
+extern "C" const char *wcfServerHostName(wcfClient *wcli) {
+    WCF_GET_WCLI("");
+    return wcli_->svr_hostname.c_str();
+}
 
 WEBCFACE_NS_END

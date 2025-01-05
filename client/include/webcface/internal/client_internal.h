@@ -81,8 +81,10 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         StrMap1<std::shared_ptr<TextData>> text_data;
         StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
         StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
-        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev, canvas3d_data;
-        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev, canvas2d_data;
+        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev,
+            canvas3d_data;
+        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev,
+            canvas2d_data;
         StrMap1<ImageData> image_data;
         StrMap1<std::vector<LogLineData>> log_data;
         StrMap1<std::shared_ptr<FuncData>> func_data;
@@ -350,7 +352,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
-    SyncDataStore2<std::shared_ptr<RobotModelData> >robot_model_store;
+    SyncDataStore2<std::shared_ptr<RobotModelData>> robot_model_store;
     SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
     SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
     SyncDataStore2<std::shared_ptr<LogData>> log_store;
@@ -389,6 +391,41 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         return 0;
     }
 
+    class CCallback1 {
+        std::variant<std::nullptr_t, wcfEventCallback1, wcfEventCallback1W>
+            callback;
+        void *user_data;
+
+      public:
+        CCallback1() = default;
+        CCallback1(wcfEventCallback1 cb, void *ud)
+            : callback(cb), user_data(ud) {}
+        CCallback1(wcfEventCallback1W cb, void *ud)
+            : callback(cb), user_data(ud) {}
+        CCallback1(const CCallback1 &) = delete;
+        CCallback1 &operator=(const CCallback1 &) = delete;
+        CCallback1(CCallback1 &&) = delete;
+        CCallback1 &operator=(CCallback1 &&) = delete;
+        ~CCallback1() = default;
+
+        void operator()(const SharedString &name) const {
+            switch (callback.index()) {
+            case 1:
+                if (std::get<1>(callback)) {
+                    std::get<1>(callback)(name.decode().c_str(), user_data);
+                }
+                break;
+            case 2:
+                if (std::get<2>(callback)) {
+                    std::get<2>(callback)(name.decodeW().c_str(), user_data);
+                }
+                break;
+            default:
+                break;
+            }
+        }
+    };
+
     /*!
      * \brief コールバックリスト(のmapなど)にアクセスするときにロック
      *
@@ -400,7 +437,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * なのでmapになっていないmember_entry_eventもnullの可能性がある
      */
-    std::shared_ptr<std::function<void(Member)>> member_entry_event;
+    std::shared_ptr<CCallback1> member_entry_event;
 
     StrMap2<std::shared_ptr<std::function<void(Value)>>> value_change_event;
     StrMap2<std::shared_ptr<std::function<void(Variant)>>> text_change_event;
@@ -426,8 +463,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas3d_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>>
-        log_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::mutex logger_m;

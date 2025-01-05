@@ -10,11 +10,11 @@
 WEBCFACE_NS_BEGIN
 inline namespace c_wcf {
 template <typename CharT>
-inline std::basic_string<CharT> strOrEmpty(const CharT *p) {
+inline SharedString strOrEmpty(const CharT *p) {
     if (p) {
-        return p;
+        return SharedString::encode(p);
     } else {
-        return std::basic_string<CharT>();
+        return SharedString();
     }
 }
 
@@ -81,7 +81,7 @@ struct CharType<wchar_t> {
  * wcfInit時にnewして追加、wcfClose時にdeleteして削除する
  *
  */
-inline std::vector<wcfClient *> wcli_list;
+inline std::vector<void *> wcli_list;
 
 /*!
  * \brief wcfFuncRunAsyncで取得されたwcfPromiseのリスト
@@ -98,13 +98,18 @@ inline std::vector<Promise *> func_result_list;
  * Clientのポインタ、またはwcliがwcfInitで生成されたポインタでなければnullptr
  *
  */
-inline Client *getWcli(wcfClient *wcli) {
+inline std::shared_ptr<internal::ClientData> getWcli(wcfClient *wcli) {
     if (std::find(wcli_list.begin(), wcli_list.end(), wcli) ==
         wcli_list.end()) {
         return nullptr;
     }
-    return static_cast<Client *>(wcli);
+    return *static_cast<std::shared_ptr<internal::ClientData> *>(wcli);
 }
+#define WCF_GET_WCLI(bad)                                                      \
+    auto wcli_ = getWcli(wcli);                                                \
+    if (!wcli_) {                                                              \
+        return bad;                                                            \
+    }
 
 inline Promise *getPromise(wcfPromise *res) {
     if (std::find(func_result_list.begin(), func_result_list.end(), res) ==
