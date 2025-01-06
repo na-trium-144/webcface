@@ -87,8 +87,8 @@ static auto entries(const Field *this_, S &store) {
     std::vector<V> ret;
     for (const auto &f : keys) {
         if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+            f.first.startsWith(this_->field_.u8String() + field_separator)) {
+            ret.emplace_back(this_->child(f.first));
         }
     }
     return ret;

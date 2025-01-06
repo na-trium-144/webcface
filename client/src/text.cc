@@ -73,7 +73,7 @@ std::optional<ValAdaptor> Variant::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return std::nullopt;
     }
@@ -82,7 +82,7 @@ const ValAdaptor &Variant::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return ValAdaptor::emptyVal();
     }
@@ -91,7 +91,7 @@ std::optional<std::string> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asString();
+        return v->asString();
     } else {
         return std::nullopt;
     }
@@ -100,7 +100,7 @@ const std::string &Text::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asStringRef();
+        return v->asStringRef();
     } else {
         return SharedString::emptyStr();
     }
@@ -109,7 +109,7 @@ std::optional<std::wstring> Text::tryGetW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWString();
+        return v->asWString();
     } else {
         return std::nullopt;
     }
@@ -118,7 +118,7 @@ const std::wstring &Text::getW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWStringRef();
+        return v->asWStringRef();
     } else {
         return SharedString::emptyStrW();
     }

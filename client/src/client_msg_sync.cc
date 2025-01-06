@@ -14,6 +14,8 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
+#include "webcface/internal/log_history.h"
+#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -130,8 +132,12 @@ internal::ClientData::SyncMutexedData::syncData(internal::ClientData *this_,
     SyncDataSnapshot data;
     data.time = std::chrono::system_clock::now();
 
-    // std::lock_guard value_lock(this_->value_store.mtx);
-    data.value_data = this_->value_store.transferSend(is_first);
+    {
+        std::lock_guard value_lock(this_->value_store.mtx);
+        data.value_data = this_->value_store.transferSend(is_first);
+        data.value_entry_data =
+            this_->value_store.getEntry(this_->self_member_name);
+    }
     // std::lock_guard text_lock(this_->text_store.mtx);
     data.text_data = this_->text_store.transferSend(is_first);
     // std::lock_guard robot_model_lock(this_->robot_model_store.mtx);
@@ -176,10 +182,19 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     message::pack(buffer, len, message::Sync{data.time});
 
     for (const auto &v : data.value_data) {
-        message::pack(buffer, len, message::Value{{}, v.first, v.second});
+        message::pack(
+            buffer, len,
+            message::Value{
+                {},
+                v.first,
+                std::const_pointer_cast<std::vector<double>>(v.second),
+                data.value_entry_data.at(v.first)});
     }
     for (const auto &v : data.text_data) {
-        message::pack(buffer, len, message::Text{{}, v.first, v.second});
+        message::pack(
+            buffer, len,
+            message::Text{
+                {}, v.first, std::const_pointer_cast<ValAdaptor>(v.second)});
     }
     for (const auto &v : data.robot_model_data) {
         std::vector<std::shared_ptr<message::RobotLink>> links;
@@ -264,7 +279,7 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &v : data.image_data) {
         message::pack(buffer, len,
-                      message::Image{v.first, v.second.toMessage()});
+                      message::Image{v.first, v.second->toMessage()});
     }
 
     for (const auto &v : data.log_data) {

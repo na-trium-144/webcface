@@ -78,10 +78,9 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     request();
     if (vb) {
         std::vector<Canvas3DComponent> v;
-        v.reserve((*vb)->data_ids.size());
-        for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
+        v.reserve(vb->data_ids.size());
+        for (const auto &id : vb->data_ids) {
+            v.emplace_back(vb->components.at(id.u8String()), this->data_w, id);
         }
         return v;
     } else {

@@ -4,98 +4,88 @@
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/field.h"
-#include <type_traits>
 #include "webcface/internal/func_internal.h"
 #include "webcface/image_frame.h"
 #include "webcface/robot_link.h"
 #include "webcface/internal/robot_link_internal.h"
-#include "webcface/log.h"
+#include "webcface/internal/log_history.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
-/*!
- * \brief setSend時にこれを実際に送信すべきかどうか
- * \private
- */
-template <typename T>
-static bool shouldSend(const T &prev, const T &current) {
-    if constexpr (std::is_same_v<T, std::shared_ptr<ValueData>> ||
-                  std::is_same_v<T, std::shared_ptr<TextData>>) {
-        return *prev != *current;
-    } else if constexpr (std::is_same_v<T, std::string>) {
-        return prev != current;
-    } else if constexpr (std::is_same_v<T, std::shared_ptr<FuncData>>) {
-        // Funcは内容が変更されても2回目以降送信しない
-        return false;
-    } else {
-        return true;
-    }
-}
 
-template <typename T, typename ReqT>
-SyncDataStore2<T, ReqT>::SyncDataStore2(const SharedString &name)
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+SyncDataStore2<T, ResendCondition, ReqT, EntryT>::SyncDataStore2(
+    const SharedString &name)
     : self_member_name(name) {}
 
-template <typename T, typename ReqT>
-bool SyncDataStore2<T, ReqT>::isSelf(const SharedString &member) const {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+bool SyncDataStore2<T, ResendCondition, ReqT, EntryT>::isSelf(
+    const SharedString &member) const {
     return member == self_member_name;
 }
 
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setSend(const FieldBase &base, const T &data) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setSend(
+    const FieldBase &base, const std::shared_ptr<T> &data) {
     setSend(base.field_, data);
 }
 
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setSend(const SharedString &name, const T &data) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setSend(
+    const SharedString &name, const std::shared_ptr<T> &data) {
     std::lock_guard lock(mtx);
     data_send[name] = data;
     // auto &recv_self = data_recv[self_member_name];
     // recv_self[name] = data; // 送信後に自分の値を参照する用
 }
 
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setRecv(const FieldBase &base, const T &data) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setRecv(
+    const FieldBase &base, const std::shared_ptr<T> &data) {
     setRecv(base.member_, base.field_, data);
 }
 
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setRecv(const SharedString &from,
-                                      const SharedString &name, const T &data) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setRecv(
+    const SharedString &from, const SharedString &name,
+    const std::shared_ptr<T> &data) {
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
 }
 
-template <typename T, typename ReqT>
-StrSet1 SyncDataStore2<T, ReqT>::getEntry(const FieldBase &base) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+StrMap1<EntryT> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
+    const FieldBase &base) {
     return getEntry(base.member_);
 }
-template <typename T, typename ReqT>
-StrSet1 SyncDataStore2<T, ReqT>::getEntry(const SharedString &name) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+StrMap1<EntryT> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
+    const SharedString &name) {
     std::lock_guard lock(mtx);
     auto e = entry.find(name);
     if (e != entry.end()) {
         return e->second;
     } else {
-        return StrSet1{};
+        return StrMap1<EntryT>{};
     }
 }
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::initMember(const SharedString &from) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::initMember(
+    const SharedString &from) {
     std::lock_guard lock(mtx);
     entry[from].clear();
     data_recv[from].clear();
 }
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::setEntry(const SharedString &from,
-                                       const SharedString &e) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setEntry(
+    const SharedString &from, const SharedString &e, const EntryT &e_data) {
     std::lock_guard lock(mtx);
-    entry[from].emplace(e);
+    entry[from].emplace(e, e_data);
 }
 
-template <typename T, typename ReqT>
-unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
-                                             const SharedString &field) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+unsigned int SyncDataStore2<T, ResendCondition, ReqT, EntryT>::addReq(
+    const SharedString &member, const SharedString &field) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member][field] == 0) {
         unsigned int max_req = 0;
@@ -111,10 +101,9 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
     }
     return 0;
 }
-template <typename T, typename ReqT>
-unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
-                                             const SharedString &field,
-                                             const ReqT &info) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+unsigned int SyncDataStore2<T, ResendCondition, ReqT, EntryT>::addReq(
+    const SharedString &member, const SharedString &field, const ReqT &info) {
     std::lock_guard lock(mtx);
     if (!isSelf(member) &&
         (req[member][field] == 0 || this->req_info[member][field] != info)) {
@@ -133,20 +122,21 @@ unsigned int SyncDataStore2<T, ReqT>::addReq(const SharedString &member,
     return 0;
 }
 
-template <typename T, typename ReqT>
-const ReqT &SyncDataStore2<T, ReqT>::getReqInfo(const SharedString &member,
-                                                const SharedString &field) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+const ReqT &SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getReqInfo(
+    const SharedString &member, const SharedString &field) {
     return req_info[member][field];
 }
 
 
-template <typename T, typename ReqT>
-std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const FieldBase &base) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+std::shared_ptr<T> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getRecv(
+    const FieldBase &base) {
     return getRecv(base.member_, base.field_);
 }
-template <typename T, typename ReqT>
-std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
-                                                  const SharedString &name) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+std::shared_ptr<T> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getRecv(
+    const SharedString &from, const SharedString &name) {
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
         auto it = data_send.find(name);
@@ -162,15 +152,16 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
             return it->second;
         }
     }
-    return std::nullopt;
+    return nullptr;
 }
-template <typename T, typename ReqT>
-bool SyncDataStore2<T, ReqT>::unsetRecv(const FieldBase &base) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+bool SyncDataStore2<T, ResendCondition, ReqT, EntryT>::unsetRecv(
+    const FieldBase &base) {
     return unsetRecv(base.member_, base.field_);
 }
-template <typename T, typename ReqT>
-bool SyncDataStore2<T, ReqT>::unsetRecv(const SharedString &from,
-                                        const SharedString &name) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+bool SyncDataStore2<T, ResendCondition, ReqT, EntryT>::unsetRecv(
+    const SharedString &from, const SharedString &name) {
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
@@ -181,23 +172,24 @@ bool SyncDataStore2<T, ReqT>::unsetRecv(const SharedString &from,
     }
     return false;
 }
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::clearRecv(const FieldBase &base) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::clearRecv(
+    const FieldBase &base) {
     clearRecv(base.member_, base.field_);
 }
-template <typename T, typename ReqT>
-void SyncDataStore2<T, ReqT>::clearRecv(const SharedString &from,
-                                        const SharedString &name) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::clearRecv(
+    const SharedString &from, const SharedString &name) {
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
         data_recv.at(from).erase(name);
     }
     return;
 }
-template <typename T, typename ReqT>
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 std::pair<SharedString, SharedString>
-SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
-                                const SharedString &sub_field) {
+SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getReq(
+    unsigned int req_id, const SharedString &sub_field) {
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
@@ -219,14 +211,15 @@ SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
     return std::make_pair(nullptr, nullptr);
 }
 
-template <typename T, typename ReqT>
-StrMap1<T> SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+StrMap1<std::shared_ptr<T>>
+SyncDataStore2<T, ResendCondition, ReqT, EntryT>::transferSend(bool is_first) {
     std::lock_guard lock(mtx);
-    StrMap1<T> send_changed;
+    StrMap1<std::shared_ptr<T>> send_changed;
     auto &recv_self = data_recv[self_member_name];
     for (auto &[name, data] : data_send) {
         auto r_it = recv_self.find(name);
-        if (r_it == recv_self.end() || shouldSend(r_it->second, data)) {
+        if (r_it == recv_self.end() || ResendCondition::shouldResend(r_it->second, data)) {
             send_changed[name] = data;
             recv_self[name] = std::move(data);
         }
@@ -239,18 +232,20 @@ StrMap1<T> SyncDataStore2<T, ReqT>::transferSend(bool is_first) {
         return send_changed;
     }
 }
-template <typename T, typename ReqT>
-StrMap1<T> SyncDataStore2<T, ReqT>::getSendPrev(bool is_first) {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+StrMap1<std::shared_ptr<T>>
+SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getSendPrev(bool is_first) {
     std::lock_guard lock(mtx);
     if (is_first) {
-        return StrMap1<T>{};
+        return StrMap1<std::shared_ptr<T>>{};
     } else {
         return data_send_prev;
     }
 }
 
-template <typename T, typename ReqT>
-StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+StrMap2<unsigned int>
+SyncDataStore2<T, ResendCondition, ReqT, EntryT>::transferReq() {
     std::lock_guard lock(mtx);
     // if (is_first) {
     // req_send.clear();
@@ -260,15 +255,17 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
     // }
 }
 
-template class SyncDataStore2<std::string, int>; // test用
-template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
-template class SyncDataStore2<std::shared_ptr<TextData>, int>;
-template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
-template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
-template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
-template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>, int>;
-template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>, int>;
-template class SyncDataStore2<ImageData, message::ImageReq>;
-template class SyncDataStore2<std::shared_ptr<LogData>, int>;
+template class SyncDataStore2<const std::string, ResendOnChange>; // test用
+template class SyncDataStore2<const std::vector<double>, ResendOnChange, int,
+                              std::optional<std::vector<std::size_t>>>;
+template class SyncDataStore2<const ValAdaptor, ResendOnChange>;
+template class SyncDataStore2<FuncInfo, ResendNever>;
+template class SyncDataStore2<const std::vector<std::shared_ptr<internal::RobotLinkData>>>;
+template class SyncDataStore2<const ImageFrame, ResendAlways,
+                              message::ImageReq>;
+template class SyncDataStore2<const message::ViewData>;
+template class SyncDataStore2<const message::Canvas3DData>;
+template class SyncDataStore2<const message::Canvas2DData>;
+template class SyncDataStore2<LogHistory>;
 } // namespace internal
 WEBCFACE_NS_END

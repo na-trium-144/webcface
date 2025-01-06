@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/log_history.h"
 #include <webcface/internal/logger.h>
 
 using namespace webcface;
@@ -31,13 +32,13 @@ TEST_F(LoggerTest, loggerBuf) {
     std::cerr.rdbuf(&b);
     std::cerr << "c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
-    ASSERT_EQ((*ls)->data.size(), 3u);
-    EXPECT_EQ((*ls)->data[0].level_, 2);
-    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
-    EXPECT_EQ((*ls)->data[1].level_, 2);
-    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
-    EXPECT_EQ((*ls)->data[2].level_, 2);
-    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
+    ASSERT_EQ(ls->data.size(), 3u);
+    EXPECT_EQ(ls->data[0].level_, 2);
+    EXPECT_EQ(ls->data[0].message_.u8String(), "a");
+    EXPECT_EQ(ls->data[1].level_, 2);
+    EXPECT_EQ(ls->data[1].message_.u8String(), "b");
+    EXPECT_EQ(ls->data[2].level_, 2);
+    EXPECT_EQ(ls->data[2].message_.u8String(), "c");
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
@@ -48,12 +49,12 @@ TEST_F(LoggerTest, loggerBufW) {
     std::wcerr.rdbuf(&b);
     std::wcerr << L"c" << std::endl;
     auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
-    ASSERT_EQ((*ls)->data.size(), 3u);
-    EXPECT_EQ((*ls)->data[0].level_, 2);
-    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
-    EXPECT_EQ((*ls)->data[1].level_, 2);
-    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
-    EXPECT_EQ((*ls)->data[2].level_, 2);
-    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
+    ASSERT_EQ(ls->data.size(), 3u);
+    EXPECT_EQ(ls->data[0].level_, 2);
+    EXPECT_EQ(ls->data[0].message_.u8String(), "a");
+    EXPECT_EQ(ls->data[1].level_, 2);
+    EXPECT_EQ(ls->data[1].message_.u8String(), "b");
+    EXPECT_EQ(ls->data[2].level_, 2);
+    EXPECT_EQ(ls->data[2].message_.u8String(), "c");
     std::wcerr.rdbuf(wcerr_buf);
 }

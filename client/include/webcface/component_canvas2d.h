@@ -31,7 +31,7 @@ enum class Canvas2DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas2DComponent {
-    std::shared_ptr<message::Canvas2DComponentData> msg_data;
+    std::shared_ptr<const message::Canvas2DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
     SharedString id_;
 
@@ -45,7 +45,7 @@ class WEBCFACE_DLL Canvas2DComponent {
     Canvas2DComponent();
 
     Canvas2DComponent(
-        const std::shared_ptr<message::Canvas2DComponentData> &msg_data,
+        const std::shared_ptr<const message::Canvas2DComponentData> &msg_data,
         const std::weak_ptr<internal::ClientData> &data_w,
         const SharedString &id);
 

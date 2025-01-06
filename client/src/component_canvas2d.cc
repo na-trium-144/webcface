@@ -12,7 +12,7 @@ std::wstring Canvas2DComponent::idW() const { return id_.decodeW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
-    const std::shared_ptr<message::Canvas2DComponentData> &msg_data,
+    const std::shared_ptr<const message::Canvas2DComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
     : msg_data(msg_data), data_w(data_w), id_(id) {}
 

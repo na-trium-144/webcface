@@ -102,7 +102,7 @@ TEST_F(ViewTest, viewSet) {
     EXPECT_EQ(manip_called, 1);
     v.sync();
     EXPECT_EQ(callback_called, 1);
-    auto &view_data_base = **data_->view_store.getRecv(self_name, "b"_ss);
+    auto &view_data_base = *data_->view_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(view_data_base.components.size(), 11u);
     EXPECT_EQ(view_data_base.data_ids.size(), 11u);
     std::vector<std::shared_ptr<message::ViewComponentData>> view_data;
@@ -202,7 +202,7 @@ TEST_F(ViewTest, viewSet) {
     v.init();
     v.sync();
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->data_ids.size(),
+    EXPECT_EQ(data_->view_store.getRecv(self_name, "b"_ss)->data_ids.size(),
               0u);
 
     {
@@ -210,7 +210,7 @@ TEST_F(ViewTest, viewSet) {
         v2 << "a";
     }
     EXPECT_EQ(callback_called, 3);
-    EXPECT_EQ((*data_->view_store.getRecv(self_name, "b"_ss))->data_ids.size(),
+    EXPECT_EQ(data_->view_store.getRecv(self_name, "b"_ss)->data_ids.size(),
               1u);
 
     {

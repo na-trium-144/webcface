@@ -85,7 +85,7 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
     auto v = dataLock()->robot_model_store.getRecv(*this);
     if (v) {
         std::vector<RobotLink> links;
-        for (const auto &ln_msg : **v) {
+        for (const auto &ln_msg : *v) {
             links.emplace_back(ln_msg);
         }
         return links;

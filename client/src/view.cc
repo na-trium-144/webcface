@@ -38,14 +38,11 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
     std::unordered_map<ViewComponentType, int> idx_next;
     auto data = target_.setCheck();
     auto components_p = std::make_shared<message::ViewData>();
-    components_p->data_ids.reserve(components_.size());
-    for (std::size_t i = 0; i < components_.size(); i++) {
+    components_p->reserve(components_.size());
+    for (auto &vc : components_) {
         std::shared_ptr<internal::TemporalViewComponentData> msg_data =
-            components_[i].lockTmp(data, target_.field_, &idx_next);
-        components_p->components.emplace(
-            msg_data->id.u8String(),
-            std::static_pointer_cast<message::ViewComponentData>(msg_data));
-        components_p->data_ids.push_back(msg_data->id);
+            vc.lockTmp(data, target_.field_, &idx_next);
+        components_p->emplace_back(msg_data->id, msg_data);
     }
     data->view_store.setSend(target_, components_p);
 
@@ -151,11 +148,10 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
     auto vb = dataLock()->view_store.getRecv(*this);
     if (vb) {
         std::vector<ViewComponent> v;
-        v.reserve((*vb)->data_ids.size());
-        for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
-        }
+        v.reserve(vb->data_ids.size());
+        vb->forEach([&](const auto &id, const auto &component) {
+            v.emplace_back(component, this->data_w, id);
+        });
         return v;
     } else {
         return std::nullopt;

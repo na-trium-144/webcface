@@ -12,13 +12,12 @@
 #include "webcface/common/encoding.h"
 #include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
-#include "webcface/log.h"
+#include "webcface/log_line.h"
 #include "queue.h"
 #include "webcface/func_result.h"
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
-#include "webcface/image_frame.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -76,15 +75,16 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     struct SyncDataSnapshot {
         std::chrono::system_clock::time_point time;
-        StrMap1<std::shared_ptr<ValueData>> value_data;
-        StrMap1<std::shared_ptr<TextData>> text_data;
-        StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
-        StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
-        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev, canvas3d_data;
-        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev, canvas2d_data;
-        StrMap1<ImageData> image_data;
+        typename ValueStore::Map1 value_data;
+        StrMap1<std::optional<std::vector<std::size_t>>> value_entry_data;
+        typename TextStore::Map1 text_data;
+        typename RobotModelStore::Map1 robot_model_data;
+        typename ViewStore::Map1 view_prev, view_data;
+        typename Canvas3DStore::Map1 canvas3d_prev, canvas3d_data;
+        typename Canvas2DStore::Map1 canvas2d_prev, canvas2d_data;
+        typename ImageStore::Map1 image_data;
         StrMap1<std::vector<LogLineData>> log_data;
-        StrMap1<std::shared_ptr<FuncData>> func_data;
+        typename FuncStore::Map1 func_data;
     };
 
     struct SyncDataFirst {
@@ -344,15 +344,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     std::mutex entry_m;
     StrSet1 member_entry;
-    SyncDataStore2<std::shared_ptr<ValueData>> value_store;
-    SyncDataStore2<std::shared_ptr<TextData>> text_store;
-    SyncDataStore2<std::shared_ptr<FuncData>> func_store;
-    SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
-    SyncDataStore2<ImageData, message::ImageReq> image_store;
-    SyncDataStore2<std::shared_ptr<RobotModelData> >robot_model_store;
-    SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
-    SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
-    SyncDataStore2<std::shared_ptr<LogData>> log_store;
+    ValueStore value_store;
+    TextStore text_store;
+    FuncStore func_store;
+    ViewStore view_store;
+    ImageStore image_store;
+    RobotModelStore robot_model_store;
+    Canvas3DStore canvas3d_store;
+    Canvas2DStore canvas2d_store;
+    LogStore log_store;
     SyncDataStore1<std::chrono::system_clock::time_point> sync_time_store;
     FuncResultStore func_result_store;
 

@@ -1,30 +1,62 @@
 #pragma once
-#include <deque>
 #include <mutex>
+#include <memory>
 #include <optional>
 #include "webcface/field.h"
-#include "webcface/log.h"
 #include "webcface/common/val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
+
+struct ResendAlways {
+    template <typename T>
+    static bool shouldResend(const T &, const T &) {
+        return true;
+    }
+};
+struct ResendNever {
+    template <typename T>
+    static bool shouldResend(const T &, const T &) {
+        return false;
+    }
+};
+struct ResendOnChange {
+    template <typename T>
+    static bool shouldResend(const T &prev, const T &current) {
+        return *prev != *current;
+    }
+};
+
 /*!
  * \brief 送受信するデータを保持するクラス
  *
- * memberごとにフィールドを持つデータに使う。
- * member, fieldの2次元mapとなる
- *
- * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
- *
+ * * memberごとにフィールドを持つデータに使う。
+ * member, field の2次元mapとなる
+ * * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
+ * * ImageはReqに追加情報を持つ(ReqT=ImageReq)、それ以外では使用しない(int)
+ * * (ver2.6〜)
+ * ValueはEntryに追加情報を持つ(EntryT=`optional<vector<size_t>>`)、
+ * それ以外では使用しない(int)
+ * * (ver2.6〜) ResendCondition で setSend()
+ * が実際にデータを上書きするかどうかの判断基準を指定。
+ *   * (ver2.5までは data_store2.cc 内の shouldSend() 関数内に記述していた)
+ * * (ver2.6〜) データは std::shared_ptr<T> で保持される
+ *   * DataStore2の data_send, data_send_prev, data_recv および
+ *   ClientDataのsyncバッファーで同じデータが共有される。
+ *   * Tがconstの場合、一度setSend(),setRecv()したデータには変更を加えられない。
+ *   (新しいshared_ptrを作って再度セットする)
+ *     *
+ * なのでgetRecv()から取得したshared_ptrをmutexをロックしない状態で保持しても問題ない。
  */
-template <typename T, typename ReqT = int>
+template <typename T, typename ResendCondition = ResendAlways,
+          typename ReqT = int, typename EntryT = int>
 class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
      *
      */
-    StrMap1<T> data_send;
-    StrMap1<T> data_send_prev;
+    StrMap1<std::shared_ptr<T>> data_send;
+    StrMap1<std::shared_ptr<T>> data_send_prev;
     /*!
      * \brief 送信済みデータ&受信済みデータ
      *
@@ -34,14 +66,14 @@ class SyncDataStore2 {
      * それまでの間はgetRecvはdata_recvではなくdata_sendを優先的に読むようにする
      *
      */
-    StrMap2<T> data_recv;
+    StrMap2<std::shared_ptr<T>> data_recv;
     /*!
      * \brief 受信済みのentry
      *
      * entry[member名] = {データ名のリスト}
      *
      */
-    StrSet2 entry;
+    StrMap2<EntryT> entry;
     /*!
      * \brief データ受信リクエスト
      *
@@ -58,13 +90,15 @@ class SyncDataStore2 {
 
     SharedString self_member_name;
 
-
   public:
     explicit SyncDataStore2(const SharedString &name);
 
     std::recursive_mutex mtx;
 
     bool isSelf(const SharedString &member) const;
+
+    using SharedData = std::shared_ptr<T>;
+    using Map1 = StrMap1<SharedData>;
 
     /*!
      * \brief リクエストを追加
@@ -97,16 +131,16 @@ class SyncDataStore2 {
      * has_sendをtrueにする
      *
      */
-    void setSend(const SharedString &name, const T &data);
-    void setSend(const FieldBase &base, const T &data);
+    void setSend(const SharedString &name, const std::shared_ptr<T> &data);
+    void setSend(const FieldBase &base, const std::shared_ptr<T> &data);
 
     /*!
      * \brief 受信したデータをdata_recvにセット
      *
      */
     void setRecv(const SharedString &from, const SharedString &name,
-                 const T &data);
-    void setRecv(const FieldBase &base, const T &data);
+                 const std::shared_ptr<T> &data);
+    void setRecv(const FieldBase &base, const std::shared_ptr<T> &data);
     /*!
      * \brief 受信したデータを削除
      *
@@ -118,9 +152,9 @@ class SyncDataStore2 {
      * \brief data_recvからデータを返す
      *
      */
-    std::optional<T> getRecv(const SharedString &from,
-                             const SharedString &name);
-    std::optional<T> getRecv(const FieldBase &base);
+    std::shared_ptr<T> getRecv(const SharedString &from,
+                               const SharedString &name);
+    std::shared_ptr<T> getRecv(const FieldBase &base);
     /*!
      * \brief data_recvからデータを削除, reqを消す
      *
@@ -140,14 +174,16 @@ class SyncDataStore2 {
      * \brief 受信したentryを追加
      *
      */
-    void setEntry(const SharedString &from, const SharedString &e);
+    void setEntry(const SharedString &from, const SharedString &e,
+                  const EntryT &e_data = EntryT());
 
     /*!
      * \brief entryを取得
-     *
+     * \todo entryデータまで全部コピーしていて効率が悪い
+     * そもそも外からmutexかけて参照取るとか?
      */
-    StrSet1 getEntry(const SharedString &from);
-    StrSet1 getEntry(const FieldBase &base);
+    StrMap1<EntryT> getEntry(const SharedString &from);
+    StrMap1<EntryT> getEntry(const FieldBase &base);
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す
@@ -166,8 +202,8 @@ class SyncDataStore2 {
      * \brief data_sendを返し、data_sendをクリア
      *
      */
-    StrMap1<T> transferSend(bool is_first);
-    StrMap1<T> getSendPrev(bool is_first);
+    StrMap1<std::shared_ptr<T>> transferSend(bool is_first);
+    StrMap1<std::shared_ptr<T>> getSendPrev(bool is_first);
 
     /*!
      * \brief req_sendを返し、req_sendをクリア
@@ -178,6 +214,7 @@ class SyncDataStore2 {
 
 struct FuncInfo;
 struct RobotLinkData;
+struct LogHistory;
 } // namespace internal
 class ImageFrame;
 namespace message {
@@ -187,44 +224,37 @@ struct Canvas3DData;
 struct ImageReq;
 } // namespace message
 namespace internal {
-using ValueData = std::vector<double>;
-using TextData = ValAdaptor;
-using FuncData = FuncInfo;
-using RobotModelData = std::vector<std::shared_ptr<internal::RobotLinkData>>;
-using ImageData = ImageFrame;
-
-struct LogData {
-    std::deque<LogLineData> data;
-    std::size_t sent_lines = 0;
-
-    LogData() = default;
-    explicit LogData(const std::deque<LogLineData> &data) : data(data) {}
-
-    std::vector<LogLineData> getDiff() {
-        auto begin = data.cbegin() + static_cast<int>(sent_lines);
-        auto end = data.cend();
-        sent_lines = data.size();
-        return std::vector<LogLineData>(begin, end);
-    }
-    std::vector<LogLineData> getAll() {
-        sent_lines = data.size();
-        return std::vector<LogLineData>(data.cbegin(), data.cend());
-    }
-};
+using TestStringStore =
+    SyncDataStore2<const std::string, ResendOnChange>; // test用
+using ValueStore = SyncDataStore2<const std::vector<double>, ResendOnChange,
+                                  int, std::optional<std::vector<std::size_t>>>;
+using TextStore = SyncDataStore2<const ValAdaptor, ResendOnChange>;
+using FuncStore = SyncDataStore2<FuncInfo, ResendNever>;
+using RobotModelStore =
+    SyncDataStore2<const std::vector<std::shared_ptr<internal::RobotLinkData>>>;
+using ImageStore =
+    SyncDataStore2<const ImageFrame, ResendAlways, message::ImageReq>;
+using ViewStore = SyncDataStore2<const message::ViewData>;
+using Canvas3DStore = SyncDataStore2<const message::Canvas3DData>;
+using Canvas2DStore = SyncDataStore2<const message::Canvas2DData>;
+using LogStore = SyncDataStore2<LogHistory>;
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<TextData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>,
-                                     int>;
-extern template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>,
-                                     int>;
-extern template class SyncDataStore2<ImageData, message::ImageReq>;
-extern template class SyncDataStore2<std::shared_ptr<LogData>, int>;
+extern template class SyncDataStore2<const std::string,
+                                     ResendOnChange>; // test用
+extern template class SyncDataStore2<const std::vector<double>, ResendOnChange,
+                                     int,
+                                     std::optional<std::vector<std::size_t>>>;
+extern template class SyncDataStore2<const ValAdaptor, ResendOnChange>;
+extern template class SyncDataStore2<FuncInfo, ResendNever>;
+extern template class SyncDataStore2<
+    const std::vector<std::shared_ptr<internal::RobotLinkData>>>;
+extern template class SyncDataStore2<const ImageFrame, ResendAlways,
+                                     message::ImageReq>;
+extern template class SyncDataStore2<const message::ViewData>;
+extern template class SyncDataStore2<const message::Canvas3DData>;
+extern template class SyncDataStore2<const message::Canvas2DData>;
+extern template class SyncDataStore2<LogHistory>;
 #endif
 
 } // namespace internal

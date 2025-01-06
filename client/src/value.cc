@@ -88,7 +88,7 @@ std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->size() >= 1 ? std::make_optional((**v)[0]) : std::nullopt;
+        return v->size() >= 1 ? std::make_optional((*v)[0]) : std::nullopt;
     }
     auto last_name = lastName();
     if (std::all_of(last_name.cbegin(), last_name.cend(),
@@ -105,7 +105,7 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return std::nullopt;
     }

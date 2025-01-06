@@ -3,6 +3,7 @@
 #include "webcface/common/internal/message/log.h"
 #include "webcface/internal/logger.h"
 #include "webcface/internal/client_internal.h"
+#include "webcface/internal/log_history.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -35,10 +36,10 @@ static void writeLog(internal::ClientData *data_p, const SharedString &field,
     std::lock_guard lock(data_p->log_store.mtx);
     auto v = data_p->log_store.getRecv(data_p->self_member_name, field);
     if (!v) {
-        v.emplace(std::make_shared<internal::LogData>());
+        v = std::make_shared<internal::LogHistory>();
     }
-    (*v)->data.emplace_back(std::move(ll));
-    data_p->log_store.setSend(field, *v);
+    v->data.emplace_back(std::move(ll));
+    data_p->log_store.setSend(field, v);
 }
 
 template <typename CharT>
@@ -111,8 +112,8 @@ std::optional<std::vector<LogLine>> Log::tryGet() const {
     auto v = dataLock()->log_store.getRecv(member_, field_);
     if (v) {
         std::vector<LogLine> log_s;
-        log_s.reserve((*v)->data.size());
-        for (const auto &l : (*v)->data) {
+        log_s.reserve(v->data.size());
+        for (const auto &l : v->data) {
             log_s.emplace_back(l);
         }
         return log_s;
@@ -125,8 +126,8 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
     auto v = dataLock()->log_store.getRecv(member_, field_);
     if (v) {
         std::vector<LogLineW> log_s;
-        log_s.reserve((*v)->data.size());
-        for (const auto &l : (*v)->data) {
+        log_s.reserve(v->data.size());
+        for (const auto &l : v->data) {
             log_s.emplace_back(l);
         }
         return log_s;
@@ -141,7 +142,7 @@ bool Log::exists() const {
 
 const Log &Log::clear() const {
     dataLock()->log_store.setRecv(member_, field_,
-                                  std::make_shared<internal::LogData>());
+                                  std::make_shared<internal::LogHistory>());
     return *this;
 }
 

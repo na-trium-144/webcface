@@ -13,9 +13,9 @@ std::wstring Canvas3DComponent::idW() const { return id_.decodeW(); }
 Canvas3DComponent::Canvas3DComponent() = default;
 
 Canvas3DComponent::Canvas3DComponent(
-    const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+    const std::shared_ptr<const message::Canvas3DComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
-    : msg_data(msg_data), data_w(data_w) , id_(id){}
+    : msg_data(msg_data), data_w(data_w), id_(id) {}
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
     : msg_data() {}
@@ -27,14 +27,14 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(
     const TemporalCanvas3DComponent &other) {
     if (other.msg_data) {
-        msg_data =
-            std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
+        msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
+            *other.msg_data);
     }
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
-    msg_data =
-        std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
+    msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
+        *other.msg_data);
     return *this;
 }
 TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}

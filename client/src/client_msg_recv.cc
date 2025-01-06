@@ -8,6 +8,7 @@
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/internal/log_history.h"
 #include "webcface/log.h"
 #include "webcface/member.h"
 #include "webcface/view.h"
@@ -171,25 +172,14 @@ void internal::ClientData::onRecv(
             auto &r =
                 *static_cast<webcface::message::Res<webcface::message::View> *>(
                     obj.get());
-            std::lock_guard lock_s(this->view_store.mtx);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
-            std::shared_ptr<message::ViewData> vb_prev;
-            if (v_prev) {
-                vb_prev = *v_prev;
-            } else {
-                vb_prev = std::make_shared<message::ViewData>();
-                v_prev.emplace(vb_prev);
-                this->view_store.setRecv(member, field, vb_prev);
-            }
-            if (r.data_ids) {
-                vb_prev->data_ids = std::move(*r.data_ids);
-            }
-            for (const auto &d : r.data_diff) {
-                auto id = SharedString::fromU8String(d.first);
-                vb_prev->components[id.u8String()] = d.second;
-            }
+            this->view_store.setRecv(
+                member, field,
+                std::make_shared<message::ViewData>(
+                    message::ViewData::mergeDiff(v_prev.get(), r.data_diff,
+                                                 std::move(*r.data_ids))));
             std::shared_ptr<std::function<void(View)>> cl;
             {
                 std::lock_guard lock(event_m);
@@ -205,25 +195,14 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Canvas3D> *>(
                 obj.get());
-            std::lock_guard lock_s(this->canvas3d_store.mtx);
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
-            std::shared_ptr<message::Canvas3DData> vv_prev;
-            if (v_prev) {
-                vv_prev = *v_prev;
-            } else {
-                vv_prev = std::make_shared<message::Canvas3DData>();
-                v_prev.emplace(vv_prev);
-                this->canvas3d_store.setRecv(member, field, vv_prev);
-            }
-            if (r.data_ids) {
-                vv_prev->data_ids = std::move(*r.data_ids);
-            }
-            for (const auto &d : r.data_diff) {
-                auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id.u8String()] = d.second;
-            }
+            this->canvas3d_store.setRecv(
+                member, field,
+                std::make_shared<message::Canvas3DData>(
+                    message::Canvas3DData::mergeDiff(v_prev.get(), r.data_diff,
+                                                     std::move(*r.data_ids))));
             std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
                 std::lock_guard lock(event_m);
@@ -239,27 +218,15 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Canvas2D> *>(
                 obj.get());
-            std::lock_guard lock_s(this->canvas2d_store.mtx);
             auto [member, field] =
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
-            std::shared_ptr<message::Canvas2DData> vv_prev;
-            if (v_prev) {
-                vv_prev = *v_prev;
-            } else {
-                vv_prev = std::make_shared<message::Canvas2DData>();
-                v_prev.emplace(vv_prev);
-                this->canvas2d_store.setRecv(member, field, vv_prev);
-            }
-            vv_prev->width = r.width;
-            vv_prev->height = r.height;
-            if (r.data_ids) {
-                vv_prev->data_ids = std::move(*r.data_ids);
-            }
-            for (const auto &d : r.data_diff) {
-                auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id.u8String()] = d.second;
-            }
+            auto v = std::make_shared<message::Canvas2DData>(
+                message::Canvas2DData::mergeDiff(v_prev.get(), r.data_diff,
+                                                 std::move(*r.data_ids)));
+            v->width = r.width;
+            v->height = r.height;
+            this->canvas2d_store.setRecv(member, field, v);
             std::shared_ptr<std::function<void(Canvas2D)>> cl;
             {
                 std::lock_guard lock(event_m);
@@ -274,7 +241,8 @@ void internal::ClientData::onRecv(
         case MessageKind::image + MessageKind::res: {
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Image> *>(obj.get());
-            onRecvRes(this, r, r, this->image_store, this->image_change_event);
+            onRecvRes(this, r, std::make_shared<ImageFrame>(r),
+                      this->image_store, this->image_change_event);
             break;
         }
         case MessageKind::log + MessageKind::res: {
@@ -286,8 +254,8 @@ void internal::ClientData::onRecv(
                 this->log_store.getReq(r.req_id, r.sub_field);
             auto log_s = this->log_store.getRecv(member, field);
             if (!log_s) {
-                log_s = std::make_shared<LogData>();
-                this->log_store.setRecv(member, field, *log_s);
+                log_s = std::make_shared<LogHistory>();
+                this->log_store.setRecv(member, field, log_s);
             }
             int log_keep_lines_local = log_keep_lines.load();
             auto r_begin = r.log->begin();
@@ -297,13 +265,13 @@ void internal::ClientData::onRecv(
                     static_cast<std::size_t>(log_keep_lines_local)) {
                     r_begin = r_end - log_keep_lines_local;
                 }
-                while ((*log_s)->data.size() + (r_end - r_begin) >
+                while (log_s->data.size() + (r_end - r_begin) >
                        static_cast<std::size_t>(log_keep_lines_local)) {
-                    (*log_s)->data.pop_front();
+                    log_s->data.pop_front();
                 }
             }
             for (auto lit = r_begin; lit != r_end; lit++) {
-                (*log_s)->data.emplace_back(*lit);
+                log_s->data.emplace_back(*lit);
             }
             std::shared_ptr<std::function<void(Log)>> cl;
             {
@@ -324,7 +292,7 @@ void internal::ClientData::onRecv(
                 this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{
                         {}, r.caller_id, r.caller_member_id, true}));
-                (*func_info)->run(std::move(r));
+                func_info->run(std::move(r));
             } else {
                 this->messagePushAlways(webcface::message::packSingle(
                     webcface::message::CallResponse{

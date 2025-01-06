@@ -71,7 +71,7 @@ AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
             static_cast<Field>(*this), std::move(args_vec));
         if (func_info) {
             state->setter().reach(true);
-            (*func_info)->run(state->setter());
+            func_info->run(state->setter());
         } else {
             state->setter().reach(false);
         }
@@ -92,14 +92,14 @@ AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
 ValType Func::returnType() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return (*func_info)->return_type;
+        return func_info->return_type;
     }
     return ValType::none_;
 }
 std::vector<Arg> Func::args() const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (func_info) {
-        return (*func_info)->args.value_or(std::vector<Arg>{});
+        return func_info->args.value_or(std::vector<Arg>{});
     }
     return std::vector<Arg>{};
 }
@@ -112,18 +112,18 @@ const Func &Func::setArgs(const std::vector<Arg> &args) const {
     if (!func_info) {
         throw std::invalid_argument("setArgs failed: Func not set");
     } else {
-        if ((*func_info)->args.has_value()) {
-            if ((*func_info)->args->size() != args.size()) {
+        if (func_info->args.has_value()) {
+            if (func_info->args->size() != args.size()) {
                 throw std::invalid_argument(
                     "setArgs failed: Number of args does not match, size: " +
                     std::to_string(args.size()) +
-                    " actual: " + std::to_string((*func_info)->args->size()));
+                    " actual: " + std::to_string(func_info->args->size()));
             }
             for (std::size_t i = 0; i < args.size(); i++) {
-                (*func_info)->args->at(i).mergeConfig(args[i]);
+                func_info->args->at(i).mergeConfig(args[i]);
             }
         } else {
-            (*func_info)->args.emplace(args);
+            func_info->args.emplace(args);
         }
         return *this;
     }
@@ -133,7 +133,7 @@ const Func &Func::setReturnType(ValType return_type) const {
     if (!func_info) {
         throw std::invalid_argument("setReturnType failed: Func not set");
     } else {
-        (*func_info)->return_type = return_type;
+        func_info->return_type = return_type;
         return *this;
     }
 }

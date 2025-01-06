@@ -1,6 +1,7 @@
 #pragma once
 #include <deque>
 #include <string>
+#include <vector>
 #include <unordered_map>
 #include <chrono>
 #include <optional>
@@ -60,7 +61,9 @@ struct MemberData {
      * entry非表示のものも含む。
      *
      */
-    StrMap1<std::shared_ptr<std::vector<double>>> value;
+    StrMap1<std::pair<std::optional<std::vector<std::size_t>>,
+                      std::shared_ptr<std::vector<double>>>>
+        value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;
     StrMap1<message::ViewData> view;
