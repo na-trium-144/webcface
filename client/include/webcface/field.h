@@ -24,6 +24,7 @@ class Image;
 class Func;
 class FuncListener;
 class RobotModel;
+class Plot;
 class Canvas2D;
 class Canvas3D;
 class Log;
@@ -176,6 +177,8 @@ struct WEBCFACE_DLL Field : public FieldBase {
     Text text(std::wstring_view field) const;
     RobotModel robotModel(std::string_view field = "") const;
     RobotModel robotModel(std::wstring_view field) const;
+    Plot plot(std::string_view field = "") const;
+    Plot plot(std::wstring_view field) const;
     Image image(std::string_view field = "") const;
     Image image(std::wstring_view field) const;
     Func func(std::string_view field = "") const;
@@ -201,6 +204,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
     std::vector<Value> valueEntries() const;
     std::vector<Text> textEntries() const;
     std::vector<RobotModel> robotModelEntries() const;
+    std::vector<Plot> plotEntries() const;
     std::vector<Func> funcEntries() const;
     std::vector<View> viewEntries() const;
     std::vector<Canvas3D> canvas3DEntries() const;

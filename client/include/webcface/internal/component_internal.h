@@ -28,6 +28,7 @@ struct TemporalViewComponentData : message::ViewComponentData {
 struct TemporalCanvas2DComponentData : message::Canvas2DComponentData {
     TemporalCanvas2DComponentData() = default;
 
+    std::weak_ptr<internal::ClientData> data_w;
     std::shared_ptr<std::function<void()>> on_click_func_tmp;
     SharedString id;
 };
