@@ -13,6 +13,10 @@ thread_dep = dependency('threads')
 spdlog_dependencies = [thread_dep]
 spdlog_compile_args = []
 
+if meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
+  spdlog_compile_args += '/utf-8'
+endif
+
 if meson.get_compiler('cpp').has_header_symbol('format', '__cpp_lib_format', required: get_option('std_format'))
   spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
   fmt_dep = dependency('', required: false)
