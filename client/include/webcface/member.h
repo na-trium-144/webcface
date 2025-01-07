@@ -53,6 +53,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::robotModel;
     using Field::text;
     using Field::value;
+    using Field::valueFixed;
     using Field::view;
 
     /*!

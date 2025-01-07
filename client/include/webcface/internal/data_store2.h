@@ -47,6 +47,11 @@ struct ResendOnChange {
  *   (新しいshared_ptrを作って再度セットする)
  *     *
  * なのでgetRecv()から取得したshared_ptrをmutexをロックしない状態で保持しても問題ない。
+ * 
+ * \todo
+ * * Valueでoperator[]を使って値を変更した場合毎回vectorのコピーが発生していて非効率
+ * * ImageFrameのshared_ptrが有効活用されていない
+ * 
  */
 template <typename T, typename ResendCondition = ResendAlways,
           typename ReqT = int, typename EntryT = int>
@@ -175,7 +180,9 @@ class SyncDataStore2 {
      *
      */
     void setEntry(const SharedString &from, const SharedString &e,
-                  const EntryT &e_data = EntryT());
+                  EntryT e_data = EntryT());
+    void setEntry(const FieldBase &base,
+                  EntryT e_data = EntryT());
 
     /*!
      * \brief entryを取得
@@ -222,12 +229,13 @@ struct ViewData;
 struct Canvas2DData;
 struct Canvas3DData;
 struct ImageReq;
+struct ValueShape;
 } // namespace message
 namespace internal {
 using TestStringStore =
     SyncDataStore2<const std::string, ResendOnChange>; // test用
 using ValueStore = SyncDataStore2<const std::vector<double>, ResendOnChange,
-                                  int, std::optional<std::vector<std::size_t>>>;
+                                  int, message::ValueShape>;
 using TextStore = SyncDataStore2<const ValAdaptor, ResendOnChange>;
 using FuncStore = SyncDataStore2<FuncInfo, ResendNever>;
 using RobotModelStore =
@@ -243,8 +251,7 @@ using LogStore = SyncDataStore2<LogHistory>;
 extern template class SyncDataStore2<const std::string,
                                      ResendOnChange>; // test用
 extern template class SyncDataStore2<const std::vector<double>, ResendOnChange,
-                                     int,
-                                     std::optional<std::vector<std::size_t>>>;
+                                     int, message::ValueShape>;
 extern template class SyncDataStore2<const ValAdaptor, ResendOnChange>;
 extern template class SyncDataStore2<FuncInfo, ResendNever>;
 extern template class SyncDataStore2<

@@ -18,6 +18,8 @@ struct ClientData;
 
 class Member;
 class Value;
+template <std::size_t... Shape>
+class ValueFixed;
 class Text;
 class View;
 class Image;
@@ -172,6 +174,14 @@ struct WEBCFACE_DLL Field : public FieldBase {
 
     Value value(std::string_view field = "") const;
     Value value(std::wstring_view field) const;
+    template <std::size_t... Shape>
+    ValueFixed<Shape...> valueFixed(std::string_view field = "") const {
+        return ValueFixed<Shape...>(child(field));
+    }
+    template <std::size_t... Shape>
+    ValueFixed<Shape...> valueFixed(std::wstring_view field) const {
+        return ValueFixed<Shape...>(child(field));
+    }
     Text text(std::string_view field = "") const;
     Text text(std::wstring_view field) const;
     RobotModel robotModel(std::string_view field = "") const;

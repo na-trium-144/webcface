@@ -153,41 +153,104 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
 }
 // TEST_F(DataTest, ArrayLike){
+static_assert(
+    std::is_same_v<traits::ElementTypeOf<std::vector<double>>, const double &>);
+static_assert(std::is_same_v<traits::ElementTypeOf<std::array<double, 5>>,
+                             const double &>);
+static_assert(std::is_same_v<traits::ElementTypeOf<double (&)[5]>, double &>);
+static_assert(
+    std::is_same_v<traits::ElementTypeOf<std::vector<std::vector<double>>>,
+                   const std::vector<double> &>);
+static_assert(
+    std::is_same_v<traits::ElementTypeOf<std::array<std::vector<double>, 5>>,
+                   const std::vector<double> &>);
+static_assert(
+    std::is_same_v<traits::ElementTypeOf<double (&)[5][3]>, double (&)[3]>);
+
 static_assert(traits::IsArrayLike<std::vector<double>>::value);
+static_assert(traits::IsNestedArrayLike<std::vector<double>>::value);
 static_assert(traits::IsArrayLike<std::vector<int>>::value);
+static_assert(traits::IsNestedArrayLike<std::vector<int>>::value);
 static_assert(
     std::is_same_v<traits::ArrayLikeTrait<std::vector<double>>::ArrayLike,
                    std::nullptr_t>);
 static_assert(
+    std::is_same_v<traits::NestedArrayLikeTrait<std::vector<double>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(
     std::is_same_v<traits::ArrayLikeTrait<std::vector<int>>::ArrayLike,
                    std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::NestedArrayLikeTrait<std::vector<int>>::ArrayLike,
+                   std::nullptr_t>);
 static_assert(traits::IsArrayLike<std::array<double, 5>>::value);
+static_assert(traits::IsNestedArrayLike<std::array<double, 5>>::value);
 static_assert(traits::IsArrayLike<std::array<int, 5>>::value);
+static_assert(traits::IsNestedArrayLike<std::array<int, 5>>::value);
 static_assert(
     std::is_same_v<traits::ArrayLikeTrait<std::array<double, 5>>::ArrayLike,
                    std::nullptr_t>);
+static_assert(std::is_same_v<
+              traits::NestedArrayLikeTrait<std::array<double, 5>>::ArrayLike,
+              std::nullptr_t>);
 static_assert(
     std::is_same_v<traits::ArrayLikeTrait<std::array<int, 5>>::ArrayLike,
                    std::nullptr_t>);
-static_assert(std::is_same_v<traits::ArrayLikeTrait<double[5]>::ArrayLike,
+static_assert(
+    std::is_same_v<traits::NestedArrayLikeTrait<std::array<int, 5>>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(std::is_same_v<traits::ArrayLikeTrait<double (&)[5]>::ArrayLike,
                              std::nullptr_t>);
 static_assert(
-    std::is_same_v<traits::ArrayLikeTrait<int[5]>::ArrayLike, std::nullptr_t>);
+    std::is_same_v<traits::NestedArrayLikeTrait<double (&)[5]>::ArrayLike,
+                   std::nullptr_t>);
+static_assert(std::is_same_v<traits::ArrayLikeTrait<int (&)[5]>::ArrayLike,
+                             std::nullptr_t>);
+static_assert(
+    std::is_same_v<traits::NestedArrayLikeTrait<int (&)[5]>::ArrayLike,
+                   std::nullptr_t>);
+
+static_assert(!traits::IsArrayLike<std::vector<std::vector<double>>>::value);
+static_assert(
+    traits::IsNestedArrayLike<std::vector<std::vector<double>>>::value);
+static_assert(
+    !traits::IsArrayLike<std::array<std::array<double, 5>, 5>>::value);
+static_assert(
+    traits::IsNestedArrayLike<std::array<std::array<double, 5>, 5>>::value);
+static_assert(!traits::IsArrayLike<double (&)[5][5]>::value);
+static_assert(traits::IsNestedArrayLike<double (&)[5][5]>::value);
 
 static_assert(traits::ArraySizeMatch<std::array<double, 5>, 5>::value);
+static_assert(traits::NestedArraySizeMatch<std::array<double, 5>, 5>::value);
+static_assert(traits::ArraySizeMatch<double (&)[5], 5>::value);
+static_assert(traits::NestedArraySizeMatch<double (&)[5], 5>::value);
 static_assert(!traits::ArraySizeMatch<std::array<double, 5>, 10>::value);
+static_assert(!traits::NestedArraySizeMatch<std::array<double, 5>, 10>::value);
+static_assert(!traits::ArraySizeMatch<double (&)[5], 10>::value);
+static_assert(!traits::NestedArraySizeMatch<double (&)[5], 10>::value);
 static_assert(std::is_same_v<traits::ArraySizeTrait<std::array<double, 5>,
                                                     5>::SizeMatchOrDynamic,
                              std::nullptr_t>);
 static_assert(
-    std::is_same_v<traits::ArraySizeTrait<double[5], 5>::SizeMatchOrDynamic,
+    std::is_same_v<traits::ArraySizeTrait<double (&)[5], 5>::SizeMatchOrDynamic,
                    std::nullptr_t>);
 // vector -> always true (need runtime check)
-static_assert(traits::ArraySizeMatch<std::vector<double>, 5>::value);
 static_assert(std::is_same_v<traits::ArraySizeTrait<std::vector<double>,
                                                     5>::SizeMatchOrDynamic,
                              std::nullptr_t>);
 // }
+static_assert(
+    !traits::ArraySizeMatch<std::array<std::array<double, 5>, 5>, 25>::value);
+static_assert(traits::NestedArraySizeMatch<std::array<std::array<double, 5>, 5>,
+                                           25>::value);
+static_assert(!traits::ArraySizeMatch<double (&)[5][5], 25>::value);
+static_assert(traits::NestedArraySizeMatch<double (&)[5][5], 25>::value);
+// static_assert(!traits::ArraySizeMatch<std::array<std::array<double, 5>, 5>,
+// 5>::value);
+static_assert(!traits::NestedArraySizeMatch<
+              std::array<std::array<double, 5>, 5>, 5>::value);
+static_assert(!traits::NestedArraySizeMatch<double (&)[5][5], 5>::value);
+
 
 TEST_F(DataTest, textSet) {
     data_->text_change_event[self_name]["b"_ss] =

@@ -20,6 +20,7 @@
 #include "webcface/common/internal/message/log.h"
 #include "webcface/common/internal/message/robot_model.h"
 #include "webcface/common/internal/message/sync.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/view.h"
 #include "webcface/server/server.h"
 
@@ -61,8 +62,8 @@ struct MemberData {
      * entry非表示のものも含む。
      *
      */
-    StrMap1<std::pair<std::optional<std::vector<std::size_t>>,
-                      std::shared_ptr<std::vector<double>>>>
+    StrMap1<
+        std::pair<message::ValueShape, std::shared_ptr<std::vector<double>>>>
         value;
     StrMap1<std::shared_ptr<ValAdaptor>> text;
     StrMap1<std::shared_ptr<message::FuncInfo>> func;

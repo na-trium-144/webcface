@@ -215,7 +215,11 @@ void MemberData::onRecv(const std::string &message) {
                         if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Value>{
-                                {}, cd->member_id, f.first, f.second.first});
+                                {},
+                                cd->member_id,
+                                f.first,
+                                f.second.first.size,
+                                f.second.first.fixed});
                             logger->trace("send value_entry {} of member {}",
                                           f.first.decode(), cd->member_id);
                         }
@@ -421,7 +425,7 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 });
             }
-            this->value[v.field].first = std::move(v.size);
+            this->value[v.field].first = {v.size, v.fixed};
             this->value[v.field].second = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {

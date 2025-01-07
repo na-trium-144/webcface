@@ -14,77 +14,168 @@
 WEBCFACE_NS_BEGIN
 namespace traits {
 
+template <
+    typename T,
+    std::enable_if_t<std::is_same_v<decltype(*std::begin(std::declval<T>())),
+                                    decltype(*std::end(std::declval<T>()))>,
+                     std::nullptr_t> = nullptr>
+using ElementTypeOf = decltype(*std::begin(std::declval<T>()));
+
+template <typename T>
+constexpr auto getSizeOf(T &&)
+    -> std::integral_constant<std::size_t,
+                              std::tuple_size<std::decay_t<T>>::value> {
+    return {};
+}
+template <typename T, std::size_t N>
+constexpr auto getSizeOf(T (&)[N]) -> std::integral_constant<std::size_t, N> {
+    return {};
+}
+template <typename T>
+using SizeOf = decltype(getSizeOf(std::declval<T>()));
+
 template <bool>
-struct ArrayLikeTraitCheck {};
+struct ArrayLikeTraitEnabler {};
 template <>
-struct ArrayLikeTraitCheck<true> {
+struct ArrayLikeTraitEnabler<true> {
     using ArrayLike = TraitOkType;
 };
-template <bool>
-struct ArraySizeTraitCheck {};
-template <>
-struct ArraySizeTraitCheck<true> {
+template <bool Fixed, bool SizeMatch>
+struct ArraySizeTraitEnabler {
+    // Fixed = false
     using SizeMatchOrDynamic = TraitOkType;
+};
+template <>
+struct ArraySizeTraitEnabler<true, false> {};
+template <>
+struct ArraySizeTraitEnabler<true, true> {
+    using SizeMatchOrDynamic = TraitOkType;
+    using SizeMatchStatic = TraitOkType;
 };
 
 constexpr std::false_type isArrayLike(...) { return {}; }
 template <typename T>
-constexpr auto isArrayLike(T)
-    -> std::bool_constant<
-        std::is_convertible_v<decltype(*std::begin(std::declval<T>())),
-                              double> &&
-        std::is_convertible_v<decltype(*std::end(std::declval<T>())), double>> {
+constexpr auto isArrayLike(T &&)
+    // 参照で受け取ることにより生配列も保持される
+    -> std::bool_constant<std::is_convertible_v<ElementTypeOf<T>, double>> {
     return {};
 }
 template <typename T>
 using IsArrayLike = decltype(isArrayLike(std::declval<T>()));
+/*!
+ * T にstd::begin, std::endが使用可能で、要素がdoubleに変換可能なときにのみ、
+ * ArrayLikeTrait<T>::ArrayLike が定義される
+ *
+ * 要するに、range
+ *
+ */
+template <typename T>
+struct ArrayLikeTrait : ArrayLikeTraitEnabler<IsArrayLike<T>::value> {};
 
-constexpr std::true_type arraySizeMatch(...) { return {}; }
+constexpr std::false_type isFixedSize(...) { return {}; }
+template <typename T, SizeOf<T> = {}>
+constexpr std::true_type isFixedSize(T &&) {
+    return {};
+}
+template <typename T>
+using IsFixedSize = decltype(isFixedSize(std::declval<T>()));
+
+constexpr std::false_type arraySizeMatch(...) { return {}; }
 template <typename T, std::size_t Num>
-constexpr auto arraySizeMatch(T, std::integral_constant<std::size_t, Num>)
-    -> std::bool_constant<std::tuple_size<T>::value == Num> {
+constexpr auto arraySizeMatch(T &&, std::integral_constant<std::size_t, Num>)
+    -> std::bool_constant<SizeOf<T>::value == Num> {
     return {};
 }
 template <typename T, std::size_t Num>
 using ArraySizeMatch = decltype(arraySizeMatch(
     std::declval<T>(), std::integral_constant<std::size_t, Num>()));
-
-/*!
- * T にstd::begin, std::endが使用可能で、要素がdoubleに変換可能なときにのみ、
- * ArrayLikeTrait<T>::ArrayLike が定義される
- *
- */
-template <typename T>
-struct ArrayLikeTrait : ArrayLikeTraitCheck<IsArrayLike<T>::value> {};
-/*!
- * 生配列の場合std::declvalを使うとポインタになってしまうので、別で特殊化している
- *
- */
-template <typename T, std::size_t N>
-struct ArrayLikeTrait<T[N]>
-    : ArrayLikeTraitCheck<std::is_convertible_v<T, double>> {};
-template <typename T, std::size_t N>
-struct ArrayLikeTrait<T (&)[N]> : ArrayLikeTrait<T[N]> {};
-
 /*!
  * T が配列で、std::tuple_size<T>がNumと一致するか定義されないとき、
  * ArraySizeTrait<T, Num>::SizeMatchOrDynamic が定義される
  *
  */
 template <typename T, std::size_t Num>
-struct ArraySizeTrait : ArraySizeTraitCheck<ArraySizeMatch<T, Num>::value> {};
+struct ArraySizeTrait : ArraySizeTraitEnabler<IsFixedSize<T>::value,
+                                              ArraySizeMatch<T, Num>::value> {};
+
+
+constexpr std::false_type isNestedArrayLike(...) { return {}; }
+template <typename T, typename = ElementTypeOf<T>>
+constexpr auto isNestedArrayLike(T &&) {
+    return std::bool_constant < IsArrayLike<T>::value ||
+           decltype(isNestedArrayLike(
+               std::declval<ElementTypeOf<T>>()))::value > {};
+}
+template <typename T>
+using IsNestedArrayLike = decltype(isNestedArrayLike(std::declval<T>()));
 /*!
- * 生配列の場合std::declvalを使うとポインタになってしまうので、別で特殊化している
+ * T にstd::begin, std::endが使用可能で、
+ * 要素がNestedArrayLikeまたはArrayLikeの場合、
+ * NestedArrayLikeTrait<T>::ArrayLike が定義される
  *
  */
-template <typename T, std::size_t N, std::size_t Num>
-struct ArraySizeTrait<T[N], Num> : ArraySizeTraitCheck<N == Num> {};
-template <typename T, std::size_t N, std::size_t Num>
-struct ArraySizeTrait<T (&)[N], Num> : ArraySizeTrait<T[N], Num> {};
+template <typename T>
+struct NestedArrayLikeTrait
+    : ArrayLikeTraitEnabler<IsNestedArrayLike<T>::value> {};
+
+constexpr std::false_type isNestedFixedSize(...) { return {}; }
+template <typename T, typename = ElementTypeOf<T>>
+constexpr auto isNestedFixedSize(T &&) {
+    return std::bool_constant < IsFixedSize<T>::value &&
+           (IsArrayLike<T>::value ||
+            decltype(isNestedFixedSize(
+                std::declval<ElementTypeOf<T>>))::value) > {};
+}
+template <typename T>
+using IsNestedFixedSize = decltype(isNestedFixedSize(std::declval<T>()));
+
+constexpr std::false_type nestedArraySizeMatch(...) { return {}; }
+template <typename T, std::size_t Num>
+constexpr auto nestedArraySizeMatch(T &&,
+                                    std::integral_constant<std::size_t, Num>,
+                                    SizeOf<T> = {}) {
+    return std::bool_constant <
+               (IsArrayLike<T>::value && SizeOf<T>::value == Num) ||
+           (Num % SizeOf<T>::value == 0 &&
+            decltype(nestedArraySizeMatch(
+                std::declval<ElementTypeOf<T>>(),
+                std::integral_constant<std::size_t,
+                                       Num / SizeOf<T>::value>()))::value) > {};
+}
+template <typename T, std::size_t Num>
+using NestedArraySizeMatch = decltype(nestedArraySizeMatch(
+    std::declval<T>(), std::integral_constant<std::size_t, Num>()));
+/*!
+ * T が配列で、std::tuple_size<T>がNumと一致するか定義されないとき、
+ * ArraySizeTrait<T, Num>::SizeMatchOrDynamic が定義される
+ *
+ */
+template <typename T, std::size_t Num>
+struct NestedArraySizeTrait
+    : ArraySizeTraitEnabler<IsNestedFixedSize<T>::value,
+                            NestedArraySizeMatch<T, Num>::value> {};
+
 
 template <typename T>
 std::vector<double> arrayLikeToVector(const T &array) {
     return std::vector<double>(std::begin(array), std::end(array));
+}
+/*!
+ * \todo 効率が悪い
+ */
+template <typename T>
+std::vector<double> nestedArrayLikeToVector(const T &array) {
+    if constexpr (IsArrayLike<T>::value) {
+        return arrayLikeToVector(array);
+    } else {
+        std::vector<double> vec;
+        for (auto it : array) {
+            std::vector<double> vec_in = nestedArrayLikeToVector(*it);
+            vec.reserve(vec.size() + vec_in.size());
+            std::copy(vec_in.begin(), vec_in.end(), std::back_inserter(vec));
+        }
+        return vec;
+    }
 }
 
 template <std::size_t Num, typename T>

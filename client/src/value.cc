@@ -8,6 +8,12 @@
 
 WEBCFACE_NS_BEGIN
 
+ValueShape::ValueShape(const message::ValueShape &msg)
+    : fixed_size(msg.size), is_fixed(msg.fixed) {}
+ValueShape::operator message::ValueShape() const {
+    return message::ValueShape{fixed_size, is_fixed};
+}
+
 Value::Value(const Field &base) : Field(base) {}
 
 const Value &Value::request() const {
@@ -20,6 +26,28 @@ const Value &Value::request() const {
     return *this;
 }
 
+const Value &Value::set(std::vector<double> v, ValueShape shape) const {
+    if (shape.is_fixed) {
+        if (v.size() != shape.fixed_size) {
+            throw std::invalid_argument("array size mismatch, expected: " +
+                                        std::to_string(shape.fixed_size) +
+                                        ", got: " + std::to_string(v.size()));
+        }
+    }
+    auto data = setCheck();
+    data->value_store.setSend(
+        *this, std::make_shared<std::vector<double>>(std::move(v)));
+    data->value_store.setEntry(*this, shape);
+    std::shared_ptr<std::function<void(Value)>> change_event;
+    {
+        std::lock_guard lock(data->event_m);
+        change_event = data->value_change_event[this->member_][this->field_];
+    }
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
+    }
+    return *this;
+}
 const Value &Value::set(double v) const {
     auto last_name = this->lastName();
     auto parent = this->parent();
@@ -36,23 +64,12 @@ const Value &Value::set(double v) const {
             return *this;
         }
     }
-    set(std::vector<double>{v});
+    set(std::vector<double>{v}, ValueShape{1, true});
     return *this;
 }
 
 const Value &Value::set(std::vector<double> v) const {
-    auto data = setCheck();
-    data->value_store.setSend(
-        *this, std::make_shared<std::vector<double>>(std::move(v)));
-    std::shared_ptr<std::function<void(Value)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->value_change_event[this->member_][this->field_];
-    }
-    if (change_event && *change_event) {
-        change_event->operator()(*this);
-    }
-    return *this;
+    return set(std::move(v), ValueShape{});
 }
 const Value &Value::onChange(std::function<void(Value)> callback) const {
     this->request();

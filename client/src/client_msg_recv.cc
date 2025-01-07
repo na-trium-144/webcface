@@ -63,11 +63,11 @@ static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
     }
 }
 /// \private
-template <typename Msg, typename S, typename E>
+template <typename Msg, typename S, typename E, typename... A>
 static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
-                        const E &event) {
+                        const E &event, A &&...args) {
     auto member = this_->getMemberNameFromId(r.member_id);
-    store.setEntry(member, r.field);
+    store.setEntry(member, r.field, args...);
     std::decay_t<decltype(event.at(member))> cl;
     {
         std::lock_guard lock(this_->event_m);
@@ -379,7 +379,8 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Value> *>(
                 obj.get());
-            onRecvEntry(this, r, this->value_store, this->value_entry_event);
+            onRecvEntry(this, r, this->value_store, this->value_entry_event,
+                        message::ValueShape{r.size, r.fixed});
             break;
         }
         case MessageKind::entry + MessageKind::text: {

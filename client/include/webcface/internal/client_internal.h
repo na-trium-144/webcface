@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <spdlog/logger.h>
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
 #include "webcface/log_line.h"
@@ -76,7 +77,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     struct SyncDataSnapshot {
         std::chrono::system_clock::time_point time;
         typename ValueStore::Map1 value_data;
-        StrMap1<std::optional<std::vector<std::size_t>>> value_entry_data;
+        StrMap1<message::ValueShape> value_entry_data;
         typename TextStore::Map1 text_data;
         typename RobotModelStore::Map1 robot_model_data;
         typename ViewStore::Map1 view_prev, view_data;

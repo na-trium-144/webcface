@@ -188,7 +188,9 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
                 {},
                 v.first,
                 std::const_pointer_cast<std::vector<double>>(v.second),
-                data.value_entry_data.at(v.first)});
+                data.value_entry_data.at(v.first).size,
+                data.value_entry_data.at(v.first).fixed,
+            });
     }
     for (const auto &v : data.text_data) {
         message::pack(

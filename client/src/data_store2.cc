@@ -1,4 +1,5 @@
 #include "webcface/internal/data_store2.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/image.h"
 #include "webcface/common/internal/message/view.h"
 #include "webcface/common/internal/message/canvas2d.h"
@@ -78,9 +79,14 @@ void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::initMember(
 }
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setEntry(
-    const SharedString &from, const SharedString &e, const EntryT &e_data) {
+    const SharedString &from, const SharedString &e, EntryT e_data) {
     std::lock_guard lock(mtx);
     entry[from].emplace(e, e_data);
+}
+template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
+void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setEntry(
+    const FieldBase &base, EntryT e_data) {
+    setEntry(base.member_, base.field_, e_data);
 }
 
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
@@ -219,7 +225,8 @@ SyncDataStore2<T, ResendCondition, ReqT, EntryT>::transferSend(bool is_first) {
     auto &recv_self = data_recv[self_member_name];
     for (auto &[name, data] : data_send) {
         auto r_it = recv_self.find(name);
-        if (r_it == recv_self.end() || ResendCondition::shouldResend(r_it->second, data)) {
+        if (r_it == recv_self.end() ||
+            ResendCondition::shouldResend(r_it->second, data)) {
             send_changed[name] = data;
             recv_self[name] = std::move(data);
         }
@@ -257,10 +264,11 @@ SyncDataStore2<T, ResendCondition, ReqT, EntryT>::transferReq() {
 
 template class SyncDataStore2<const std::string, ResendOnChange>; // test用
 template class SyncDataStore2<const std::vector<double>, ResendOnChange, int,
-                              std::optional<std::vector<std::size_t>>>;
+                              message::ValueShape>;
 template class SyncDataStore2<const ValAdaptor, ResendOnChange>;
 template class SyncDataStore2<FuncInfo, ResendNever>;
-template class SyncDataStore2<const std::vector<std::shared_ptr<internal::RobotLinkData>>>;
+template class SyncDataStore2<
+    const std::vector<std::shared_ptr<internal::RobotLinkData>>>;
 template class SyncDataStore2<const ImageFrame, ResendAlways,
                               message::ImageReq>;
 template class SyncDataStore2<const message::ViewData>;

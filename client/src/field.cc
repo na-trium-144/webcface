@@ -1,4 +1,5 @@
 #include "webcface/field.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/member.h"
 #include "webcface/value.h"
 #include "webcface/text.h"

@@ -12,6 +12,19 @@
 #endif
 
 WEBCFACE_NS_BEGIN
+namespace message{
+struct ValueShape;
+}
+/*!
+ * \since ver2.6
+ */
+struct WEBCFACE_DLL ValueShape {
+    std::size_t fixed_size;
+    bool is_fixed;
+    ValueShape(std::size_t size = 1, bool fixed = false) : fixed_size(size), is_fixed(fixed) {}
+    ValueShape(const message::ValueShape &);
+    operator message::ValueShape() const;
+};
 
 /*!
  * \brief 実数値またはその配列の送受信データを表すクラス
@@ -111,17 +124,27 @@ class WEBCFACE_DLL Value : protected Field {
         onChange(std::forward<T>(callback));
     }
 
+  protected:
+    /*!
+     * \since ver2.6
+     */
+    const Value &set(std::vector<double> v, ValueShape shape) const;
+
+  public:
     /*!
      * \brief 値をセットする
      *
-     * ver1.11〜:
+     * * (ver1.11〜)
      * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
+     * * (ver2.6〜) サイズ1の固定長データとなる
      *
      */
     const Value &set(double v) const;
     /*!
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
+     *
+     * * (ver2.6〜) 可変長データとなる
      *
      */
     const Value &set(std::vector<double> v) const;
@@ -134,8 +157,8 @@ class WEBCFACE_DLL Value : protected Field {
      * が使えてその値がdoubleに変換可能ならなんでもok
      *
      */
-    template <typename R,
-              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk>
+    template <typename R, typename traits::NestedArrayLikeTrait<R>::ArrayLike =
+                              traits::TraitOk>
     const Value &set(const R &range) const {
         return set(traits::arrayLikeToVector(range));
     }
@@ -324,6 +347,93 @@ class WEBCFACE_DLL Value : protected Field {
     bool operator>(const Value &) const = delete;
     bool operator>=(const Value &) const = delete;
 };
+
+template <std::size_t... Shape>
+class ValueFixed : Value {
+    static constexpr std::size_t size = (Shape * ...);
+    static_assert(size > 0);
+
+  public:
+    using Field::lastName;
+    using Field::name;
+    using Field::nameW;
+    using Value::child;
+    using Value::Value;
+    using Value::operator[];
+    using Value::parent;
+    const ValueFixed &
+    onChange(std::function<void WEBCFACE_CALL_FP(Value)> callback) const {
+        this->Value::onChange(std::move(callback));
+        return *this;
+    }
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const ValueFixed &onChange(F callback) const {
+        return onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    const ValueFixed &set(double v) const {
+        this->Value::set(v);
+        return *this;
+    }
+    template <
+        typename R,
+        typename traits::NestedArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+        typename traits::NestedArraySizeTrait<R, size>::SizeMatchOrDynamic =
+            traits::TraitOk>
+    const ValueFixed &set(const R &range) const {
+        return this->Value::set(traits::nestedArrayLikeToVector(range),
+                                ValueShape{size, true});
+    }
+    template <typename T>
+    const ValueFixed &operator=(T &&v) const {
+        this->set(std::forward<T>(v));
+        return *this;
+    }
+
+    const ValueFixed &request() const {
+        this->Value::request();
+        return *this;
+    }
+    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    std::optional<double> tryGet() const {
+        return this->Value::tryGet();
+    }
+    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    double get() const {
+        return tryGet().value_or(0);
+    }
+    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    operator double() const {
+        return get();
+    }
+
+    using Value::exists;
+
+    const ValueFixed &free() const {
+        this->Value::free();
+        return *this;
+    }
+
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, ValueFixed>,
+                                        std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, ValueFixed>,
+                                        std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    bool operator<(const ValueFixed &) const = delete;
+    bool operator<=(const ValueFixed &) const = delete;
+    bool operator>(const ValueFixed &) const = delete;
+    bool operator>=(const ValueFixed &) const = delete;
+};
+
 
 /*!
  * \brief Valueをostreamに渡すとValueの中身を表示
