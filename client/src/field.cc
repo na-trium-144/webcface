@@ -18,7 +18,6 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-Member Field::member() const { return *this; }
 SharedString Field::lastName8() const {
     auto i = this->field_.u8String().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
@@ -50,35 +49,6 @@ Field Field::child(const SharedString &field) const {
                                                        field.u8String())};
     }
 }
-
-Value Field::value(std::string_view field) const { return child(field); }
-Value Field::value(std::wstring_view field) const { return child(field); }
-Text Field::text(std::string_view field) const { return child(field); }
-Text Field::text(std::wstring_view field) const { return child(field); }
-RobotModel Field::robotModel(std::string_view field) const {
-    return child(field);
-}
-RobotModel Field::robotModel(std::wstring_view field) const {
-    return child(field);
-}
-Image Field::image(std::string_view field) const { return child(field); }
-Image Field::image(std::wstring_view field) const { return child(field); }
-Func Field::func(std::string_view field) const { return child(field); }
-Func Field::func(std::wstring_view field) const { return child(field); }
-FuncListener Field::funcListener(std::string_view field) const {
-    return child(field);
-}
-FuncListener Field::funcListener(std::wstring_view field) const {
-    return child(field);
-}
-View Field::view(std::string_view field) const { return child(field); }
-View Field::view(std::wstring_view field) const { return child(field); }
-Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }
-Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
-Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
-Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
-Log Field::log(std::string_view field) const { return child(field); }
-Log Field::log(std::wstring_view field) const { return child(field); }
 
 /// \private
 template <typename V, typename S>

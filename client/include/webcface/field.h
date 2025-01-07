@@ -9,6 +9,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "webcface/common/encoding.h"
+#include "webcface/complete.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -102,7 +103,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief Memberを返す
      *
      */
-    Member member() const;
+    template <WEBCFACE_COMPLETE(Member)>
+    Member_ member() const {
+        return *this;
+    }
     /*!
      * \brief field名を返す
      *
@@ -170,33 +174,92 @@ struct WEBCFACE_DLL Field : public FieldBase {
      */
     Field operator[](int index) const { return child(index); }
 
-    Value value(std::string_view field = "") const;
-    Value value(std::wstring_view field) const;
-    Text text(std::string_view field = "") const;
-    Text text(std::wstring_view field) const;
-    RobotModel robotModel(std::string_view field = "") const;
-    RobotModel robotModel(std::wstring_view field) const;
-    Image image(std::string_view field = "") const;
-    Image image(std::wstring_view field) const;
-    Func func(std::string_view field = "") const;
-    Func func(std::wstring_view field) const;
-    FuncListener funcListener(std::string_view field) const;
-    FuncListener funcListener(std::wstring_view field) const;
-    View view(std::string_view field = "") const;
-    View view(std::wstring_view field) const;
-    Canvas3D canvas3D(std::string_view field = "") const;
-    Canvas3D canvas3D(std::wstring_view field) const;
-    Canvas2D canvas2D(std::string_view field = "") const;
-    Canvas2D canvas2D(std::wstring_view field) const;
+    template <WEBCFACE_COMPLETE(Value)>
+    Value_ value(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Value)>
+    Value_ value(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Text)>
+    Text_ text(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Text)>
+    Text_ text(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    RobotModel_ robotModel(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    RobotModel_ robotModel(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Image)>
+    Image_ image(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Image)>
+    Image_ image(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Func)>
+    Func_ func(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Func)>
+    Func_ func(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(FuncListener)>
+    FuncListener_ funcListener(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(FuncListener)>
+    FuncListener_ funcListener(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(View)>
+    View_ view(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(View)>
+    View_ view(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas3D)>
+    Canvas3D_ canvas3D(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas3D)>
+    Canvas3D_ canvas3D(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas2D)>
+    Canvas2D_ canvas2D(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas2D)>
+    Canvas2D_ canvas2D(std::wstring_view field) const {
+        return child(field);
+    }
     /*!
      * \since ver2.4
      */
-    Log log(std::string_view field = "") const;
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::string_view field = "") const {
+        return child(field);
+    }
     /*!
      * \since ver2.4
      */
-    Log log(std::wstring_view field) const;
-
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::wstring_view field) const {
+        return child(field);
+    }
 
     std::vector<Value> valueEntries() const;
     std::vector<Text> textEntries() const;
