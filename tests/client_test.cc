@@ -8,6 +8,7 @@
 #include "webcface/common/internal/message/text.h"
 #include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/view.h"
+#include "webcface/internal/log_history.h"
 
 TEST_F(ClientTest, unixSocketConnection) {
     auto dummy_tcp_s = std::make_shared<DummyServer>(false);
@@ -392,7 +393,7 @@ TEST_F(ClientTest, logSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    auto ls = std::make_shared<internal::LogData>(std::deque<LogLineData>{
+    auto ls = std::make_shared<internal::LogHistory>(std::deque<LogLineData>{
         {0, std::chrono::system_clock::now(),
          SharedString::fromU8String(std::string(100000, 'a'))},
         {1, std::chrono::system_clock::now(), "b"_ss},
@@ -448,13 +449,10 @@ TEST_F(ClientTest, logReq) {
             })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
-              2u);
-    EXPECT_EQ(
-        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 0);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.at(0).level_, 0);
     EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->data.at(0)
                   .message_.u8String()
                   .size(),
@@ -469,9 +467,8 @@ TEST_F(ClientTest, logReq) {
             })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
-              3u);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.size(), 3u);
 
     // keep_lines以上のログは保存しない
     webcface::Log::keepLines(2);
@@ -484,13 +481,10 @@ TEST_F(ClientTest, logReq) {
             })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 3);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
-              2u);
-    EXPECT_EQ(
-        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 2);
-    EXPECT_EQ(
-        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(1).level_, 3);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.at(0).level_, 2);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.at(1).level_, 3);
 
     dummy_s->send(message::Res<message::Log>{
         1, ""_ss,
@@ -507,13 +501,10 @@ TEST_F(ClientTest, logReq) {
             })});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 4);
-    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.size(),
-              2u);
-    EXPECT_EQ(
-        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(0).level_, 6);
-    EXPECT_EQ(
-        data_->log_store.getRecv("a"_ss, "b"_ss).value()->data.at(1).level_, 7);
+    EXPECT_TRUE(data_->log_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.size(), 2u);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.at(0).level_, 6);
+    EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)->data.at(1).level_, 7);
 
     webcface::Log::keepLines(1000);
 }

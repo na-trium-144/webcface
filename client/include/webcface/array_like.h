@@ -19,7 +19,17 @@ template <
     std::enable_if_t<std::is_same_v<decltype(*std::begin(std::declval<T>())),
                                     decltype(*std::end(std::declval<T>()))>,
                      std::nullptr_t> = nullptr>
-using ElementTypeOf = decltype(*std::begin(std::declval<T>()));
+constexpr auto getElementTypeOf(T &&)
+    -> std::add_lvalue_reference_t<decltype(*std::begin(std::declval<T>()))> {
+    return {};
+}
+template <typename T, std::size_t N>
+constexpr auto getElementTypeOf(T (&&)[N]) -> std::add_lvalue_reference_t<T> {
+    return {};
+}
+template <typename T>
+using ElementTypeOf = std::remove_const_t<
+    std::remove_reference_t<decltype(getElementTypeOf(std::declval<T>()))>>;
 
 template <typename T>
 constexpr auto getSizeOf(T &&)
@@ -28,7 +38,7 @@ constexpr auto getSizeOf(T &&)
     return {};
 }
 template <typename T, std::size_t N>
-constexpr auto getSizeOf(T (&)[N]) -> std::integral_constant<std::size_t, N> {
+constexpr auto getSizeOf(T (&&)[N]) -> std::integral_constant<std::size_t, N> {
     return {};
 }
 template <typename T>

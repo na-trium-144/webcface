@@ -167,61 +167,45 @@ TEST_F(ClientTest, canvas2DReq) {
         message::Res<message::Canvas2D>{1, "c"_ss, 200, 200, v, v_ids});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).value()->width,
-              200);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss).value()->height,
-              200);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.size(),
+    EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->width, 200);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->height, 200);
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.size(),
               3u);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->type,
+        static_cast<int>(Canvas2DComponentType::geometry));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->type,
-              static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->color,
               static_cast<int>(ViewColor::black));
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->fill,
+        static_cast<int>(ViewColor::white));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->fill,
-              static_cast<int>(ViewColor::white));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_type,
               static_cast<int>(GeometryType::line));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 0}));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->on_click_member->u8String(),
               self_name.decode());
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->on_click_field->u8String(),
               "f");
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("1")->type,
+        static_cast<int>(Canvas2DComponentType::geometry));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("1")
-                  ->type,
-              static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("1")
                   ->geometry_type,
               static_cast<int>(GeometryType::rect));
-    EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b.c"_ss).has_value());
+    EXPECT_TRUE(data_->canvas2d_store.getRecv("a"_ss, "b.c"_ss));
 
     // 差分だけ送る
     std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>> v2{
@@ -238,42 +222,30 @@ TEST_F(ClientTest, canvas2DReq) {
         message::Res<message::Canvas2D>{1, ""_ss, 100, 100, v2, std::nullopt});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.size(),
+    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.size(),
               3u);
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->type,
+        static_cast<int>(Canvas2DComponentType::geometry));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->type,
-              static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->color,
               static_cast<int>(ViewColor::red));
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->fill,
+        static_cast<int>(ViewColor::white));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->fill,
-              static_cast<int>(ViewColor::white));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_type,
               static_cast<int>(GeometryType::line));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->properties,
               (std::vector<double>{0, 0, 0, 30, 30, 0}));
+    EXPECT_EQ(
+        data_->canvas2d_store.getRecv("a"_ss, "b"_ss)->components.at("1")->type,
+        static_cast<int>(Canvas2DComponentType::geometry));
     EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("1")
-                  ->type,
-              static_cast<int>(Canvas2DComponentType::geometry));
-    EXPECT_EQ(data_->canvas2d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("1")
                   ->geometry_type,
               static_cast<int>(GeometryType::rect));
@@ -404,42 +376,32 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->send(message::Res<message::Canvas3D>{1, "c"_ss, v, v_ids});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.size(),
+    EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.size(),
               3u);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->type,
+        static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->type,
-              static_cast<int>(Canvas3DComponentType::geometry));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->color,
               static_cast<int>(ViewColor::black));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_type,
               static_cast<int>(GeometryType::line));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_properties,
               (std::vector<double>{0, 0, 0, 30, 30, 30}));
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.at("1")->type,
+        static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("1")
-                  ->type,
-              static_cast<int>(Canvas3DComponentType::geometry));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("1")
                   ->geometry_type,
               static_cast<int>(GeometryType::rect));
-    EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b.c"_ss).has_value());
+    EXPECT_TRUE(data_->canvas3d_store.getRecv("a"_ss, "b.c"_ss));
 
     // 差分だけ送る
     std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>> v2{
@@ -455,37 +417,27 @@ TEST_F(ClientTest, canvas3DReq) {
     dummy_s->send(message::Res<message::Canvas3D>{1, ""_ss, v2, std::nullopt});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.size(),
+    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.size(),
               3u);
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.at("0")->type,
+        static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("0")
-                  ->type,
-              static_cast<int>(Canvas3DComponentType::geometry));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->color,
               static_cast<int>(ViewColor::red));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_type,
               static_cast<int>(GeometryType::line));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("0")
                   ->geometry_properties,
               (std::vector<double>{0, 0, 0, 30, 30, 30}));
+    EXPECT_EQ(
+        data_->canvas3d_store.getRecv("a"_ss, "b"_ss)->components.at("1")->type,
+        static_cast<int>(Canvas3DComponentType::geometry));
     EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
-                  ->components.at("1")
-                  ->type,
-              static_cast<int>(Canvas3DComponentType::geometry));
-    EXPECT_EQ(data_->canvas3d_store.getRecv("a"_ss, "b"_ss)
-                  .value()
                   ->components.at("1")
                   ->geometry_type,
               static_cast<int>(GeometryType::rect));
@@ -532,12 +484,10 @@ TEST_F(ClientTest, robotModelReq) {
             RobotLink{"a", Geometry{}, ViewColor::black}.lockJoints({})}));
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b"_ss).value()->size(),
-              1u);
-    EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b.c"_ss).has_value());
-    EXPECT_EQ(
-        data_->robot_model_store.getRecv("a"_ss, "b.c"_ss).value()->size(), 1u);
+    EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b"_ss));
+    EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b"_ss)->size(), 1u);
+    EXPECT_TRUE(data_->robot_model_store.getRecv("a"_ss, "b.c"_ss));
+    EXPECT_EQ(data_->robot_model_store.getRecv("a"_ss, "b.c"_ss)->size(), 1u);
 }
 TEST_F(ClientTest, imageSend) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -546,10 +496,10 @@ TEST_F(ClientTest, imageSend) {
         wait();
     }
     data_->image_store.setSend(
-        "a"_ss,
-        ImageFrame{sizeWH(100, 100),
-                   std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
-                   ImageColorMode::bgr});
+        "a"_ss, std::make_shared<ImageFrame>(
+                    sizeWH(100, 100),
+                    std::make_shared<std::vector<unsigned char>>(100 * 100 * 3),
+                    ImageColorMode::bgr));
     wcli_->sync();
     dummy_s->waitRecv<message::Image>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
@@ -580,10 +530,10 @@ TEST_F(ClientTest, imageReq) {
     dummy_s->send(message::Res<message::Image>{1, "c"_ss, img.toMessage()});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
-    ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b"_ss).has_value());
+    ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b"_ss));
     EXPECT_EQ(data_->image_store.getRecv("a"_ss, "b"_ss)->data().size(),
               img.data().size());
-    ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b.c"_ss).has_value());
+    ASSERT_TRUE(data_->image_store.getRecv("a"_ss, "b.c"_ss));
     EXPECT_EQ(data_->image_store.getRecv("a"_ss, "b.c"_ss)->data().size(),
               img.data().size());
 }
