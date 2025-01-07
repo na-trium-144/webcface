@@ -63,33 +63,60 @@ static auto entries(const Field *this_, S &store) {
     }
     return ret;
 }
-std::vector<Value> Field::valueEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::valueEntries() const {
     return entries<Value>(this, dataLock()->value_store);
 }
-std::vector<Text> Field::textEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::textEntries() const {
     return entries<Text>(this, dataLock()->text_store);
 }
-std::vector<RobotModel> Field::robotModelEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::robotModelEntries() const {
     return entries<RobotModel>(this, dataLock()->robot_model_store);
 }
-std::vector<Func> Field::funcEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::funcEntries() const {
     return entries<Func>(this, dataLock()->func_store);
 }
-std::vector<View> Field::viewEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::viewEntries() const {
     return entries<View>(this, dataLock()->view_store);
 }
-std::vector<Canvas3D> Field::canvas3DEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::canvas3DEntries() const {
     return entries<Canvas3D>(this, dataLock()->canvas3d_store);
 }
-std::vector<Canvas2D> Field::canvas2DEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::canvas2DEntries() const {
     return entries<Canvas2D>(this, dataLock()->canvas2d_store);
 }
-std::vector<Image> Field::imageEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::imageEntries() const {
     return entries<Image>(this, dataLock()->image_store);
 }
-std::vector<Log> Field::logEntries() const {
+template <typename T, std::nullptr_t>
+std::vector<T> Field::logEntries() const {
     return entries<Log>(this, dataLock()->log_store);
 }
+
+template WEBCFACE_DLL std::vector<Value>
+Field::valueEntries<Value, nullptr>() const;
+template WEBCFACE_DLL std::vector<Text>
+Field::textEntries<Text, nullptr>() const;
+template WEBCFACE_DLL std::vector<RobotModel>
+Field::robotModelEntries<RobotModel, nullptr>() const;
+template WEBCFACE_DLL std::vector<Func>
+Field::funcEntries<Func, nullptr>() const;
+template WEBCFACE_DLL std::vector<View>
+Field::viewEntries<View, nullptr>() const;
+template WEBCFACE_DLL std::vector<Canvas2D>
+Field::canvas2DEntries<Canvas2D, nullptr>() const;
+template WEBCFACE_DLL std::vector<Canvas3D>
+Field::canvas3DEntries<Canvas3D, nullptr>() const;
+template WEBCFACE_DLL std::vector<Image>
+Field::imageEntries<Image, nullptr>() const;
+template WEBCFACE_DLL std::vector<Log> Field::logEntries<Log, nullptr>() const;
 
 bool Field::expired() const { return data_w.expired(); }
 

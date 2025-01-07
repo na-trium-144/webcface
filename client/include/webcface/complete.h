@@ -16,7 +16,7 @@ constexpr bool isComplete(T *) {
 
 #define define_assert_complete(Type, header)                                   \
     template <typename T>                                                      \
-    std::nullptr_t assertComplete##Type() {                                    \
+    constexpr std::nullptr_t assertComplete##Type() {                          \
         static_assert(isComplete((T *)nullptr),                                \
                       "Please include <webcface/" #header                      \
                       "> to use class '" #Type "'!");                          \
