@@ -170,12 +170,14 @@ void send(const std::shared_ptr<internal::ClientData> &data,
     while (true) {
         auto ret = curl_ws_send(handle, msg.c_str() + sent, msg.size() - sent,
                                 &sent, 0, CURLWS_BINARY);
-        if (ret == CURLE_AGAIN) {
-            std::this_thread::sleep_for(std::chrono::microseconds(10));
-            continue;
-        } else if (ret == CURLE_OK) {
-            // data->logger_internal->trace("sending done");
-            break;
+        if (ret == CURLE_AGAIN || ret == CURLE_OK) {
+            if (sent < msg.size()) {
+                std::this_thread::sleep_for(std::chrono::microseconds(10));
+                continue;
+            } else {
+                // data->logger_internal->trace("sending done");
+                break;
+            }
         } else {
             data->logger_internal->error("error sending message {}",
                                          static_cast<int>(ret));
