@@ -3,6 +3,7 @@
 #include <vector>
 #include <array>
 #include <type_traits>
+#include <iterator>
 #include <string>
 #include "trait.h"
 #ifdef WEBCFACE_MESON
@@ -83,8 +84,8 @@ template <typename T>
 struct ArrayLikeTrait : ArrayLikeTraitEnabler<IsArrayLike<T>::value> {};
 
 constexpr std::false_type isFixedSize(...) { return {}; }
-template <typename T, SizeOf<T> = {}>
-constexpr std::true_type isFixedSize(T &&) {
+template <typename T>
+constexpr std::true_type isFixedSize(T &&, SizeOf<T> = {}) {
     return {};
 }
 template <typename T>
