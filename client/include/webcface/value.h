@@ -12,7 +12,7 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message{
+namespace message {
 struct ValueShape;
 }
 /*!
@@ -21,9 +21,44 @@ struct ValueShape;
 struct WEBCFACE_DLL ValueShape {
     std::size_t fixed_size;
     bool is_fixed;
-    ValueShape(std::size_t size = 1, bool fixed = false) : fixed_size(size), is_fixed(fixed) {}
+    ValueShape(std::size_t size = 1, bool fixed = false)
+        : fixed_size(size), is_fixed(fixed) {}
     ValueShape(const message::ValueShape &);
     operator message::ValueShape() const;
+};
+
+/*!
+ * \brief 配列型のValueデータの一部の要素を指定するクラス
+ * \since ver2.6
+ */
+class WEBCFACE_DLL ValueIndex : protected Field {
+    std::size_t index;
+    ValueIndex(const Field &base, std::size_t index)
+        : Field(base), index(index) {}
+
+  public:
+    friend class Value;
+
+    /*!
+     * \brief 値をセットする
+     *
+     * * 事前に Value::resize() でサイズを変更しておく必要がある
+     * * データがない場合、範囲外の場合は std::out_of_range
+     */
+    const ValueIndex &set(double v) const;
+    /*!
+     * \brief 値があればその要素を返す
+     *
+     * * データがない場合、範囲外の場合はstd::nullopt
+     */
+    std::optional<double> tryGet() const;
+    /*!
+     * \brief 値があればその要素を返す
+     *
+     * * データがない場合、範囲外の場合は0
+     *
+     */
+    double get() const { return tryGet().value_or(0); }
 };
 
 /*!
@@ -60,8 +95,11 @@ class WEBCFACE_DLL Value : protected Field {
     }
     /*!
      * \since ver1.11
+     * \deprecated ver2.6
      */
-    Value child(int index) const { return this->Field::child(index); }
+    [[deprecated]] Value child(int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -82,10 +120,15 @@ class WEBCFACE_DLL Value : protected Field {
      */
     Value operator[](const wchar_t *field) const { return child(field); }
     /*!
-     * child()と同じ
-     * \since ver1.11
+     * * (ver1.11〜) <del>child()と同じ</del>
+     * * (ver2.6〜)
+     * 配列型Valueデータの要素をset,getするためのValueIndexクラスを返す
+     *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
+     * とは異なる挙動になる
      */
-    Value operator[](int index) const { return child(index); }
+    ValueIndex operator[](std::size_t index) const {
+        return ValueIndex(*this, index);
+    }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11
@@ -135,8 +178,10 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 値をセットする
      *
      * * (ver1.11〜)
-     * vが配列でなく、parent()の配列データが利用可能ならその要素をセットする
-     * * (ver2.6〜) サイズ1の固定長データとなる
+     * <del>vが配列でなく、parent()の配列データが利用可能ならその要素をセットする</del>
+     *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
+     * ValueIndex を使う
+     * * (ver2.6〜) セットしたデータはサイズ1の固定長データとなる
      *
      */
     const Value &set(double v) const;
@@ -203,22 +248,35 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 値を返す
      *
-     * ver1.11〜 parent()の配列データが利用可能ならその要素を返す
+     * * データが配列だった場合、最初の要素を返す
+     * * (ver1.11〜) <del>parent()の配列データが利用可能ならその要素を返す</del>
+     *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
+     * ValueIndex を使う
      *
      */
     std::optional<double> tryGet() const;
     /*!
      * \brief 値をvectorで返す
      *
+     * * データが配列でない場合、サイズ1のvectorとして返す
+     *
      */
     std::optional<std::vector<double>> tryGetVec() const;
     /*!
      * \brief 値を返す
      *
+     * * データが配列だった場合、最初の要素を返す
+     * * (ver1.11〜) <del>parent()の配列データが利用可能ならその要素を返す</del>
+     *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
+     * ValueIndex を使う
+     *
      */
     double get() const { return tryGet().value_or(0); }
     /*!
      * \brief 値をvectorで返す
+     *
+     * * データが存在しない場合、サイズ0のvectorとして返す
+     * * データが配列でない場合、サイズ1のvectorとして返す
      *
      */
     std::vector<double> getVec() const {

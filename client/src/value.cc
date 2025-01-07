@@ -48,29 +48,28 @@ const Value &Value::set(std::vector<double> v, ValueShape shape) const {
     }
     return *this;
 }
-const Value &Value::set(double v) const {
-    auto last_name = this->lastName();
-    auto parent = this->parent();
-    if (std::all_of(last_name.cbegin(), last_name.cend(),
-                    [](unsigned char c) { return std::isdigit(c); })) {
-        std::size_t index = std::stoi(std::string(last_name));
-        auto pv = parent.tryGetVec();
-        if (pv && index < pv->size() + 10) { // てきとう
-            while (pv->size() <= index) {
-                pv->push_back(0);
-            }
-            pv->at(index) = v;
-            parent.set(*pv);
-            return *this;
-        }
+const ValueIndex &ValueIndex::set(double v) const {
+    Value parent = *this;
+    auto pv = parent.tryGetVec();
+    if (pv && index < pv->size()) {
+        pv->at(index) = v;
+        parent.set(*pv);
+        return *this;
+    } else {
+        throw std::out_of_range("index out of range, current size: " +
+                                std::to_string(pv ? pv->size() : 0) +
+                                ", got index: " + std::to_string(index));
     }
+}
+const Value &Value::set(double v) const {
     set(std::vector<double>{v}, ValueShape{1, true});
     return *this;
 }
-
 const Value &Value::set(std::vector<double> v) const {
     return set(std::move(v), ValueShape{});
 }
+
+
 const Value &Value::onChange(std::function<void(Value)> callback) const {
     this->request();
     auto data = dataLock();
@@ -101,20 +100,19 @@ const Value &Value::push_back(double v) const {
     return *this;
 }
 
+std::optional<double> ValueIndex::tryGet() const {
+    Value parent = *this;
+    auto pv = parent.tryGetVec();
+    if (pv && index < pv->size()) {
+        return pv->at(index);
+    }
+    return std::nullopt;
+}
 std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
-    if (v) {
-        return v->size() >= 1 ? std::make_optional((*v)[0]) : std::nullopt;
-    }
-    auto last_name = lastName();
-    if (std::all_of(last_name.cbegin(), last_name.cend(),
-                    [](unsigned char c) { return std::isdigit(c); })) {
-        std::size_t index = std::stoi(std::string(last_name));
-        auto pv = parent().tryGetVec();
-        if (pv && index < pv->size()) {
-            return pv->at(index);
-        }
+    if (v && v->size() >= 1) {
+        return (*v)[0];
     }
     return std::nullopt;
 }
