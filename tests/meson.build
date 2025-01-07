@@ -1,6 +1,8 @@
 test_src = [
   'client_data_test.cc',
-  'data_test.cc',
+  'value_test.cc',
+  'text_test.cc',
+  'log_test.cc',
   'func_test.cc',
   'func_listener_test.cc',
   'view_test.cc',
