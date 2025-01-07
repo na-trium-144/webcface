@@ -23,17 +23,19 @@ constexpr bool isComplete(T *) {
         return nullptr;                                                        \
     }
 
-define_assert_complete(Member, member.h);
-define_assert_complete(Value, value.h);
-define_assert_complete(Text, text.h);
-define_assert_complete(View, view.h);
-define_assert_complete(Image, image.h);
-define_assert_complete(Func, func.h);
-define_assert_complete(FuncListener, func.h);
-define_assert_complete(RobotModel, robot_model.h);
-define_assert_complete(Canvas2D, canvas2d.h);
-define_assert_complete(Canvas3D, canvas3d.h);
-define_assert_complete(Log, log.h);
+// clang-format off
+define_assert_complete(Member, member.h)
+define_assert_complete(Value, value.h)
+define_assert_complete(Text, text.h)
+define_assert_complete(View, view.h)
+define_assert_complete(Image, image.h)
+define_assert_complete(Func, func.h)
+define_assert_complete(FuncListener, func.h)
+define_assert_complete(RobotModel, robot_model.h)
+define_assert_complete(Canvas2D, canvas2d.h)
+define_assert_complete(Canvas3D, canvas3d.h)
+define_assert_complete(Log, log.h)
+// clang-format on
 
 #undef define_assert_complete
 
