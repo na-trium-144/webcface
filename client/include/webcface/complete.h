@@ -19,7 +19,7 @@ constexpr bool isComplete(T *) {
     constexpr std::nullptr_t assertComplete##Type() {                          \
         static_assert(isComplete((T *)nullptr),                                \
                       "Please include <webcface/" #header                      \
-                      "> to use class '" #Type "'!");                          \
+                      "> to use class " #Type "!");                            \
         return nullptr;                                                        \
     }
 
