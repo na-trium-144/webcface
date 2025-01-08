@@ -108,7 +108,7 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         auto ret = curl_easy_perform(handle);
         if (ret == CURLE_OK) {
-            data->logger_internal->debug("connected to {}",
+            data->logger_internal->info("connected to {}",
                                          data->current_curl_path);
             data->current_curl_connected = true;
             return;
@@ -127,7 +127,7 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
         data->current_curl_handle = nullptr;
     }
     data->current_curl_connected = false;
-    data->logger_internal->debug("connection closed");
+    data->logger_internal->info("connection closed");
 }
 bool recv(const std::shared_ptr<internal::ClientData> &data,
           const std::function<void(std::string &&)> &cb) {
