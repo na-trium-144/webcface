@@ -1,5 +1,5 @@
-#include "webcface/common/internal/message/base.h"
 #include "webcface/common/internal/message/pack.h"
+#include "webcface/common/internal/message/base.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/func.h"

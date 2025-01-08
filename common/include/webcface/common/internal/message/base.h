@@ -4,6 +4,12 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include "./fmt.h"
+#include "webcface/common/val_adaptor.h"
+
+#ifndef MSGPACK_DEFINE_MAP
+#define MSGPACK_DEFINE_MAP(...)
+#endif
 
 WEBCFACE_NS_BEGIN
 namespace message {
@@ -56,6 +62,36 @@ struct MessageBase {
 
 template <typename T>
 struct Res {};
+
+/*!
+ * \brief server->client 新しいvalueなどの報告
+ *
+ * Funcの場合はこれではなくFuncInfoを使用
+ *
+ */
+template <typename T>
+struct Entry : public MessageBase<T::kind + MessageKind::entry> {
+    unsigned int member_id = 0;
+    SharedString field;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
+};
+/*!
+ * \brief client->server 以降Recvを送るようリクエスト
+ *
+ * todo: 解除できるようにする
+ *
+ */
+template <typename T>
+struct Req : public MessageBase<T::kind + MessageKind::req> {
+    SharedString member;
+    SharedString field;
+    unsigned int req_id = 0;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
+                       MSGPACK_NVP("f", field))
+};
+struct Image;
+template <>
+struct Req<Image>;
 
 } // namespace message
 WEBCFACE_NS_END
