@@ -87,11 +87,7 @@ void MemberData::send() {
     send_len = 0;
 }
 void MemberData::send(const std::string &msg) {
-    std::string message_str;
-    for (const auto &c : msg) {
-        fmt::format_to(std::back_inserter(message_str), "{:02x} ", c);
-    }
-    logger->trace("-> packed: {}", message_str);
+    logger->trace("-> packed: {}", message::messageTrace(msg));
     if (connected()) {
         store->server->send(con, msg);
     } else {
@@ -156,11 +152,7 @@ void MemberData::sendPing() {
     send(message::Ping{});
 }
 void MemberData::onRecv(const std::string &message) {
-    std::string message_str;
-    for (const auto &c : message) {
-        fmt::format_to(std::back_inserter(message_str), "{:02x} ", c);
-    }
-    logger->trace("unpacking: {}", message_str);
+    logger->trace("unpacking: {}", message::messageTrace(message));
     static std::unordered_map<int, bool> message_kind_warned;
     namespace MessageKind = webcface::message::MessageKind;
     auto messages = webcface::message::unpack(message, this->logger);

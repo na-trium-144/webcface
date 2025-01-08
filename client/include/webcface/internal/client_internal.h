@@ -25,6 +25,11 @@ WEBCFACE_NS_BEGIN
 class Log;
 class Variant;
 
+namespace message {
+template <typename T>
+std::string packSingle(const T &obj);
+}
+
 namespace internal {
 
 void wsThreadMain(const std::shared_ptr<ClientData> &data);
@@ -56,6 +61,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     std::string current_curl_path;
     std::string current_ws_buf = "";
     std::shared_ptr<void> curl_initializer;
+    std::vector<char> curl_err_buffer;
 
     /*!
      * \brief websocket接続、通信するスレッド
@@ -81,8 +87,10 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         StrMap1<std::shared_ptr<TextData>> text_data;
         StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
         StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
-        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev, canvas3d_data;
-        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev, canvas2d_data;
+        StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev,
+            canvas3d_data;
+        StrMap1<std::shared_ptr<message::Canvas2DData>> canvas2d_prev,
+            canvas2d_data;
         StrMap1<ImageData> image_data;
         StrMap1<std::vector<LogLineData>> log_data;
         StrMap1<std::shared_ptr<FuncData>> func_data;
@@ -263,10 +271,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * Call, Pingなど
      */
-    bool messagePushOnline(std::string &&msg) {
+    template <typename T>
+    bool messagePushOnline(const T &obj) {
         ScopedWsLock lock_ws(this);
         if (lock_ws.getData().connected) {
-            lock_ws.getData().sync_queue.push(std::move(msg));
+            this->logger_internal->debug("-> queued to send: {}", obj);
+            lock_ws.getData().sync_queue.push(message::packSingle(obj));
             this->ws_cond.notify_all();
             return true;
         } else {
@@ -279,15 +289,17 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * Reqはsync_first時にすべて含まれるので。
      */
-    bool messagePushReq(std::string &&msg) {
+    template <typename T>
+    bool messagePushReq(const T &obj) {
         bool has_sync_first;
         {
             ScopedSyncLock lock_s(this);
             has_sync_first = (lock_s.getData().sync_first != std::nullopt);
         }
         if (has_sync_first) {
+            this->logger_internal->debug("-> queued to send: {}", obj);
             ScopedWsLock lock_ws(this);
-            lock_ws.getData().sync_queue.push(std::move(msg));
+            lock_ws.getData().sync_queue.push(message::packSingle(obj));
             this->ws_cond.notify_all();
             return true;
         } else {
@@ -299,12 +311,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * syncで確実に送信するデータに使う。
      */
-    void messagePushAlways(std::string &&msg) {
+    template <typename T>
+    void messagePushAlways(const T &obj) {
+        this->logger_internal->debug("-> queued to send: {}", obj);
         ScopedWsLock lock_ws(this);
-        lock_ws.getData().sync_queue.push(std::move(msg));
+        lock_ws.getData().sync_queue.push(message::packSingle(obj));
         this->ws_cond.notify_all();
     }
     void messagePushAlways(SyncDataSnapshot &&msg) {
+        this->logger_internal->debug("-> sync data queued");
         ScopedWsLock lock_ws(this);
         lock_ws.getData().sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();
@@ -350,7 +365,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
-    SyncDataStore2<std::shared_ptr<RobotModelData> >robot_model_store;
+    SyncDataStore2<std::shared_ptr<RobotModelData>> robot_model_store;
     SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
     SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
     SyncDataStore2<std::shared_ptr<LogData>> log_store;
@@ -426,8 +441,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         canvas3d_entry_event;
     StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
         canvas2d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>>
-        log_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
     std::mutex logger_m;

@@ -19,6 +19,12 @@ struct Ping;
 struct PingStatusReq;
 
 /*!
+ * \brief バイナリを16進数の文字列に変換
+ * \since ver2.6
+ */
+std::string messageTrace(const std::string &message);
+
+/*!
  * \brief msgpackのメッセージをパースし返す
  *
  */

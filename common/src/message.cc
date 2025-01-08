@@ -13,6 +13,14 @@
 
 WEBCFACE_NS_BEGIN
 namespace message {
+std::string messageTrace(const std::string &message) {
+    std::string message_str;
+    for (const auto &c : message) {
+        fmt::format_to(std::back_inserter(message_str), "{:02x} ", c);
+    }
+    return message_str;
+}
+
 static std::string objectTypeStr(msgpack::type::object_type type) {
     switch (type) {
     case msgpack::type::NIL:

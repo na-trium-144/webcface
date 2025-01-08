@@ -14,8 +14,8 @@ const Value &Value::request() const {
     auto data = dataLock();
     auto req = data->value_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(message::packSingle(
-            message::Req<message::Value>{{}, member_, field_, req}));
+        data->messagePushReq(
+            message::Req<message::Value>{{}, member_, field_, req});
     }
     return *this;
 }
