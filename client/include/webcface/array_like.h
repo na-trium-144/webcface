@@ -156,11 +156,16 @@ using NestedArraySizeMatch = decltype(nestedArraySizeMatch(
  * T が配列で、std::tuple_size<T>がNumと一致するか定義されないとき、
  * ArraySizeTrait<T, Num>::SizeMatchOrDynamic が定義される
  *
+ * Tが値型の場合、Numが1のときだけtrue
  */
-template <typename T, std::size_t Num>
+template <typename T, std::size_t Num, typename = void>
 struct NestedArraySizeTrait
     : ArraySizeTraitEnabler<IsNestedFixedSize<T>::value,
                             NestedArraySizeMatch<T, Num>::value> {};
+template <typename T, std::size_t Num>
+struct NestedArraySizeTrait<
+    T, Num, std::enable_if_t<std::is_convertible_v<T, double>, void>>
+    : ArraySizeTraitEnabler<true, Num == 1> {};
 
 
 template <typename T>

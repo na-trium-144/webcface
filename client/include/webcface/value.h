@@ -44,9 +44,6 @@ class ValueElement<FirstDim, Shape...> : protected Field {
     using Vector = std::vector<typename ValueElement<Shape...>::Vector>;
     using Array = std::array<typename ValueElement<Shape...>::Array, FirstDim>;
 
-    template <std::size_t...>
-    friend class ValueElement;
-
     ValueElement(const Field &base, std::size_t index)
         : Field(base), index(index) {}
 
@@ -74,7 +71,6 @@ class ValueElement<FirstDim, Shape...> : protected Field {
     }
     Array getArray() const { return tryGetArray().value_or(Array{}); }
 
-  private:
     bool tryGetArray(Array &target) const;
 };
 /*!
@@ -84,15 +80,18 @@ class ValueElement<FirstDim, Shape...> : protected Field {
 template <>
 class WEBCFACE_DLL ValueElement<> : protected Field {
     std::size_t index;
+
+  public:
     using Vector = double;
     using Array = double;
 
-  public:
     ValueElement(const Field &base, std::size_t index)
         : Field(base), index(index) {}
 
     template <std::size_t...>
     friend class ValueElement;
+    template <std::size_t...>
+    friend class ValueList;
 
     /*!
      * \brief 値をセットする
@@ -117,7 +116,6 @@ class WEBCFACE_DLL ValueElement<> : protected Field {
      */
     double get() const { return tryGet().value_or(0); }
 
-  private:
     bool tryGetVec(double &target) const {
         auto v = tryGet();
         if (v) {
@@ -133,6 +131,7 @@ class WEBCFACE_DLL ValueElement<> : protected Field {
  * コンストラクタではなく Member::value(), Member::values(),
  * Member::onValueEntry() を使って取得してください
  *
+ * \sa ValueFixed, ValueList
  */
 class WEBCFACE_DLL Value : protected Field {
   public:
@@ -243,11 +242,13 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver2.6
      *
      * * データがこのクライアント自身のものの場合、resizeする。
-     * * そうでない場合、サイズが一致しているかどうかを確認し、
+     * * そうでない場合、
+     * fixed=trueならサイズが一致しているかどうか、
+     * fixed=falseならサイズがsizeの倍数かどうかを確認し、
      * 一致しない場合 std::runtime_error を投げる。
      *
      */
-    void assertSize(std::size_t size) const;
+    void assertSize(std::size_t size, bool fixed) const;
     /*!
      * \since ver2.6
      */
@@ -261,6 +262,15 @@ class WEBCFACE_DLL Value : protected Field {
      */
     bool tryGetArray(double *target, std::ptrdiff_t index,
                      std::ptrdiff_t size) const;
+
+    /*!
+     * \since ver2.6
+     *
+     * * 配列データの index から index+size までを返す
+     *
+     */
+    std::optional<std::vector<double>> tryGetVec(std::ptrdiff_t index,
+                                                 std::ptrdiff_t size) const;
 
   public:
     /*!
@@ -509,7 +519,7 @@ class WEBCFACE_DLL Value : protected Field {
 };
 
 /*!
- * \brief 可変長配列を送受信するクラス
+ * \brief 固定長配列を送受信するクラス
  * \since ver2.6
  *
  * データは Value クラスと共通のフォーマットだが、
@@ -520,8 +530,8 @@ class WEBCFACE_DLL Value : protected Field {
  */
 template <std::size_t FirstDim = 1, std::size_t... Shape>
 class ValueFixed : Value {
-    static constexpr std::size_t size = (FirstDim * ... * Shape);
-    static_assert(size > 0);
+    static constexpr std::size_t Size = (FirstDim * ... * Shape);
+    static_assert(Size > 0);
 
   public:
     using Vector = typename ValueElement<FirstDim, Shape...>::Vector;
@@ -549,17 +559,21 @@ class ValueFixed : Value {
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
-        this->Value::assertSize(size);
+        this->Value::assertSize(Size, true);
         return ValueElement<Shape...>(*this, index);
     }
 
-    template <typename F, typename std::enable_if_t<
-                              std::is_invocable_v<F, ValueFixed<Shape...>>,
-                              std::nullptr_t> = nullptr>
+    const ValueFixed &onChange(std::nullptr_t) const {
+        this->Value::onChange(nullptr);
+        return *this;
+    }
+    template <typename F,
+              typename std::enable_if_t<std::is_invocable_v<F, ValueFixed>,
+                                        std::nullptr_t> = nullptr>
     const ValueFixed &onChange(F callback) const {
         this->Value::onChange(
             [callback = std::move(callback)](const Value &base) {
-                callback(ValueFixed<Shape...>(base));
+                callback(ValueFixed(base));
             });
         return *this;
     }
@@ -574,8 +588,8 @@ class ValueFixed : Value {
      * \brief 値をセットする (配列サイズが1の場合のみ)
      *
      */
-    template <std::size_t s = size,
-              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     const ValueFixed &set(double v) const {
         this->Value::set(v);
         return *this;
@@ -586,7 +600,7 @@ class ValueFixed : Value {
      * サイズが一致しない場合 std::invalid_argument を投げる
      */
     const ValueFixed &set(std::vector<double> v) const {
-        this->Value::set(std::move(v), ValueShape{size, true});
+        this->Value::set(std::move(v), ValueShape{Size, true});
         return *this;
     }
     /*!
@@ -604,7 +618,7 @@ class ValueFixed : Value {
     template <
         typename R,
         typename traits::NestedArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
-        typename traits::NestedArraySizeTrait<R, size>::SizeMatchOrDynamic =
+        typename traits::NestedArraySizeTrait<R, Size>::SizeMatchOrDynamic =
             traits::TraitOk>
     const ValueFixed &set(const R &range) const {
         return this->set(traits::nestedArrayLikeToVector(range));
@@ -619,31 +633,31 @@ class ValueFixed : Value {
         this->Value::request();
         return *this;
     }
-    template <std::size_t s = size,
-              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     std::optional<double> tryGet() const {
-        this->Value::assertSize(size);
+        this->Value::assertSize(Size, true);
         return this->Value::tryGet();
     }
     std::optional<Vector> tryGetVec() const {
-        this->Value::assertSize(size);
+        this->Value::assertSize(Size, true);
         return ValueElement<FirstDim, Shape...>(*this, 0).tryGetVec();
     }
     std::optional<Array> tryGetArray() const {
-        this->Value::assertSize(size);
+        this->Value::assertSize(Size, true);
         return ValueElement<FirstDim, Shape...>(*this, 0).tryGetArray();
     }
 
-    template <std::size_t s = size,
-              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     double get() const {
         return tryGet().value_or(0);
     }
     Vector getVec() const { return tryGetVec().value_or(Vector{}); }
     Array getArray() const { return tryGetArray().value_or(Array{}); }
 
-    template <std::size_t s = size,
-              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     operator double() const {
         return get();
     }
@@ -673,11 +687,202 @@ class ValueFixed : Value {
     bool operator>=(const ValueFixed &) const = delete;
 };
 
+/*!
+ * \brief 可変長配列を送受信するクラス
+ * \since ver2.6
+ *
+ * データは Value クラスと共通のフォーマットだが、
+ * 2つ目以降の次元は ValueFixed と同様固定長として扱われる
+ */
+template <std::size_t... Shape>
+class ValueList : Value {
+    static constexpr std::size_t Size = (1 * ... * Shape);
+    static_assert(Size > 0);
+
+  public:
+    using VectorElem = typename ValueElement<Shape...>::Vector;
+    using ArrayElem = typename ValueElement<Shape...>::Array;
+
+    using Field::lastName;
+    using Field::member;
+    using Field::name;
+    using Field::nameW;
+    using Value::child;
+    using Value::Value;
+    using Value::operator[];
+    using Value::parent;
+
+    /*!
+     * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
+     *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
+     * とは異なる挙動になる
+     * * データがこのクライアント自身のものの場合、resizeする。
+     * そうでない場合、受信したデータのサイズが一致しているかどうかを確認し、
+     * 一致しない場合 std::runtime_error を投げる。
+     * * 2次元以上の配列の場合 ValueElement に再度 operator[]
+     * を使うことで次元を1つ減らす
+     */
+    template <typename T,
+              std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+    ValueElement<Shape...> operator[](T index) const {
+        this->Value::assertSize(Size, false);
+        return ValueElement<Shape...>(*this, index);
+    }
+
+    const ValueList &onChange(std::nullptr_t) const {
+        this->Value::onChange(nullptr);
+        return *this;
+    }
+    template <typename F,
+              typename std::enable_if_t<std::is_invocable_v<F, ValueList>,
+                                        std::nullptr_t> = nullptr>
+    const ValueList &onChange(F callback) const {
+        this->Value::onChange(
+            [callback = std::move(callback)](const Value &base) {
+                callback(ValueList(base));
+            });
+        return *this;
+    }
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const ValueList &onChange(F callback) const {
+        this->Value::onChange(
+            [callback = std::move(callback)](const auto &) { callback(); });
+        return *this;
+    }
+    /*!
+     * \brief vector型配列をセットする
+     *
+     * サイズがShapeの倍数でない場合 std::invalid_argument を投げる
+     */
+    const ValueList &set(std::vector<double> v) const {
+        this->Value::set(std::move(v), ValueShape{Size, false});
+        return *this;
+    }
+    /*!
+     * \brief 配列型の値をセットする
+     *
+     * * std::begin(), std::end()
+     * が使えてその値がdoubleに変換可能ならなんでもok
+     * * ネストした配列も可
+     * * std::array などサイズが固定の配列を渡した場合、
+     * サイズが一致しなければコンパイルエラー
+     * * std::vector などサイズが取得できない型を渡した場合、
+     * 実行時にサイズが一致しなければ std::invalid_argument を投げる
+     *
+     */
+    template <
+        typename R,
+        typename traits::NestedArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
+        typename traits::NestedArraySizeTrait<traits::ElementTypeOf<R>, Size>::
+            SizeMatchOrDynamic = traits::TraitOk>
+    const ValueList &set(const R &range) const {
+        return this->set(traits::nestedArrayLikeToVector(range));
+    }
+    /*!
+     * \brief 配列をセット、またはすでにsetされていればリサイズする
+     *
+     * double型の値の総数ではなく、最も外側の次元のサイズを指定する
+     */
+    const ValueList &resize(std::size_t size) const {
+        this->Value::resize(size * Size);
+        return *this;
+    }
+    /*!
+     * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
+     */
+    // const ValueList &push_back(double v) const;
+
+    template <typename T>
+    const ValueList &operator=(T &&v) const {
+        this->set(std::forward<T>(v));
+        return *this;
+    }
+
+    const ValueList &request() const {
+        this->Value::request();
+        return *this;
+    }
+    std::optional<std::vector<VectorElem>> tryGetVec() const {
+        if constexpr (sizeof...(Shape) == 0) {
+            return Value(*this).tryGetVec();
+        } else {
+            this->Value::assertSize(Size, false);
+            std::vector<VectorElem> vec;
+            auto rows = this->Value::size() / Size;
+            for (std::size_t i = 0; i < rows; i++) {
+                auto v = (*this)[i].tryGetVec();
+                if (v) {
+                    vec.push_back(std::move(*v));
+                } else {
+                    return std::nullopt;
+                }
+            }
+            return vec;
+        }
+    }
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && (s > 1), std::nullptr_t> = nullptr>
+    std::optional<std::vector<ArrayElem>> tryGetArray() const {
+        this->Value::assertSize(Size, false);
+        auto rows = this->Value::size() / Size;
+        std::vector<ArrayElem> vec(rows);
+        for (std::size_t i = 0; i < rows; i++) {
+            if (!(*this)[i].tryGetArray(vec[i])) {
+                return std::nullopt;
+            }
+        }
+        return vec;
+    }
+
+    std::vector<VectorElem> getVec() const {
+        return tryGetVec().value_or(std::vector<VectorElem>{});
+    }
+    template <std::size_t s = Size,
+              std::enable_if_t<s == Size && (s > 1), std::nullptr_t> = nullptr>
+    std::vector<ArrayElem> getArray() const {
+        return tryGetArray().value_or(std::vector<ArrayElem>{});
+    }
+    /*!
+     * \brief データのサイズを返す
+     *
+     * double型の値の総数ではなく、最も外側の次元のサイズ:
+     * Value::size() / (Shapeの積)
+     * を返す。
+     *
+     */
+    std::size_t size() const { return this->Value::size() / Size; }
+
+    using Value::exists;
+
+    const ValueList &free() const {
+        this->Value::free();
+        return *this;
+    }
+
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, ValueList>,
+                                        std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    template <typename T,
+              typename std::enable_if_t<std::is_same_v<T, ValueList>,
+                                        std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return static_cast<Field>(*this) == static_cast<Field>(other);
+    }
+    bool operator<(const ValueList &) const = delete;
+    bool operator<=(const ValueList &) const = delete;
+    bool operator>(const ValueList &) const = delete;
+    bool operator>=(const ValueList &) const = delete;
+};
+
 template <std::size_t FirstDim, std::size_t... Shape>
 std::optional<typename ValueElement<FirstDim, Shape...>::Vector>
 ValueElement<FirstDim, Shape...>::tryGetVec() const {
     if constexpr (sizeof...(Shape) == 0) {
-        return Value(*this).tryGetVec();
+        return Value(*this).tryGetVec(this->index * FirstDim, FirstDim);
     } else {
         Vector vec;
         vec.reserve(FirstDim);

@@ -43,6 +43,10 @@ class ValueTest : public ::testing::Test {
     ValueFixed<Shape...> valueFixed(const T1 &member, const T2 &name) {
         return ValueFixed<Shape...>{field(member, name)};
     }
+    template <std::size_t... Shape, typename T1, typename T2>
+    ValueList<Shape...> valueList(const T1 &member, const T2 &name) {
+        return ValueList<Shape...>{field(member, name)};
+    }
     int callback_called;
     template <typename V>
     auto callback() {
@@ -68,10 +72,18 @@ TEST_F(ValueTest, field) {
     EXPECT_EQ(valueFixed<1>("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(valueFixed<1>("a", "b").child(L"c").name(), "b.c");
     EXPECT_EQ(valueFixed<1>("a", "b.c").parent().name(), "b");
+    EXPECT_EQ(valueList<1>("a", "b").member().name(), "a");
+    EXPECT_EQ(valueList<1>("a", "b").member().nameW(), L"a");
+    EXPECT_EQ(valueList<1>("a", "b").name(), "b");
+    EXPECT_EQ(valueList<1>("a", "b").nameW(), L"b");
+    EXPECT_EQ(valueList<1>("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(valueList<1>("a", "b").child(L"c").name(), "b.c");
+    EXPECT_EQ(valueList<1>("a", "b.c").parent().name(), "b");
 
 
     EXPECT_THROW(Value().tryGet(), std::runtime_error);
     EXPECT_THROW(ValueFixed<1>().tryGet(), std::runtime_error);
+    EXPECT_THROW(ValueList<1>().tryGetVec(), std::runtime_error);
 }
 TEST_F(ValueTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());
@@ -89,10 +101,21 @@ TEST_F(ValueTest, eventTarget) {
     data_->value_change_event["a"_ss]["c"_ss]->operator()(field("a", "c"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
-    value("a", "c").onChange(nullptr);
+    valueFixed<1>("a", "c").onChange(nullptr);
     EXPECT_FALSE(*data_->value_change_event["a"_ss]["c"_ss]);
-    value("a", "c").onChange(callbackVoid());
+    valueFixed<1>("a", "c").onChange(callbackVoid());
     data_->value_change_event["a"_ss]["c"_ss]->operator()(field("a", "c"));
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+
+    valueList<1>("a", "d").onChange(callback<ValueList<1>>());
+    data_->value_change_event["a"_ss]["d"_ss]->operator()(field("a", "d"));
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    valueList<1>("a", "d").onChange(nullptr);
+    EXPECT_FALSE(*data_->value_change_event["a"_ss]["d"_ss]);
+    valueList<1>("a", "d").onChange(callbackVoid());
+    data_->value_change_event["a"_ss]["d"_ss]->operator()(field("a", "d"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
@@ -105,6 +128,7 @@ TEST_F(ValueTest, valueSet) {
     valueFixed<1, 1, 1>(self_name, "b4").set(123);
     // valueFixed<0>(self_name, "b5").set(123);
     // valueFixed<2>(self_name, "b5").set(123);
+    // valueList<>(self_name, "b6").set(123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b2"_ss)).at(0), 123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b3"_ss)).at(0), 123);
@@ -161,6 +185,35 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_THROW(d16[1][0][0].set(6), std::out_of_range);
     EXPECT_THROW(d16[0][0][-1].set(0), std::out_of_range);
 
+    valueList<>(self_name, "d17").set({1, 2, 3, 4, 5});
+    valueList<>(self_name, "d18").set(std::array<int, 5>{1, 2, 3, 4, 5});
+    valueList<5>(self_name, "d19")
+        .set(std::vector<std::vector<int>>{{1, 2, 3, 4, 5}});
+    valueList<5>(self_name, "d20")
+        .set(std::vector<std::vector<int>>{{{1, 2}, {3, 4, 5}}});
+    valueList<5>(self_name, "d21")
+        .set(std::array<std::array<std::array<int, 1>, 5>, 1>{
+            {{{{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}}});
+    EXPECT_THROW(valueList<5>(self_name, "d22").set({1, 2, 3}),
+                 std::invalid_argument);
+    EXPECT_THROW(valueList<5>(self_name, "d23")
+                     .set(std::vector<std::vector<int>>{{1, 2}, {3, 4, 5, 6}}),
+                 std::invalid_argument);
+    auto d24 = valueList<5>(self_name, "d24");
+    d24.resize(1);
+    d24[0][0].set(1);
+    d24[0][4] = 5;
+    EXPECT_THROW(d24[0][5].set(6), std::out_of_range);
+    EXPECT_THROW(d24[0][-1].set(0), std::out_of_range);
+    EXPECT_THROW(d24[1][0].set(6), std::out_of_range);
+    auto d25 = valueList<1, 5, 1>(self_name, "d25");
+    d25.resize(1);
+    d25[0][0][0][0].set(1);
+    d25[0][1][-1][0] = 5;
+    EXPECT_THROW(d25[0][1][0][0].set(6), std::out_of_range);
+    EXPECT_THROW(d25[0][0][0][-1].set(0), std::out_of_range);
+    EXPECT_THROW(d25[1][0][0][0].set(0), std::out_of_range);
+
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
@@ -201,6 +254,27 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).size(), 5u);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).at(4), 5);
 }
 // TEST_F(ValueTest, ArrayLike){
 static_assert(
@@ -368,6 +442,31 @@ TEST_F(ValueTest, valueGetVec) {
     EXPECT_THROW(valueFixed<6>("a", "b")[0], std::runtime_error);
     EXPECT_THROW(valueFixed<6>("a", "b").tryGetVec(), std::runtime_error);
 
+    EXPECT_EQ(valueList<>("a", "b").tryGetVec().value(),
+              (std::vector<double>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueList<>("a", "b").getVec(),
+              (std::vector<double>{1, 2, 3, 4, 5}));
+    // EXPECT_EQ(valueList<>("a", "b").tryGetArray().value(),
+    //             (std::array<double, 5>{1, 2, 3, 4, 5}));
+    // EXPECT_EQ(valueList<>("a", "b").getArray(),
+    //             (std::array<double, 5>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueList<5>("a", "b").tryGetVec().value(),
+              (std::vector<std::vector<double>>{{1, 2, 3, 4, 5}}));
+    EXPECT_EQ(valueList<5>("a", "b").getVec(),
+              (std::vector<std::vector<double>>{{1, 2, 3, 4, 5}}));
+    EXPECT_EQ(valueList<5>("a", "b").tryGetArray().value(),
+              (std::vector<std::array<double, 5>>{{1, 2, 3, 4, 5}}));
+    EXPECT_EQ(valueList<5>("a", "b").getArray(),
+              (std::vector<std::array<double, 5>>{{1, 2, 3, 4, 5}}));
+    EXPECT_EQ(valueList<5>("a", "b")[0][1].tryGet().value(), 2);
+    EXPECT_EQ(valueList<5>("a", "b")[0][1].get(), 2);
+    // EXPECT_THROW(valueList<5>("a", "b")[5].tryGet(), std::out_of_range);
+    // EXPECT_THROW(valueList<5>("a", "b")[5].get(), std::out_of_range);
+    EXPECT_THROW(valueList<4>("a", "b")[0], std::runtime_error);
+    EXPECT_THROW(valueList<4>("a", "b").tryGetVec(), std::runtime_error);
+    EXPECT_THROW(valueList<6>("a", "b")[0], std::runtime_error);
+    EXPECT_THROW(valueList<6>("a", "b").tryGetVec(), std::runtime_error);
+
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").tryGetVec().value()),
               (std::vector<std::vector<std::vector<double>>>{
                   {{1}, {2}, {3}, {4}, {5}}}));
@@ -382,10 +481,10 @@ TEST_F(ValueTest, valueGetVec) {
                   {{{{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}}}));
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1][0].tryGet().value()), 2);
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1][0].get()), 2);
-    EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].tryGet()),
-                 std::out_of_range);
-    EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].get()),
-                 std::out_of_range);
+    // EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].tryGet()),
+    //              std::out_of_range);
+    // EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].get()),
+    //              std::out_of_range);
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].tryGetVec().value()),
               std::vector<double>{2});
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].getVec()),

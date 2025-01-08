@@ -33,6 +33,13 @@ const Value &Value::set(std::vector<double> v, ValueShape shape) const {
                                         std::to_string(shape.fixed_size) +
                                         ", got: " + std::to_string(v.size()));
         }
+    } else {
+        if (v.size() % shape.fixed_size != 0) {
+            throw std::invalid_argument(
+                "array size mismatch, expected multiple of: " +
+                std::to_string(shape.fixed_size) +
+                ", got: " + std::to_string(v.size()));
+        }
     }
     auto data = setCheck();
     data->value_store.setSend(
@@ -125,6 +132,19 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
         return std::nullopt;
     }
 }
+std::optional<std::vector<double>> Value::tryGetVec(std::ptrdiff_t index,
+                                                    std::ptrdiff_t size) const {
+    auto v = dataLock()->value_store.getRecv(*this);
+    request();
+    if (v) {
+        assert(index >= 0 && size >= 0 &&
+               static_cast<std::size_t>(index + size) <= v->size());
+        return std::vector<double>(v->begin() + index,
+                                   v->begin() + index + size);
+    } else {
+        return std::nullopt;
+    }
+}
 bool Value::tryGetArray(double *target, std::ptrdiff_t index,
                         std::ptrdiff_t size) const {
     auto v = dataLock()->value_store.getRecv(*this);
@@ -145,15 +165,26 @@ std::size_t Value::size() const {
     return v ? v->size() : 0;
 }
 
-void Value::assertSize(std::size_t size) const {
+void Value::assertSize(std::size_t size, bool fixed) const {
     if (dataLock()->isSelf(*this)) {
-        resize(size);
+        if (fixed) {
+            resize(size);
+        }
     } else {
         auto v = dataLock()->value_store.getRecv(*this);
-        if (v && v->size() != size) {
-            throw std::runtime_error(
-                "array size mismatch, expected: " + std::to_string(size) +
-                ", actual data size is: " + std::to_string(v->size()));
+        if (fixed) {
+            if (v && v->size() != size) {
+                throw std::runtime_error(
+                    "array size mismatch, expected: " + std::to_string(size) +
+                    ", actual data size is: " + std::to_string(v->size()));
+            }
+        } else {
+            if (v && v->size() % size != 0) {
+                throw std::runtime_error(
+                    "array size mismatch, expected multiple of: " +
+                    std::to_string(size) +
+                    ", actual data size is: " + std::to_string(v->size()));
+            }
         }
     }
 }
