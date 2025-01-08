@@ -18,7 +18,7 @@ struct ClientData;
 
 class Member;
 class Value;
-template <std::size_t... Shape>
+template <std::size_t FirstDim, std::size_t... Shape>
 class ValueFixed;
 class Text;
 class View;

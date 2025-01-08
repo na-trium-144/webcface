@@ -48,7 +48,7 @@ const Value &Value::set(std::vector<double> v, ValueShape shape) const {
     }
     return *this;
 }
-const ValueIndex &ValueIndex::set(double v) const {
+const ValueElement<> &ValueElement<>::set(double v) const {
     Value parent = *this;
     auto pv = parent.tryGetVec();
     if (pv && index < pv->size()) {
@@ -100,7 +100,7 @@ const Value &Value::push_back(double v) const {
     return *this;
 }
 
-std::optional<double> ValueIndex::tryGet() const {
+std::optional<double> ValueElement<>::tryGet() const {
     Value parent = *this;
     auto pv = parent.tryGetVec();
     if (pv && index < pv->size()) {
@@ -125,6 +125,25 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
         return std::nullopt;
     }
 }
+std::size_t Value::size() const {
+    auto v = dataLock()->value_store.getRecv(*this);
+    request();
+    return v ? v->size() : 0;
+}
+
+void Value::assertSize(std::size_t size) const {
+    if (dataLock()->isSelf(*this)) {
+        resize(size);
+    } else {
+        auto v = dataLock()->value_store.getRecv(*this);
+        if (v && v->size() != size) {
+            throw std::runtime_error(
+                "array size mismatch, expected: " + std::to_string(size) +
+                ", actual data size is: " + std::to_string(v->size()));
+        }
+    }
+}
+
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();
 }

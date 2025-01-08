@@ -132,8 +132,9 @@ TEST_F(ValueTest, valueSetVec) {
     d6.push_back(3);
     d6.resize(5);
     d6[3].set(4);
-    d6[4].set(5);
+    d6[4] = 5;
     EXPECT_THROW(d6[5].set(6), std::out_of_range);
+    EXPECT_THROW(d6[-1].set(0), std::out_of_range);
     value(self_name, "d7").resize(5);
 
     valueFixed<5>(self_name, "d9").set({1, 2, 3, 4, 5});
@@ -149,6 +150,16 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_THROW(valueFixed<5>(self_name, "d14")
                      .set(std::vector<std::vector<int>>{{1, 2}, {3, 4, 5, 6}}),
                  std::invalid_argument);
+    auto d15 = valueFixed<5>(self_name, "d15");
+    d15[0].set(1);
+    d15[4] = 5;
+    EXPECT_THROW(d15[5].set(6), std::out_of_range);
+    EXPECT_THROW(d15[-1].set(0), std::out_of_range);
+    auto d16 = valueFixed<1, 5, 1>(self_name, "d16");
+    d16[0][0][0].set(1);
+    d16[1][-1][0] = 5;
+    EXPECT_THROW(d16[1][0][0].set(6), std::out_of_range);
+    EXPECT_THROW(d16[0][0][-1].set(0), std::out_of_range);
 
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
@@ -184,6 +195,12 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).size(), 5u);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(4), 5);
 }
 // TEST_F(ValueTest, ArrayLike){
 static_assert(

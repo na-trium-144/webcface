@@ -27,17 +27,47 @@ struct WEBCFACE_DLL ValueShape {
     operator message::ValueShape() const;
 };
 
+template <std::size_t... Shape>
+class ValueElement;
+/*!
+ * \brief 配列型のValueデータの一部の要素を指定するクラス
+ * \since ver2.6
+ *
+ * 2次元以上の配列に対して operator[] で次元を1つ減らした配列を表す。
+ *
+ */
+template <std::size_t FirstDim, std::size_t... Shape>
+class ValueElement<FirstDim, Shape...> : protected Field {
+    std::size_t index;
+
+  public:
+    ValueElement(const Field &base, std::size_t index)
+        : Field(base), index(index) {}
+
+    /*!
+     * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
+     *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
+     * とは異なる挙動になる
+     * * 2次元以上の配列の場合 ValueElement に再度 operator[]
+     * を使うことで次元を1つ減らす
+     */
+    template <typename T,
+              std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+    ValueElement<Shape...> operator[](T index) const {
+        return ValueElement<Shape...>(*this, this->index * FirstDim + index);
+    }
+};
 /*!
  * \brief 配列型のValueデータの一部の要素を指定するクラス
  * \since ver2.6
  */
-class WEBCFACE_DLL ValueIndex : protected Field {
+template <>
+class WEBCFACE_DLL ValueElement<> : protected Field {
     std::size_t index;
-    ValueIndex(const Field &base, std::size_t index)
-        : Field(base), index(index) {}
 
   public:
-    friend class Value;
+    ValueElement(const Field &base, std::size_t index)
+        : Field(base), index(index) {}
 
     /*!
      * \brief 値をセットする
@@ -45,7 +75,9 @@ class WEBCFACE_DLL ValueIndex : protected Field {
      * * 事前に Value::resize() でサイズを変更しておく必要がある
      * * データがない場合、範囲外の場合は std::out_of_range
      */
-    const ValueIndex &set(double v) const;
+    const ValueElement &set(double v) const;
+    const ValueElement &operator=(double v) const { return set(v); }
+
     /*!
      * \brief 値があればその要素を返す
      *
@@ -122,12 +154,14 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * * (ver1.11〜) <del>child()と同じ</del>
      * * (ver2.6〜)
-     * 配列型Valueデータの要素をset,getするためのValueIndexクラスを返す
+     * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
      *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
      * とは異なる挙動になる
      */
-    ValueIndex operator[](std::size_t index) const {
-        return ValueIndex(*this, index);
+    template <typename T,
+              std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+    ValueElement<> operator[](T index) const {
+        return ValueElement<>(*this, index);
     }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
@@ -170,6 +204,15 @@ class WEBCFACE_DLL Value : protected Field {
   protected:
     /*!
      * \since ver2.6
+     *
+     * * データがこのクライアント自身のものの場合、resizeする。
+     * * そうでない場合、サイズが一致しているかどうかを確認し、
+     * 一致しない場合 std::runtime_error を投げる。
+     *
+     */
+    void assertSize(std::size_t size) const;
+    /*!
+     * \since ver2.6
      */
     const Value &set(std::vector<double> v, ValueShape shape) const;
 
@@ -180,7 +223,7 @@ class WEBCFACE_DLL Value : protected Field {
      * * (ver1.11〜)
      * <del>vが配列でなく、parent()の配列データが利用可能ならその要素をセットする</del>
      *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
-     * ValueIndex を使う
+     * ValueElement を使う
      * * (ver2.6〜) セットしたデータはサイズ1の固定長データとなる
      * (ValueFixed<1>()::set() と同じ)
      *
@@ -254,7 +297,7 @@ class WEBCFACE_DLL Value : protected Field {
      * * データが配列だった場合、最初の要素を返す
      * * (ver1.11〜) <del>parent()の配列データが利用可能ならその要素を返す</del>
      *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
-     * ValueIndex を使う
+     * ValueElement を使う
      *
      */
     std::optional<double> tryGet() const;
@@ -271,7 +314,7 @@ class WEBCFACE_DLL Value : protected Field {
      * * データが配列だった場合、最初の要素を返す
      * * (ver1.11〜) <del>parent()の配列データが利用可能ならその要素を返す</del>
      *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
-     * ValueIndex を使う
+     * ValueElement を使う
      *
      */
     double get() const { return tryGet().value_or(0); }
@@ -285,6 +328,16 @@ class WEBCFACE_DLL Value : protected Field {
     std::vector<double> getVec() const {
         return tryGetVec().value_or(std::vector<double>{});
     }
+    /*!
+     * \brief データのサイズを返す
+     * \since ver2.6
+     *
+     * * getVec().size() と同じ。データを受信していない場合リクエストされる。
+     * * データが存在しない場合は0を返す
+     *
+     */
+    std::size_t size() const;
+
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
 
@@ -419,9 +472,9 @@ class WEBCFACE_DLL Value : protected Field {
  * 送られてきたデータも固定長であるかどうか、を
  * set() や get() でチェックする
  */
-template <std::size_t... Shape>
+template <std::size_t FirstDim = 1, std::size_t... Shape>
 class ValueFixed : Value {
-    static constexpr std::size_t size = (1 * ... * Shape);
+    static constexpr std::size_t size = (FirstDim * ... * Shape);
     static_assert(size > 0);
 
   public:
@@ -433,6 +486,23 @@ class ValueFixed : Value {
     using Value::Value;
     using Value::operator[];
     using Value::parent;
+
+    /*!
+     * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
+     *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
+     * とは異なる挙動になる
+     * * データがこのクライアント自身のものの場合、resizeする。
+     * そうでない場合、受信したデータのサイズが一致しているかどうかを確認し、
+     * 一致しない場合 std::runtime_error を投げる。
+     * * 2次元以上の配列の場合 ValueElement に再度 operator[]
+     * を使うことで次元を1つ減らす
+     */
+    template <typename T,
+              std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+    ValueElement<Shape...> operator[](T index) const {
+        this->Value::assertSize(size);
+        return ValueElement<Shape...>(*this, index);
+    }
 
     template <typename F, typename std::enable_if_t<
                               std::is_invocable_v<F, ValueFixed<Shape...>>,
@@ -503,6 +573,7 @@ class ValueFixed : Value {
     template <std::size_t s = size,
               std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     std::optional<double> tryGet() const {
+        this->Value::assertSize(size);
         return this->Value::tryGet();
     }
     template <std::size_t s = size,
