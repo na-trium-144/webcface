@@ -6,18 +6,25 @@ if get_option('default_library') == 'shared'
   fmt_private_cpp_args += ['-DFMT_LIB_EXPORT']
   fmt_interface_cpp_args += ['-DFMT_SHARED']
 endif
+fmt_src = ['src/format.cc']
 
 if meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
   fmt_private_cpp_args += '/utf-8'
   fmt_interface_cpp_args += '/utf-8'
 endif
 
+# https://github.com/fmtlib/fmt/issues/2710
+if host_machine.system() == 'cygwin'
+  fmt_private_cpp_args += '-DFMT_OS=0'
+else
+  fmt_src += 'src/os.cc'
+endif
+
 header_only = get_option('header-only')
 
 fmt_lib = library(
   'fmt',
-  'src/format.cc',
-  'src/os.cc',
+  fmt_src,
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
   build_by_default: not header_only,
