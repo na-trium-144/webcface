@@ -10,22 +10,36 @@
 #include "webcface/common/internal/message/text.h"
 #include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/view.h"
-#include <sstream>
 
 WEBCFACE_NS_BEGIN
 namespace message {
-static void printMsg(const std::shared_ptr<spdlog::logger> &logger,
-                     const std::string &message) {
-    std::stringstream ss;
-    ss << "message: " << std::hex;
-    for (std::size_t i = 0; i < message.size(); i++) {
-        ss << std::setw(3) << static_cast<int>(message[i] & 0xff);
+static std::string objectTypeStr(msgpack::type::object_type type) {
+    switch (type) {
+    case msgpack::type::NIL:
+        return "nil";
+    case msgpack::type::BOOLEAN:
+        return "boolean";
+    case msgpack::type::POSITIVE_INTEGER:
+        return "positive integer";
+    case msgpack::type::NEGATIVE_INTEGER:
+        return "negative integer";
+    case msgpack::type::FLOAT32:
+        return "float32";
+    case msgpack::type::FLOAT64:
+        return "float64";
+    case msgpack::type::STR:
+        return "string";
+    case msgpack::type::BIN:
+        return "binary";
+    case msgpack::type::ARRAY:
+        return "array";
+    case msgpack::type::MAP:
+        return "map";
+    case msgpack::type::EXT:
+        return "extension";
+    default:
+        return "unknown object_type " + std::to_string(static_cast<int>(type));
     }
-    logger->debug(ss.str());
-    // for (int i = 0; i < message.size(); i++) {
-    //     std::cerr << message[i];
-    // }
-    // std::cerr << std::endl;
 }
 std::vector<std::pair<int, std::shared_ptr<void>>>
 unpack(const std::string &message,
@@ -39,12 +53,24 @@ unpack(const std::string &message,
         msgpack::object obj(result.get());
         // msgpack::unique_ptr<msgpack::zone> z(result.zone());
 
-        if (obj.type != msgpack::type::ARRAY || obj.via.array.size % 2 != 0) {
-            logger->error("unpack error: invalid array length");
+        if (obj.type != msgpack::type::ARRAY) {
+            logger->error("unpack error: array expected, got {}",
+                          objectTypeStr(obj.type));
+            return std::vector<std::pair<int, std::shared_ptr<void>>>{};
+        }
+        if (obj.via.array.size % 2 != 0) {
+            logger->error("unpack error: array length must be even, got {}",
+                          obj.via.array.size);
             return std::vector<std::pair<int, std::shared_ptr<void>>>{};
         }
         std::vector<std::pair<int, std::shared_ptr<void>>> ret;
         for (std::size_t i = 0; i < obj.via.array.size; i += 2) {
+            if (obj.via.array.ptr[i].type != msgpack::type::POSITIVE_INTEGER) {
+                logger->error("unpack error: message kind as positive integer "
+                              "expected, got {}",
+                              objectTypeStr(obj.via.array.ptr[i].type));
+                return std::vector<std::pair<int, std::shared_ptr<void>>>{};
+            }
             auto kind = obj.via.array.ptr[i].as<int>();
             std::shared_ptr<void> obj_u;
             switch (kind) {
@@ -55,9 +81,8 @@ unpack(const std::string &message,
             obj_u =                                                            \
                 std::make_shared<type>(obj.via.array.ptr[i + 1].as<type>());   \
         } catch (const std::exception &e) {                                    \
-            logger->error("unpack error: {} at index={}, kind={}", e.what(),   \
+            logger->error("unpack error: {} (at index={}, kind={})", e.what(), \
                           i + 1, static_cast<int>(type::kind));                \
-            printMsg(logger, message);                                         \
             continue;                                                          \
         }                                                                      \
         break;
@@ -108,7 +133,6 @@ unpack(const std::string &message,
         return ret;
     } catch (const std::exception &e) {
         logger->error("unpack error: {}", e.what());
-        printMsg(logger, message);
         return std::vector<std::pair<int, std::shared_ptr<void>>>{};
     }
 }
