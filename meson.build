@@ -9,7 +9,13 @@ project('webcface', 'c', 'cpp',
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
     'default_library=shared',
 
-    # options for subproject in subproject
+    # options for subproject
+    'fmt:default_library=static',
+    'spdlog:tests=disabled',
+    'spdlog:compile_library=true',
+    'spdlog:default_library=static',
+    'spdlog:external_fmt=enabled',
+    'spdlog:std_format=disabled',
     'libjpeg-turbo:default_library=static',
     'libjpeg-turbo:jpeg-turbo=disabled',
     'libjpeg-turbo:tests=disabled',
@@ -189,6 +195,7 @@ elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(compile_args: [
     '-Wno-inline',
     '--system-header-prefix=msgpack.hpp',
+    '--system-header-prefix=fmt/',
     '--system-header-prefix=spdlog/',
     '--system-header-prefix=curl/',
     '--system-header-prefix=crow.h',
@@ -399,15 +406,12 @@ msgpack_cxx_dep = dependency('msgpack-cxx',
     'std_variant=false', # msvcでなんかエラーになる
   ],
 )
-spdlog_dep = dependency('spdlog',
-  default_options: [
-    'tests=disabled',
-    'compile_library=true',
-    'default_library=static',
-    'external_fmt=disabled',
-    'std_format=disabled',
-  ],
-)
+fmt_dep = dependency('fmt', version: '>=11')
+if fmt_dep.type_name() == 'internal'
+  spdlog_dep = subproject('spdlog').get_variable('spdlog_dep')
+else
+  spdlog_dep = dependency('spdlog')
+endif
 utf8cpp_dep = dependency('utf8cpp')
 
 # curlはvisibilityがhiddenになっている

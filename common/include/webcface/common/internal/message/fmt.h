@@ -1,9 +1,8 @@
 #pragma once
-#ifdef SPDLOG_FMT_EXTERNAL
-#include <fmt/core.h>
-#else
-#include <spdlog/fmt/bundled/base.h>
+#ifndef SPDLOG_FMT_EXTERNAL
+#error "SPDLOG_FMT_EXTERNAL must be enabled. Clear the build directory and try again."
 #endif
+#include <fmt/base.h>
 
 #define WEBCFACE_MESSAGE_FMT(Type)                                             \
     template <>                                                                \
