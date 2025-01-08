@@ -101,10 +101,10 @@ const Value &Value::push_back(double v) const {
 }
 
 std::optional<double> ValueElement<>::tryGet() const {
-    Value parent = *this;
-    auto pv = parent.tryGetVec();
-    if (pv && index < pv->size()) {
-        return pv->at(index);
+    auto v = dataLock()->value_store.getRecv(*this);
+    Value(*this).request();
+    if (v && index < v->size()) {
+        return v->at(index);
     }
     return std::nullopt;
 }
@@ -125,6 +125,20 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
         return std::nullopt;
     }
 }
+bool Value::tryGetArray(double *target, std::ptrdiff_t index,
+                        std::ptrdiff_t size) const {
+    auto v = dataLock()->value_store.getRecv(*this);
+    request();
+    if (v) {
+        assert(index >= 0 && size >= 0 &&
+               static_cast<std::size_t>(index + size) <= v->size());
+        std::copy(v->begin() + index, v->begin() + index + size, target);
+        return true;
+    } else {
+        return false;
+    }
+}
+
 std::size_t Value::size() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();

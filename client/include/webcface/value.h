@@ -41,6 +41,12 @@ class ValueElement<FirstDim, Shape...> : protected Field {
     std::size_t index;
 
   public:
+    using Vector = std::vector<typename ValueElement<Shape...>::Vector>;
+    using Array = std::array<typename ValueElement<Shape...>::Array, FirstDim>;
+
+    template <std::size_t...>
+    friend class ValueElement;
+
     ValueElement(const Field &base, std::size_t index)
         : Field(base), index(index) {}
 
@@ -56,6 +62,20 @@ class ValueElement<FirstDim, Shape...> : protected Field {
     ValueElement<Shape...> operator[](T index) const {
         return ValueElement<Shape...>(*this, this->index * FirstDim + index);
     }
+
+    std::optional<Vector> tryGetVec() const;
+    Vector getVec() const { return tryGetVec().value_or(Vector{}); }
+    std::optional<Array> tryGetArray() const {
+        Array array;
+        if (!tryGetArray(array)) {
+            return std::nullopt;
+        }
+        return array;
+    }
+    Array getArray() const { return tryGetArray().value_or(Array{}); }
+
+  private:
+    bool tryGetArray(Array &target) const;
 };
 /*!
  * \brief 配列型のValueデータの一部の要素を指定するクラス
@@ -64,10 +84,15 @@ class ValueElement<FirstDim, Shape...> : protected Field {
 template <>
 class WEBCFACE_DLL ValueElement<> : protected Field {
     std::size_t index;
+    using Vector = double;
+    using Array = double;
 
   public:
     ValueElement(const Field &base, std::size_t index)
         : Field(base), index(index) {}
+
+    template <std::size_t...>
+    friend class ValueElement;
 
     /*!
      * \brief 値をセットする
@@ -91,6 +116,15 @@ class WEBCFACE_DLL ValueElement<> : protected Field {
      *
      */
     double get() const { return tryGet().value_or(0); }
+
+  private:
+    bool tryGetVec(double &target) const {
+        auto v = tryGet();
+        if (v) {
+            target = *v;
+        }
+        return v.has_value();
+    }
 };
 
 /*!
@@ -106,6 +140,9 @@ class WEBCFACE_DLL Value : protected Field {
     Value(const Field &base);
     Value(const Field &base, const SharedString &field)
         : Value(Field{base, field}) {}
+
+    template <std::size_t...>
+    friend class ValueElement;
 
     using Field::lastName;
     using Field::member;
@@ -215,6 +252,15 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver2.6
      */
     const Value &set(std::vector<double> v, ValueShape shape) const;
+    /*!
+     * \since ver2.6
+     *
+     * * 配列データの index から index+size までを、
+     * target から target+size にコピー
+     *
+     */
+    bool tryGetArray(double *target, std::ptrdiff_t index,
+                     std::ptrdiff_t size) const;
 
   public:
     /*!
@@ -478,6 +524,9 @@ class ValueFixed : Value {
     static_assert(size > 0);
 
   public:
+    using Vector = typename ValueElement<FirstDim, Shape...>::Vector;
+    using Array = typename ValueElement<FirstDim, Shape...>::Array;
+
     using Field::lastName;
     using Field::member;
     using Field::name;
@@ -576,11 +625,23 @@ class ValueFixed : Value {
         this->Value::assertSize(size);
         return this->Value::tryGet();
     }
+    std::optional<Vector> tryGetVec() const {
+        this->Value::assertSize(size);
+        return ValueElement<FirstDim, Shape...>(*this, 0).tryGetVec();
+    }
+    std::optional<Array> tryGetArray() const {
+        this->Value::assertSize(size);
+        return ValueElement<FirstDim, Shape...>(*this, 0).tryGetArray();
+    }
+
     template <std::size_t s = size,
               std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     double get() const {
         return tryGet().value_or(0);
     }
+    Vector getVec() const { return tryGetVec().value_or(Vector{}); }
+    Array getArray() const { return tryGetArray().value_or(Array{}); }
+
     template <std::size_t s = size,
               std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     operator double() const {
@@ -612,6 +673,40 @@ class ValueFixed : Value {
     bool operator>=(const ValueFixed &) const = delete;
 };
 
+template <std::size_t FirstDim, std::size_t... Shape>
+std::optional<typename ValueElement<FirstDim, Shape...>::Vector>
+ValueElement<FirstDim, Shape...>::tryGetVec() const {
+    if constexpr (sizeof...(Shape) == 0) {
+        return Value(*this).tryGetVec();
+    } else {
+        Vector vec;
+        vec.reserve(FirstDim);
+        for (std::size_t i = 0; i < FirstDim; i++) {
+            auto row = (*this)[i].tryGetVec();
+            if (row) {
+                vec.push_back(std::move(*row));
+            } else {
+                return std::nullopt;
+            }
+        }
+        return vec;
+    }
+}
+template <std::size_t FirstDim, std::size_t... Shape>
+bool ValueElement<FirstDim, Shape...>::tryGetArray(
+    typename ValueElement<FirstDim, Shape...>::Array &target) const {
+    if constexpr (sizeof...(Shape) == 0) {
+        return Value(*this).tryGetArray(target.data(), this->index * FirstDim,
+                                        FirstDim);
+    } else {
+        for (std::size_t i = 0; i < FirstDim; i++) {
+            if (!(*this)[i].tryGetArray(target[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
 
 /*!
  * \brief Valueをostreamに渡すとValueの中身を表示

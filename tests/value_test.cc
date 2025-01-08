@@ -350,4 +350,58 @@ TEST_F(ValueTest, valueGetVec) {
     EXPECT_EQ(value("a", "b")[1].get(), 2);
     EXPECT_EQ(value("a", "b")[5].tryGet(), std::nullopt);
     EXPECT_EQ(value("a", "b")[5].get(), 0);
+
+    EXPECT_EQ(valueFixed<5>("a", "b").tryGetVec().value(),
+              (std::vector<double>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueFixed<5>("a", "b").getVec(),
+              (std::vector<double>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueFixed<5>("a", "b").tryGetArray().value(),
+              (std::array<double, 5>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueFixed<5>("a", "b").getArray(),
+              (std::array<double, 5>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueFixed<5>("a", "b")[1].tryGet().value(), 2);
+    EXPECT_EQ(valueFixed<5>("a", "b")[1].get(), 2);
+    // EXPECT_THROW(valueFixed<5>("a", "b")[5].tryGet(), std::out_of_range);
+    // EXPECT_THROW(valueFixed<5>("a", "b")[5].get(), std::out_of_range);
+    EXPECT_THROW(valueFixed<4>("a", "b")[0], std::runtime_error);
+    EXPECT_THROW(valueFixed<4>("a", "b").tryGetVec(), std::runtime_error);
+    EXPECT_THROW(valueFixed<6>("a", "b")[0], std::runtime_error);
+    EXPECT_THROW(valueFixed<6>("a", "b").tryGetVec(), std::runtime_error);
+
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").tryGetVec().value()),
+              (std::vector<std::vector<std::vector<double>>>{
+                  {{1}, {2}, {3}, {4}, {5}}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").getVec()),
+              (std::vector<std::vector<std::vector<double>>>{
+                  {{1}, {2}, {3}, {4}, {5}}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").tryGetArray().value()),
+              (std::array<std::array<std::array<double, 1>, 5>, 1>{
+                  {{{{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").getArray()),
+              (std::array<std::array<std::array<double, 1>, 5>, 1>{
+                  {{{{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1][0].tryGet().value()), 2);
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1][0].get()), 2);
+    EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].tryGet()),
+                 std::out_of_range);
+    EXPECT_THROW((valueFixed<1, 5, 1>("a", "b")[0][5][0].get()),
+                 std::out_of_range);
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].tryGetVec().value()),
+              std::vector<double>{2});
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].getVec()),
+              std::vector<double>{2});
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].tryGetArray().value()),
+              (std::array<double, 1>{2}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0][1].getArray()),
+              (std::array<double, 1>{2}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0].tryGetVec().value()),
+              (std::vector<std::vector<double>>{{1}, {2}, {3}, {4}, {5}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0].getVec()),
+              (std::vector<std::vector<double>>{{1}, {2}, {3}, {4}, {5}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0].tryGetArray().value()),
+              (std::array<std::array<double, 1>, 5>{
+                  {{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}));
+    EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")[0].getArray()),
+              (std::array<std::array<double, 1>, 5>{
+                  {{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}}));
 }
