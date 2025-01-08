@@ -188,7 +188,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
             : std::unique_lock<std::mutex>(data->ws_m), data(data) {}
         explicit ScopedWsLock(const std::shared_ptr<ClientData> &data)
             : ScopedWsLock(data.get()) {}
-        auto &getData() {
+        WsMutexedData &getData() {
             assert(this->owns_lock());
             return data->ws_data;
         }
@@ -259,7 +259,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
             : std::unique_lock<std::mutex>(data->sync_m), data(data) {}
         explicit ScopedSyncLock(const std::shared_ptr<ClientData> &data)
             : ScopedSyncLock(data.get()) {}
-        auto &getData() {
+        SyncMutexedData &getData() {
             assert(this->owns_lock());
             return data->sync_data;
         }
