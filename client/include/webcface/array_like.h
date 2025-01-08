@@ -15,22 +15,18 @@
 WEBCFACE_NS_BEGIN
 namespace traits {
 
+// 生配列はlvalueで渡さないとstd::begin()が使えない
 template <
     typename T,
-    std::enable_if_t<std::is_same_v<decltype(*std::begin(std::declval<T>())),
-                                    decltype(*std::end(std::declval<T>()))>,
-                     std::nullptr_t> = nullptr>
-constexpr auto getElementTypeOf(T &&)
-    -> std::add_lvalue_reference_t<decltype(*std::begin(std::declval<T>()))> {
-    return {};
-}
-template <typename T, std::size_t N>
-constexpr auto getElementTypeOf(T (&&)[N]) -> std::add_lvalue_reference_t<T> {
-    return {};
-}
-template <typename T>
-using ElementTypeOf = std::remove_const_t<
-    std::remove_reference_t<decltype(getElementTypeOf(std::declval<T>()))>>;
+    std::enable_if_t<
+        std::is_same_v<decltype(*std::begin(
+                           std::declval<std::add_lvalue_reference_t<T>>())),
+                       decltype(*std::end(
+                           std::declval<std::add_lvalue_reference_t<T>>()))>,
+        std::nullptr_t> = nullptr>
+using ElementTypeOf =
+    std::remove_const_t<std::remove_reference_t<decltype(*std::begin(
+        std::declval<std::add_lvalue_reference_t<T>>()))>>;
 
 template <typename T>
 constexpr auto getSizeOf(T &&)
@@ -168,25 +164,28 @@ struct NestedArraySizeTrait
 
 
 template <typename T>
+void arrayLikeToVector(std::vector<double> &target, const T &array) {
+    std::copy(std::begin(array), std::end(array), std::back_inserter(target));
+}
+template <typename T>
 std::vector<double> arrayLikeToVector(const T &array) {
     return std::vector<double>(std::begin(array), std::end(array));
 }
-/*!
- * \todo 効率が悪い
- */
+template <typename T>
+void nestedArrayLikeToVector(std::vector<double> &target, const T &array) {
+    if constexpr (IsArrayLike<T>::value) {
+        arrayLikeToVector(target, array);
+    } else {
+        for (const auto &row : array) {
+            nestedArrayLikeToVector(target, row);
+        }
+    }
+}
 template <typename T>
 std::vector<double> nestedArrayLikeToVector(const T &array) {
-    if constexpr (IsArrayLike<T>::value) {
-        return arrayLikeToVector(array);
-    } else {
-        std::vector<double> vec;
-        for (auto it : array) {
-            std::vector<double> vec_in = nestedArrayLikeToVector(*it);
-            vec.reserve(vec.size() + vec_in.size());
-            std::copy(vec_in.begin(), vec_in.end(), std::back_inserter(vec));
-        }
-        return vec;
-    }
+    std::vector<double> vec;
+    nestedArrayLikeToVector(vec, array);
+    return vec;
 }
 
 template <std::size_t Num, typename T>

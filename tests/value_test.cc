@@ -39,6 +39,10 @@ class ValueTest : public ::testing::Test {
     Value value(const T1 &member, const T2 &name) {
         return Value{field(member, name)};
     }
+    template <std::size_t... Shape, typename T1, typename T2>
+    ValueFixed<Shape...> valueFixed(const T1 &member, const T2 &name) {
+        return ValueFixed<Shape...>{field(member, name)};
+    }
     int callback_called;
     template <typename V>
     auto callback() {
@@ -57,8 +61,17 @@ TEST_F(ValueTest, field) {
     EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(value("a", "b").child(L"c").name(), "b.c");
     EXPECT_EQ(value("a", "b.c").parent().name(), "b");
+    EXPECT_EQ(valueFixed<1>("a", "b").member().name(), "a");
+    EXPECT_EQ(valueFixed<1>("a", "b").member().nameW(), L"a");
+    EXPECT_EQ(valueFixed<1>("a", "b").name(), "b");
+    EXPECT_EQ(valueFixed<1>("a", "b").nameW(), L"b");
+    EXPECT_EQ(valueFixed<1>("a", "b").child("c").name(), "b.c");
+    EXPECT_EQ(valueFixed<1>("a", "b").child(L"c").name(), "b.c");
+    EXPECT_EQ(valueFixed<1>("a", "b.c").parent().name(), "b");
+
 
     EXPECT_THROW(Value().tryGet(), std::runtime_error);
+    EXPECT_THROW(ValueFixed<1>().tryGet(), std::runtime_error);
 }
 TEST_F(ValueTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());
@@ -71,14 +84,37 @@ TEST_F(ValueTest, eventTarget) {
     data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
+
+    valueFixed<1>("a", "c").onChange(callback<ValueFixed<1>>());
+    data_->value_change_event["a"_ss]["c"_ss]->operator()(field("a", "c"));
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+    value("a", "c").onChange(nullptr);
+    EXPECT_FALSE(*data_->value_change_event["a"_ss]["c"_ss]);
+    value("a", "c").onChange(callbackVoid());
+    data_->value_change_event["a"_ss]["c"_ss]->operator()(field("a", "c"));
+    EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
 }
 TEST_F(ValueTest, valueSet) {
     data_->value_change_event[self_name]["b"_ss] =
         std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "b").set(123);
+    valueFixed<>(self_name, "b2").set(123);
+    valueFixed<1>(self_name, "b3").set(123);
+    valueFixed<1, 1, 1>(self_name, "b4").set(123);
+    // valueFixed<0>(self_name, "b5").set(123);
+    // valueFixed<2>(self_name, "b5").set(123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "b2"_ss)).at(0), 123);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "b3"_ss)).at(0), 123);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "b4"_ss)).at(0), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
+    EXPECT_THROW(valueFixed<>("a", "b").set(123), std::invalid_argument);
+    EXPECT_THROW(valueFixed<1>("a", "b").set(123), std::invalid_argument);
+    EXPECT_THROW((valueFixed<1, 1, 1>("a", "b").set(123)),
+                 std::invalid_argument);
 }
 TEST_F(ValueTest, valueSetVec) {
     data_->value_change_event[self_name]["d"_ss] =
@@ -99,6 +135,21 @@ TEST_F(ValueTest, valueSetVec) {
     d6[4].set(5);
     EXPECT_THROW(d6[5].set(6), std::out_of_range);
     value(self_name, "d7").resize(5);
+
+    valueFixed<5>(self_name, "d9").set({1, 2, 3, 4, 5});
+    valueFixed<5>(self_name, "d10").set(std::array<int, 5>{1, 2, 3, 4, 5});
+    valueFixed<5>(self_name, "d11").set(std::vector<int>{1, 2, 3, 4, 5});
+    valueFixed<5>(self_name, "d12")
+        .set(std::vector<std::vector<int>>{{1, 2}, {3, 4, 5}});
+    valueFixed<5>(self_name, "d13")
+        .set(std::array<std::array<int, 1>, 5>{
+            {{{1}}, {{2}}, {{3}}, {{4}}, {{5}}}});
+    EXPECT_THROW(valueFixed<5>(self_name, "d14").set({1, 2, 3}),
+                 std::invalid_argument);
+    EXPECT_THROW(valueFixed<5>(self_name, "d14")
+                     .set(std::vector<std::vector<int>>{{1, 2}, {3, 4, 5, 6}}),
+                 std::invalid_argument);
+
     EXPECT_EQ(callback_called, 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
@@ -118,6 +169,21 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(4), 5);
 }
 // TEST_F(ValueTest, ArrayLike){
 static_assert(
@@ -233,6 +299,8 @@ TEST_F(ValueTest, valueGet) {
         std::make_shared<std::vector<double>>(std::vector<double>({123})));
     EXPECT_EQ(value("a", "b").tryGet().value(), 123);
     EXPECT_EQ(value("a", "b").get(), 123);
+    EXPECT_EQ(valueFixed<1>("a", "b").tryGet().value(), 123);
+    EXPECT_EQ(valueFixed<1>("a", "b").get(), 123);
     EXPECT_EQ(value("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(value("a", "c").get(), 0);
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("b"_ss), 1u);

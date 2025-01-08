@@ -182,6 +182,7 @@ class WEBCFACE_DLL Value : protected Field {
      *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
      * ValueIndex を使う
      * * (ver2.6〜) セットしたデータはサイズ1の固定長データとなる
+     * (ValueFixed<1>()::set() と同じ)
      *
      */
     const Value &set(double v) const;
@@ -189,7 +190,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
      *
-     * * (ver2.6〜) 可変長データとなる
+     * * (ver2.6〜) データ型は可変長となる
      *
      */
     const Value &set(std::vector<double> v) const;
@@ -200,6 +201,8 @@ class WEBCFACE_DLL Value : protected Field {
      * * <del>R::value_type がdoubleに変換可能な型Rならなんでもok</del>
      * * (ver2.5〜) std::begin(), std::end()
      * が使えてその値がdoubleに変換可能ならなんでもok
+     * * (ver2.6〜) ネストした配列も可
+     * * (ver2.6〜) データ型は可変長となる
      *
      */
     template <typename R, typename traits::NestedArrayLikeTrait<R>::ArrayLike =
@@ -406,43 +409,86 @@ class WEBCFACE_DLL Value : protected Field {
     bool operator>=(const Value &) const = delete;
 };
 
+/*!
+ * \brief 可変長配列を送受信するクラス
+ * \since ver2.6
+ *
+ * データは Value クラスと共通のフォーマットだが、
+ * データが固定長であるという情報が送信されるのに加え、
+ * テンプレートで指定された配列サイズと一致しているかどうか、
+ * 送られてきたデータも固定長であるかどうか、を
+ * set() や get() でチェックする
+ */
 template <std::size_t... Shape>
 class ValueFixed : Value {
-    static constexpr std::size_t size = (Shape * ...);
+    static constexpr std::size_t size = (1 * ... * Shape);
     static_assert(size > 0);
 
   public:
     using Field::lastName;
+    using Field::member;
     using Field::name;
     using Field::nameW;
     using Value::child;
     using Value::Value;
     using Value::operator[];
     using Value::parent;
-    const ValueFixed &
-    onChange(std::function<void WEBCFACE_CALL_FP(Value)> callback) const {
-        this->Value::onChange(std::move(callback));
+
+    template <typename F, typename std::enable_if_t<
+                              std::is_invocable_v<F, ValueFixed<Shape...>>,
+                              std::nullptr_t> = nullptr>
+    const ValueFixed &onChange(F callback) const {
+        this->Value::onChange(
+            [callback = std::move(callback)](const Value &base) {
+                callback(ValueFixed<Shape...>(base));
+            });
         return *this;
     }
     template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
                                                     std::nullptr_t> = nullptr>
     const ValueFixed &onChange(F callback) const {
-        return onChange(
+        this->Value::onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
+        return *this;
     }
-    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    /*!
+     * \brief 値をセットする (配列サイズが1の場合のみ)
+     *
+     */
+    template <std::size_t s = size,
+              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     const ValueFixed &set(double v) const {
         this->Value::set(v);
         return *this;
     }
+    /*!
+     * \brief vector型配列をセットする
+     *
+     * サイズが一致しない場合 std::invalid_argument を投げる
+     */
+    const ValueFixed &set(std::vector<double> v) const {
+        this->Value::set(std::move(v), ValueShape{size, true});
+        return *this;
+    }
+    /*!
+     * \brief 配列型の値をセットする
+     *
+     * * std::begin(), std::end()
+     * が使えてその値がdoubleに変換可能ならなんでもok
+     * * ネストした配列も可
+     * * std::array などサイズが固定の配列を渡した場合、
+     * サイズが一致しなければコンパイルエラー
+     * * std::vector などサイズが取得できない型を渡した場合、
+     * 実行時にサイズが一致しなければ std::invalid_argument を投げる
+     *
+     */
     template <
         typename R,
         typename traits::NestedArrayLikeTrait<R>::ArrayLike = traits::TraitOk,
         typename traits::NestedArraySizeTrait<R, size>::SizeMatchOrDynamic =
             traits::TraitOk>
     const ValueFixed &set(const R &range) const {
-        return this->Value::set(traits::nestedArrayLikeToVector(range),
-                                ValueShape{size, true});
+        return this->set(traits::nestedArrayLikeToVector(range));
     }
     template <typename T>
     const ValueFixed &operator=(T &&v) const {
@@ -454,15 +500,18 @@ class ValueFixed : Value {
         this->Value::request();
         return *this;
     }
-    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = size,
+              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     std::optional<double> tryGet() const {
         return this->Value::tryGet();
     }
-    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = size,
+              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     double get() const {
         return tryGet().value_or(0);
     }
-    template <std::enable_if_t<size == 1, std::nullptr_t> = nullptr>
+    template <std::size_t s = size,
+              std::enable_if_t<s == size && s == 1, std::nullptr_t> = nullptr>
     operator double() const {
         return get();
     }
