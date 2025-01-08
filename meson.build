@@ -10,9 +10,9 @@ project('webcface', 'c', 'cpp',
     'default_library=shared',
 
     # options for subproject
-    'msgpack-cxx:boost=disabled',
-    'msgpack-cxx:tests=disabled',
-    'msgpack-cxx:std_variant=false', # msvcでなんかエラーになる
+    'msgpackc-cxx:boost=disabled',
+    'msgpackc-cxx:tests=disabled',
+    'msgpackc-cxx:std_variant=false', # msvcでなんかエラーになる
     'fmt:default_library=static',
     'spdlog:tests=disabled',
     'spdlog:compile_library=true',
