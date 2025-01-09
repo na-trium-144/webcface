@@ -27,6 +27,7 @@ constexpr bool isComplete(T *) {
 define_assert_complete(Member, member.h)
 define_assert_complete(Value, value.h)
 define_assert_complete(Text, text.h)
+define_assert_complete(Variant, text.h)
 define_assert_complete(View, view.h)
 define_assert_complete(Image, image.h)
 define_assert_complete(Func, func.h)
@@ -41,8 +42,8 @@ define_assert_complete(Log, log.h)
 
 #define WEBCFACE_COMPLETE(Type)                                                \
     typename Type##_ = Type,                                                   \
-             std::nullptr_t =                                                  \
-                 ::webcface::traits::assertComplete##Type<Type##_>()
+             std::nullptr_t = ::webcface::traits::assertComplete##Type<        \
+                 std::enable_if_t<std::is_same_v<Type##_, Type>, Type##_>>()
 
 } // namespace traits
 WEBCFACE_NS_END

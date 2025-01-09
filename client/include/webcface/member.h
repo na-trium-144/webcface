@@ -1,14 +1,15 @@
 #pragma once
+#include <functional>
 #include <string>
 #include <vector>
 #include <optional>
+#include <chrono>
 #include "field.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "webcface/log.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -56,16 +57,23 @@ class WEBCFACE_DLL Member : protected Field {
     /*!
      * \since ver2.4
      */
-    Log log(std::string_view name) const { return this->Field::log(name); }
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::string_view name) const {
+        return this->child(name);
+    }
     /*!
      * \since ver2.4
      */
-    Log log(std::wstring_view name) const { return this->Field::log(name); }
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::wstring_view name) const {
+        return this->child(name);
+    }
     /*!
      * ver2.4〜: nameを省略した場合 "default" として送信される。
      *
      */
-    Log log() const;
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log() const;
 
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;
@@ -282,5 +290,6 @@ class WEBCFACE_DLL Member : protected Field {
         return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
+extern template Log Member::log<Log, nullptr>() const;
 
 WEBCFACE_NS_END
