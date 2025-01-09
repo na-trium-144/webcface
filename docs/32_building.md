@@ -28,6 +28,7 @@ webcface ver1 をソースからビルドしたい場合は、[v1](https://githu
 [CLI11](https://github.com/CLIUtils/CLI11.git),
 [Crow](https://github.com/CrowCpp/Crow),
 [curl](https://github.com/curl/curl),
+[fmt](https://github.com/fmtlib/fmt)(>=11),
 [libvips](https://github.com/libvips/libvips),
 [msgpack-cxx](https://github.com/msgpack/msgpack-c),
 [spdlog](https://github.com/gabime/spdlog),
@@ -43,6 +44,8 @@ webcface ver1 をソースからビルドしたい場合は、[v1](https://githu
     時間はかかりますが、動作テスト済みのバージョンの組み合わせでビルドされるので確実性が上がります。
 * これらの依存ライブラリをすべてソースからビルドし、かつWebCFaceがsharedライブラリとしてビルドされる場合は、依存ライブラリはstaticライブラリとしてWebCFace内部に埋め込まれ、シンボルも隠されます。
     * そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。
+* spdlogは `SPDLOG_FMT_EXTERNAL` が有効になっている必要があります。
+またfmt>=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。
 * libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。
 * crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。
     * 現在はこの機能はリリースされておらず、 na-trium-144/Crow のフォークの [5f5372e](https://github.com/na-trium-144/Crow/commit/5f5372ed80860dfcef788972bb0fd3972f715842) のコミットでしかビルドできません。
@@ -62,10 +65,11 @@ sudo apt install meson
 sudo apt install python3-pip
 pip install meson
 ```
-
+* 依存ライブラリ(optional)
+    * `libvips-dev` はwebsocketが無効の `libcurl4` に依存しているため使用できません。
+    * `libspdlog-dev`, `libfmt-dev` は古いため使用できません。
 ```sh
-# optional:
-# sudo apt install libspdlog-dev libasio-dev libvips-dev
+# sudo apt install libasio-dev
 # sudo apt install libcli11-dev        # (only on 22.04 or later)
 # sudo apt install libmsgpack-cxx-dev  # (only on 24.04 or later)
 ```
@@ -76,8 +80,10 @@ pip install meson
 
 ```sh
 brew install cmake meson ninja
-# optional:
-# brew install msgpack-cxx spdlog asio cli11 utf8cpp vips curl
+```
+* 依存ライブラリ(optional)
+```
+# brew install msgpack-cxx fmt spdlog asio cli11 utf8cpp vips curl
 ```
 
 </details>
@@ -100,8 +106,10 @@ brew install cmake meson ninja
 ```sh
 pacman -S pactoys
 pacboy -S git make gcc:p cmake:p ninja:p meson:p
-# optional:
-# pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p vips:p
+```
+* 依存ライブラリ(optional)
+```sh
+# pacboy -S msgpack-cxx:p fmt:p spdlog:p asio:p cli11:p utf8cpp:p vips:p
 ```
 
 </details>
@@ -210,6 +218,7 @@ mesonの引数`-Dcmake_prefix_path`にwebcfaceのパスを追加するなどす�
 webcface-toolsは外部ライブラリとして
 [spdlog](https://github.com/gabime/spdlog),
 [cli11](https://github.com/CLIUtils/CLI11.git),
+[FTXUI](https://github.com/ArthurSonzogni/FTXUI),
 [tiny-process-library](https://gitlab.com/eidheim/tiny-process-library),
 [toml++](https://github.com/marzer/tomlplusplus)
 を使用します。
