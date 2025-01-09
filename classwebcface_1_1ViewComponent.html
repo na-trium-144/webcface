@@ -191,15 +191,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afab8d648f381a6398bd51c7c592027d4"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#afab8d648f381a6398bd51c7c592027d4">textW</a> () const</td></tr>
 <tr class="memdesc:afab8d648f381a6398bd51c7c592027d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">表示する文字列を取得 (wstring)  <br /></td></tr>
 <tr class="separator:afab8d648f381a6398bd51c7c592027d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a376cacc3cf036d47178c1dea1fa94cd0"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a376cacc3cf036d47178c1dea1fa94cd0">onClick</a> () const</td></tr>
-<tr class="memdesc:a376cacc3cf036d47178c1dea1fa94cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を取得  <br /></td></tr>
-<tr class="separator:a376cacc3cf036d47178c1dea1fa94cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12d4ec6085140c225ce663aacf76fb74"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74">onChange</a> () const</td></tr>
-<tr class="memdesc:a12d4ec6085140c225ce663aacf76fb74"><td class="mdescLeft">&#160;</td><td class="mdescRight">inputの値の変化時に実行される関数を取得  <br /></td></tr>
-<tr class="separator:a12d4ec6085140c225ce663aacf76fb74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89ac0883725dde7beab7de699d3dbd37"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a89ac0883725dde7beab7de699d3dbd37">bind</a> () const</td></tr>
-<tr class="memdesc:a89ac0883725dde7beab7de699d3dbd37"><td class="mdescLeft">&#160;</td><td class="mdescRight">inputの現在の値を取得  <br /></td></tr>
-<tr class="separator:a89ac0883725dde7beab7de699d3dbd37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; Func_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a402ef2277b12b5f33f15413c88f26d4e">onClick</a> () const</td></tr>
+<tr class="memdesc:a402ef2277b12b5f33f15413c88f26d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を取得  <br /></td></tr>
+<tr class="separator:a402ef2277b12b5f33f15413c88f26d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; Func_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#ace505c3ce73a7c845ff3b8cdf86d5533">onChange</a> () const</td></tr>
+<tr class="memdesc:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="mdescLeft">&#160;</td><td class="mdescRight">inputの値の変化時に実行される関数を取得  <br /></td></tr>
+<tr class="separator:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memTemplParams" colspan="2">template&lt;typename Variant_  = Variant, std::nullptr_t  = ::webcface::traits::assertCompleteVariant &lt;   std::enable_if_t&lt;std::is_same_v&lt; Variant_,  Variant &gt;,  Variant_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; Variant_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a2ed570329d56e7b71e53c8a6f2696a11">bind</a> () const</td></tr>
+<tr class="memdesc:a2ed570329d56e7b71e53c8a6f2696a11"><td class="mdescLeft">&#160;</td><td class="mdescRight">inputの現在の値を取得  <br /></td></tr>
+<tr class="separator:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8706caeec86b7fd2c88d0cf36f62b84d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a">ViewColor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a8706caeec86b7fd2c88d0cf36f62b84d">textColor</a> () const</td></tr>
 <tr class="memdesc:a8706caeec86b7fd2c88d0cf36f62b84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字色を取得  <br /></td></tr>
 <tr class="separator:a8706caeec86b7fd2c88d0cf36f62b84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +221,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af705bc9b6f2e309a2ecbabf78abdc919"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#af705bc9b6f2e309a2ecbabf78abdc919">option</a> () const</td></tr>
 <tr class="memdesc:af705bc9b6f2e309a2ecbabf78abdc919"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数の選択肢を取得する。  <br /></td></tr>
 <tr class="separator:af705bc9b6f2e309a2ecbabf78abdc919"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memTemplParams" colspan="2">template&lt;typename T , std::nullptr_t &gt; </td></tr>
+<tr class="memitem:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#ace505c3ce73a7c845ff3b8cdf86d5533">onChange</a> () const</td></tr>
+<tr class="separator:ace505c3ce73a7c845ff3b8cdf86d5533"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplParams" colspan="2">template&lt;typename T , std::nullptr_t &gt; </td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a402ef2277b12b5f33f15413c88f26d4e">onClick</a> () const</td></tr>
+<tr class="separator:a402ef2277b12b5f33f15413c88f26d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memTemplParams" colspan="2">template&lt;typename T , std::nullptr_t &gt; </td></tr>
+<tr class="memitem:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ViewComponent.html#a2ed570329d56e7b71e53c8a6f2696a11">bind</a> () const</td></tr>
+<tr class="separator:a2ed570329d56e7b71e53c8a6f2696a11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Viewに表示する要素です </p>
@@ -393,14 +405,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a89ac0883725dde7beab7de699d3dbd37" name="a89ac0883725dde7beab7de699d3dbd37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89ac0883725dde7beab7de699d3dbd37">&#9670;&#160;</a></span>bind()</h2>
+<a id="a2ed570329d56e7b71e53c8a6f2696a11" name="a2ed570329d56e7b71e53c8a6f2696a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ed570329d56e7b71e53c8a6f2696a11">&#9670;&#160;</a></span>bind() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Variant_  = Variant, std::nullptr_t  = ::webcface::traits::assertCompleteVariant &lt;   std::enable_if_t&lt;std::is_same_v&lt; Variant_,  Variant &gt;,  Variant_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &gt; bind </td>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &gt; bind&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a>, nullptr &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -411,9 +425,28 @@ Public Member Functions</h2></td></tr>
 <p>inputの現在の値を取得 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
 <ul>
-<li>値の変更はonChange()に新しい値を渡して呼び出す (<a class="el" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74" title="inputの値の変化時に実行される関数を取得">onChange()</a>-&gt;runAsync(value) など)</li>
+<li>値の変更はonChange()に新しい値を渡して呼び出す (<a class="el" href="classwebcface_1_1ViewComponent.html#ace505c3ce73a7c845ff3b8cdf86d5533" title="inputの値の変化時に実行される関数を取得">onChange()</a>-&gt;runAsync(value) など)</li>
 <li>ver2.0〜 戻り値をText型からVariant型に変更 </li>
 </ul>
+
+</div>
+</div>
+<a id="a2ed570329d56e7b71e53c8a6f2696a11" name="a2ed570329d56e7b71e53c8a6f2696a11"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ed570329d56e7b71e53c8a6f2696a11">&#9670;&#160;</a></span>bind() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::nullptr_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &gt; bind&lt; <a class="el" href="classwebcface_1_1Variant.html">Variant</a>, nullptr &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -539,14 +572,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a12d4ec6085140c225ce663aacf76fb74" name="a12d4ec6085140c225ce663aacf76fb74"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12d4ec6085140c225ce663aacf76fb74">&#9670;&#160;</a></span>onChange()</h2>
+<a id="ace505c3ce73a7c845ff3b8cdf86d5533" name="ace505c3ce73a7c845ff3b8cdf86d5533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace505c3ce73a7c845ff3b8cdf86d5533">&#9670;&#160;</a></span>onChange() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onChange </td>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onChange&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -556,19 +591,40 @@ Public Member Functions</h2></td></tr>
 
 <p>inputの値の変化時に実行される関数を取得 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.10</dd></dl>
-<p><a class="el" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74" title="inputの値の変化時に実行される関数を取得">onChange()</a>に新しい値を渡して呼び出すことで値を変更させる (<a class="el" href="classwebcface_1_1ViewComponent.html#a12d4ec6085140c225ce663aacf76fb74" title="inputの値の変化時に実行される関数を取得">onChange()</a>-&gt;runAsync(value) など)</p>
+<p><a class="el" href="classwebcface_1_1ViewComponent.html#ace505c3ce73a7c845ff3b8cdf86d5533" title="inputの値の変化時に実行される関数を取得">onChange()</a>に新しい値を渡して呼び出すことで値を変更させる (<a class="el" href="classwebcface_1_1ViewComponent.html#ace505c3ce73a7c845ff3b8cdf86d5533" title="inputの値の変化時に実行される関数を取得">onChange()</a>-&gt;runAsync(value) など)</p>
 <p>内部データはonClickと共通 </p>
 
 </div>
 </div>
-<a id="a376cacc3cf036d47178c1dea1fa94cd0" name="a376cacc3cf036d47178c1dea1fa94cd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a376cacc3cf036d47178c1dea1fa94cd0">&#9670;&#160;</a></span>onClick()</h2>
+<a id="ace505c3ce73a7c845ff3b8cdf86d5533" name="ace505c3ce73a7c845ff3b8cdf86d5533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ace505c3ce73a7c845ff3b8cdf86d5533">&#9670;&#160;</a></span>onChange() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::nullptr_t &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick </td>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onChange&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a402ef2277b12b5f33f15413c88f26d4e" name="a402ef2277b12b5f33f15413c88f26d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a402ef2277b12b5f33f15413c88f26d4e">&#9670;&#160;</a></span>onClick() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -577,6 +633,25 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>クリック時に実行される関数を取得 </p>
+
+</div>
+</div>
+<a id="a402ef2277b12b5f33f15413c88f26d4e" name="a402ef2277b12b5f33f15413c88f26d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a402ef2277b12b5f33f15413c88f26d4e">&#9670;&#160;</a></span>onClick() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::nullptr_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -801,7 +876,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a></li>
-    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

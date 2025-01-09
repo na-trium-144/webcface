@@ -468,15 +468,15 @@ Value, Text</h1>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// ちなみに &quot;tutorial-send&quot; を毎回書くのは面倒なのでこのように変数に入れることもできます</span></div>
-<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;data&quot; という名前のValueデータが変わった時に呼び出される処理</span></div>
-<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">value</a>(<span class="stringliteral">&quot;data&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Value.html#a5015290390a1b4942a768968150fc2df">onChange</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a9061fd48b247b9a0a0f3b2c92c336343">value</a>(<span class="stringliteral">&quot;data&quot;</span>).onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;data changed: &quot;</span> &lt;&lt; v.<a class="code hl_function" href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">get</a>() &lt;&lt; std::endl;</div>
 <div class="line">    });</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// &quot;tutorial-send&quot; が送信している &quot;message&quot; という名前のTextデータが変わった時に呼び出される処理</span></div>
-<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a7f0ed33e851f794caa1bf924341fb1a9">text</a>(<span class="stringliteral">&quot;message&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Text.html#aa6aa50819dc8edd13316f34918100d05">onChange</a>([](<a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> t){</div>
+<div class="line">    sender.<a class="code hl_function" href="classwebcface_1_1Member.html#ad5123f286651762b463402568c9c1a8c">text</a>(<span class="stringliteral">&quot;message&quot;</span>).onChange([](<a class="code hl_class" href="classwebcface_1_1Text.html">webcface::Text</a> t){</div>
 <div class="line">        std::cout &lt;&lt; <span class="stringliteral">&quot;message changed: &quot;</span> &lt;&lt; t.<a class="code hl_function" href="classwebcface_1_1Text.html#a442c2e70e260b81f142b037ad452dd96">get</a>() &lt;&lt; std::endl;</div>
 <div class="line">    });</div>
 <div class="line"> </div>
@@ -485,16 +485,14 @@ Value, Text</h1>
 <div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:22</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a7f0ed33e851f794caa1bf924341fb1a9"><div class="ttname"><a href="classwebcface_1_1Member.html#a7f0ed33e851f794caa1bf924341fb1a9">webcface::Member::text</a></div><div class="ttdeci">Text text(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:56</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a8954365ff9e8954832517ed39349fafe"><div class="ttname"><a href="classwebcface_1_1Member.html#a8954365ff9e8954832517ed39349fafe">webcface::Member::value</a></div><div class="ttdeci">Value value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:54</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:23</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a9061fd48b247b9a0a0f3b2c92c336343"><div class="ttname"><a href="classwebcface_1_1Member.html#a9061fd48b247b9a0a0f3b2c92c336343">webcface::Member::value</a></div><div class="ttdeci">Value_ value(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:178</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_ad5123f286651762b463402568c9c1a8c"><div class="ttname"><a href="classwebcface_1_1Member.html#ad5123f286651762b463402568c9c1a8c">webcface::Member::text</a></div><div class="ttdeci">Text_ text(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:186</div></div>
 <div class="ttc" id="aclasswebcface_1_1Text_html"><div class="ttname"><a href="classwebcface_1_1Text.html">webcface::Text</a></div><div class="ttdoc">文字列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> text.h:183</div></div>
 <div class="ttc" id="aclasswebcface_1_1Text_html_a442c2e70e260b81f142b037ad452dd96"><div class="ttname"><a href="classwebcface_1_1Text.html#a442c2e70e260b81f142b037ad452dd96">webcface::Text::get</a></div><div class="ttdeci">const std::string &amp; get() const</div><div class="ttdoc">文字列を返す (const参照)</div><div class="ttdef"><b>Definition</b> text.cc:99</div></div>
-<div class="ttc" id="aclasswebcface_1_1Text_html_aa6aa50819dc8edd13316f34918100d05"><div class="ttname"><a href="classwebcface_1_1Text.html#aa6aa50819dc8edd13316f34918100d05">webcface::Text::onChange</a></div><div class="ttdeci">const Text &amp; onChange(F callback) const</div><div class="ttdoc">値が変化したときに呼び出されるコールバックを設定</div><div class="ttdef"><b>Definition</b> text.h:251</div></div>
 <div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:23</div></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_a5015290390a1b4942a768968150fc2df"><div class="ttname"><a href="classwebcface_1_1Value.html#a5015290390a1b4942a768968150fc2df">webcface::Value::onChange</a></div><div class="ttdeci">const Value &amp; onChange(std::function&lt; void(Value)&gt; callback) const</div><div class="ttdoc">値が変化したときに呼び出されるコールバックを設定</div><div class="ttdef"><b>Definition</b> value.cc:57</div></div>
 <div class="ttc" id="aclasswebcface_1_1Value_html_af53ec2e557ea14cce1373e0f77954c82"><div class="ttname"><a href="classwebcface_1_1Value.html#af53ec2e557ea14cce1373e0f77954c82">webcface::Value::get</a></div><div class="ttdeci">double get() const</div><div class="ttdoc">値を返す</div><div class="ttdef"><b>Definition</b> value.h:196</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_aa8fab40ead35fa8e761986d5f4000a5c"><div class="ttname"><a href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">webcface::Field::member</a></div><div class="ttdeci">Member member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.cc:21</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a46b5785dc80e4d37f469ca9a2c1dcdbd"><div class="ttname"><a href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">webcface::Field::member</a></div><div class="ttdeci">Member_ member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.h:107</div></div>
 </div><!-- fragment --></li>
 </ul>
 <p class="startli">これを実行すると、1秒ごとに受信した値が表示される代わりに、send側からデータが送られてきたタイミングで1度だけ </p><div class="fragment"><div class="line">data changed: 100</div>
@@ -578,13 +576,13 @@ Func</h1>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 省略...</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line">        <span class="comment">// tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
-<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a6ae7a23d3e36930f42b466890bd38711">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>();</div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a171e85b11856e1499909b2643a76bb6a">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync();</div>
 <div class="line">        hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([hoge_p](){</div>
 <div class="line">            <span class="comment">// hoge_pが完了したとき、結果を表示します</span></div>
 <div class="line">            <span class="keywordflow">if</span>(hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
@@ -598,8 +596,7 @@ Func</h1>
 <div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1Func_html_af6fa739e31a048973df789bf7c3f2530"><div class="ttname"><a href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">webcface::Func::runAsync</a></div><div class="ttdeci">Promise runAsync(Args... args) const</div><div class="ttdoc">関数を実行する (非同期)</div><div class="ttdef"><b>Definition</b> func.h:523</div></div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a6ae7a23d3e36930f42b466890bd38711"><div class="ttname"><a href="classwebcface_1_1Member.html#a6ae7a23d3e36930f42b466890bd38711">webcface::Member::func</a></div><div class="ttdeci">Func func(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:66</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a171e85b11856e1499909b2643a76bb6a"><div class="ttname"><a href="classwebcface_1_1Member.html#a171e85b11856e1499909b2643a76bb6a">webcface::Member::func</a></div><div class="ttdeci">Func_ func(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:210</div></div>
 <div class="ttc" id="aclasswebcface_1_1Promise_html"><div class="ttname"><a href="classwebcface_1_1Promise.html">webcface::Promise</a></div><div class="ttdoc">非同期で実行した関数の実行結果を取得するインタフェース。</div><div class="ttdef"><b>Definition</b> func_result.h:50</div></div>
 <div class="ttc" id="aclasswebcface_1_1Promise_html_a057b21531e5541d9e1ef6f203530de47"><div class="ttname"><a href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">webcface::Promise::isError</a></div><div class="ttdeci">bool isError() const</div><div class="ttdoc">関数がエラーになったかどうかを返す</div><div class="ttdef"><b>Definition</b> func_result.cc:235</div></div>
 <div class="ttc" id="aclasswebcface_1_1Promise_html_afcb0086c9cc1938e4ac0441a9e1994be"><div class="ttname"><a href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">webcface::Promise::onFinish</a></div><div class="ttdeci">Promise &amp; onFinish(std::function&lt; void(Promise)&gt; callback)</div><div class="ttdoc">関数の実行が完了した時呼び出すコールバックを設定</div><div class="ttdef"><b>Definition</b> func_result.cc:149</div></div>
@@ -631,13 +628,13 @@ Func</h1>
 <div class="line"> </div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;Hello, World! (receiver)&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line"> </div>
-<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aa8fab40ead35fa8e761986d5f4000a5c">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> sender = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;tutorial-send&quot;</span>);</div>
 <div class="line"> </div>
 <div class="line">    <span class="comment">// 省略...</span></div>
 <div class="line"> </div>
 <div class="line">    <span class="keywordflow">while</span> (<span class="keyword">true</span>) {</div>
 <div class="line">        <span class="comment">// tutorial-send の &quot;hoge&quot; という関数を呼び出します</span></div>
-<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a6ae7a23d3e36930f42b466890bd38711">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>();</div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> hoge_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a171e85b11856e1499909b2643a76bb6a">func</a>(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync();</div>
 <div class="line">        hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([hoge_p](){</div>
 <div class="line">            <span class="comment">// hoge_pが完了したとき、結果を表示します</span></div>
 <div class="line">            <span class="keywordflow">if</span>(hoge_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
@@ -648,7 +645,7 @@ Func</h1>
 <div class="line">        });</div>
 <div class="line"> </div>
 <div class="line">        <span class="comment">// tutorial-send の &quot;fuga&quot; という関数を引数を渡して呼び出します</span></div>
-<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> fuga_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a6ae7a23d3e36930f42b466890bd38711">func</a>(<span class="stringliteral">&quot;fuga&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530">runAsync</a>(123, <span class="stringliteral">&quot;abc&quot;</span>);</div>
+<div class="line">        <a class="code hl_class" href="classwebcface_1_1Promise.html">webcface::Promise</a> fuga_p = sender.<a class="code hl_function" href="classwebcface_1_1Member.html#a171e85b11856e1499909b2643a76bb6a">func</a>(<span class="stringliteral">&quot;fuga&quot;</span>).runAsync(123, <span class="stringliteral">&quot;abc&quot;</span>);</div>
 <div class="line">        fuga_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#afcb0086c9cc1938e4ac0441a9e1994be">onFinish</a>([fuga_p](){</div>
 <div class="line">            <span class="comment">// fuga_pが完了したとき、結果を表示します</span></div>
 <div class="line">            <span class="keywordflow">if</span>(fuga_p.<a class="code hl_function" href="classwebcface_1_1Promise.html#a057b21531e5541d9e1ef6f203530de47">isError</a>()){</div>
@@ -808,7 +805,7 @@ Func</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

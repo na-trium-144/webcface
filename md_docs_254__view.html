@@ -180,7 +180,7 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::view からViewオブジェクトを作り、 View::add() などで要素を追加し、 最後にView::sync()をしてからClient::sync()をすることで送信されます。</p>
 <p class="startli">Viewはstd::ostreamを継承しており、 add() の代わりに v &lt;&lt; 表示する値; というようにもできます。 ostreamに出力可能なものはそのままviewにテキストとして出力できます。 ostreamと同様にフォーマットを指定したり、std::endlで改行もできます。</p>
-<p class="startli">例 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
+<p class="startli">例 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line"><span class="comment">// v.init(); // ←オブジェクトvを新規に構築せず繰り返し使いまわす場合は必要</span></div>
 <div class="line">v &lt;&lt; <span class="stringliteral">&quot;hello world&quot;</span> &lt;&lt; std::endl; <span class="comment">// v.add(&quot;hello world&quot;).add(&quot;\n&quot;) と等価</span></div>
 <div class="line">v &lt;&lt; i &lt;&lt; std::endl; <span class="comment">// i はintの変数とか</span></div>
@@ -190,11 +190,11 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 <div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:26</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:31</div></div>
 <div class="ttc" id="anamespacewebcface_html_a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"><div class="ttname"><a href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::ViewComponentType::button</a></div><div class="ttdeci">@ button</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a1a6e1affea60ef37fbb3118637671da0"><div class="ttname"><a href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">webcface::Field::view</a></div><div class="ttdeci">View view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.cc:74</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a18bf28b7b1b1f26c6ef6c3ab17a47c51"><div class="ttname"><a href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">webcface::Field::view</a></div><div class="ttdeci">View_ view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:226</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png" alt="example_view.png" class="inline"/></p>
 <dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.0</span> ワイド文字列を出力したい場合はostreamに直接渡すのではなく Component::text を使う必要があります。 (後述)</dd></dl>
 <p>C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。 </p><div class="fragment"><div class="line">{</div>
-<div class="line">    <a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line">    <a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line">    v &lt;&lt; ...;</div>
 <div class="line">    v &lt;&lt; ...;</div>
 <div class="line">    <span class="comment">// v.sync(); (自動で呼ばれる)</span></div>
@@ -271,7 +271,7 @@ ViewComponent</h1>
 <div class="line">    };</div>
 <div class="line">}</div>
 <div class="line"> </div>
-<div class="line"><a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line"><a class="code hl_class" href="classwebcface_1_1View.html">webcface::View</a> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line">v &lt;&lt; showNameAndValue(<span class="stringliteral">&quot;foo&quot;</span>, 123) &lt;&lt; std::endl; <span class="comment">// v &lt;&lt; &quot;foo = 123&quot;;</span></div>
 <div class="line">v.<a class="code hl_function" href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">sync</a>();</div>
 </div><!-- fragment --></li>
@@ -341,7 +341,7 @@ button</h2>
 <p>ボタンを表示します。</p>
 <p>クリック時の動作は、関数を登録済みの<a class="el" href="md_docs_253__func.html">Funcオブジェクト</a>かFuncListenerオブジェクトを指定するか、または関数を直接設定できます。</p>
 <dl class="section note"><dt>Note</dt><dd>別のMemberのFuncオブジェクトを渡すこともできます (ボタンを押すと別のMemberに登録されている関数が実行される)</dd></dl>
-<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.5</span> <span class="since-py">3.0</span> buttonや、このあと説明するinputなど、インタラクティブな動作を伴う要素には id として一意な文字列を指定してください。 通常は指定しなくても動作しますが、 次の例のようにview内に要素が出現したり消滅したりするようなものを書いた場合 その切り替わりのタイミングで要素の内容がずれる場合があります。 <div class="fragment"><div class="line"><span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
+<dl class="section warning"><dt>Warning</dt><dd><span class="since-c">2.5</span> <span class="since-py">3.0</span> buttonや、このあと説明するinputなど、インタラクティブな動作を伴う要素には id として一意な文字列を指定してください。 通常は指定しなくても動作しますが、 次の例のようにview内に要素が出現したり消滅したりするようなものを書いた場合 その切り替わりのタイミングで要素の内容がずれる場合があります。 <div class="fragment"><div class="line"><span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line"><span class="keywordflow">if</span>(some_condition){</div>
 <div class="line">    <span class="comment">// some_conditionによって表示されたりされなかったりする</span></div>
 <div class="line">    v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(...);</div>
@@ -396,10 +396,10 @@ InputRef</h3>
 <div class="line">  &lt;&lt; std::endl;</div>
 <div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:439</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a15ad27cc4c91db0504f3e788b2596709"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a15ad27cc4c91db0504f3e788b2596709">webcface::TemporalViewComponent::id</a></div><div class="ttdeci">TemporalViewComponent &amp; id(std::string_view id)</div><div class="ttdoc">idを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:250</div></div>
-<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7fe27f33a23d228ef1a701ba30cc6cbb"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref) &amp;</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:302</div></div>
+<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7fe27f33a23d228ef1a701ba30cc6cbb"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref) &amp;</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:309</div></div>
 <div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:631</div></div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、 staticにできない場合(複数のviewで使い回す場合など)は次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。 <div class="fragment"><div class="line"><span class="keywordflow">while</span> (<span class="keyword">true</span>){</div>
-<div class="line">    <span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a1a6e1affea60ef37fbb3118637671da0">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
+<div class="line">    <span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> input_val;</div>
 <div class="line">    v &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::button</a>(<span class="stringliteral">&quot;cout &quot;</span>,</div>
 <div class="line">                          [=] { std::cout &lt;&lt; input_val &lt;&lt; std::endl; })</div>
@@ -469,7 +469,7 @@ onChange</h3>
 <li><p class="startli"><b class="tab-title">C++</b> onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a15ad27cc4c91db0504f3e788b2596709">id</a>(<span class="stringliteral">&quot;input1&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">onChange</a>([](std::string val) {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;input changed: &quot;</span> &lt;&lt; val &lt;&lt; std::endl;</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7003ea06e11e7b952d2e8be1f5a874a6"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">webcface::TemporalViewComponent::onChange</a></div><div class="ttdeci">TemporalViewComponent &amp; onChange(T func) &amp;</div><div class="ttdoc">値が変化した時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_view.h:429</div></div>
+<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7003ea06e11e7b952d2e8be1f5a874a6"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">webcface::TemporalViewComponent::onChange</a></div><div class="ttdeci">TemporalViewComponent &amp; onChange(T func) &amp;</div><div class="ttdoc">値が変化した時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_view.h:438</div></div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>bindとonChangeを両方設定することはできません。</dd></dl>
 <p><span></span></p>
 </li>
@@ -607,7 +607,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

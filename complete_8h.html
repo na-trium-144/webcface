@@ -1,0 +1,289 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: client/include/webcface/complete.h File Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.5.2</span>
+   </div>
+   <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('complete_8h.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
+<a href="#func-members">Functions</a>  </div>
+  <div class="headertitle"><div class="title">complete.h File Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;cstddef&gt;</code><br />
+<code>#include &quot;<a class="el" href="webcface-config_8h_source.html">webcface-config.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Include dependency graph for complete.h:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="complete_8h__incl.svg" width="246" height="124"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div><div class="textblock"><div class="dynheader">
+This graph shows which files directly or indirectly include this file:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="complete_8h__dep__incl.svg" width="4522" height="828"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+</div>
+<p><a href="complete_8h_source.html">Go to the source code of this file.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
+Namespaces</h2></td></tr>
+<tr class="memitem:namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:namespacewebcface_1_1traits"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html">webcface::traits</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a559eba5242931269b4d8088c9f7b71bf"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="complete_8h.html#a559eba5242931269b4d8088c9f7b71bf">define_assert_complete</a>(Type,  header)</td></tr>
+<tr class="separator:a559eba5242931269b4d8088c9f7b71bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a422a5ed506c538f6f85c13bc3a22eaa5"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="complete_8h.html#a422a5ed506c538f6f85c13bc3a22eaa5">WEBCFACE_COMPLETE</a>(Type)</td></tr>
+<tr class="separator:a422a5ed506c538f6f85c13bc3a22eaa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:ade885106c602d63acbe0e0ae5e8054c7"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#ade885106c602d63acbe0e0ae5e8054c7">isComplete</a> (...)</td></tr>
+<tr class="separator:ade885106c602d63acbe0e0ae5e8054c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d93729e7764e4d7fb6a2e418db68976"><td class="memTemplParams" colspan="2">template&lt;typename T , int  = sizeof(T)&gt; </td></tr>
+<tr class="memitem:a3d93729e7764e4d7fb6a2e418db68976"><td class="memTemplItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a3d93729e7764e4d7fb6a2e418db68976">isComplete</a> (T *)</td></tr>
+<tr class="separator:a3d93729e7764e4d7fb6a2e418db68976"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a58e8168e380214a0017a1d20112f897e"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a58e8168e380214a0017a1d20112f897e"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a58e8168e380214a0017a1d20112f897e">assertCompleteMember</a> ()</td></tr>
+<tr class="separator:a58e8168e380214a0017a1d20112f897e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2562b8651dccb3357222415e1c1cedbf"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2562b8651dccb3357222415e1c1cedbf"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a2562b8651dccb3357222415e1c1cedbf">assertCompleteValue</a> ()</td></tr>
+<tr class="separator:a2562b8651dccb3357222415e1c1cedbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2aa3fb8162ecbbac27efec0cbdb5f02f"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a2aa3fb8162ecbbac27efec0cbdb5f02f"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a2aa3fb8162ecbbac27efec0cbdb5f02f">assertCompleteText</a> ()</td></tr>
+<tr class="separator:a2aa3fb8162ecbbac27efec0cbdb5f02f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8949105f711803c1bc47407104fa9f5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac8949105f711803c1bc47407104fa9f5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#ac8949105f711803c1bc47407104fa9f5">assertCompleteVariant</a> ()</td></tr>
+<tr class="separator:ac8949105f711803c1bc47407104fa9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac232adf004c7f02e1acf433f5ba46df5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ac232adf004c7f02e1acf433f5ba46df5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#ac232adf004c7f02e1acf433f5ba46df5">assertCompleteView</a> ()</td></tr>
+<tr class="separator:ac232adf004c7f02e1acf433f5ba46df5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb79c49aa05935b9595c69a9193a4a90"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:abb79c49aa05935b9595c69a9193a4a90"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#abb79c49aa05935b9595c69a9193a4a90">assertCompleteImage</a> ()</td></tr>
+<tr class="separator:abb79c49aa05935b9595c69a9193a4a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19f42dc01250fa5f07e839b238805e3b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a19f42dc01250fa5f07e839b238805e3b"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a19f42dc01250fa5f07e839b238805e3b">assertCompleteFunc</a> ()</td></tr>
+<tr class="separator:a19f42dc01250fa5f07e839b238805e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2b6273252cc6a6b2306decc3f0b75a5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae2b6273252cc6a6b2306decc3f0b75a5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#ae2b6273252cc6a6b2306decc3f0b75a5">assertCompleteFuncListener</a> ()</td></tr>
+<tr class="separator:ae2b6273252cc6a6b2306decc3f0b75a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53d21db483d5f1cb833a63370e0f2b4b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a53d21db483d5f1cb833a63370e0f2b4b"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a53d21db483d5f1cb833a63370e0f2b4b">assertCompleteRobotModel</a> ()</td></tr>
+<tr class="separator:a53d21db483d5f1cb833a63370e0f2b4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3c274f77cd72c5bf36670ffa40b87c5"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:aa3c274f77cd72c5bf36670ffa40b87c5"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#aa3c274f77cd72c5bf36670ffa40b87c5">assertCompleteCanvas2D</a> ()</td></tr>
+<tr class="separator:aa3c274f77cd72c5bf36670ffa40b87c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cf0dea056c52f93a6509b7717f79897"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a1cf0dea056c52f93a6509b7717f79897"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a1cf0dea056c52f93a6509b7717f79897">assertCompleteCanvas3D</a> ()</td></tr>
+<tr class="separator:a1cf0dea056c52f93a6509b7717f79897"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab5519d2ed5bcaa7785d1310aa7c29dd3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab5519d2ed5bcaa7785d1310aa7c29dd3"><td class="memTemplItemLeft" align="right" valign="top">constexpr std::nullptr_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#ab5519d2ed5bcaa7785d1310aa7c29dd3">assertCompleteLog</a> ()</td></tr>
+<tr class="separator:ab5519d2ed5bcaa7785d1310aa7c29dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a559eba5242931269b4d8088c9f7b71bf" name="a559eba5242931269b4d8088c9f7b71bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a559eba5242931269b4d8088c9f7b71bf">&#9670;&#160;</a></span>define_assert_complete</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define define_assert_complete</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Type, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">header&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;                                                      \</div>
+<div class="line">    <span class="keyword">constexpr</span> std::nullptr_t assertComplete##Type() {                          \</div>
+<div class="line">        static_assert(isComplete((T *)<span class="keyword">nullptr</span>),                                \</div>
+<div class="line">                      <span class="stringliteral">&quot;Please include &lt;webcface/&quot;</span> #header                      \</div>
+<div class="line">                      <span class="stringliteral">&quot;&gt; to use class &quot;</span> #Type <span class="stringliteral">&quot;!&quot;</span>);                            \</div>
+<div class="line">        <span class="keywordflow">return</span> <span class="keyword">nullptr</span>;                                                        \</div>
+<div class="line">    }</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a422a5ed506c538f6f85c13bc3a22eaa5" name="a422a5ed506c538f6f85c13bc3a22eaa5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a422a5ed506c538f6f85c13bc3a22eaa5">&#9670;&#160;</a></span>WEBCFACE_COMPLETE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define WEBCFACE_COMPLETE</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname">Type</td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Value:</b><div class="fragment"><div class="line">    <span class="keyword">typename</span> Type##_ = Type,                                                   \</div>
+<div class="line">             std::nullptr_t = ::webcface::traits::assertComplete##Type&lt;        \</div>
+<div class="line">                 std::enable_if_t&lt;std::is_same_v&lt;Type##_, Type&gt;, Type##_&gt;&gt;()</div>
+</div><!-- fragment -->
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="complete_8h.html">complete.h</a></li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

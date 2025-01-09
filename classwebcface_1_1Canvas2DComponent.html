@@ -194,9 +194,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#ad52e2b9bd0b29ed5bd2f9c7a4a3363fe">geometry</a> () const</td></tr>
 <tr class="memdesc:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">geometryを取得  <br /></td></tr>
 <tr class="separator:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a376cacc3cf036d47178c1dea1fa94cd0"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a376cacc3cf036d47178c1dea1fa94cd0">onClick</a> () const</td></tr>
-<tr class="memdesc:a376cacc3cf036d47178c1dea1fa94cd0"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を取得  <br /></td></tr>
-<tr class="separator:a376cacc3cf036d47178c1dea1fa94cd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; Func_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a402ef2277b12b5f33f15413c88f26d4e">onClick</a> () const</td></tr>
+<tr class="memdesc:a402ef2277b12b5f33f15413c88f26d4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">クリック時に実行される関数を取得  <br /></td></tr>
+<tr class="separator:a402ef2277b12b5f33f15413c88f26d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplParams" colspan="2">template&lt;typename T , std::nullptr_t &gt; </td></tr>
+<tr class="memitem:a402ef2277b12b5f33f15413c88f26d4e"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas2DComponent.html#a402ef2277b12b5f33f15413c88f26d4e">onClick</a> () const</td></tr>
+<tr class="separator:a402ef2277b12b5f33f15413c88f26d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Canvas2Dの各要素を表すクラス。 </p>
@@ -370,14 +374,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a376cacc3cf036d47178c1dea1fa94cd0" name="a376cacc3cf036d47178c1dea1fa94cd0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a376cacc3cf036d47178c1dea1fa94cd0">&#9670;&#160;</a></span>onClick()</h2>
+<a id="a402ef2277b12b5f33f15413c88f26d4e" name="a402ef2277b12b5f33f15413c88f26d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a402ef2277b12b5f33f15413c88f26d4e">&#9670;&#160;</a></span>onClick() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, std::nullptr_t  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick </td>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -387,6 +393,25 @@ Public Member Functions</h2></td></tr>
 
 <p>クリック時に実行される関数を取得 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.9 </dd></dl>
+
+</div>
+</div>
+<a id="a402ef2277b12b5f33f15413c88f26d4e" name="a402ef2277b12b5f33f15413c88f26d4e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a402ef2277b12b5f33f15413c88f26d4e">&#9670;&#160;</a></span>onClick() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::nullptr_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; onClick&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, nullptr &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -571,7 +596,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Canvas2DComponent.html">Canvas2DComponent</a></li>
-    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

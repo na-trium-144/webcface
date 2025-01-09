@@ -179,9 +179,13 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="structwebcface_1_1Geometry.html">Geometry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas3DComponent.html#ad52e2b9bd0b29ed5bd2f9c7a4a3363fe">geometry</a> () const</td></tr>
 <tr class="memdesc:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">geometryを取得  <br /></td></tr>
 <tr class="separator:ad52e2b9bd0b29ed5bd2f9c7a4a3363fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cff1114f5ead5eda00e701078120999"><td class="memItemLeft" align="right" valign="top">std::optional&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas3DComponent.html#a7cff1114f5ead5eda00e701078120999">robotModel</a> () const</td></tr>
-<tr class="memdesc:a7cff1114f5ead5eda00e701078120999"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelを取得  <br /></td></tr>
-<tr class="separator:a7cff1114f5ead5eda00e701078120999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memTemplParams" colspan="2">template&lt;typename RobotModel_  = RobotModel, std::nullptr_t  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; RobotModel_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas3DComponent.html#a5db70bdc0edf137064f6c6d1f5a461b5">robotModel</a> () const</td></tr>
+<tr class="memdesc:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">RobotModelを取得  <br /></td></tr>
+<tr class="separator:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memTemplParams" colspan="2">template&lt;typename T , std::nullptr_t &gt; </td></tr>
+<tr class="memitem:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memTemplItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Canvas3DComponent.html#a5db70bdc0edf137064f6c6d1f5a461b5">robotModel</a> () const</td></tr>
+<tr class="separator:a5db70bdc0edf137064f6c6d1f5a461b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Canvas3Dに表示する要素 </p>
@@ -401,14 +405,16 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a7cff1114f5ead5eda00e701078120999" name="a7cff1114f5ead5eda00e701078120999"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cff1114f5ead5eda00e701078120999">&#9670;&#160;</a></span>robotModel()</h2>
+<a id="a5db70bdc0edf137064f6c6d1f5a461b5" name="a5db70bdc0edf137064f6c6d1f5a461b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db70bdc0edf137064f6c6d1f5a461b5">&#9670;&#160;</a></span>robotModel() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename RobotModel_  = RobotModel, std::nullptr_t  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">std::optional&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModel </td>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModel&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, nullptr &gt; </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -417,6 +423,25 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>RobotModelを取得 </p>
+
+</div>
+</div>
+<a id="a5db70bdc0edf137064f6c6d1f5a461b5" name="a5db70bdc0edf137064f6c6d1f5a461b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5db70bdc0edf137064f6c6d1f5a461b5">&#9670;&#160;</a></span>robotModel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , std::nullptr_t &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::optional&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModel&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, nullptr &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -449,7 +474,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Canvas3DComponent.html">Canvas3DComponent</a></li>
-    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
