@@ -199,7 +199,8 @@ class WEBCFACE_DLL ViewComponent {
      * \brief クリック時に実行される関数を取得
      *
      */
-    std::optional<Func> onClick() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onClick() const;
     /*!
      * \brief inputの値の変化時に実行される関数を取得
      * \since ver1.10
@@ -210,7 +211,8 @@ class WEBCFACE_DLL ViewComponent {
      * 内部データはonClickと共通
      *
      */
-    std::optional<Func> onChange() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onChange() const;
     /*!
      * \brief inputの現在の値を取得
      * \since ver1.10
@@ -220,7 +222,8 @@ class WEBCFACE_DLL ViewComponent {
      * * ver2.0〜 戻り値をText型からVariant型に変更
      *
      */
-    std::optional<Variant> bind() const;
+    template <WEBCFACE_COMPLETE(Variant)>
+    std::optional<Variant_> bind() const;
 
     /*!
      * \brief 文字色を取得
@@ -258,6 +261,12 @@ class WEBCFACE_DLL ViewComponent {
      */
     std::vector<ValAdaptor> option() const;
 };
+extern template std::optional<Func>
+ViewComponent::onClick<Func, nullptr>() const;
+extern template std::optional<Func>
+ViewComponent::onChange<Func, nullptr>() const;
+extern template std::optional<Variant>
+ViewComponent::bind<Variant, nullptr>() const;
 
 /*!
  * \brief Viewを構築するときに使う一時的なViewComponent
