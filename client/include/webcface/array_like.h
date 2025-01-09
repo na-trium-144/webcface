@@ -16,14 +16,7 @@ WEBCFACE_NS_BEGIN
 namespace traits {
 
 // 生配列はlvalueで渡さないとstd::begin()が使えない
-template <
-    typename T,
-    std::enable_if_t<
-        std::is_same_v<decltype(*std::begin(
-                           std::declval<std::add_lvalue_reference_t<T>>())),
-                       decltype(*std::end(
-                           std::declval<std::add_lvalue_reference_t<T>>()))>,
-        std::nullptr_t> = nullptr>
+template <typename T>
 using ElementTypeOf =
     std::remove_const_t<std::remove_reference_t<decltype(*std::begin(
         std::declval<std::add_lvalue_reference_t<T>>()))>>;
@@ -116,7 +109,7 @@ constexpr auto isNestedArrayLike(T &&) {
 template <typename T>
 using IsNestedArrayLike = decltype(isNestedArrayLike(std::declval<T>()));
 /*!
- * T にstd::begin, std::endが使用可能で、
+ * T にstd::beginが使用可能で、
  * 要素がNestedArrayLikeまたはArrayLikeの場合、
  * NestedArrayLikeTrait<T>::ArrayLike が定義される
  *

@@ -298,7 +298,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \since ver1.7 (set(VectorOpt(std::vector<T>)) を置き換え)
      *
      * * <del>R::value_type がdoubleに変換可能な型Rならなんでもok</del>
-     * * (ver2.5〜) std::begin(), std::end()
+     * * (ver2.5〜) std::begin()
      * が使えてその値がdoubleに変換可能ならなんでもok
      * * (ver2.6〜) ネストした配列も可
      * * (ver2.6〜) データ型は可変長となる
@@ -606,7 +606,7 @@ class ValueFixed : Value {
     /*!
      * \brief 配列型の値をセットする
      *
-     * * std::begin(), std::end()
+     * * std::begin()
      * が使えてその値がdoubleに変換可能ならなんでもok
      * * ネストした配列も可
      * * std::array などサイズが固定の配列を渡した場合、
@@ -762,7 +762,7 @@ class ValueList : Value {
     /*!
      * \brief 配列型の値をセットする
      *
-     * * std::begin(), std::end()
+     * * std::begin()
      * が使えてその値がdoubleに変換可能ならなんでもok
      * * ネストした配列も可
      * * std::array などサイズが固定の配列を渡した場合、
