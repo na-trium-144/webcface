@@ -21,6 +21,8 @@ class Member;
 class Value;
 template <std::size_t FirstDim, std::size_t... Shape>
 class ValueFixed;
+template <std::size_t... Shape>
+class ValueList;
 class Text;
 class View;
 class Image;
@@ -192,13 +194,21 @@ struct WEBCFACE_DLL Field : public FieldBase {
     Value_ value(std::wstring_view field) const {
         return child(field);
     }
-    template <std::size_t... Shape>
-    ValueFixed<Shape...> valueFixed(std::string_view field = "") const {
-        return ValueFixed<Shape...>(child(field));
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueFixed, Shape...)>
+    ValueFixed_ valueFixed(std::string_view field = "") const {
+        return ValueFixed_(child(field));
     }
-    template <std::size_t... Shape>
-    ValueFixed<Shape...> valueFixed(std::wstring_view field) const {
-        return ValueFixed<Shape...>(child(field));
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueFixed, Shape...)>
+    ValueFixed_ valueFixed(std::wstring_view field) const {
+        return ValueFixed_(child(field));
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueList, Shape...)>
+    ValueList_ valueList(std::string_view field = "") const {
+        return ValueList_(child(field));
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueList, Shape...)>
+    ValueList_ valueList(std::wstring_view field) const {
+        return ValueList_(child(field));
     }
     template <WEBCFACE_COMPLETE(Text)>
     Text_ text(std::string_view field = "") const {

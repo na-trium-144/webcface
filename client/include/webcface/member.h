@@ -54,6 +54,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::text;
     using Field::value;
     using Field::valueFixed;
+    using Field::valueList;
     using Field::view;
 
     /*!

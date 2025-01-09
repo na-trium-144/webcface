@@ -19,22 +19,6 @@ struct Ping;
 struct PingStatusReq;
 
 /*!
- * \brief server->client 新しいvalueなどの報告
- *
- * Funcの場合はこれではなくFuncInfoを使用
- *
- */
-template <typename T>
-struct Entry : public MessageBase<T::kind + MessageKind::entry> {
-    unsigned int member_id = 0;
-    SharedString field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
-};
-struct Value;
-template <>
-struct Entry<Value>;
-
-/*!
  * \brief バイナリを16進数の文字列に変換
  * \since ver2.6
  */

@@ -75,6 +75,10 @@ struct Entry : public MessageBase<T::kind + MessageKind::entry> {
     SharedString field;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
 };
+struct Value;
+template <>
+struct Entry<Value>;
+
 /*!
  * \brief client->server 以降Recvを送るようリクエスト
  *
