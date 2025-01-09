@@ -585,7 +585,8 @@ serverHostName</h2>
 <h1><a class="anchor" id="autotoc_md58"></a>
 ログ出力</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
-<p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
+<p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラーなど)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
+<p><span class="since-c">2.6</span> <code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、送受信しているメッセージの詳細も見ることができます。 <code>WEBCFACE_TRACE</code> 環境変数が存在する場合、送受信しているメッセージの生バイナリデータを(16進数表記で)見ることができます。</p>
 <p><span class="since-js">1.1</span> ではClientのコンストラクタでlogLevelに <code>"trace"</code> または <code>"verbose"</code> を指定することでも表示できます。</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -599,7 +600,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jan 7 2025 18:24:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

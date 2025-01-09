@@ -294,21 +294,24 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a80e74661d4870765688ab1b4ffc0a496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a> (const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
-<tr class="memdesc:a80e74661d4870765688ab1b4ffc0a496"><td class="mdescLeft">&#160;</td><td class="mdescRight">msgpackのメッセージをパースし返す  <br /></td></tr>
-<tr class="separator:a80e74661d4870765688ab1b4ffc0a496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a965c311b611151d72a5129362ea11618"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a965c311b611151d72a5129362ea11618"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">packSingle</a> (const T &amp;obj)</td></tr>
 <tr class="memdesc:a965c311b611151d72a5129362ea11618"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージ1つを要素数2の配列としてシリアル化  <br /></td></tr>
 <tr class="separator:a965c311b611151d72a5129362ea11618"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa2619ac9929b790908f9c65878601825"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#aa2619ac9929b790908f9c65878601825">messageTrace</a> (const std::string &amp;message)</td></tr>
+<tr class="memdesc:aa2619ac9929b790908f9c65878601825"><td class="mdescLeft">&#160;</td><td class="mdescRight">バイナリを16進数の文字列に変換  <br /></td></tr>
+<tr class="separator:aa2619ac9929b790908f9c65878601825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80e74661d4870765688ab1b4ffc0a496"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a> (const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</td></tr>
+<tr class="memdesc:a80e74661d4870765688ab1b4ffc0a496"><td class="mdescLeft">&#160;</td><td class="mdescRight">msgpackのメッセージをパースし返す  <br /></td></tr>
+<tr class="separator:a80e74661d4870765688ab1b4ffc0a496"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36879effdf16e6acdd563b41fb630f35"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a36879effdf16e6acdd563b41fb630f35"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a> (std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</td></tr>
 <tr class="memdesc:a36879effdf16e6acdd563b41fb630f35"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージをシリアル化しbufferに追加  <br /></td></tr>
 <tr class="separator:a36879effdf16e6acdd563b41fb630f35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0368ef47eb403e45018a73ef46c90c62"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">packDone</a> (std::stringstream &amp;buffer, int len)</td></tr>
 <tr class="separator:a0368ef47eb403e45018a73ef46c90c62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaaae13bc09562632bfc1591ce70ed469"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#aaaae13bc09562632bfc1591ce70ed469">printMsg</a> (const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger, const std::string &amp;message)</td></tr>
-<tr class="separator:aaaae13bc09562632bfc1591ce70ed469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c7a1174d55c14c5324ec4a12f697251"><td class="memItemLeft" align="right" valign="top">static std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html#a6c7a1174d55c14c5324ec4a12f697251">objectTypeStr</a> (msgpack::type::object_type type)</td></tr>
+<tr class="separator:a6c7a1174d55c14c5324ec4a12f697251"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
 <a id="abcfd96b0be942012c2f4641b4741a31e" name="abcfd96b0be942012c2f4641b4741a31e"></a>
@@ -369,6 +372,53 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="aa2619ac9929b790908f9c65878601825" name="aa2619ac9929b790908f9c65878601825"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2619ac9929b790908f9c65878601825">&#9670;&#160;</a></span>messageTrace()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string messageTrace </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>バイナリを16進数の文字列に変換 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6 </dd></dl>
+
+</div>
+</div>
+<a id="a6c7a1174d55c14c5324ec4a12f697251" name="a6c7a1174d55c14c5324ec4a12f697251"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c7a1174d55c14c5324ec4a12f697251">&#9670;&#160;</a></span>objectTypeStr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static std::string objectTypeStr </td>
+          <td>(</td>
+          <td class="paramtype">msgpack::type::object_type&#160;</td>
+          <td class="paramname"><em>type</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a36879effdf16e6acdd563b41fb630f35" name="a36879effdf16e6acdd563b41fb630f35"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a36879effdf16e6acdd563b41fb630f35">&#9670;&#160;</a></span>pack()</h2>
 
@@ -465,42 +515,6 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="aaaae13bc09562632bfc1591ce70ed469" name="aaaae13bc09562632bfc1591ce70ed469"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaae13bc09562632bfc1591ce70ed469">&#9670;&#160;</a></span>printMsg()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void printMsg </td>
-          <td>(</td>
-          <td class="paramtype">const std::shared_ptr&lt; spdlog::logger &gt; &amp;&#160;</td>
-          <td class="paramname"><em>logger</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>message</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a80e74661d4870765688ab1b4ffc0a496" name="a80e74661d4870765688ab1b4ffc0a496"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a80e74661d4870765688ab1b4ffc0a496">&#9670;&#160;</a></span>unpack()</h2>
 
@@ -537,7 +551,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1message.html">message</a></li>
-    <li class="footer">Generated on Tue Jan 7 2025 18:24:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

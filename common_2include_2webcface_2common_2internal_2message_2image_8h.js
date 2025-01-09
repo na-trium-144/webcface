@@ -5,7 +5,10 @@ var common_2include_2webcface_2common_2internal_2message_2image_8h =
     [ "ImageReq", "structwebcface_1_1message_1_1ImageReq.html", "structwebcface_1_1message_1_1ImageReq" ],
     [ "Req< Image >", "structwebcface_1_1message_1_1Req_3_01Image_01_4.html", "structwebcface_1_1message_1_1Req_3_01Image_01_4" ],
     [ "Res< Image >", "structwebcface_1_1message_1_1Res_3_01Image_01_4.html", "structwebcface_1_1message_1_1Res_3_01Image_01_4" ],
-    [ "MSGPACK_DEFINE_MAP", "common_2include_2webcface_2common_2internal_2message_2image_8h.html#a4a1019f8988e145f759e836c4ae91b2c", null ],
+    [ "formatter< webcface::message::Image >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Image_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Image_01_4" ],
+    [ "formatter< webcface::message::Res< webcface::message::Image > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Res_3_01webcface_1_1message_1_1Image_01_4_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Res_3_01webcface_1_1message_1_1Image_01_4_01_4" ],
+    [ "formatter< webcface::message::Entry< webcface::message::Image > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Image_01_4_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Image_01_4_01_4" ],
+    [ "formatter< webcface::message::Req< webcface::message::Image > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Req_3_01webcface_1_1message_1_1Image_01_4_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Req_3_01webcface_1_1message_1_1Image_01_4_01_4" ],
     [ "ImageColorMode", "common_2include_2webcface_2common_2internal_2message_2image_8h.html#abcfd96b0be942012c2f4641b4741a31e", [
       [ "gray", "common_2include_2webcface_2common_2internal_2message_2image_8h.html#abcfd96b0be942012c2f4641b4741a31eacda7a650c5856cf2f6738072447d7825", null ],
       [ "bgr", "common_2include_2webcface_2common_2internal_2message_2image_8h.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59", null ],

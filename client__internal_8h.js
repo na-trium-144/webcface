@@ -5,6 +5,7 @@ var client__internal_8h =
     [ "ScopedWsLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock.html", "classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock" ],
     [ "SyncMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData.html", "structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData" ],
     [ "ScopedSyncLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock.html", "classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock" ],
+    [ "packSingle", "client__internal_8h.html#a965c311b611151d72a5129362ea11618", null ],
     [ "wsThreadMain", "client__internal_8h.html#afd83eaea48642bb91173288271a8f398", null ],
     [ "log_keep_lines", "client__internal_8h.html#a446bbf399941c098956bd5557c7e35ef", null ]
 ];

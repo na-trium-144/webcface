@@ -2,6 +2,9 @@ var base_8h =
 [
     [ "MessageBase< k >", "structwebcface_1_1message_1_1MessageBase.html", "structwebcface_1_1message_1_1MessageBase" ],
     [ "Res< T >", "structwebcface_1_1message_1_1Res.html", null ],
+    [ "Entry< T >", "structwebcface_1_1message_1_1Entry.html", "structwebcface_1_1message_1_1Entry" ],
+    [ "Req< T >", "structwebcface_1_1message_1_1Req.html", "structwebcface_1_1message_1_1Req" ],
+    [ "MSGPACK_DEFINE_MAP", "base_8h.html#a4a1019f8988e145f759e836c4ae91b2c", null ],
     [ "MessageKindEnum", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484", [
       [ "unknown", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a5b9f6d065e6e98483b3d3ed01f4f6cbe", null ],
       [ "value", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a97de9ab6885342a574053b8f64a563a9", null ],

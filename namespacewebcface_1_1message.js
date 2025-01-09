@@ -97,9 +97,10 @@ var namespacewebcface_1_1message =
       [ "webp", "namespacewebcface_1_1message.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720", null ],
       [ "png", "namespacewebcface_1_1message.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0", null ]
     ] ],
+    [ "messageTrace", "namespacewebcface_1_1message.html#aa2619ac9929b790908f9c65878601825", null ],
+    [ "objectTypeStr", "namespacewebcface_1_1message.html#a6c7a1174d55c14c5324ec4a12f697251", null ],
     [ "pack", "namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35", null ],
     [ "packDone", "namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62", null ],
     [ "packSingle", "namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618", null ],
-    [ "printMsg", "namespacewebcface_1_1message.html#aaaae13bc09562632bfc1591ce70ed469", null ],
     [ "unpack", "namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496", null ]
 ];

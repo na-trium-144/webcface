@@ -1,7 +1,11 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structwebcface_1_1message_1_1ImageReq.html" title=" " alt="" coords="69,5,157,31"/>
-<area shape="rect" id="Node000001" href="$structwebcface_1_1message_1_1Req_3_01Image_01_4.html" title=" " alt="" coords="268,35,387,60"/>
-<area shape="poly" id="edge45_Node000000_Node000001" title=" " alt="" coords="171,23,268,37,268,42,170,28"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,55,220,95"/>
-<area shape="poly" id="edge46_Node000002_Node000001" title=" " alt="" coords="234,57,268,52,268,58,234,62"/>
+<area shape="rect" id="Node000000" href="$structwebcface_1_1message_1_1ImageFrame.html" title=" " alt="" coords="61,70,165,95"/>
+<area shape="rect" id="Node000001" href="$structwebcface_1_1message_1_1Image.html" title=" " alt="" coords="295,43,358,69"/>
+<area shape="poly" id="edge98_Node000000_Node000001" title=" " alt="" coords="178,72,295,57,295,62,179,77"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1message_1_1Res_3_01Image_01_4.html" title=" " alt="" coords="268,97,385,122"/>
+<area shape="poly" id="edge99_Node000000_Node000003" title=" " alt="" coords="179,88,268,99,268,105,178,93"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,5,220,45"/>
+<area shape="poly" id="edge100_Node000002_Node000001" title=" " alt="" coords="234,40,296,49,295,54,233,45"/>
+<area shape="rect" id="Node000004" href="$structwebcface_1_1message_1_1MessageBase.html" title=" " alt="" coords="5,120,220,160"/>
+<area shape="poly" id="edge101_Node000004_Node000003" title=" " alt="" coords="233,120,268,115,268,120,234,125"/>
 </map>

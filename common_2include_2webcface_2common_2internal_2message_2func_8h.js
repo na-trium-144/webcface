@@ -5,5 +5,8 @@ var common_2include_2webcface_2common_2internal_2message_2func_8h =
     [ "CallResult", "structwebcface_1_1message_1_1CallResult.html", "structwebcface_1_1message_1_1CallResult" ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", "structwebcface_1_1message_1_1Arg" ],
     [ "FuncInfo", "structwebcface_1_1message_1_1FuncInfo.html", "structwebcface_1_1message_1_1FuncInfo" ],
-    [ "MSGPACK_DEFINE_MAP", "common_2include_2webcface_2common_2internal_2message_2func_8h.html#a4a1019f8988e145f759e836c4ae91b2c", null ]
+    [ "formatter< webcface::message::FuncInfo >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1FuncInfo_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1FuncInfo_01_4" ],
+    [ "formatter< webcface::message::Call >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Call_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Call_01_4" ],
+    [ "formatter< webcface::message::CallResponse >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1CallResponse_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1CallResponse_01_4" ],
+    [ "formatter< webcface::message::CallResult >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1CallResult_01_4.html", "structfmt_1_1formatter_3_01webcface_1_1message_1_1CallResult_01_4" ]
 ];

@@ -142,20 +142,23 @@ $(document).ready(function(){initNavTree('base_8h.html',''); initResizable(); })
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
+<a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a>  </div>
   <div class="headertitle"><div class="title">base.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="webcface-config_8h_source.html">webcface-config.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fmt_8h_source.html">./fmt.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="common_2val__adaptor_8h_source.html">webcface/common/val_adaptor.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for base.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="base_8h__incl.svg" width="211" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="base_8h__incl.svg" width="962" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="base_8h__dep__incl.svg" width="4894" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="base_8h__dep__incl.svg" width="5064" height="462"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="base_8h_source.html">Go to the source code of this file.</a></p>
@@ -167,6 +170,12 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Res.html">Res&lt; T &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Entry.html">Entry&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">server-&gt;client 新しいvalueなどの報告  <a href="structwebcface_1_1message_1_1Entry.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1message_1_1Req.html">Req&lt; T &gt;</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">client-&gt;server 以降Recvを送るようリクエスト  <a href="structwebcface_1_1message_1_1Req.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
@@ -176,6 +185,11 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacewebcface_1_1message_1_1MessageKind"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message_1_1MessageKind.html">webcface::message::MessageKind</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Macros</h2></td></tr>
+<tr class="memitem:a4a1019f8988e145f759e836c4ae91b2c"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="base_8h.html#a4a1019f8988e145f759e836c4ae91b2c">MSGPACK_DEFINE_MAP</a>(...)</td></tr>
+<tr class="separator:a4a1019f8988e145f759e836c4ae91b2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -220,13 +234,32 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="separator:a1432d06fc2e2d1f6da93d1c04dec4484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Macro Definition Documentation</h2>
+<a id="a4a1019f8988e145f759e836c4ae91b2c" name="a4a1019f8988e145f759e836c4ae91b2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a1019f8988e145f759e836c4ae91b2c">&#9670;&#160;</a></span>MSGPACK_DEFINE_MAP</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define MSGPACK_DEFINE_MAP</td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>...</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html">common</a></li><li class="navelem"><a class="el" href="dir_11fbc4217d50ab21044e5ad6614aede5.html">include</a></li><li class="navelem"><a class="el" href="dir_691cd2f0393d009848f7dbc991939c45.html">webcface</a></li><li class="navelem"><a class="el" href="dir_c6f8b713f490183ef4573a582b3d24eb.html">common</a></li><li class="navelem"><a class="el" href="dir_1c12ecd836656bb3bc10d23ecddfe48f.html">internal</a></li><li class="navelem"><a class="el" href="dir_8efb265f184e2da02acee1416832a7a4.html">message</a></li><li class="navelem"><a class="el" href="base_8h.html">base.h</a></li>
-    <li class="footer">Generated on Tue Jan 7 2025 18:24:41 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 04:06:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
