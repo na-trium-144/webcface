@@ -141,8 +141,8 @@ const View &View::request() const {
     auto data = dataLock();
     auto req = data->view_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(message::packSingle(
-            message::Req<message::View>{{}, member_, field_, req}));
+        data->messagePushReq(
+            message::Req<message::View>{{}, member_, field_, req});
     }
     return *this;
 }

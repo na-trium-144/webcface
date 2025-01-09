@@ -1,0 +1,10 @@
+[wrap-git]
+url = https://github.com/fmtlib/fmt.git
+revision = 11.0.2
+depth = 1
+patch_directory = fmt
+# meson.build copied from wrapdb 11.1.1-2 and modified (for visibility etc.)
+# fmt 11.1 does not work with spdlog 1.15.0
+
+[provide]
+fmt = fmt_dep

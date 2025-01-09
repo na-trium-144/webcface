@@ -298,8 +298,6 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
                             this->pack(sync);
                             this->pack(message::Res<webcface::message::Image>{
                                 req_id, sub_field, img_send});
-                            logger->trace("send image_res req_id={} + '{}'",
-                                          req_id, sub_field.decode());
                             this->send();
                         }
                     } catch (const std::exception &e) {
