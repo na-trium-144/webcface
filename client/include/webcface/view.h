@@ -246,6 +246,18 @@ class WEBCFACE_DLL View : protected Field {
     }
 
     /*!
+     * \brief back inserter iterator を返す
+     * \since ver2.6
+     *
+     * * これが返すイテレーターを使うことでViewに文字列を追加できる。
+     * * fmt::format_to や std::format_to に渡して使う
+     *
+     */
+    std::ostreambuf_iterator<char> inserter() const {
+        return std::ostreambuf_iterator<char>(os);
+    }
+
+    /*!
      * \brief Viewの内容をclientに反映し送信可能にする
      *
      * * ver1.2以降: このViewオブジェクトの内容が変更されていなければ

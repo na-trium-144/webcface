@@ -23,6 +23,7 @@ foreach e: example_src
   dependencies = [
     warning_options,
     webcface_dep,
+    fmt_dep,
   ]
   if e['libvips']
     dependencies += libvips_cpp_dep
