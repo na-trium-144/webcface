@@ -248,7 +248,7 @@ class WEBCFACE_DLL View : protected Field {
     }
 
     /*!
-     * \brief back inserter iterator を返す
+     * \brief このViewに文字列を出力する back inserter iterator を返す
      * \since ver2.6
      *
      * * これが返すイテレーターを使うことでViewに文字列を追加できる。
@@ -258,6 +258,14 @@ class WEBCFACE_DLL View : protected Field {
     std::ostreambuf_iterator<char> inserter() const {
         return std::ostreambuf_iterator<char>(os);
     }
+    /*!
+     * \brief このViewに文字列を出力するostreamを返す
+     * \since ver2.6
+     *
+     * * 参照はこのViewが破棄されるまで有効
+     *
+     */
+    std::ostream &ostream() const { return os; }
 
     /*!
      * \brief Viewの内容をclientに反映し送信可能にする
