@@ -176,7 +176,7 @@ Requirements</h2>
 <h2><a class="anchor" id="autotoc_md45"></a>
 Dependencies</h2>
 <ul>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/chriskohlhoff/asio">Asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">CLI11</a>, <a href="https://github.com/CrowCpp/Crow">Crow</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/libvips/libvips">libvips</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) <a href="https://opencv.org/">OpenCV</a>(exampleのみ), を使用します。</li>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/chriskohlhoff/asio">Asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">CLI11</a>, <a href="https://github.com/CrowCpp/Crow">Crow</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>(&gt;=11), <a href="https://github.com/libvips/libvips">libvips</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) <a href="https://opencv.org/">OpenCV</a>(exampleのみ), を使用します。</li>
 <li><del>デフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします。</del></li>
 <li><span class="since-c">2.6</span> システムにインストールされているものがあればデフォルトでそれを探して使用します。</li>
 <li>しかしインストールされていない場合は自動的に必要なソースをダウンロードしてビルドするので、WebCFaceを使うためにこれらのライブラリをすべてインストールする必要はありません。<ul>
@@ -187,6 +187,7 @@ Dependencies</h2>
 <li>そのためビルドしたWebCFaceを他の環境に配布する場合などはシステムにインストールしたライブラリを使用しないほうが良いです。</li>
 </ul>
 </li>
+<li>spdlogは <code>SPDLOG_FMT_EXTERNAL</code> が有効になっている必要があります。 またfmt&gt;=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。</li>
 <li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。</li>
 <li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。<ul>
 <li>現在はこの機能はリリースされておらず、 na-trium-144/Crow のフォークの <a href="https://github.com/na-trium-144/Crow/commit/5f5372ed80860dfcef788972bb0fd3972f715842">5f5372e</a> のコミットでしかビルドできません。</li>
@@ -205,21 +206,27 @@ Ubuntu</summary>
 <li>ubuntu22.04またはそれ以前ではaptでインストールできるmesonは古いので <div class="fragment"><div class="line">sudo apt install python3-pip</div>
 <div class="line">pip install meson</div>
 </div><!-- fragment --></li>
-</ul>
-<div class="fragment"><div class="line"># optional:</div>
-<div class="line"># sudo apt install libspdlog-dev libasio-dev libvips-dev</div>
+<li>依存ライブラリ(optional)<ul>
+<li><code>libvips-dev</code> はwebsocketが無効の <code>libcurl4</code> に依存しているため使用できません。</li>
+<li><code>libspdlog-dev</code>, <code>libfmt-dev</code> は古いため使用できません。 <div class="fragment"><div class="line"># sudo apt install libasio-dev</div>
 <div class="line"># sudo apt install libcli11-dev        # (only on 22.04 or later)</div>
 <div class="line"># sudo apt install libmsgpack-cxx-dev  # (only on 24.04 or later)</div>
-</div><!-- fragment --><p></p>
+</div><!-- fragment --></li>
+</ul>
+</li>
+</ul>
+<p></p>
 </details>
 <details >
 <summary >
 Homebrew (MacOS, Linux)</summary>
 <p></p>
 <div class="fragment"><div class="line">brew install cmake meson ninja</div>
-<div class="line"># optional:</div>
-<div class="line"># brew install msgpack-cxx spdlog asio cli11 utf8cpp vips curl</div>
-</div><!-- fragment --><p></p>
+</div><!-- fragment --><ul>
+<li>依存ライブラリ(optional) <div class="fragment"><div class="line"># brew install msgpack-cxx fmt spdlog asio cli11 utf8cpp vips curl</div>
+</div><!-- fragment --></li>
+</ul>
+<p></p>
 </details>
 <details >
 <summary >
@@ -246,9 +253,11 @@ MSYS2 MinGW</summary>
 <p></p>
 <div class="fragment"><div class="line">pacman -S pactoys</div>
 <div class="line">pacboy -S git make gcc:p cmake:p ninja:p meson:p</div>
-<div class="line"># optional:</div>
-<div class="line"># pacboy -S msgpack-cxx:p spdlog:p asio:p cli11:p utf8cpp:p vips:p</div>
-</div><!-- fragment --><p></p>
+</div><!-- fragment --><ul>
+<li>依存ライブラリ(optional) <div class="fragment"><div class="line"># pacboy -S msgpack-cxx:p fmt:p spdlog:p asio:p cli11:p utf8cpp:p vips:p</div>
+</div><!-- fragment --></li>
+</ul>
+<p></p>
 </details>
 <details >
 <summary >
@@ -326,7 +335,7 @@ tools</h1>
 <div class="line">meson install -C build --skip-subprojects</div>
 </div><!-- fragment --><p> のようにビルド、インストールできます。</p>
 <p>toolsのビルド時にWebCFaceライブラリが見つからないとなる場合は 環境変数<code>PKG_CONFIG_PATH</code>(またはmesonの引数<code>-Dpkg_config_path</code>)に (webcfaceのパス)/lib/pkgconfig を追加するか、 環境変数<code>PATH</code>に (webcfaceのパス)/bin を追加するか、 mesonの引数<code>-Dcmake_prefix_path</code>にwebcfaceのパスを追加するなどすればビルドできるはずです。</p>
-<p>webcface-toolsは外部ライブラリとして <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://gitlab.com/eidheim/tiny-process-library">tiny-process-library</a>, <a href="https://github.com/marzer/tomlplusplus">toml++</a> を使用します。 システムにインストールされてなければ自動的にソースからビルドします。 <br  />
+<p>webcface-toolsは外部ライブラリとして <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/CLIUtils/CLI11.git">cli11</a>, <a href="https://github.com/ArthurSonzogni/FTXUI">FTXUI</a>, <a href="https://gitlab.com/eidheim/tiny-process-library">tiny-process-library</a>, <a href="https://github.com/marzer/tomlplusplus">toml++</a> を使用します。 システムにインストールされてなければ自動的にソースからビルドします。 <br  />
 </p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -340,7 +349,7 @@ tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 9 2025 05:19:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 9 2025 07:52:04 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
