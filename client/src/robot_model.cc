@@ -104,6 +104,7 @@ const RobotModel &RobotModel::free() const {
     return *this;
 }
 bool RobotModel::exists() const {
+    std::lock_guard lock(dataLock()->robot_model_store.mtx);
     return dataLock()->robot_model_store.getEntry(member_).count(field_);
 }
 

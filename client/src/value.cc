@@ -5,13 +5,14 @@
 #include "webcface/member.h"
 #include <algorithm>
 #include <cctype>
+#include <numeric>
 
 WEBCFACE_NS_BEGIN
 
 ValueShape::ValueShape(const message::ValueShape &msg)
-    : fixed_size(msg.size), is_fixed(msg.fixed) {}
+    : fixed_shape(msg.shape), is_fixed(msg.fixed) {}
 ValueShape::operator message::ValueShape() const {
-    return message::ValueShape{fixed_size, is_fixed};
+    return message::ValueShape{fixed_shape, is_fixed};
 }
 
 Value::Value(const Field &base) : Field(base) {}
@@ -26,25 +27,32 @@ const Value &Value::request() const {
     return *this;
 }
 
-const Value &Value::set(std::vector<double> v, ValueShape shape) const {
+const Value &Value::setImpl(std::vector<double> v,
+                            const ValueShape &shape) const {
+    std::size_t size =
+        std::accumulate(shape.fixed_shape.begin(), shape.fixed_shape.end(),
+                        1uLL, [](auto a, auto b) { return a * b; });
     if (shape.is_fixed) {
-        if (v.size() != shape.fixed_size) {
-            throw std::invalid_argument("array size mismatch, expected: " +
-                                        std::to_string(shape.fixed_size) +
-                                        ", got: " + std::to_string(v.size()));
+        if (v.size() != size) {
+            throw std::invalid_argument(
+                "array size mismatch, expected: " + std::to_string(size) +
+                ", got: " + std::to_string(v.size()));
         }
     } else {
-        if (v.size() % shape.fixed_size != 0) {
+        if (v.size() % size != 0) {
             throw std::invalid_argument(
                 "array size mismatch, expected multiple of: " +
-                std::to_string(shape.fixed_size) +
-                ", got: " + std::to_string(v.size()));
+                std::to_string(size) + ", got: " + std::to_string(v.size()));
         }
     }
     auto data = setCheck();
+    data->value_store.setEntry(*this, shape);
+    return setImpl(std::move(v));
+}
+const Value &Value::setImpl(std::vector<double> v) const {
+    auto data = setCheck();
     data->value_store.setSend(
         *this, std::make_shared<std::vector<double>>(std::move(v)));
-    data->value_store.setEntry(*this, shape);
     std::shared_ptr<std::function<void(Value)>> change_event;
     {
         std::lock_guard lock(data->event_m);
@@ -60,7 +68,7 @@ const ValueElement<> &ValueElement<>::set(double v) const {
     auto pv = parent.tryGetVec();
     if (pv && index < pv->size()) {
         pv->at(index) = v;
-        parent.set(*pv);
+        parent.setImpl(*pv, shape);
         return *this;
     } else {
         throw std::out_of_range("index out of range, current size: " +
@@ -69,11 +77,11 @@ const ValueElement<> &ValueElement<>::set(double v) const {
     }
 }
 const Value &Value::set(double v) const {
-    set(std::vector<double>{v}, ValueShape{1, true});
+    setImpl(std::vector<double>{v}, ValueShape{{}, true});
     return *this;
 }
 const Value &Value::set(std::vector<double> v) const {
-    return set(std::move(v), ValueShape{});
+    return setImpl(std::move(v), ValueShape{{}, false});
 }
 
 
@@ -93,7 +101,7 @@ const Value &Value::resize(std::size_t size) const {
     } else {
         pv.emplace(size);
     }
-    this->set(*pv);
+    this->setImpl(*pv);
     return *this;
 }
 const Value &Value::push_back(double v) const {
@@ -103,7 +111,7 @@ const Value &Value::push_back(double v) const {
     } else {
         pv.emplace({v});
     }
-    this->set(*pv);
+    this->setImpl(*pv);
     return *this;
 }
 
@@ -164,6 +172,37 @@ std::size_t Value::size() const {
     request();
     return v ? v->size() : 0;
 }
+bool Value::isFixed() const {
+    auto data = dataLock();
+    std::lock_guard lock(data->value_store.mtx);
+    if (!data->value_store.getEntry(*this).count(this->field_)) {
+        return false;
+    }
+    return data->value_store.getEntry(*this).at(this->field_).fixed;
+}
+const std::vector<std::size_t> &Value::fixedShape() const {
+    auto data = dataLock();
+    std::lock_guard lock(data->value_store.mtx);
+    if (!data->value_store.getEntry(*this).count(this->field_)) {
+        static std::vector<std::size_t> empty;
+        return empty;
+    }
+    auto &shape = data->value_store.getEntry(*this).at(this->field_).shape;
+    if (shape.empty()) {
+        shape.push_back(1);
+    }
+    return shape;
+}
+std::size_t Value::fixedSize() const {
+    auto data = dataLock();
+    std::lock_guard lock(data->value_store.mtx);
+    if (!data->value_store.getEntry(*this).count(this->field_)) {
+        return 0;
+    }
+    auto &shape = data->value_store.getEntry(*this).at(this->field_).shape;
+    return std::accumulate(shape.begin(), shape.end(), 1uLL,
+                           [](auto a, auto b) { return a * b; });
+}
 
 void Value::assertSize(std::size_t size, bool fixed) const {
     if (dataLock()->isSelf(*this)) {
@@ -201,6 +240,7 @@ const Value &Value::free() const {
 }
 
 bool Value::exists() const {
+    std::lock_guard lock(dataLock()->value_store.mtx);
     return dataLock()->value_store.getEntry(member_).count(field_);
 }
 

@@ -98,6 +98,7 @@ const Canvas3D &Canvas3D::free() const {
     return *this;
 }
 bool Canvas3D::exists() const {
+    std::lock_guard lock(dataLock()->canvas3d_store.mtx);
     return dataLock()->canvas3d_store.getEntry(member_).count(field_);
 }
 

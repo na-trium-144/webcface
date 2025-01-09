@@ -186,11 +186,9 @@ class SyncDataStore2 {
 
     /*!
      * \brief entryを取得
-     * \todo entryデータまで全部コピーしていて効率が悪い
-     * そもそも外からmutexかけて参照取るとか?
      */
-    StrMap1<EntryT> getEntry(const SharedString &from);
-    StrMap1<EntryT> getEntry(const FieldBase &base);
+    StrMap1<EntryT> &getEntry(const SharedString &from);
+    StrMap1<EntryT> &getEntry(const FieldBase &base);
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す

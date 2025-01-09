@@ -14,11 +14,14 @@ TEST_F(ClientTest, valueSend) {
     }
     data_->value_store.setSend(
         "a"_ss, std::make_shared<std::vector<double>>(std::vector<double>{5}));
+    data_->value_store.setEntry(self_name, "a"_ss, {{2}, true});
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
         EXPECT_EQ(obj.data->size(), 1u);
         EXPECT_EQ(obj.data->at(0), 5);
+        EXPECT_EQ(obj.shape, std::vector<std::size_t>{2});
+        EXPECT_TRUE(obj.fixed);
     });
     dummy_s->recvClear();
 

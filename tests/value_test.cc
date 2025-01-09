@@ -130,9 +130,21 @@ TEST_F(ValueTest, valueSet) {
     // valueFixed<2>(self_name, "b5").set(123);
     // valueList<>(self_name, "b6").set(123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b"_ss).shape,
+              std::vector<std::size_t>{});
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b2"_ss)).at(0), 123);
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b2"_ss).shape,
+              std::vector<std::size_t>{});
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b2"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b3"_ss)).at(0), 123);
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b3"_ss).shape,
+              std::vector<std::size_t>{});
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b3"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b4"_ss)).at(0), 123);
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b4"_ss).shape,
+              (std::vector<std::size_t>{}));
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("b4"_ss).fixed, true);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
     EXPECT_THROW(valueFixed<>("a", "b").set(123), std::invalid_argument);
@@ -215,7 +227,6 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_THROW(d25[1][0][0][0].set(0), std::out_of_range);
 
     EXPECT_EQ(callback_called, 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(4), 5);
@@ -233,48 +244,51 @@ TEST_F(ValueTest, valueSetVec) {
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d9"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d10"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d11"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d12"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d13"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d15"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d16"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d17"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d18"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d19"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d20"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d21"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d24"_ss)).at(4), 5);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).size(), 5u);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).at(0), 1);
-    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d25"_ss)).at(4), 5);
+    for (const SharedString &field : {"d"_ss, "d2"_ss, "d3"_ss, "d4"_ss,
+                                      "d5"_ss, "d6"_ss, /*"d7"_ss,*/ "d8"_ss}) {
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).shape,
+                  std::vector<std::size_t>{});
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).fixed,
+                  false);
+    }
+
+    for (const SharedString &field : {"d9"_ss, "d10"_ss, "d11"_ss, "d12"_ss,
+                                      "d13"_ss, "d15"_ss, "d16"_ss}) {
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).size(), 5u);
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).at(0), 1);
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).at(4), 5);
+    }
+    for (const SharedString &field :
+         {"d9"_ss, "d10"_ss, "d11"_ss, "d12"_ss, "d13"_ss, "d15"_ss}) {
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).shape,
+                  std::vector<std::size_t>{5});
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).fixed, true);
+    }
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("d16"_ss).shape,
+              (std::vector<std::size_t>{1, 5, 1}));
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("d16"_ss).fixed, true);
+
+    for (const SharedString &field : {"d17"_ss, "d18"_ss, "d19"_ss, "d20"_ss,
+                                      "d21"_ss, "d24"_ss, "d25"_ss}) {
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).size(), 5u);
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).at(0), 1);
+        EXPECT_EQ((*data_->value_store.getRecv(self_name, field)).at(4), 5);
+    }
+    for (const SharedString &field : {"d17"_ss, "d18"_ss}) {
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).shape,
+                  std::vector<std::size_t>{});
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).fixed,
+                  false);
+    }
+    for (const SharedString &field : {"d19"_ss, "d20"_ss, "d21"_ss, "d24"_ss}) {
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).shape,
+                  std::vector<std::size_t>{5});
+        EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).fixed,
+                  false);
+    }
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("d25"_ss).shape,
+              (std::vector<std::size_t>{1, 5, 1}));
+    EXPECT_EQ(data_->value_store.getEntry(self_name).at("d25"_ss).fixed, false);
 }
 // TEST_F(ValueTest, ArrayLike){
 static_assert(
@@ -383,7 +397,74 @@ static_assert(!traits::NestedArraySizeMatch<
               std::array<std::array<double, 5>, 5>, 5>::value);
 static_assert(!traits::NestedArraySizeMatch<double[5][5], 5>::value);
 
+TEST_F(ValueTest, shape) {
+    EXPECT_FALSE(value("a", "b").exists());
+    EXPECT_FALSE(value("a", "b").isFixed());
+    EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{});
+    EXPECT_EQ(value("a", "b").fixedSize(), 0u);
+    EXPECT_FALSE(value("a", "b").exists());
+    EXPECT_TRUE(valueFixed<1>("a", "b").sizeValid());
+    EXPECT_TRUE(valueFixed<5>("a", "b").sizeValid());
+    EXPECT_TRUE((valueFixed<1, 5, 1>("a", "b")).sizeValid());
+    EXPECT_TRUE(valueList<>("a", "b").sizeValid());
+    EXPECT_TRUE(valueList<5>("a", "b").sizeValid());
+    EXPECT_TRUE((valueList<1, 5, 1>("a", "b")).sizeValid());
 
+    for (int fixed = 0; fixed <= 1; fixed++) {
+        data_->value_store.setEntry("a"_ss, "b"_ss,
+                                    message::ValueShape{{}, fixed == 1});
+        EXPECT_TRUE(value("a", "b").exists());
+        EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
+        EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{1});
+        EXPECT_EQ(value("a", "b").fixedSize(), 1u);
+        EXPECT_EQ(valueFixed<1>("a", "b").sizeValid(), fixed == 1);
+        EXPECT_FALSE(valueFixed<5>("a", "b").sizeValid());
+        EXPECT_FALSE((valueFixed<1, 5, 1>("a", "b")).sizeValid());
+        EXPECT_TRUE(valueList<>("a", "b").sizeValid());
+        EXPECT_FALSE(valueList<5>("a", "b").sizeValid());
+        EXPECT_FALSE((valueList<1, 5, 1>("a", "b")).sizeValid());
+
+        data_->value_store.setEntry("a"_ss, "b"_ss,
+                                    message::ValueShape{{5}, fixed == 1});
+        EXPECT_TRUE(value("a", "b").exists());
+        EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
+        EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{5});
+        EXPECT_EQ(value("a", "b").fixedSize(), 5u);
+        EXPECT_FALSE(valueFixed<1>("a", "b").sizeValid());
+        EXPECT_EQ(valueFixed<5>("a", "b").sizeValid(), fixed == 1);
+        EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")).sizeValid(), fixed == 1);
+        EXPECT_TRUE(valueList<>("a", "b").sizeValid());
+        EXPECT_TRUE(valueList<5>("a", "b").sizeValid());
+        EXPECT_TRUE((valueList<1, 5, 1>("a", "b")).sizeValid());
+
+        data_->value_store.setEntry("a"_ss, "b"_ss,
+                                    message::ValueShape{{5, 1}, fixed == 1});
+        EXPECT_TRUE(value("a", "b").exists());
+        EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
+        EXPECT_EQ(value("a", "b").fixedShape(),
+                  (std::vector<std::size_t>{5, 1}));
+        EXPECT_EQ(value("a", "b").fixedSize(), 5u);
+        EXPECT_FALSE(valueFixed<1>("a", "b").sizeValid());
+        EXPECT_EQ(valueFixed<5>("a", "b").sizeValid(), fixed == 1);
+        EXPECT_EQ((valueFixed<1, 5, 1>("a", "b")).sizeValid(), fixed == 1);
+        EXPECT_TRUE(valueList<>("a", "b").sizeValid());
+        EXPECT_TRUE(valueList<5>("a", "b").sizeValid());
+        EXPECT_TRUE((valueList<1, 5, 1>("a", "b")).sizeValid());
+
+        data_->value_store.setEntry("a"_ss, "b"_ss,
+                                    message::ValueShape{{9}, fixed == 1});
+        EXPECT_TRUE(value("a", "b").exists());
+        EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
+        EXPECT_EQ(value("a", "b").fixedShape(), (std::vector<std::size_t>{9}));
+        EXPECT_EQ(value("a", "b").fixedSize(), 9u);
+        EXPECT_FALSE(valueFixed<1>("a", "b").sizeValid());
+        EXPECT_FALSE(valueFixed<5>("a", "b").sizeValid());
+        EXPECT_FALSE((valueFixed<1, 5, 1>("a", "b")).sizeValid());
+        EXPECT_TRUE(valueList<>("a", "b").sizeValid());
+        EXPECT_FALSE(valueList<5>("a", "b").sizeValid());
+        EXPECT_FALSE((valueList<1, 5, 1>("a", "b")).sizeValid());
+    }
+}
 TEST_F(ValueTest, valueGet) {
     data_->value_store.setRecv(
         "a"_ss, "b"_ss,
@@ -407,8 +488,10 @@ TEST_F(ValueTest, valueGetVec) {
         std::make_shared<std::vector<double>>(std::vector<double>({123})));
     EXPECT_EQ(value("a", "b").tryGetVec().value(), std::vector<double>{123});
     EXPECT_EQ(value("a", "b").getVec(), std::vector<double>{123});
+    EXPECT_EQ(value("a", "b").size(), 1u);
     EXPECT_EQ(value("a", "c").tryGetVec(), std::nullopt);
     EXPECT_TRUE(value("a", "c").getVec().empty());
+    EXPECT_EQ(value("a", "c").size(), 0u);
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("b"_ss), 1u);
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("c"_ss), 2u);
     EXPECT_EQ(value(self_name, "b").tryGetVec(), std::nullopt);
@@ -420,6 +503,7 @@ TEST_F(ValueTest, valueGetVec) {
     EXPECT_EQ(value("a", "b").tryGetVec().value(),
               (std::vector<double>{1, 2, 3, 4, 5}));
     EXPECT_EQ(value("a", "b").getVec(), (std::vector<double>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(value("a", "b").size(), 5u);
     EXPECT_EQ(value("a", "b")[1].tryGet().value(), 2);
     EXPECT_EQ(value("a", "b")[1].get(), 2);
     EXPECT_EQ(value("a", "b")[5].tryGet(), std::nullopt);
@@ -450,6 +534,8 @@ TEST_F(ValueTest, valueGetVec) {
     //             (std::array<double, 5>{1, 2, 3, 4, 5}));
     // EXPECT_EQ(valueList<>("a", "b").getArray(),
     //             (std::array<double, 5>{1, 2, 3, 4, 5}));
+    EXPECT_EQ(valueList<>("a", "b").size(), 5u);
+
     EXPECT_EQ(valueList<5>("a", "b").tryGetVec().value(),
               (std::vector<std::vector<double>>{{1, 2, 3, 4, 5}}));
     EXPECT_EQ(valueList<5>("a", "b").getVec(),
@@ -458,6 +544,8 @@ TEST_F(ValueTest, valueGetVec) {
               (std::vector<std::array<double, 5>>{{1, 2, 3, 4, 5}}));
     EXPECT_EQ(valueList<5>("a", "b").getArray(),
               (std::vector<std::array<double, 5>>{{1, 2, 3, 4, 5}}));
+    EXPECT_EQ(valueList<5>("a", "b").size(), 1u);
+
     EXPECT_EQ(valueList<5>("a", "b")[0][1].tryGet().value(), 2);
     EXPECT_EQ(valueList<5>("a", "b")[0][1].get(), 2);
     // EXPECT_THROW(valueList<5>("a", "b")[5].tryGet(), std::out_of_range);

@@ -286,11 +286,14 @@ TEST_F(ClientTest, entry) {
 
     EXPECT_FALSE(m.value("b").exists());
     m.onValueEntry(callback<Value>());
-    dummy_s->send(message::Entry<message::Value>{{}, 10, "b"_ss});
+    dummy_s->send(message::Entry<message::Value>{10, "b"_ss, {2}, true});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_TRUE(m.value("b").exists());
+    EXPECT_TRUE(m.value("b").isFixed());
+    EXPECT_EQ(m.value("b").fixedShape(), std::vector<std::size_t>{2});
+    EXPECT_EQ(m.value("b").fixedSize(), 2u);
     ASSERT_EQ(m.valueEntries().size(), 1u);
     EXPECT_EQ(m.valueEntries()[0].name(), "b");
     EXPECT_EQ(m.valueEntries()[0].nameW(), L"b");

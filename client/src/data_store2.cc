@@ -55,20 +55,16 @@ void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setRecv(
 }
 
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
-StrMap1<EntryT> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
+StrMap1<EntryT> &SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
     const FieldBase &base) {
+    std::lock_guard lock(mtx);
     return getEntry(base.member_);
 }
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
-StrMap1<EntryT> SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
+StrMap1<EntryT> &SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
     const SharedString &name) {
     std::lock_guard lock(mtx);
-    auto e = entry.find(name);
-    if (e != entry.end()) {
-        return e->second;
-    } else {
-        return StrMap1<EntryT>{};
-    }
+    return entry[name];
 }
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::initMember(
@@ -81,12 +77,12 @@ template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setEntry(
     const SharedString &from, const SharedString &e, EntryT e_data) {
     std::lock_guard lock(mtx);
-    entry[from].emplace(e, e_data);
+    entry[from][e] = std::move(e_data);
 }
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setEntry(
     const FieldBase &base, EntryT e_data) {
-    setEntry(base.member_, base.field_, e_data);
+    setEntry(base.member_, base.field_, std::move(e_data));
 }
 
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>

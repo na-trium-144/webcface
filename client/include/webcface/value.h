@@ -19,10 +19,10 @@ struct ValueShape;
  * \since ver2.6
  */
 struct WEBCFACE_DLL ValueShape {
-    std::size_t fixed_size;
+    std::vector<std::size_t> fixed_shape;
     bool is_fixed;
-    ValueShape(std::size_t size = 1, bool fixed = false)
-        : fixed_size(size), is_fixed(fixed) {}
+    ValueShape(std::vector<std::size_t> shape = {}, bool fixed = false)
+        : fixed_shape(std::move(shape)), is_fixed(fixed) {}
     ValueShape(const message::ValueShape &);
     operator message::ValueShape() const;
 };
@@ -39,13 +39,14 @@ class ValueElement;
 template <std::size_t FirstDim, std::size_t... Shape>
 class ValueElement<FirstDim, Shape...> : protected Field {
     std::size_t index;
+    ValueShape shape;
 
   public:
     using Vector = std::vector<typename ValueElement<Shape...>::Vector>;
     using Array = std::array<typename ValueElement<Shape...>::Array, FirstDim>;
 
-    ValueElement(const Field &base, std::size_t index)
-        : Field(base), index(index) {}
+    ValueElement(const Field &base, std::size_t index, ValueShape shape)
+        : Field(base), index(index), shape(std::move(shape)) {}
 
     /*!
      * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
@@ -57,7 +58,8 @@ class ValueElement<FirstDim, Shape...> : protected Field {
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
-        return ValueElement<Shape...>(*this, this->index * FirstDim + index);
+        return ValueElement<Shape...>(*this, this->index * FirstDim + index,
+                                      shape);
     }
 
     std::optional<Vector> tryGetVec() const;
@@ -80,13 +82,14 @@ class ValueElement<FirstDim, Shape...> : protected Field {
 template <>
 class WEBCFACE_DLL ValueElement<> : protected Field {
     std::size_t index;
+    ValueShape shape;
 
   public:
     using Vector = double;
     using Array = double;
 
-    ValueElement(const Field &base, std::size_t index)
-        : Field(base), index(index) {}
+    ValueElement(const Field &base, std::size_t index, ValueShape shape)
+        : Field(base), index(index), shape(std::move(shape)) {}
 
     template <std::size_t...>
     friend class ValueElement;
@@ -197,7 +200,7 @@ class WEBCFACE_DLL Value : protected Field {
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<> operator[](T index) const {
-        return ValueElement<>(*this, index);
+        return ValueElement<>(*this, index, {{}, false});
     }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
@@ -252,7 +255,13 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \since ver2.6
      */
-    const Value &set(std::vector<double> v, ValueShape shape) const;
+    const Value &setImpl(std::vector<double> v, const ValueShape &shape) const;
+    /*!
+     * \since ver2.6
+     *
+     * shapeを変更しない
+     */
+    const Value &setImpl(std::vector<double> v) const;
     /*!
      * \since ver2.6
      *
@@ -391,8 +400,51 @@ class WEBCFACE_DLL Value : protected Field {
      * * getVec().size() と同じ。データを受信していない場合リクエストされる。
      * * データが存在しない場合は0を返す
      *
+     * \sa fixedShape(), fixedSize()
      */
     std::size_t size() const;
+    /*!
+     * \brief データが固定長かどうかを返す
+     * \since ver2.6
+     *
+     * * size() と違って、データのリクエストはしない。
+     * * データが存在しない場合 (exists() がfalseの場合) はfalseを返す。
+     *
+     * \sa fixedShape(), fixedSize()
+     */
+    bool isFixed() const;
+    /*!
+     * \brief データの固定長サイズを返す
+     * \since ver2.6
+     *
+     * * size() と違って、データのリクエストはしない。
+     * * データが存在しない場合 (exists() がfalseの場合) は空のvectorを返す。
+     * * データが存在する場合、少なくとも長さ1以上のvectorでデータのサイズを返す。
+     *   * 例えば `ValueFixed<2, 3>` のデータであれば `{2, 3}`
+     *   * 数値1つの場合は `{1}`
+     * * isFixed()
+     * がfalseの場合は、固定長の部分(2つ目以降の次元)のサイズを返す。
+     *   * 例えば `ValueList<2, 3>` のデータ (n ✕ 2 ✕ 3 の配列) であれば
+     * `{2, 3}`
+     *
+     * \sa size(), isFixed(), fixedSize()
+     */
+    const std::vector<std::size_t> &fixedShape() const;
+    /*!
+     * \brief データの固定長サイズを返す
+     * \since ver2.6
+     *
+     * * size() と違って、データのリクエストはしない。
+     * * データが存在しない場合 (exists() がfalseの場合) は0を返す。
+     * * データが存在する場合、 fixedShape() の値の積(少なくとも1以上)を返す。
+     *   * 例えば `ValueFixed<2, 3>` のデータであれば 6
+     *   * 数値1つの場合は 1
+     *   * `ValueList<2, 3>` のデータ (n ✕ 2 ✕ 3 の配列) であれば 6
+     * (この場合データを受信した後 size() が n ✕ 6 を返す)
+     *
+     * \sa size(), isFixed(), fixedShape()
+     */
+    std::size_t fixedSize() const;
 
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
@@ -560,7 +612,8 @@ class ValueFixed : Value {
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
         this->Value::assertSize(Size, true);
-        return ValueElement<Shape...>(*this, index);
+        return ValueElement<Shape...>(*this, index,
+                                      ValueShape{{FirstDim, Shape...}, true});
     }
 
     const ValueFixed &onChange(std::nullptr_t) const {
@@ -600,7 +653,8 @@ class ValueFixed : Value {
      * サイズが一致しない場合 std::invalid_argument を投げる
      */
     const ValueFixed &set(std::vector<double> v) const {
-        this->Value::set(std::move(v), ValueShape{Size, true});
+        this->Value::setImpl(std::move(v),
+                             ValueShape{{FirstDim, Shape...}, true});
         return *this;
     }
     /*!
@@ -641,11 +695,11 @@ class ValueFixed : Value {
     }
     std::optional<Vector> tryGetVec() const {
         this->Value::assertSize(Size, true);
-        return ValueElement<FirstDim, Shape...>(*this, 0).tryGetVec();
+        return ValueElement<FirstDim, Shape...>(*this, 0, {}).tryGetVec();
     }
     std::optional<Array> tryGetArray() const {
         this->Value::assertSize(Size, true);
-        return ValueElement<FirstDim, Shape...>(*this, 0).tryGetArray();
+        return ValueElement<FirstDim, Shape...>(*this, 0, {}).tryGetArray();
     }
 
     template <std::size_t s = Size,
@@ -663,6 +717,20 @@ class ValueFixed : Value {
     }
 
     using Value::exists;
+    /*!
+     * \brief
+     * テンプレートで指定したサイズと実際のデータサイズが一致しているかを返す。
+     *
+     * * データが存在しない場合はtrueを返す。
+     * * データが存在する場合、 `Value::isFixed() && Value::fixedSize() ==
+     * (shapeの積)` と同じ。
+     * * shapeが一致しているかどうかは問わない。
+     *
+     */
+    bool sizeValid() const {
+        return !this->Value::exists() ||
+               (this->Value::isFixed() && this->Value::fixedSize() == Size);
+    }
 
     const ValueFixed &free() const {
         this->Value::free();
@@ -726,7 +794,8 @@ class ValueList : Value {
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
         this->Value::assertSize(Size, false);
-        return ValueElement<Shape...>(*this, index);
+        return ValueElement<Shape...>(*this, index,
+                                      ValueShape{{Shape...}, false});
     }
 
     const ValueList &onChange(std::nullptr_t) const {
@@ -756,7 +825,7 @@ class ValueList : Value {
      * サイズがShapeの倍数でない場合 std::invalid_argument を投げる
      */
     const ValueList &set(std::vector<double> v) const {
-        this->Value::set(std::move(v), ValueShape{Size, false});
+        this->Value::setImpl(std::move(v), ValueShape{{Shape...}, false});
         return *this;
     }
     /*!
@@ -854,6 +923,19 @@ class ValueList : Value {
     std::size_t size() const { return this->Value::size() / Size; }
 
     using Value::exists;
+    /*!
+     * \brief
+     * テンプレートで指定したサイズと実際のデータサイズが一致しているかを返す。
+     *
+     * * データが存在しない場合はtrueを返す。
+     * * データが存在する場合、 Value::fixedSize() が (shapeの積)
+     * の倍数になっていればtrue。
+     * * 固定長か可変長か、shapeが一致しているかどうかは問わない。
+     *
+     */
+    bool sizeValid() const {
+        return !this->Value::exists() || this->Value::fixedSize() % Size == 0;
+    }
 
     const ValueList &free() const {
         this->Value::free();

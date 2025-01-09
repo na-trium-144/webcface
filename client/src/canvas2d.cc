@@ -101,6 +101,7 @@ const Canvas2D &Canvas2D::free() const {
     return *this;
 }
 bool Canvas2D::exists() const {
+    std::lock_guard lock(dataLock()->canvas2d_store.mtx);
     return dataLock()->canvas2d_store.getEntry(member_).count(field_);
 }
 

@@ -142,6 +142,7 @@ const Text &Text::free() const {
 }
 
 bool Text::exists() const {
+    std::lock_guard lock(dataLock()->text_store.mtx);
     return dataLock()->text_store.getEntry(member_).count(field_);
 }
 

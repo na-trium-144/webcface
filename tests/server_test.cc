@@ -128,20 +128,22 @@ TEST_F(ServerTest, entry) {
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
-    dummy_c1->send(
-        message::Value{{}, "a"_ss, std::make_shared<std::vector<double>>(1)});
+    dummy_c1->send(message::Value{
+        "a"_ss, std::make_shared<std::vector<double>>(1), {2}, true});
     dummy_c1->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c1->send(message::RobotModel{
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>(),
+        std::map<std::string,
+                 std::shared_ptr<message::Canvas3DComponentData>>(),
         {}});
     dummy_c1->send(message::Canvas2D{
         "a"_ss,
         0,
         0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>(),
+        std::map<std::string,
+                 std::shared_ptr<message::Canvas2DComponentData>>(),
         {}});
     dummy_c1->send(message::View{
         "a"_ss,
@@ -171,6 +173,8 @@ TEST_F(ServerTest, entry) {
     dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.shape, std::vector<std::size_t>{2});
+        EXPECT_TRUE(obj.fixed);
     });
     dummy_c2->waitRecv<message::Entry<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -212,11 +216,13 @@ TEST_F(ServerTest, entry) {
     dummy_c2->recvClear();
 
     // c1にentryを追加する
-    dummy_c1->send(
-        message::Value{{}, "b"_ss, std::make_shared<std::vector<double>>(1)});
+    dummy_c1->send(message::Value{
+        "b"_ss, std::make_shared<std::vector<double>>(1), {3}, true});
     dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.shape, std::vector<std::size_t>{3});
+        EXPECT_TRUE(obj.fixed);
     });
     dummy_c1->send(message::Text{{}, "b"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c2->waitRecv<message::Entry<message::Text>>([&](const auto &obj) {
@@ -240,7 +246,8 @@ TEST_F(ServerTest, entry) {
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>(),
+        std::map<std::string,
+                 std::shared_ptr<message::Canvas3DComponentData>>(),
         {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
@@ -250,7 +257,8 @@ TEST_F(ServerTest, entry) {
         "b"_ss,
         0,
         0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>(),
+        std::map<std::string,
+                 std::shared_ptr<message::Canvas2DComponentData>>(),
         {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);

@@ -190,19 +190,18 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     packWithLogging(logger_internal, buffer, len, message::Sync{data.time});
 
     for (const auto &v : data.value_data) {
-        packWithLogging(logger_internal,
-            buffer, len,
+        packWithLogging(
+            logger_internal, buffer, len,
             message::Value{
-                {},
                 v.first,
                 std::const_pointer_cast<std::vector<double>>(v.second),
-                data.value_entry_data.at(v.first).size,
+                data.value_entry_data.at(v.first).shape,
                 data.value_entry_data.at(v.first).fixed,
             });
     }
     for (const auto &v : data.text_data) {
-        packWithLogging(logger_internal,
-            buffer, len,
+        packWithLogging(
+            logger_internal, buffer, len,
             message::Text{
                 {}, v.first, std::const_pointer_cast<ValAdaptor>(v.second)});
     }
@@ -290,7 +289,7 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &v : data.image_data) {
         packWithLogging(logger_internal, buffer, len,
-                      message::Image{v.first, v.second->toMessage()});
+                        message::Image{v.first, v.second->toMessage()});
     }
 
     for (const auto &v : data.log_data) {

@@ -137,6 +137,7 @@ std::optional<std::vector<LogLineW>> Log::tryGetW() const {
 }
 
 bool Log::exists() const {
+    std::lock_guard lock(dataLock()->log_store.mtx);
     return dataLock()->log_store.getEntry(member_).count(field_);
 }
 

@@ -168,6 +168,7 @@ const View &View::free() const {
     return *this;
 }
 bool View::exists() const {
+    std::lock_guard lock(dataLock()->view_store.mtx);
     return dataLock()->view_store.getEntry(member_).count(field_);
 }
 

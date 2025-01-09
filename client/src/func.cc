@@ -104,6 +104,7 @@ std::vector<Arg> Func::args() const {
     return std::vector<Arg>{};
 }
 bool Func::exists() const {
+    std::lock_guard lock(dataLock()->func_store.mtx);
     return dataLock()->func_store.getEntry(member_).count(field_);
 }
 

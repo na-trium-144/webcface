@@ -186,7 +186,7 @@ void internal::ClientData::onRecv(
                 member, field,
                 std::make_shared<message::ViewData>(
                     message::ViewData::mergeDiff(v_prev.get(), r.data_diff,
-                                                 std::move(*r.data_ids))));
+                                                 std::move(r.data_ids))));
             std::shared_ptr<std::function<void(View)>> cl;
             {
                 std::lock_guard lock(event_m);
@@ -210,7 +210,7 @@ void internal::ClientData::onRecv(
                 member, field,
                 std::make_shared<message::Canvas3DData>(
                     message::Canvas3DData::mergeDiff(v_prev.get(), r.data_diff,
-                                                     std::move(*r.data_ids))));
+                                                     std::move(r.data_ids))));
             std::shared_ptr<std::function<void(Canvas3D)>> cl;
             {
                 std::lock_guard lock(event_m);
@@ -232,7 +232,7 @@ void internal::ClientData::onRecv(
             auto v_prev = this->canvas2d_store.getRecv(member, field);
             auto v = std::make_shared<message::Canvas2DData>(
                 message::Canvas2DData::mergeDiff(v_prev.get(), r.data_diff,
-                                                 std::move(*r.data_ids)));
+                                                 std::move(r.data_ids)));
             v->width = r.width;
             v->height = r.height;
             this->canvas2d_store.setRecv(member, field, v);
@@ -393,8 +393,7 @@ void internal::ClientData::onRecv(
                 webcface::message::Entry<webcface::message::Value> *>(
                 obj.get());
             this->logger_internal->debug("received {}", r);
-            onRecvEntry(this, r, this->value_store, this->value_entry_event,
-                        message::ValueShape{r.size, r.fixed});
+            onRecvEntry(this, r, this->value_store, this->value_entry_event, r);
             break;
         }
         case MessageKind::entry + MessageKind::text: {

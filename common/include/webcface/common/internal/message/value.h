@@ -12,16 +12,19 @@ WEBCFACE_NS_BEGIN
 namespace message {
 
 struct ValueShape {
-    std::size_t size = 1;
+    std::vector<std::size_t> shape;
     bool fixed = false;
 };
-struct Value : public MessageBase<MessageKind::value> {
+struct Value : public MessageBase<MessageKind::value>, public ValueShape {
     SharedString field;
     std::shared_ptr<std::vector<double>> data;
-    std::size_t size = 1;
-    bool fixed = false;
+    Value() = default;
+    Value(const SharedString &field,
+          const std::shared_ptr<std::vector<double>> &data,
+          const std::vector<std::size_t> &shape, bool fixed)
+        : ValueShape{shape, fixed}, field(field), data(data) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data),
-                       MSGPACK_NVP("s", size), MSGPACK_NVP("x", fixed))
+                       MSGPACK_NVP("s", shape), MSGPACK_NVP("x", fixed))
 };
 
 /*!
@@ -45,13 +48,16 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
 };
 
 template <>
-struct Entry<Value> : public MessageBase<Value::kind + MessageKind::entry> {
+struct Entry<Value> : public MessageBase<Value::kind + MessageKind::entry>,
+                      public ValueShape {
     unsigned int member_id = 0;
     SharedString field;
-    std::size_t size = 1;
-    bool fixed = false;
+    Entry() = default;
+    Entry(unsigned int member_id, const SharedString &field,
+          const std::vector<std::size_t> &shape, bool fixed)
+        : ValueShape{shape, fixed}, member_id(member_id), field(field) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("s", size), MSGPACK_NVP("x", fixed))
+                       MSGPACK_NVP("s", shape), MSGPACK_NVP("x", fixed))
 };
 
 } // namespace message

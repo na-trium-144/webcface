@@ -86,6 +86,7 @@ const Image &Image::free() const {
     return *this;
 }
 bool Image::exists() const {
+    std::lock_guard lock(dataLock()->image_store.mtx);
     return dataLock()->image_store.getEntry(member_).count(field_);
 }
 
