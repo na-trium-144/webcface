@@ -9,6 +9,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "components.h"
+#include "trait.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -16,6 +17,15 @@ template <typename Component>
 class DataSetBuffer;
 class ViewBuf;
 } // namespace internal
+
+namespace traits {
+template <typename T>
+using EnableIfFormattable =
+    decltype(std::declval<std::ostream>() << std::declval<T>(), TraitOk);
+template <typename T>
+using EnableIfViewInvocable =
+    decltype(std::declval<T>()(std::declval<View>()), TraitOk);
+} // namespace traits
 
 /*!
  * \brief Viewの送受信データを表すクラス
@@ -26,14 +36,6 @@ class ViewBuf;
 class WEBCFACE_DLL View : protected Field {
     std::shared_ptr<internal::ViewBuf> sb;
     mutable std::ostream os;
-
-    static constexpr std::nullptr_t TraitOk = nullptr;
-    template <typename T>
-    using EnableIfFormattable =
-        decltype(std::declval<std::ostream>() << std::declval<T>(), TraitOk);
-    template <typename T>
-    using EnableIfInvocable =
-        decltype(std::declval<T>()(std::declval<View>()), TraitOk);
 
   public:
     View();
@@ -191,7 +193,7 @@ class WEBCFACE_DLL View : protected Field {
      * ver1.9〜 const参照ではなく&&型にしてforwardするようにした
      *
      */
-    template <typename T, EnableIfFormattable<T> = TraitOk>
+    template <typename T, traits::EnableIfFormattable<T> = traits::TraitOk>
     const View &operator<<(T &&rhs) const {
         os << std::forward<T>(rhs);
         return *this;
@@ -225,7 +227,7 @@ class WEBCFACE_DLL View : protected Field {
      * カスタムコンポーネントとして引数にViewをとる関数を渡すことができる
      *
      */
-    template <typename F, EnableIfInvocable<F> = TraitOk>
+    template <typename F, traits::EnableIfViewInvocable<F> = traits::TraitOk>
     const View &operator<<(const F &manip) const {
         manip(*this);
         return *this;
