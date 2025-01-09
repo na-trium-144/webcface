@@ -454,6 +454,7 @@ Third-party libraries used by WebCFace itself and tools are licensed as follows:
 * CLI11 (BSD 3-Clause): https://github.com/CLIUtils/CLI11
 * Crow (BSD 3-Clause): https://github.com/CrowCpp/Crow
 * curl: https://curl.se/docs/copyright.html
+* fmt (MIT): https://github.com/fmtlib/fmt
 * libvips (LGPL-2.1): https://github.com/libvips/libvips
 * msgpack-cxx (Boost Software License): https://github.com/msgpack/msgpack-c
 * spdlog (MIT): https://github.com/gabime/spdlog
