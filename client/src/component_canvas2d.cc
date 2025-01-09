@@ -167,8 +167,8 @@ TemporalCanvas2DComponent::geometry(const Geometry &g) & {
     return *this;
 }
 
-
-std::optional<Func> Canvas2DComponent::onClick() const {
+template <typename T, std::nullptr_t>
+std::optional<T> Canvas2DComponent::onClick() const {
     checkData();
     if (msg_data->on_click_member && msg_data->on_click_field) {
         return Field{data_w, *msg_data->on_click_member,
@@ -177,6 +177,8 @@ std::optional<Func> Canvas2DComponent::onClick() const {
         return std::nullopt;
     }
 }
+template WEBCFACE_DLL std::optional<Func>
+Canvas2DComponent::onClick<Func, nullptr>() const;
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::onClick(const Func &func) & {
     msg_data->on_click_member = static_cast<FieldBase>(func).member_;

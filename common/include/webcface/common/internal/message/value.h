@@ -23,6 +23,7 @@ struct Value : public MessageBase<MessageKind::value> {
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data),
                        MSGPACK_NVP("s", size), MSGPACK_NVP("x", fixed))
 };
+
 /*!
  * \brief server->client  Value,Textなどのfieldをreqidに変えただけのもの
  *
@@ -43,8 +44,6 @@ struct Res<Value> : public MessageBase<MessageKind::value + MessageKind::res> {
                        MSGPACK_NVP("d", data))
 };
 
-template <typename T>
-struct Entry;
 template <>
 struct Entry<Value> : public MessageBase<Value::kind + MessageKind::entry> {
     unsigned int member_id = 0;
@@ -57,3 +56,8 @@ struct Entry<Value> : public MessageBase<Value::kind + MessageKind::entry> {
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::Value)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Value>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Value>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Value>)

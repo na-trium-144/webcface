@@ -1,5 +1,6 @@
 webcface_common_src = [
   'src/encoding.cc',
+  'src/fmt.cc',
   'src/val_adaptor.cc',
   'src/message.cc',
   'src/unix_path.cc',
@@ -15,6 +16,7 @@ webcface_common_lib = static_library('webcface-common',
     warning_options,
     msgpack_cxx_dep,
     spdlog_dep,
+    fmt_dep,
     utf8cpp_dep,
     win32folders_dep,
   ],
@@ -29,6 +31,7 @@ webcface_common_dep = declare_dependency(
   dependencies: [
     msgpack_cxx_dep,
     spdlog_dep,
+    fmt_dep,
     utf8cpp_dep,
   ],
 )

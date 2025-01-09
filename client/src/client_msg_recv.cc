@@ -88,6 +88,7 @@ void internal::ClientData::onRecv(
         switch (kind) {
         case MessageKind::sync_init_end: {
             auto &r = *static_cast<webcface::message::SyncInitEnd *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             this->svr_name = r.svr_name;
             this->svr_version = r.ver;
             this->self_member_id.emplace(r.member_id);
@@ -100,12 +101,13 @@ void internal::ClientData::onRecv(
             break;
         }
         case MessageKind::ping: {
-            this->messagePushOnline(
-                webcface::message::packSingle(webcface::message::Ping{}));
+            this->logger_internal->debug("received {}", message::Ping{});
+            this->messagePushOnline(webcface::message::Ping{});
             break;
         }
         case MessageKind::ping_status: {
             auto &r = *static_cast<webcface::message::PingStatus *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             this->ping_status = r.status;
             StrSet1 members;
             {
@@ -134,6 +136,7 @@ void internal::ClientData::onRecv(
         }
         case MessageKind::sync: {
             auto &r = *static_cast<webcface::message::Sync *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             const auto &member = this->getMemberNameFromId(r.member_id);
             this->sync_time_store.setRecv(member, r.getTime());
             sync_members.push_back(member);
@@ -142,6 +145,7 @@ void internal::ClientData::onRecv(
         case MessageKind::value + MessageKind::res: {
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Value> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvRes(this, r, r.data, this->value_store,
                       this->value_change_event);
             break;
@@ -150,6 +154,7 @@ void internal::ClientData::onRecv(
             auto &r =
                 *static_cast<webcface::message::Res<webcface::message::Text> *>(
                     obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvRes(this, r, r.data, this->text_store,
                       this->text_change_event);
             break;
@@ -157,6 +162,7 @@ void internal::ClientData::onRecv(
         case MessageKind::robot_model + MessageKind::res: {
             auto &r =
                 *static_cast<message::Res<message::RobotModel> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             auto links_data = std::make_shared<
                 std::vector<std::shared_ptr<internal::RobotLinkData>>>();
             links_data->reserve(r.data.size());
@@ -172,6 +178,7 @@ void internal::ClientData::onRecv(
             auto &r =
                 *static_cast<webcface::message::Res<webcface::message::View> *>(
                     obj.get());
+            this->logger_internal->debug("received {}", r);
             auto [member, field] =
                 this->view_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->view_store.getRecv(member, field);
@@ -195,6 +202,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Canvas3D> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             auto [member, field] =
                 this->canvas3d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas3d_store.getRecv(member, field);
@@ -218,6 +226,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Canvas2D> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             auto [member, field] =
                 this->canvas2d_store.getReq(r.req_id, r.sub_field);
             auto v_prev = this->canvas2d_store.getRecv(member, field);
@@ -241,6 +250,7 @@ void internal::ClientData::onRecv(
         case MessageKind::image + MessageKind::res: {
             auto &r = *static_cast<
                 webcface::message::Res<webcface::message::Image> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvRes(this, r, std::make_shared<ImageFrame>(r),
                       this->image_store, this->image_change_event);
             break;
@@ -249,6 +259,7 @@ void internal::ClientData::onRecv(
             auto &r =
                 *static_cast<webcface::message::Res<webcface::message::Log> *>(
                     obj.get());
+            this->logger_internal->debug("received {}", r);
             std::lock_guard lock_s(this->log_store.mtx);
             auto [member, field] =
                 this->log_store.getReq(r.req_id, r.sub_field);
@@ -286,23 +297,23 @@ void internal::ClientData::onRecv(
         }
         case MessageKind::call: {
             auto &r = *static_cast<webcface::message::Call *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             auto func_info =
                 this->func_store.getRecv(this->self_member_name, r.field);
             if (func_info) {
-                this->messagePushAlways(webcface::message::packSingle(
-                    webcface::message::CallResponse{
-                        {}, r.caller_id, r.caller_member_id, true}));
+                this->messagePushAlways(webcface::message::CallResponse{
+                    {}, r.caller_id, r.caller_member_id, true});
                 func_info->run(std::move(r));
             } else {
-                this->messagePushAlways(webcface::message::packSingle(
-                    webcface::message::CallResponse{
-                        {}, r.caller_id, r.caller_member_id, false}));
+                this->messagePushAlways(webcface::message::CallResponse{
+                    {}, r.caller_id, r.caller_member_id, false});
             }
             break;
         }
         case MessageKind::call_response: {
             auto &r =
                 *static_cast<webcface::message::CallResponse *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             try {
                 this->func_result_store.getResult(r.caller_id)
                     ->setter()
@@ -323,6 +334,7 @@ void internal::ClientData::onRecv(
         }
         case MessageKind::call_result: {
             auto &r = *static_cast<webcface::message::CallResult *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             try {
                 if (r.is_error) {
                     this->func_result_store.getResult(r.caller_id)
@@ -348,6 +360,7 @@ void internal::ClientData::onRecv(
         }
         case MessageKind::sync_init: {
             auto &r = *static_cast<webcface::message::SyncInit *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             {
                 std::lock_guard lock(this->entry_m);
                 this->member_entry.emplace(r.member_name);
@@ -379,6 +392,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Value> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->value_store, this->value_entry_event,
                         message::ValueShape{r.size, r.fixed});
             break;
@@ -386,12 +400,14 @@ void internal::ClientData::onRecv(
         case MessageKind::entry + MessageKind::text: {
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Text> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->text_store, this->text_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::view: {
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::View> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->view_store, this->view_entry_event);
             break;
         }
@@ -399,6 +415,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Canvas3D> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->canvas3d_store,
                         this->canvas3d_entry_event);
             break;
@@ -407,6 +424,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Canvas2D> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->canvas2d_store,
                         this->canvas2d_entry_event);
             break;
@@ -415,6 +433,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::RobotModel> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->robot_model_store,
                         this->robot_model_entry_event);
             break;
@@ -423,17 +442,20 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Image> *>(
                 obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->image_store, this->image_entry_event);
             break;
         }
         case MessageKind::entry + MessageKind::log: {
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Log> *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             onRecvEntry(this, r, this->log_store, this->log_entry_event);
             break;
         }
         case MessageKind::func_info: {
             auto &r = *static_cast<webcface::message::FuncInfo *>(obj.get());
+            this->logger_internal->debug("received {}", r);
             auto member = this->getMemberNameFromId(r.member_id);
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
@@ -468,7 +490,7 @@ void internal::ClientData::onRecv(
         case MessageKind::log_default:
         case MessageKind::log_req_default:
             if (!message_kind_warned[kind]) {
-                logger_internal->warn("Invalid message Kind {}", kind);
+                logger_internal->warn("invalid message kind {}", kind);
                 message_kind_warned[kind] = true;
             }
             break;
@@ -478,7 +500,7 @@ void internal::ClientData::onRecv(
             break;
         default:
             if (!message_kind_warned[kind]) {
-                logger_internal->warn("Unknown message Kind {}", kind);
+                logger_internal->warn("unknown message kind {}", kind);
                 message_kind_warned[kind] = true;
             }
             break;

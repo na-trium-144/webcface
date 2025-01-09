@@ -33,23 +33,12 @@ struct Entry : public MessageBase<T::kind + MessageKind::entry> {
 struct Value;
 template <>
 struct Entry<Value>;
+
 /*!
- * \brief client->server 以降Recvを送るようリクエスト
- *
- * todo: 解除できるようにする
- *
+ * \brief バイナリを16進数の文字列に変換
+ * \since ver2.6
  */
-template <typename T>
-struct Req : public MessageBase<T::kind + MessageKind::req> {
-    SharedString member;
-    SharedString field;
-    unsigned int req_id = 0;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
-                       MSGPACK_NVP("f", field))
-};
-struct Image;
-template <>
-struct Req<Image>;
+std::string messageTrace(const std::string &message);
 
 /*!
  * \brief msgpackのメッセージをパースし返す

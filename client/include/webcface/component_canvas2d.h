@@ -131,8 +131,10 @@ class WEBCFACE_DLL Canvas2DComponent {
      * \brief クリック時に実行される関数を取得
      * \since ver1.9
      */
-    std::optional<Func> onClick() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onClick() const;
 };
+extern template std::optional<Func> Canvas2DComponent::onClick<Func, nullptr>() const;
 
 class WEBCFACE_DLL TemporalCanvas2DComponent {
     std::unique_ptr<internal::TemporalCanvas2DComponentData> msg_data;

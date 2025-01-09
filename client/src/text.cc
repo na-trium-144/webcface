@@ -41,8 +41,8 @@ const Variant &Variant::request() const {
     auto data = dataLock();
     auto req = data->text_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(message::packSingle(
-            message::Req<message::Text>{{}, member_, field_, req}));
+        data->messagePushReq(
+            message::Req<message::Text>{{}, member_, field_, req});
     }
     return *this;
 }

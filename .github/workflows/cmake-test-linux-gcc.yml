@@ -52,7 +52,7 @@ jobs:
         -Dtest_wait=200
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
-        "-Dforce_fallback_for=['libcurl']"
+        --force-fallback-for=libcurl
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
@@ -63,6 +63,7 @@ jobs:
       run: |
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep utf8"

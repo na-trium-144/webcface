@@ -44,19 +44,19 @@ void internal::FuncInfo::run(webcface::message::Call &&call) {
         auto data = data_w.lock();
         if (data) {
             if (p.isError()) {
-                data->messagePushAlways(webcface::message::packSingle(
+                data->messagePushAlways(
                     webcface::message::CallResult{{},
                                                   call.caller_id,
                                                   call.caller_member_id,
                                                   true,
-                                                  ValAdaptor(p.rejection())}));
+                                                  ValAdaptor(p.rejection())});
             } else {
-                data->messagePushAlways(webcface::message::packSingle(
+                data->messagePushAlways(
                     webcface::message::CallResult{{},
                                                   call.caller_id,
                                                   call.caller_member_id,
                                                   false,
-                                                  p.response()}));
+                                                  p.response()});
             }
         }
     });
@@ -79,9 +79,9 @@ AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
     } else {
         // リモートの場合cli.sync()を待たずに呼び出しメッセージを送る
         auto state = data->func_result_store.addResult(*this);
-        if (!data->messagePushOnline(message::packSingle(message::Call{
+        if (!data->messagePushOnline(message::Call{
                 state->callerId(), 0, data->getMemberIdFromName(member_),
-                field_, args_vec}))) {
+                field_, args_vec})) {
             state->setter().reach(false);
         }
         // resultはcli.onRecv内でセットされる。

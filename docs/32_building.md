@@ -133,7 +133,7 @@ meson setup build
     * `default_library=both` は現在非対応です
 * <span class="since-c">2.6</span> それぞれの依存ライブラリはまずシステムにインストールされているものを探し、見つからなければsubprojectにフォールバックします。
     * ただしlibcurlやCrowはインストールされているものが使用できない場合エラーになるため、その場合は
-    `"-Dforce_fallback_for=['libcurl','Crow']"`
+    `--force-fallback-for=libcurl,Crow`
     などとして除外する必要があります。
     * `-Dwrap_mode=forcefallback` とするとインストールされたものを探さずすべてソースビルドします。
     * インストールされているのに見つからない場合は環境変数の `PKG_CONFIG_PATH` か、引数で `-Dpkg_config_path` や `-Dcmake_prefix_path` などを設定してください

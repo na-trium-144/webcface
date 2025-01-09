@@ -105,8 +105,11 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \brief RobotModelを取得
      *
      */
-    std::optional<RobotModel> robotModel() const;
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    std::optional<RobotModel_> robotModel() const;
 };
+extern template std::optional<RobotModel>
+Canvas3DComponent::robotModel<RobotModel, nullptr>() const;
 
 /*!
  * \brief Canvas3Dを構築するときに使う一時的なCanvas3DComponent
