@@ -25,7 +25,7 @@ Viewの2回目以降の送信時にはWebCFace内部では前回からの差分�
     View::add() などで要素を追加し、
     最後にView::sync()をしてからClient::sync()をすることで送信されます。
 
-    Viewはstd::ostreamを継承しており、 add() の代わりに v << 表示する値; というようにもできます。
+    Viewはstd::ostreamを継承しており、 add() の代わりに `v << 表示する値;` というようにもできます。
     ostreamに出力可能なものはそのままviewにテキストとして出力できます。
     ostreamと同様にフォーマットを指定したり、std::endlで改行もできます。
 
@@ -41,9 +41,17 @@ Viewの2回目以降の送信時にはWebCFace内部では前回からの差分�
     ```
     ![example_view.png](https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png)
 
+    <span class="since-c">2.6</span>
+    View::inserter() が返すイテレーターを使って、 `fmt::format_to()` や `std::format_to()` で出力することもできます。
+    ```cpp
+    #include <fmt/base.h>
+
+    fmt::format_to(v.inserter(), "with inserter: {}\n", i);
+    ```
+
     \warning
     <span class="since-c">2.0</span>
-    ワイド文字列を出力したい場合はostreamに直接渡すのではなく Component::text を使う必要があります。
+    ワイド文字列を出力したい場合はostreamやinserterに直接渡すのではなく Component::text を使う必要があります。
     (後述)
 
     C++ではViewのデストラクタでも自動的にView.sync()が呼ばれます。
@@ -186,11 +194,11 @@ Viewに追加する各種要素をViewComponentといいます。
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    std::ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。
-    View::add()関数, set()関数でも同様に文字列に変換されます。
+    Viewをostreamとして使うことで、std::ostreamでフォーマット可能なデータはそのまま渡して文字列化できます。
+
+    View::add() 関数に数値や文字列などを渡すことでも文字列に変換されます。
     ```cpp
     v.add("hello").add(123);
-    v << "hello" << 123;
     ```
     
     文字列を直接渡す代わりに `text(文字列)` でViewComponentに変換すると、textColorなど後述のオプションを指定することもできるようになります。
@@ -200,6 +208,9 @@ Viewに追加する各種要素をViewComponentといいます。
 
     <span class="since-c">2.0</span>
     Viewに直接ワイド文字列を出力することはできませんが、text()の引数にはワイド文字列も使用可能です。
+
+    <span class="since-c">2.6</span>
+    View::inserter() が返すイテレーターを使って、 `fmt::format_to()` や `std::format_to()` で出力することもできます。
 
 - <b class="tab-title">C</b>
     wcfText, (<span class="since-c">2.0</span> wcfTextW) でテキストを指定します。
