@@ -47,11 +47,11 @@ struct ResendOnChange {
  *   (新しいshared_ptrを作って再度セットする)
  *     *
  * なのでgetRecv()から取得したshared_ptrをmutexをロックしない状態で保持しても問題ない。
- * 
+ *
  * \todo
  * * Valueでoperator[]を使って値を変更した場合毎回vectorのコピーが発生していて非効率
  * * ImageFrameのshared_ptrが有効活用されていない
- * 
+ *
  */
 template <typename T, typename ResendCondition = ResendAlways,
           typename ReqT = int, typename EntryT = int>
@@ -181,14 +181,18 @@ class SyncDataStore2 {
      */
     void setEntry(const SharedString &from, const SharedString &e,
                   EntryT e_data = EntryT());
-    void setEntry(const FieldBase &base,
-                  EntryT e_data = EntryT());
+    void setEntry(const FieldBase &base, EntryT e_data = EntryT());
 
     /*!
      * \brief entryを取得
      */
     StrMap1<EntryT> &getEntry(const SharedString &from);
-    StrMap1<EntryT> &getEntry(const FieldBase &base);
+    /*!
+     * \brief entryを取得
+     *
+     * 存在しなければnullptr
+     */
+    EntryT *getEntryP(const SharedString &from, const SharedString &e);
 
     /*!
      * \brief req_idに対応するmember名とフィールド名を返す

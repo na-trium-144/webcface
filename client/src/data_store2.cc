@@ -55,10 +55,14 @@ void SyncDataStore2<T, ResendCondition, ReqT, EntryT>::setRecv(
 }
 
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
-StrMap1<EntryT> &SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(
-    const FieldBase &base) {
+EntryT *SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntryP(
+    const SharedString &member, const SharedString &name) {
     std::lock_guard lock(mtx);
-    return getEntry(base.member_);
+    if (entry[member].count(name)) {
+        return &entry[member][name];
+    } else {
+        return nullptr;
+    }
 }
 template <typename T, typename ResendCondition, typename ReqT, typename EntryT>
 StrMap1<EntryT> &SyncDataStore2<T, ResendCondition, ReqT, EntryT>::getEntry(

@@ -46,7 +46,20 @@ const Value &Value::setImpl(std::vector<double> v,
         }
     }
     auto data = setCheck();
-    data->value_store.setEntry(*this, shape);
+    {
+        // entry更新: 可能な限り前のentryの寿命を維持するようにする
+        std::lock_guard lock(data->value_store.mtx);
+        auto prev_entry_p =
+            data->value_store.getEntryP(this->member_, this->field_);
+        if (prev_entry_p) {
+            if (prev_entry_p->shape != shape.fixed_shape) {
+                prev_entry_p->shape = shape.fixed_shape;
+            }
+            prev_entry_p->fixed = shape.is_fixed;
+        } else {
+            data->value_store.setEntry(*this, shape);
+        }
+    }
     return setImpl(std::move(v));
 }
 const Value &Value::setImpl(std::vector<double> v) const {
@@ -140,6 +153,17 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
         return std::nullopt;
     }
 }
+const std::vector<double> &Value::getVec() const {
+    auto v = dataLock()->value_store.getRecv(*this);
+    request();
+    if (v) {
+        return *v;
+    } else {
+        static std::vector<double> empty;
+        return empty;
+    }
+}
+
 std::optional<std::vector<double>> Value::tryGetVec(std::ptrdiff_t index,
                                                     std::ptrdiff_t size) const {
     auto v = dataLock()->value_store.getRecv(*this);
@@ -175,33 +199,35 @@ std::size_t Value::size() const {
 bool Value::isFixed() const {
     auto data = dataLock();
     std::lock_guard lock(data->value_store.mtx);
-    if (!data->value_store.getEntry(*this).count(this->field_)) {
-        return false;
-    }
-    return data->value_store.getEntry(*this).at(this->field_).fixed;
+    auto e = data->value_store.getEntryP(this->member_, this->field_);
+    return e && e->fixed;
 }
 const std::vector<std::size_t> &Value::fixedShape() const {
     auto data = dataLock();
     std::lock_guard lock(data->value_store.mtx);
-    if (!data->value_store.getEntry(*this).count(this->field_)) {
+    auto e = data->value_store.getEntryP(this->member_, this->field_);
+    if (e) {
+        auto &shape = e->shape;
+        if (shape.empty()) {
+            shape.push_back(1);
+        }
+        return shape;
+    } else {
         static std::vector<std::size_t> empty;
         return empty;
     }
-    auto &shape = data->value_store.getEntry(*this).at(this->field_).shape;
-    if (shape.empty()) {
-        shape.push_back(1);
-    }
-    return shape;
 }
 std::size_t Value::fixedSize() const {
     auto data = dataLock();
     std::lock_guard lock(data->value_store.mtx);
-    if (!data->value_store.getEntry(*this).count(this->field_)) {
+    auto e = data->value_store.getEntryP(this->member_, this->field_);
+    if (e) {
+        auto &shape = e->shape;
+        return std::accumulate(shape.begin(), shape.end(), 1uLL,
+                               [](auto a, auto b) { return a * b; });
+    } else {
         return 0;
     }
-    auto &shape = data->value_store.getEntry(*this).at(this->field_).shape;
-    return std::accumulate(shape.begin(), shape.end(), 1uLL,
-                           [](auto a, auto b) { return a * b; });
 }
 
 void Value::assertSize(std::size_t size, bool fixed) const {

@@ -388,11 +388,11 @@ class WEBCFACE_DLL Value : protected Field {
      *
      * * データが存在しない場合、サイズ0のvectorとして返す
      * * データが配列でない場合、サイズ1のvectorとして返す
-     *
+     * * ver2.6〜: const参照
+     *   * 次の Client::sync() まで有効
+     * 
      */
-    std::vector<double> getVec() const {
-        return tryGetVec().value_or(std::vector<double>{});
-    }
+    const std::vector<double> &getVec() const;
     /*!
      * \brief データのサイズを返す
      * \since ver2.6
@@ -426,6 +426,10 @@ class WEBCFACE_DLL Value : protected Field {
      * がfalseの場合は、固定長の部分(2つ目以降の次元)のサイズを返す。
      *   * 例えば `ValueList<2, 3>` のデータ (n ✕ 2 ✕ 3 の配列) であれば
      * `{2, 3}`
+     * * 戻り値の参照は、
+     *   * 自身のデータの場合 set() で異なるshapeの値をセットするまで有効
+     *   * 他memberのデータの場合、
+     * Client::sync() 中にそのmemberの接続・切断状態が変わるまで有効
      *
      * \sa size(), isFixed(), fixedSize()
      */
