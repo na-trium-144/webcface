@@ -11,6 +11,26 @@ WEBCFACE_NS_BEGIN
 namespace internal {
 namespace WebSocket {
 
+/* if the request did not complete correctly, show the error
+information. if no detailed error information was written to errbuf
+show the more generic information from curl_easy_strerror instead.
+*/
+static std::string_view
+getCurlError(const std::shared_ptr<internal::ClientData> &data, CURLcode res) {
+    if (res != CURLE_OK) {
+        size_t len = std::strlen(data->curl_err_buffer.data());
+        if (len) {
+            if (data->curl_err_buffer[len - 1] == '\n') {
+                --len;
+            }
+            return {data->curl_err_buffer.data(), len};
+        } else {
+            return curl_easy_strerror(res);
+        }
+    }
+    return {};
+}
+
 struct CurlInitializer {
     CurlInitializer() {
         curl_global_init(CURL_GLOBAL_ALL);
@@ -32,6 +52,9 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
          attempt++) {
         // std::lock_guard ws_lock(data->curl_m);
         CURL *handle = data->current_curl_handle = curl_easy_init();
+        data->curl_err_buffer.resize(CURL_ERROR_SIZE);
+        curl_easy_setopt(handle, CURLOPT_ERRORBUFFER,
+                         data->curl_err_buffer.data());
         data->current_ws_buf.clear();
         if (std::getenv("WEBCFACE_TRACE") != nullptr) {
             curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
@@ -80,18 +103,19 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
                              ("ws://" + data->host.decode() + "/").c_str());
             break;
         }
-        data->logger_internal->trace("trying {}...", data->current_curl_path);
+        data->logger_internal->debug("trying {}...", data->current_curl_path);
         curl_easy_setopt(handle, CURLOPT_PORT, static_cast<long>(data->port));
         curl_easy_setopt(handle, CURLOPT_CONNECT_ONLY, 2L);
         auto ret = curl_easy_perform(handle);
         if (ret == CURLE_OK) {
-            data->logger_internal->debug("connected to {}",
+            data->logger_internal->info("connected to {}",
                                          data->current_curl_path);
             data->current_curl_connected = true;
             return;
         } else {
-            data->logger_internal->trace("connection failed {}",
-                                         static_cast<int>(ret));
+            data->logger_internal->debug("connection failed {}: {}",
+                                         static_cast<int>(ret),
+                                         getCurlError(data, ret));
             curl_easy_cleanup(handle);
             data->current_curl_handle = nullptr;
         }
@@ -103,6 +127,7 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
         data->current_curl_handle = nullptr;
     }
     data->current_curl_connected = false;
+    data->logger_internal->info("connection closed");
 }
 bool recv(const std::shared_ptr<internal::ClientData> &data,
           const std::function<void(std::string &&)> &cb) {
@@ -119,7 +144,6 @@ bool recv(const std::shared_ptr<internal::ClientData> &data,
             // std::lock_guard ws_lock(data->curl_m);
             ret = curl_ws_recv(handle, buffer, sizeof(buffer), &rlen, &meta);
             if (meta && meta->flags & CURLWS_CLOSE) {
-                data->logger_internal->debug("connection closed");
                 WebSocket::close(data);
                 break;
             } else if (meta && static_cast<std::size_t>(meta->offset) >
@@ -137,15 +161,14 @@ bool recv(const std::shared_ptr<internal::ClientData> &data,
                 data->current_ws_buf.append(buffer, rlen);
             }
             if (ret != CURLE_AGAIN && ret != CURLE_OK) {
-                data->logger_internal->debug("connection closed {}",
-                                             static_cast<int>(ret));
+                data->logger_internal->debug("recv failed {}: {}",
+                                             static_cast<int>(ret),
+                                             getCurlError(data, ret));
                 WebSocket::close(data);
                 break;
             }
             if (ret == CURLE_OK && meta && meta->bytesleft == 0 &&
                 !data->current_ws_buf.empty()) {
-                data->logger_internal->trace("message received len={}",
-                                             data->current_ws_buf.size());
                 std::size_t sent;
                 curl_ws_send(handle, nullptr, 0, &sent, 0, CURLWS_PONG);
                 recv_ok = true;
@@ -164,7 +187,6 @@ bool recv(const std::shared_ptr<internal::ClientData> &data,
 void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {
     // std::lock_guard ws_lock(data->curl_m);
-    data->logger_internal->trace("sending message {} bytes", msg.size());
     std::size_t sent = 0;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
     while (true) {
@@ -175,12 +197,12 @@ void send(const std::shared_ptr<internal::ClientData> &data,
                 std::this_thread::sleep_for(std::chrono::microseconds(10));
                 continue;
             } else {
-                // data->logger_internal->trace("sending done");
                 break;
             }
         } else {
-            data->logger_internal->error("error sending message {}",
-                                         static_cast<int>(ret));
+            data->logger_internal->error("error sending message {}: {}",
+                                         static_cast<int>(ret),
+                                         getCurlError(data, ret));
             WebSocket::close(data);
             break;
         }

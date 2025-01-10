@@ -4,6 +4,7 @@
 WEBCFACE_NS_BEGIN
 namespace internal {
 namespace WebSocket {
+
 /*!
  * \brief WebSocketに接続する
  *

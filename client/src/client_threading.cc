@@ -145,6 +145,8 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     bool has_recv = internal::WebSocket::recv(
                         data, [data](std::string &&msg) {
                             ClientData::ScopedWsLock lock_ws(data);
+                            data->logger_internal->trace(
+                                "unpacking: {}", message::messageTrace(msg));
                             lock_ws.getData().recv_queue.push(
                                 message::unpack(msg, data->logger_internal));
                             data->ws_cond.notify_all();
@@ -191,6 +193,8 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                         break;
                     }
                     }
+                    data->logger_internal->trace("-> packed: {}",
+                                                 message::messageTrace(msg_s));
                     internal::WebSocket::send(data, msg_s);
                 }
             }

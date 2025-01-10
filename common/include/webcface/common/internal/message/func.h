@@ -120,3 +120,8 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
 
 }
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::FuncInfo)
+WEBCFACE_MESSAGE_FMT(webcface::message::Call)
+WEBCFACE_MESSAGE_FMT(webcface::message::CallResponse)
+WEBCFACE_MESSAGE_FMT(webcface::message::CallResult)

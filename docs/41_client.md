@@ -565,8 +565,12 @@ Clientの接続が完了し受信するまでは取得できません(空文字�
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
 
-`WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
+`WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラーなど)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
+
+<span class="since-c">2.6</span>
+`WEBCFACE_VERBOSE` 環境変数が存在する場合、送受信しているメッセージの詳細も見ることができます。
+`WEBCFACE_TRACE` 環境変数が存在する場合、送受信しているメッセージの生バイナリデータを(16進数表記で)見ることができます。
 
 <span class="since-js">1.1</span>
 ではClientのコンストラクタでlogLevelに `"trace"` または `"verbose"` を指定することでも表示できます。
