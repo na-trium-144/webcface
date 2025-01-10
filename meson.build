@@ -228,6 +228,9 @@ webcface_system_version_rc = false
 relative_rpath = ''
 if host_machine.system() == 'linux'
   summary('System', 'linux')
+  if get_option('b_lto')
+    add_project_link_arguments('-Wno-alloca-larger-than', language: ['cpp'])
+  endif
   webcface_system_visibility = true
   webcface_system_exclude_libs = true
   relative_rpath = '$ORIGIN' / '..' / get_option('libdir')
