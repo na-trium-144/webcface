@@ -54,6 +54,7 @@ jobs:
         -Ddefault_library=${{matrix.shared_flag}}
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
+        --unity=on
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile

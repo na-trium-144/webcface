@@ -49,6 +49,7 @@ jobs:
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -m '${{github.workspace}}/build/install')
         --force-fallback-for=libcurl
+        --unity=on
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

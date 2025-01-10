@@ -50,6 +50,7 @@ jobs:
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -u '${{github.workspace}}/build/install')
+        --unity=on
 
     - name: Compile
       shell: C:\cygwin\bin\bash.exe '{0}'
