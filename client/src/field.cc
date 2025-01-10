@@ -11,6 +11,7 @@
 #include "webcface/log.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
+#include <algorithm>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -52,15 +53,59 @@ Field Field::child(const SharedString &field) const {
 
 /// \private
 template <typename V, typename S>
-static auto entries(const Field *this_, S &store) {
+static void entries(std::vector<V> &ret, const Field *this_, S &store,
+                    bool recurse = true) {
+    std::size_t ret_prev_size = ret.size();
     auto keys = store.getEntry(*this_);
-    std::vector<V> ret;
-    for (const auto &f : keys) {
+    for (auto f : keys) {
         if (this_->field_.empty() ||
             f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+            if (!this_->field_.empty()) {
+                f = f.substr(this_->field_.u8String().size() + 1);
+            }
+            if (!recurse) {
+                f = f.substr(0, f.find(field_separator));
+            }
+            if (std::find(ret.begin(), ret.begin() + ret_prev_size,
+                          V(this_->child(f))) == ret.begin() + ret_prev_size) {
+                ret.emplace_back(this_->child(f));
+            }
         }
     }
+}
+/// \private
+template <typename V, typename S>
+static auto entries(const Field *this_, S &store) {
+    std::vector<V> ret;
+    entries(ret, this_, store);
+    return ret;
+}
+std::vector<Field> Field::childrenRecurse() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store);
+    entries(ret, this, data->text_store);
+    entries(ret, this, data->robot_model_store);
+    entries(ret, this, data->func_store);
+    entries(ret, this, data->view_store);
+    entries(ret, this, data->canvas2d_store);
+    entries(ret, this, data->canvas3d_store);
+    entries(ret, this, data->image_store);
+    entries(ret, this, data->log_store);
+    return ret;
+}
+std::vector<Field> Field::children() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store, false);
+    entries(ret, this, data->text_store, false);
+    entries(ret, this, data->robot_model_store, false);
+    entries(ret, this, data->func_store, false);
+    entries(ret, this, data->view_store, false);
+    entries(ret, this, data->canvas2d_store, false);
+    entries(ret, this, data->canvas3d_store, false);
+    entries(ret, this, data->image_store, false);
+    entries(ret, this, data->log_store, false);
     return ret;
 }
 template <typename T, std::nullptr_t>

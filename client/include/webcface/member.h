@@ -75,6 +75,8 @@ class WEBCFACE_DLL Member : protected Field {
     template <WEBCFACE_COMPLETE(Log)>
     Log_ log() const;
 
+    using Field::children;
+    using Field::childrenRecurse;
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;
     using Field::funcEntries;
