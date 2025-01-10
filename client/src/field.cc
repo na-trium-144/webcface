@@ -55,10 +55,18 @@ Field Field::child(const SharedString &field) const {
 template <typename S>
 static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    return std::any_of(keys.begin(), keys.end(), [this_](const auto &f) {
-        return this_->field_.empty() ||
-               f.startsWith(this_->field_.u8String() + field_separator);
-    });
+    auto field_with_sep = this_->field_.u8String() + field_separator;
+    for (const auto &f : keys) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(field_with_sep)) {
+            return true;
+        } else if (f.u8String() < field_with_sep) {
+            continue;
+        } else {
+            break;
+        }
+    }
+    return false;
 }
 bool Field::hasChildren() const {
     auto data = dataLock();
@@ -79,9 +87,10 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
                     bool recurse = true) {
     std::size_t ret_prev_size = ret.size();
     auto keys = store.getEntry(*this_);
+    auto field_with_sep = this_->field_.u8String() + field_separator;
     for (auto f : keys) {
-        if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(field_with_sep)) {
             if (!this_->field_.empty()) {
                 f = f.substr(this_->field_.u8String().size() + 1);
             }
@@ -92,6 +101,10 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
                           V(this_->child(f))) == ret.begin() + ret_prev_size) {
                 ret.emplace_back(this_->child(f));
             }
+        } else if (f.u8String() < field_with_sep) {
+            continue;
+        } else {
+            break;
         }
     }
 }
