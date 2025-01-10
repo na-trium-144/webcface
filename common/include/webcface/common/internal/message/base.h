@@ -4,12 +4,13 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+
+#ifdef WEBCFACE_UNITY
+#include "./pack.h"
+#endif
+
 #include "./fmt.h"
 #include "webcface/common/val_adaptor.h"
-
-#ifndef MSGPACK_DEFINE_MAP
-#define MSGPACK_DEFINE_MAP(...)
-#endif
 
 WEBCFACE_NS_BEGIN
 namespace message {

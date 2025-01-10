@@ -3,10 +3,6 @@
 #include "webcface/common/encoding.h"
 #include "webcface/common/val_adaptor.h"
 
-#ifndef MSGPACK_DEFINE_MAP
-#define MSGPACK_DEFINE_MAP(...)
-#endif
-
 WEBCFACE_NS_BEGIN
 namespace message {
 
