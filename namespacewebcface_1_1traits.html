@@ -209,6 +209,12 @@ Typedefs</h2></td></tr>
 <tr class="separator:abd31c9e1babc0d7ab2e39e1d1d0e18aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a072c2ad5bb2650ff7928823d6e34764e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a072c2ad5bb2650ff7928823d6e34764e">TraitOkType</a> = std::nullptr_t</td></tr>
 <tr class="separator:a072c2ad5bb2650ff7928823d6e34764e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c61415ee3e526408c92bfb2327a54c1"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a5c61415ee3e526408c92bfb2327a54c1"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1">EnableIfFormattable</a> = decltype(std::declval&lt; std::ostream &gt;()&lt;&lt; std::declval&lt; T &gt;(), <a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">TraitOk</a>)</td></tr>
+<tr class="separator:a5c61415ee3e526408c92bfb2327a54c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3922df3e3a34177fa04ca35271e00909"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a3922df3e3a34177fa04ca35271e00909"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909">EnableIfViewInvocable</a> = decltype(std::declval&lt; T &gt;()(std::declval&lt; <a class="el" href="classwebcface_1_1View.html">View</a> &gt;()), <a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">TraitOk</a>)</td></tr>
+<tr class="separator:a3922df3e3a34177fa04ca35271e00909"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
@@ -292,6 +298,38 @@ template&lt;typename T , std::size_t Num&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">using <a class="el" href="namespacewebcface_1_1traits.html#a33dc0b7f435e7fc8afe80fe1a9a65232">ArraySizeMatch</a> =  decltype(<a class="el" href="namespacewebcface_1_1traits.html#adb248f15510362d8c6300aa02fa22441">arraySizeMatch</a>( std::declval&lt;T&gt;(), std::integral_constant&lt;std::size_t, Num&gt;()))</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5c61415ee3e526408c92bfb2327a54c1" name="a5c61415ee3e526408c92bfb2327a54c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c61415ee3e526408c92bfb2327a54c1">&#9670;&#160;</a></span>EnableIfFormattable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1">EnableIfFormattable</a> =  decltype(std::declval&lt;std::ostream&gt;() &lt;&lt; std::declval&lt;T&gt;(), <a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">TraitOk</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3922df3e3a34177fa04ca35271e00909" name="a3922df3e3a34177fa04ca35271e00909"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3922df3e3a34177fa04ca35271e00909">&#9670;&#160;</a></span>EnableIfViewInvocable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909">EnableIfViewInvocable</a> =  decltype(std::declval&lt;T&gt;()(std::declval&lt;<a class="el" href="classwebcface_1_1View.html">View</a>&gt;()), <a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">TraitOk</a>)</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -990,7 +1028,7 @@ template&lt;typename T , int  = sizeof(T)&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1traits.html">traits</a></li>
-    <li class="footer">Generated on Thu Jan 9 2025 07:52:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Jan 10 2025 03:01:15 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

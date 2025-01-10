@@ -1567,7 +1567,7 @@
 <g id="Node000071" class="node">
 <title>Node71</title>
 <g id="a_Node000071"><a xlink:href="client_2include_2webcface_2view_8h.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="2840,-134.5 2742,-134.5 2742,-115.5 2840,-115.5 2840,-134.5"/>
+<polygon fill="#fff0f0" stroke="red" points="2840,-134.5 2742,-134.5 2742,-115.5 2840,-115.5 2840,-134.5"/>
 <text text-anchor="middle" x="2791" y="-122.5" font-family="Helvetica,sans-Serif" font-size="10.00">webcface/view.h</text>
 </a>
 </g>

@@ -1,9 +1,8 @@
 var searchData=
 [
-  ['sharedstring_0',['SharedString',['../namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130',1,'webcface::encoding']]],
-  ['sizematchordynamic_1',['SizeMatchOrDynamic',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html#afb119c7b997f7f459b15373a579c42ba',1,'webcface::traits::ArraySizeTraitCheck&lt; true &gt;']]],
-  ['strmap1_2',['StrMap1',['../namespacewebcface.html#a7a0d36dc9b88af5a365f951294574095',1,'webcface::StrMap1'],['../namespacewebcface_1_1encoding.html#a90c05c74798a38d04baedac8459a2da5',1,'webcface::encoding::StrMap1']]],
-  ['strmap2_3',['StrMap2',['../namespacewebcface.html#abd5eab460a31c187724b48a8773dbb40',1,'webcface::StrMap2'],['../namespacewebcface_1_1encoding.html#a5a2d3933cb3b7e879545b4ea4ebf013a',1,'webcface::encoding::StrMap2']]],
-  ['strset1_4',['StrSet1',['../namespacewebcface.html#ac6b473f4adca237a3e8cc413871a4e99',1,'webcface::StrSet1'],['../namespacewebcface_1_1encoding.html#ac4a63a49456338c2a9df7934d7d02f96',1,'webcface::encoding::StrSet1']]],
-  ['strset2_5',['StrSet2',['../namespacewebcface.html#aa211fead709a7546b1b6416379df5449',1,'webcface::StrSet2'],['../namespacewebcface_1_1encoding.html#a7ec4740046d3756407b405cfd14fb241',1,'webcface::encoding::StrSet2']]]
+  ['rect_0',['Rect',['../namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'webcface::Rect'],['../namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'webcface::components::Rect'],['../namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4',1,'webcface::components::geometries::Rect']]],
+  ['returntype_1',['ReturnType',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#a202ff67c2c2f50eb95941ff89318955d',1,'webcface::traits::FuncSignatureTrait&lt; Ret(Args...)&gt;']]],
+  ['returntypesupportedbywebcfacefunc_2',['ReturnTypeSupportedByWebCFaceFunc',['../structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html#a9e561eeb220ff324a48f912cb851e2a2',1,'webcface::traits::FuncReturnTypeCheck&lt; true &gt;']]],
+  ['returntypetrait_3',['ReturnTypeTrait',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#a8f0e7e829a2ecead96ba03e7c552779e',1,'webcface::traits::FuncSignatureTrait&lt; Ret(Args...)&gt;']]],
+  ['robotmodeldata_4',['RobotModelData',['../namespacewebcface_1_1internal.html#ab2432f0cfb8d951a2b09fc21191e3d2b',1,'webcface::internal']]]
 ];

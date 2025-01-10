@@ -22,6 +22,8 @@ var namespacewebcface_1_1traits =
     [ "FuncSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4" ],
     [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4" ],
     [ "ArraySizeMatch", "namespacewebcface_1_1traits.html#a33dc0b7f435e7fc8afe80fe1a9a65232", null ],
+    [ "EnableIfFormattable", "namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1", null ],
+    [ "EnableIfViewInvocable", "namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909", null ],
     [ "FuncObjTrait", "namespacewebcface_1_1traits.html#abd31c9e1babc0d7ab2e39e1d1d0e18aa", null ],
     [ "InvokeSignature", "namespacewebcface_1_1traits.html#a8eacf5f32d380b6510a63af681d1b76d", null ],
     [ "IsArrayLike", "namespacewebcface_1_1traits.html#a1de8b86dba8dc4ae5d4a8b6950aadc43", null ],

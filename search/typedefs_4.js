@@ -1,6 +1,7 @@
 var searchData=
 [
-  ['loggerbuf_0',['LoggerBuf',['../namespacewebcface.html#a5d0220b13276ff62ae5c0c6793aae628',1,'webcface']]],
-  ['loggerbufw_1',['LoggerBufW',['../namespacewebcface.html#ad129abf240c40c4cab70ab8fae7973f9',1,'webcface']]],
-  ['loggercallback_2',['LoggerCallback',['../namespacewebcface_1_1server.html#aecae47e6f485b5e58b2ad68c6f817119',1,'webcface::server']]]
+  ['imagebase_0',['ImageBase',['../namespacewebcface.html#ab04304b2017cf40223df2bfb82dd175e',1,'webcface']]],
+  ['imagedata_1',['ImageData',['../namespacewebcface_1_1internal.html#acec0de5d5a2a408a7cf843cd3e4e2501',1,'webcface::internal']]],
+  ['invokesignature_2',['InvokeSignature',['../namespacewebcface_1_1traits.html#a8eacf5f32d380b6510a63af681d1b76d',1,'webcface::traits']]],
+  ['isarraylike_3',['IsArrayLike',['../namespacewebcface_1_1traits.html#a1de8b86dba8dc4ae5d4a8b6950aadc43',1,'webcface::traits']]]
 ];

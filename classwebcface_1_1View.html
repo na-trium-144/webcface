@@ -233,7 +233,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2a55edf80c166811c43460b1de6cec81"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#a2a55edf80c166811c43460b1de6cec81">init</a> () const</td></tr>
 <tr class="memdesc:a2a55edf80c166811c43460b1de6cec81"><td class="mdescLeft">&#160;</td><td class="mdescRight">このViewのViewBufの内容を初期化する  <br /></td></tr>
 <tr class="separator:a2a55edf80c166811c43460b1de6cec81"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a111c2d30a7a7a52b38a8cced7fb0c516"><td class="memTemplParams" colspan="2">template&lt;typename T , EnableIfFormattable&lt; T &gt;  = TraitOk&gt; </td></tr>
+<tr class="memitem:a111c2d30a7a7a52b38a8cced7fb0c516"><td class="memTemplParams" colspan="2">template&lt;typename T , <a class="el" href="namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1">traits::EnableIfFormattable</a>&lt; T &gt;  = traits::TraitOk&gt; </td></tr>
 <tr class="memitem:a111c2d30a7a7a52b38a8cced7fb0c516"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#a111c2d30a7a7a52b38a8cced7fb0c516">operator&lt;&lt;</a> (T &amp;&amp;rhs) const</td></tr>
 <tr class="memdesc:a111c2d30a7a7a52b38a8cced7fb0c516"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列にフォーマットし、textコンポーネントとして追加  <br /></td></tr>
 <tr class="separator:a111c2d30a7a7a52b38a8cced7fb0c516"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -246,7 +246,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af6df1326298e8cff03fbc6d21d3a83c2"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#af6df1326298e8cff03fbc6d21d3a83c2">operator&lt;&lt;</a> (<a class="el" href="classwebcface_1_1TemporalViewComponent.html">TemporalViewComponent</a> vc) const</td></tr>
 <tr class="memdesc:af6df1326298e8cff03fbc6d21d3a83c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンポーネントを追加  <br /></td></tr>
 <tr class="separator:af6df1326298e8cff03fbc6d21d3a83c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4b7995b28c8691e93c3d9683d9648a5"><td class="memTemplParams" colspan="2">template&lt;typename F , EnableIfInvocable&lt; F &gt;  = TraitOk&gt; </td></tr>
+<tr class="memitem:ac4b7995b28c8691e93c3d9683d9648a5"><td class="memTemplParams" colspan="2">template&lt;typename F , <a class="el" href="namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909">traits::EnableIfViewInvocable</a>&lt; F &gt;  = traits::TraitOk&gt; </td></tr>
 <tr class="memitem:ac4b7995b28c8691e93c3d9683d9648a5"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#ac4b7995b28c8691e93c3d9683d9648a5">operator&lt;&lt;</a> (const F &amp;manip) const</td></tr>
 <tr class="memdesc:ac4b7995b28c8691e93c3d9683d9648a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンポーネントを追加  <br /></td></tr>
 <tr class="separator:ac4b7995b28c8691e93c3d9683d9648a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,6 +254,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad9dd8ab0c2a24cdf120d2f294cebf838"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#ad9dd8ab0c2a24cdf120d2f294cebf838">add</a> (T &amp;&amp;rhs) const</td></tr>
 <tr class="memdesc:ad9dd8ab0c2a24cdf120d2f294cebf838"><td class="mdescLeft">&#160;</td><td class="mdescRight">コンポーネントなどを追加  <br /></td></tr>
 <tr class="separator:ad9dd8ab0c2a24cdf120d2f294cebf838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5649d84130d2edafd7c0665d0aab273"><td class="memItemLeft" align="right" valign="top">std::ostreambuf_iterator&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#ae5649d84130d2edafd7c0665d0aab273">inserter</a> () const</td></tr>
+<tr class="memdesc:ae5649d84130d2edafd7c0665d0aab273"><td class="mdescLeft">&#160;</td><td class="mdescRight">このViewに文字列を出力する back inserter iterator を返す  <br /></td></tr>
+<tr class="separator:ae5649d84130d2edafd7c0665d0aab273"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f49022a54eb957e184b56d91cdb7344"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#a7f49022a54eb957e184b56d91cdb7344">ostream</a> () const</td></tr>
+<tr class="memdesc:a7f49022a54eb957e184b56d91cdb7344"><td class="mdescLeft">&#160;</td><td class="mdescRight">このViewに文字列を出力するostreamを返す  <br /></td></tr>
+<tr class="separator:a7f49022a54eb957e184b56d91cdb7344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a504472014f457652159a49ff8fa1429a"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1View.html">View</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">sync</a> () const</td></tr>
 <tr class="memdesc:a504472014f457652159a49ff8fa1429a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Viewの内容をclientに反映し送信可能にする  <br /></td></tr>
 <tr class="separator:a504472014f457652159a49ff8fa1429a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1387,6 +1393,38 @@ template&lt;typename T , std::nullptr_t &gt; </div>
 
 </div>
 </div>
+<a id="ae5649d84130d2edafd7c0665d0aab273" name="ae5649d84130d2edafd7c0665d0aab273"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5649d84130d2edafd7c0665d0aab273">&#9670;&#160;</a></span>inserter()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostreambuf_iterator&lt; char &gt; inserter </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このViewに文字列を出力する back inserter iterator を返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6</dd></dl>
+<ul>
+<li>これが返すイテレーターを使うことでViewに文字列を追加できる。</li>
+<li>fmt::format_to や std::format_to に渡して使う </li>
+</ul>
+
+</div>
+</div>
 <a id="a0522a651826ba6fcbb9ce86258e8fa30" name="a0522a651826ba6fcbb9ce86258e8fa30"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0522a651826ba6fcbb9ce86258e8fa30">&#9670;&#160;</a></span>isSelf()</h2>
 
@@ -1843,7 +1881,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename F , EnableIfInvocable&lt; F &gt;  = TraitOk&gt; </div>
+template&lt;typename F , <a class="el" href="namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909">traits::EnableIfViewInvocable</a>&lt; F &gt;  = traits::TraitOk&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1901,7 +1939,7 @@ template&lt;typename F , EnableIfInvocable&lt; F &gt;  = TraitOk&gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , EnableIfFormattable&lt; T &gt;  = TraitOk&gt; </div>
+template&lt;typename T , <a class="el" href="namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1">traits::EnableIfFormattable</a>&lt; T &gt;  = traits::TraitOk&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2238,6 +2276,37 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="classwebcface_1_1View.html#ae195bb39b25548f60189f84e14d63119" title="「(thisの名前).(追加の名前)」を新しい名前とするField">child()</a>と同じ </p><dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a7f49022a54eb957e184b56d91cdb7344" name="a7f49022a54eb957e184b56d91cdb7344"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f49022a54eb957e184b56d91cdb7344">&#9670;&#160;</a></span>ostream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::ostream &amp; ostream </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>このViewに文字列を出力するostreamを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6</dd></dl>
+<ul>
+<li>参照はこのViewが破棄されるまで有効 </li>
+</ul>
 
 </div>
 </div>
@@ -2902,7 +2971,7 @@ template&lt;typename T , std::nullptr_t &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1View.html">View</a></li>
-    <li class="footer">Generated on Thu Jan 9 2025 07:52:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Jan 10 2025 03:01:14 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
