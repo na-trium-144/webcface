@@ -271,7 +271,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * 名前にさらにピリオドが含まれる場合はその前までの名前を返す。
      * * 同名で複数のデータが存在する場合も1回のみカウントする。
      *
-     * \sa childrenRecurse()
+     * \sa childrenRecurse(), hasChildren()
      */
     std::vector<Field> children() const;
     /*!
@@ -281,9 +281,15 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * * データ型を問わずすべてのデータを列挙する。
      * * 同名で複数のデータが存在する場合も1回のみカウントする。
      *
-     * \sa children()
+     * \sa children(), hasChildren()
      */
     std::vector<Field> childrenRecurse() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
+     * \since ver2.6
+     * \sa children(), childrenRecurse()
+     */
+    bool hasChildren() const;
 
     /*!
      * \brief 「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。

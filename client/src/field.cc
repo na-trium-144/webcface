@@ -52,6 +52,28 @@ Field Field::child(const SharedString &field) const {
 }
 
 /// \private
+template <typename S>
+static bool hasChildrenT(const Field *this_, S &store) {
+    auto keys = store.getEntry(*this_);
+    return std::any_of(keys.begin(), keys.end(), [this_](const auto &f) {
+        return this_->field_.empty() ||
+               f.startsWith(this_->field_.u8String() + field_separator);
+    });
+}
+bool Field::hasChildren() const {
+    auto data = dataLock();
+    return hasChildrenT(this, data->value_store) ||
+           hasChildrenT(this, data->text_store) ||
+           hasChildrenT(this, data->robot_model_store) ||
+           hasChildrenT(this, data->func_store) ||
+           hasChildrenT(this, data->view_store) ||
+           hasChildrenT(this, data->canvas2d_store) ||
+           hasChildrenT(this, data->canvas3d_store) ||
+           hasChildrenT(this, data->image_store) ||
+           hasChildrenT(this, data->log_store);
+}
+
+/// \private
 template <typename V, typename S>
 static void entries(std::vector<V> &ret, const Field *this_, S &store,
                     bool recurse = true) {
