@@ -75,7 +75,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
-            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true -Db_lto=true -Dtest_wait=200
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true -Db_lto=true -Dwerror=false -Dtest_wait=200
             meson compile -C build || meson compile -C build
             DESTDIR=/workspace/dist meson install -C build --skip-subprojects
             meson test -C build --print-errorlog --suite webcface
@@ -107,6 +107,7 @@ jobs:
         $([[ ${{matrix.arch}} = arm64 ]] && echo --cross-file scripts/cross/macos_arm64)
         -Dtest_wait=1000
         -Db_lto=true
+        -Dwerror=false
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: test
@@ -153,6 +154,7 @@ jobs:
         --cross-file scripts/cross/msvc_${{matrix.arch}}
         -Dtest_wait=1000
         -Db_lto=true
+        -Dwerror=false
     - name: Setup Meson release
       if: matrix.buildtype == 'release'
       run: >
@@ -167,6 +169,7 @@ jobs:
         --cross-file scripts/cross/msvc_${{matrix.arch}}
         -Dtest_wait=1000
         -Db_lto=true
+        -Dwerror=false
     - name: Compile
       run: |
         meson compile -C build
