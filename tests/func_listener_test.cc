@@ -59,11 +59,11 @@ TEST_F(FuncListenerTest, listen) {
     auto f = func(self_name, "a");
     auto fl = funcListener(self_name, "a");
     fl.listen();
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->return_type,
+    EXPECT_EQ(data_->func_store.getRecv(self_name, "a"_ss)->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
     EXPECT_EQ(func(self_name, "a").returnType(), ValType::none_);
-    EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->args->size(), 0u);
+    EXPECT_EQ(data_->func_store.getRecv(self_name, "a"_ss)->args->size(), 0u);
     EXPECT_EQ(f.args().size(), 0u);
     EXPECT_EQ(func(self_name, "a").args().size(), 0u);
 

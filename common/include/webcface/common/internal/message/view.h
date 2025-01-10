@@ -1,6 +1,7 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/diff_data.h"
 #include "webcface/common/val_adaptor.h"
 #include <optional>
 #include <unordered_map>
@@ -53,17 +54,17 @@ struct ViewComponentData {
                        MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
                        MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_))
 };
-/*!
- * 各要素にidを振り、id→要素のデータ の対応を components が管理し、
- * idの並び順を data_ids が管理する
- *
- */
-struct ViewData {
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>>
-        components;
-    std::vector<SharedString> data_ids;
-};
 
+struct ViewData : internal::DiffData<ViewComponentData> {
+    ViewData() = default;
+    ViewData(internal::DiffData<ViewComponentData> &&other)
+        : internal::DiffData<ViewComponentData>(std::move(other)) {}
+    ViewData(const std::map<std::string, std::shared_ptr<ViewComponentData>>
+                 &components,
+             std::vector<SharedString> &&data_ids)
+        : internal::DiffData<ViewComponentData>(components,
+                                                std::move(data_ids)) {}
+};
 
 struct ViewOld : public MessageBase<MessageKind::view_old> {
     SharedString field;

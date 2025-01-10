@@ -13,7 +13,7 @@ std::wstring Canvas3DComponent::idW() const { return id_.decodeW(); }
 Canvas3DComponent::Canvas3DComponent() = default;
 
 Canvas3DComponent::Canvas3DComponent(
-    const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+    const std::shared_ptr<const message::Canvas3DComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
     : msg_data(msg_data), data_w(data_w), id_(id) {}
 

@@ -15,9 +15,10 @@ TEST_F(ServerTest, value) {
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Value{
-        {},
         "a"_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{3, 4, 5})});
+        std::make_shared<std::vector<double>>(std::vector<double>{3, 4, 5}),
+        {2},
+        true});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "a"_ss, 1});
@@ -33,10 +34,11 @@ TEST_F(ServerTest, value) {
 
     // 変化後の値
     dummy_c1->send(message::Sync{});
-    dummy_c1->send(message::Value{{},
-                                  "a"_ss,
-                                  std::make_shared<std::vector<double>>(
-                                      std::vector<double>{6, 7, 8, 9})});
+    dummy_c1->send(message::Value{
+        "a"_ss,
+        std::make_shared<std::vector<double>>(std::vector<double>{6, 7, 8, 9}),
+        {2},
+        true});
     dummy_c2->waitRecv<message::Sync>([&](auto) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);

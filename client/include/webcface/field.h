@@ -19,6 +19,10 @@ struct ClientData;
 
 class Member;
 class Value;
+template <std::size_t FirstDim, std::size_t... Shape>
+class ValueFixed;
+template <std::size_t... Shape>
+class ValueList;
 class Text;
 class View;
 class Image;
@@ -156,8 +160,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.6
      */
-    Field child(int index) const { return child(std::to_string(index)); }
+    [[deprecated]]
+    Field child(int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
@@ -171,8 +179,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.6
      */
-    Field operator[](int index) const { return child(index); }
+    [[deprecated]]
+    Field operator[](int index) const {
+        return child(std::to_string(index));
+    }
 
     template <WEBCFACE_COMPLETE(Value)>
     Value_ value(std::string_view field = "") const {
@@ -181,6 +193,22 @@ struct WEBCFACE_DLL Field : public FieldBase {
     template <WEBCFACE_COMPLETE(Value)>
     Value_ value(std::wstring_view field) const {
         return child(field);
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueFixed, Shape...)>
+    ValueFixed_ valueFixed(std::string_view field = "") const {
+        return ValueFixed_(child(field));
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueFixed, Shape...)>
+    ValueFixed_ valueFixed(std::wstring_view field) const {
+        return ValueFixed_(child(field));
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueList, Shape...)>
+    ValueList_ valueList(std::string_view field = "") const {
+        return ValueList_(child(field));
+    }
+    template <std::size_t... Shape, WEBCFACE_COMPLETE_VA(ValueList, Shape...)>
+    ValueList_ valueList(std::wstring_view field) const {
+        return ValueList_(child(field));
     }
     template <WEBCFACE_COMPLETE(Text)>
     Text_ text(std::string_view field = "") const {

@@ -79,7 +79,7 @@ TEST_F(Canvas2DTest, set) {
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas2d_data_base =
-        **data_->canvas2d_store.getRecv(self_name, "b"_ss);
+        *data_->canvas2d_store.getRecv(self_name, "b"_ss);
     EXPECT_EQ(canvas2d_data_base.width, 100);
     EXPECT_EQ(canvas2d_data_base.height, 150);
     ASSERT_EQ(canvas2d_data_base.components.size(), 2u);
@@ -116,7 +116,7 @@ TEST_F(Canvas2DTest, set) {
     v.sync();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(
-        (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
+        data_->canvas2d_store.getRecv(self_name, "b"_ss)->components.size(),
         0u);
 
     {
@@ -126,7 +126,7 @@ TEST_F(Canvas2DTest, set) {
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
-        (*data_->canvas2d_store.getRecv(self_name, "b"_ss))->components.size(),
+        data_->canvas2d_store.getRecv(self_name, "b"_ss)->components.size(),
         1u);
 
     {

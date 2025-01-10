@@ -1,6 +1,7 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/diff_data.h"
 #include <optional>
 #include <unordered_map>
 #include <vector>
@@ -40,10 +41,16 @@ struct Canvas3DComponentData {
                        MSGPACK_NVP("fm", field_member),
                        MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
 };
-struct Canvas3DData {
-    std::map<std::string, std::shared_ptr<Canvas3DComponentData>> components;
-    std::vector<SharedString> data_ids;
+struct Canvas3DData : internal::DiffData<Canvas3DComponentData> {
     Canvas3DData() = default;
+    Canvas3DData(internal::DiffData<Canvas3DComponentData> &&other)
+        : internal::DiffData<Canvas3DComponentData>(std::move(other)) {}
+    Canvas3DData(
+        const std::map<std::string, std::shared_ptr<Canvas3DComponentData>>
+            &components,
+        std::vector<SharedString> &&data_ids)
+        : internal::DiffData<Canvas3DComponentData>(components,
+                                                    std::move(data_ids)) {}
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;

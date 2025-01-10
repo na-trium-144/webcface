@@ -1,4 +1,5 @@
 #include "webcface/field.h"
+#include "webcface/common/internal/message/value.h"
 #include "webcface/member.h"
 #include "webcface/value.h"
 #include "webcface/text.h"
@@ -53,12 +54,12 @@ Field Field::child(const SharedString &field) const {
 /// \private
 template <typename V, typename S>
 static auto entries(const Field *this_, S &store) {
-    auto keys = store.getEntry(*this_);
+    std::lock_guard lock(store.mtx);
     std::vector<V> ret;
-    for (const auto &f : keys) {
+    for (const auto &f : store.getEntry(this_->member_)) {
         if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+            f.first.startsWith(this_->field_.u8String() + field_separator)) {
+            ret.emplace_back(this_->child(f.first));
         }
     }
     return ret;

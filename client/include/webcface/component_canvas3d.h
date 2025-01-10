@@ -31,7 +31,7 @@ enum class Canvas3DComponentType {
  *
  */
 class WEBCFACE_DLL Canvas3DComponent {
-    std::shared_ptr<message::Canvas3DComponentData> msg_data;
+    std::shared_ptr<const message::Canvas3DComponentData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
     SharedString id_;
 
@@ -45,7 +45,7 @@ class WEBCFACE_DLL Canvas3DComponent {
     Canvas3DComponent();
 
     Canvas3DComponent(
-        const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
+        const std::shared_ptr<const message::Canvas3DComponentData> &msg_data,
         const std::weak_ptr<internal::ClientData> &data_w,
         const SharedString &id);
 

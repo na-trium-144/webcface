@@ -208,7 +208,9 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * \since ver1.11
      */
-    Text child(int index) const { return this->Field::child(index); }
+    [[deprecated]] Text child(int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -232,7 +234,9 @@ class WEBCFACE_DLL Text : protected Variant {
      * child()と同じ
      * \since ver1.11
      */
-    Text operator[](int index) const { return child(index); }
+    [[deprecated]] Text operator[](int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11

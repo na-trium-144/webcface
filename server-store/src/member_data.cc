@@ -221,7 +221,8 @@ void MemberData::onRecv(const std::string &message) {
                         if (!f.first.startsWith(field_separator)) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Value>{
-                                {}, cd->member_id, f.first});
+                                cd->member_id, f.first, f.second.first.shape,
+                                f.second.first.fixed});
                         }
                     }
                     for (const auto &f : cd->text) {
@@ -358,11 +359,12 @@ void MemberData::onRecv(const std::string &message) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::Value>{
-                                {}, this->member_id, v.field});
+                                this->member_id, v.field, v.shape, v.fixed});
                     }
                 });
             }
-            this->value[v.field] = v.data;
+            this->value[v.field].first = {v.shape, v.fixed};
+            this->value[v.field].second = v.data;
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
                 auto req_field =
@@ -447,31 +449,25 @@ void MemberData::onRecv(const std::string &message) {
                     }
                 });
             }
-            auto &this_view = this->view[v.field];
-            for (auto &d : v.data_diff) {
-                if (!d.second) {
-                    d.second = std::make_shared<message::ViewComponentData>();
-                }
-                this_view.components[d.first] = d.second;
-            }
             bool ids_changed = false;
-            std::vector<SharedString> prev_data_ids;
+            auto prev_view = std::move(this->view[v.field]);
             if (v.data_ids) {
                 ids_changed = true;
-                prev_data_ids = std::move(this_view.data_ids);
-                this_view.data_ids = std::move(*v.data_ids);
             }
+            this->view[v.field] = message::ViewData::mergeDiff(
+                &this->view[v.field], v.data_diff, std::move(v.data_ids));
+            auto &new_view = this->view[v.field];
             std::map<std::string, std::shared_ptr<message::ViewComponentData>>
                 old_diff;
-            for (std::size_t i = 0; i < this_view.data_ids.size(); i++) {
-                if (v.data_diff.count(this_view.data_ids[i].u8String()) ||
-                    (ids_changed &&
-                     (prev_data_ids.size() <= i ||
-                      prev_data_ids.at(i) != this_view.data_ids[i]))) {
-                    old_diff[std::to_string(i)] =
-                        this_view.components[this_view.data_ids[i].u8String()];
+            std::size_t i = 0;
+            new_view.forEach([&](const auto &id, const auto &component) {
+                if (v.data_diff.count(id.u8String()) ||
+                    (ids_changed && (prev_view.data_ids.size() <= i ||
+                                     prev_view.data_ids.at(i) != id))) {
+                    old_diff[std::to_string(i)] = component;
                 }
-            }
+                ++i;
+            });
             // このvalueをsubscribeしてるところに送り返す
             store->forEach([&](auto cd) {
                 {
@@ -485,7 +481,7 @@ void MemberData::onRecv(const std::string &message) {
                             req_id, sub_field, v.data_diff,
                             ids_changed
                                 ? std::make_optional<std::vector<SharedString>>(
-                                      this_view.data_ids)
+                                      new_view.data_ids)
                                 : std::nullopt));
                     }
                 }
@@ -498,7 +494,7 @@ void MemberData::onRecv(const std::string &message) {
                         cd->pack(
                             webcface::message::Res<webcface::message::ViewOld>(
                                 req_id, sub_field, old_diff,
-                                this_view.data_ids.size()));
+                                new_view.data_ids.size()));
                     }
                 }
             });
@@ -1007,7 +1003,7 @@ void MemberData::onRecv(const std::string &message) {
                         }
                         this->pack(
                             webcface::message::Res<webcface::message::Value>{
-                                s.req_id, sub_field, it.second});
+                                s.req_id, sub_field, it.second.second});
                     }
                 }
             });

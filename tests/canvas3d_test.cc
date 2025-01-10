@@ -89,7 +89,7 @@ TEST_F(Canvas3DTest, set) {
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &canvas3d_data_base =
-        **data_->canvas3d_store.getRecv(self_name, "b"_ss);
+        *data_->canvas3d_store.getRecv(self_name, "b"_ss);
     ASSERT_EQ(canvas3d_data_base.components.size(), 3u);
     ASSERT_EQ(canvas3d_data_base.data_ids.size(), 3u);
     std::vector<std::shared_ptr<message::Canvas3DComponentData>> canvas3d_data;
@@ -140,7 +140,7 @@ TEST_F(Canvas3DTest, set) {
     v.sync();
     EXPECT_EQ(callback_called, 2);
     EXPECT_EQ(
-        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        data_->canvas3d_store.getRecv(self_name, "b"_ss)->components.size(),
         0u);
 
     {
@@ -149,7 +149,7 @@ TEST_F(Canvas3DTest, set) {
     }
     EXPECT_EQ(callback_called, 3);
     EXPECT_EQ(
-        (*data_->canvas3d_store.getRecv(self_name, "b"_ss))->components.size(),
+        data_->canvas3d_store.getRecv(self_name, "b"_ss)->components.size(),
         1u);
 
     {
@@ -163,9 +163,7 @@ TEST_F(Canvas3DTest, set) {
     } // v3のデストラクタでsyncされる
     EXPECT_EQ(callback_called, 4);
 
-    {
-        Canvas3D v5{};
-    } // エラーやセグフォしない
+    { Canvas3D v5{}; } // エラーやセグフォしない
 
     Canvas3D v6{};
     v6.add(TemporalCanvas3DComponent{Canvas3DComponentType::geometry});

@@ -5,6 +5,7 @@
 #include <optional>
 #include <chrono>
 #include "field.h"
+#include "log.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -52,6 +53,8 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::robotModel;
     using Field::text;
     using Field::value;
+    using Field::valueFixed;
+    using Field::valueList;
     using Field::view;
 
     /*!

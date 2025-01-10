@@ -16,3 +16,4 @@ version.rc
 /subprojects/libffi.wrap
 /subprojects/pcre2.wrap
 /subprojects/proxy-libintl.wrap
+/subprojects/sysprof.wrap

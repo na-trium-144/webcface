@@ -8,6 +8,7 @@
 #include <webcface/common/internal/message/log.h>
 #include <webcface/common/internal/message/robot_model.h>
 #include <webcface/common/internal/message/sync.h>
+#include <fmt/ranges.h>
 #include <fmt/std.h>
 #include <fmt/chrono.h>
 
@@ -84,15 +85,21 @@ static std::string fmtValue(const std::vector<double> &v) {
     }
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Value) {
-    return fmt::format_to(ctx.out(), "{}-Value('{}', {})", msg_kind,
-                          m.field.decode(), fmtValue(*m.data));
+    return fmt::format_to(ctx.out(), "{}-Value('{}', {}, shape=[{}], fixed={})",
+                          msg_kind, m.field.decode(), fmtValue(*m.data),
+                          fmt::join(m.shape, ", "), m.fixed);
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Value>) {
     return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
                           msg_kind, m.req_id, m.sub_field.decode(),
                           fmtValue(*m.data));
 }
-WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Value)
+WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Entry<webcface::message::Value>) {
+    return fmt::format_to(
+        ctx.out(),
+        "{}-ValueEntry('{}' from member_id={}, shape=[{}], fixed={})", msg_kind,
+        m.field.decode(), m.member_id, fmt::join(m.shape, ", "), m.fixed);
+}
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Value)
 
 /// \private

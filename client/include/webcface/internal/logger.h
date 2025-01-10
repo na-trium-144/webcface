@@ -1,10 +1,13 @@
 #pragma once
 #include <streambuf>
-#include <memory>
 #include <string>
-#include "webcface/log.h"
+#include "webcface/common/encoding.h"
 
 WEBCFACE_NS_BEGIN
+
+namespace internal{
+struct ClientData;
+}
 
 template <typename CharT>
 class BasicLoggerBuf final : public std::basic_streambuf<CharT> {

@@ -78,10 +78,9 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
     request();
     if (vb) {
         std::vector<Canvas3DComponent> v;
-        v.reserve((*vb)->data_ids.size());
-        for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
+        v.reserve(vb->data_ids.size());
+        for (const auto &id : vb->data_ids) {
+            v.emplace_back(vb->components.at(id.u8String()), this->data_w, id);
         }
         return v;
     } else {
@@ -99,6 +98,7 @@ const Canvas3D &Canvas3D::free() const {
     return *this;
 }
 bool Canvas3D::exists() const {
+    std::lock_guard lock(dataLock()->canvas3d_store.mtx);
     return dataLock()->canvas3d_store.getEntry(member_).count(field_);
 }
 

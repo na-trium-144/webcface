@@ -9,11 +9,15 @@ using namespace webcface::internal;
 static SharedString operator""_ss(const char *str, std::size_t len) {
     return SharedString::fromU8String(std::string_view(str, len));
 }
+static std::shared_ptr<std::string> operator""_sp(const char *str,
+                                                  std::size_t len) {
+    return std::make_shared<std::string>(str, len);
+}
 
 class SyncDataStore2Test : public ::testing::Test {
   protected:
     SharedString self_name = "test"_ss;
-    SyncDataStore2<std::string> s2{"test"_ss};
+    TestStringStore s2{"test"_ss};
 };
 TEST_F(SyncDataStore2Test, self) {
     EXPECT_TRUE(s2.isSelf(self_name));
@@ -21,34 +25,34 @@ TEST_F(SyncDataStore2Test, self) {
     EXPECT_FALSE(s2.isSelf(""_ss));
 }
 TEST_F(SyncDataStore2Test, setSend) {
-    s2.setSend("a"_ss, "b");
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
+    s2.setSend("a"_ss, "b"_sp);
+    EXPECT_EQ(*s2.getRecv(self_name, "a"_ss), "b");
     auto send = s2.transferSend(false);
-    EXPECT_EQ(send.at("a"_ss), "b");
+    EXPECT_EQ(*send.at("a"_ss), "b");
     EXPECT_EQ(send.size(), 1u);
     EXPECT_EQ(s2.transferSend(false).size(), 0u);
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
-    s2.setSend("a"_ss, "b"); // 同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
+    s2.setSend("a"_ss, "b"_sp); // 同じデータ
+    EXPECT_EQ(*s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"_ss));
     EXPECT_EQ(send.size(), 0u);
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
-    s2.setSend("a"_ss, "zzzzzz");
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "zzzzzz");
-    s2.setSend("a"_ss, "b"); // 一度違うデータを送ってから同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
+    s2.setSend("a"_ss, "zzzzzz"_sp);
+    EXPECT_EQ(*s2.getRecv(self_name, "a"_ss), "zzzzzz");
+    s2.setSend("a"_ss, "b"_sp); // 一度違うデータを送ってから同じデータ
+    EXPECT_EQ(*s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"_ss));
     EXPECT_EQ(send.size(), 0u);
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
-    s2.setSend("a"_ss, "c"); // 違うデータ
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "c");
+    s2.setSend("a"_ss, "c"_sp); // 違うデータ
+    EXPECT_EQ(*s2.getRecv(self_name, "a"_ss), "c");
     send = s2.transferSend(false);
-    EXPECT_EQ(send.at("a"_ss), "c");
+    EXPECT_EQ(*send.at("a"_ss), "c");
     EXPECT_EQ(send.size(), 1u);
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 }
@@ -71,19 +75,19 @@ TEST_F(SyncDataStore2Test, addReq) {
 }
 TEST_F(SyncDataStore2Test, getRecv) {
     auto recv_empty = s2.getRecv(self_name, "b"_ss);
-    EXPECT_EQ(recv_empty, std::nullopt);
+    EXPECT_EQ(recv_empty, nullptr);
 
     recv_empty = s2.getRecv("a"_ss, "b"_ss);
-    EXPECT_EQ(recv_empty, std::nullopt);
+    EXPECT_EQ(recv_empty, nullptr);
 
-    s2.setRecv("a"_ss, "b"_ss, "c");
-    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), "c");
+    s2.setRecv("a"_ss, "b"_ss, "c"_sp);
+    EXPECT_EQ(*s2.getRecv("a"_ss, "b"_ss), "c");
 }
 TEST_F(SyncDataStore2Test, unsetRecv) {
     auto reqi0 = s2.unsetRecv("a"_ss, "b"_ss);
     EXPECT_FALSE(reqi0);
 
-    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.setRecv("a"_ss, "b"_ss, "c"_sp);
     s2.addReq("d"_ss, "e"_ss);
     auto reqi1 = s2.unsetRecv("a"_ss, "b"_ss);
     auto reqi2 = s2.unsetRecv("d"_ss, "e"_ss);
@@ -91,13 +95,13 @@ TEST_F(SyncDataStore2Test, unsetRecv) {
     EXPECT_TRUE(reqi2);
     EXPECT_EQ(s2.getReq(1, ""_ss).first, ""_ss);
     EXPECT_EQ(s2.getReq(1, ""_ss).second, ""_ss);
-    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), nullptr);
 }
 TEST_F(SyncDataStore2Test, clearRecv) {
-    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.setRecv("a"_ss, "b"_ss, "c"_sp);
     s2.clearRecv("a"_ss, "b"_ss);
     s2.clearRecv("d"_ss, "e"_ss);
-    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), nullptr);
 }
 TEST_F(SyncDataStore2Test, setEntry) {
     s2.setEntry("a"_ss, "b"_ss);
@@ -106,10 +110,10 @@ TEST_F(SyncDataStore2Test, setEntry) {
 }
 TEST_F(SyncDataStore2Test, initMember) {
     s2.setEntry("a"_ss, "b"_ss);
-    s2.setRecv("a"_ss, "b"_ss, "c");
+    s2.setRecv("a"_ss, "b"_ss, "c"_sp);
     s2.initMember("a"_ss);
     EXPECT_TRUE(s2.getEntry("a"_ss).empty());
-    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), std::nullopt);
+    EXPECT_EQ(s2.getRecv("a"_ss, "b"_ss), nullptr);
 }
 
 class SyncDataStore1Test : public ::testing::Test {

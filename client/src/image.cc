@@ -41,7 +41,7 @@ const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
 
 const Image &Image::set(const ImageFrame &img) const {
     auto data = setCheck();
-    data->image_store.setSend(*this, img);
+    data->image_store.setSend(*this, std::make_shared<ImageFrame>(img));
     std::shared_ptr<std::function<void(Image)>> change_event;
     {
         std::lock_guard lock(data->event_m);
@@ -63,7 +63,12 @@ const Image &Image::onChange(std::function<void(Image)> callback) const {
 
 std::optional<ImageFrame> Image::tryGet() const {
     this->tryRequest();
-    return dataLock()->image_store.getRecv(*this);
+    auto img = dataLock()->image_store.getRecv(*this);
+    if (img) {
+        return *img;
+    } else {
+        return std::nullopt;
+    }
 }
 
 std::chrono::system_clock::time_point Image::time() const {
@@ -81,6 +86,7 @@ const Image &Image::free() const {
     return *this;
 }
 bool Image::exists() const {
+    std::lock_guard lock(dataLock()->image_store.mtx);
     return dataLock()->image_store.getEntry(member_).count(field_);
 }
 

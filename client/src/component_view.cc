@@ -71,7 +71,7 @@ ViewComponent &ViewComponent::operator=(ViewComponent &&) noexcept = default;
 ViewComponent::~ViewComponent() noexcept = default;
 
 ViewComponent::ViewComponent(
-    const std::shared_ptr<message::ViewComponentData> &msg_data,
+    const std::shared_ptr<const message::ViewComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
     : msg_data(msg_data), data_w(data_w), id_(id) {}
 

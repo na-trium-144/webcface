@@ -1,6 +1,7 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/diff_data.h"
 #include <optional>
 #include <unordered_map>
 #include <vector>
@@ -44,13 +45,22 @@ struct Canvas2DComponentData {
                        MSGPACK_NVP("L", on_click_member),
                        MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
 };
-struct Canvas2DData {
+struct Canvas2DData : internal::DiffData<Canvas2DComponentData> {
     double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<Canvas2DComponentData>> components;
-    std::vector<SharedString> data_ids;
     Canvas2DData() = default;
     Canvas2DData(double width, double height)
-        : width(width), height(height), components(), data_ids() {}
+        : internal::DiffData<Canvas2DComponentData>(), width(width),
+          height(height) {}
+    Canvas2DData(internal::DiffData<Canvas2DComponentData> &&other)
+        : internal::DiffData<Canvas2DComponentData>(std::move(other)) {}
+    Canvas2DData(
+        double width, double height,
+        const std::map<std::string, std::shared_ptr<Canvas2DComponentData>>
+            &components,
+        std::vector<SharedString> &&data_ids)
+        : internal::DiffData<Canvas2DComponentData>(components,
+                                                    std::move(data_ids)),
+          width(width), height(height) {}
 };
 
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
