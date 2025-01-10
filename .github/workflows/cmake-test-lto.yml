@@ -1,0 +1,175 @@
+# This starter workflow is for a CMake project running on a single platform. There is a different starter workflow if you need cross-platform coverage.
+# See: https://github.com/actions/starter-workflows/blob/main/ci/cmake-multi-platform.yml
+name: Meson Test action/lto
+
+on:
+  push:
+    branches:
+    - action/lto
+
+jobs:
+  build-linux:
+    # The host should always be linux
+    runs-on: ubuntu-22.04
+    name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
+
+    # Run steps on a matrix of 4 arch/distro combinations
+    strategy:
+      matrix:
+        arch: [amd64, arm64, armhf]
+        distro: ["20.04"]
+        include:
+          - arch: amd64
+            base: ubuntu
+          - arch: arm64
+            base: '--platform=linux/arm64/v8 arm64v8/ubuntu'
+          - arch: armhf
+            base: '--platform=linux/arm/v7 arm32v7/ubuntu'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: uraimo/run-on-arch-action@v2
+        name: Build artifact
+        id: build
+        with:
+          arch: none
+          distro: none
+          base_image: ${{matrix.base}}:${{matrix.distro}}
+
+          # Not required, but speeds up builds
+          # githubToken: ${{ github.token }}
+
+          # Create an artifacts directory
+          # setup: |
+          #   mkdir -p "${PWD}/artifacts"
+
+          # Mount the artifacts directory as /artifacts in the container
+          dockerRunArgs: |
+            --volume "${{github.workspace}}:/workspace"
+
+          # Pass some environment variables to the container
+          # env: | # YAML, but pipe character is necessary
+          #   artifact_name: git-${{ matrix.distro }}_${{ matrix.arch }}
+
+          # armv7のubuntu20.04でなぜかSSL周りがエラーになり、これでなぜか直る
+          env: |
+            SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+
+          # The shell to run commands with in the container
+          shell: /bin/sh
+
+          # Install some dependencies in the container. This speeds up builds if
+          # you are also using githubToken. Any dependencies installed here will
+          # be part of the container image that gets cached, so subsequent
+          # builds don't have to re-install them. The image layer is cached
+          # publicly in your project's package repository, so it is vital that
+          # no secrets are present in the container state or logs.
+          install: |
+            apt-get update -q -y
+            apt-get install -q -y ca-certificates gpg wget lsb-release
+            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+            echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+            apt-get update -q -y
+            apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config
+            pip3 install meson
+
+          # Produce a binary artifact and place it in the mounted volume
+          run: |
+            cd /workspace
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true -Db_lto=true -Dtest_wait=200
+            meson compile -C build || meson compile -C build
+            DESTDIR=/workspace/dist meson install -C build --skip-subprojects
+            meson test -C build --print-errorlog --suite webcface
+
+
+  build-macos:
+    strategy:
+      matrix:
+        arch: [x86_64, arm64]
+    runs-on: macos-13
+    name: Build on macos-13 ${{matrix.arch}}
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: ilammy/setup-nasm@v1
+    - uses: seanmiddleditch/gha-setup-ninja@v5
+    - name: Install Meson
+      run: pip install meson
+
+    - name: Setup Meson
+      run: >
+        meson setup build
+        --buildtype=release
+        -Dwrap_mode=forcefallback
+        --prefix=/opt/webcface
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        -Dpkgconfig.relocatable=true
+        $([[ ${{matrix.arch}} = arm64 ]] && echo --cross-file scripts/cross/macos_arm64)
+        -Dtest_wait=1000
+        -Db_lto=true
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
+    - name: test
+      run: meson test -C build --print-errorlog --suite webcface
+
+  build-msvc:
+    strategy:
+      matrix:
+        arch: ["x86", "x64"]
+        buildtype: ["release"]
+        include:
+        - arch: x86
+          devcmd: amd64_x86
+        - arch: x64
+          devcmd: amd64
+        # - arch: arm64
+        #   devcmd: amd64_arm64
+    runs-on: windows-2019
+    name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Install Meson
+      uses: crazy-max/ghaction-chocolatey@v3
+      with:
+        args: install -y meson
+    - name: Add meson to path
+      run: echo "c:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+    - uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: ${{matrix.devcmd}}
+    - name: Setup Meson debug
+      if: matrix.buildtype == 'debug'
+      run: >
+        meson setup build
+        --buildtype=${{matrix.buildtype}}
+        -Dwrap_mode=forcefallback
+        "--prefix=C:\Program Files\webcface"
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        -Dtests=disabled
+        -Dexamples=disabled
+        -Dserver=disabled
+        "-Dpkgconfig.relocatable=true"
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
+        -Dtest_wait=1000
+        -Db_lto=true
+    - name: Setup Meson release
+      if: matrix.buildtype == 'release'
+      run: >
+        meson setup build
+        --buildtype=${{matrix.buildtype}}
+        -Dwrap_mode=forcefallback
+        "--prefix=C:\Program Files\webcface"
+        -Dversion_suffix=
+        -Ddownload_webui=disabled
+        -Dtests=disabled
+        "-Dpkgconfig.relocatable=true"
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
+        -Dtest_wait=1000
+        -Db_lto=true
+    - name: Compile
+      run: |
+        meson compile -C build
+    - name: Test
+      run: meson test -C build --print-errorlog --suite webcface
+
