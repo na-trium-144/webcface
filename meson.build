@@ -14,6 +14,8 @@ project('webcface', 'c', 'cpp',
     'msgpackc-cxx:tests=disabled',
     'msgpackc-cxx:std_variant=false', # msvcでなんかエラーになる
     'fmt:default_library=static',
+    'fmt:warning_level=0',
+    'fmt:werror=false',
     'spdlog:tests=disabled',
     'spdlog:compile_library=true',
     'spdlog:default_library=static',
