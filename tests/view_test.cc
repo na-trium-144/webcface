@@ -100,11 +100,15 @@ TEST_F(ViewTest, viewSet) {
     };
     v << manip2;
     EXPECT_EQ(manip_called, 1);
+    auto inserter = v.inserter();
+    *inserter = 'i';
+    *inserter = 'n';
+    *inserter = 's';
     v.sync();
     EXPECT_EQ(callback_called, 1);
     auto &view_data_base = *data_->view_store.getRecv(self_name, "b"_ss);
-    EXPECT_EQ(view_data_base.components.size(), 11u);
-    EXPECT_EQ(view_data_base.data_ids.size(), 11u);
+    EXPECT_EQ(view_data_base.components.size(), 12u);
+    EXPECT_EQ(view_data_base.data_ids.size(), 12u);
     std::vector<std::shared_ptr<message::ViewComponentData>> view_data;
     view_data.reserve(view_data_base.components.size());
     for (const auto &id : view_data_base.data_ids) {
@@ -198,6 +202,9 @@ TEST_F(ViewTest, viewSet) {
     // EXPECT_EQ(static_cast<std::string>(
     //               text(self_name, view_data[10].text_ref_->field_).get()),
     //           "aaa");
+
+    EXPECT_EQ(view_data[11]->type, static_cast<int>(ViewComponentType::text));
+    EXPECT_EQ(view_data[11]->text.u8String(), "ins");
 
     v.init();
     v.sync();
