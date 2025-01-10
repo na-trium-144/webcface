@@ -29,9 +29,9 @@ const Value &Value::request() const {
 
 const Value &Value::setImpl(std::vector<double> v,
                             const ValueShape &shape) const {
-    std::size_t size =
-        std::accumulate(shape.fixed_shape.begin(), shape.fixed_shape.end(),
-                        1uLL, [](auto a, auto b) { return a * b; });
+    std::size_t size = std::accumulate(
+        shape.fixed_shape.begin(), shape.fixed_shape.end(),
+        static_cast<std::size_t>(1), [](auto a, auto b) { return a * b; });
     if (shape.is_fixed) {
         if (v.size() != size) {
             throw std::invalid_argument(
@@ -223,7 +223,8 @@ std::size_t Value::fixedSize() const {
     auto e = data->value_store.getEntryP(this->member_, this->field_);
     if (e) {
         auto &shape = e->shape;
-        return std::accumulate(shape.begin(), shape.end(), 1uLL,
+        return std::accumulate(shape.begin(), shape.end(),
+                               static_cast<std::size_t>(1),
                                [](auto a, auto b) { return a * b; });
     } else {
         return 0;

@@ -62,7 +62,9 @@ class ValueElement<FirstDim, Shape...> : protected Field {
                                       shape);
     }
 
-    std::optional<Vector> tryGetVec() const;
+    // std::optional<Vector> tryGetVec() const;
+    // だとMSVCがなぜかコンパイルエラーを出すが、これなら通る
+    auto tryGetVec() const -> std::optional<Vector>;
     Vector getVec() const { return tryGetVec().value_or(Vector{}); }
     std::optional<Array> tryGetArray() const {
         Array array;
@@ -390,7 +392,7 @@ class WEBCFACE_DLL Value : protected Field {
      * * データが配列でない場合、サイズ1のvectorとして返す
      * * ver2.6〜: const参照
      *   * 次の Client::sync() まで有効
-     * 
+     *
      */
     const std::vector<double> &getVec() const;
     /*!
@@ -965,8 +967,8 @@ class ValueList : Value {
 };
 
 template <std::size_t FirstDim, std::size_t... Shape>
-std::optional<typename ValueElement<FirstDim, Shape...>::Vector>
-ValueElement<FirstDim, Shape...>::tryGetVec() const {
+auto ValueElement<FirstDim, Shape...>::tryGetVec() const
+    -> std::optional<Vector> {
     if constexpr (sizeof...(Shape) == 0) {
         return Value(*this).tryGetVec(this->index * FirstDim, FirstDim);
     } else {
