@@ -515,7 +515,38 @@ utf8cpp_dep = dependency('utf8cpp')
 # curlはvisibilityがhiddenになっている
 curl_dep = dependency('libcurl')
 if curl_dep.type_name() != 'internal'
-  curl_has_ws_support = cxx.run('''
+  if host_machine.system() == 'darwin' and \
+      curl_dep.version().version_compare('>=8.10.0') and \
+      curl_dep.version().version_compare('<8.12.0')
+    # https://github.com/curl/curl/issues/15865
+    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug on MacOS. ' +
+      'Use other versions or set "--force-fallback-for=libcurl".',
+    )
+  endif
+  curl_dep_version = curl_dep.version().split('-')[0].split('.')
+  curl_runtime_version_test = cxx.run('''
+    #include <curl/curl.h>
+    #include <cassert>
+    #include <iostream>
+    int main() {
+      auto info = curl_version_info(CURLVERSION_NOW);
+      std::cerr << "version_num = " << std::hex << info->version_num << std::endl;
+      assert(((info->version_num >> 16) & 0xff) == ''' + curl_dep_version[0] + ''');
+      assert(((info->version_num >> 8) & 0xff) == ''' + curl_dep_version[1] + ''');
+      assert(((info->version_num >> 0) & 0xff) == ''' + curl_dep_version[2] + ''');
+    }
+    ''',
+    dependencies: [curl_dep],
+    name: 'curl_runtime_version_test',
+  )
+  assert(curl_runtime_version_test.compiled())
+  if curl_runtime_version_test.returncode() != 0
+    error('Could not run test using libcurl. ' + \
+      'Check the install_name, PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH, ' + \
+      'or if you are unsure set "--force-fallback-for=libcurl" to build libcurl from source.',
+    )
+  endif
+  curl_ws_support_test = cxx.run('''
     #include <curl/curl.h>
     #include <cassert>
     #include <cstddef>
@@ -526,10 +557,11 @@ if curl_dep.type_name() != 'internal'
     }
     ''',
     dependencies: [curl_dep],
-    name: 'curl_has_ws_support',
+    name: 'curl_ws_support_test',
   )
-  if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
-    error('The installed curl has no websocket support, so WebCFace cannot use it.\n' + \
+  assert(curl_ws_support_test.compiled())
+  if curl_ws_support_test.returncode() != 0
+    error('The installed curl has no websocket support, so WebCFace cannot use it. ' + \
       'Set "--force-fallback-for=libcurl".',
     )
   endif
@@ -540,7 +572,7 @@ if build_server
 
   crow_dep = dependency('Crow')
   if crow_dep.type_name() != 'internal'
-    crow_has_unix_socket_support = cxx.compiles('''
+    crow_unix_socket_support_test = cxx.compiles('''
       #include <crow.h>
       int main(){
           crow::SimpleApp app;
@@ -551,10 +583,10 @@ if build_server
       }
       ''',
       dependencies: [crow_dep],
-      name: 'crow_has_unix_socket_support',
+      name: 'crow_unix_socket_support_test',
     )
-    if not crow_has_unix_socket_support
-      error('The installed Crow has no unix socket support, so WebCFace cannot use it.\n' + \
+    if not crow_unix_socket_support_test
+      error('The installed Crow has no unix socket support, so WebCFace cannot use it. ' + \
         'Set "--force-fallback-for=Crow".',
       )
     endif
