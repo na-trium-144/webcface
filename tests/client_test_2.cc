@@ -159,12 +159,42 @@ TEST_F(ClientTest, textSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a"_ss, std::make_shared<ValAdaptor>("c"));
-    wcli_->sync();
-    dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(*obj.data, "c");
-    });
+    for (std::size_t len = 10; len < 1000000; len *= 10) {
+        data_->text_store.setSend(
+            "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a')));
+        wcli_->sync();
+        dummy_s->waitRecv<message::Text>([&](const auto &obj) {
+            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            for (std::size_t i = 0; i < len; i++) {
+                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+            }
+        });
+        dummy_s->recvClear();
+    }
+}
+TEST_F(ClientTest, textSendWithUnix) {
+    auto dummy_tcp_s = std::make_shared<DummyServer>(false);
+    dummy_s = std::make_shared<DummyServer>(true);
+    wait();
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->start();
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+
+    for (std::size_t len = 10; len < 1000000; len *= 10) {
+        data_->text_store.setSend(
+            "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a')));
+        wcli_->sync();
+        dummy_s->waitRecv<message::Text>([&](const auto &obj) {
+            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            for (std::size_t i = 0; i < len; i++) {
+                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+            }
+        });
+        dummy_s->recvClear();
+    }
 }
 TEST_F(ClientTest, textReq) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -190,6 +220,61 @@ TEST_F(ClientTest, textReq) {
     EXPECT_EQ(*data_->text_store.getRecv("a"_ss, "b"_ss).value(), "z");
     EXPECT_TRUE(data_->text_store.getRecv("a"_ss, "b.c"_ss).has_value());
     EXPECT_EQ(*data_->text_store.getRecv("a"_ss, "b.c"_ss).value(), "z");
+
+    for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
+        dummy_s->send(message::Res<message::Text>{
+            1, ""_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        while (!data_->text_store.getRecv("a"_ss, "b"_ss).has_value() ||
+               data_->text_store.getRecv("a"_ss, "b"_ss)
+                       .value()
+                       ->asU8StringRef()
+                       .size() != len) {
+            wcli_->loopSyncFor(
+                std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+        }
+        for (std::size_t i = 0; i < len; i++) {
+            EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss)
+                          .value()
+                          ->asU8StringRef()[i],
+                      'a');
+        }
+    }
+}
+TEST_F(ClientTest, textReqWithUnix) {
+    auto dummy_tcp_s = std::make_shared<DummyServer>(false);
+    dummy_s = std::make_shared<DummyServer>(true);
+    wait();
+    EXPECT_FALSE(dummy_s->connected());
+    EXPECT_FALSE(wcli_->connected());
+    wcli_->start();
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+    wcli_->member("a").text("b").tryGet();
+    dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member.u8String(), "a");
+        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.req_id, 1u);
+    });
+
+    for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
+        dummy_s->send(message::Res<message::Text>{
+            1, ""_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        while (!data_->text_store.getRecv("a"_ss, "b"_ss).has_value() ||
+               data_->text_store.getRecv("a"_ss, "b"_ss)
+                       .value()
+                       ->asU8StringRef()
+                       .size() != len) {
+            wcli_->loopSyncFor(
+                std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+        }
+        for (std::size_t i = 0; i < len; i++) {
+            EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss)
+                          .value()
+                          ->asU8StringRef()[i],
+                      'a');
+        }
+    }
 }
 TEST_F(ClientTest, viewSend) {
     dummy_s = std::make_shared<DummyServer>(false);

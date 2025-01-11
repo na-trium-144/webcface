@@ -10,6 +10,9 @@ option('tests', type: 'feature', value: 'auto',
 option('test_wait', type: 'integer', min: 1, value: 10,
   description: 'Delays of wait() in tests, in milliseconds',
 )
+option('test_maxlen', type: 'integer', min: 10, value: 1000000,
+  description: 'Max length of message in tests',
+)
 option('server', type: 'feature', value: 'auto',
   description: 'Build server. (auto = enabled when WebCFace is top-level and not cygwin.)',
 )

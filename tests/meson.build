@@ -59,12 +59,14 @@ webcface_test = executable('webcface-test',
   cpp_args: [
     '-DWEBCFACE_BUILDING',
     '-DWEBCFACE_TEST_TIMEOUT=' + get_option('test_wait').to_string(),
+    '-DWEBCFACE_TEST_MAXLEN=' + get_option('test_maxlen').to_string(),
   ],
   link_args: test_link_args,
   dependencies: test_dependencies,
   link_with: test_link_libs,
 )
 summary('Test wait (ms)', get_option('test_wait'))
+summary('Test maxlen', get_option('test_maxlen'))
 test_parsed = run_command(py,
   meson.project_source_root() / 'scripts' / 'add_tests.py',
   test_src,
