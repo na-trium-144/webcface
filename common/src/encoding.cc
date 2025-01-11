@@ -122,6 +122,20 @@ bool SharedString::startsWith(std::string_view str) const {
 bool SharedString::startsWith(char str) const {
     return !u8StringView().empty() && u8StringView()[0] == str;
 }
+SharedString SharedString::substr(std::size_t pos, std::size_t len) const {
+    if (!data) {
+        return *this;
+    } else {
+        return SharedString::fromU8String(u8StringView().substr(pos, len));
+    }
+}
+std::size_t SharedString::find(char c, std::size_t pos) const {
+    if (!data) {
+        return std::string::npos;
+    } else {
+        return u8StringView().find(c, pos);
+    }
+}
 
 std::string toNarrow(std::wstring_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS

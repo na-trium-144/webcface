@@ -11,6 +11,7 @@
 #include "webcface/log.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
+#include <algorithm>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -51,16 +52,95 @@ Field Field::child(const SharedString &field) const {
 }
 
 /// \private
-template <typename V, typename S>
-static auto entries(const Field *this_, S &store) {
+template <typename S>
+static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    std::vector<V> ret;
+    auto prefix_with_sep = this_->field_.u8String() + field_separator;
     for (const auto &f : keys) {
-        if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            return true;
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
         }
     }
+    return false;
+}
+bool Field::hasChildren() const {
+    auto data = dataLock();
+    return hasChildrenT(this, data->value_store) ||
+           hasChildrenT(this, data->text_store) ||
+           hasChildrenT(this, data->robot_model_store) ||
+           hasChildrenT(this, data->func_store) ||
+           hasChildrenT(this, data->view_store) ||
+           hasChildrenT(this, data->canvas2d_store) ||
+           hasChildrenT(this, data->canvas3d_store) ||
+           hasChildrenT(this, data->image_store) ||
+           hasChildrenT(this, data->log_store);
+}
+
+/// \private
+template <typename V, typename S>
+static void entries(std::vector<V> &ret, const Field *this_, S &store,
+                    bool recurse = true) {
+    auto keys = store.getEntry(*this_);
+    std::string prefix_with_sep;
+    std::size_t prefix_len = 0;
+    if (!this_->field_.empty()) {
+        prefix_with_sep = this_->field_.u8String() + field_separator;
+        prefix_len = prefix_with_sep.size();
+    }
+    for (auto f : keys) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            if (!recurse) {
+                f = f.substr(0, f.find(field_separator, prefix_len));
+            }
+            if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
+                ret.emplace_back(*this_, f);
+            }
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
+        }
+    }
+}
+/// \private
+template <typename V, typename S>
+static auto entries(const Field *this_, S &store) {
+    std::vector<V> ret;
+    entries(ret, this_, store);
+    return ret;
+}
+std::vector<Field> Field::childrenRecurse() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store);
+    entries(ret, this, data->text_store);
+    entries(ret, this, data->robot_model_store);
+    entries(ret, this, data->func_store);
+    entries(ret, this, data->view_store);
+    entries(ret, this, data->canvas2d_store);
+    entries(ret, this, data->canvas3d_store);
+    entries(ret, this, data->image_store);
+    entries(ret, this, data->log_store);
+    return ret;
+}
+std::vector<Field> Field::children() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store, false);
+    entries(ret, this, data->text_store, false);
+    entries(ret, this, data->robot_model_store, false);
+    entries(ret, this, data->func_store, false);
+    entries(ret, this, data->view_store, false);
+    entries(ret, this, data->canvas2d_store, false);
+    entries(ret, this, data->canvas3d_store, false);
+    entries(ret, this, data->image_store, false);
+    entries(ret, this, data->log_store, false);
     return ret;
 }
 template <typename T, std::nullptr_t>

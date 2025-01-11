@@ -372,6 +372,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(m.funcEntries()[0].name(), "a");
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");
 
+    EXPECT_FALSE(m.log("a").exists());
     EXPECT_FALSE(m.log().exists());
     m.onLogEntry(callback<Log>());
     dummy_s->send(message::Entry<message::Log>{{}, 10, "a"_ss});
@@ -379,6 +380,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_TRUE(m.log("a").exists());
+    EXPECT_FALSE(m.log().exists());
 
     m.onSync(callback<Member>());
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
@@ -386,6 +388,60 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
+TEST_F(ClientTest, childrenEntry) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wcli_->start();
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+    dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    auto m = wcli_->member("a");
+    EXPECT_FALSE(m.hasChildren());
+    EXPECT_FALSE(m.child("c").hasChildren());
+
+    dummy_s->send(message::Entry<message::Value>{{}, 10, "a"_ss});
+    dummy_s->send(message::Entry<message::Text>{{}, 10, "b"_ss});
+    dummy_s->send(message::Entry<message::Text>{{}, 10, "c.a"_ss});
+    dummy_s->send(message::Entry<message::Text>{{}, 10, "c.b"_ss});
+    dummy_s->send(message::Entry<message::Text>{{}, 10, "c.c"_ss});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+
+    EXPECT_TRUE(m.hasChildren());
+    EXPECT_FALSE(m.child("a").hasChildren());
+    EXPECT_FALSE(m.child("b").hasChildren());
+    EXPECT_TRUE(m.child("c").hasChildren());
+    auto children = m.children();
+    EXPECT_EQ(children.size(), 3u);
+    EXPECT_EQ(children.at(0).member().name(), "a");
+    EXPECT_EQ(children.at(0).name(), "a");
+    EXPECT_EQ(children.at(1).member().name(), "a");
+    EXPECT_EQ(children.at(1).name(), "b");
+    EXPECT_EQ(children.at(2).member().name(), "a");
+    EXPECT_EQ(children.at(2).name(), "c");
+
+    auto children_recurse = m.childrenRecurse();
+    EXPECT_EQ(children_recurse.size(), 5u);
+    EXPECT_EQ(children_recurse.at(0).member().name(), "a");
+    EXPECT_EQ(children_recurse.at(0).name(), "a");
+    EXPECT_EQ(children_recurse.at(1).name(), "b");
+    EXPECT_EQ(children_recurse.at(2).name(), "c.a");
+    EXPECT_EQ(children_recurse.at(3).name(), "c.b");
+    EXPECT_EQ(children_recurse.at(4).name(), "c.c");
+
+    auto children_a = m.child("a").children();
+    EXPECT_EQ(children_a.size(), 0u);
+
+    auto children_c = m.child("c").children();
+    EXPECT_EQ(children_c.size(), 3u);
+    EXPECT_EQ(children_c.at(0).member().name(), "a");
+    EXPECT_EQ(children_c.at(0).name(), "c.a");
+    EXPECT_EQ(children_c.at(1).member().name(), "a");
+    EXPECT_EQ(children_c.at(1).name(), "c.b");
+    EXPECT_EQ(children_c.at(2).member().name(), "a");
+    EXPECT_EQ(children_c.at(2).name(), "c.c");
+}
+
 TEST_F(ClientTest, logSend) {
     dummy_s = std::make_shared<DummyServer>(false);
     wcli_->start();
