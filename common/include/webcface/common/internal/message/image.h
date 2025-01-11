@@ -49,6 +49,12 @@ struct ImageFrame {
         }
         return data_->data();
     }
+    std::size_t rawSize() const {
+        if (!data_) {
+            throw "ImageFrame data is empty";
+        }
+        return data_->size();
+    }
 };
 struct Image : public MessageBase<MessageKind::image>, public ImageFrame {
     SharedString field;
@@ -114,3 +120,8 @@ struct Res<Image> : public MessageBase<MessageKind::image + MessageKind::res>,
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::Image)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Image>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Image>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Image>)

@@ -124,3 +124,11 @@ struct Res<Log> : public MessageBase<MessageKind::log + MessageKind::res> {
 
 }
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::LogDefault)
+WEBCFACE_MESSAGE_FMT(webcface::message::LogReqDefault)
+WEBCFACE_MESSAGE_FMT(webcface::message::LogEntryDefault)
+WEBCFACE_MESSAGE_FMT(webcface::message::Log)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Log>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Log>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Log>)

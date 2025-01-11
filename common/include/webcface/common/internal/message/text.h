@@ -31,3 +31,8 @@ struct Res<Text> : public MessageBase<MessageKind::text + MessageKind::res> {
 
 }
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::Text)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Text>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Text>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Text>)

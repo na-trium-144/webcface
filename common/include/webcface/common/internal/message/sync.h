@@ -155,3 +155,10 @@ struct Sync : public MessageBase<MessageKind::sync> {
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::SyncInit)
+WEBCFACE_MESSAGE_FMT(webcface::message::SyncInitEnd)
+WEBCFACE_MESSAGE_FMT(webcface::message::Sync)
+WEBCFACE_MESSAGE_FMT(webcface::message::Ping)
+WEBCFACE_MESSAGE_FMT(webcface::message::PingStatus)
+WEBCFACE_MESSAGE_FMT(webcface::message::PingStatusReq)

@@ -3,6 +3,7 @@
 #include <thread>
 #include <iostream>
 #include <chrono>
+#include <fmt/base.h>
 
 int main() {
     webcface::Client wcli("example_view");
@@ -17,6 +18,7 @@ int main() {
             auto v = wcli.view("a");
             v << "hello world" << std::endl;
             v << i << std::endl;
+            fmt::format_to(v.inserter(), "with inserter: {}\n", i);
             v << webcface::button("a",
                                   [] { std::cout << "hello" << std::endl; });
             v << std::endl;

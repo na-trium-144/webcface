@@ -137,3 +137,12 @@ struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::View)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::View>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::View>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::View>)
+WEBCFACE_MESSAGE_FMT(webcface::message::ViewOld)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::ViewOld>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::ViewOld>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::ViewOld>)

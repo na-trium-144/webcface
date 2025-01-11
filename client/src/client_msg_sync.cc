@@ -19,7 +19,7 @@ WEBCFACE_NS_BEGIN
 
 void internal::ClientData::pingStatusReq() {
     if (!ping_status_req) {
-        this->messagePushReq(message::packSingle(message::PingStatusReq{}));
+        this->messagePushReq(message::PingStatusReq{});
     }
     ping_status_req = true;
 }
@@ -51,74 +51,82 @@ internal::ClientData::SyncMutexedData::syncDataFirst(
 
     return data;
 }
+/// \private
+template <typename T>
+static void packWithLogging(const std::shared_ptr<spdlog::logger> &logger,
+                            std::stringstream &buffer, int &len,
+                            const T &data) {
+    message::pack(buffer, len, data);
+    logger->debug("-> sync data: {}", data);
+}
 std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
     std::stringstream buffer;
     int len = 0;
 
-    message::pack(buffer, len,
-                  message::SyncInit{
-                      {}, self_member_name, 0, "cpp", WEBCFACE_VERSION, ""});
+    packWithLogging(logger_internal, buffer, len,
+                    message::SyncInit{
+                        {}, self_member_name, 0, "cpp", WEBCFACE_VERSION, ""});
 
     for (const auto &v : data.value_req) {
         for (const auto &v2 : v.second) {
-            message::pack(
-                buffer, len,
+            packWithLogging(
+                logger_internal, buffer, len,
                 message::Req<message::Value>{{}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.text_req) {
         for (const auto &v2 : v.second) {
-            message::pack(
-                buffer, len,
+            packWithLogging(
+                logger_internal, buffer, len,
                 message::Req<message::Text>{{}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.view_req) {
         for (const auto &v2 : v.second) {
-            message::pack(
-                buffer, len,
+            packWithLogging(
+                logger_internal, buffer, len,
                 message::Req<message::View>{{}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.robot_model_req) {
         for (const auto &v2 : v.second) {
-            message::pack(buffer, len,
-                          message::Req<message::RobotModel>{
-                              {}, v.first, v2.first, v2.second});
+            packWithLogging(logger_internal, buffer, len,
+                            message::Req<message::RobotModel>{
+                                {}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.canvas3d_req) {
         for (const auto &v2 : v.second) {
-            message::pack(buffer, len,
-                          message::Req<message::Canvas3D>{
-                              {}, v.first, v2.first, v2.second});
+            packWithLogging(logger_internal, buffer, len,
+                            message::Req<message::Canvas3D>{
+                                {}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.canvas2d_req) {
         for (const auto &v2 : v.second) {
-            message::pack(buffer, len,
-                          message::Req<message::Canvas2D>{
-                              {}, v.first, v2.first, v2.second});
+            packWithLogging(logger_internal, buffer, len,
+                            message::Req<message::Canvas2D>{
+                                {}, v.first, v2.first, v2.second});
         }
     }
     for (const auto &v : data.image_req) {
         for (const auto &v2 : v.second) {
-            message::pack(buffer, len,
-                          message::Req<message::Image>{
-                              v.first, v2.first, v2.second,
-                              data.image_req_info.at(v.first).at(v2.first)});
+            packWithLogging(logger_internal, buffer, len,
+                            message::Req<message::Image>{
+                                v.first, v2.first, v2.second,
+                                data.image_req_info.at(v.first).at(v2.first)});
         }
     }
     for (const auto &v : data.log_req) {
         for (const auto &v2 : v.second) {
-            message::pack(
-                buffer, len,
+            packWithLogging(
+                logger_internal, buffer, len,
                 message::Req<message::Log>{{}, v.first, v2.first, v2.second});
         }
     }
 
     if (data.ping_status_req) {
-        message::pack(buffer, len, message::PingStatusReq{});
+        packWithLogging(logger_internal, buffer, len, message::PingStatusReq{});
     }
 
     return packSyncData(buffer, len, data.sync_data);
@@ -173,13 +181,15 @@ internal::ClientData::SyncMutexedData::syncData(internal::ClientData *this_,
 std::string internal::ClientData::packSyncData(std::stringstream &buffer,
                                                int &len,
                                                const SyncDataSnapshot &data) {
-    message::pack(buffer, len, message::Sync{data.time});
+    packWithLogging(logger_internal, buffer, len, message::Sync{data.time});
 
     for (const auto &v : data.value_data) {
-        message::pack(buffer, len, message::Value{{}, v.first, v.second});
+        packWithLogging(logger_internal, buffer, len,
+                        message::Value{{}, v.first, v.second});
     }
     for (const auto &v : data.text_data) {
-        message::pack(buffer, len, message::Text{{}, v.first, v.second});
+        packWithLogging(logger_internal, buffer, len,
+                        message::Text{{}, v.first, v.second});
     }
     for (const auto &v : data.robot_model_data) {
         std::vector<std::shared_ptr<message::RobotLink>> links;
@@ -187,7 +197,8 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
         for (std::size_t i = 0; i < v.second->size(); i++) {
             links.emplace_back(v.second->at(i));
         }
-        message::pack(buffer, len, message::RobotModel{v.first, links});
+        packWithLogging(logger_internal, buffer, len,
+                        message::RobotModel{v.first, links});
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
@@ -208,9 +219,9 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
             v_ids_changed.emplace(p.second->data_ids);
         }
         if (!v_diff.empty() || v_ids_changed) {
-            message::pack(buffer, len,
-                          message::View{p.first, std::move(v_diff),
-                                        std::move(v_ids_changed)});
+            packWithLogging(logger_internal, buffer, len,
+                            message::View{p.first, std::move(v_diff),
+                                          std::move(v_ids_changed)});
         }
     }
     for (const auto &p : data.canvas3d_data) {
@@ -232,9 +243,9 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
             v_ids_changed.emplace(p.second->data_ids);
         }
         if (!v_diff.empty() || v_ids_changed) {
-            message::pack(buffer, len,
-                          message::Canvas3D{p.first, std::move(v_diff),
-                                            std::move(v_ids_changed)});
+            packWithLogging(logger_internal, buffer, len,
+                            message::Canvas3D{p.first, std::move(v_diff),
+                                              std::move(v_ids_changed)});
         }
     }
     for (const auto &p : data.canvas2d_data) {
@@ -256,24 +267,26 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
             v_ids_changed.emplace(p.second->data_ids);
         }
         if (!v_diff.empty() || v_ids_changed) {
-            message::pack(buffer, len,
-                          message::Canvas2D{p.first, p.second->width,
-                                            p.second->height, std::move(v_diff),
-                                            std::move(v_ids_changed)});
+            packWithLogging(
+                logger_internal, buffer, len,
+                message::Canvas2D{p.first, p.second->width, p.second->height,
+                                  std::move(v_diff), std::move(v_ids_changed)});
         }
     }
     for (const auto &v : data.image_data) {
-        message::pack(buffer, len,
-                      message::Image{v.first, v.second.toMessage()});
+        packWithLogging(logger_internal, buffer, len,
+                        message::Image{v.first, v.second.toMessage()});
     }
 
     for (const auto &v : data.log_data) {
-        message::pack(buffer, len,
-                      message::Log{v.first, v.second.begin(), v.second.end()});
+        packWithLogging(
+            logger_internal, buffer, len,
+            message::Log{v.first, v.second.begin(), v.second.end()});
     }
     for (const auto &v : data.func_data) {
         if (!v.first.startsWith(field_separator)) {
-            message::pack(buffer, len, v.second->toMessage(v.first));
+            packWithLogging(logger_internal, buffer, len,
+                            v.second->toMessage(v.first));
         }
     }
 

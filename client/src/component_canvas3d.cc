@@ -15,7 +15,7 @@ Canvas3DComponent::Canvas3DComponent() = default;
 Canvas3DComponent::Canvas3DComponent(
     const std::shared_ptr<message::Canvas3DComponentData> &msg_data,
     const std::weak_ptr<internal::ClientData> &data_w, const SharedString &id)
-    : msg_data(msg_data), data_w(data_w) , id_(id){}
+    : msg_data(msg_data), data_w(data_w), id_(id) {}
 
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(std::nullptr_t)
     : msg_data() {}
@@ -27,14 +27,14 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(Canvas3DComponentType type)
 TemporalCanvas3DComponent::TemporalCanvas3DComponent(
     const TemporalCanvas3DComponent &other) {
     if (other.msg_data) {
-        msg_data =
-            std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
+        msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
+            *other.msg_data);
     }
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
-    msg_data =
-        std::make_unique<internal::TemporalCanvas3DComponentData>(*other.msg_data);
+    msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
+        *other.msg_data);
     return *this;
 }
 TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}
@@ -113,7 +113,8 @@ TemporalCanvas3DComponent::geometry(const Geometry &g) & {
     msg_data->geometry_properties = g.properties;
     return *this;
 }
-std::optional<RobotModel> Canvas3DComponent::robotModel() const {
+template <typename T, std::nullptr_t>
+std::optional<T> Canvas3DComponent::robotModel() const {
     checkData();
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
@@ -123,6 +124,8 @@ std::optional<RobotModel> Canvas3DComponent::robotModel() const {
         return std::nullopt;
     }
 }
+template WEBCFACE_DLL std::optional<RobotModel>
+Canvas3DComponent::robotModel<RobotModel, nullptr>() const;
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;

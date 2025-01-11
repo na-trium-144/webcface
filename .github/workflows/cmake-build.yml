@@ -75,7 +75,7 @@ jobs:
           # Produce a binary artifact and place it in the mounted volume
           run: |
             cd /workspace
-            meson setup build --buildtype=release --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true
             meson compile -C build || meson compile -C build
             DESTDIR=/workspace/dist meson install -C build --skip-subprojects
 
@@ -156,6 +156,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=release
+        -Dwrap_mode=forcefallback
         --prefix=/opt/webcface
         -Dversion_suffix=
         -Ddownload_webui=disabled
@@ -240,6 +241,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=${{matrix.buildtype}}
+        -Dwrap_mode=forcefallback
         "--prefix=C:\Program Files\webcface"
         -Dversion_suffix=
         -Ddownload_webui=disabled
@@ -253,6 +255,7 @@ jobs:
       run: >
         meson setup build
         --buildtype=${{matrix.buildtype}}
+        -Dwrap_mode=forcefallback
         "--prefix=C:\Program Files\webcface"
         -Dversion_suffix=
         -Ddownload_webui=disabled
