@@ -11,8 +11,8 @@
 * JavaScript [Value](https://na-trium-144.github.io/webcface-js/classes/Value.html)
 * Python [webcface.Value](https://na-trium-144.github.io/webcface-python/webcface.value.html#webcface.value.Value)
 
-数値データ、または1次元数値配列を送受信する型です。
-double型で送受信されます。
+数値データ、または数値の配列データを送受信する型です。
+double型またはそのリストとして送受信されます。
 
 ## コマンドライン
 
@@ -29,12 +29,16 @@ webcface-send
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    Client::value からValueオブジェクトを作り、 Value::set() でデータを代入し、Client::sync()することで送信されます。
+    Value::set() でデータを代入し、Client::sync()することで送信されます。
 
     ```cpp
     wcli.value("hoge").set(5);
     wcli.value("fuga").set({1, 2, 3, 4, 5});
     ```
+
+    \note
+    webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
+
     \note
     <span class="since-c">1.7</span>
     配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
@@ -47,8 +51,8 @@ webcface-send
     ```
 
     <span class="since-c">1.11</span>
-    valueに直接`[]`(または`child()`)で要素アクセスが可能です。
-    また、resize()で配列を初期化しpush_back()で追加する使い方もできます。
+    valueに直接`[]` <del>(または`child()`)</del> で配列の要素アクセスが可能です。
+    また、resize() で配列を初期化し push_back() で追加する使い方もできます。
     ```cpp
     wcli.value("fuga").resize(5);
     for(int i = 0; i < 5; i++){
@@ -71,14 +75,14 @@ webcface-send
     で送信できます。
 
 - <b class="tab-title">JavaScript</b>
-    Client.value からValueオブジェクトを作り、 Value.set() でデータを代入し、Client.sync()することで送信されます。
+    Value.set() でデータを代入し、Client.sync()することで送信されます。
     ```ts
     wcli.value("hoge").set(5);
     wcli.value("fuga").set([1, 2, 3, 4, 5]);
     ```
 
 - <b class="tab-title">Python</b>
-    Client.value からValueオブジェクトを作り、 Value.set() でデータを代入し、Client.sync()することで送信されます。
+    Value.set() でデータを代入し、Client.sync()することで送信されます。
     ```python
     wcli.value("hoge").set(5)
     wcli.value("fuga").set([1, 2, 3, 4, 5])
@@ -89,118 +93,6 @@ webcface-send
 
 </div>
 
-\note
-(serverが<span class="since-c">1.10</span>以降の場合)
-データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。
-(WebUI上に表示することなくデータを送ることができます)  
-半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。  
-Text、Funcなど他のデータ型についても同様です。
-
-### 通信データについて
-
-クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。
-(Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)
-
-![pub-sub](https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png)
-
-サーバー→クライアント間では、初期状態ではデータは送信されず、
-クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。
-
-<span class="since-c">1.8</span>
-<span class="since-js">1.4.1</span>
-<span class="since-py">1.1.2</span>
-クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。
-
-基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。
-(通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)
-
-\note
-webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
-
-### グループ化
-
-Valueの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
-
-Valueに限らず他のデータ型 ([View](./54_view.md), [Canvas2D](./61_canvas2d.md), [Image](./62_image.md), [Canvas3D](./63_canvas3d.md), [RobotModel](./64_robot_model.md)) でも同様です。
-
-![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
-
-\note
-ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
-WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
-
-<div class="tabbed">
-
-- <b class="tab-title">C++</b>
-    ```cpp
-    wcli.value("pos.x") = 1;
-    wcli.value("pos.y") = 2;
-    wcli.value("pos.z") = 3;
-    ```
-    Value::child() でも同じ結果になります。
-    ```cpp
-    webcface::Value pos = wcli.value("pos");
-    pos.child("x") = 1; // = "pos.x"
-    pos.child("y") = 2; // = "pos.y"
-    pos.child("z") = 3; // = "pos.z"
-    ```
-
-    <span class="since-c">1.11</span>
-    Member::child() で webcface::Field 型としてオブジェクトが得られ、そこからvalue()でValue型に変換することもできます。
-    (この場合はValue以外の型に変換することもでき汎用性が高いです)
-    また、`[]`を使ってもchild()と同じ結果になります。
-    ```cpp
-    webcface::Field pos = wcli.child("pos");
-    pos.child("x").value() = 1; // = "pos.x"
-    pos["y"].value() = 2;       // = "pos.y"
-    pos.value("z") = 3;         // = "pos.z"
-    ```
-
-    \note <span class="since-c">1.11</span>
-    child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、
-    グループ化ではなく配列としての値代入が優先されます。
-    (これはValue型のみの特別な処理です。)  
-    ただし以下のような場合は通常の文字列と同様に処理します。
-    ```cpp
-    wcli.value("data")[0]["a"] = 1; // value("data.0.a") = 1
-    ```
-
-- <b class="tab-title">C</b>
-    ```c
-    wcfValueSet(wcli, "pos.x", 1);
-    wcfValueSet(wcli, "pos.y", 2);
-    wcfValueSet(wcli, "pos.z", 3);
-    ```
-
-- <b class="tab-title">JavaScript</b>
-    ```ts
-    wcli.value("pos.x").set(1);
-    wcli.value("pos.y").set(2);
-    wcli.value("pos.z").set(3);
-    ```
-    Value.child() でも同じ結果になります。
-    ```ts
-    const pos: Value = wcli.value("pos");
-    pos.child("x").set(1);
-    pos.child("y").set(2);
-    pos.child("z").set(3);
-    ```
-
-- <b class="tab-title">Python</b>
-    ```python
-    wcli.value("pos.x").set(1)
-    wcli.value("pos.y").set(2)
-    wcli.value("pos.z").set(3)
-    ```
-    Value.child() でも同じ結果になります。
-    ```python
-    pos = wcli.value("pos")
-    pos.child("x").set(1)
-    pos.child("y").set(2)
-    pos.child("z").set(3)
-    ```
-
-</div>
 
 ### 複数の値をまとめて送る
 
@@ -271,7 +163,6 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
-    Member::value() でValueクラスのオブジェクトが得られ、
     Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
 
     例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
@@ -295,20 +186,6 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     まだ受信していない場合nullと表示されます。
     ```cpp
     std::cout << "hoge = " << wcli.member("foo").value("hoge") << std::endl;
-    ```
-
-    グループ化したデータは送信時と同様child()を使っても要素を参照できます。
-    ```cpp
-    webcface::Value pos = wcli.member("foo").value("pos");
-    double x = pos.child("x").get(); // = "pos.x"
-    double y = pos.child("y").get(); // = "pos.y"
-    double z = pos.child("z").get(); // = "pos.z"
-    ```
-    ```cpp
-    webcface::Field pos = wcli.member("foo").child("pos");
-    double x = pos.child("x").value().get(); // = "pos.x"
-    double y = pos["y"].value().get();       // = "pos.y"
-    double z = pos.value("z").get();         // = "pos.z"
     ```
 
     <span class="since-c">1.11</span>
@@ -357,7 +234,6 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     \note <span class="since-c">1.7</span> member名に空文字列またはNULLを指定すると自分自身を指します。
 
 - <b class="tab-title">JavaScript</b>
-    Member.value() でValueクラスのオブジェクトが得られ、
     Value.tryGet(), Value.tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。
 
     例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
@@ -376,7 +252,6 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     Value.request()で明示的にリクエストを送信することもできます。
 
 - <b class="tab-title">Python</b>
-    Member.value() でValueクラスのオブジェクトが得られ、
     Value.try_get(), Value.try_get_vec() などで値のリクエストをするとともに受信した値を取得できます。
 
     例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
@@ -392,14 +267,6 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     * get(), getVec() はNoneの代わりに0を返します。
 
     Value.request()で明示的にリクエストを送信することもできます。
-
-    グループ化したデータは送信時と同様child()を使っても要素を参照できます。
-    ```cpp
-    pos = wcli.member("foo").value("pos");
-    x = pos.child("x").get(); // = "pos.x"
-    y = pos.child("y").get(); // = "pos.y"
-    z = pos.child("z").get(); // = "pos.z"
-    ```
 
 </div>
 

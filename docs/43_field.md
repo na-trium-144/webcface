@@ -53,7 +53,7 @@ WebCFaceで送受信されるそれぞれのデータを Field と呼びます�
     ```
 
 - <b class="tab-title">Python</b>
-    \since
+    \since <span class="since-py">3.1</span>
 
     Client.child() または Member.child() に名前を指定することで Field オブジェクトを取得できます。
 
@@ -65,6 +65,9 @@ WebCFaceで送受信されるそれぞれのデータを Field と呼びます�
 </div>
 
 ### データ型
+
+Field型のままではデータの送信や受信はできません。
+各種データ型のメソッドを使う必要があります。
 
 <div class="tabbed">
 
@@ -122,6 +125,12 @@ WebCFaceで送受信されるそれぞれのデータを Field と呼びます�
 
 Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
+![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
+
+\note
+ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、
+WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。
+
 <div class="tabbed">
 
 - <b class="tab-title">C++</b>
@@ -149,7 +158,7 @@ Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダ�
 
     \deprecated
     <span class="since-c">1.11</span>
-    <del>child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、</del>
+    <del>Value::child() (または`[]`)の引数が数値(または`"1"`のような文字列でも同じ)の場合、</del>
     <del>グループ化ではなく配列としての値代入が優先されます。</del>
     <del>(これはValue型のみの特別な処理です。)</del>  
     <del>ただし以下のような場合は通常の文字列と同様に処理します。</del>
@@ -157,7 +166,6 @@ Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダ�
     wcli.value("data")[0]["a"] = 1; // value("data.0.a") = 1
     ```
     <span class="since-c">2.6</span> child() や `[]` 内に数値を入れられる仕様はdeprecatedです。
-
 
 - <b class="tab-title">JavaScript</b>
     ```ts
@@ -193,6 +201,25 @@ Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダ�
 
 </div>
 
+## 基本的な通信の仕様
+
+クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。
+(Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)
+
+![pub-sub](https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png)
+
+サーバー→クライアント間では、初期状態ではデータは送信されず、
+クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。
+
+<span class="since-c">1.8</span>
+<span class="since-js">1.4.1</span>
+<span class="since-py">1.1.2</span>
+クライアント→サーバー間では、同じデータを繰り返しsetした場合は2回目以降はデータを送信しないことで通信量を削減しています。
+
+基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。
+(通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)
+
+### Entry
 
 
 \note
