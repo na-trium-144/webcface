@@ -91,9 +91,14 @@ DummyClient::DummyClient(bool use_unix)
                       std::lock_guard lock(client_m);
                       if (auto msg = msg_queue.pop()) {
                           dummy_logger->trace("sending message");
-                          std::size_t sent;
-                          curl_ws_send(handle, msg->c_str(), msg->size(), &sent,
-                                       0, CURLWS_BINARY);
+                          std::size_t sent_total = 0;
+                          while (sent_total < msg->size()) {
+                              std::size_t sent;
+                              curl_ws_send(handle, msg->c_str() + sent_total,
+                                           msg->size() - sent_total, &sent, 0,
+                                           CURLWS_BINARY);
+                              sent_total += sent;
+                          }
                       }
                   }
                   std::this_thread::yield();
