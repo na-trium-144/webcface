@@ -77,6 +77,7 @@ class WEBCFACE_DLL Member : protected Field {
 
     using Field::children;
     using Field::childrenRecurse;
+    using Field::hasChildren;
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;
     using Field::funcEntries;

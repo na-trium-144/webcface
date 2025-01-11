@@ -85,11 +85,10 @@ bool Field::hasChildren() const {
 template <typename V, typename S>
 static void entries(std::vector<V> &ret, const Field *this_, S &store,
                     bool recurse = true) {
-    std::size_t ret_prev_size = ret.size();
     auto keys = store.getEntry(*this_);
     std::string prefix_with_sep;
     std::size_t prefix_len = 0;
-    if (!this_->field.empty()) {
+    if (!this_->field_.empty()) {
         prefix_with_sep = this_->field_.u8String() + field_separator;
         prefix_len = prefix_with_sep.size();
     }
@@ -99,8 +98,7 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
             if (!recurse) {
                 f = f.substr(0, f.find(field_separator, prefix_len));
             }
-            if (std::find(ret.begin(), ret.begin() + ret_prev_size,
-                          V(*this_, f)) == ret.begin() + ret_prev_size) {
+            if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
                 ret.emplace_back(*this_, f);
             }
         } else if (f.u8String() < prefix_with_sep) {
