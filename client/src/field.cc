@@ -55,12 +55,12 @@ Field Field::child(const SharedString &field) const {
 template <typename S>
 static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    auto field_with_sep = this_->field_.u8String() + field_separator;
+    auto prefix_with_sep = this_->field_.u8String() + field_separator;
     for (const auto &f : keys) {
         // mapはkeyでソートされているので
-        if (this_->field_.empty() || f.startsWith(field_with_sep)) {
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
             return true;
-        } else if (f.u8String() < field_with_sep) {
+        } else if (f.u8String() < prefix_with_sep) {
             continue;
         } else {
             break;
@@ -87,21 +87,23 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
                     bool recurse = true) {
     std::size_t ret_prev_size = ret.size();
     auto keys = store.getEntry(*this_);
-    auto field_with_sep = this_->field_.u8String() + field_separator;
+    std::string prefix_with_sep;
+    std::size_t prefix_len = 0;
+    if (!this_->field.empty()) {
+        prefix_with_sep = this_->field_.u8String() + field_separator;
+        prefix_len = prefix_with_sep.size();
+    }
     for (auto f : keys) {
         // mapはkeyでソートされているので
-        if (this_->field_.empty() || f.startsWith(field_with_sep)) {
-            if (!this_->field_.empty()) {
-                f = f.substr(this_->field_.u8String().size() + 1);
-            }
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
             if (!recurse) {
-                f = f.substr(0, f.find(field_separator));
+                f = f.substr(0, f.find(field_separator, prefix_len));
             }
             if (std::find(ret.begin(), ret.begin() + ret_prev_size,
-                          V(this_->child(f))) == ret.begin() + ret_prev_size) {
-                ret.emplace_back(this_->child(f));
+                          V(*this_, f)) == ret.begin() + ret_prev_size) {
+                ret.emplace_back(*this_, f);
             }
-        } else if (f.u8String() < field_with_sep) {
+        } else if (f.u8String() < prefix_with_sep) {
             continue;
         } else {
             break;

@@ -92,7 +92,7 @@ class WEBCFACE_DLL SharedString {
     bool startsWith(char str) const;
     SharedString substr(std::size_t pos,
                         std::size_t len = std::string::npos) const;
-    std::size_t find(char c) const;
+    std::size_t find(char c, std::size_t pos = 0) const;
 
     bool operator==(const SharedString &other) const;
     bool operator<=(const SharedString &other) const;

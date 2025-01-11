@@ -129,11 +129,11 @@ SharedString SharedString::substr(std::size_t pos, std::size_t len) const {
         return SharedString::fromU8String(u8StringView().substr(pos, len));
     }
 }
-std::size_t SharedString::find(char c) const {
+std::size_t SharedString::find(char c, std::size_t pos) const {
     if (!data) {
         return std::string::npos;
     } else {
-        return u8StringView().find(c);
+        return u8StringView().find(c, pos);
     }
 }
 
