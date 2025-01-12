@@ -413,6 +413,10 @@ TEST_F(ValueTest, shape) {
     for (int fixed = 0; fixed <= 1; fixed++) {
         data_->value_store.setEntry("a"_ss, "b"_ss,
                                     message::ValueShape{{}, fixed == 1});
+        // データの有無で結果が変わってしまう
+        data_->value_store.setRecv(
+            "a"_ss, "b"_ss,
+            std::make_shared<std::vector<double>>(std::vector<double>{1}));
         EXPECT_TRUE(value("a", "b").exists());
         EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
         EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{1});
@@ -426,6 +430,9 @@ TEST_F(ValueTest, shape) {
 
         data_->value_store.setEntry("a"_ss, "b"_ss,
                                     message::ValueShape{{5}, fixed == 1});
+        data_->value_store.setRecv("a"_ss, "b"_ss,
+                                   std::make_shared<std::vector<double>>(
+                                       std::vector<double>{1, 2, 3, 4, 5}));
         EXPECT_TRUE(value("a", "b").exists());
         EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
         EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{5});
@@ -453,6 +460,10 @@ TEST_F(ValueTest, shape) {
 
         data_->value_store.setEntry("a"_ss, "b"_ss,
                                     message::ValueShape{{9}, fixed == 1});
+        data_->value_store.setRecv(
+            "a"_ss, "b"_ss,
+            std::make_shared<std::vector<double>>(
+                std::vector<double>{1, 2, 3, 4, 5, 6, 7, 8, 9}));
         EXPECT_TRUE(value("a", "b").exists());
         EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
         EXPECT_EQ(value("a", "b").fixedShape(), (std::vector<std::size_t>{9}));

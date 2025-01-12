@@ -46,6 +46,7 @@ void Value::assertSize(const ValueShape &shape, std::size_t write_size,
                      (e_size % size == 0 && !shape.is_fixed) ||
                      (v && v->size() % size == 0 && !shape.is_fixed) ||
                      (e_size == 1 && !e->fixed && size == 1) ||
+                     (e_size == 1 && !e->fixed && !v) ||
                      (e_size == 1 && !e->fixed && v && v->size() == size);
         if (!match) {
             throw std::invalid_argument(
