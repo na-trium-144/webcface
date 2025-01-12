@@ -238,6 +238,8 @@ data = {
 			ix?: number | null, // max
 			is?: number | null, // step
 			io?: string[] | number[], // option
+			w?: number, // width
+			h?: number, // height
 		},
 		id: {...},
 		...
@@ -249,6 +251,7 @@ data = {
 * 各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します
 * データは前回のsyncから変更された要素のみを送ります
 * idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります
+* <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> w (width), h (height) 追加
 
 ### view entry (kind = 29)
 * value entryと同様
