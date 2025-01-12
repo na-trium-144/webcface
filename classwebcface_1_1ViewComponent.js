@@ -10,6 +10,7 @@ var classwebcface_1_1ViewComponent =
     [ "bind", "classwebcface_1_1ViewComponent.html#a2ed570329d56e7b71e53c8a6f2696a11", null ],
     [ "cData", "classwebcface_1_1ViewComponent.html#aaf0ed24110d57217055f563e2f179160", null ],
     [ "cDataW", "classwebcface_1_1ViewComponent.html#a358b93d2e84721a2bacb4e5773e889d5", null ],
+    [ "height", "classwebcface_1_1ViewComponent.html#ad3774f6419003470f54fd495124ef51f", null ],
     [ "id", "classwebcface_1_1ViewComponent.html#a4c5cdd8165762b000c6518db56830677", null ],
     [ "idW", "classwebcface_1_1ViewComponent.html#a4061e632a5b8d7d178d892b0444a7b67", null ],
     [ "max", "classwebcface_1_1ViewComponent.html#a0aed672f8abc2efb3dff9708f52896a3", null ],
@@ -27,5 +28,6 @@ var classwebcface_1_1ViewComponent =
     [ "text", "classwebcface_1_1ViewComponent.html#a0627ce9d4496345ea0233aa48e179aa5", null ],
     [ "textColor", "classwebcface_1_1ViewComponent.html#a8706caeec86b7fd2c88d0cf36f62b84d", null ],
     [ "textW", "classwebcface_1_1ViewComponent.html#afab8d648f381a6398bd51c7c592027d4", null ],
-    [ "type", "classwebcface_1_1ViewComponent.html#ab67824aaebde62b2cab953fdfa538a87", null ]
+    [ "type", "classwebcface_1_1ViewComponent.html#ab67824aaebde62b2cab953fdfa538a87", null ],
+    [ "width", "classwebcface_1_1ViewComponent.html#ad72663daf610f2a0833a2fc3d78e4fdf", null ]
 ];

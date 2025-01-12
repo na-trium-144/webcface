@@ -9,6 +9,8 @@ var classwebcface_1_1TemporalViewComponent =
     [ "bgColor", "classwebcface_1_1TemporalViewComponent.html#ad9d9a18be55cfdf3c356f3b7c8fb7618", null ],
     [ "bind", "classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb", null ],
     [ "bind", "classwebcface_1_1TemporalViewComponent.html#a89b21c4c5798d3578ef3f879a47604ec", null ],
+    [ "height", "classwebcface_1_1TemporalViewComponent.html#a4023a8fd5ea3f0f971457ccecc4b1240", null ],
+    [ "height", "classwebcface_1_1TemporalViewComponent.html#ad8427b6debcbbfe178d8a640c546ac9a", null ],
     [ "id", "classwebcface_1_1TemporalViewComponent.html#a15ad27cc4c91db0504f3e788b2596709", null ],
     [ "id", "classwebcface_1_1TemporalViewComponent.html#a87d278bb540ebddc76a6ecd449d0465d", null ],
     [ "init", "classwebcface_1_1TemporalViewComponent.html#a4346c4c93aca9ea62f4d771c51dd7a93", null ],
@@ -43,6 +45,8 @@ var classwebcface_1_1TemporalViewComponent =
     [ "text", "classwebcface_1_1TemporalViewComponent.html#adfb073c4a6a22e0aee82c0046b25ba11", null ],
     [ "textColor", "classwebcface_1_1TemporalViewComponent.html#ab525d10b7690fe83b9e8bb407f00ff46", null ],
     [ "textColor", "classwebcface_1_1TemporalViewComponent.html#a26d27630c0bd10206e2b4a5b72f3550a", null ],
+    [ "width", "classwebcface_1_1TemporalViewComponent.html#a89f8f6c9ff1d4926a7ee55420b6d9cba", null ],
+    [ "width", "classwebcface_1_1TemporalViewComponent.html#a895a726291495235f810665687ed1ec1", null ],
     [ "ViewBuf", "classwebcface_1_1TemporalViewComponent.html#a5edc4e3ec776ace89fa9ed22e74c9017", null ],
     [ "View", "classwebcface_1_1TemporalViewComponent.html#a018ff8a950133459fda57a235706a80b", null ]
 ];

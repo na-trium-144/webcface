@@ -302,9 +302,9 @@ Point, Transform</h1>
 <div class="line"><span class="comment"># ... 省略</span></div>
 <div class="line">canvas.sync() <span class="comment"># ここまでにcanvasに追加したものをクライアントに反映</span></div>
 <div class="line">wcli.sync()<span class="comment">#</span></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface::components::geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> components.h:468</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface::components::geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> components.h:524</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface::components::geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> components.h:422</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a70a6a0aadee31b74968201a0eee0bf5f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a70a6a0aadee31b74968201a0eee0bf5f">webcface::components::geometries::rect</a></div><div class="ttdeci">TemporalGeometry rect(const Point &amp;origin, double width, double height)</div><div class="ttdef"><b>Definition</b> components.h:507</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a8054b6a17f6efeeeff18590a7b38f8e2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a8054b6a17f6efeeeff18590a7b38f8e2">webcface::components::geometries::circle</a></div><div class="ttdeci">TemporalGeometry circle(const Transform &amp;origin, double radius)</div><div class="ttdef"><b>Definition</b> components.h:563</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_ab71462a4b3c7f94d111654688068b64f"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f">webcface::components::geometries::polygon</a></div><div class="ttdeci">TemporalGeometry polygon(const std::vector&lt; Point &gt; &amp;points)</div><div class="ttdef"><b>Definition</b> components.h:461</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png" alt="example_canvas2d.png" class="inline"/></p>
 <p class="startli">init() で指定するキャンバスのサイズを canvas2d() 時に指定することもできます。(init() は不要になります) </p><div class="fragment"><div class="line">canvas = wcli.canvas2d(<span class="stringliteral">&quot;canvas&quot;</span>, 100, 100)</div>
 </div><!-- fragment --><p> また、with構文を使って <code>with wcli.canvas2d("hoge", width, height) as canvas:</code> などとするとwithを抜けるときに自動でcanvas.sync()がされます。</p>
@@ -319,7 +319,7 @@ Geometry (2次元)</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
 <code><a class="el" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></code> 名前空間に定義されています。 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:381</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:420</div></div>
 </div><!-- fragment --> をすると便利かもしれません <dl class="section note"><dt>Note</dt><dd>namespace geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas2DComponent.html" title="Canvas2Dの各要素を表すクラス。">webcface::Canvas2DComponent</a> または <a class="el" href="structwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。</li>
 <li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
@@ -432,7 +432,7 @@ Entry, Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 11 2025 18:50:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Jan 12 2025 15:49:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

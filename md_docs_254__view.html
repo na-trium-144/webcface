@@ -244,7 +244,7 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 <div class="line">v.add(i, <span class="stringliteral">&quot;\n&quot;</span>) <span class="comment"># i は適当な変数とか</span></div>
 <div class="line">v.add(<a class="code hl_function" href="namespacewebcface_1_1components.html#a88c2cdf079489564311bab9249d5c086">webcface.components.button</a>(<span class="stringliteral">&quot;a&quot;</span>, <span class="keyword">lambda</span>: print(<span class="stringliteral">&quot;hello&quot;</span>)))</div>
 <div class="line">v.sync()</div>
-<div class="ttc" id="anamespacewebcface_1_1components_html_a88c2cdf079489564311bab9249d5c086"><div class="ttname"><a href="namespacewebcface_1_1components.html#a88c2cdf079489564311bab9249d5c086">webcface::components::button</a></div><div class="ttdeci">TemporalViewComponent button(std::string_view text, T &amp;&amp;func)</div><div class="ttdoc">buttonコンポーネント</div><div class="ttdef"><b>Definition</b> components.h:615</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html_a88c2cdf079489564311bab9249d5c086"><div class="ttname"><a href="namespacewebcface_1_1components.html#a88c2cdf079489564311bab9249d5c086">webcface::components::button</a></div><div class="ttdeci">TemporalViewComponent button(std::string_view text, T &amp;&amp;func)</div><div class="ttdoc">buttonコンポーネント</div><div class="ttdef"><b>Definition</b> components.h:654</div></div>
 </div><!-- fragment --><p> add() にはコンマ区切りで複数の要素を渡すこともできます(1つずつadd()するのと同じです)</p>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_view.png" alt="example_view.png" class="inline"/></p>
 <p class="startli">with構文を使って <code>with wcli.view("hoge") as v:</code> などとするとwithを抜けるときに自動でv.sync()がされます。 </p><div class="fragment"><div class="line"><span class="keyword">with</span> wcli.view(<span class="stringliteral">&quot;a&quot;</span>) <span class="keyword">as</span> v:</div>
@@ -261,7 +261,7 @@ ViewComponent</h1>
  <span class="since-c">1.9</span> <del><code>webcface::Components</code></del> <br  />
  <span class="since-c">2.0</span> <code><a class="el" href="namespacewebcface_1_1components.html">webcface::components</a></code> 名前空間に定義されています。</p>
 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1components.html">webcface::components</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1components_html"><div class="ttname"><a href="namespacewebcface_1_1components.html">webcface::components</a></div><div class="ttdef"><b>Definition</b> components.h:380</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html"><div class="ttname"><a href="namespacewebcface_1_1components.html">webcface::components</a></div><div class="ttdef"><b>Definition</b> components.h:419</div></div>
 </div><!-- fragment --><p> をすると便利かもしれません</p>
 <dl class="section note"><dt>Note</dt><dd><ul>
 <li>namespace components はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です。</li>
@@ -382,7 +382,10 @@ input</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span><span class="since-js">1.6</span><span class="since-py">2.0</span></dd></dl>
 <p>viewに入力欄を表示します。</p>
 <ul>
-<li>textInput: 文字列入力</li>
+<li>textInput: 文字列入力<ul>
+<li><span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> height プロパティを2以上にすることで複数行入力欄になります。</li>
+</ul>
+</li>
 <li>decimalInput: 小数入力</li>
 <li>numberInput: 整数の入力</li>
 <li>selectInput: リストから値を選択させる</li>
@@ -402,7 +405,7 @@ InputRef</h3>
 <div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:439</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a15ad27cc4c91db0504f3e788b2596709"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a15ad27cc4c91db0504f3e788b2596709">webcface::TemporalViewComponent::id</a></div><div class="ttdeci">TemporalViewComponent &amp; id(std::string_view id)</div><div class="ttdoc">idを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:250</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7fe27f33a23d228ef1a701ba30cc6cbb"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref) &amp;</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:309</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:631</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:670</div></div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd>上の例ではinput_valをstatic変数にし寿命が切れないようにしていますが、 staticにできない場合(複数のviewで使い回す場合など)は次の例のようにviewの生成ごとにInputRefオブジェクトを生成・破棄しても動作はします。 <div class="fragment"><div class="line"><span class="keywordflow">while</span> (<span class="keyword">true</span>){</div>
 <div class="line">    <span class="keyword">auto</span> v = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a>(<span class="stringliteral">&quot;a&quot;</span>);</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> input_val;</div>
@@ -474,7 +477,7 @@ onChange</h3>
 <li><p class="startli"><b class="tab-title">C++</b> onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a15ad27cc4c91db0504f3e788b2596709">id</a>(<span class="stringliteral">&quot;input1&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">onChange</a>([](std::string val) {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;input changed: &quot;</span> &lt;&lt; val &lt;&lt; std::endl;</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7003ea06e11e7b952d2e8be1f5a874a6"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">webcface::TemporalViewComponent::onChange</a></div><div class="ttdeci">TemporalViewComponent &amp; onChange(T func) &amp;</div><div class="ttdoc">値が変化した時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_view.h:438</div></div>
+<div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7003ea06e11e7b952d2e8be1f5a874a6"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">webcface::TemporalViewComponent::onChange</a></div><div class="ttdeci">TemporalViewComponent &amp; onChange(T func) &amp;</div><div class="ttdoc">値が変化した時に実行される関数を設定</div><div class="ttdef"><b>Definition</b> component_view.h:448</div></div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>bindとonChangeを両方設定することはできません。</dd></dl>
 <p><span></span></p>
 </li>
@@ -493,6 +496,10 @@ onChange</h3>
 オプション</h2>
 <p>各ViewComponentには以下のオプションを指定することができます。 (要素の種類によっては効果がないものもあります)</p>
 <ul>
+<li>id: <span class="since-c">2.5</span><span class="since-py">3.0</span> インタラクティブな要素に指定するID<ul>
+<li>指定する場合は一意な文字列を指定してください。</li>
+</ul>
+</li>
 <li>textColor: 文字の色を変更します。<ul>
 <li>WebUIではデフォルトは黒です</li>
 </ul>
@@ -501,7 +508,13 @@ onChange</h3>
 <li>WebUIではデフォルトは緑です</li>
 </ul>
 </li>
-<li>各種inputに指定できるオプション (<a class="el" href="md_docs_253__func.html">Func</a>のArgオプションと同様です。)<ul>
+<li>width, height: <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> 要素の幅、高さを指定します。<ul>
+<li>サイズの単位、0または負の場合の表示方法は実装依存です。</li>
+<li>WebUIでは正の整数を指定すると 指定した値 * 1em になります</li>
+<li>デフォルトでは0になっています。</li>
+</ul>
+</li>
+<li>各種inputに指定できる入力データのオプション (<a class="el" href="md_docs_253__func.html">Func</a>のArgオプションと同様です。)<ul>
 <li>init: 初期値</li>
 <li>min: 最小値, max: 最大値 (decimalInput, numberInput, sliderInputのみ)</li>
 <li>min: 最小文字数, max: 最大文字数 (textInputのみ)</li>
@@ -612,7 +625,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 11 2025 18:50:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Jan 12 2025 15:49:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

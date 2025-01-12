@@ -475,6 +475,8 @@ view (kind = 9)</h2>
 <div class="line">            ix?: number | null, // max</div>
 <div class="line">            is?: number | null, // step</div>
 <div class="line">            io?: string[] | number[], // option</div>
+<div class="line">            w?: number, // width</div>
+<div class="line">            h?: number, // height</div>
 <div class="line">        },</div>
 <div class="line">        id: {...},</div>
 <div class="line">        ...</div>
@@ -486,6 +488,7 @@ view (kind = 9)</h2>
 <li>各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します</li>
 <li>データは前回のsyncから変更された要素のみを送ります</li>
 <li>idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります</li>
+<li><span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> w (width), h (height) 追加</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md203"></a>
 view entry (kind = 29)</h2>
@@ -953,7 +956,7 @@ log_req_default (kind = 86)</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 11 2025 18:50:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Jan 12 2025 15:49:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
