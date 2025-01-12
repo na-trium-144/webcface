@@ -351,6 +351,11 @@ class WEBCFACE_DLL Value : protected Field {
      * \sa assertSize()
      */
     const Value &push_back(double v) const;
+    /*!
+     * \since ver2.6
+     * \sa push_back()
+     */
+    const Value &pushBack(double v) const { return push_back(v); }
 
     /*!
      * \brief 数値または配列をセットする

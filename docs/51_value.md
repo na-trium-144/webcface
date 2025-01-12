@@ -48,7 +48,7 @@ webcface-send
 
     <span class="since-c">1.11</span>
     valueに直接`[]`(または`child()`)で要素アクセスが可能です。
-    また、resize()で配列を初期化しpush_back()で追加する使い方もできます。
+    また、resize()で配列を初期化し push_back() (<span class="since-c">2.6</span> pushBack() も可) で追加する使い方もできます。
     ```cpp
     wcli.value("fuga").resize(5);
     for(int i = 0; i < 5; i++){
