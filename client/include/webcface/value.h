@@ -246,11 +246,11 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \since ver2.6
      *
-     * * データがこのクライアント自身のものの場合、resizeする。
-     * * そうでない場合、
-     * fixed=trueならサイズが一致しているかどうか、
-     * fixed=falseならサイズがsizeの倍数かどうかを確認し、
+     * * ValueFixedとValueListから呼び出してサイズチェックするのに使う。
+     * Valueクラスはこれを使わない
+     * * すでにデータが存在する場合、そのサイズがsizeの倍数かどうかを確認し、
      * 一致しない場合 std::runtime_error を投げる。
+     * * 存在しない場合、resizeする。
      *
      */
     void assertSize(std::size_t size, bool fixed) const;
