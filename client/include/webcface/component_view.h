@@ -260,6 +260,16 @@ class WEBCFACE_DLL ViewComponent {
      *
      */
     std::vector<ValAdaptor> option() const;
+    /*!
+     * \brief 要素の幅を取得する。
+     * \since ver2.6
+     */
+    int width() const;
+    /*!
+     * \brief 要素の高さを取得する。
+     * \since ver2.6
+     */
+    int height() const;
 };
 extern template std::optional<Func>
 ViewComponent::onClick<Func, nullptr>() const;
@@ -597,6 +607,37 @@ class WEBCFACE_DLL TemporalViewComponent {
      */
     TemporalViewComponent &&option(std::vector<ValAdaptor> option) && {
         this->option(std::move(option));
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief 要素の幅を設定する。
+     * \since ver2.6
+     *
+     * * 0または負の値の場合どのように表示されるかは実装依存
+     */
+    TemporalViewComponent &width(int width) &;
+    /*!
+     * \brief 要素の幅を設定する。
+     * \since ver2.6
+     */
+    TemporalViewComponent &&width(int width) && {
+        this->width(width);
+        return std::move(*this);
+    }
+    /*!
+     * \brief 要素の高さを設定する。
+     * \since ver2.6
+     *
+     * * 0または負の値の場合どのように表示されるかは実装依存
+     */
+    TemporalViewComponent &height(int height) &;
+    /*!
+     * \brief 要素の高さを設定する。
+     * \since ver2.6
+     */
+    TemporalViewComponent &&height(int height) && {
+        this->height(height);
         return std::move(*this);
     }
 };

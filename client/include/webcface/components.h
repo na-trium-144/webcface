@@ -364,6 +364,45 @@ struct TemporalComponent {
         this->textSize(s);
         return std::move(*this);
     }
+
+    /*!
+     * \brief 要素の幅 (Viewのみ)
+     * \since ver2.6
+     */
+    TemporalComponent &width(int width) & {
+        static_assert(V, "width can be set only for View components");
+        if constexpr (V) {
+            component_v.width(width);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 要素の幅 (Viewのみ)
+     * \since ver2.6
+     */
+    TemporalComponent &&width(int width) && {
+        this->width(width);
+        return std::move(*this);
+    }
+    /*!
+     * \brief 要素の高さ (Viewのみ)
+     * \since ver2.6
+     */
+    TemporalComponent &height(int height) & {
+        static_assert(V, "height can be set only for View components");
+        if constexpr (V) {
+            component_v.height(height);
+        }
+        return *this;
+    }
+    /*!
+     * \brief 要素の高さ (Viewのみ)
+     * \since ver2.6
+     */
+    TemporalComponent &&height(int height) && {
+        this->height(height);
+        return std::move(*this);
+    }
 };
 class TemporalGeometry : public TemporalComponent<false, true, true>,
                          public Geometry {

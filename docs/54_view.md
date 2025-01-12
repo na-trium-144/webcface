@@ -395,6 +395,7 @@ v.sync();
 viewに入力欄を表示します。
 
 - textInput: 文字列入力
+  - <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> height プロパティを2以上にすることで複数行入力欄になります。
 - decimalInput: 小数入力
 - numberInput: 整数の入力
 - selectInput: リストから値を選択させる
@@ -577,11 +578,17 @@ viewに入力欄を表示します。
 各ViewComponentには以下のオプションを指定することができます。
 (要素の種類によっては効果がないものもあります)
 
+* id: <span class="since-c">2.5</span><span class="since-py">3.0</span> インタラクティブな要素に指定するID
+    * 指定する場合は一意な文字列を指定してください。
 * textColor: 文字の色を変更します。
     * WebUIではデフォルトは黒です
 * bgColor: 背景色を変更します。
     * WebUIではデフォルトは緑です
-* 各種inputに指定できるオプション
+* width, height: <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> 要素の幅、高さを指定します。
+    * サイズの単位、0または負の場合の表示方法は実装依存です。
+    * WebUIでは正の整数を指定すると 指定した値 \* 1em になります
+    * デフォルトでは0になっています。
+* 各種inputに指定できる入力データのオプション
 ([Func](./53_func.md)のArgオプションと同様です。)
     * init: 初期値
     * min: 最小値, max: 最大値 (decimalInput, numberInput, sliderInputのみ)

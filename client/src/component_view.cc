@@ -392,4 +392,21 @@ TemporalViewComponent::option(std::vector<ValAdaptor> option) & {
     return *this;
 }
 
+int ViewComponent::width() const {
+    checkData();
+    return msg_data->width;
+}
+TemporalViewComponent &TemporalViewComponent::width(int width) & {
+    msg_data->width = width;
+    return *this;
+}
+int ViewComponent::height() const {
+    checkData();
+    return msg_data->height;
+}
+TemporalViewComponent &TemporalViewComponent::height(int height) & {
+    msg_data->height = height;
+    return *this;
+}
+
 WEBCFACE_NS_END
