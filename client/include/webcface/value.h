@@ -39,14 +39,14 @@ class ValueElement;
 template <std::size_t FirstDim, std::size_t... Shape>
 class ValueElement<FirstDim, Shape...> : protected Field {
     std::size_t index;
-    ValueShape shape;
+    ValueShape original_shape;
 
   public:
     using Vector = std::vector<typename ValueElement<Shape...>::Vector>;
     using Array = std::array<typename ValueElement<Shape...>::Array, FirstDim>;
 
     ValueElement(const Field &base, std::size_t index, ValueShape shape)
-        : Field(base), index(index), shape(std::move(shape)) {}
+        : Field(base), index(index), original_shape(std::move(shape)) {}
 
     /*!
      * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
@@ -59,7 +59,7 @@ class ValueElement<FirstDim, Shape...> : protected Field {
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
         return ValueElement<Shape...>(*this, this->index * FirstDim + index,
-                                      shape);
+                                      original_shape);
     }
 
     // std::optional<Vector> tryGetVec() const;
@@ -84,14 +84,14 @@ class ValueElement<FirstDim, Shape...> : protected Field {
 template <>
 class WEBCFACE_DLL ValueElement<> : protected Field {
     std::size_t index;
-    ValueShape shape;
+    ValueShape original_shape;
 
   public:
     using Vector = double;
     using Array = double;
 
     ValueElement(const Field &base, std::size_t index, ValueShape shape)
-        : Field(base), index(index), shape(std::move(shape)) {}
+        : Field(base), index(index), original_shape(std::move(shape)) {}
 
     template <std::size_t...>
     friend class ValueElement;
@@ -120,14 +120,6 @@ class WEBCFACE_DLL ValueElement<> : protected Field {
      *
      */
     double get() const { return tryGet().value_or(0); }
-
-    bool tryGetVec(double &target) const {
-        auto v = tryGet();
-        if (v) {
-            target = *v;
-        }
-        return v.has_value();
-    }
 };
 
 /*!
@@ -202,7 +194,7 @@ class WEBCFACE_DLL Value : protected Field {
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<> operator[](T index) const {
-        return ValueElement<>(*this, index, {{}, false});
+        return ValueElement<>(*this, index, {{1}, false});
     }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
@@ -246,24 +238,39 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \since ver2.6
      *
-     * * ValueFixedとValueListから呼び出してサイズチェックするのに使う。
-     * Valueクラスはこれを使わない
-     * * すでにデータが存在する場合、そのサイズがsizeの倍数かどうかを確認し、
-     * 一致しない場合 std::runtime_error を投げる。
-     * * 存在しない場合、resizeする。
+     * * ValueElement, Value, ValueFixed, ValueListの、
+     * setImpl 以外のset関数とget関数から呼ばれる
+     * * すでにEntryやデータが存在する場合、
+     * 次のように引数で渡したサイズと互換性があるかをチェックし、
+     * 一致しない場合 std::invalid_argument を投げる。
+     *   * entryが引数と完全一致している場合はok。
+     *   *
+     * 引数で渡したsizeがEntryのfixedSizeと一致するまたはその約数であれば可変長データに変換可能。
+     *      * すなわち、どんなデータもfixedSize=1の可変長 (Value::getVec())
+     * には変換可能。
+     *   *
+     * 引数で渡したsizeが実際のデータサイズと一致するまたはその約数であれば可変長データに変換可能。
+     *   * 後方互換性のため、fixedSize=1の可変長データに限り、
+     *      * fixedSize=1の固定長に変換可能(先頭の要素を返す)。
+     *      * 実際のデータサイズと一致する固定長に変換可能。
+     * * write_size が0でない場合、さらに write_size
+     * の配列からEntryのデータ型への変換が可能かどうかをチェックする。
+     * * Entryが存在しない場合、
+     * 自身のデータに関してはwrite_size が0でなければEntryを登録する。
+     * 他Memberのデータに関してはなにもしない。
+     *
      *
      */
-    void assertSize(std::size_t size, bool fixed) const;
+    void assertSize(const ValueShape &shape, std::size_t write_size,
+                    bool overwrite_entry) const;
     /*!
      * \since ver2.6
-     */
-    const Value &setImpl(std::vector<double> v, const ValueShape &shape) const;
-    /*!
-     * \since ver2.6
-     *
-     * shapeを変更しない
      */
     const Value &setImpl(std::vector<double> v) const;
+    /*!
+     * \since ver2.6
+     */
+    const Value &resizeImpl(std::size_t size, bool overwrite_entry) const;
     /*!
      * \since ver2.6
      *
@@ -291,17 +298,23 @@ class WEBCFACE_DLL Value : protected Field {
      * <del>vが配列でなく、parent()の配列データが利用可能ならその要素をセットする</del>
      *   * (ver2.6〜) 配列データの要素にアクセスするには、 operator[] で得られる
      * ValueElement を使う
-     * * (ver2.6〜) セットしたデータはサイズ1の固定長データとなる
-     * (ValueFixed<1>()::set() と同じ)
+     * * (ver2.6〜)
+     * データがまだセットされていなければfixedSize=1の固定長データにする
+     *   * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
      *
+     * \sa assertSize()
      */
     const Value &set(double v) const;
     /*!
      * \brief vector型配列をセットする
      * \since ver2.0 (set(VectorOpt<double>) を置き換え)
      *
-     * * (ver2.6〜) データ型は可変長となる
+     * * (ver2.6〜) データ型はfixedSize=1の可変長データにする
+     *   * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
      *
+     * \sa assertSize()
      */
     const Value &set(std::vector<double> v) const;
     /*!
@@ -312,8 +325,11 @@ class WEBCFACE_DLL Value : protected Field {
      * * (ver2.5〜) std::begin()
      * が使えてその値がdoubleに変換可能ならなんでもok
      * * (ver2.6〜) ネストした配列も可
-     * * (ver2.6〜) データ型は可変長となる
+     * (ver2.6〜) データ型はfixedSize=1の可変長データにする
+     *   * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
      *
+     * \sa assertSize()
      */
     template <typename R, typename traits::NestedArrayLikeTrait<R>::ArrayLike =
                               traits::TraitOk>
@@ -327,6 +343,12 @@ class WEBCFACE_DLL Value : protected Field {
     const Value &resize(std::size_t size) const;
     /*!
      * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
+     *
+     * (ver2.6〜) データ型はfixedSize=1の可変長データにする
+     *   * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
      */
     const Value &push_back(double v) const;
 
@@ -591,6 +613,10 @@ class ValueFixed : Value {
     static constexpr std::size_t Size = (FirstDim * ... * Shape);
     static_assert(Size > 0);
 
+    static ValueShape templateShape() {
+        return ValueShape{{FirstDim, Shape...}, true};
+    }
+
   public:
     using Vector = typename ValueElement<FirstDim, Shape...>::Vector;
     using Array = typename ValueElement<FirstDim, Shape...>::Array;
@@ -608,18 +634,17 @@ class ValueFixed : Value {
      * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
      *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
      * とは異なる挙動になる
-     * * データがこのクライアント自身のものの場合、resizeする。
-     * そうでない場合、受信したデータのサイズが一致しているかどうかを確認し、
-     * 一致しない場合 std::runtime_error を投げる。
      * * 2次元以上の配列の場合 ValueElement に再度 operator[]
      * を使うことで次元を1つ減らす
      */
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
-        this->Value::assertSize(Size, true);
-        return ValueElement<Shape...>(*this, index,
-                                      ValueShape{{FirstDim, Shape...}, true});
+        if (this->Field::isSelf()) {
+            this->Value::assertSize(templateShape(), Size, true);
+            this->Value::resizeImpl(Size, false);
+        }
+        return ValueElement<Shape...>(*this, index, templateShape());
     }
 
     const ValueFixed &onChange(std::nullptr_t) const {
@@ -656,11 +681,16 @@ class ValueFixed : Value {
     /*!
      * \brief vector型配列をセットする
      *
-     * サイズが一致しない場合 std::invalid_argument を投げる
+     * サイズがテンプレート引数と一致しない場合 std::invalid_argument を投げる
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
      */
     const ValueFixed &set(std::vector<double> v) const {
-        this->Value::setImpl(std::move(v),
-                             ValueShape{{FirstDim, Shape...}, true});
+        this->Value::assertSize(templateShape(), Size, true);
+        this->Value::assertSize(templateShape(), v.size(), true);
+        this->Value::setImpl(std::move(v));
         return *this;
     }
     /*!
@@ -673,7 +703,10 @@ class ValueFixed : Value {
      * サイズが一致しなければコンパイルエラー
      * * std::vector などサイズが取得できない型を渡した場合、
      * 実行時にサイズが一致しなければ std::invalid_argument を投げる
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
      *
+     * \sa assertSize()
      */
     template <
         typename R,
@@ -693,27 +726,68 @@ class ValueFixed : Value {
         this->Value::request();
         return *this;
     }
+    /*!
+     * \brief 値を取得する (配列サイズが1の場合のみ)
+     */
     template <std::size_t s = Size,
               std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     std::optional<double> tryGet() const {
-        this->Value::assertSize(Size, true);
         return this->Value::tryGet();
     }
+    /*!
+     * \brief 配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     std::optional<Vector> tryGetVec() const {
-        this->Value::assertSize(Size, true);
-        return ValueElement<FirstDim, Shape...>(*this, 0, {}).tryGetVec();
+        return ValueElement<FirstDim, Shape...>(*this, 0, templateShape())
+            .tryGetVec();
     }
+    /*!
+     * \brief 固定長配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたarrayを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     std::optional<Array> tryGetArray() const {
-        this->Value::assertSize(Size, true);
-        return ValueElement<FirstDim, Shape...>(*this, 0, {}).tryGetArray();
+        return ValueElement<FirstDim, Shape...>(*this, 0, templateShape())
+            .tryGetArray();
     }
 
+    /*!
+     * \brief 値を取得する (配列サイズが1の場合のみ)
+     */
     template <std::size_t s = Size,
               std::enable_if_t<s == Size && s == 1, std::nullptr_t> = nullptr>
     double get() const {
         return tryGet().value_or(0);
     }
+    /*!
+     * \brief 配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     Vector getVec() const { return tryGetVec().value_or(Vector{}); }
+    /*!
+     * \brief 固定長配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたarrayを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     Array getArray() const { return tryGetArray().value_or(Array{}); }
 
     template <std::size_t s = Size,
@@ -728,14 +802,22 @@ class ValueFixed : Value {
      * テンプレートで指定したサイズと実際のデータサイズが一致しているかを返す。
      *
      * * データが存在しない場合はtrueを返す。
-     * * データが存在する場合、 `Value::isFixed() && Value::fixedSize() ==
-     * (shapeの積)` と同じ。
+     * * データが存在する場合、
+     * `Value::isFixed() && Value::fixedSize() == (shapeの積)` とほぼ同じ。
      * * shapeが一致しているかどうかは問わない。
      *
+     * \sa Value::assertSize()
      */
     bool sizeValid() const {
-        return !this->Value::exists() ||
-               (this->Value::isFixed() && this->Value::fixedSize() == Size);
+        if (!this->Value::exists()) {
+            return true;
+        }
+        try {
+            this->Value::assertSize(templateShape(), 0, false);
+            return true;
+        } catch (const std::invalid_argument &) {
+            return false;
+        }
     }
 
     const ValueFixed &free() const {
@@ -773,6 +855,8 @@ class ValueList : Value {
     static constexpr std::size_t Size = (1 * ... * Shape);
     static_assert(Size > 0);
 
+    static ValueShape templateShape() { return ValueShape{{Shape...}, false}; }
+
   public:
     using VectorElem = typename ValueElement<Shape...>::Vector;
     using ArrayElem = typename ValueElement<Shape...>::Array;
@@ -790,18 +874,13 @@ class ValueList : Value {
      * * 配列型Valueデータの要素をset,getするためのValueElementクラスを返す
      *   * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
      * とは異なる挙動になる
-     * * データがこのクライアント自身のものの場合、resizeする。
-     * そうでない場合、受信したデータのサイズが一致しているかどうかを確認し、
-     * 一致しない場合 std::runtime_error を投げる。
      * * 2次元以上の配列の場合 ValueElement に再度 operator[]
      * を使うことで次元を1つ減らす
      */
     template <typename T,
               std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
     ValueElement<Shape...> operator[](T index) const {
-        this->Value::assertSize(Size, false);
-        return ValueElement<Shape...>(*this, index,
-                                      ValueShape{{Shape...}, false});
+        return ValueElement<Shape...>(*this, index, templateShape());
     }
 
     const ValueList &onChange(std::nullptr_t) const {
@@ -828,10 +907,16 @@ class ValueList : Value {
     /*!
      * \brief vector型配列をセットする
      *
-     * サイズがShapeの倍数でない場合 std::invalid_argument を投げる
+     * * サイズがShapeの倍数でない場合 std::invalid_argument を投げる
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
      */
     const ValueList &set(std::vector<double> v) const {
-        this->Value::setImpl(std::move(v), ValueShape{{Shape...}, false});
+        this->Value::assertSize(templateShape(), Size, true);
+        this->Value::assertSize(templateShape(), v.size(), true);
+        this->Value::setImpl(std::move(v));
         return *this;
     }
     /*!
@@ -844,7 +929,10 @@ class ValueList : Value {
      * サイズが一致しなければコンパイルエラー
      * * std::vector などサイズが取得できない型を渡した場合、
      * 実行時にサイズが一致しなければ std::invalid_argument を投げる
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
      *
+     * \sa assertSize()
      */
     template <
         typename R,
@@ -857,10 +945,15 @@ class ValueList : Value {
     /*!
      * \brief 配列をセット、またはすでにsetされていればリサイズする
      *
-     * double型の値の総数ではなく、最も外側の次元のサイズを指定する
+     * * double型の値の総数ではなく、最も外側の次元のサイズを指定する
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
      */
     const ValueList &resize(std::size_t size) const {
-        this->Value::resize(size * Size);
+        this->Value::assertSize(templateShape(), size * Size, true);
+        this->Value::resizeImpl(size * Size, false);
         return *this;
     }
     /*!
@@ -878,11 +971,21 @@ class ValueList : Value {
         this->Value::request();
         return *this;
     }
+    /*!
+     * \brief 配列を取得する
+     *
+     * * テンプレート引数の数 +1 だけネストしたvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     std::optional<std::vector<VectorElem>> tryGetVec() const {
         if constexpr (sizeof...(Shape) == 0) {
+            this->Value::assertSize(templateShape(), 0, false);
             return Value(*this).tryGetVec();
         } else {
-            this->Value::assertSize(Size, false);
+            this->Value::assertSize(templateShape(), 0, false);
             std::vector<VectorElem> vec;
             auto rows = this->Value::size() / Size;
             for (std::size_t i = 0; i < rows; i++) {
@@ -896,10 +999,19 @@ class ValueList : Value {
             return vec;
         }
     }
+    /*!
+     * \brief 固定長配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたarray のvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     template <std::size_t s = Size,
               std::enable_if_t<s == Size && (s > 1), std::nullptr_t> = nullptr>
     std::optional<std::vector<ArrayElem>> tryGetArray() const {
-        this->Value::assertSize(Size, false);
+        this->Value::assertSize(templateShape(), 0, false);
         auto rows = this->Value::size() / Size;
         std::vector<ArrayElem> vec(rows);
         for (std::size_t i = 0; i < rows; i++) {
@@ -910,9 +1022,27 @@ class ValueList : Value {
         return vec;
     }
 
+    /*!
+     * \brief 配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     std::vector<VectorElem> getVec() const {
         return tryGetVec().value_or(std::vector<VectorElem>{});
     }
+    /*!
+     * \brief 固定長配列を取得する
+     *
+     * * テンプレート引数の数と同じだけネストしたarray のvectorを返す。
+     * * すでにセットされているデータ型と互換性がない場合
+     * std::invalid_argumentを投げる
+     *
+     * \sa assertSize()
+     */
     template <std::size_t s = Size,
               std::enable_if_t<s == Size && (s > 1), std::nullptr_t> = nullptr>
     std::vector<ArrayElem> getArray() const {
@@ -938,9 +1068,18 @@ class ValueList : Value {
      * の倍数になっていればtrue。
      * * 固定長か可変長か、shapeが一致しているかどうかは問わない。
      *
+     * \sa Value::assertSize()
      */
     bool sizeValid() const {
-        return !this->Value::exists() || this->Value::fixedSize() % Size == 0;
+        if (!this->Value::exists()) {
+            return true;
+        }
+        try {
+            this->Value::assertSize(templateShape(), 0, false);
+            return true;
+        } catch (const std::invalid_argument &) {
+            return false;
+        }
     }
 
     const ValueList &free() const {
@@ -970,6 +1109,7 @@ template <std::size_t FirstDim, std::size_t... Shape>
 auto ValueElement<FirstDim, Shape...>::tryGetVec() const
     -> std::optional<Vector> {
     if constexpr (sizeof...(Shape) == 0) {
+        Value(*this).assertSize(original_shape, 0, false);
         return Value(*this).tryGetVec(this->index * FirstDim, FirstDim);
     } else {
         Vector vec;
@@ -989,6 +1129,7 @@ template <std::size_t FirstDim, std::size_t... Shape>
 bool ValueElement<FirstDim, Shape...>::tryGetArray(
     typename ValueElement<FirstDim, Shape...>::Array &target) const {
     if constexpr (sizeof...(Shape) == 0) {
+        Value(*this).assertSize(original_shape, 0, false);
         return Value(*this).tryGetArray(target.data(), this->index * FirstDim,
                                         FirstDim);
     } else {

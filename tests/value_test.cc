@@ -131,19 +131,19 @@ TEST_F(ValueTest, valueSet) {
     // valueList<>(self_name, "b6").set(123);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b"_ss).shape,
-              std::vector<std::size_t>{});
+              std::vector<std::size_t>{1});
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b2"_ss)).at(0), 123);
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b2"_ss).shape,
-              std::vector<std::size_t>{});
+              std::vector<std::size_t>{1});
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b2"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b3"_ss)).at(0), 123);
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b3"_ss).shape,
-              std::vector<std::size_t>{});
+              std::vector<std::size_t>{1});
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b3"_ss).fixed, true);
     EXPECT_EQ((*data_->value_store.getRecv(self_name, "b4"_ss)).at(0), 123);
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b4"_ss).shape,
-              (std::vector<std::size_t>{}));
+              (std::vector<std::size_t>{1}));
     EXPECT_EQ(data_->value_store.getEntry(self_name).at("b4"_ss).fixed, true);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
@@ -247,7 +247,7 @@ TEST_F(ValueTest, valueSetVec) {
     for (const SharedString &field : {"d"_ss, "d2"_ss, "d3"_ss, "d4"_ss,
                                       "d5"_ss, "d6"_ss, /*"d7"_ss,*/ "d8"_ss}) {
         EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).shape,
-                  std::vector<std::size_t>{});
+                  std::vector<std::size_t>{1});
         EXPECT_EQ(data_->value_store.getEntry(self_name).at(field).fixed,
                   false);
     }
@@ -417,7 +417,7 @@ TEST_F(ValueTest, shape) {
         EXPECT_EQ(value("a", "b").isFixed(), fixed == 1);
         EXPECT_EQ(value("a", "b").fixedShape(), std::vector<std::size_t>{1});
         EXPECT_EQ(value("a", "b").fixedSize(), 1u);
-        EXPECT_EQ(valueFixed<1>("a", "b").sizeValid(), fixed == 1);
+        EXPECT_TRUE(valueFixed<1>("a", "b").sizeValid());
         EXPECT_FALSE(valueFixed<5>("a", "b").sizeValid());
         EXPECT_FALSE((valueFixed<1, 5, 1>("a", "b")).sizeValid());
         EXPECT_TRUE(valueList<>("a", "b").sizeValid());
@@ -469,6 +469,7 @@ TEST_F(ValueTest, valueGet) {
     data_->value_store.setRecv(
         "a"_ss, "b"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>({123})));
+    data_->value_store.setEntry("a"_ss, "b"_ss, {});
     EXPECT_EQ(value("a", "b").tryGet().value(), 123);
     EXPECT_EQ(value("a", "b").get(), 123);
     EXPECT_EQ(valueFixed<1>("a", "b").tryGet().value(), 123);
@@ -486,6 +487,7 @@ TEST_F(ValueTest, valueGetVec) {
     data_->value_store.setRecv(
         "a"_ss, "b"_ss,
         std::make_shared<std::vector<double>>(std::vector<double>({123})));
+    data_->value_store.setEntry("a"_ss, "b"_ss, {});
     EXPECT_EQ(value("a", "b").tryGetVec().value(), std::vector<double>{123});
     EXPECT_EQ(value("a", "b").getVec(), std::vector<double>{123});
     EXPECT_EQ(value("a", "b").size(), 1u);
@@ -521,10 +523,10 @@ TEST_F(ValueTest, valueGetVec) {
     EXPECT_EQ(valueFixed<5>("a", "b")[1].get(), 2);
     // EXPECT_THROW(valueFixed<5>("a", "b")[5].tryGet(), std::out_of_range);
     // EXPECT_THROW(valueFixed<5>("a", "b")[5].get(), std::out_of_range);
-    EXPECT_THROW(valueFixed<4>("a", "b")[0], std::runtime_error);
-    EXPECT_THROW(valueFixed<4>("a", "b").tryGetVec(), std::runtime_error);
-    EXPECT_THROW(valueFixed<6>("a", "b")[0], std::runtime_error);
-    EXPECT_THROW(valueFixed<6>("a", "b").tryGetVec(), std::runtime_error);
+    EXPECT_THROW(valueFixed<4>("a", "b")[0].tryGet(), std::invalid_argument);
+    EXPECT_THROW(valueFixed<4>("a", "b").tryGetVec(), std::invalid_argument);
+    EXPECT_THROW(valueFixed<6>("a", "b")[0].tryGet(), std::invalid_argument);
+    EXPECT_THROW(valueFixed<6>("a", "b").tryGetVec(), std::invalid_argument);
 
     EXPECT_EQ(valueList<>("a", "b").tryGetVec().value(),
               (std::vector<double>{1, 2, 3, 4, 5}));
@@ -550,10 +552,10 @@ TEST_F(ValueTest, valueGetVec) {
     EXPECT_EQ(valueList<5>("a", "b")[0][1].get(), 2);
     // EXPECT_THROW(valueList<5>("a", "b")[5].tryGet(), std::out_of_range);
     // EXPECT_THROW(valueList<5>("a", "b")[5].get(), std::out_of_range);
-    EXPECT_THROW(valueList<4>("a", "b")[0], std::runtime_error);
-    EXPECT_THROW(valueList<4>("a", "b").tryGetVec(), std::runtime_error);
-    EXPECT_THROW(valueList<6>("a", "b")[0], std::runtime_error);
-    EXPECT_THROW(valueList<6>("a", "b").tryGetVec(), std::runtime_error);
+    EXPECT_THROW(valueList<4>("a", "b")[0][0].tryGet(), std::invalid_argument);
+    EXPECT_THROW(valueList<4>("a", "b").tryGetVec(), std::invalid_argument);
+    EXPECT_THROW(valueList<6>("a", "b")[0][0].tryGet(), std::invalid_argument);
+    EXPECT_THROW(valueList<6>("a", "b").tryGetVec(), std::invalid_argument);
 
     EXPECT_EQ((valueFixed<1, 5, 1>("a", "b").tryGetVec().value()),
               (std::vector<std::vector<std::vector<double>>>{

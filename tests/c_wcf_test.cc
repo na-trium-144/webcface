@@ -188,6 +188,9 @@ TEST_F(CClientTest, valueReq) {
         EXPECT_EQ(obj.field.u8String(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
+    dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
+    dummy_s->send(message::Entry<message::Value>{10, "b"_ss, {}, false});
+    dummy_s->send(message::Entry<message::Value>{10, "b.c"_ss, {}, false});
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
         std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});

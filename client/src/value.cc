@@ -27,41 +27,60 @@ const Value &Value::request() const {
     return *this;
 }
 
-const Value &Value::setImpl(std::vector<double> v,
-                            const ValueShape &shape) const {
-    std::size_t size = std::accumulate(
+void Value::assertSize(const ValueShape &shape, std::size_t write_size,
+                       bool overwrite_entry) const {
+    auto size = std::accumulate(
         shape.fixed_shape.begin(), shape.fixed_shape.end(),
         static_cast<std::size_t>(1), [](auto a, auto b) { return a * b; });
-    if (shape.is_fixed) {
-        if (v.size() != size) {
+    assert(!(overwrite_entry && write_size == 0));
+    auto data = dataLock();
+    std::lock_guard lock(data->value_store.mtx);
+    auto e = data->value_store.getEntryP(this->member_, this->field_);
+    auto v = data->value_store.getRecv(*this);
+    assert(!(v && !e));
+    if (e) {
+        auto e_size = std::accumulate(e->shape.begin(), e->shape.end(),
+                                      static_cast<std::size_t>(1),
+                                      [](auto a, auto b) { return a * b; });
+        bool match = (e_size == size && e->fixed) ||
+                     (e_size % size == 0 && !shape.is_fixed) ||
+                     (v && v->size() % size == 0 && !shape.is_fixed) ||
+                     (e_size == 1 && !e->fixed && size == 1) ||
+                     (e_size == 1 && !e->fixed && v && v->size() == size);
+        if (!match) {
             throw std::invalid_argument(
-                "array size mismatch, expected: " + std::to_string(size) +
-                ", got: " + std::to_string(v.size()));
+                "array size mismatch, current data shape is " +
+                std::to_string(e_size) + (e->fixed ? " (Fixed)" : "") +
+                ", current data size is " + std::to_string(v ? v->size() : 0) +
+                ", and tried to access it as shape " + std::to_string(size) +
+                (shape.is_fixed ? " (Fixed)" : ""));
         }
-    } else {
-        if (v.size() % size != 0) {
-            throw std::invalid_argument(
-                "array size mismatch, expected multiple of: " +
-                std::to_string(size) + ", got: " + std::to_string(v.size()));
+        if (write_size > 0) {
+            bool write_match = (write_size == e_size) ||
+                               (write_size % e_size == 0 && !e->fixed) ||
+                               (e_size == 1);
+            if (!write_match) {
+                throw std::invalid_argument(
+                    "array size mismatch, expected " + std::to_string(e_size) +
+                    (e->fixed ? " (Fixed)" : "") + " but got " +
+                    std::to_string(write_size));
+            }
         }
     }
-    auto data = setCheck();
-    {
+    if (overwrite_entry) {
+        setCheck();
         // entry更新: 可能な限り前のentryの寿命を維持するようにする
-        std::lock_guard lock(data->value_store.mtx);
-        auto prev_entry_p =
-            data->value_store.getEntryP(this->member_, this->field_);
-        if (prev_entry_p) {
-            if (prev_entry_p->shape != shape.fixed_shape) {
-                prev_entry_p->shape = shape.fixed_shape;
+        if (e) {
+            if (e->shape != shape.fixed_shape) {
+                e->shape = shape.fixed_shape;
             }
-            prev_entry_p->fixed = shape.is_fixed;
+            e->fixed = shape.is_fixed;
         } else {
             data->value_store.setEntry(*this, shape);
         }
     }
-    return setImpl(std::move(v));
 }
+
 const Value &Value::setImpl(std::vector<double> v) const {
     auto data = setCheck();
     data->value_store.setSend(
@@ -81,7 +100,8 @@ const ValueElement<> &ValueElement<>::set(double v) const {
     auto pv = parent.tryGetVec();
     if (pv && index < pv->size()) {
         pv->at(index) = v;
-        parent.setImpl(*pv, shape);
+        parent.assertSize(original_shape, pv->size(), true);
+        parent.setImpl(*pv);
         return *this;
     } else {
         throw std::out_of_range("index out of range, current size: " +
@@ -90,13 +110,14 @@ const ValueElement<> &ValueElement<>::set(double v) const {
     }
 }
 const Value &Value::set(double v) const {
-    setImpl(std::vector<double>{v}, ValueShape{{}, true});
+    assertSize({{1}, true}, 1, true);
+    setImpl(std::vector<double>{v});
     return *this;
 }
 const Value &Value::set(std::vector<double> v) const {
-    return setImpl(std::move(v), ValueShape{{}, false});
+    assertSize({{1}, false}, v.size(), true);
+    return setImpl(std::move(v));
 }
-
 
 const Value &Value::onChange(std::function<void(Value)> callback) const {
     this->request();
@@ -108,12 +129,17 @@ const Value &Value::onChange(std::function<void(Value)> callback) const {
 }
 
 const Value &Value::resize(std::size_t size) const {
+    this->resizeImpl(size, true);
+    return *this;
+}
+const Value &Value::resizeImpl(std::size_t size, bool overwrite_entry) const {
     auto pv = this->tryGetVec();
     if (pv) {
         pv->resize(size);
     } else {
         pv.emplace(size);
     }
+    this->assertSize({{1}, false}, size, overwrite_entry);
     this->setImpl(*pv);
     return *this;
 }
@@ -124,13 +150,16 @@ const Value &Value::push_back(double v) const {
     } else {
         pv.emplace({v});
     }
+    this->assertSize({{1}, false}, pv->size(), true);
     this->setImpl(*pv);
     return *this;
 }
 
 std::optional<double> ValueElement<>::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
-    Value(*this).request();
+    Value parent = *this;
+    parent.assertSize(original_shape, 0, false);
+    parent.request();
     if (v && index < v->size()) {
         return v->at(index);
     }
@@ -138,6 +167,7 @@ std::optional<double> ValueElement<>::tryGet() const {
 }
 std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
+    assertSize({{1}, true}, 0, false);
     request();
     if (v && v->size() >= 1) {
         return (*v)[0];
@@ -146,6 +176,7 @@ std::optional<double> Value::tryGet() const {
 }
 std::optional<std::vector<double>> Value::tryGetVec() const {
     auto v = dataLock()->value_store.getRecv(*this);
+    // assertSize({{1}, false}, false);
     request();
     if (v) {
         return *v;
@@ -155,6 +186,7 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
 }
 const std::vector<double> &Value::getVec() const {
     auto v = dataLock()->value_store.getRecv(*this);
+    assertSize({{1}, false}, 0, false);
     request();
     if (v) {
         return *v;
@@ -167,6 +199,7 @@ const std::vector<double> &Value::getVec() const {
 std::optional<std::vector<double>> Value::tryGetVec(std::ptrdiff_t index,
                                                     std::ptrdiff_t size) const {
     auto v = dataLock()->value_store.getRecv(*this);
+    // assertSize({1}, false, false);
     request();
     if (v) {
         assert(index >= 0 && size >= 0 &&
@@ -180,6 +213,7 @@ std::optional<std::vector<double>> Value::tryGetVec(std::ptrdiff_t index,
 bool Value::tryGetArray(double *target, std::ptrdiff_t index,
                         std::ptrdiff_t size) const {
     auto v = dataLock()->value_store.getRecv(*this);
+    // assertSize({1}, false, false);
     request();
     if (v) {
         assert(index >= 0 && size >= 0 &&
@@ -228,30 +262,6 @@ std::size_t Value::fixedSize() const {
                                [](auto a, auto b) { return a * b; });
     } else {
         return 0;
-    }
-}
-
-void Value::assertSize(std::size_t size, bool fixed) const {
-    auto v = dataLock()->value_store.getRecv(*this);
-    if (v) {
-        if (fixed) {
-            if (v->size() != size) {
-                throw std::runtime_error(
-                    "array size mismatch, expected: " + std::to_string(size) +
-                    ", actual data size is: " + std::to_string(v->size()));
-            }
-        } else {
-            if (v->size() % size != 0) {
-                throw std::runtime_error(
-                    "array size mismatch, expected multiple of: " +
-                    std::to_string(size) +
-                    ", actual data size is: " + std::to_string(v->size()));
-            }
-        }
-    } else {
-        if (dataLock()->isSelf(*this) && fixed) {
-            resize(size);
-        }
     }
 }
 
