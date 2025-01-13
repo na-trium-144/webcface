@@ -513,7 +513,7 @@ endif
 utf8cpp_dep = dependency('utf8cpp')
 
 # curlはvisibilityがhiddenになっている
-curl_dep = dependency('libcurl')
+curl_dep = dependency('libcurl', version: '>=7.86.0')
 if curl_dep.type_name() != 'internal'
   if host_machine.system() == 'darwin' and \
       curl_dep.version().version_compare('>=8.10.0') and \
