@@ -3,10 +3,18 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
 #include "webcface/common/internal/unlock.h"
+
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
+#include <spdlog/sinks/stdout_color_sinks.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 #include <string>
 #include <chrono>
 #include <thread>
-#include <spdlog/sinks/stdout_color_sinks.h>
 
 WEBCFACE_NS_BEGIN
 
