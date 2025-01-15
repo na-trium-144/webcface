@@ -354,7 +354,11 @@ Encoding</h1>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 <li><span class="since-c">2.0</span> Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、 また Client::loopSync() は通信を切断するまで受信データの待機を続けます。 上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
-<li>具体的には内部で100μsおきにsync()を呼んだり接続状態を確認しています。</li>
+<li>具体的には内部で100μsおきに接続状態や受信データを確認しています。</li>
+<li>loopSync という名前ですが1度送信を行った後は受信データの処理しか行いません。 loopSync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。<ul>
+<li>sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。</li>
+</ul>
+</li>
 <li>ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span>(<span class="keyword">true</span>){</div>
 <div class="line">    <span class="comment">// 繰り返し実行する処理...</span></div>
 <div class="line">    wcli.loopSyncFor(std::chrono::milliseconds(100));</div>
@@ -398,7 +402,11 @@ Encoding</h1>
 <div class="line">}</div>
 </div><!-- fragment --></li>
 <li><span class="since-c">2.0</span> wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または <a class="el" href="c__wcf_2client_8h.html#abd0cb7925d14b7c8bfa40e3b8c3eeaac" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfLoopSync()</a> は指定した時間の間(または永遠に) 受信データの待機を続けます。 上の例のようにwcfSync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
-<li>具体的には内部で100μsおきにwcfSync()を呼んだり接続状態を確認しています。</li>
+<li>具体的には内部で100μsおきに接続状態や受信データを確認しています。</li>
+<li>loopSync という名前ですが1度送信を行った後は受信データの処理しか行いません。 loopSync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。<ul>
+<li>sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。</li>
+</ul>
+</li>
 <li>ただしサーバーに接続しておらず <a class="el" href="c__wcf_2client_8h.html#acba49f7a260d842ab77f040071e95798" title="通信が切断されたときに自動で再試行するかどうかを設定する。">wcfAutoReconnect()</a> がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span>(1){</div>
 <div class="line">    <span class="comment">// 繰り返し実行する処理...</span></div>
 <div class="line"> </div>
@@ -460,6 +468,10 @@ Encoding</h1>
 <li><span class="since-py">2.0</span> sync() の引数にtimeout(秒)を指定すると、指定した時間の間受信データの待機を続けます。 上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。<ul>
 <li>デフォルトは0です(一度sync処理をした後すぐにreturnします)</li>
 <li>Noneを指定すると通信を切断するまでずっとsyncし、returnしません。</li>
+<li>timeoutが0でない場合、1度送信を行った後は受信データの処理しか行いません。 sync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。<ul>
+<li>sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。</li>
+</ul>
+</li>
 <li>ただしサーバーに接続しておらず auto_reconnect がオフの場合は、即座にreturnします。(デッドロック回避) <div class="fragment"><div class="line"><span class="keywordflow">while</span> <span class="keyword">True</span>:</div>
 <div class="line">    <span class="comment"># ...</span></div>
 <div class="line"> </div>
@@ -600,7 +612,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 13 2025 06:24:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 15 2025 12:11:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

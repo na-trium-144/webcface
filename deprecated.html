@@ -143,6 +143,9 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
+<dt>Page <a class="el" href="md_docs_243__field.html">4-3. Field</a>  </dt>
+<dd><a class="anchor" id="_deprecated000044"></a> <span class="since-c">1.11</span> <del>Value::child() (または<code>[]</code>)の引数が数値(または<code>"1"</code>のような文字列でも同じ)の場合、</del> <del>グループ化ではなく配列としての値代入が優先されます。</del> <del>(これはValue型のみの特別な処理です。)</del> <br  />
+ <del>ただし以下のような場合は通常の文字列と同様に処理します。</del>  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#aa30c2b2fa223cf32c0f2612b55941de3">Canvas2D::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000003"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a3799c65797b21f35329dc284df16a65d">Canvas2D::time</a>  () const</dt>
@@ -163,10 +166,10 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dd><a class="anchor" id="_deprecated000011"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#aa30c2b2fa223cf32c0f2612b55941de3">Image::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000014"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#ad62b14a93738a13f924e556e27375317">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, ImageCompressMode cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt) const</dt>
-<dd><a class="anchor" id="_deprecated000016"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a56018aeabb91f122dd0bc33bca216efa">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols=std::nullopt, std::optional&lt; ImageColorMode &gt; color_mode=std::nullopt, std::optional&lt; double &gt; frame_rate=std::nullopt) const</dt>
 <dd><a class="anchor" id="_deprecated000015"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#ad62b14a93738a13f924e556e27375317">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, ImageCompressMode cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt) const</dt>
+<dd><a class="anchor" id="_deprecated000016"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a3799c65797b21f35329dc284df16a65d">Image::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000017"></a>1.7でMember::syncTime()に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame::ImageFrame</a>  (int rows, int cols, const void *data, ImageColorMode color_mode=<a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">ImageColorMode::bgr</a>)</dt>
@@ -176,17 +179,17 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Log.html#aa30c2b2fa223cf32c0f2612b55941de3">Log::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000019"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000023"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a4f5ea49021351d27b3f96465e350b98e">funcEntries()</a> に変更 </dd>
+<dd><a class="anchor" id="_deprecated000023"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a4f5ea49021351d27b3f96465e350b98e" title="「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。">funcEntries()</a> に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">Member::images</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000025"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a2b5e03fe9ff0acd7eee09b9b00b706f1">imageEntries()</a> に変更  </dd>
+<dd><a class="anchor" id="_deprecated000025"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a2b5e03fe9ff0acd7eee09b9b00b706f1" title="「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。">imageEntries()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a2e0eced713028d20cd2c49c819131d80">Member::robotModels</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000022"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ad8034103feeb50056d3e1c49f981060b">robotModelEntries()</a> に変更 </dd>
+<dd><a class="anchor" id="_deprecated000022"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ad8034103feeb50056d3e1c49f981060b" title="「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。">robotModelEntries()</a> に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a1cc337f3ebf4841d5fc32f519c400c5a">Member::texts</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000021"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#aad4d66acb4ca719d9f25bd7cc7e1b444">textEntries()</a> に変更  </dd>
+<dd><a class="anchor" id="_deprecated000021"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#aad4d66acb4ca719d9f25bd7cc7e1b444" title="「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。">textEntries()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a79db1efde6ce9c6db23757da84f030a2">Member::values</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000020"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a5269b80733bbade708ae9ff308fef2b2">valueEntries()</a> に変更 </dd>
+<dd><a class="anchor" id="_deprecated000020"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a5269b80733bbade708ae9ff308fef2b2" title="「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。">valueEntries()</a> に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a18661fc989eced84d33d56528fcc0b56">Member::views</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000024"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a628d8cd73732f10d09c0ba48e7e989ad">viewEntries()</a> に変更  </dd>
+<dd><a class="anchor" id="_deprecated000024"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a628d8cd73732f10d09c0ba48e7e989ad" title="「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。">viewEntries()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a05a565f888fd60985445985ca89ba408">Promise::result</a>  </dt>
 <dd><a class="anchor" id="_deprecated000013"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a>, <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a>, <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a>, <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a> を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a98d52cac5d23020581151ee1f106ec8a">Promise::started</a>  </dt>
@@ -197,12 +200,12 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dd><a class="anchor" id="_deprecated000027"></a>1.7でMember::syncTime() に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a9e923e02816412b7f4448dc29fc463ab">Rotation::rot</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000032"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a3b72e791356cc624883b083fc905ebb7">Rotation::rot</a>  (std::size_t index) const</dt>
-<dd><a class="anchor" id="_deprecated000033"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a0d48a5fb9f1e2156994fcd3a0277207f">Rotation::rot</a>  ()</dt>
-<dd><a class="anchor" id="_deprecated000034"></a>ver2.5〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a2846fe47152dd1c13ae6dac2e28c380f">Rotation::rot</a>  (std::size_t index)</dt>
 <dd><a class="anchor" id="_deprecated000035"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a0d48a5fb9f1e2156994fcd3a0277207f">Rotation::rot</a>  ()</dt>
+<dd><a class="anchor" id="_deprecated000034"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a3b72e791356cc624883b083fc905ebb7">Rotation::rot</a>  (std::size_t index) const</dt>
+<dd><a class="anchor" id="_deprecated000033"></a>ver2.5〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#aa30c2b2fa223cf32c0f2612b55941de3">Text::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000029"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time</a>  () const</dt>
@@ -236,7 +239,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 13 2025 06:24:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 15 2025 12:11:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

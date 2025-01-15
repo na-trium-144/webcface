@@ -180,6 +180,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:add2d5f7d9b140a1a8c4735fd8acd6110"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3f01c068bb6513a43331a004dfc0c87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ad3f01c068bb6513a43331a004dfc0c87">startsWith</a> (char str) const</td></tr>
 <tr class="separator:ad3f01c068bb6513a43331a004dfc0c87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a102632bc4c960e8728dfe97845902d80"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#a102632bc4c960e8728dfe97845902d80">substr</a> (std::size_t pos, std::size_t len=std::string::npos) const</td></tr>
+<tr class="separator:a102632bc4c960e8728dfe97845902d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1c46983326f0b46c6f47cd11febec00"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ac1c46983326f0b46c6f47cd11febec00">find</a> (char c, std::size_t pos=0) const</td></tr>
+<tr class="separator:ac1c46983326f0b46c6f47cd11febec00"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a58e45c7c2e8fd7d88592ccddb39e87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#a5a58e45c7c2e8fd7d88592ccddb39e87">operator==</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;other) const</td></tr>
 <tr class="separator:a5a58e45c7c2e8fd7d88592ccddb39e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2746d731d6132fd444f40a73136d34a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ad2746d731d6132fd444f40a73136d34a">operator&lt;=</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;other) const</td></tr>
@@ -459,6 +463,34 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ac1c46983326f0b46c6f47cd11febec00" name="ac1c46983326f0b46c6f47cd11febec00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1c46983326f0b46c6f47cd11febec00">&#9670;&#160;</a></span>find()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::size_t find </td>
+          <td>(</td>
+          <td class="paramtype">char&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>pos</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="abce45bbc14557a38457b458d47a884aa" name="abce45bbc14557a38457b458d47a884aa"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abce45bbc14557a38457b458d47a884aa">&#9670;&#160;</a></span>fromU8String()</h2>
 
@@ -629,6 +661,34 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a102632bc4c960e8728dfe97845902d80" name="a102632bc4c960e8728dfe97845902d80"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a102632bc4c960e8728dfe97845902d80">&#9670;&#160;</a></span>substr()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> substr </td>
+          <td>(</td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>pos</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>len</em> = <code>std::string::npos</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a0f47241963fefbf3fa5caa44765990c6" name="a0f47241963fefbf3fa5caa44765990c6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0f47241963fefbf3fa5caa44765990c6">&#9670;&#160;</a></span>u8String()</h2>
 
@@ -673,7 +733,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a></li>
-    <li class="footer">Generated on Mon Jan 13 2025 06:24:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 15 2025 12:11:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

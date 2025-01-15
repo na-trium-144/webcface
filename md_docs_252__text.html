@@ -143,16 +143,13 @@ $(document).ready(function(){initNavTree('md_docs_252__text.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md77">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md78">送信</a></li>
-<li class="level1"><a href="#autotoc_md79">受信</a><ul><li class="level2"><a href="#autotoc_md80">時刻</a></li>
-<li class="level2"><a href="#autotoc_md81">Entry</a></li>
-<li class="level2"><a href="#autotoc_md82">Event</a></li>
-</ul>
-</li>
+<ul><li class="level1"><a href="#autotoc_md86">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md87">送信</a></li>
+<li class="level1"><a href="#autotoc_md88">受信</a></li>
+<li class="level1"><a href="#autotoc_md89">Entry, イベントについて</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md76"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md85"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Text.html" title="文字列の送受信データを表すクラス">webcface::Text</a> (<code><a class="el" href="client_2include_2webcface_2text_8h.html">webcface/text.h</a></code>)</li>
@@ -163,12 +160,12 @@ $(document).ready(function(){initNavTree('md_docs_252__text.html',''); initResiz
 </dd></dl>
 <p>文字列データを送受信します。</p>
 <p>使い方は<a class="el" href="md_docs_251__value.html">Value</a>とほぼ同じです。</p>
-<h1><a class="anchor" id="autotoc_md77"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send -t text</div>
 </div><!-- fragment --><p> を実行し、文字列を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>詳細は <a class="el" href="md_docs_272__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::text からTextオブジェクトを作り、 Text::set() でデータを代入し、Client::sync()することで送信されます</p>
@@ -215,7 +212,7 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 <div class="line">wcli.text(<span class="stringliteral">&quot;a&quot;</span>).set(a_instance); <span class="comment">// Dictにキャストされる</span></div>
 </div><!-- fragment --><p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
@@ -290,18 +287,9 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 <p class="startli">Text.request()で明示的にリクエストを送信することもできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md80"></a>
-時刻</h2>
-<p><del>Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</del> <br  />
- <span class="since-c">1.7</span> <span class="since-js">1.6</span> <span class="since-py"></span> Member::syncTime() に統一しました。詳細は <a class="el" href="md_docs_251__value.html">5-1. Value</a> を参照</p>
-<h2><a class="anchor" id="autotoc_md81"></a>
-Entry</h2>
-<p>Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。 使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
-<h2><a class="anchor" id="autotoc_md82"></a>
-Event</h2>
-<p>受信したデータが変化したときにコールバックを呼び出すことができます。(TextChange イベント) コールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。</p>
-<p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は onSync() が使えます</p>
-<p>使い方は <a class="el" href="md_docs_251__value.html">Value</a> と同様なのでそちらを参照してください</p>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md89"></a>
+Entry, イベントについて</h1>
+<p><a class="el" href="md_docs_243__field.html">4-3. Field</a> に移動しました。そちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
@@ -314,7 +302,7 @@ Event</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 13 2025 06:24:44 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 15 2025 12:11:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
