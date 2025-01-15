@@ -261,24 +261,99 @@ struct WEBCFACE_DLL Field : public FieldBase {
         return child(field);
     }
 
+
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * childrenRecurse() と異なり、
+     * 名前にさらにピリオドが含まれる場合はその前までの名前を返す。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa childrenRecurse(), hasChildren()
+     */
+    std::vector<Field> children() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa children(), hasChildren()
+     */
+    std::vector<Field> childrenRecurse() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
+     * \since ver2.6
+     * \sa children(), childrenRecurse()
+     */
+    bool hasChildren() const;
+
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Value)>
     std::vector<Value_> valueEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Text)>
     std::vector<Text_> textEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(RobotModel)>
     std::vector<RobotModel_> robotModelEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Func)>
     std::vector<Func_> funcEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(View)>
     std::vector<View_> viewEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Canvas2D)>
     std::vector<Canvas2D_> canvas2DEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas3Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Canvas3D)>
     std::vector<Canvas3D_> canvas3DEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Image)>
     std::vector<Image_> imageEntries() const;
     /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。
      * \since ver2.4
+     * \sa childrenRecurse()
      */
     template <WEBCFACE_COMPLETE(Log)>
     std::vector<Log_> logEntries() const;

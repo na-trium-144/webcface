@@ -747,27 +747,10 @@ ViewComponent::id() で各要素に割り振られたid(文字列)を取得で�
 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ)
 同じbutton、同じinputには常に同じidが振られます。
 
-### 時刻
+## Entry, イベントについて
 
-~~View::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
-<span class="since-c">1.7</span>
-<span class="since-js">1.6</span>
-<span class="since-py"></span>
-Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md) を参照
+[4-3. Field](43_field.md) に移動しました。そちらを参照してください
 
-### Entry
-
-Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
-
-### Event
-
-受信したデータが変化したときにコールバックを呼び出すことができます。
-コールバックを設定することでもその値はリクエストされます。
-
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
-
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
