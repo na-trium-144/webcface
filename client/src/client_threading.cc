@@ -165,6 +165,10 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             {
                 // sendの前にrecvを行う
                 ScopedUnlock un(lock_ws);
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
                 while (
                     // curl側に溜まっているデータがなくなるまで受信処理
                     internal::WebSocket::recv(data, [data](std::string &&msg) {
@@ -176,6 +180,9 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                         data->ws_cond.notify_all();
                     })) {
                 }
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
             }
             lock_ws.getData().do_ws_recv = false;
             lock_ws.getData().recv_ready = false;
