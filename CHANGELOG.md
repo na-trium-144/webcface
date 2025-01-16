@@ -1,3 +1,14 @@
+## [2.7.0] - 2025-01-17
+### Changed
+* ABIバージョン: 23
+* gcc-9と10以降でABIに互換性がなかったコードを修正 (#472)
+	* WEBCFACE_COMPLETE テンプレートのnullptrをboolに変更
+	* rotAxisAngle() の返り値をstd::pairから独自のstructに変更
+	* gccでのみ `-fabi-version=11`, `-Wabi`, `-Wpsabi` オプションを指定するようにした
+* subprojectのfmtとspdlogがインストールされないようにした (#475)
+### Fixed
+* Func::setArgs() をすると引数型の情報が失われるバグ(ver2.0から)を修正 (#473)
+
 ## [2.6.0] - 2025-01-15
 ### Changed
 * ABIバージョン: 22
