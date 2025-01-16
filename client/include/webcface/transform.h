@@ -204,6 +204,47 @@ enum class AxisSequence {
 };
 
 /*!
+ * \since ver2.7
+ *
+ * * ver2.5〜2.6まで Rotation::quaternionToAxisAngle() と
+ * Rotation::rotAxisAngle() は std::pair を返していたが、
+ * arm64,armv7でのABI互換性に問題があるためver2.7でstructに変更した
+ * * ver2.6以前でも2.7以降でも動作するコードを書くには、
+ *   * 構造化束縛を使う: `auto [axis, angle] = rotAxisAngle()`
+ *   * または、ADLでget()関数を使う:
+ * `auto axis = get<0>(rotAxisAngle());`,
+ * `auto angle = get<1>(rotAxisAngle());`
+ *
+ */
+struct AxisAngle {
+    std::array<double, 3> axis;
+    double angle;
+    AxisAngle(const std::array<double, 3> &axis, double angle) noexcept
+        : axis(axis), angle(angle) {}
+
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpsabi"
+#endif
+    [[deprecated]]
+    operator std::pair<std::array<double, 3>, double>() const noexcept {
+        return {axis, angle};
+    }
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
+};
+template <std::size_t I>
+const auto &get(const AxisAngle &aa) {
+    static_assert(I < 2);
+    if constexpr (I == 0) {
+        return aa.axis;
+    } else {
+        return aa.angle;
+    }
+}
+
+/*!
  * \brief 3次元の回転を表すクラス
  * \since ver2.5
  *
@@ -272,7 +313,7 @@ class Rotation {
      * \brief クォータニオンから回転軸と角度に変換
      * \since ver2.5
      */
-    static WEBCFACE_DLL std::pair<std::array<double, 3>, double>
+    static WEBCFACE_DLL AxisAngle
     quaternionToAxisAngle(const std::array<double, 4> &quat);
 
     Rotation()
@@ -388,10 +429,13 @@ class Rotation {
     /*!
      * \brief 回転軸と角度として取得
      * \since ver2.5
+     *
+     * * ver2.6までは std::pair<std::array<double, 3>, double> を返していたが、
+     * ver2.7で AxisAngle クラスに変更
+     *
+     * \sa AxisAngle
      */
-    std::pair<std::array<double, 3>, double> rotAxisAngle() const {
-        return quaternionToAxisAngle(rotQuat());
-    }
+    AxisAngle rotAxisAngle() const { return quaternionToAxisAngle(rotQuat()); }
 
     /*!
      * \brief この回転をTransformに適用する
