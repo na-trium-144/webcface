@@ -243,9 +243,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aadc5c63fcfef3c23abfba965f429a76a"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#aadc5c63fcfef3c23abfba965f429a76a">rot2D</a> () const</td></tr>
 <tr class="memdesc:aadc5c63fcfef3c23abfba965f429a76a"><td class="mdescLeft">&#160;</td><td class="mdescRight">2次元の回転を取得  <br /></td></tr>
 <tr class="separator:aadc5c63fcfef3c23abfba965f429a76a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a24581f27fd1c3a590f47b6f5e4fe6d3c">rotAxisAngle</a> () const</td></tr>
-<tr class="memdesc:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度として取得  <br /></td></tr>
-<tr class="separator:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a230370e655227f10d30c27885fd40438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#a230370e655227f10d30c27885fd40438">rotAxisAngle</a> () const</td></tr>
+<tr class="memdesc:a230370e655227f10d30c27885fd40438"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度として取得  <br /></td></tr>
+<tr class="separator:a230370e655227f10d30c27885fd40438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104">rotEuler</a> (<a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850">AxisSequence</a> axis=<a class="el" href="namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850a6811254e01b3550bdb2dc46f204730dc">AxisSequence::ZYX</a>) const</td></tr>
 <tr class="memdesc:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="mdescLeft">&#160;</td><td class="mdescRight">3次元の回転をオイラー角として取得  <br /></td></tr>
 <tr class="separator:af1fceb7b1ad8ae634dc1f57609cbf104"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1190,8 +1190,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a24581f27fd1c3a590f47b6f5e4fe6d3c" name="a24581f27fd1c3a590f47b6f5e4fe6d3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24581f27fd1c3a590f47b6f5e4fe6d3c">&#9670;&#160;</a></span>rotAxisAngle()</h2>
+<a id="a230370e655227f10d30c27885fd40438" name="a230370e655227f10d30c27885fd40438"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a230370e655227f10d30c27885fd40438">&#9670;&#160;</a></span>rotAxisAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1200,7 +1200,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt; rotAxisAngle </td>
+          <td class="memname"><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> rotAxisAngle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1214,7 +1214,11 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>回転軸と角度として取得 </p>
-<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<ul>
+<li>ver2.6までは std::pair&lt;std::array&lt;double, 3&gt;, double&gt; を返していたが、 ver2.7で <a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> クラスに変更</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> </dd></dl>
 
 </div>
 </div>
@@ -1403,7 +1407,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Transform.html">Transform</a></li>
-    <li class="footer">Generated on Wed Jan 15 2025 12:14:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 16 2025 11:34:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

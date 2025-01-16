@@ -1,6 +1,7 @@
 var transform_8h =
 [
     [ "Point", "classwebcface_1_1Point.html", "classwebcface_1_1Point" ],
+    [ "AxisAngle", "structwebcface_1_1AxisAngle.html", "structwebcface_1_1AxisAngle" ],
     [ "Rotation", "classwebcface_1_1Rotation.html", "classwebcface_1_1Rotation" ],
     [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
     [ "AxisSequence", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850", [
@@ -17,6 +18,7 @@ var transform_8h =
       [ "ZYX", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a6811254e01b3550bdb2dc46f204730dc", null ],
       [ "YXZ", "transform_8h.html#a7795005546b43cd39adb81c8b52b0850a4c15872a8be8098b60ba0892bc42ee6d", null ]
     ] ],
+    [ "get", "transform_8h.html#a7c032867cb5a7bf643aa9f70aec6ae46", null ],
     [ "identity", "transform_8h.html#a9cc7119f63c09d929d8218008d2bb386", null ],
     [ "rot2D", "transform_8h.html#aed75afef04fc7284b31be4aaa5d7d6d4", null ],
     [ "rotFromAxisAngle", "transform_8h.html#a738094c1b1b1317c5ae9cb807d5fc916", null ],

@@ -9,7 +9,7 @@ var classwebcface_1_1Canvas3DComponent =
     [ "operator!=", "classwebcface_1_1Canvas3DComponent.html#a602f27157136ec7a792f5865ffbb02d6", null ],
     [ "operator==", "classwebcface_1_1Canvas3DComponent.html#ad2cd93ce25359ad46354271880350e4e", null ],
     [ "origin", "classwebcface_1_1Canvas3DComponent.html#ab06166d764882e2648ea38f617c9bc15", null ],
-    [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#a5db70bdc0edf137064f6c6d1f5a461b5", null ],
-    [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#a5db70bdc0edf137064f6c6d1f5a461b5", null ],
+    [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#aa41a8ee25fcf33edbc21949e4258d18c", null ],
+    [ "robotModel", "classwebcface_1_1Canvas3DComponent.html#aa41a8ee25fcf33edbc21949e4258d18c", null ],
     [ "type", "classwebcface_1_1Canvas3DComponent.html#a40f6f491a20ff340c7200c677c65b1b4", null ]
 ];

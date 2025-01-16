@@ -23,6 +23,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "ArraySizeTraitCheck< true >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html", null ],
+    [ "AxisAngle", "structwebcface_1_1AxisAngle.html", null ],
     [ "basic_streambuf", null, [
       [ "BasicLoggerBuf< CharT >", "classwebcface_1_1BasicLoggerBuf.html", null ]
     ] ],

@@ -28,7 +28,7 @@ var classwebcface_1_1Transform =
     [ "rot", "classwebcface_1_1Transform.html#a2846fe47152dd1c13ae6dac2e28c380f", null ],
     [ "rot", "classwebcface_1_1Transform.html#a3b72e791356cc624883b083fc905ebb7", null ],
     [ "rot2D", "classwebcface_1_1Transform.html#aadc5c63fcfef3c23abfba965f429a76a", null ],
-    [ "rotAxisAngle", "classwebcface_1_1Transform.html#a24581f27fd1c3a590f47b6f5e4fe6d3c", null ],
+    [ "rotAxisAngle", "classwebcface_1_1Transform.html#a230370e655227f10d30c27885fd40438", null ],
     [ "rotEuler", "classwebcface_1_1Transform.html#af1fceb7b1ad8ae634dc1f57609cbf104", null ],
     [ "rotMatrix", "classwebcface_1_1Transform.html#a53c04abee1a63b70eed7aa5174e93833", null ],
     [ "rotMatrix", "classwebcface_1_1Transform.html#ac4ef8d6b50abfe077d6bdf5ef6817ba4", null ],

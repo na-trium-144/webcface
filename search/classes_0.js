@@ -15,5 +15,6 @@ var searchData=
   ['arraysizetraitcheck_12',['ArraySizeTraitCheck',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck.html',1,'webcface::traits']]],
   ['arraysizetraitcheck_3c_20arraysizematch_3c_20t_2c_20num_20_3e_3a_3avalue_20_3e_13',['ArraySizeTraitCheck&lt; ArraySizeMatch&lt; T, Num &gt;::value &gt;',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck.html',1,'webcface::traits']]],
   ['arraysizetraitcheck_3c_20n_3d_3dnum_20_3e_14',['ArraySizeTraitCheck&lt; N==Num &gt;',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck.html',1,'webcface::traits']]],
-  ['arraysizetraitcheck_3c_20true_20_3e_15',['ArraySizeTraitCheck&lt; true &gt;',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html',1,'webcface::traits']]]
+  ['arraysizetraitcheck_3c_20true_20_3e_15',['ArraySizeTraitCheck&lt; true &gt;',['../structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html',1,'webcface::traits']]],
+  ['axisangle_16',['AxisAngle',['../structwebcface_1_1AxisAngle.html',1,'webcface']]]
 ];

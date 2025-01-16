@@ -191,9 +191,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afce06530354c23bce4800b603598231f"><td class="memItemLeft" align="right" valign="top">std::array&lt; double, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#afce06530354c23bce4800b603598231f">rotQuat</a> () const</td></tr>
 <tr class="memdesc:afce06530354c23bce4800b603598231f"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンとして取得  <br /></td></tr>
 <tr class="separator:afce06530354c23bce4800b603598231f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memItemLeft" align="right" valign="top">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#a24581f27fd1c3a590f47b6f5e4fe6d3c">rotAxisAngle</a> () const</td></tr>
-<tr class="memdesc:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度として取得  <br /></td></tr>
-<tr class="separator:a24581f27fd1c3a590f47b6f5e4fe6d3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a230370e655227f10d30c27885fd40438"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#a230370e655227f10d30c27885fd40438">rotAxisAngle</a> () const</td></tr>
+<tr class="memdesc:a230370e655227f10d30c27885fd40438"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度として取得  <br /></td></tr>
+<tr class="separator:a230370e655227f10d30c27885fd40438"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76b7cbceaacd574a753a06116e011c9f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Transform.html">Transform</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#a76b7cbceaacd574a753a06116e011c9f">appliedTo</a> (const <a class="el" href="classwebcface_1_1Transform.html">Transform</a> &amp;target) const</td></tr>
 <tr class="memdesc:a76b7cbceaacd574a753a06116e011c9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">この回転をTransformに適用する  <br /></td></tr>
 <tr class="separator:a76b7cbceaacd574a753a06116e011c9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -244,9 +244,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a8d8a3e996c540c3eafae9445f5ca986a"><td class="memItemLeft" align="right" valign="top">static std::array&lt; double, 4 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#a8d8a3e996c540c3eafae9445f5ca986a">axisAngleToQuaternion</a> (const std::array&lt; double, 3 &gt; &amp;axis, double angle)</td></tr>
 <tr class="memdesc:a8d8a3e996c540c3eafae9445f5ca986a"><td class="mdescLeft">&#160;</td><td class="mdescRight">回転軸と角度からクォータニオンに変換  <br /></td></tr>
 <tr class="separator:a8d8a3e996c540c3eafae9445f5ca986a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7a9011413be1c9dbfd2a2c678b70a36"><td class="memItemLeft" align="right" valign="top">static std::pair&lt; std::array&lt; double, 3 &gt;, double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#ae7a9011413be1c9dbfd2a2c678b70a36">quaternionToAxisAngle</a> (const std::array&lt; double, 4 &gt; &amp;quat)</td></tr>
-<tr class="memdesc:ae7a9011413be1c9dbfd2a2c678b70a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンから回転軸と角度に変換  <br /></td></tr>
-<tr class="separator:ae7a9011413be1c9dbfd2a2c678b70a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a169cf4d1f72dc9968c2223f9831e0b3b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Rotation.html#a169cf4d1f72dc9968c2223f9831e0b3b">quaternionToAxisAngle</a> (const std::array&lt; double, 4 &gt; &amp;quat)</td></tr>
+<tr class="memdesc:a169cf4d1f72dc9968c2223f9831e0b3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">クォータニオンから回転軸と角度に変換  <br /></td></tr>
+<tr class="separator:a169cf4d1f72dc9968c2223f9831e0b3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
@@ -774,8 +774,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="ae7a9011413be1c9dbfd2a2c678b70a36" name="ae7a9011413be1c9dbfd2a2c678b70a36"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7a9011413be1c9dbfd2a2c678b70a36">&#9670;&#160;</a></span>quaternionToAxisAngle()</h2>
+<a id="a169cf4d1f72dc9968c2223f9831e0b3b" name="a169cf4d1f72dc9968c2223f9831e0b3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a169cf4d1f72dc9968c2223f9831e0b3b">&#9670;&#160;</a></span>quaternionToAxisAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -784,7 +784,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt; quaternionToAxisAngle </td>
+          <td class="memname"><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> quaternionToAxisAngle </td>
           <td>(</td>
           <td class="paramtype">const std::array&lt; double, 4 &gt; &amp;&#160;</td>
           <td class="paramname"><em>quat</em></td><td>)</td>
@@ -992,8 +992,8 @@ Friends</h2></td></tr>
 
 </div>
 </div>
-<a id="a24581f27fd1c3a590f47b6f5e4fe6d3c" name="a24581f27fd1c3a590f47b6f5e4fe6d3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24581f27fd1c3a590f47b6f5e4fe6d3c">&#9670;&#160;</a></span>rotAxisAngle()</h2>
+<a id="a230370e655227f10d30c27885fd40438" name="a230370e655227f10d30c27885fd40438"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a230370e655227f10d30c27885fd40438">&#9670;&#160;</a></span>rotAxisAngle()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1002,7 +1002,7 @@ Friends</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::pair&lt; std::array&lt; double, 3 &gt;, double &gt; rotAxisAngle </td>
+          <td class="memname"><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> rotAxisAngle </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1016,7 +1016,11 @@ Friends</h2></td></tr>
 </div><div class="memdoc">
 
 <p>回転軸と角度として取得 </p>
-<dl class="section since"><dt>Since</dt><dd>ver2.5 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver2.5</dd></dl>
+<ul>
+<li>ver2.6までは std::pair&lt;std::array&lt;double, 3&gt;, double&gt; を返していたが、 ver2.7で <a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> クラスに変更</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1AxisAngle.html">AxisAngle</a> </dd></dl>
 
 </div>
 </div>
@@ -1311,7 +1315,7 @@ Friends</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Rotation.html">Rotation</a></li>
-    <li class="footer">Generated on Wed Jan 15 2025 12:14:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Jan 16 2025 11:34:48 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -198,6 +198,7 @@ var annotated_dup =
         [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4" ]
       ] ],
       [ "Arg", "classwebcface_1_1Arg.html", "classwebcface_1_1Arg" ],
+      [ "AxisAngle", "structwebcface_1_1AxisAngle.html", "structwebcface_1_1AxisAngle" ],
       [ "BasicLoggerBuf", "classwebcface_1_1BasicLoggerBuf.html", "classwebcface_1_1BasicLoggerBuf" ],
       [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", "structwebcface_1_1components_1_1geometries_1_1Box" ],
       [ "CallHandle", "classwebcface_1_1CallHandle.html", "classwebcface_1_1CallHandle" ],
