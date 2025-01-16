@@ -279,6 +279,9 @@ endif
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
   warning_options = declare_dependency(
     compile_args: cxx.get_supported_arguments(
+      # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+      '-fabi-version=11',
+      '-Wabi',
       '-Wno-inline',
       '-Wno-attributes',
       '-Wno-error=psabi', # refer to PR#9
