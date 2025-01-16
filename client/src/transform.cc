@@ -347,8 +347,7 @@ Rotation::axisAngleToQuaternion(const std::array<double, 3> &axis,
                 axis[2] / norm * s};
     }
 }
-std::pair<std::array<double, 3>, double>
-Rotation::quaternionToAxisAngle(const std::array<double, 4> &quat) {
+AxisAngle Rotation::quaternionToAxisAngle(const std::array<double, 4> &quat) {
     double w = quat[0];
     double x = quat[1];
     double y = quat[2];

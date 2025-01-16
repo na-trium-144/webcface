@@ -6,10 +6,18 @@
 #include <msgpack.hpp>
 #include <string>
 #include <cstdint>
-#include <spdlog/logger.h>
 #include <utf8.h>
 #include "webcface/common/val_adaptor.h"
 #include "./base.h"
+
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
+#include <spdlog/logger.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 MSGPACK_ADD_ENUM(webcface::ValType)
 

@@ -13,11 +13,11 @@
 WEBCFACE_NS_BEGIN
 
 // ver2.4〜: nameを省略した場合 "default" として送信される。
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 T Member::log() const {
     return Log{*this, message::Log::defaultLogName()};
 }
-template WEBCFACE_DLL Log Member::log<Log, nullptr>() const;
+template WEBCFACE_DLL Log Member::log<Log, true>() const;
 
 
 const Member &Member::onValueEntry(std::function<void(Value)> callback) const {

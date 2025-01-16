@@ -272,11 +272,11 @@ class WEBCFACE_DLL ViewComponent {
     int height() const;
 };
 extern template std::optional<Func>
-ViewComponent::onClick<Func, nullptr>() const;
+ViewComponent::onClick<Func, true>() const;
 extern template std::optional<Func>
-ViewComponent::onChange<Func, nullptr>() const;
+ViewComponent::onChange<Func, true>() const;
 extern template std::optional<Variant>
-ViewComponent::bind<Variant, nullptr>() const;
+ViewComponent::bind<Variant, true>() const;
 
 /*!
  * \brief Viewを構築するときに使う一時的なViewComponent
