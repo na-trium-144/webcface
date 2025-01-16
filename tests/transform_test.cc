@@ -306,13 +306,17 @@ TEST(TransformTest, quat) {
         Transform tf2 = rotFromQuat(w, x, y, z);
         Transform tf3 = rotFromQuat(tf2.rotQuat());
         Transform tf4 = rotFromEuler(tf2.rotEuler());
+        auto [axis, angle] = tf2.rotAxisAngle();
+        Transform tf5 = rotFromAxisAngle(axis, angle);
         auto axis_angle = tf2.rotAxisAngle();
-        Transform tf5 = rotFromAxisAngle(axis_angle.first, axis_angle.second);
+        Transform tf5_2 =
+            rotFromAxisAngle(get<0>(axis_angle), get<1>(axis_angle));
         for (std::size_t i = 0; i < 3; i++) {
             for (std::size_t j = 0; j < 3; j++) {
                 EXPECT_NEAR(tf2.rotMatrix(i, j), tf3.rotMatrix(i, j), 1e-8);
                 EXPECT_NEAR(tf2.rotMatrix(i, j), tf4.rotMatrix(i, j), 1e-8);
                 EXPECT_NEAR(tf2.rotMatrix(i, j), tf5.rotMatrix(i, j), 1e-8);
+                EXPECT_NEAR(tf2.rotMatrix(i, j), tf5_2.rotMatrix(i, j), 1e-8);
             }
         }
     };

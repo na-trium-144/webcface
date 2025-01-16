@@ -293,6 +293,6 @@ class WEBCFACE_DLL Member : protected Field {
         return static_cast<Field>(*this) != static_cast<Field>(other);
     }
 };
-extern template Log Member::log<Log, nullptr>() const;
+extern template Log Member::log<Log, true>() const;
 
 WEBCFACE_NS_END

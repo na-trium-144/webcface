@@ -52,7 +52,15 @@ webcface_client_lib = static_library('webcface-client',
     m_dep,
   ],
   build_by_default: false,
-  cpp_args: ['-DWEBCFACE_BUILDING'],
+  cpp_args: [
+    '-DWEBCFACE_BUILDING',
+    cxx.get_supported_arguments(
+      # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+      '-fabi-version=11',
+      '-Wabi',
+      '-Wpsabi',
+    ),
+  ],
   gnu_symbol_visibility: 'inlineshidden',
 )
 webcface_client_dep = declare_dependency(

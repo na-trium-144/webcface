@@ -16,11 +16,11 @@ constexpr bool isComplete(T *) {
 
 #define define_assert_complete(Type, header)                                   \
     template <typename T>                                                      \
-    constexpr std::nullptr_t assertComplete##Type() {                          \
+    constexpr bool assertComplete##Type() {                                    \
         static_assert(isComplete((T *)nullptr),                                \
                       "Please include <webcface/" #header                      \
                       "> to use class " #Type "!");                            \
-        return nullptr;                                                        \
+        return true;                                                           \
     }
 
 // clang-format off
@@ -42,7 +42,7 @@ define_assert_complete(Log, log.h)
 
 #define WEBCFACE_COMPLETE(Type)                                                \
     typename Type##_ = Type,                                                   \
-             std::nullptr_t = ::webcface::traits::assertComplete##Type<        \
+             bool = ::webcface::traits::assertComplete##Type<                  \
                  std::enable_if_t<std::is_same_v<Type##_, Type>, Type##_>>()
 
 } // namespace traits
