@@ -83,7 +83,7 @@ jobs:
         run: |
           cd ${{github.workspace}}/dist/opt/webcface/
           zip --symlinks -r ${{github.workspace}}/libwebcface-linux-${{matrix.arch}}.zip *
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-${{ matrix.arch }}
           path: ${{github.workspace}}/*.zip
@@ -133,7 +133,7 @@ jobs:
           version: ${{ github.ref }} # refs/tags/v*.*.*
           arch: ${{matrix.arch}}
           desc: 'Web-based Communication Framework & Dashboard-like UI'
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: linux-deb-${{ matrix.arch }}
           path: ${{github.workspace}}/*.deb
@@ -170,7 +170,7 @@ jobs:
       run: |
         cd ${{github.workspace}}/dist/opt/webcface/
         zip --symlinks -r ${{github.workspace}}/libwebcface-macos-${{matrix.arch}}.zip *
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: macos-${{matrix.arch}}
         path: ${{github.workspace}}/*.zip
@@ -180,11 +180,11 @@ jobs:
     name: Create universal binary
     needs: [build-macos]
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: macos-x86_64
           path: ${{github.workspace}}/
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: macos-arm64
           path: ${{github.workspace}}/
@@ -206,7 +206,7 @@ jobs:
         run: |
           cd ${{github.workspace}}/universal
           zip --symlinks -r ${{github.workspace}}/libwebcface-macos-universal.zip *
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: macos-universal
           path: ${{github.workspace}}/libwebcface-macos-universal.zip
@@ -273,7 +273,7 @@ jobs:
     - name: Create zip archive
       working-directory: '${{github.workspace}}\dist\Program Files\webcface'
       run: Compress-Archive * ${{github.workspace}}\libwebcface-windows-${{matrix.arch}}-${{matrix.buildtype}}.zip
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: msvc-${{matrix.arch}}-${{matrix.buildtype}}
         path: ${{github.workspace}}/*.zip
@@ -283,51 +283,51 @@ jobs:
     needs: [build-linux, lipo-macos, build-msvc]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-amd64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-deb-amd64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-arm64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-deb-arm64
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-armhf
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: linux-deb-armhf
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: macos-universal
           path: ${{github.workspace}}/artifact
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: msvc-x86-debug
           path: ${{github.workspace}}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: msvc-x86-release
           path: ${{github.workspace}}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: msvc-x64-debug
           path: ${{github.workspace}}
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: msvc-x64-release
           path: ${{github.workspace}}
-      # - uses: actions/download-artifact@v3
+      # - uses: actions/download-artifact@v4
       #   with:
       #     name: msvc-arm64
       #     path: ${{github.workspace}}/artifact
