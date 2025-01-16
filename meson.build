@@ -277,7 +277,7 @@ else
 endif
 
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(
+  warning_options_dep = declare_dependency(
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
       '-Wno-attributes',
@@ -295,7 +295,7 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '-Wno-inline',
     '--system-header-prefix=msgpack.hpp',
     '--system-header-prefix=fmt/',
@@ -308,7 +308,7 @@ elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
     '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '/wd4251',
     '/wd4275',
     '/wd4661',
@@ -322,8 +322,16 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = []
+  warning_options_dep = []
 endif
+wabi_options_dep = declare_dependency(
+  compile_args: cxx.get_supported_arguments(
+    # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+    '-fabi-version=11',
+    '-Wabi',
+    '-Wpsabi',
+  ),
+)
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
 conf_data.set10('WEBCFACE_SYSTEM_DLLEXPORT', webcface_system_dllexport)

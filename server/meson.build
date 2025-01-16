@@ -18,7 +18,7 @@ endif
 executable('webcface-server',
   sources: sources,
   dependencies: [
-    warning_options,
+    warning_options_dep,
     webcface_server_store_dep,
     cli11_dep,
   ],

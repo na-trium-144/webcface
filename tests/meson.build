@@ -14,7 +14,7 @@ test_src = [
   'transform_test.cc',
 ]
 test_dependencies = [
-  warning_options,
+  warning_options_dep,
   # webcface_dep,
   webcface_config_dep,
   webcface_common_dep,

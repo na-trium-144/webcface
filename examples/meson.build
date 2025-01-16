@@ -21,7 +21,7 @@ foreach e: example_src
   target = fs.replace_suffix(e['src'], '')
   sources = [e['src']]
   dependencies = [
-    warning_options,
+    warning_options_dep,
     webcface_dep,
     fmt_dep,
   ]
