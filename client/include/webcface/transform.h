@@ -222,17 +222,10 @@ struct AxisAngle {
     AxisAngle(const std::array<double, 3> &axis, double angle) noexcept
         : axis(axis), angle(angle) {}
 
-#ifdef WEBCFACE_COMPILER_IS_GCC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpsabi"
-#endif
     [[deprecated]]
     operator std::pair<std::array<double, 3>, double>() const noexcept {
         return {axis, angle};
     }
-#ifdef WEBCFACE_COMPILER_IS_GCC
-#pragma GCC diagnostic pop
-#endif
 };
 template <std::size_t I>
 const auto &get(const AxisAngle &aa) {
