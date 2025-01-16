@@ -231,6 +231,43 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 > ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。
 > 自分でソースからビルドする場合は [3-2. Building from Source](https://na-trium-144.github.io/webcface/md_docs_232__building.html) を参照してください。
 
+### Docker (x86_64, arm64, armhf)
+
+You can also pull and run `webcface-server` and tools using Docker.
+The image is released as [ghcr.io/na-trium-144/webcface-package/webcface-amd64](ghcr.io/na-trium-144/webcface-package/webcface-amd64).
+For arm64 or armhf, replace `amd64` in the image name.
+
+> Dockerを使って `webcface-server` とコマンドラインツールを実行することもできます。
+> Dockerイメージは [ghcr.io/na-trium-144/webcface-package/webcface-amd64](ghcr.io/na-trium-144/webcface-package/webcface-amd64) としてリリースしています。
+> arm64やarmhfの場合はイメージ名の `amd64` の部分を変更してください。
+
+### webcface-server
+
+* Example (TCP and Unix Socket)
+```sh
+docker run --rm \
+    -p 7530:7530 \
+    -v /tmp/webcface:/tmp/webcface \
+    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest
+```
+
+### webcface-tools
+
+* Example (Unix Socket)
+```sh
+docker run --rm \
+    -v /tmp/webcface:/tmp/webcface \
+    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \
+    webcface-ls
+```
+* Example (TCP)
+```sh
+docker run --rm \
+    --add-host=host.docker.internal:host-gateway \
+    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \
+    webcface-ls -a host.docker.internal
+```
+
 ### Deb Package (Ubuntu x86_64, arm64, armhf)
 
 You can download and install the Deb package from [WebCFace Releases](https://github.com/na-trium-144/webcface/releases), [webui Releases](https://github.com/na-trium-144/webcface-webui/releases), and [tools Releases](https://github.com/na-trium-144/webcface-tools/releases).
