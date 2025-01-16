@@ -26,6 +26,7 @@ void Arg::mergeConfig(const Arg &other) {
     if (other.msg_data) {
         if (!this->msg_data) {
             this->msg_data = other.msg_data;
+            this->msg_data->type_ = this->type_;
         } else {
             if (!other.msg_data->name_.empty()) {
                 this->msg_data->name_ = other.msg_data->name_;
@@ -57,6 +58,9 @@ const std::wstring &Arg::nameW() const {
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {
     this->type_ = type;
+    if (this->msg_data) {
+        this->msg_data->type_ = type;
+    }
     return *this;
 }
 std::optional<ValAdaptor> Arg::init() const {
