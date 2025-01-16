@@ -285,7 +285,8 @@ struct WEBCFACE_DLL Field : public FieldBase {
      */
     std::vector<Field> childrenRecurse() const;
     /*!
-     * \brief 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
      * \since ver2.6
      * \sa children(), childrenRecurse()
      */
@@ -370,17 +371,17 @@ struct WEBCFACE_DLL Field : public FieldBase {
     bool operator!=(const Field &other) const { return !(*this == other); }
 };
 
-extern template std::vector<Value> Field::valueEntries<Value, nullptr>() const;
-extern template std::vector<Text> Field::textEntries<Text, nullptr>() const;
+extern template std::vector<Value> Field::valueEntries<Value, true>() const;
+extern template std::vector<Text> Field::textEntries<Text, true>() const;
 extern template std::vector<RobotModel>
-Field::robotModelEntries<RobotModel, nullptr>() const;
-extern template std::vector<Func> Field::funcEntries<Func, nullptr>() const;
-extern template std::vector<View> Field::viewEntries<View, nullptr>() const;
+Field::robotModelEntries<RobotModel, true>() const;
+extern template std::vector<Func> Field::funcEntries<Func, true>() const;
+extern template std::vector<View> Field::viewEntries<View, true>() const;
 extern template std::vector<Canvas2D>
-Field::canvas2DEntries<Canvas2D, nullptr>() const;
+Field::canvas2DEntries<Canvas2D, true>() const;
 extern template std::vector<Canvas3D>
-Field::canvas3DEntries<Canvas3D, nullptr>() const;
-extern template std::vector<Image> Field::imageEntries<Image, nullptr>() const;
-extern template std::vector<Log> Field::logEntries<Log, nullptr>() const;
+Field::canvas3DEntries<Canvas3D, true>() const;
+extern template std::vector<Image> Field::imageEntries<Image, true>() const;
+extern template std::vector<Log> Field::logEntries<Log, true>() const;
 
 WEBCFACE_NS_END
