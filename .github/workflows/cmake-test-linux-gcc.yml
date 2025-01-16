@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        gcc-ver: [7, 9, 11, 13]
+        gcc_ver: [7, 9, 11, 13, 14]
         include:
         - os: ubuntu-20.04
           gcc_ver: 7
@@ -21,6 +21,8 @@ jobs:
           gcc_ver: 11
         - os: ubuntu-24.04
           gcc_ver: 13
+        - os: ubuntu-24.04
+          gcc_ver: 14
         - dep: static
           os: ubuntu-20.04
           gcc_ver: 9
@@ -61,12 +63,12 @@ jobs:
     - name: Check Exported Symbol
       if: matrix.dep == 'source'
       run: |
-        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
+        bash -c "! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio"
-        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep utf8"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v codecvt_utf8 | grep utf8"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep vips"
 
     - name: install

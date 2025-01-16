@@ -281,7 +281,6 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
       '-Wno-attributes',
-      '-Wno-error=psabi', # refer to PR#9
       # crow
       '-Wno-error=type-limits',
       # inside fmt (fmtlib/fmt#3354)

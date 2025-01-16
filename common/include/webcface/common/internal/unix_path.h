@@ -4,7 +4,14 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
 #include <spdlog/logger.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 #if WEBCFACE_EXP_FILESYSTEM
 #include <experimental/filesystem>
