@@ -63,7 +63,7 @@ jobs:
     - name: Check Exported Symbol
       if: matrix.dep == 'source'
       run: |
-        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
+        bash -c "! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow"

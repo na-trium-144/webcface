@@ -58,6 +58,7 @@ webcface_client_lib = static_library('webcface-client',
       # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
       '-fabi-version=11',
       '-Wabi',
+      '-Wpsabi',
     ),
   ],
   gnu_symbol_visibility: 'inlineshidden',
