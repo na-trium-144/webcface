@@ -204,15 +204,15 @@ jobs:
   build-msvc:
     strategy:
       matrix:
-        arch: ["x86", "x64", "arm64"]
+        arch: ["x86", "x64"] # , "arm64"
         buildtype: ["debug", "release"]
         include:
         - arch: x86
           devcmd: amd64_x86
         - arch: x64
           devcmd: amd64
-        - arch: arm64
-          devcmd: amd64_arm64
+        # - arch: arm64
+        #   devcmd: amd64_arm64
     runs-on: windows-2019
     name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
     steps:
@@ -317,13 +317,14 @@ jobs:
         with:
           name: msvc-x64-release
           path: ${{github.workspace}}
-      - uses: actions/download-artifact@v4
-        with:
-          name: msvc-arm64
-          path: ${{github.workspace}}/artifact
+      # - uses: actions/download-artifact@v4
+      #   with:
+      #     name: msvc-arm64
+      #     path: ${{github.workspace}}/artifact
       - name: zip debug and release
+        # in x86 x64 arm64
         run: |
-          for arch in x86 x64 arm64; do
+          for arch in x86 x64; do
             cd ${{github.workspace}}
             unzip libwebcface-windows-${arch}-debug.zip -d ${arch}
             unzip -o libwebcface-windows-${arch}-release.zip -d ${arch}
