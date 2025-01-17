@@ -10,13 +10,19 @@ jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["source", "static"]
+        arch: ["x86", "x64", "arm64"]
+        dep: ["source"]
+        shared_flag: ["shared"]
         include:
-        # - dep: choco
-        #   shared_flag: shared
-        - dep: source
-          shared_flag: shared
-        - dep: static
+        - arch: x86
+          devcmd: amd64_x86
+        - arch: x64
+          devcmd: amd64
+        - arch: arm64
+          devcmd: amd64_arm64
+        - arch: x64
+          devcmd: amd64
+          dep: static
           shared_flag: static
     runs-on: windows-2019
     steps:
@@ -44,7 +50,7 @@ jobs:
 
     - uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: amd64_x86
+        arch: ${{matrix.devcmd}}
 
     - name: Setup Meson
       run: >
@@ -54,6 +60,7 @@ jobs:
         -Ddefault_library=${{matrix.shared_flag}}
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
@@ -61,10 +68,11 @@ jobs:
         meson compile -C build
 
     - name: Test
+      if: matrix.arch != 'arm64'
       run: meson test -C build --print-errorlog --suite webcface
 
     - name: Check Exported Symbol
-      if: matrix.dep == 'submodule'
+      if: matrix.dep == 'source'
       run: |
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
@@ -73,13 +81,13 @@ jobs:
       run: meson install -C build
 
     - name: Test CMake with installed package
-      if: matrix.dep != 'static'
+      if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -DCMAKE_GENERATOR_PLATFORM=WIN32
         cmake --build build --config Debug
     - name: Test building with Meson using CMake
-      if: matrix.dep != 'static'
+      if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         meson setup buildmc --buildtype=debug -Dcmake_prefix_path=${{github.workspace}}/build/install

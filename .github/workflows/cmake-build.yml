@@ -186,15 +186,15 @@ jobs:
   build-msvc:
     strategy:
       matrix:
-        arch: ["x86", "x64"]
+        arch: ["x86", "x64", "arm64"]
         buildtype: ["debug", "release"]
         include:
         - arch: x86
           devcmd: amd64_x86
         - arch: x64
           devcmd: amd64
-        # - arch: arm64
-        #   devcmd: amd64_arm64
+        - arch: arm64
+          devcmd: amd64_arm64
     runs-on: windows-2019
     name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
     steps:
@@ -299,20 +299,19 @@ jobs:
         with:
           name: msvc-x64-release
           path: ${{github.workspace}}
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: msvc-arm64
-      #     path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: msvc-arm64
+          path: ${{github.workspace}}/artifact
       - name: zip debug and release
         run: |
-          unzip libwebcface-windows-x86-debug.zip -d x86
-          unzip -o libwebcface-windows-x86-release.zip -d x86
-          unzip libwebcface-windows-x64-debug.zip -d x64
-          unzip -o libwebcface-windows-x64-release.zip -d x64
-          cd ${{github.workspace}}/x86
-          zip -r ${{github.workspace}}/artifact/libwebcface-windows-x86.zip *
-          cd ${{github.workspace}}/x64
-          zip -r ${{github.workspace}}/artifact/libwebcface-windows-x64.zip *
+          for arch in x86 x64 arm64; do
+            cd ${{github.workspace}}
+            unzip libwebcface-windows-${arch}-debug.zip -d ${arch}
+            unzip -o libwebcface-windows-${arch}-release.zip -d ${arch}
+            cd ${{github.workspace}}/${arch}
+            zip -r ${{github.workspace}}/artifact/libwebcface-windows-${arch}.zip *
+          done
 
       - name: Release
         uses: docker://antonyurchenko/git-release:v5
