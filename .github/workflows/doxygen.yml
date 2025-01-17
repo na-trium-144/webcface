@@ -28,6 +28,7 @@ jobs:
       run: |
         mkdir -p build/doxygen
         doxygen
+    - run: cp installer.sh build/doxygen/html/
     - uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: build/doxygen/html
