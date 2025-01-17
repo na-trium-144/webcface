@@ -234,12 +234,14 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 ### Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)
 
 You can use the following [installation script](installer.sh).
+By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).
 If you want to automate the installation, add options such as `-a`/`-x` or `-y` at the end.
 
 Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura.
 So they are not guaranteed to work on older OSs or other distros.
 
 > 以下の[インストールスクリプト](installer.sh)を使ってインストールできます。
+> デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。
 > スクリプト内で自動化したい場合は `-a`/`-x` や `-y` などのオプションを末尾に追加して使ってください。
 >
 > Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。
@@ -255,7 +257,8 @@ Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]
   -d DIR: Extract archive to DIR (default: /opt/webcface)
   -u: Extract App bundle to user home directory (only for macOS)
   -y: Assume yes for all prompts
-  VERSION: Version to install (default: latest)
+  VERSION: Version to install (default: 2.7.0)
+           Available versions: 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4
 ```
 
 <details>

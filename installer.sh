@@ -4,6 +4,7 @@ INSTALL_DIR="/opt/webcface"
 APP_INSTALL_DIR="/Applications"
 OPT_DIR=
 DEFAULT_VERSION=2.7.0
+AVAILABLE_VERSIONS="2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4"
 
 usage(){
     echo "Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]"
@@ -12,7 +13,8 @@ usage(){
     echo "  -d DIR: Extract archive to DIR (default: /opt/webcface)"
     echo "  -u: Extract App bundle to user home directory (only for macOS)"
     echo "  -y: Assume yes for all prompts"
-    echo "  VERSION: Version to install (default: latest)"
+    echo "  VERSION: Version to install (default: $DEFAULT_VERSION)"
+    echo "           Available versions: $AVAILABLE_VERSIONS"
     exit 1
 }
 
@@ -32,9 +34,6 @@ if [ -n "$1" ]; then
     VERSION=$1
     shift 1
 else
-    VERSION=$DEFAULT_VERSION
-fi
-if [ $VERSION = latest ]; then
     VERSION=$DEFAULT_VERSION
 fi
 case $VERSION in
@@ -59,7 +58,6 @@ case $VERSION in
 2.0.4)   WEBCFACE_VERSION=2.0.4; WEBUI_VERSION=1.8.0;  TOOLS_VERSION=2.0.1;;
 *)
     echo "Invalid version: $VERSION"
-    echo "Available versions are: 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4"
     echo
     usage
     exit 1
