@@ -35,9 +35,10 @@ var NAVTREE =
       [ "Documentation", "index.html#autotoc_md273", null ],
       [ "Links", "index.html#autotoc_md274", null ],
       [ "Installation", "index.html#autotoc_md275", [
-        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md276", null ],
-        [ "webcface-server", "index.html#autotoc_md277", null ],
-        [ "webcface-tools", "index.html#autotoc_md278", null ],
+        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md276", [
+          [ "webcface-server", "index.html#autotoc_md277", null ],
+          [ "webcface-tools", "index.html#autotoc_md278", null ]
+        ] ],
         [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md279", null ],
         [ "Unzip manually (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md280", null ],
         [ "macOS", "index.html#autotoc_md281", null ],
