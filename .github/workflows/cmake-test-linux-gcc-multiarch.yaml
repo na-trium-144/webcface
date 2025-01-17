@@ -33,6 +33,7 @@ jobs:
             -e CC=gcc-14
             -e CXX=g++-14
           run: |
+            set -e
             apt-get update -q -y
             apt-get install -q -y ca-certificates gpg wget lsb-release
             wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
@@ -40,6 +41,25 @@ jobs:
             apt-get update -q -y
             apt-get install -q -y build-essential gcc-14 g++-14 cmake meson file git python3-pip ninja-build zip pkg-config
             cd /workspace
-            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/workspace/build/install -Dtest_wait=200
             meson compile -C build || meson compile -C build
-            DESTDIR=/workspace/dist meson install -C build --skip-subprojects
+            meson test -C build --print-errorlog --suite webcface
+            ! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v codecvt_utf8 | grep utf8
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep vips
+            meson install -C build
+            cd /workspace/.github/test
+            cmake -B build -DCMAKE_PREFIX_PATH=/workspace/build/install
+            cmake --build build
+            meson setup buildmc -Dcmake_prefix_path=/workspace/build/install
+            meson compile -Cbuildmc
+            export PKG_CONFIG_PATH=/workspace/build/install/lib/aarch64-linux-gnu/pkgconfig:/workspace/build/install/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH
+            pkg-config --cflags --libs webcface
+            g++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
+            gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+            meson setup buildm
+            meson compile -Cbuildm
