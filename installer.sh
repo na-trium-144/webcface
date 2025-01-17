@@ -1,25 +1,28 @@
 #!/bin/sh
 set -e
 INSTALL_DIR="/opt/webcface"
+APP_INSTALL_DIR="/Applications"
 OPT_DIR=
 DEFAULT_VERSION=2.7.0
 
 usage(){
-    echo "Usage: installer.sh [-a|-x] [-y] [-d DIR] [VERSION]"
+    echo "Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]"
     echo "  -a: Install with apt-get (only for Debian-based systems)"
     echo "  -x: Extract archive manually, without using apt-get"
     echo "  -d DIR: Extract archive to DIR (default: /opt/webcface)"
+    echo "  -u: Extract App bundle to user home directory (only for macOS)"
     echo "  -y: Assume yes for all prompts"
     echo "  VERSION: Version to install (default: latest)"
     exit 1
 }
 
-while getopts axyd: OPT; do
+while getopts axd:uy OPT; do
     case $OPT in
     a) OPT_APT=1 ;;
     x) OPT_APT=0 ;;
-    y) OPT_YES=1 ;;
     d) OPT_DIR=1; INSTALL_DIR="$OPTARG" ;;
+    u) OPT_USER=1 ;;
+    y) OPT_YES=1 ;;
     *) echo; usage ;;
     esac
 done
@@ -70,17 +73,17 @@ fi
 case $(uname -s) in
 Linux)
     case $(uname -m) in
-    x86_64)
+    x86_64|x64)
         ARCH=amd64
         WEBUI_ARCH=amd64
         LIBPATH=x86_64-linux-gnu
         ;;
-    arm64)
+    aarch64|arm64|armv8l)
         ARCH=arm64
         WEBUI_ARCH=arm64
         LIBPATH=aarch64-linux-gnu
         ;;
-    armhf)
+    arm|armv7l)
         ARCH=armhf
         WEBUI_ARCH=armv7l
         LIBPATH=arm-linux-gnueabihf
@@ -94,7 +97,10 @@ Linux)
     if [ $(id -u) -ne 0 ]; then
         echo "Warning: This install script may fail without sudo, depending on the installation destination."
     fi
-    
+    if [ -n "$OPT_USER" ]; then
+        echo "Warning: -u option not supported on Linux."
+    fi
+
     if type apt-get >/dev/null 2>&1; then
         if apt list --installed 'webcface*' 2>&1 | grep -q '^webcface'; then
             # WebCFace is already installed with apt
@@ -219,6 +225,66 @@ Linux)
         echo
         echo "Done."
     esac
+    ;;
+Darwin)
+    if [ $(id -u) -ne 0 ]; then
+        echo "Warning: This install script may fail without sudo, depending on the installation destination."
+        if [ -n "$OPT_USER" ]; then
+            APP_INSTALL_DIR=$HOME/Applications
+        fi
+    else
+        if [ -n "$OPT_USER" ]; then
+            echo "Error: -u option must be used without sudo."
+            exit 1
+        fi
+    fi
+    if [ "$OPT_APT" = 1 ]; then
+        echo "Warning: -a option not supported on macOS."
+    fi
+
+    if type brew >/dev/null 2>&1; then
+        if [ -n "$SUDO_USER" ]; then
+            # Prevent Homebrew from running as root
+            brew="sudo -u $SUDO_USER brew"
+        else
+            brew=brew
+        fi
+        if $brew list --versions webcface >/dev/null; then
+            echo "Error: WebCFace is already installed with Homebrew. Please uninstall it first."
+            exit 1
+        fi
+    fi
+    if [ -e "$INSTALL_DIR" ]; then
+        echo "Warning: $INSTALL_DIR already exists. It will be overwritten."
+    fi
+    printf "%s" "This script will install WebCFace $VERSION (webui: $WEBUI_VERSION, tools: $TOOLS_VERSION) to $INSTALL_DIR and $APP_INSTALL_DIR. OK to proceed? [Y/n] "
+    if [ -z "$OPT_YES" ]; then
+        read yn
+        case $yn in
+        [nN]*) exit 1;;
+        esac
+    fi
+    echo
+    ZIP=webcface_${VERSION}_macos_universal.zip
+    echo "Downloading $ZIP..."
+    curl -fL -o /tmp/$ZIP https://github.com/na-trium-144/webcface-package/releases/download/v${VERSION}/$ZIP
+    APP_ZIP=webcface-desktop_${VERSION}_macos_app.zip
+    echo "Downloading $APP_ZIP..."
+    curl -fL -o /tmp/$APP_ZIP https://github.com/na-trium-144/webcface-package/releases/download/v${VERSION}/$APP_ZIP
+    echo "Extracting $ZIP to $INSTALL_DIR..."
+    unzip -o /tmp/$ZIP -d $INSTALL_DIR
+    rm -f /tmp/$ZIP
+    echo "Extracting $APP_ZIP to $APP_INSTALL_DIR..."
+    unzip -o /tmp/$APP_ZIP -d $APP_INSTALL_DIR
+    rm -f /tmp/$APP_ZIP
+    echo
+    echo "Done."
+    echo "You may need to add the following lines to your .bashrc or .zshrc etc.:"
+    echo "  export PATH=\"$INSTALL_DIR/bin:\$PATH\""
+    echo "  export PKG_CONFIG_PATH=\"$INSTALL_DIR/lib/pkgconfig:\$PKG_CONFIG_PATH\""
+    if [ "$INSTALL_DIR" != "/opt/webcface" ]; then
+        echo "  export DYLD_LIBRARY_PATH=\"$INSTALL_DIR/lib:\$DYLD_LIBRARY_PATH\""
+    fi
     ;;
 *)
     echo "Unsupported OS: $(uname -s)"
