@@ -10,7 +10,7 @@ on:
 jobs:
   build-linux:
     # The host should always be linux
-    runs-on: ubuntu-22.04
+    runs-on: ${{matrix.runner}}
     name: Build on ${{ matrix.distro }} ${{ matrix.arch }}
 
     # Run steps on a matrix of 4 arch/distro combinations
@@ -21,10 +21,13 @@ jobs:
         include:
           - arch: amd64
             base: ubuntu
+            runner: ubuntu-22.04
           - arch: arm64
             base: '--platform=linux/arm64/v8 arm64v8/ubuntu'
+            runner: ubuntu-22.04-arm
           - arch: armhf
             base: '--platform=linux/arm/v7 arm32v7/ubuntu'
+            runner: ubuntu-22.04-arm
     steps:
       - uses: actions/checkout@v4
       - uses: uraimo/run-on-arch-action@v2
