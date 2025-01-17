@@ -165,8 +165,7 @@ Requirements</h2>
 <li>インストール済みの依存ライブラリを使用するためには CMake や pkgcong (pkg-config) も必要になります</li>
 </ul>
 </li>
-<li>Linuxはgcc-7以上とclang-7以上、MacはmacOS13(Ventura)以上、Visual Studioは2019以上でビルドできることを確認しています。 それ以前のバージョンでも動くかもしれません。</li>
-<li>MinGWでもビルドできます。MSYS2のUCRT64環境でテストしていますがMINGW64やCLANG64環境でもビルドできると思います。</li>
+<li>Linux (x86_64, arm64, armhf) は gcc-7 以上と clang-7 以上、 Mac (x86_64, arm64) は macOS13 (Ventura) 以上、 Windowsは Visual Studio 2019 の x86, x64, arm64、 MinGWは MSYS2 の UCRT64 環境 でビルドできることを確認しています。 それ以外のバージョンでも動くかもしれません。</li>
 <li>CygwinやMSYS2のMSYS環境ではasioがビルドできない(<a href="https://github.com/chriskohlhoff/asio/issues/518">chriskohlhoff/asio#518</a>)ため、現状ではサーバー機能を除いてクライアントのみビルドすることができます。<ul>
 <li>asioはCygwin32bitでビルドできると主張しているが、32bitでもなぜかビルドできない<del>がissueを建てるのはめんどくさい</del></li>
 <li>仮にビルドできたとしても、curlが使用するCygwinのsocketとasioが使用するWin32のsocketが干渉して動かない気もします</li>
@@ -349,7 +348,7 @@ tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 16 2025 18:33:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Jan 17 2025 09:03:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
