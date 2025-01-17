@@ -35,17 +35,19 @@ var NAVTREE =
       [ "Documentation", "index.html#autotoc_md273", null ],
       [ "Links", "index.html#autotoc_md274", null ],
       [ "Installation", "index.html#autotoc_md275", [
-        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md276", [
-          [ "webcface-server", "index.html#autotoc_md277", null ],
-          [ "webcface-tools", "index.html#autotoc_md278", null ]
+        [ "Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)", "index.html#autotoc_md276", [
+          [ "Deb Package", "index.html#autotoc_md277", null ],
+          [ "Unzip manually (Linux)", "index.html#autotoc_md278", null ],
+          [ "macOS", "index.html#autotoc_md279", null ]
         ] ],
-        [ "Deb Package (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md279", null ],
-        [ "Unzip manually (Ubuntu x86_64, arm64, armhf)", "index.html#autotoc_md280", null ],
-        [ "macOS", "index.html#autotoc_md281", null ],
-        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md282", null ],
-        [ "Windows MSVC", "index.html#autotoc_md283", null ]
+        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md280", null ],
+        [ "Windows MSVC (x86, x64)", "index.html#autotoc_md281", null ],
+        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md282", [
+          [ "webcface-server", "index.html#autotoc_md283", null ],
+          [ "webcface-tools", "index.html#autotoc_md284", null ]
+        ] ]
       ] ],
-      [ "License", "index.html#autotoc_md284", null ]
+      [ "License", "index.html#autotoc_md285", null ]
     ] ],
     [ "1-1. Tutorial (Visualizing)", "md_docs_211__tutorial__vis.html", [
       [ "WebCFaceのインストール", "md_docs_211__tutorial__vis.html#autotoc_md1", null ],
@@ -430,20 +432,20 @@ var NAVTREEINDEX =
 "classwebcface_1_1server_1_1Server.html#aca339e57a30b1c2a5e0b9ee496353536",
 "common_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b",
 "functions_b.html",
-"md_docs_253__func.html#autotoc_md97",
-"namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a334c4a4c42fdb79d7ebc3e73b517e6f8",
-"namespacewebcface_1_1internal.html#a33c459d57e812ca4e6e9191947cc8ead",
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1View_01_4_01_4.html#ab64a9410006647a907cb819b8bdc8452",
+"md_docs_253__func.html#autotoc_md96",
+"namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a2676d7b68ff2c97c5776c6e5da218c01",
+"namespacewebcface_1_1internal.html#a22c693261d3f39842ecb4f56e8604cf1",
+"structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1View_01_4_01_4.html#a2feda2b9392db2e4767dea22df467d5e",
 "structwebcface_1_1Field.html#a91500f66e86a02b1e57fb0f96ef99989",
 "structwebcface_1_1c__wcf_1_1CharType_3_01char_01_4.html#a86b1361efbf894f05e67bb86d3b84bcf",
 "structwebcface_1_1components_1_1geometries_1_1Plane.html#a4a7b88988ccd08949b9be2e7de101e8c",
-"structwebcface_1_1internal_1_1ClientData.html#ac1ff9136d0547bd5b3fdde936c1b11a2",
-"structwebcface_1_1internal_1_1PromiseData.html#a1a2609dbab2836c580768fc7758a4ac8",
-"structwebcface_1_1message_1_1Call.html#ad1edaa1b21d91cb7279cd5d2ffec0bdf",
-"structwebcface_1_1message_1_1ImageReq.html#abe0db23ce7f19f5dfd27436efea2e30d",
-"structwebcface_1_1message_1_1Res_3_01RobotModel_01_4.html#a05bd34cdc5977d76905a5686f2492248",
-"structwebcface_1_1server_1_1MemberData.html#a0def83d3edbdb9857716384b049d828e",
-"transform_8h.html#a7795005546b43cd39adb81c8b52b0850a14f73cdf715a90c270fef41c547860b8"
+"structwebcface_1_1internal_1_1ClientData.html#ac12c0189fb9871dca59ac653ce95b4cf",
+"structwebcface_1_1internal_1_1PromiseData.html#a1857b0e2073dee1ce8b4c840768c14fc",
+"structwebcface_1_1message_1_1Call.html#aa64e7eb60ec2268a955e58dc5b294c4e",
+"structwebcface_1_1message_1_1ImageReq.html#aad2f641d45be5c29d1ce11a6dbdac449",
+"structwebcface_1_1message_1_1Res_3_01RobotModel_01_4.html",
+"structwebcface_1_1server_1_1MemberData.html#a0d6dce092921d8dcd3a2e09b7290caf3",
+"transform_8h.html#a7795005546b43cd39adb81c8b52b0850a07bb28478030fc8b86da84000c9860d3"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

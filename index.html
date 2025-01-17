@@ -267,47 +267,39 @@ Links</h2>
 <h2><a class="anchor" id="autotoc_md275"></a>
 Installation</h2>
 <p>For WebCFace ver1, refer to the <a href="https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation">v1 branch</a> (documentation is Japanese only).</p>
-<p>For ver2, you can download built archives for Linux, Windows, and MacOS as follows. If you want to build from source, refer to <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a>.</p>
+<p>For ver2, you can download built archives for Linux, MacOS and Windows as follows, or run it with Docker. If you want to build from source, refer to <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a>.</p>
 <blockquote class="doxtable">
 <p>&zwj;WebCFace ver1については <a href="https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation">v1ブランチ</a> を参照してください。</p>
-<p>ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードできます。 自分でソースからビルドする場合は <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a> を参照してください。 </p>
+<p>ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードするか、Dockerで動かすことができます。 自分でソースからビルドする場合は <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a> を参照してください。 </p>
 </blockquote>
 <h3><a class="anchor" id="autotoc_md276"></a>
-Docker (x86_64, arm64, armhf)</h3>
-<p>You can also pull and run <code>webcface-server</code> and tools using Docker. The image is released as <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a>. For arm64 or armhf, replace <code>amd64</code> in the image name.</p>
+Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)</h3>
+<p>You can use the following <a href="installer.sh">installation script</a>. By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS). If you want to automate the installation, add options such as <code>-a</code>/<code>-x</code> or <code>-y</code> at the end.</p>
+<p>Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura. So they are not guaranteed to work on older OSs or other distros.</p>
 <blockquote class="doxtable">
-<p>&zwj;Dockerを使って <code>webcface-server</code> とコマンドラインツールを実行することもできます。 Dockerイメージは <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a> としてリリースしています。 arm64やarmhfの場合はイメージ名の <code>amd64</code> の部分を変更してください。 </p>
+<p>&zwj;以下の<a href="installer.sh">インストールスクリプト</a>を使ってインストールできます。 デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。 スクリプト内で自動化したい場合は <code>-a</code>/<code>-x</code> や <code>-y</code> などのオプションを末尾に追加して使ってください。</p>
+<p>Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。 </p>
 </blockquote>
+<div class="fragment"><div class="line">sudo sh &lt;(curl -f https://na-trium-144.github.io/webcface/installer.sh)</div>
+</div><!-- fragment --><div class="fragment"><div class="line">Usage: sh &lt;(...) [-a|-x] [-y] [-d DIR] [-u] [VERSION]</div>
+<div class="line">  -a: Install with apt-get (only for Debian-based systems)</div>
+<div class="line">  -x: Extract archive manually, without using apt-get</div>
+<div class="line">  -d DIR: Extract archive to DIR (default: /opt/webcface)</div>
+<div class="line">  -u: Extract App bundle to user home directory (only for macOS)</div>
+<div class="line">  -y: Assume yes for all prompts</div>
+<div class="line">  VERSION: Version to install (default: 2.7.0)</div>
+<div class="line">           Available versions: 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4</div>
+</div><!-- fragment --><details >
+<summary >
+Details</summary>
+<p></p>
+<p></p>
+</details>
 <h4><a class="anchor" id="autotoc_md277"></a>
-webcface-server</h4>
-<ul>
-<li>Example (TCP and Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
-<div class="line">    -p 7530:7530 \</div>
-<div class="line">    -v /tmp/webcface:/tmp/webcface \</div>
-<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest</div>
-</div><!-- fragment --></li>
-</ul>
-<h4><a class="anchor" id="autotoc_md278"></a>
-webcface-tools</h4>
-<ul>
-<li>Example (Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
-<div class="line">    -v /tmp/webcface:/tmp/webcface \</div>
-<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \</div>
-<div class="line">    webcface-ls</div>
-</div><!-- fragment --></li>
-<li>Example (TCP) <div class="fragment"><div class="line">docker run --rm \</div>
-<div class="line">    --add-host=host.docker.internal:host-gateway \</div>
-<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \</div>
-<div class="line">    webcface-ls -a host.docker.internal</div>
-</div><!-- fragment --></li>
-</ul>
-<h3><a class="anchor" id="autotoc_md279"></a>
-Deb Package (Ubuntu x86_64, arm64, armhf)</h3>
-<p>You can download and install the Deb package from <a href="https://github.com/na-trium-144/webcface/releases">WebCFace Releases</a>, <a href="https://github.com/na-trium-144/webcface-webui/releases">webui Releases</a>, and <a href="https://github.com/na-trium-144/webcface-tools/releases">tools Releases</a>. In addition to the contents distributed as zip archives, it includes the WebCFace Desktop application launcher. To download and extract using the command line, copy and paste the following commands.</p>
-<p>It is built on Ubuntu 20.04, so it may not work on older versions of Ubuntu or other distributions.</p>
+Deb Package</h4>
+<p>You can download and install the Deb package from <a href="https://github.com/na-trium-144/webcface/releases">WebCFace Releases</a>, <a href="https://github.com/na-trium-144/webcface-webui/releases">webui Releases</a>, and <a href="https://github.com/na-trium-144/webcface-tools/releases">tools Releases</a>. In addition to the contents distributed as zip archives, it includes the WebCFace Desktop application launcher.</p>
 <blockquote class="doxtable">
-<p>&zwj;Debパッケージとしてビルドしたものを <a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からダウンロードしてインストールできます。 内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。 ダウンロードと展開をコマンドラインでやるなら以下のようにします。</p>
-<p>Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。 </p>
+<p>&zwj;Debパッケージとしてビルドしたものを <a href="https://github.com/na-trium-144/webcface/releases">WebCFaceのReleases</a> と <a href="https://github.com/na-trium-144/webcface-webui/releases">webuiのReleases</a> 、<a href="https://github.com/na-trium-144/webcface-tools/releases">toolsのReleases</a> からダウンロードしてインストールできます。 内容はzipアーカイブで配布しているものに加えて WebCFace Desktop のアプリケーションランチャーが含まれます。 </p>
 </blockquote>
 <details  open="true">
 <summary >
@@ -342,30 +334,18 @@ armhf</summary>
 <div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md280"></a>
-Unzip manually (Ubuntu x86_64, arm64, armhf)</h3>
+<h4><a class="anchor" id="autotoc_md278"></a>
+Unzip manually (Linux)</h4>
 <p>Instead of using apt, you can download the zip file for Linux from the <a href="https://github.com/na-trium-144/webcface-package/releases">webcface-package repository</a> and extract it to a location of your choice.</p>
 <ul>
 <li>If you have sudo privileges, we recommend extracting it to /usr/local or /opt/webcface.</li>
 <li>Also, add bin/ in the extracted directory to PATH and lib/*-linux-gnu*/pkgconfig/ to PKG_CONFIG_PATH.</li>
-<li>If you want to use the systemd service file, add a link to the file extracted to /opt/webcface/lib/systemd/system in /etc/systemd/system/.<ul>
-<li>If you extract it to a location other than /opt/webcface, you will need to manually rewrite the path written in the service file.</li>
 </ul>
-</li>
-<li>It is built on Ubuntu 20.04, so it may not work on older versions of Ubuntu or other distributions.</li>
-</ul>
-<p>If you want to download and extract from the command line, use the following. (The following command extracts to /opt/webcface and writes the environment variables to ~/.bashrc. If you are using a different environment, please change it accordingly.)</p>
 <blockquote class="doxtable">
 <p>&zwj;aptを使う代わりに、 <a href="https://github.com/na-trium-144/webcface-package/releases">webcface-package リポジトリから</a> linux用のzipファイルをダウンロードし、任意の場所に展開して使うこともできます。</p><ul>
 <li>sudo権限が使える場合は /usr/local または /opt/webcface に展開するのがおすすめです。</li>
-<li>また、展開したディレクトリ内の bin/ をPATHに、 lib/*-linux-gnu*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。</li>
-<li>さらにsystemdのサービスファイルを使用したい場合は /opt/webcface/lib/systemd/system に展開されたファイルに対して /etc/systemd/system/ にリンクを貼るなどしてください。<ul>
-<li>/opt/webcface 以外の場所に展開した場合はserviceファイルに書かれているパスを手動で書き換える必要があります。</li>
+<li>また、展開したディレクトリ内の bin/ をPATHに、 lib/*-linux-gnu*/pkgconfig/ をPKG_CONFIG_PATHに追加してください。 </li>
 </ul>
-</li>
-<li>Ubuntu20.04でビルドしているため、それより古いUbuntuや、Ubuntu以外のディストリビューションで動作するかはわかりません。</li>
-</ul>
-<p>ダウンロードと展開をコマンドラインでやるなら以下のようにします。 (以下のコマンドは /opt/webcface に展開し, 環境変数を ~/.bashrc に書き込みます。それ以外の環境の場合は適宜読み替えてください。) </p>
 </blockquote>
 <details  open="true">
 <summary >
@@ -400,13 +380,12 @@ armhf</summary>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/</div>
 </div><!-- fragment --> </details>
-<h3><a class="anchor" id="autotoc_md281"></a>
-macOS</h3>
+<h4><a class="anchor" id="autotoc_md279"></a>
+macOS</h4>
 <p><a href="https://github.com/na-trium-144/webcface-package/releases">From the webcface-package repository</a> You can download a zip file for macOS, but since it is not signed or notarized, it will be blocked by Gatekeeper when downloaded from a browser. (A screen will appear saying "Cannot open because the developer cannot be verified.")</p>
 <p>Instead, you can avoid Gatekeeper by downloading and extracting it from the command line as follows. (The following command extracts webcface_universal to /opt/webcface and webcface-desktop_app to /Applications, and writes the environment variables to zshrc. Please read appropriately if you are using a different environment.)</p>
 <ul>
 <li>It is a universal binary, and is the same for both IntelMac and Apple Silicon.</li>
-<li>It is built on macOS 13 (Ventura), so it may not work on older Macs.</li>
 <li>The webcface library has install_name set to the path /opt/webcface/lib, so if you extract it to a location other than that, you may also need to <code>export DYLD_LIBRARY_PATH="(webcface directory path)/lib:$DYLD_LIBRARY_PATH"</code></li>
 </ul>
 <blockquote class="doxtable">
@@ -414,7 +393,6 @@ macOS</h3>
 <p>その代わり、以下のようにコマンドラインからダウンロード、展開することでGatekeeperを回避できます。 (以下のコマンドは webcface_universal を /opt/webcface に、 webcface-desktop_app を /Applications に展開し、環境変数をzshrcに書き込みます。それ以外の環境の場合は適宜読み替えてください)</p>
 <ul>
 <li>Universalバイナリになっており、IntelMacもAppleシリコンも共通です。</li>
-<li>macOS 13 (Ventura) でビルドしているので、それより古いMacでは動かないかもしれません。</li>
 <li>webcfaceライブラリはinstall_nameが /opt/webcface/lib のパスになっているため、それ以外の場所に展開した場合は <code>export DYLD_LIBRARY_PATH="(webcfaceディレクトリのパス)/lib:$DYLD_LIBRARY_PATH"</code> も必要になるかもしれません。 </li>
 </ul>
 </blockquote>
@@ -426,7 +404,7 @@ macOS</h3>
 <div class="line">rm webcface-desktop_2.7.0_macos_app.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md282"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md280"></a>
 Homebrew (MacOS, Linux)</h3>
 <p>You can install from <a href="https://github.com/na-trium-144/homebrew-webcface">na-trium-144/webcface tap</a> using brew, but it is not recommended because the webcface built with brew requires many dependent libraries as shared libraries.</p>
 <p>Also, if you install with brew, the WebCFace Desktop app is not included.</p>
@@ -436,8 +414,8 @@ Homebrew (MacOS, Linux)</h3>
 </blockquote>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md283"></a>
-Windows MSVC</h3>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md281"></a>
+Windows MSVC (x86, x64)</h3>
 <p>You can download the exe or zip file for Windows from the <a href="https://github.com/na-trium-144/webcface-package/releases">webcface-package repository</a>.</p>
 <ul>
 <li>x86 and x64 versions are available.<ul>
@@ -486,7 +464,36 @@ Windows MSVC</h3>
 </ul>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください) </p>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md284"></a>
+<h3><a class="anchor" id="autotoc_md282"></a>
+Docker (x86_64, arm64, armhf)</h3>
+<p>You can also pull and run <code>webcface-server</code> and tools using Docker. The image is released as <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a>. For arm64 or armhf, replace <code>amd64</code> in the image name.</p>
+<blockquote class="doxtable">
+<p>&zwj;Dockerを使って <code>webcface-server</code> とコマンドラインツールを実行することもできます。 Dockerイメージは <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a> としてリリースしています。 arm64やarmhfの場合はイメージ名の <code>amd64</code> の部分を変更してください。 </p>
+</blockquote>
+<h4><a class="anchor" id="autotoc_md283"></a>
+webcface-server</h4>
+<ul>
+<li>Example (TCP and Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
+<div class="line">    -p 7530:7530 \</div>
+<div class="line">    -v /tmp/webcface:/tmp/webcface \</div>
+<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest</div>
+</div><!-- fragment --></li>
+</ul>
+<h4><a class="anchor" id="autotoc_md284"></a>
+webcface-tools</h4>
+<ul>
+<li>Example (Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
+<div class="line">    -v /tmp/webcface:/tmp/webcface \</div>
+<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \</div>
+<div class="line">    webcface-ls</div>
+</div><!-- fragment --></li>
+<li>Example (TCP) <div class="fragment"><div class="line">docker run --rm \</div>
+<div class="line">    --add-host=host.docker.internal:host-gateway \</div>
+<div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest \</div>
+<div class="line">    webcface-ls -a host.docker.internal</div>
+</div><!-- fragment --></li>
+</ul>
+<h2><a class="anchor" id="autotoc_md285"></a>
 License</h2>
 <p>WebCFace and related programs are all released under the MIT license. For details, see <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a>.</p>
 <p>Third-party libraries used by WebCFace itself and tools are licensed as follows:</p>
@@ -514,7 +521,7 @@ License</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Jan 17 2025 09:37:18 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Jan 17 2025 19:52:24 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
