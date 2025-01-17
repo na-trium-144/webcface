@@ -7,11 +7,7 @@ DEFAULT_VERSION=2.7.0
 AVAILABLE_VERSIONS="2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4"
 
 usage(){
-    case $0 in
-    /dev/fd*) self="sh <(...)" ;;
-    *) self="$0" ;;
-    esac
-    echo "Usage: $self [-a|-x] [-y] [-d DIR] [-u] [VERSION]"
+    echo "Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]"
     echo "  -a: Install with apt-get (only for Debian-based systems)"
     echo "  -x: Extract archive manually, without using apt-get"
     echo "  -d DIR: Extract archive to DIR (default: /opt/webcface)"

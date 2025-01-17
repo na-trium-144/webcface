@@ -247,11 +247,12 @@ So they are not guaranteed to work on older OSs or other distros.
 > Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。
 
 ```sh
-sudo sh <(curl -f https://na-trium-144.github.io/webcface/installer.sh)
+curl -fO https://na-trium-144.github.io/webcface/installer.sh
+sudo sh ./installer.sh
 ```
 
 ```
-Usage: sh <(...) [-a|-x] [-y] [-d DIR] [-u] [VERSION]
+Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]
   -a: Install with apt-get (only for Debian-based systems)
   -x: Extract archive manually, without using apt-get
   -d DIR: Extract archive to DIR (default: /opt/webcface)
