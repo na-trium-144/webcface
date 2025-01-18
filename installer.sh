@@ -11,9 +11,9 @@ usage(){
     echo "  -a: Install with apt-get (only for Debian-based systems)"
     echo "  -x: Extract archive manually, without using apt-get"
     echo "  -d DIR: Extract archive to DIR (default: /opt/webcface)"
-    echo "  -u: Extract App bundle to user home directory (only for macOS)"
+    echo "  -u: Extract webcface-desktop.app to \$HOME/Applications, instead of the default /Applications (only for macOS)"
     echo "  -y: Assume yes for all prompts"
-    echo "  VERSION: Version to install (default: $DEFAULT_VERSION)"
+    echo "  VERSION: Version to install, without 'v' prefix (default: $DEFAULT_VERSION)"
     echo "           Available versions: $AVAILABLE_VERSIONS"
     exit 1
 }

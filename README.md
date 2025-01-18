@@ -259,6 +259,7 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 
 You can use the following [installation script](installer.sh).
 By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).
+(Installation does not occur immediately upon execution, and one or two confirmation prompts will be displayed.)
 
 After installation, you may need to add PATH settings to files such as .bashrc or .zshrc.
 Follow the instructions displayed after running the installer.
@@ -268,7 +269,7 @@ So they are not guaranteed to work on older OSs or other distros.
 
 > 以下の[インストールスクリプト](installer.sh)を使ってインストールできます。
 > デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。
-> スクリプト内で自動化したい場合は `-a`/`-x` や `-y` などのオプションを末尾に追加して使ってください。
+> (実行すると即座にインストールされるわけではなく、1つか2つ確認のプロンプトが表示されます。)
 >
 > インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。
 > インストーラー実行後に表示される指示に従ってください。
@@ -281,7 +282,7 @@ sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)"
 
 If you want to automate the installation, add `--` followed by options such as `-a`/`-x` or `-y` at the end.
 
-> 引数を渡す場合は最後に `--` とその後ろに `-a`/`-x` や `-y` などのオプションを追加してください。
+> スクリプト内などで呼び出して自動化したい場合は、後ろに `--` と `-a`/`-x` や `-y` などのオプションを追加してください。
 
 ```sh
 sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)" -- -a -y
@@ -292,9 +293,9 @@ Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]
   -a: Install with apt-get (only for Debian-based systems)
   -x: Extract archive manually, without using apt-get
   -d DIR: Extract archive to DIR (default: /opt/webcface)
-  -u: Extract App bundle to user home directory (only for macOS)
+  -u: Extract webcface-desktop.app to $HOME/Applications, instead of the default /Applications (only for macOS)
   -y: Assume yes for all prompts
-  VERSION: Version to install (default: 2.7.0)
+  VERSION: Version to install, without 'v' prefix (default: 2.7.0)
            Available versions: 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4
 ```
 
