@@ -260,6 +260,9 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 You can use the following [installation script](installer.sh).
 By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).
 
+After installation, you may need to add PATH settings to files such as .bashrc or .zshrc.
+Follow the instructions displayed after running the installer.
+
 Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura.
 So they are not guaranteed to work on older OSs or other distros.
 
@@ -267,6 +270,9 @@ So they are not guaranteed to work on older OSs or other distros.
 > デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。
 > スクリプト内で自動化したい場合は `-a`/`-x` や `-y` などのオプションを末尾に追加して使ってください。
 >
+> インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。
+> インストーラー実行後に表示される指示に従ってください。
+> 
 > Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。
 
 ```sh
