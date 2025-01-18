@@ -22,6 +22,30 @@ Web-based Communication Framework &amp; Dashboard-like UI
 > * C++ (C++17以上), C, Python (3.6以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
 > * Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
 
+## Table of contents
+
+<!--ts-->
+   * [Table of contents](#table-of-contents)
+   * [Features](#features)
+      * [Easy to Setup](#easy-to-setup)
+      * [Inter-Process Communication](#inter-process-communication)
+      * [WebUI](#webui)
+      * [WebCFace-Tools](#webcface-tools)
+   * [Documentation](#documentation)
+   * [Links](#links)
+   * [Installation](#installation)
+      * [Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)](#linux-x86_64-arm64-armhf--macos-x86_64-arm64)
+         * [Deb Package](#deb-package)
+         * [Unzip manually (Linux)](#unzip-manually-linux)
+         * [macOS](#macos)
+      * [Homebrew (MacOS, Linux)](#homebrew-macos-linux)
+      * [Windows MSVC (x86, x64)](#windows-msvc-x86-x64)
+      * [Docker (x86_64, arm64, armhf)](#docker-x86_64-arm64-armhf)
+         * [webcface-server](#webcface-server)
+         * [webcface-tools](#webcface-tools-1)
+   * [License](#license)
+<!--te-->
+
 ## Features
 
 ### Easy to Setup
@@ -235,7 +259,6 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 
 You can use the following [installation script](installer.sh).
 By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).
-If you want to automate the installation, add options such as `-a`/`-x` or `-y` at the end.
 
 Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura.
 So they are not guaranteed to work on older OSs or other distros.
@@ -247,8 +270,15 @@ So they are not guaranteed to work on older OSs or other distros.
 > Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。
 
 ```sh
-curl -fO https://na-trium-144.github.io/webcface/installer.sh
-sudo sh ./installer.sh
+sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)"
+```
+
+If you want to automate the installation, add `--` followed by options such as `-a`/`-x` or `-y` at the end.
+
+> 引数を渡す場合は最後に `--` とその後ろに `-a`/`-x` や `-y` などのオプションを追加してください。
+
+```sh
+sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)" -- -a -y
 ```
 
 ```
