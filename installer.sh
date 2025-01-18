@@ -222,6 +222,7 @@ Linux)
         rm -f /tmp/$WEBCFACE_DEB /tmp/$TOOLS_DEB /tmp/$WEBUI_DEB /tmp/$DESKTOP_DEB
         echo
         echo "Done."
+        echo "Since symlinks to WebCFace are created in /usr using apt-get, so there is no need to modify your PATH."
     esac
     ;;
 Darwin)

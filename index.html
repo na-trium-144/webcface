@@ -306,9 +306,11 @@ Installation</h2>
 <h3><a class="anchor" id="autotoc_md277"></a>
 Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)</h3>
 <p>You can use the following <a href="installer.sh">installation script</a>. By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).</p>
+<p>After installation, you may need to add PATH settings to files such as .bashrc or .zshrc. Follow the instructions displayed after running the installer.</p>
 <p>Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura. So they are not guaranteed to work on older OSs or other distros.</p>
 <blockquote class="doxtable">
 <p>&zwj;以下の<a href="installer.sh">インストールスクリプト</a>を使ってインストールできます。 デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。 スクリプト内で自動化したい場合は <code>-a</code>/<code>-x</code> や <code>-y</code> などのオプションを末尾に追加して使ってください。</p>
+<p>インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。 インストーラー実行後に表示される指示に従ってください。</p>
 <p>Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。 </p>
 </blockquote>
 <div class="fragment"><div class="line">sudo sh -c &quot;$(curl -f https://na-trium-144.github.io/webcface/installer.sh)&quot;</div>
@@ -557,7 +559,7 @@ License</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 18 2025 05:17:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sat Jan 18 2025 06:17:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
