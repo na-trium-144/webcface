@@ -22,7 +22,10 @@ Web-based Communication Framework &amp; Dashboard-like UI
 > * C++ (C++17以上), C, Python (3.6以上), JavaScript/TypeScript で相互に数値、文字列、画像などのデータを送受信したり、関数を呼び出したりすることができます。
 > * Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。
 
+## Table of contents
+
 <!--ts-->
+   * [Table of contents](#table-of-contents)
    * [Features](#features)
       * [Easy to Setup](#easy-to-setup)
       * [Inter-Process Communication](#inter-process-communication)
