@@ -305,27 +305,27 @@ Installation</h2>
 </blockquote>
 <h3><a class="anchor" id="autotoc_md277"></a>
 Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)</h3>
-<p>You can use the following <a href="installer.sh">installation script</a>. By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).</p>
+<p>You can use the following <a href="installer.sh">installation script</a>. By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS). (Installation does not occur immediately upon execution, and one or two confirmation prompts will be displayed.)</p>
 <p>After installation, you may need to add PATH settings to files such as .bashrc or .zshrc. Follow the instructions displayed after running the installer.</p>
 <p>Linux binaries are built on Ubuntu 20.04, and MacOS binaries are built on Ventura. So they are not guaranteed to work on older OSs or other distros.</p>
 <blockquote class="doxtable">
-<p>&zwj;以下の<a href="installer.sh">インストールスクリプト</a>を使ってインストールできます。 デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。 スクリプト内で自動化したい場合は <code>-a</code>/<code>-x</code> や <code>-y</code> などのオプションを末尾に追加して使ってください。</p>
+<p>&zwj;以下の<a href="installer.sh">インストールスクリプト</a>を使ってインストールできます。 デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。 (実行すると即座にインストールされるわけではなく、1つか2つ確認のプロンプトが表示されます。)</p>
 <p>インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。 インストーラー実行後に表示される指示に従ってください。</p>
 <p>Linux用バイナリは Ubuntu 20.04 で、 MacOS用バイナリは Ventura でビルドしているため、Ubuntu以外のディストリビューションや古いOSでの動作は保証しません。 </p>
 </blockquote>
 <div class="fragment"><div class="line">sudo sh -c &quot;$(curl -f https://na-trium-144.github.io/webcface/installer.sh)&quot;</div>
 </div><!-- fragment --><p>If you want to automate the installation, add <code>--</code> followed by options such as <code>-a</code>/<code>-x</code> or <code>-y</code> at the end.</p>
 <blockquote class="doxtable">
-<p>&zwj;引数を渡す場合は最後に <code>--</code> とその後ろに <code>-a</code>/<code>-x</code> や <code>-y</code> などのオプションを追加してください。 </p>
+<p>&zwj;スクリプト内などで呼び出して自動化したい場合は、後ろに <code>--</code> と <code>-a</code>/<code>-x</code> や <code>-y</code> などのオプションを追加してください。 </p>
 </blockquote>
 <div class="fragment"><div class="line">sudo sh -c &quot;$(curl -f https://na-trium-144.github.io/webcface/installer.sh)&quot; -- -a -y</div>
 </div><!-- fragment --><div class="fragment"><div class="line">Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]</div>
 <div class="line">  -a: Install with apt-get (only for Debian-based systems)</div>
 <div class="line">  -x: Extract archive manually, without using apt-get</div>
 <div class="line">  -d DIR: Extract archive to DIR (default: /opt/webcface)</div>
-<div class="line">  -u: Extract App bundle to user home directory (only for macOS)</div>
+<div class="line">  -u: Extract webcface-desktop.app to $HOME/Applications, instead of the default /Applications (only for macOS)</div>
 <div class="line">  -y: Assume yes for all prompts</div>
-<div class="line">  VERSION: Version to install (default: 2.7.0)</div>
+<div class="line">  VERSION: Version to install, without &#39;v&#39; prefix (default: 2.7.0)</div>
 <div class="line">           Available versions: 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4</div>
 </div><!-- fragment --><details >
 <summary >
@@ -559,7 +559,7 @@ License</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Jan 18 2025 06:17:43 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sat Jan 18 2025 12:21:37 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
