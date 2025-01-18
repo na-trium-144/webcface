@@ -268,7 +268,6 @@ So they are not guaranteed to work on older OSs or other distros.
 
 > 以下の[インストールスクリプト](installer.sh)を使ってインストールできます。
 > デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。
-> スクリプト内で自動化したい場合は `-a`/`-x` や `-y` などのオプションを末尾に追加して使ってください。
 >
 > インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。
 > インストーラー実行後に表示される指示に従ってください。
@@ -281,7 +280,7 @@ sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)"
 
 If you want to automate the installation, add `--` followed by options such as `-a`/`-x` or `-y` at the end.
 
-> 引数を渡す場合は最後に `--` とその後ろに `-a`/`-x` や `-y` などのオプションを追加してください。
+> スクリプト内などで呼び出して自動化したい場合は、後ろに `--` と `-a`/`-x` や `-y` などのオプションを追加してください。
 
 ```sh
 sudo sh -c "$(curl -f https://na-trium-144.github.io/webcface/installer.sh)" -- -a -y
