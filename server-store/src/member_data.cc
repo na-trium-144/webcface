@@ -455,7 +455,7 @@ void MemberData::onRecv(const std::string &message) {
                 ids_changed = true;
             }
             this->view[v.field] = message::ViewData::mergeDiff(
-                &this->view[v.field], v.data_diff, std::move(v.data_ids));
+                &prev_view, v.data_diff, std::move(v.data_ids));
             auto &new_view = this->view[v.field];
             std::map<std::string, std::shared_ptr<message::ViewComponentData>>
                 old_diff;

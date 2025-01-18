@@ -404,7 +404,7 @@ TEST_F(ClientTest, childrenEntry) {
     EXPECT_FALSE(m.hasChildren());
     EXPECT_FALSE(m.child("c").hasChildren());
 
-    dummy_s->send(message::Entry<message::Value>{{}, 10, "a"_ss});
+    dummy_s->send(message::Entry<message::Value>{10, "a"_ss, {}, false});
     dummy_s->send(message::Entry<message::Text>{{}, 10, "b"_ss});
     dummy_s->send(message::Entry<message::Text>{{}, 10, "c.a"_ss});
     dummy_s->send(message::Entry<message::Text>{{}, 10, "c.b"_ss});

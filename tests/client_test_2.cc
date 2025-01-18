@@ -261,9 +261,8 @@ TEST_F(ClientTest, textReqWithUnix) {
     for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
         dummy_s->send(message::Res<message::Text>{
             1, ""_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
-        while (!data_->text_store.getRecv("a"_ss, "b"_ss).has_value() ||
+        while (!data_->text_store.getRecv("a"_ss, "b"_ss) ||
                data_->text_store.getRecv("a"_ss, "b"_ss)
-                       .value()
                        ->asU8StringRef()
                        .size() != len) {
             wcli_->loopSyncFor(
@@ -271,7 +270,6 @@ TEST_F(ClientTest, textReqWithUnix) {
         }
         for (std::size_t i = 0; i < len; i++) {
             EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss)
-                          .value()
                           ->asU8StringRef()[i],
                       'a');
         }
