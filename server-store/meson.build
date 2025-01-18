@@ -15,7 +15,7 @@ webcface_server_store_lib = static_library('webcface-server-store',
   ],
   dependencies: [
     webcface_config_dep,
-    warning_options,
+    warning_options_dep,
     webcface_common_dep,
     filesystem_dep,
     spdlog_dep,

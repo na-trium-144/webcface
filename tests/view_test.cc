@@ -81,6 +81,8 @@ TEST_F(ViewTest, viewSet) {
     v << components::text("aaa")
              .textColor(ViewColor::yellow)
              .bgColor(ViewColor::green)
+             .width(10)
+             .height(2)
       << newLine();
     v << button("f", func(self_name, "f"));
     v << button("a", []() {});

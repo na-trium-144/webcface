@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.5.2',
+  version: '2.7.0',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -14,6 +14,8 @@ project('webcface', 'c', 'cpp',
     'msgpackc-cxx:tests=disabled',
     'msgpackc-cxx:std_variant=false', # msvcでなんかエラーになる
     'fmt:default_library=static',
+    'fmt:warning_level=0',
+    'fmt:werror=false',
     'spdlog:tests=disabled',
     'spdlog:compile_library=true',
     'spdlog:default_library=static',
@@ -174,9 +176,9 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 
-webcface_abi_major = '21' # ABIの破壊的変更で1増やす
+webcface_abi_major = '23' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.11.0'
+webcface_webui_version = '1.12.2'
 
 webcface_description = 'Web-based Communication Framework'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
@@ -275,11 +277,10 @@ else
 endif
 
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(
+  warning_options_dep = declare_dependency(
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
       '-Wno-attributes',
-      '-Wno-error=psabi', # refer to PR#9
       # crow
       '-Wno-error=type-limits',
       # inside fmt (fmtlib/fmt#3354)
@@ -294,7 +295,7 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '-Wno-inline',
     '--system-header-prefix=msgpack.hpp',
     '--system-header-prefix=fmt/',
@@ -307,7 +308,7 @@ elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
     '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '/wd4251',
     '/wd4275',
     '/wd4661',
@@ -321,8 +322,16 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = []
+  warning_options_dep = []
 endif
+wabi_options_dep = declare_dependency(
+  compile_args: cxx.get_supported_arguments(
+    # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+    '-fabi-version=11',
+    '-Wabi',
+    '-Wpsabi',
+  ),
+)
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
 conf_data.set10('WEBCFACE_SYSTEM_DLLEXPORT', webcface_system_dllexport)
@@ -511,9 +520,40 @@ endif
 utf8cpp_dep = dependency('utf8cpp')
 
 # curlはvisibilityがhiddenになっている
-curl_dep = dependency('libcurl')
+curl_dep = dependency('libcurl', version: '>=7.86.0')
 if curl_dep.type_name() != 'internal'
-  curl_has_ws_support = cxx.run('''
+  if host_machine.system() == 'darwin' and \
+      curl_dep.version().version_compare('>=8.10.0') and \
+      curl_dep.version().version_compare('<8.12.0')
+    # https://github.com/curl/curl/issues/15865
+    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug on MacOS. ' +
+      'Use other versions or set "--force-fallback-for=libcurl".',
+    )
+  endif
+  curl_dep_version = curl_dep.version().split('-')[0].split('.')
+  curl_runtime_version_test = cxx.run('''
+    #include <curl/curl.h>
+    #include <cassert>
+    #include <iostream>
+    int main() {
+      auto info = curl_version_info(CURLVERSION_NOW);
+      std::cerr << "version_num = " << std::hex << info->version_num << std::endl;
+      assert(((info->version_num >> 16) & 0xff) == ''' + curl_dep_version[0] + ''');
+      assert(((info->version_num >> 8) & 0xff) == ''' + curl_dep_version[1] + ''');
+      assert(((info->version_num >> 0) & 0xff) == ''' + curl_dep_version[2] + ''');
+    }
+    ''',
+    dependencies: [curl_dep],
+    name: 'curl_runtime_version_test',
+  )
+  assert(curl_runtime_version_test.compiled())
+  if curl_runtime_version_test.returncode() != 0
+    error('Could not run test using libcurl. ' + \
+      'Check the install_name, PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH, ' + \
+      'or if you are unsure set "--force-fallback-for=libcurl" to build libcurl from source.',
+    )
+  endif
+  curl_ws_support_test = cxx.run('''
     #include <curl/curl.h>
     #include <cassert>
     #include <cstddef>
@@ -524,10 +564,11 @@ if curl_dep.type_name() != 'internal'
     }
     ''',
     dependencies: [curl_dep],
-    name: 'curl_has_ws_support',
+    name: 'curl_ws_support_test',
   )
-  if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
-    error('The installed curl has no websocket support, so WebCFace cannot use it.\n' + \
+  assert(curl_ws_support_test.compiled())
+  if curl_ws_support_test.returncode() != 0
+    error('The installed curl has no websocket support, so WebCFace cannot use it. ' + \
       'Set "--force-fallback-for=libcurl".',
     )
   endif
@@ -538,7 +579,7 @@ if build_server
 
   crow_dep = dependency('Crow')
   if crow_dep.type_name() != 'internal'
-    crow_has_unix_socket_support = cxx.compiles('''
+    crow_unix_socket_support_test = cxx.compiles('''
       #include <crow.h>
       int main(){
           crow::SimpleApp app;
@@ -549,10 +590,10 @@ if build_server
       }
       ''',
       dependencies: [crow_dep],
-      name: 'crow_has_unix_socket_support',
+      name: 'crow_unix_socket_support_test',
     )
-    if not crow_has_unix_socket_support
-      error('The installed Crow has no unix socket support, so WebCFace cannot use it.\n' + \
+    if not crow_unix_socket_support_test
+      error('The installed Crow has no unix socket support, so WebCFace cannot use it. ' + \
         'Set "--force-fallback-for=Crow".',
       )
     endif

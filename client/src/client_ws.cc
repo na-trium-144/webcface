@@ -6,6 +6,7 @@
 #include <string>
 #include <cstdlib>
 #include <thread>
+#include <cassert>
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -109,7 +110,7 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         auto ret = curl_easy_perform(handle);
         if (ret == CURLE_OK) {
             data->logger_internal->info("connected to {}",
-                                         data->current_curl_path);
+                                        data->current_curl_path);
             data->current_curl_connected = true;
             return;
         } else {
@@ -132,6 +133,7 @@ void close(const std::shared_ptr<internal::ClientData> &data) {
 bool recv(const std::shared_ptr<internal::ClientData> &data,
           const std::function<void(std::string &&)> &cb) {
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
+    assert(handle);
     CURLcode ret;
     // data->logger_internal->trace("recv");
     bool has_recv = false;
@@ -187,16 +189,22 @@ bool recv(const std::shared_ptr<internal::ClientData> &data,
 void send(const std::shared_ptr<internal::ClientData> &data,
           const std::string &msg) {
     // std::lock_guard ws_lock(data->curl_m);
-    std::size_t sent = 0;
+    std::size_t sent_total = 0;
     CURL *handle = static_cast<CURL *>(data->current_curl_handle);
+    assert(handle);
     while (true) {
-        auto ret = curl_ws_send(handle, msg.c_str() + sent, msg.size() - sent,
-                                &sent, 0, CURLWS_BINARY);
-        if (ret == CURLE_AGAIN) {
-            std::this_thread::sleep_for(std::chrono::microseconds(10));
-            continue;
-        } else if (ret == CURLE_OK) {
-            break;
+        std::size_t sent;
+        auto ret =
+            curl_ws_send(handle, msg.c_str() + sent_total,
+                         msg.size() - sent_total, &sent, 0, CURLWS_BINARY);
+        sent_total += sent;
+        if (ret == CURLE_AGAIN || ret == CURLE_OK) {
+            if (sent_total < msg.size()) {
+                std::this_thread::sleep_for(std::chrono::microseconds(10));
+                continue;
+            } else {
+                break;
+            }
         } else {
             data->logger_internal->error("error sending message {}: {}",
                                          static_cast<int>(ret),

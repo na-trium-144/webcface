@@ -214,27 +214,9 @@ wcli.text("a").set(a_instance); // Dictにキャストされる
 
 </div>
 
-### 時刻
+## Entry, イベントについて
 
-<del>Text::time() でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。</del>  
-<span class="since-c">1.7</span>
-<span class="since-js">1.6</span>
-<span class="since-py"></span>
-Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md) を参照
-
-### Entry
-
-Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
-
-### Event
-
-受信したデータが変化したときにコールバックを呼び出すことができます。(TextChange イベント)
-コールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。
-
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は onSync() が使えます
-
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+[4-3. Field](43_field.md) に移動しました。そちらを参照してください
 
 <div class="section_buttons">
 

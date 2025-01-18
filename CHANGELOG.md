@@ -1,3 +1,32 @@
+## [2.7.0] - 2025-01-17
+### Changed
+* ABIバージョン: 23
+* gcc-9と10以降でABIに互換性がなかったコードを修正 (#472)
+	* WEBCFACE_COMPLETE テンプレートのnullptrをboolに変更
+	* rotAxisAngle() の返り値をstd::pairから独自のstructに変更
+	* gccでのみ `-fabi-version=11`, `-Wabi`, `-Wpsabi` オプションを指定するようにした
+* subprojectのfmtとspdlogがインストールされないようにした (#475)
+### Fixed
+* Func::setArgs() をすると引数型の情報が失われるバグ(ver2.0から)を修正 (#473)
+
+## [2.6.0] - 2025-01-15
+### Changed
+* ABIバージョン: 22
+* READMEを適当に英語に翻訳 (#439)
+* spdlogを -hidden-l ではなく visibility=inlineshidden でビルドしてリンクするように変更 (#444)
+* サーバー側の画像変換に使うライブラリをImageMagickからlibvipsに変更 (#441)
+* デフォルト状態のMesonのオプションを buildtype=release → debug に、 wrap_mode=forcefallback → default に変更 (#445)
+* verbose, traceモードで表示されるログの内容を変更 (#460)
+* ヘッダーのinclude忘れで不完全型を使おうとしてコンパイルエラーになる場合 static_assert でわかりやすいエラーメッセージを出すようにした (#457)
+* libcurl >=8.10, <8.12 は使用しないようにした (#458)
+* libcurl <7.86 は使用しないようにした (#468)
+### Added
+* View::inserter() (#462)
+* Viewの要素に width, height プロパティ追加 (#467)
+* Field::children(), childrenRecurse(), hasChildren() (#464)
+### Fixed
+* libcurl >=8.10 でcurl_ws_sendがメッセージを1回で送信できない場合の再送処理 (#455, #458)
+
 ## [2.5.2] - 2024-12-11
 ### Changed
 * MacOSのビルド済みバイナリの配布はこのバージョンからMacOS13でのビルドになります

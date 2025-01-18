@@ -8,7 +8,6 @@
 #include <atomic>
 #include <unordered_map>
 #include <cstdlib>
-#include <spdlog/logger.h>
 #include "webcface/common/encoding.h"
 #include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/image.h"
@@ -19,6 +18,14 @@
 #include "data_store1.h"
 #include "data_store2.h"
 #include "func_internal.h"
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
+#include <spdlog/logger.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 WEBCFACE_NS_BEGIN
 

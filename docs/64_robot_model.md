@@ -135,17 +135,6 @@ webcface::RobotLink
 のリストとして得られ、
 RobotLinkオブジェクトから各種プロパティを取得できます。
 
-<!-- ### 時刻
-
-~~RobotModel::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
-<span class="since-c">1.7</span>
-<span class="since-js">1.6</span>
-<span class="since-py"></span>
-Member::syncTime() に変更
- -->
-### Entry, Event
-
-いずれも使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 

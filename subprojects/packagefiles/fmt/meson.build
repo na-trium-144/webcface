@@ -28,16 +28,8 @@ fmt_lib = library(
   cpp_args: fmt_private_cpp_args,
   include_directories: 'include',
   build_by_default: not header_only,
-  install: not header_only,
   gnu_symbol_visibility: 'inlineshidden',
 )
-
-if not header_only
-  install_subdir('include',
-    strip_directory: true,
-    install_dir: get_option('includedir'),
-  )
-endif
 
 fmt_dep = declare_dependency(
   include_directories: 'include',
@@ -53,11 +45,3 @@ fmt_header_only_dep = declare_dependency(
   include_directories: 'include',
   compile_args: '-DFMT_HEADER_ONLY',
 )
-
-if not header_only
-  pkg_mod = import('pkgconfig')
-  pkg_mod.generate(fmt_lib,
-    name: 'fmt',
-    filebase: 'fmt',
-  )
-endif

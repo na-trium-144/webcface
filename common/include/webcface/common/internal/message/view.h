@@ -29,6 +29,7 @@ struct ViewComponentData {
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt,
                           step_ = std::nullopt;
     std::vector<ValAdaptor> option_;
+    int width = 0, height = 0;
 
     ViewComponentData() = default;
     bool operator==(const ViewComponentData &other) const {
@@ -39,7 +40,8 @@ struct ViewComponentData {
                text_ref_field == other.text_ref_field &&
                text_color == other.text_color && bg_color == other.bg_color &&
                min_ == other.min_ && max_ == other.max_ &&
-               step_ == other.step_ && option_ == other.option_;
+               step_ == other.step_ && option_ == other.option_ &&
+               width == other.width && height == other.height;
     }
     bool operator!=(const ViewComponentData &other) const {
         return !(*this == other);
@@ -52,7 +54,8 @@ struct ViewComponentData {
                        MSGPACK_NVP("r", text_ref_field),
                        MSGPACK_NVP("c", text_color), MSGPACK_NVP("b", bg_color),
                        MSGPACK_NVP("im", min_), MSGPACK_NVP("ix", max_),
-                       MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_))
+                       MSGPACK_NVP("is", step_), MSGPACK_NVP("io", option_),
+                       MSGPACK_NVP("w", width), MSGPACK_NVP("h", height))
 };
 
 struct ViewData : internal::DiffData<ViewComponentData> {

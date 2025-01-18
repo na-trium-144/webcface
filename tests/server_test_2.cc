@@ -76,6 +76,44 @@ TEST_F(ServerTest, text) {
         EXPECT_EQ(obj.sub_field.u8String(), "");
         EXPECT_EQ(*obj.data, "zzzzz");
     });
+    dummy_c2->recvClear();
+
+    for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
+        dummy_c1->send(message::Sync{});
+        dummy_c1->send(message::Text{
+            {}, "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        dummy_c2->waitRecv<message::Sync>([&](auto) {});
+        dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
+            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            for (std::size_t i = 0; i < len; i++) {
+                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+            }
+        });
+        dummy_c2->recvClear();
+    }
+}
+TEST_F(ServerTest, textWithUnix) {
+    dummy_c1 = std::make_shared<DummyClient>(true);
+    dummy_c2 = std::make_shared<DummyClient>(true);
+    dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
+    wait();
+    dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
+    dummy_c2->send(message::Req<message::Text>{{}, "c1"_ss, "a"_ss, 1});
+    dummy_c2->recvClear();
+
+    for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
+        dummy_c1->send(message::Sync{});
+        dummy_c1->send(message::Text{
+            {}, "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        dummy_c2->waitRecv<message::Sync>([&](auto) {});
+        dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
+            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            for (std::size_t i = 0; i < len; i++) {
+                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+            }
+        });
+        dummy_c2->recvClear();
+    }
 }
 TEST_F(ServerTest, robotModel) {
     dummy_c1 = std::make_shared<DummyClient>();

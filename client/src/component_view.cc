@@ -271,13 +271,13 @@ TemporalViewComponent &TemporalViewComponent::text(std::wstring_view text) & {
     msg_data->text = SharedString::encode(text);
     return *this;
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::optional<T> ViewComponent::onChange() const {
     return onClick();
 }
 template WEBCFACE_DLL std::optional<Func>
-ViewComponent::onChange<Func, nullptr>() const;
-template <typename T, std::nullptr_t>
+ViewComponent::onChange<Func, true>() const;
+template <typename T, bool>
 std::optional<T> ViewComponent::onClick() const {
     checkData();
     if (msg_data->on_click_member && msg_data->on_click_field) {
@@ -289,7 +289,7 @@ std::optional<T> ViewComponent::onClick() const {
     }
 }
 template WEBCFACE_DLL std::optional<Func>
-ViewComponent::onClick<Func, nullptr>() const;
+ViewComponent::onClick<Func, true>() const;
 TemporalViewComponent &TemporalViewComponent::onClick(const Func &func) & {
     msg_data->on_click_member.emplace(static_cast<FieldBase>(func).member_);
     msg_data->on_click_field.emplace(static_cast<FieldBase>(func).field_);
@@ -313,7 +313,7 @@ TemporalViewComponent &TemporalViewComponent::bind(const InputRef &ref) & {
     msg_data->text_ref_tmp = ref;
     return *this;
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::optional<T> ViewComponent::bind() const {
     checkData();
     if (msg_data->text_ref_member && msg_data->text_ref_field) {
@@ -324,7 +324,7 @@ std::optional<T> ViewComponent::bind() const {
     }
 }
 template WEBCFACE_DLL std::optional<Variant>
-ViewComponent::bind<Variant, nullptr>() const;
+ViewComponent::bind<Variant, true>() const;
 
 TemporalViewComponent &TemporalViewComponent::onChange(
     const std::shared_ptr<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>
@@ -389,6 +389,23 @@ TemporalViewComponent &
 TemporalViewComponent::option(std::vector<ValAdaptor> option) & {
     msg_data->option_ = std::move(option);
     msg_data->min_ = msg_data->max_ = std::nullopt;
+    return *this;
+}
+
+int ViewComponent::width() const {
+    checkData();
+    return msg_data->width;
+}
+TemporalViewComponent &TemporalViewComponent::width(int width) & {
+    msg_data->width = width;
+    return *this;
+}
+int ViewComponent::height() const {
+    checkData();
+    return msg_data->height;
+}
+TemporalViewComponent &TemporalViewComponent::height(int height) & {
+    msg_data->height = height;
     return *this;
 }
 
