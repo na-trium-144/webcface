@@ -259,6 +259,7 @@ If you want to build from source, refer to [3-2. Building from Source](https://n
 
 You can use the following [installation script](installer.sh).
 By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS).
+If it found WebCFace already installed using apt or extracted at /opt/webcface manually, it will install over that.
 (Installation does not occur immediately upon execution, and one or two confirmation prompts will be displayed.)
 
 After installation, you may need to add PATH settings to files such as .bashrc or .zshrc.
@@ -269,6 +270,7 @@ So they are not guaranteed to work on older OSs or other distros.
 
 > 以下の[インストールスクリプト](installer.sh)を使ってインストールできます。
 > デフォルトでは apt-get でインストールされるか、または手動で /opt/webcface (Linux,MacOS) と /Applications (MacOSのみ) に展開されます。
+> すでにaptを使って、もしくは /opt/webcface に手動で展開されたものがある場合、それを上書きしてインストールします。
 > (実行すると即座にインストールされるわけではなく、1つか2つ確認のプロンプトが表示されます。)
 >
 > インストール後、 .bashrc や .zshrc などのファイルにPATHの設定を追加する必要がある場合があります。
