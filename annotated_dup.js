@@ -250,6 +250,7 @@ var annotated_dup =
       [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
       [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
       [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
+      [ "ValueElementRef", "classwebcface_1_1ValueElementRef.html", "classwebcface_1_1ValueElementRef" ],
       [ "Variant", "classwebcface_1_1Variant.html", "classwebcface_1_1Variant" ],
       [ "View", "classwebcface_1_1View.html", "classwebcface_1_1View" ],
       [ "ViewComponent", "classwebcface_1_1ViewComponent.html", "classwebcface_1_1ViewComponent" ]

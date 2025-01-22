@@ -144,90 +144,124 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <div class="contents">
 <div class="textblock"><dl class="reflist">
 <dt>Page <a class="el" href="md_docs_243__field.html">4-3. Field</a>  </dt>
-<dd><a class="anchor" id="_deprecated000044"></a> <span class="since-c">1.11</span> <del>Value::child() (または<code>[]</code>)の引数が数値(または<code>"1"</code>のような文字列でも同じ)の場合、</del> <del>グループ化ではなく配列としての値代入が優先されます。</del> <del>(これはValue型のみの特別な処理です。)</del> <br  />
+<dd><a class="anchor" id="_deprecated000061"></a> <span class="since-c">1.11</span> <del>Value::child() (または<code>[]</code>)の引数が数値(または<code>"1"</code>のような文字列でも同じ)の場合、</del> <del>グループ化ではなく配列としての値代入が優先されます。</del> <del>(これはValue型のみの特別な処理です。)</del> <br  />
  <del>ただし以下のような場合は通常の文字列と同様に処理します。</del>  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#aa30c2b2fa223cf32c0f2612b55941de3">Canvas2D::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000003"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a3799c65797b21f35329dc284df16a65d">Canvas2D::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000004"></a>1.7でMember::syncTime()に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#aa30c2b2fa223cf32c0f2612b55941de3">Canvas3D::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000005"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#a3799c65797b21f35329dc284df16a65d">Canvas3D::time</a>  () const</dt>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#af22c3fd591694ba745993127c80c75b1">Canvas2D::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000003"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a97cebd071c16130d61dc71f274afb903">Canvas2D::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000004"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas2D.html#a3799c65797b21f35329dc284df16a65d">Canvas2D::time</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000006"></a>1.7でMember::syncTime()に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#aa30c2b2fa223cf32c0f2612b55941de3">Canvas3D::appendListener</a>  (T &amp;&amp;callback) const</dt>
+<dd><a class="anchor" id="_deprecated000009"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#ae7197039fa548507c9235e705b2bc402">Canvas3D::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000007"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#afaefc104d19afe5266d3a8bdf7ad3a45">Canvas3D::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000008"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Canvas3D.html#a3799c65797b21f35329dc284df16a65d">Canvas3D::time</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000010"></a>1.7でMember::syncTime()に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="structwebcface_1_1Field.html#a3f4c5cd0eab27717d89875ffdd67a62f">Field::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000011"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="structwebcface_1_1Field.html#a6f8a5749c0af85b6117dd2bbf61e66c3">Field::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000012"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a5c47f8be889dcb238240bbd382f30001">Func::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000013"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a33e24fb2d5d52fe428c37276c47ce9ba">Func::hidden</a>  (bool) const</dt>
-<dd><a class="anchor" id="_deprecated000008"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
+<dd><a class="anchor" id="_deprecated000016"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a00e2dc2334b2ecc26c1650fdb500273f">Func::operator()</a>  (Args... args) const</dt>
-<dd><a class="anchor" id="_deprecated000010"></a>ver2.0〜  </dd>
+<dd><a class="anchor" id="_deprecated000018"></a>ver2.0〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a77e208904509450ea3aa3adac2f366de">Func::operator=</a>  (T func) const</dt>
-<dd><a class="anchor" id="_deprecated000007"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#acc5f1d0d00b5ae8fa27ecf86cc345810" title="関数をセットする">set()</a>とsetAsync()に分かれたので、代入演算子だとわかりづらい また、 operator=(const Func &amp;) との区別もつきづらい </dd>
+<dd><a class="anchor" id="_deprecated000015"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#acc5f1d0d00b5ae8fa27ecf86cc345810" title="関数をセットする">set()</a>とsetAsync()に分かれたので、代入演算子だとわかりづらい また、 operator=(const Func &amp;) との区別もつきづらい </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#ae1725eb5094bb4b83008d453e68eb9fb">Func::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000014"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249">Func::run</a>  (Args... args) const</dt>
-<dd><a class="anchor" id="_deprecated000009"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530" title="関数を実行する (非同期)">runAsync()</a>を推奨。 <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">Promise::waitFinish()</a> と response(), rejection() で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 詳細は waitFinish() のドキュメントを参照 </dd>
+<dd><a class="anchor" id="_deprecated000017"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530" title="関数を実行する (非同期)">runAsync()</a>を推奨。 <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">Promise::waitFinish()</a> と response(), rejection() で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 詳細は waitFinish() のドキュメントを参照 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1FuncListener.html#aac80d390ce7bdfe7df4b7ca2e34fe5e8">FuncListener::hidden</a>  (bool)</dt>
-<dd><a class="anchor" id="_deprecated000011"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
+<dd><a class="anchor" id="_deprecated000019"></a> ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#aa30c2b2fa223cf32c0f2612b55941de3">Image::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000014"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000024"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a25e06912c9450e3ca8f40ee9239795a7">Image::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000022"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a0318ead08f53527af14056e9506c2f6c">Image::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000023"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a56018aeabb91f122dd0bc33bca216efa">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols=std::nullopt, std::optional&lt; ImageColorMode &gt; color_mode=std::nullopt, std::optional&lt; double &gt; frame_rate=std::nullopt) const</dt>
-<dd><a class="anchor" id="_deprecated000015"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000025"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#ad62b14a93738a13f924e556e27375317">Image::request</a>  (std::optional&lt; int &gt; rows, std::optional&lt; int &gt; cols, ImageCompressMode cmp_mode, int quality, std::optional&lt; double &gt; frame_rate=std::nullopt) const</dt>
-<dd><a class="anchor" id="_deprecated000016"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000026"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Image.html#a3799c65797b21f35329dc284df16a65d">Image::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000017"></a>1.7でMember::syncTime()に変更 </dd>
+<dd><a class="anchor" id="_deprecated000027"></a>1.7でMember::syncTime()に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a">ImageFrame::ImageFrame</a>  (int rows, int cols, const void *data, ImageColorMode color_mode=<a class="el" href="namespacewebcface.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59">ImageColorMode::bgr</a>)</dt>
-<dd><a class="anchor" id="_deprecated000018"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
+<dd><a class="anchor" id="_deprecated000028"></a>ver2.0〜 rows, colsの順番がややこしいので <a class="el" href="namespacewebcface.html#a532ccd01be60db41be021d0f1b3b2e97" title="高さ × 幅 でサイズを指定">sizeHW()</a> を使ってサイズ指定 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1InputRef.html#a6c8717854f176b75328439d1defc7a17">InputRef::as</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000031"></a>ver2.0〜 <a class="el" href="classwebcface_1_1InputRef.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1InputRef.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1InputRef.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
+<dd><a class="anchor" id="_deprecated000045"></a>ver2.0〜 <a class="el" href="classwebcface_1_1InputRef.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1InputRef.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1InputRef.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Log.html#aa30c2b2fa223cf32c0f2612b55941de3">Log::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000019"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000023"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2" title="「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。">funcEntries()</a> に変更 </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">Member::images</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000025"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a866326e5bc56f5fb6b349ad91896479c" title="「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。">imageEntries()</a> に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a2e0eced713028d20cd2c49c819131d80">Member::robotModels</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000022"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#afee6e2a9a95ba2541bf0ff302b426523" title="「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。">robotModelEntries()</a> に変更 </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a1cc337f3ebf4841d5fc32f519c400c5a">Member::texts</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000021"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a6f0461788d6228e196254a794dc57ace" title="「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。">textEntries()</a> に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a79db1efde6ce9c6db23757da84f030a2">Member::values</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000020"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ac8cc11afdd37eec02b77c8b5e2c5b058" title="「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。">valueEntries()</a> に変更 </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a18661fc989eced84d33d56528fcc0b56">Member::views</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000024"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a310bd45025f17fed63d4f97f542c4683" title="「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。">viewEntries()</a> に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a05a565f888fd60985445985ca89ba408">Promise::result</a>  </dt>
-<dd><a class="anchor" id="_deprecated000013"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a>, <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a>, <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a>, <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a> を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。 </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a98d52cac5d23020581151ee1f106ec8a">Promise::started</a>  </dt>
-<dd><a class="anchor" id="_deprecated000012"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9" title="リモートに呼び出しメッセージが到達したかどうかを返す">reached()</a>, <a class="el" href="classwebcface_1_1Promise.html#a5c8cd46cb5cb4df9f4cf59d80e987f05" title="呼び出した関数がリモートに存在するか(=実行が開始されたか)を返す">found()</a>, <a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a> を推奨。 started.get(), started.wait() 使用時の注意はwaitReach()を参照。 </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#aa30c2b2fa223cf32c0f2612b55941de3">RobotModel::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000026"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a3799c65797b21f35329dc284df16a65d">RobotModel::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000027"></a>1.7でMember::syncTime() に変更  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a9e923e02816412b7f4448dc29fc463ab">Rotation::rot</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000032"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a2846fe47152dd1c13ae6dac2e28c380f">Rotation::rot</a>  (std::size_t index)</dt>
-<dd><a class="anchor" id="_deprecated000035"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a0d48a5fb9f1e2156994fcd3a0277207f">Rotation::rot</a>  ()</dt>
-<dd><a class="anchor" id="_deprecated000034"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a3b72e791356cc624883b083fc905ebb7">Rotation::rot</a>  (std::size_t index) const</dt>
-<dd><a class="anchor" id="_deprecated000033"></a>ver2.5〜  </dd>
-<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#aa30c2b2fa223cf32c0f2612b55941de3">Text::appendListener</a>  (T &amp;&amp;callback) const</dt>
 <dd><a class="anchor" id="_deprecated000029"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a7fd842c99612e3ce7332ea288325cd7b">Member::funcs</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000033"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2" title="「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。">funcEntries()</a> に変更 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">Member::images</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000035"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a866326e5bc56f5fb6b349ad91896479c" title="「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。">imageEntries()</a> に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a2e0eced713028d20cd2c49c819131d80">Member::robotModels</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000032"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#afee6e2a9a95ba2541bf0ff302b426523" title="「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。">robotModelEntries()</a> に変更 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a1cc337f3ebf4841d5fc32f519c400c5a">Member::texts</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000031"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a6f0461788d6228e196254a794dc57ace" title="「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。">textEntries()</a> に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a79db1efde6ce9c6db23757da84f030a2">Member::values</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000030"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#ac8cc11afdd37eec02b77c8b5e2c5b058" title="「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。">valueEntries()</a> に変更 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Member.html#a18661fc989eced84d33d56528fcc0b56">Member::views</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000034"></a>1.6で <a class="el" href="classwebcface_1_1Member.html#a310bd45025f17fed63d4f97f542c4683" title="「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。">viewEntries()</a> に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a05a565f888fd60985445985ca89ba408">Promise::result</a>  </dt>
+<dd><a class="anchor" id="_deprecated000021"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#aebaed0be88cbcf45f1985b819c9dabb7" title="関数の実行が完了したかどうかを返す">finished()</a>, <a class="el" href="classwebcface_1_1Promise.html#ad4541e9cca69aee68553ce9ea5a4c0eb" title="関数の実行が完了した場合その戻り値を返す">response()</a>, <a class="el" href="classwebcface_1_1Promise.html#af590971bb4437cd389a7ae84ceeade18" title="関数の実行がエラーになった場合そのエラーメッセージを返す">rejection()</a>, <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">waitFinish()</a> を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Promise.html#a98d52cac5d23020581151ee1f106ec8a">Promise::started</a>  </dt>
+<dd><a class="anchor" id="_deprecated000020"></a>ver2.0〜 <a class="el" href="classwebcface_1_1Promise.html#a100794e956da6b0716eee17d8ade58b9" title="リモートに呼び出しメッセージが到達したかどうかを返す">reached()</a>, <a class="el" href="classwebcface_1_1Promise.html#a5c8cd46cb5cb4df9f4cf59d80e987f05" title="呼び出した関数がリモートに存在するか(=実行が開始されたか)を返す">found()</a>, <a class="el" href="classwebcface_1_1Promise.html#a3441c9c9e3c16ba8336963bf77338b37" title="リモートに呼び出しメッセージが到達するまで待機">waitReach()</a> を推奨。 started.get(), started.wait() 使用時の注意はwaitReach()を参照。 </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#aa30c2b2fa223cf32c0f2612b55941de3">RobotModel::appendListener</a>  (T &amp;&amp;callback) const</dt>
+<dd><a class="anchor" id="_deprecated000038"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a34d5185371dc3a2d0f522aa9cfe80e2c">RobotModel::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000036"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a593423f55e0dca3d31e565736e98bb07">RobotModel::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000037"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a3799c65797b21f35329dc284df16a65d">RobotModel::time</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000039"></a>1.7でMember::syncTime() に変更  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a3b72e791356cc624883b083fc905ebb7">Rotation::rot</a>  (std::size_t index) const</dt>
+<dd><a class="anchor" id="_deprecated000047"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a2846fe47152dd1c13ae6dac2e28c380f">Rotation::rot</a>  (std::size_t index)</dt>
+<dd><a class="anchor" id="_deprecated000049"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a0d48a5fb9f1e2156994fcd3a0277207f">Rotation::rot</a>  ()</dt>
+<dd><a class="anchor" id="_deprecated000048"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Rotation.html#a9e923e02816412b7f4448dc29fc463ab">Rotation::rot</a>  () const</dt>
+<dd><a class="anchor" id="_deprecated000046"></a>ver2.5〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#aa30c2b2fa223cf32c0f2612b55941de3">Text::appendListener</a>  (T &amp;&amp;callback) const</dt>
+<dd><a class="anchor" id="_deprecated000043"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a6b5c71afe63a9abfa3d14a5754afcb50">Text::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000041"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#aa0b5ffd6b19b3c6c0c713162ab941dec">Text::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000042"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">Text::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000030"></a>1.7でMember::syncTime()に変更  </dd>
+<dd><a class="anchor" id="_deprecated000044"></a>1.7でMember::syncTime()に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Transform.html#acc93d26012f58adc9c7aee2ddeac8eb9">Transform::Transform</a>  (const <a class="el" href="classwebcface_1_1Point.html" title="3次元 or 2次元の座標を表すクラス。">Point</a> &amp;pos, const std::array&lt; double, 3 &gt; &amp;rot)</dt>
-<dd><a class="anchor" id="_deprecated000036"></a>ver2.5〜 <a class="el" href="classwebcface_1_1Rotation.html#af851b4d9aacd1a871da33592334b8d72">Transform(pos, rotEuler(rot))</a> </dd>
+<dd><a class="anchor" id="_deprecated000050"></a>ver2.5〜 <a class="el" href="classwebcface_1_1Rotation.html#af851b4d9aacd1a871da33592334b8d72">Transform(pos, rotEuler(rot))</a> </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Transform.html#a3ab06d5d80286d4e62aecd5d50127853">Transform::Transform</a>  (double x, double y, double z, double z_angle, double y_angle, double x_angle)</dt>
-<dd><a class="anchor" id="_deprecated000037"></a>ver2.5〜 <a class="el" href="classwebcface_1_1Transform.html" title="3次元の平行移動と回転">Transform</a>({x, y, z}, rotEuler(z, y, x)) </dd>
+<dd><a class="anchor" id="_deprecated000051"></a>ver2.5〜 <a class="el" href="classwebcface_1_1Transform.html" title="3次元の平行移動と回転">Transform</a>({x, y, z}, rotEuler(z, y, x)) </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Transform.html#a1c5ac1e39a1e665a0c60e3bed5d75b85">Transform::Transform</a>  (double x, double y)</dt>
-<dd><a class="anchor" id="_deprecated000038"></a>ver2.5〜 translate(x, y)  </dd>
+<dd><a class="anchor" id="_deprecated000052"></a>ver2.5〜 translate(x, y)  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ValAdaptor.html#a6c8717854f176b75328439d1defc7a17">ValAdaptor::as</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000043"></a>ver2.0〜 <a class="el" href="classwebcface_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
+<dd><a class="anchor" id="_deprecated000060"></a>ver2.0〜 <a class="el" href="classwebcface_1_1ValAdaptor.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1ValAdaptor.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1ValAdaptor.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#aa30c2b2fa223cf32c0f2612b55941de3">Value::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000039"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000054"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a8fbab20cd4f5c797f2a5e9bc8ab71aa2">Value::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000053"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">Value::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000040"></a>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更  </dd>
+<dd><a class="anchor" id="_deprecated000055"></a>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Variant.html#aa30c2b2fa223cf32c0f2612b55941de3">Variant::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000028"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000040"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#aa30c2b2fa223cf32c0f2612b55941de3">View::appendListener</a>  (T &amp;&amp;callback) const</dt>
-<dd><a class="anchor" id="_deprecated000041"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dd><a class="anchor" id="_deprecated000058"></a> ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#ad06ba5b01b583249243b5317d3379392">View::child</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000056"></a>ver2.8〜  </dd>
+<dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#a272532a94252d75939f8a13126d1ca72">View::operator[]</a>  (int index) const</dt>
+<dd><a class="anchor" id="_deprecated000057"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#a3799c65797b21f35329dc284df16a65d">View::time</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000042"></a>1.7でMember::syncTime()に変更 </dd>
+<dd><a class="anchor" id="_deprecated000059"></a>1.7でMember::syncTime()に変更 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a>  (wcfClient *wcli, const char *member, const char *field, const <a class="el" href="structwcfMultiVal.html" title="数値と文字列をまとめて扱うためのstruct">wcfMultiVal</a> *args, int arg_size, <a class="el" href="structwcfMultiVal.html" title="数値と文字列をまとめて扱うためのstruct">wcfMultiVal</a> **result)</dt>
 <dd><a class="anchor" id="_deprecated000001"></a>ver2.0〜 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a59cdc2f8704281f326fa90f81cd05163" title="関数を非同期で呼び出す">wcfFuncRunAsync()</a>を推奨。 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a1a29429472d65e1d80e3d2c119d80bc3" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得">wcfFuncWaitResult()</a> で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a8f3e54495fa9d7ee3faf4eb303833b79">wcfFuncRunW</a>  (wcfClient *wcli, const wchar_t *member, const wchar_t *field, const <a class="el" href="structwcfMultiValW.html" title="数値と文字列をまとめて扱うためのstruct (wstring)">wcfMultiValW</a> *args, int arg_size, <a class="el" href="structwcfMultiValW.html" title="数値と文字列をまとめて扱うためのstruct (wstring)">wcfMultiValW</a> **result)</dt>
@@ -239,7 +273,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jan 22 2025 08:21:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

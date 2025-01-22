@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <dd>
 <span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</dd></dl>
 <p>set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
-</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> valueに直接<code>[]</code> <del>(または<code>child()</code>)</del> で配列の要素アクセスが可能です。 また、resize() で配列を初期化し push_back() で追加する使い方もできます。 <code>cpp wcli.value("fuga").resize(5); for(int i = 0; i &lt; 5; i++){ wcli.value("fuga").push_back(i); } wcli.value("fuga")[3] = 100; // 上書き // wcli.value("fuga").child(3) = 100; としても同じ </code></p>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> valueに直接<code>[]</code> <del>(または<code>child()</code>)</del> (<span class="since-c">2.8</span> または <code>at()</code>) で配列の要素アクセスが可能です。 また、resize() で配列を初期化し push_back() で追加する使い方もできます。 ただしValueにセットしたデータはsync等で自動的にリセットされることはないので、push_backとsyncを繰り返す場合は resize(0) や set({}) などで初期化してください。 <code>cpp wcli.value("fuga").resize(5); for(int i = 0; i &lt; 5; i++){ wcli.value("fuga")[i] = i; // wcli.value("fuga").at(i) も同じ } wcli.value("fuga").push_back(100); </code> <span class="since-c">2.8</span> <code>[]</code>や<code>at()</code>は ValueElementRef 型を返すようになりました。使い方は今までと変わりません。</p>
 </li>
 <li><b class="tab-title">C</b> double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW) <div class="fragment"><div class="line"><a class="code hl_function" href="client_2include_2webcface_2c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, 123.45);</div>
 <div class="ttc" id="aclient_2include_2webcface_2c__wcf_2value_8h_html_aa11a6ea52672771139a39b354bd78346"><div class="ttname"><a href="client_2include_2webcface_2c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a></div><div class="ttdeci">wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value)</div><div class="ttdoc">単一の値を送信する</div><div class="ttdef"><b>Definition</b> value.cc:111</div></div>
@@ -263,8 +263,9 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </ul>
 <p class="startli"><span class="since-c">1.7</span> Value::request() で明示的にリクエストを送信することもできます。</p>
 <p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
-</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> 送信時と同様、配列データはchild()または<code>[]</code>を使ってもアクセスできます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>)[3].get();</div>
-</div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><ul>
+</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> 送信時と同様、配列データは<code>[]</code> <del>または<code>child()</code></del> <span class="since-c">2.8</span>または<code>at()</code> を使ってもアクセスできます。 </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>)[3].get();</div>
+</div><!-- fragment --><p class="startli"><span class="since-c">2.8</span> <code>size()</code> で配列データのサイズを取得できます。 ただし tryGet() などと同様、まだ受信していないデータに関しては0を返し、リクエストが送られます。</p>
+<dl class="section warning"><dt>Warning</dt><dd><ul>
 <li><span class="since-c">1.11</span> Valueオブジェクト同士を <code>==</code>, <code>!=</code> で比較するとValueが参照するデータの名前が一致するかどうかで判定されます。 (Textなど他のデータ型でも同様です。) <br  />
 </li>
 <li>ver1.10まではdoubleにキャストされた上で値を比較していたので、異なる挙動になります。 値を比較したい場合は明示的にキャストするか<code>get()</code>などを呼んでください。</li>
@@ -340,7 +341,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jan 22 2025 08:21:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

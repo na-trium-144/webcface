@@ -1,0 +1,2410 @@
+<!-- HTML header for doxygen 1.9.8-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.7"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>WebCFace: ValueElementRef Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen_custom.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeDarkModeToggle.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeParagraphLink.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeTabs.init()
+</script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeInteractiveToc.init()
+</script>
+<script type="text/javascript">
+  function insertBadge(){
+    for(const sp of document.getElementsByClassName('since-c')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-00599c?logo=C%2B%2B" alt="c++ ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-js')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-f7df1e?logo=JavaScript&amp;logoColor=black" alt="js ver${ver}" class="inline">`;
+    }
+    for(const sp of document.getElementsByClassName('since-py')){
+      const ver = sp.textContent || "1.0";
+      sp.innerHTML = `<img src="https://img.shields.io/badge/${ver}~-3776ab?logo=python&amp;logoColor=white" alt="python ver${ver}" class="inline">`;
+    }
+  }
+</script>
+</head>
+<body onload="insertBadge();">
+<!-- https://tholman.com/github-corners/ -->
+<a href="https://github.com/na-trium-144/webcface" class="github-corner" aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#64CEAA; color:#fff; position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
+  <td id="projectalign">
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.7.0</span>
+   </div>
+   <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.7 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('classwebcface_1_1ValueElementRef.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classwebcface_1_1ValueElementRef-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ValueElementRef Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>配列型のValueデータの一部の要素を指定するクラス  
+ <a href="classwebcface_1_1ValueElementRef.html#details">More...</a></p>
+
+<p><code>#include &lt;<a class="el" href="client_2include_2webcface_2value_8h_source.html">webcface/value.h</a>&gt;</code></p>
+<div class="dynheader">
+Inheritance diagram for ValueElementRef:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1ValueElementRef__inherit__graph.svg" width="146" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<div class="dynheader">
+Collaboration diagram for ValueElementRef:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1ValueElementRef__coll__graph.svg" width="146" height="288"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a7c8afd140fc34380750337f1aaaca344"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValueElementRef.html#a7c8afd140fc34380750337f1aaaca344">ValueElementRef</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base, std::size_t index)</td></tr>
+<tr class="separator:a7c8afd140fc34380750337f1aaaca344"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af338610aab9ecfc5b2dd1b42cfc2b6f0"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValueElementRef.html#af338610aab9ecfc5b2dd1b42cfc2b6f0">set</a> (double v) const</td></tr>
+<tr class="memdesc:af338610aab9ecfc5b2dd1b42cfc2b6f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をセットする  <br /></td></tr>
+<tr class="separator:af338610aab9ecfc5b2dd1b42cfc2b6f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a81364702559fdd8ede3c8875dd2f0dfd"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValueElementRef.html#a81364702559fdd8ede3c8875dd2f0dfd">operator=</a> (double v) const</td></tr>
+<tr class="separator:a81364702559fdd8ede3c8875dd2f0dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5bef3971255d46007752bd07c18803f"><td class="memItemLeft" align="right" valign="top">std::optional&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValueElementRef.html#ae5bef3971255d46007752bd07c18803f">tryGet</a> () const</td></tr>
+<tr class="memdesc:ae5bef3971255d46007752bd07c18803f"><td class="mdescLeft">&#160;</td><td class="mdescRight">値があればその要素を返す  <br /></td></tr>
+<tr class="separator:ae5bef3971255d46007752bd07c18803f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53ec2e557ea14cce1373e0f77954c82"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValueElementRef.html#af53ec2e557ea14cce1373e0f77954c82">get</a> () const</td></tr>
+<tr class="memdesc:af53ec2e557ea14cce1373e0f77954c82"><td class="mdescLeft">&#160;</td><td class="mdescRight">値があればその要素を返す  <br /></td></tr>
+<tr class="separator:af53ec2e557ea14cce1373e0f77954c82"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a725c14e25d8d4e15eb297b926aec13bf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a725c14e25d8d4e15eb297b926aec13bf">dataLock</a> () const</td></tr>
+<tr class="memdesc:a725c14e25d8d4e15eb297b926aec13bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、失敗したらruntime_errorを投げる  <br /></td></tr>
+<tr class="separator:a725c14e25d8d4e15eb297b926aec13bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6aae196570f9dc73d6768aaaeb146220"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6aae196570f9dc73d6768aaaeb146220">setCheck</a> () const</td></tr>
+<tr class="memdesc:a6aae196570f9dc73d6768aaaeb146220"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
+<tr class="separator:a6aae196570f9dc73d6768aaaeb146220"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
+<tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memTemplParams" colspan="2">template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertCompleteMember &lt;   std::enable_if_t&lt;std::is_same_v&lt; Member_,  Member &gt;,  Member_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memTemplItemLeft" align="right" valign="top">Member_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a> () const</td></tr>
+<tr class="memdesc:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
+<tr class="separator:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memItemLeft" align="right" valign="top">const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a> () const</td></tr>
+<tr class="memdesc:a24dcbf29c0d6cd766009a182a6484e3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す  <br /></td></tr>
+<tr class="separator:a24dcbf29c0d6cd766009a182a6484e3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c997fd30e7178c869b823143102d682"><td class="memItemLeft" align="right" valign="top">const std::wstring &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a8c997fd30e7178c869b823143102d682">nameW</a> () const</td></tr>
+<tr class="memdesc:a8c997fd30e7178c869b823143102d682"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す (wstring)  <br /></td></tr>
+<tr class="separator:a8c997fd30e7178c869b823143102d682"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c06b66607b91e9ae36f0688b3d108f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6c06b66607b91e9ae36f0688b3d108f7">lastName8</a> () const</td></tr>
+<tr class="separator:a6c06b66607b91e9ae36f0688b3d108f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac495d25f6992031499cac9742d799703"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field) const</td></tr>
+<tr class="separator:ac495d25f6992031499cac9742d799703"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6bf5695e81e7867bf17ca940f7d9d958"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6bf5695e81e7867bf17ca940f7d9d958">child</a> (std::string_view field) const</td></tr>
+<tr class="memdesc:a6bf5695e81e7867bf17ca940f7d9d958"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField  <br /></td></tr>
+<tr class="separator:a6bf5695e81e7867bf17ca940f7d9d958"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5df64f9f1d96814b040c8898fa3faa58"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a5df64f9f1d96814b040c8898fa3faa58">child</a> (std::wstring_view field) const</td></tr>
+<tr class="memdesc:a5df64f9f1d96814b040c8898fa3faa58"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)  <br /></td></tr>
+<tr class="separator:a5df64f9f1d96814b040c8898fa3faa58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a3f4c5cd0eab27717d89875ffdd67a62f">child</a> (int index) const</td></tr>
+<tr class="memdesc:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(index)」を新しい名前とするField  <br /></td></tr>
+<tr class="separator:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53487c64d4c15b7a2f16a968197003c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab53487c64d4c15b7a2f16a968197003c">lastName</a> () const</td></tr>
+<tr class="memdesc:ab53487c64d4c15b7a2f16a968197003c"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す  <br /></td></tr>
+<tr class="separator:ab53487c64d4c15b7a2f16a968197003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af4e3ae9c11a8760127d92e61cdd9e03f">lastNameW</a> () const</td></tr>
+<tr class="memdesc:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す (wstring)  <br /></td></tr>
+<tr class="separator:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2559fb35084a35286079239c54cf7698"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a2559fb35084a35286079239c54cf7698">parent</a> () const</td></tr>
+<tr class="memdesc:a2559fb35084a35286079239c54cf7698"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameの最後のピリオドの前までを新しい名前とするField  <br /></td></tr>
+<tr class="separator:a2559fb35084a35286079239c54cf7698"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc2fc06c9730225a1c2803ad722cac9c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#afc2fc06c9730225a1c2803ad722cac9c">operator[]</a> (std::string_view field) const</td></tr>
+<tr class="memdesc:afc2fc06c9730225a1c2803ad722cac9c"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField  <br /></td></tr>
+<tr class="separator:afc2fc06c9730225a1c2803ad722cac9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af72203466d2e2b9b82bcf6fcc96b764f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af72203466d2e2b9b82bcf6fcc96b764f">operator[]</a> (std::wstring_view field) const</td></tr>
+<tr class="memdesc:af72203466d2e2b9b82bcf6fcc96b764f"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)  <br /></td></tr>
+<tr class="separator:af72203466d2e2b9b82bcf6fcc96b764f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6f8a5749c0af85b6117dd2bbf61e66c3">operator[]</a> (int index) const</td></tr>
+<tr class="memdesc:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(index)」を新しい名前とするField  <br /></td></tr>
+<tr class="separator:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9061fd48b247b9a0a0f3b2c92c336343"><td class="memTemplParams" colspan="2">template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a9061fd48b247b9a0a0f3b2c92c336343"><td class="memTemplItemLeft" align="right" valign="top">Value_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a9061fd48b247b9a0a0f3b2c92c336343">value</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a9061fd48b247b9a0a0f3b2c92c336343"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae26e16337d298b7d4901619b0956518c"><td class="memTemplParams" colspan="2">template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ae26e16337d298b7d4901619b0956518c"><td class="memTemplItemLeft" align="right" valign="top">Value_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ae26e16337d298b7d4901619b0956518c">value</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:ae26e16337d298b7d4901619b0956518c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5123f286651762b463402568c9c1a8c"><td class="memTemplParams" colspan="2">template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ad5123f286651762b463402568c9c1a8c"><td class="memTemplItemLeft" align="right" valign="top">Text_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ad5123f286651762b463402568c9c1a8c">text</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:ad5123f286651762b463402568c9c1a8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d2764bab2cf8dc78b22cca723b4832"><td class="memTemplParams" colspan="2">template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ae1d2764bab2cf8dc78b22cca723b4832"><td class="memTemplItemLeft" align="right" valign="top">Text_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ae1d2764bab2cf8dc78b22cca723b4832">text</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:ae1d2764bab2cf8dc78b22cca723b4832"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ce4a3a7578bb9d99eb7c541d32bc0db"><td class="memTemplParams" colspan="2">template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a8ce4a3a7578bb9d99eb7c541d32bc0db"><td class="memTemplItemLeft" align="right" valign="top">RobotModel_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a8ce4a3a7578bb9d99eb7c541d32bc0db">robotModel</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a8ce4a3a7578bb9d99eb7c541d32bc0db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1db59faa1634b749e5b0d5f0a225eaf2"><td class="memTemplParams" colspan="2">template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a1db59faa1634b749e5b0d5f0a225eaf2"><td class="memTemplItemLeft" align="right" valign="top">RobotModel_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a1db59faa1634b749e5b0d5f0a225eaf2">robotModel</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a1db59faa1634b749e5b0d5f0a225eaf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad94b6c150c7b59d1ac12ee7948390e08"><td class="memTemplParams" colspan="2">template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ad94b6c150c7b59d1ac12ee7948390e08"><td class="memTemplItemLeft" align="right" valign="top">Image_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ad94b6c150c7b59d1ac12ee7948390e08">image</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:ad94b6c150c7b59d1ac12ee7948390e08"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf5927541460ab74dbb1d5d5fe7f7329"><td class="memTemplParams" colspan="2">template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:acf5927541460ab74dbb1d5d5fe7f7329"><td class="memTemplItemLeft" align="right" valign="top">Image_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#acf5927541460ab74dbb1d5d5fe7f7329">image</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:acf5927541460ab74dbb1d5d5fe7f7329"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a171e85b11856e1499909b2643a76bb6a"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a171e85b11856e1499909b2643a76bb6a"><td class="memTemplItemLeft" align="right" valign="top">Func_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a171e85b11856e1499909b2643a76bb6a">func</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a171e85b11856e1499909b2643a76bb6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ebc1dc4d887c13fe8b358c8b40d35c6"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a4ebc1dc4d887c13fe8b358c8b40d35c6"><td class="memTemplItemLeft" align="right" valign="top">Func_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a4ebc1dc4d887c13fe8b358c8b40d35c6">func</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a4ebc1dc4d887c13fe8b358c8b40d35c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1867b7c1fb26d178a4cc9c6d7d215aa1"><td class="memTemplParams" colspan="2">template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::assertCompleteFuncListener &lt;   std::enable_if_t&lt;std::is_same_v&lt; FuncListener_,  FuncListener &gt;,  FuncListener_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a1867b7c1fb26d178a4cc9c6d7d215aa1"><td class="memTemplItemLeft" align="right" valign="top">FuncListener_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a1867b7c1fb26d178a4cc9c6d7d215aa1">funcListener</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a1867b7c1fb26d178a4cc9c6d7d215aa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74b7c16273ac5d9e06d54976af0b4b03"><td class="memTemplParams" colspan="2">template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::assertCompleteFuncListener &lt;   std::enable_if_t&lt;std::is_same_v&lt; FuncListener_,  FuncListener &gt;,  FuncListener_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a74b7c16273ac5d9e06d54976af0b4b03"><td class="memTemplItemLeft" align="right" valign="top">FuncListener_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a74b7c16273ac5d9e06d54976af0b4b03">funcListener</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a74b7c16273ac5d9e06d54976af0b4b03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18bf28b7b1b1f26c6ef6c3ab17a47c51"><td class="memTemplParams" colspan="2">template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a18bf28b7b1b1f26c6ef6c3ab17a47c51"><td class="memTemplItemLeft" align="right" valign="top">View_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">view</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a18bf28b7b1b1f26c6ef6c3ab17a47c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a041285967ea9c2cae8d9170af4223b76"><td class="memTemplParams" colspan="2">template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a041285967ea9c2cae8d9170af4223b76"><td class="memTemplItemLeft" align="right" valign="top">View_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a041285967ea9c2cae8d9170af4223b76">view</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a041285967ea9c2cae8d9170af4223b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff8443d51fac49563f2f1a8366d41b17"><td class="memTemplParams" colspan="2">template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:aff8443d51fac49563f2f1a8366d41b17"><td class="memTemplItemLeft" align="right" valign="top">Canvas3D_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aff8443d51fac49563f2f1a8366d41b17">canvas3D</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:aff8443d51fac49563f2f1a8366d41b17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea514e0f3d71775dff82bd7d32171fa7"><td class="memTemplParams" colspan="2">template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:aea514e0f3d71775dff82bd7d32171fa7"><td class="memTemplItemLeft" align="right" valign="top">Canvas3D_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aea514e0f3d71775dff82bd7d32171fa7">canvas3D</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:aea514e0f3d71775dff82bd7d32171fa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a888953c142d2f1f37a617da30b127847"><td class="memTemplParams" colspan="2">template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a888953c142d2f1f37a617da30b127847"><td class="memTemplItemLeft" align="right" valign="top">Canvas2D_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a888953c142d2f1f37a617da30b127847">canvas2D</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a888953c142d2f1f37a617da30b127847"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a17b35071c80936a7a7fde2b768dfa266"><td class="memTemplParams" colspan="2">template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a17b35071c80936a7a7fde2b768dfa266"><td class="memTemplItemLeft" align="right" valign="top">Canvas2D_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a17b35071c80936a7a7fde2b768dfa266">canvas2D</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a17b35071c80936a7a7fde2b768dfa266"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c509cded45c0f2d277103c33db71e89"><td class="memTemplParams" colspan="2">template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a0c509cded45c0f2d277103c33db71e89"><td class="memTemplItemLeft" align="right" valign="top">Log_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0c509cded45c0f2d277103c33db71e89">log</a> (std::string_view field=&quot;&quot;) const</td></tr>
+<tr class="separator:a0c509cded45c0f2d277103c33db71e89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6362ff7f9c5b23d207a687e9bd72f322"><td class="memTemplParams" colspan="2">template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a6362ff7f9c5b23d207a687e9bd72f322"><td class="memTemplItemLeft" align="right" valign="top">Log_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6362ff7f9c5b23d207a687e9bd72f322">log</a> (std::wstring_view field) const</td></tr>
+<tr class="separator:a6362ff7f9c5b23d207a687e9bd72f322"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c846f5e833330d08bb196b087830ce"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aa6c846f5e833330d08bb196b087830ce">children</a> () const</td></tr>
+<tr class="memdesc:aa6c846f5e833330d08bb196b087830ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト  <br /></td></tr>
+<tr class="separator:aa6c846f5e833330d08bb196b087830ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850">childrenRecurse</a> () const</td></tr>
+<tr class="memdesc:a9765227c8f4bcdc87b9a5c4f57124850"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)  <br /></td></tr>
+<tr class="separator:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae2ef4777ea28fa9acc234111dc84eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#abae2ef4777ea28fa9acc234111dc84eb">hasChildren</a> () const</td></tr>
+<tr class="memdesc:abae2ef4777ea28fa9acc234111dc84eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す  <br /></td></tr>
+<tr class="separator:abae2ef4777ea28fa9acc234111dc84eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memTemplParams" colspan="2">template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Value_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ac8cc11afdd37eec02b77c8b5e2c5b058">valueEntries</a> () const</td></tr>
+<tr class="memdesc:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。  <br /></td></tr>
+<tr class="separator:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ac8cc11afdd37eec02b77c8b5e2c5b058">valueEntries</a> () const</td></tr>
+<tr class="separator:ac8cc11afdd37eec02b77c8b5e2c5b058"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f0461788d6228e196254a794dc57ace"><td class="memTemplParams" colspan="2">template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a6f0461788d6228e196254a794dc57ace"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Text_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6f0461788d6228e196254a794dc57ace">textEntries</a> () const</td></tr>
+<tr class="memdesc:a6f0461788d6228e196254a794dc57ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。  <br /></td></tr>
+<tr class="separator:a6f0461788d6228e196254a794dc57ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f0461788d6228e196254a794dc57ace"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:a6f0461788d6228e196254a794dc57ace"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6f0461788d6228e196254a794dc57ace">textEntries</a> () const</td></tr>
+<tr class="separator:a6f0461788d6228e196254a794dc57ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee6e2a9a95ba2541bf0ff302b426523"><td class="memTemplParams" colspan="2">template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:afee6e2a9a95ba2541bf0ff302b426523"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; RobotModel_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#afee6e2a9a95ba2541bf0ff302b426523">robotModelEntries</a> () const</td></tr>
+<tr class="memdesc:afee6e2a9a95ba2541bf0ff302b426523"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。  <br /></td></tr>
+<tr class="separator:afee6e2a9a95ba2541bf0ff302b426523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee6e2a9a95ba2541bf0ff302b426523"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:afee6e2a9a95ba2541bf0ff302b426523"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#afee6e2a9a95ba2541bf0ff302b426523">robotModelEntries</a> () const</td></tr>
+<tr class="separator:afee6e2a9a95ba2541bf0ff302b426523"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Func_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">funcEntries</a> () const</td></tr>
+<tr class="memdesc:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。  <br /></td></tr>
+<tr class="separator:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">funcEntries</a> () const</td></tr>
+<tr class="separator:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a310bd45025f17fed63d4f97f542c4683"><td class="memTemplParams" colspan="2">template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a310bd45025f17fed63d4f97f542c4683"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; View_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a310bd45025f17fed63d4f97f542c4683">viewEntries</a> () const</td></tr>
+<tr class="memdesc:a310bd45025f17fed63d4f97f542c4683"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。  <br /></td></tr>
+<tr class="separator:a310bd45025f17fed63d4f97f542c4683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a310bd45025f17fed63d4f97f542c4683"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:a310bd45025f17fed63d4f97f542c4683"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a310bd45025f17fed63d4f97f542c4683">viewEntries</a> () const</td></tr>
+<tr class="separator:a310bd45025f17fed63d4f97f542c4683"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplParams" colspan="2">template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Canvas2D_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af64f0121c51589922b7ed04cf31563c7">canvas2DEntries</a> () const</td></tr>
+<tr class="memdesc:af64f0121c51589922b7ed04cf31563c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。  <br /></td></tr>
+<tr class="separator:af64f0121c51589922b7ed04cf31563c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af64f0121c51589922b7ed04cf31563c7">canvas2DEntries</a> () const</td></tr>
+<tr class="separator:af64f0121c51589922b7ed04cf31563c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplParams" colspan="2">template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Canvas3D_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#adc5fec0b3ffefe176ec7aef5b77ee1f0">canvas3DEntries</a> () const</td></tr>
+<tr class="memdesc:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているcanvas3Dのリストを返す。  <br /></td></tr>
+<tr class="separator:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#adc5fec0b3ffefe176ec7aef5b77ee1f0">canvas3DEntries</a> () const</td></tr>
+<tr class="separator:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplParams" colspan="2">template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Image_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a866326e5bc56f5fb6b349ad91896479c">imageEntries</a> () const</td></tr>
+<tr class="memdesc:a866326e5bc56f5fb6b349ad91896479c"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。  <br /></td></tr>
+<tr class="separator:a866326e5bc56f5fb6b349ad91896479c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a866326e5bc56f5fb6b349ad91896479c">imageEntries</a> () const</td></tr>
+<tr class="separator:a866326e5bc56f5fb6b349ad91896479c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91500f66e86a02b1e57fb0f96ef99989"><td class="memTemplParams" colspan="2">template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </td></tr>
+<tr class="memitem:a91500f66e86a02b1e57fb0f96ef99989"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Log_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a91500f66e86a02b1e57fb0f96ef99989">logEntries</a> () const</td></tr>
+<tr class="memdesc:a91500f66e86a02b1e57fb0f96ef99989"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。  <br /></td></tr>
+<tr class="separator:a91500f66e86a02b1e57fb0f96ef99989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91500f66e86a02b1e57fb0f96ef99989"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
+<tr class="memitem:a91500f66e86a02b1e57fb0f96ef99989"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a91500f66e86a02b1e57fb0f96ef99989">logEntries</a> () const</td></tr>
+<tr class="separator:a91500f66e86a02b1e57fb0f96ef99989"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a0522a651826ba6fcbb9ce86258e8fa30">isSelf</a> () const</td></tr>
+<tr class="memdesc:a0522a651826ba6fcbb9ce86258e8fa30"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberがselfならtrue  <br /></td></tr>
+<tr class="separator:a0522a651826ba6fcbb9ce86258e8fa30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2f63920a9d0c274c8627c54d7e00d0f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab2f63920a9d0c274c8627c54d7e00d0f">operator==</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;other) const</td></tr>
+<tr class="separator:ab2f63920a9d0c274c8627c54d7e00d0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c810e304a62d36f287f198498e5bfa9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#a2c810e304a62d36f287f198498e5bfa9">operator==</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;rhs) const</td></tr>
+<tr class="separator:a2c810e304a62d36f287f198498e5bfa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec5efcbe0818dac5fce6ba98ddad0c0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a7ec5efcbe0818dac5fce6ba98ddad0c0">operator!=</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;other) const</td></tr>
+<tr class="separator:a7ec5efcbe0818dac5fce6ba98ddad0c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa3ada8194f5f6df572bc2f00e3c9d579"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#aa3ada8194f5f6df572bc2f00e3c9d579">operator!=</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;rhs) const</td></tr>
+<tr class="separator:aa3ada8194f5f6df572bc2f00e3c9d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:acf663a756c76fb2936c0042257df739c"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#acf663a756c76fb2936c0042257df739c">data_w</a></td></tr>
+<tr class="memdesc:acf663a756c76fb2936c0042257df739c"><td class="mdescLeft">&#160;</td><td class="mdescRight">ClientDataの参照  <br /></td></tr>
+<tr class="separator:acf663a756c76fb2936c0042257df739c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32">member_</a></td></tr>
+<tr class="memdesc:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="mdescLeft">&#160;</td><td class="mdescRight">メンバー名  <br /></td></tr>
+<tr class="separator:a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6ffd336e43abb201663ab9b064a0607"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#ac6ffd336e43abb201663ab9b064a0607">field_</a></td></tr>
+<tr class="memdesc:ac6ffd336e43abb201663ab9b064a0607"><td class="mdescLeft">&#160;</td><td class="mdescRight">フィールド名  <br /></td></tr>
+<tr class="separator:ac6ffd336e43abb201663ab9b064a0607"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>配列型のValueデータの一部の要素を指定するクラス </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.8 </dd></dl>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a7c8afd140fc34380750337f1aaaca344" name="a7c8afd140fc34380750337f1aaaca344"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c8afd140fc34380750337f1aaaca344">&#9670;&#160;</a></span>ValueElementRef()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"><em>base</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::size_t&#160;</td>
+          <td class="paramname"><em>index</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a888953c142d2f1f37a617da30b127847" name="a888953c142d2f1f37a617da30b127847"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a888953c142d2f1f37a617da30b127847">&#9670;&#160;</a></span>canvas2D() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Canvas2D_ canvas2D </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a17b35071c80936a7a7fde2b768dfa266" name="a17b35071c80936a7a7fde2b768dfa266"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a17b35071c80936a7a7fde2b768dfa266">&#9670;&#160;</a></span>canvas2D() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Canvas2D_ canvas2D </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af64f0121c51589922b7ed04cf31563c7" name="af64f0121c51589922b7ed04cf31563c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64f0121c51589922b7ed04cf31563c7">&#9670;&#160;</a></span>canvas2DEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &gt; canvas2DEntries&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af64f0121c51589922b7ed04cf31563c7" name="af64f0121c51589922b7ed04cf31563c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64f0121c51589922b7ed04cf31563c7">&#9670;&#160;</a></span>canvas2DEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &gt; canvas2DEntries&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aff8443d51fac49563f2f1a8366d41b17" name="aff8443d51fac49563f2f1a8366d41b17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff8443d51fac49563f2f1a8366d41b17">&#9670;&#160;</a></span>canvas3D() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Canvas3D_ canvas3D </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea514e0f3d71775dff82bd7d32171fa7" name="aea514e0f3d71775dff82bd7d32171fa7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea514e0f3d71775dff82bd7d32171fa7">&#9670;&#160;</a></span>canvas3D() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Canvas3D_ canvas3D </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adc5fec0b3ffefe176ec7aef5b77ee1f0" name="adc5fec0b3ffefe176ec7aef5b77ee1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc5fec0b3ffefe176ec7aef5b77ee1f0">&#9670;&#160;</a></span>canvas3DEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCompleteCanvas3D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas3D_,  Canvas3D &gt;,  Canvas3D_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a> &gt; canvas3DEntries&lt; <a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているcanvas3Dのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="adc5fec0b3ffefe176ec7aef5b77ee1f0" name="adc5fec0b3ffefe176ec7aef5b77ee1f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc5fec0b3ffefe176ec7aef5b77ee1f0">&#9670;&#160;</a></span>canvas3DEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a> &gt; canvas3DEntries&lt; <a class="el" href="classwebcface_1_1Canvas3D.html">Canvas3D</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac495d25f6992031499cac9742d799703" name="ac495d25f6992031499cac9742d799703"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac495d25f6992031499cac9742d799703">&#9670;&#160;</a></span>child() <span class="overload">[1/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> child </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3f4c5cd0eab27717d89875ffdd67a62f" name="a3f4c5cd0eab27717d89875ffdd67a62f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4c5cd0eab27717d89875ffdd67a62f">&#9670;&#160;</a></span>child() <span class="overload">[2/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> child </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(index)」を新しい名前とするField </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+
+</div>
+</div>
+<a id="a6bf5695e81e7867bf17ca940f7d9d958" name="a6bf5695e81e7867bf17ca940f7d9d958"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6bf5695e81e7867bf17ca940f7d9d958">&#9670;&#160;</a></span>child() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> child </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」を新しい名前とするField </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+
+</div>
+</div>
+<a id="a5df64f9f1d96814b040c8898fa3faa58" name="a5df64f9f1d96814b040c8898fa3faa58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5df64f9f1d96814b040c8898fa3faa58">&#9670;&#160;</a></span>child() <span class="overload">[4/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> child </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」を新しい名前とするField (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="aa6c846f5e833330d08bb196b087830ce" name="aa6c846f5e833330d08bb196b087830ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6c846f5e833330d08bb196b087830ce">&#9670;&#160;</a></span>children()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt; children </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているデータのリスト </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6</dd></dl>
+<ul>
+<li>データ型を問わずすべてのデータを列挙する。</li>
+<li><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> と異なり、 名前にさらにピリオドが含まれる場合はその前までの名前を返す。</li>
+<li>同名で複数のデータが存在する場合も1回のみカウントする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a>, <a class="el" href="structwebcface_1_1Field.html#abae2ef4777ea28fa9acc234111dc84eb" title="「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す">hasChildren()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a9765227c8f4bcdc87b9a5c4f57124850" name="a9765227c8f4bcdc87b9a5c4f57124850"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9765227c8f4bcdc87b9a5c4f57124850">&#9670;&#160;</a></span>childrenRecurse()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt; childrenRecurse </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6</dd></dl>
+<ul>
+<li>データ型を問わずすべてのデータを列挙する。</li>
+<li>同名で複数のデータが存在する場合も1回のみカウントする。</li>
+</ul>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#aa6c846f5e833330d08bb196b087830ce" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト">children()</a>, <a class="el" href="structwebcface_1_1Field.html#abae2ef4777ea28fa9acc234111dc84eb" title="「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す">hasChildren()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a725c14e25d8d4e15eb297b926aec13bf" name="a725c14e25d8d4e15eb297b926aec13bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a725c14e25d8d4e15eb297b926aec13bf">&#9670;&#160;</a></span>dataLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; dataLock </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>data_wをlockし、失敗したらruntime_errorを投げる </p>
+
+</div>
+</div>
+<a id="aab9d1bda10b0c1b79c4f48f3ebcf1d29" name="aab9d1bda10b0c1b79c4f48f3ebcf1d29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab9d1bda10b0c1b79c4f48f3ebcf1d29">&#9670;&#160;</a></span>expired()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool expired </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a171e85b11856e1499909b2643a76bb6a" name="a171e85b11856e1499909b2643a76bb6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a171e85b11856e1499909b2643a76bb6a">&#9670;&#160;</a></span>func() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Func_ func </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4ebc1dc4d887c13fe8b358c8b40d35c6" name="a4ebc1dc4d887c13fe8b358c8b40d35c6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4ebc1dc4d887c13fe8b358c8b40d35c6">&#9670;&#160;</a></span>func() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Func_ func </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab3ebb40ac598f0fa353e8cb8d9c6c7c2" name="ab3ebb40ac598f0fa353e8cb8d9c6c7c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">&#9670;&#160;</a></span>funcEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; funcEntries&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ab3ebb40ac598f0fa353e8cb8d9c6c7c2" name="ab3ebb40ac598f0fa353e8cb8d9c6c7c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">&#9670;&#160;</a></span>funcEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a> &gt; funcEntries&lt; <a class="el" href="classwebcface_1_1Func.html">Func</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1867b7c1fb26d178a4cc9c6d7d215aa1" name="a1867b7c1fb26d178a4cc9c6d7d215aa1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1867b7c1fb26d178a4cc9c6d7d215aa1">&#9670;&#160;</a></span>funcListener() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::assertCompleteFuncListener &lt;   std::enable_if_t&lt;std::is_same_v&lt; FuncListener_,  FuncListener &gt;,  FuncListener_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FuncListener_ funcListener </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a74b7c16273ac5d9e06d54976af0b4b03" name="a74b7c16273ac5d9e06d54976af0b4b03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74b7c16273ac5d9e06d54976af0b4b03">&#9670;&#160;</a></span>funcListener() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::assertCompleteFuncListener &lt;   std::enable_if_t&lt;std::is_same_v&lt; FuncListener_,  FuncListener &gt;,  FuncListener_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">FuncListener_ funcListener </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af53ec2e557ea14cce1373e0f77954c82" name="af53ec2e557ea14cce1373e0f77954c82"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af53ec2e557ea14cce1373e0f77954c82">&#9670;&#160;</a></span>get()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double get </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>値があればその要素を返す </p>
+<ul>
+<li>データがない場合、範囲外の場合は0 </li>
+</ul>
+
+</div>
+</div>
+<a id="abae2ef4777ea28fa9acc234111dc84eb" name="abae2ef4777ea28fa9acc234111dc84eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abae2ef4777ea28fa9acc234111dc84eb">&#9670;&#160;</a></span>hasChildren()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool hasChildren </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#aa6c846f5e833330d08bb196b087830ce" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト">children()</a>, <a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ad94b6c150c7b59d1ac12ee7948390e08" name="ad94b6c150c7b59d1ac12ee7948390e08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad94b6c150c7b59d1ac12ee7948390e08">&#9670;&#160;</a></span>image() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Image_ image </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="acf5927541460ab74dbb1d5d5fe7f7329" name="acf5927541460ab74dbb1d5d5fe7f7329"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf5927541460ab74dbb1d5d5fe7f7329">&#9670;&#160;</a></span>image() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Image_ image </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a866326e5bc56f5fb6b349ad91896479c" name="a866326e5bc56f5fb6b349ad91896479c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a866326e5bc56f5fb6b349ad91896479c">&#9670;&#160;</a></span>imageEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a> &gt; imageEntries&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a866326e5bc56f5fb6b349ad91896479c" name="a866326e5bc56f5fb6b349ad91896479c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a866326e5bc56f5fb6b349ad91896479c">&#9670;&#160;</a></span>imageEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a> &gt; imageEntries&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0522a651826ba6fcbb9ce86258e8fa30" name="a0522a651826ba6fcbb9ce86258e8fa30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0522a651826ba6fcbb9ce86258e8fa30">&#9670;&#160;</a></span>isSelf()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool isSelf </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>memberがselfならtrue </p>
+<p>data_wがlockできなければruntime_errorを投げる </p>
+
+</div>
+</div>
+<a id="ab53487c64d4c15b7a2f16a968197003c" name="ab53487c64d4c15b7a2f16a968197003c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab53487c64d4c15b7a2f16a968197003c">&#9670;&#160;</a></span>lastName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string lastName </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>nameのうちピリオドで区切られた最後の部分を取り出す </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+
+</div>
+</div>
+<a id="a6c06b66607b91e9ae36f0688b3d108f7" name="a6c06b66607b91e9ae36f0688b3d108f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c06b66607b91e9ae36f0688b3d108f7">&#9670;&#160;</a></span>lastName8()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> lastName8 </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af4e3ae9c11a8760127d92e61cdd9e03f" name="af4e3ae9c11a8760127d92e61cdd9e03f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4e3ae9c11a8760127d92e61cdd9e03f">&#9670;&#160;</a></span>lastNameW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::wstring lastNameW </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>nameのうちピリオドで区切られた最後の部分を取り出す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a0c509cded45c0f2d277103c33db71e89" name="a0c509cded45c0f2d277103c33db71e89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c509cded45c0f2d277103c33db71e89">&#9670;&#160;</a></span>log() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Log_ log </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
+
+</div>
+</div>
+<a id="a6362ff7f9c5b23d207a687e9bd72f322" name="a6362ff7f9c5b23d207a687e9bd72f322"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6362ff7f9c5b23d207a687e9bd72f322">&#9670;&#160;</a></span>log() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Log_ log </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
+
+</div>
+</div>
+<a id="a91500f66e86a02b1e57fb0f96ef99989" name="a91500f66e86a02b1e57fb0f96ef99989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91500f66e86a02b1e57fb0f96ef99989">&#9670;&#160;</a></span>logEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt; logEntries&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a91500f66e86a02b1e57fb0f96ef99989" name="a91500f66e86a02b1e57fb0f96ef99989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91500f66e86a02b1e57fb0f96ef99989">&#9670;&#160;</a></span>logEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt; logEntries&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a46b5785dc80e4d37f469ca9a2c1dcdbd" name="a46b5785dc80e4d37f469ca9a2c1dcdbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46b5785dc80e4d37f469ca9a2c1dcdbd">&#9670;&#160;</a></span>member()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertCompleteMember &lt;   std::enable_if_t&lt;std::is_same_v&lt; Member_,  Member &gt;,  Member_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Member_ member </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Memberを返す </p>
+
+</div>
+</div>
+<a id="a24dcbf29c0d6cd766009a182a6484e3b" name="a24dcbf29c0d6cd766009a182a6484e3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24dcbf29c0d6cd766009a182a6484e3b">&#9670;&#160;</a></span>name()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::string &amp; name </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>field名を返す </p>
+
+</div>
+</div>
+<a id="a8c997fd30e7178c869b823143102d682" name="a8c997fd30e7178c869b823143102d682"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c997fd30e7178c869b823143102d682">&#9670;&#160;</a></span>nameW()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const std::wstring &amp; nameW </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>field名を返す (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a7ec5efcbe0818dac5fce6ba98ddad0c0" name="a7ec5efcbe0818dac5fce6ba98ddad0c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec5efcbe0818dac5fce6ba98ddad0c0">&#9670;&#160;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa3ada8194f5f6df572bc2f00e3c9d579" name="aa3ada8194f5f6df572bc2f00e3c9d579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa3ada8194f5f6df572bc2f00e3c9d579">&#9670;&#160;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81364702559fdd8ede3c8875dd2f0dfd" name="a81364702559fdd8ede3c8875dd2f0dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81364702559fdd8ede3c8875dd2f0dfd">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab2f63920a9d0c274c8627c54d7e00d0f" name="ab2f63920a9d0c274c8627c54d7e00d0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2f63920a9d0c274c8627c54d7e00d0f">&#9670;&#160;</a></span>operator==() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2c810e304a62d36f287f198498e5bfa9" name="a2c810e304a62d36f287f198498e5bfa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2c810e304a62d36f287f198498e5bfa9">&#9670;&#160;</a></span>operator==() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;&#160;</td>
+          <td class="paramname"><em>rhs</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f8a5749c0af85b6117dd2bbf61e66c3" name="a6f8a5749c0af85b6117dd2bbf61e66c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f8a5749c0af85b6117dd2bbf61e66c3">&#9670;&#160;</a></span>operator[]() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> operator[] </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>index</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(index)」を新しい名前とするField </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+
+</div>
+</div>
+<a id="afc2fc06c9730225a1c2803ad722cac9c" name="afc2fc06c9730225a1c2803ad722cac9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc2fc06c9730225a1c2803ad722cac9c">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> operator[] </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」を新しい名前とするField </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+
+</div>
+</div>
+<a id="af72203466d2e2b9b82bcf6fcc96b764f" name="af72203466d2e2b9b82bcf6fcc96b764f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af72203466d2e2b9b82bcf6fcc96b764f">&#9670;&#160;</a></span>operator[]() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> operator[] </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」を新しい名前とするField (wstring) </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
+
+</div>
+</div>
+<a id="a2559fb35084a35286079239c54cf7698" name="a2559fb35084a35286079239c54cf7698"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2559fb35084a35286079239c54cf7698">&#9670;&#160;</a></span>parent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> parent </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>nameの最後のピリオドの前までを新しい名前とするField </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+
+</div>
+</div>
+<a id="a8ce4a3a7578bb9d99eb7c541d32bc0db" name="a8ce4a3a7578bb9d99eb7c541d32bc0db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8ce4a3a7578bb9d99eb7c541d32bc0db">&#9670;&#160;</a></span>robotModel() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">RobotModel_ robotModel </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1db59faa1634b749e5b0d5f0a225eaf2" name="a1db59faa1634b749e5b0d5f0a225eaf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1db59faa1634b749e5b0d5f0a225eaf2">&#9670;&#160;</a></span>robotModel() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">RobotModel_ robotModel </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afee6e2a9a95ba2541bf0ff302b426523" name="afee6e2a9a95ba2541bf0ff302b426523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee6e2a9a95ba2541bf0ff302b426523">&#9670;&#160;</a></span>robotModelEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModelEntries&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="afee6e2a9a95ba2541bf0ff302b426523" name="afee6e2a9a95ba2541bf0ff302b426523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee6e2a9a95ba2541bf0ff302b426523">&#9670;&#160;</a></span>robotModelEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModelEntries&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af338610aab9ecfc5b2dd1b42cfc2b6f0" name="af338610aab9ecfc5b2dd1b42cfc2b6f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af338610aab9ecfc5b2dd1b42cfc2b6f0">&#9670;&#160;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a> &amp; set </td>
+          <td>(</td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>v</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>値をセットする </p>
+<ul>
+<li>事前に <a class="el" href="classwebcface_1_1Value.html#ae26e646e22c80ca945e437701d49b9f6" title="配列をセット、またはすでにsetされていればリサイズする">Value::resize()</a> でサイズを変更しておく必要がある</li>
+<li>データがない場合、範囲外の場合は std::out_of_range を投げる<ul>
+<li>ver2.7以前は <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">Value</a>[i].<a class="el" href="classwebcface_1_1ValueElementRef.html#af338610aab9ecfc5b2dd1b42cfc2b6f0" title="値をセットする">set()</a> で自動的にリサイズされていたので、異なる挙動になる </li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+<a id="a6aae196570f9dc73d6768aaaeb146220" name="a6aae196570f9dc73d6768aaaeb146220"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6aae196570f9dc73d6768aaaeb146220">&#9670;&#160;</a></span>setCheck()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; setCheck </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>data_wをlockし、memberがselfではなければinvalid_argumentを投げる </p>
+
+</div>
+</div>
+<a id="ad5123f286651762b463402568c9c1a8c" name="ad5123f286651762b463402568c9c1a8c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5123f286651762b463402568c9c1a8c">&#9670;&#160;</a></span>text() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Text_ text </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae1d2764bab2cf8dc78b22cca723b4832" name="ae1d2764bab2cf8dc78b22cca723b4832"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d2764bab2cf8dc78b22cca723b4832">&#9670;&#160;</a></span>text() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Text_ text </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f0461788d6228e196254a794dc57ace" name="a6f0461788d6228e196254a794dc57ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0461788d6228e196254a794dc57ace">&#9670;&#160;</a></span>textEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a> &gt; textEntries&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a6f0461788d6228e196254a794dc57ace" name="a6f0461788d6228e196254a794dc57ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0461788d6228e196254a794dc57ace">&#9670;&#160;</a></span>textEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a> &gt; textEntries&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae5bef3971255d46007752bd07c18803f" name="ae5bef3971255d46007752bd07c18803f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae5bef3971255d46007752bd07c18803f">&#9670;&#160;</a></span>tryGet()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; double &gt; tryGet </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>値があればその要素を返す </p>
+<ul>
+<li>データがない場合、範囲外の場合はstd::nullopt </li>
+</ul>
+
+</div>
+</div>
+<a id="a9061fd48b247b9a0a0f3b2c92c336343" name="a9061fd48b247b9a0a0f3b2c92c336343"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9061fd48b247b9a0a0f3b2c92c336343">&#9670;&#160;</a></span>value() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Value_ value </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae26e16337d298b7d4901619b0956518c" name="ae26e16337d298b7d4901619b0956518c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae26e16337d298b7d4901619b0956518c">&#9670;&#160;</a></span>value() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Value_ value </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac8cc11afdd37eec02b77c8b5e2c5b058" name="ac8cc11afdd37eec02b77c8b5e2c5b058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8cc11afdd37eec02b77c8b5e2c5b058">&#9670;&#160;</a></span>valueEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a> &gt; valueEntries&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac8cc11afdd37eec02b77c8b5e2c5b058" name="ac8cc11afdd37eec02b77c8b5e2c5b058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8cc11afdd37eec02b77c8b5e2c5b058">&#9670;&#160;</a></span>valueEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a> &gt; valueEntries&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a18bf28b7b1b1f26c6ef6c3ab17a47c51" name="a18bf28b7b1b1f26c6ef6c3ab17a47c51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18bf28b7b1b1f26c6ef6c3ab17a47c51">&#9670;&#160;</a></span>view() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">View_ view </td>
+          <td>(</td>
+          <td class="paramtype">std::string_view&#160;</td>
+          <td class="paramname"><em>field</em> = <code>&quot;&quot;</code></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a041285967ea9c2cae8d9170af4223b76" name="a041285967ea9c2cae8d9170af4223b76"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a041285967ea9c2cae8d9170af4223b76">&#9670;&#160;</a></span>view() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">View_ view </td>
+          <td>(</td>
+          <td class="paramtype">std::wstring_view&#160;</td>
+          <td class="paramname"><em>field</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a310bd45025f17fed63d4f97f542c4683" name="a310bd45025f17fed63d4f97f542c4683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a310bd45025f17fed63d4f97f542c4683">&#9670;&#160;</a></span>viewEntries() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1View.html">View</a> &gt; viewEntries&lt; <a class="el" href="classwebcface_1_1View.html">View</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。 </p>
+<dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
+<dl class="section see"><dt>See also</dt><dd><a class="el" href="structwebcface_1_1Field.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a310bd45025f17fed63d4f97f542c4683" name="a310bd45025f17fed63d4f97f542c4683"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a310bd45025f17fed63d4f97f542c4683">&#9670;&#160;</a></span>viewEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1View.html">View</a> &gt; viewEntries&lt; <a class="el" href="classwebcface_1_1View.html">View</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="acf663a756c76fb2936c0042257df739c" name="acf663a756c76fb2936c0042257df739c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acf663a756c76fb2936c0042257df739c">&#9670;&#160;</a></span>data_w</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::weak_ptr&lt;<a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a>&gt; data_w</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>ClientDataの参照 </p>
+<p>ClientData内に保持するクラスもあるので循環参照を避けるためweak_ptr </p>
+
+</div>
+</div>
+<a id="ac6ffd336e43abb201663ab9b064a0607" name="ac6ffd336e43abb201663ab9b064a0607"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6ffd336e43abb201663ab9b064a0607">&#9670;&#160;</a></span>field_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> field_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>フィールド名 </p>
+<p>Memberなどフィールド名が不要なクラスでは使用しない </p>
+
+</div>
+</div>
+<a id="a3e22aa0aa6e9e9286fd1d3c1ea6c8a32" name="a3e22aa0aa6e9e9286fd1d3c1ea6c8a32"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e22aa0aa6e9e9286fd1d3c1ea6c8a32">&#9670;&#160;</a></span>member_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> member_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>メンバー名 </p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>client/include/webcface/<a class="el" href="client_2include_2webcface_2value_8h_source.html">value.h</a></li>
+<li>client/src/<a class="el" href="value_8cc.html">value.cc</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ValueElementRef.html">ValueElementRef</a></li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:20 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -80,6 +80,7 @@ var hierarchy =
         [ "Promise", "classwebcface_1_1Promise.html", null ],
         [ "RobotModel", "classwebcface_1_1RobotModel.html", null ],
         [ "Value", "classwebcface_1_1Value.html", null ],
+        [ "ValueElementRef", "classwebcface_1_1ValueElementRef.html", null ],
         [ "Variant", "classwebcface_1_1Variant.html", [
           [ "Text", "classwebcface_1_1Text.html", null ]
         ] ],

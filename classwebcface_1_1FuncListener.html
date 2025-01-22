@@ -969,6 +969,7 @@ template&lt;typename F1 &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000013">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -1448,7 +1449,7 @@ template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::
 </div><div class="memdoc">
 
 <p>関数を関数リストで非表示にする (他clientのentryに表示されなくする) </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない)</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000019">Deprecated:</a></b></dt><dd>ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない)</dd></dl>
 
 </div>
 </div>
@@ -1477,7 +1478,7 @@ template&lt;typename FuncListener_  = FuncListener, bool  = ::webcface::traits::
 </div><div class="memdoc">
 
 <p>関数を関数リストで非表示にする (他clientのentryに表示されなくする) </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000008">Deprecated:</a></b></dt><dd>ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない)</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated:</a></b></dt><dd>ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、 hiddenの指定は無効 (この関数は効果がない)</dd></dl>
 
 </div>
 </div>
@@ -2075,7 +2076,7 @@ template&lt;typename... Args&gt; </div>
 </div><div class="memdoc">
 
 <p><a class="el" href="classwebcface_1_1Func.html#a2f3ba42b8784ef2a1b3014ef617c1249" title="関数を実行する (同期)">run()</a>と同じ </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000010">Deprecated:</a></b></dt><dd>ver2.0〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000018">Deprecated:</a></b></dt><dd>ver2.0〜 </dd></dl>
 
 </div>
 </div>
@@ -2240,6 +2241,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="classwebcface_1_1Func.html#a3acdeffcf3a286db94b1507fae0c42ed" title="「(thisの名前).(追加の名前)」を新しい名前とするField">child()</a>と同じ </p><dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2494,7 +2496,7 @@ template&lt;typename... Args&gt; </div>
 
 <p>関数を実行する (同期) </p>
 <p>例外が発生した場合 runtime_error, 関数が存在しない場合 <a class="el" href="structwebcface_1_1FuncNotFound.html" title="Funcの実行ができなかった場合発生する例外">FuncNotFound</a> をthrowする</p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000009">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530" title="関数を実行する (非同期)">runAsync()</a>を推奨。 <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">Promise::waitFinish()</a> と response(), rejection() で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 詳細は waitFinish() のドキュメントを参照</dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000017">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="classwebcface_1_1Func.html#af6fa739e31a048973df789bf7c3f2530" title="関数を実行する (非同期)">runAsync()</a>を推奨。 <a class="el" href="classwebcface_1_1Promise.html#a9d94db7b219195abca18504e8a86e4b2" title="関数の実行が完了するまで待機">Promise::waitFinish()</a> と response(), rejection() で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 詳細は waitFinish() のドキュメントを参照</dd></dl>
 
 </div>
 </div>
@@ -3640,7 +3642,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1FuncListener.html">FuncListener</a></li>
-    <li class="footer">Generated on Wed Jan 22 2025 08:21:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

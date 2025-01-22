@@ -1,0 +1,9 @@
+<map id="ValueElementRef" name="ValueElementRef">
+<area shape="rect" id="Node000001" title="配列型のValueデータの一部の要素を指定するクラス" alt="" coords="5,257,140,283"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス" alt="" coords="46,183,99,208"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,222,75,257,70,257,70,222"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1FieldBase.html" title="メンバ名とデータ名を持つクラス" alt="" coords="30,108,115,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,148,75,182,70,182,70,148"/>
+<area shape="rect" id="Node000004" href="$classwebcface_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="20,5,125,31"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="75,45,75,108,70,108,70,45"/>
+</map>

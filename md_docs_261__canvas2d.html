@@ -251,7 +251,7 @@ Point, Transform</h1>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa1ffd9e753c8054cc61456ac7fac1ac89">webcface::ViewColor::black</a></div><div class="ttdeci">@ black</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">webcface::ViewColor::red</a></div><div class="ttdeci">@ red</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad487dd0b55dfcacdd920ccbdaeafa351">webcface::ViewColor::yellow</a></div><div class="ttdeci">@ yellow</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a888953c142d2f1f37a617da30b127847"><div class="ttname"><a href="structwebcface_1_1Field.html#a888953c142d2f1f37a617da30b127847">webcface::Field::canvas2D</a></div><div class="ttdeci">Canvas2D_ canvas2D(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:242</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a888953c142d2f1f37a617da30b127847"><div class="ttname"><a href="structwebcface_1_1Field.html#a888953c142d2f1f37a617da30b127847">webcface::Field::canvas2D</a></div><div class="ttdeci">Canvas2D_ canvas2D(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:250</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_canvas2d.png" alt="example_canvas2d.png" class="inline"/></p>
 <p class="startli">C++ではCanvas2Dのデストラクタでも自動的にCanvas2D::sync()が呼ばれます。</p>
 <dl class="section note"><dt>Note</dt><dd>Canvas2Dオブジェクトをコピーした場合、Canvas2Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。</dd></dl>
@@ -337,7 +337,7 @@ ver1.8以前のC++</summary>
 <div class="line">    <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a>,</div>
 <div class="line">    1</div>
 <div class="line">);</div>
-<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_a5d912265a5bbc4228fb8cf84ceb4ca3f"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#a5d912265a5bbc4228fb8cf84ceb4ca3f">webcface::Canvas2D::add</a></div><div class="ttdeci">const Canvas2D &amp; add(T &amp;&amp;cc) const</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> canvas2d.h:192</div></div>
+<div class="ttc" id="aclasswebcface_1_1Canvas2D_html_a5d912265a5bbc4228fb8cf84ceb4ca3f"><div class="ttname"><a href="classwebcface_1_1Canvas2D.html#a5d912265a5bbc4228fb8cf84ceb4ca3f">webcface::Canvas2D::add</a></div><div class="ttdeci">const Canvas2D &amp; add(T &amp;&amp;cc) const</div><div class="ttdoc">コンポーネントなどを追加</div><div class="ttdef"><b>Definition</b> canvas2d.h:200</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a></div><div class="ttdeci">@ gray</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a></div><div class="ttdeci">@ white</div></div>
 <div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:831</div></div>
@@ -427,7 +427,7 @@ Polygon</h3>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jan 22 2025 08:21:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

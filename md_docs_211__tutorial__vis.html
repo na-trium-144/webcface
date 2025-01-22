@@ -533,15 +533,15 @@ View</h1>
 <div class="line">        std::this_thread::sleep_for(std::chrono::seconds(1));</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:439</div></div>
-<div class="ttc" id="aclasswebcface_1_1InputRef_html_a21aed6732ef1c8a17601d42e53959781"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">webcface::InputRef::asString</a></div><div class="ttdeci">std::string asString() const</div><div class="ttdoc">文字列として返す(コピー)</div><div class="ttdef"><b>Definition</b> text.h:506</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html"><div class="ttname"><a href="classwebcface_1_1InputRef.html">webcface::InputRef</a></div><div class="ttdoc">名前を指定しないText</div><div class="ttdef"><b>Definition</b> text.h:447</div></div>
+<div class="ttc" id="aclasswebcface_1_1InputRef_html_a21aed6732ef1c8a17601d42e53959781"><div class="ttname"><a href="classwebcface_1_1InputRef.html#a21aed6732ef1c8a17601d42e53959781">webcface::InputRef::asString</a></div><div class="ttdeci">std::string asString() const</div><div class="ttdoc">文字列として返す(コピー)</div><div class="ttdef"><b>Definition</b> text.h:514</div></div>
 <div class="ttc" id="aclasswebcface_1_1TemporalViewComponent_html_a7fe27f33a23d228ef1a701ba30cc6cbb"><div class="ttname"><a href="classwebcface_1_1TemporalViewComponent.html#a7fe27f33a23d228ef1a701ba30cc6cbb">webcface::TemporalViewComponent::bind</a></div><div class="ttdeci">TemporalViewComponent &amp; bind(const InputRef &amp;ref) &amp;</div><div class="ttdoc">変更した値を格納するInputRefを設定</div><div class="ttdef"><b>Definition</b> component_view.cc:309</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html"><div class="ttname"><a href="classwebcface_1_1View.html">webcface::View</a></div><div class="ttdoc">Viewの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> view.h:36</div></div>
 <div class="ttc" id="aclasswebcface_1_1View_html_a504472014f457652159a49ff8fa1429a"><div class="ttname"><a href="classwebcface_1_1View.html#a504472014f457652159a49ff8fa1429a">webcface::View::sync</a></div><div class="ttdeci">const View &amp; sync() const</div><div class="ttdoc">Viewの内容をclientに反映し送信可能にする</div><div class="ttdef"><b>Definition</b> view.cc:31</div></div>
 <div class="ttc" id="aclient_2include_2webcface_2view_8h_html"><div class="ttname"><a href="client_2include_2webcface_2view_8h.html">view.h</a></div></div>
 <div class="ttc" id="anamespacewebcface_1_1components_html_aeea393bc3ef7353444b8a71552ad404f"><div class="ttname"><a href="namespacewebcface_1_1components.html#aeea393bc3ef7353444b8a71552ad404f">webcface::components::textInput</a></div><div class="ttdeci">TemporalViewComponent textInput(std::string_view text=&quot;&quot;)</div><div class="ttdef"><b>Definition</b> components.h:670</div></div>
 <div class="ttc" id="anamespacewebcface_html_a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18"><div class="ttname"><a href="namespacewebcface.html#a11040d82967b60182816ddc035d07c28ace50a09343724eb82df11390e2c1de18">webcface::ViewComponentType::button</a></div><div class="ttdeci">@ button</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a18bf28b7b1b1f26c6ef6c3ab17a47c51"><div class="ttname"><a href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">webcface::Field::view</a></div><div class="ttdeci">View_ view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:226</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a18bf28b7b1b1f26c6ef6c3ab17a47c51"><div class="ttname"><a href="structwebcface_1_1Field.html#a18bf28b7b1b1f26c6ef6c3ab17a47c51">webcface::Field::view</a></div><div class="ttdeci">View_ view(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:234</div></div>
 </div><!-- fragment --><p class="startli">これを実行し、WebUI右上のメニューから「tutorial」を開き「sample」をクリックすると、 画像のようにプログラムで指定したとおりの画面が表示されます。 「hoge」ボタンをクリックすると関数hoge (Function hoge started) と表示し、 「print」ボタンをクリックするとその左の入力欄に入力した文字列がログに表示されます。</p>
 <p class="startli"><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tutorial_view.png" alt="tutorial_view" class="inline"/></p>
 <p class="startli">上のプログラム例のように、 テキストの表示はstd::ostream (std::cout など) と同じようにviewに文字列や数値などを出力するような書き方でできます。 ボタンにはFuncと同様関数や関数オブジェクト(ラムダ式など)を登録できます。 またtextInputなどを使って入力欄を表示させることもできます。 詳細は <a class="el" href="md_docs_254__view.html">5-4. View</a> を参照</p>
@@ -603,7 +603,7 @@ View</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jan 22 2025 08:21:38 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 22 2025 08:46:19 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
