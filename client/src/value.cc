@@ -21,6 +21,22 @@ const Value &Value::request() const {
 }
 
 const Value &Value::set(double v) const {
+    auto last_name = this->lastName();
+    auto parent = this->parent();
+    // deprecated in ver2.8
+    if (std::all_of(last_name.cbegin(), last_name.cend(),
+                    [](unsigned char c) { return std::isdigit(c); })) {
+        std::size_t index = std::stoi(std::string(last_name));
+        auto pv = parent.tryGetVec();
+        if (pv && index < pv->size() + 10) { // てきとう
+            while (pv->size() <= index) {
+                pv->push_back(0);
+            }
+            pv->at(index) = v;
+            parent.set(*pv);
+            return *this;
+        }
+    }
     set(std::vector<double>{v});
     return *this;
 }
@@ -97,6 +113,16 @@ std::optional<double> Value::tryGet() const {
     request();
     if (v) {
         return (*v)->size() >= 1 ? std::make_optional((**v)[0]) : std::nullopt;
+    }
+    // deprecated in ver2.8
+    auto last_name = lastName();
+    if (std::all_of(last_name.cbegin(), last_name.cend(),
+                    [](unsigned char c) { return std::isdigit(c); })) {
+        std::size_t index = std::stoi(std::string(last_name));
+        auto pv = parent().tryGetVec();
+        if (pv && index < pv->size()) {
+            return pv->at(index);
+        }
     }
     return std::nullopt;
 }
