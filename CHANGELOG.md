@@ -10,6 +10,8 @@
 <!-- ### Fixed -->
 ### Added
 * installer.sh (#480, #481)
+* ValueElementRef, Value::at(), size() (#486)
+	* `Value::operator[](int)` の返り値型が変更になる
 
 ## [2.7.0] - 2025-01-17
 ### Changed

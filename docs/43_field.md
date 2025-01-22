@@ -162,7 +162,8 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
     ```cpp
     wcli.value("data")[0]["a"] = 1; // value("data.0.a") = 1
     ```
-    <span class="since-c">2.7</span> child() や `[]` 内に数値を入れられる仕様はdeprecatedです。
+    <span class="since-c">2.8</span> child() や `[]` 内に数値を入れられる仕様はdeprecatedです。
+    (Value型の配列アクセスを除く)
 
 - <b class="tab-title">JavaScript</b>
     ```ts
