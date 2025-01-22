@@ -118,6 +118,8 @@ TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック
     auto f = func(self_name, "a");
     f.set([]() {});
+    EXPECT_EQ(f.index(), 1);
+    EXPECT_EQ(func(self_name, "a").index(), 1);
     EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
@@ -130,6 +132,8 @@ TEST_F(FuncTest, funcSet) {
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
     f.set([](int, double, bool, const std::string &) { return 0; });
+    EXPECT_EQ(f.index(), 2);
+    EXPECT_EQ(func(self_name, "b").index(), 2);
     EXPECT_EQ(f.returnType(), ValType::int_);
     EXPECT_EQ(f.args().size(), 4u);
     EXPECT_EQ(f.args(0).type(), ValType::int_);

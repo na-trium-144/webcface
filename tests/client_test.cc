@@ -363,11 +363,12 @@ TEST_F(ClientTest, entry) {
     EXPECT_FALSE(m.func("a").exists());
     m.onFuncEntry(callback<Func>());
     dummy_s->send(message::FuncInfo{
-        10, "a"_ss, ValType::int_, {std::make_shared<message::Arg>()}});
+        10, "a"_ss, ValType::int_, {std::make_shared<message::Arg>()}, 5});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     EXPECT_TRUE(m.func("a").exists());
+    EXPECT_EQ(m.func("a").index(), 5);
     EXPECT_EQ(m.funcEntries().size(), 1u);
     EXPECT_EQ(m.funcEntries()[0].name(), "a");
     EXPECT_EQ(m.funcEntries()[0].nameW(), L"a");

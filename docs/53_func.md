@@ -574,7 +574,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 ## 関数の情報の取得
 
-関数の引数や戻り値の情報を取得できます。
+関数の引数や戻り値、(<span class="since-c">2.8</span>関数が登録された順番) の情報を取得できます。
 他のデータ型と違ってデータをリクエストする機能はなく、
 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。
 
@@ -589,6 +589,9 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     ```
     引数の情報については webcface::Arg を参照
     また、戻り値型は webcface::ValType というenum型で得られます。
+
+    <span class="since-c">2.8</span>
+    関数がset()などで登録された順番を Func::index() で取得できます。
 
 - <b class="tab-title">JavaScript</b>
     Member.func() でFuncクラスのオブジェクトが得られ、

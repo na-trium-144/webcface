@@ -531,6 +531,14 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     bool exists() const;
+    /*!
+     * \brief member内での関数の登録順番号
+     * \since ver2.8
+     * 
+     * 関数の情報が存在しない場合、また送信側のクライアントが古い場合0が返る
+     * 
+     */
+    int index() const;
 
     /*!
      * \brief 戻り値の型を返す
