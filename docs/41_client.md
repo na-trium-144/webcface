@@ -251,7 +251,10 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     Client::loopSyncFor(), Client::loopSyncUntil() は指定した時間の間、
     また Client::loopSync() は通信を切断するまで受信データの待機を続けます。
     上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
-        * 具体的には内部で100μsおきにsync()を呼んだり接続状態を確認しています。
+        * 具体的には内部で100μsおきに接続状態や受信データを確認しています。
+        * loopSync という名前ですが1度送信を行った後は受信データの処理しか行いません。
+        loopSync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。
+            * sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。
         * ただしサーバーに接続しておらず autoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
     while(true){
@@ -299,7 +302,10 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     * <span class="since-c">2.0</span>
     wcfLoopSyncFor(wcli, timeout), wcfLoopSyncUntil(wcli, timeout) または wcfLoopSync() は指定した時間の間(または永遠に) 受信データの待機を続けます。
     上の例のようにwcfSync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
-        * 具体的には内部で100μsおきにwcfSync()を呼んだり接続状態を確認しています。
+        * 具体的には内部で100μsおきに接続状態や受信データを確認しています。
+        * loopSync という名前ですが1度送信を行った後は受信データの処理しか行いません。
+        loopSync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。
+            * sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。
         * ただしサーバーに接続しておらず wcfAutoReconnect() がオフの場合は、即座にreturnします。(デッドロック回避)
     ```cpp
     while(1){
@@ -369,6 +375,9 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
     上の例のようにsync()とsleepをするならこちらを使ったほうが受信データの処理にラグが生じないのでおすすめです。
         * デフォルトは0です(一度sync処理をした後すぐにreturnします)
         * Noneを指定すると通信を切断するまでずっとsyncし、returnしません。
+        * timeoutが0でない場合、1度送信を行った後は受信データの処理しか行いません。
+        sync 中に送信データ(sync()が必要な種類のもの)が追加されても再度改めてsyncを呼ぶまで送信されません。
+            * sync()が必要でないものとしては、Funcの呼び出しと応答、リクエストの送信がsync()と非同期です。
         * ただしサーバーに接続しておらず auto_reconnect がオフの場合は、即座にreturnします。(デッドロック回避)
     ```python
     while True:
@@ -565,8 +574,12 @@ Clientの接続が完了し受信するまでは取得できません(空文字�
 <span class="since-js">1.1</span>
 <span class="since-py"></span>
 
-`WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラー)が出力されます。
+`WEBCFACE_VERBOSE` 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラーなど)が出力されます。
 また `WEBCFACE_TRACE` 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。
+
+<span class="since-c">2.6</span>
+`WEBCFACE_VERBOSE` 環境変数が存在する場合、送受信しているメッセージの詳細も見ることができます。
+`WEBCFACE_TRACE` 環境変数が存在する場合、送受信しているメッセージの生バイナリデータを(16進数表記で)見ることができます。
 
 <span class="since-js">1.1</span>
 ではClientのコンストラクタでlogLevelに `"trace"` または `"verbose"` を指定することでも表示できます。

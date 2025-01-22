@@ -55,13 +55,11 @@ void Server::pingThreadMain() {
         });
         store->ping_status = new_ping_status;
         auto msg =
-            message::packSingle(message::PingStatus{{}, store->ping_status});
+            message::PingStatus{{}, store->ping_status};
         store->forEach([&](auto cd) {
-            cd->logger->trace("ping");
             cd->sendPing();
             if (cd->ping_status_req) {
                 cd->send(msg);
-                cd->logger->trace("send ping_status");
             }
         });
     }
@@ -124,9 +122,9 @@ Server::Server(std::uint16_t port, int level, int keep_log,
 
     if (std::this_thread::get_id() != MAIN_THREAD_ID) {
         logger->warn("Initialization of webcface::Server::Server should be "
-                     "called in the main thread (to initialize ImageMagick).");
+                     "called in the main thread (to initialize libvips).");
     }
-    initMagick();
+    initVips();
 
     auto crow_logger = std::make_shared<spdlog::logger>("crow_server", sink);
     crow_logger->set_level(spdlog::level::trace);

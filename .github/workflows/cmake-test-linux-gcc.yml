@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        gcc-ver: [7, 9, 11, 13]
+        gcc_ver: [7, 9, 11, 13, 14]
         include:
         - os: ubuntu-20.04
           gcc_ver: 7
@@ -21,6 +21,8 @@ jobs:
           gcc_ver: 11
         - os: ubuntu-24.04
           gcc_ver: 13
+        - os: ubuntu-24.04
+          gcc_ver: 14
         - dep: static
           os: ubuntu-20.04
           gcc_ver: 9
@@ -35,7 +37,7 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y ninja-build
         sudo apt-get install -y gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}}
-        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libjpeg-dev libpng-dev libwebp-dev; fi
+        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libvips-dev; fi
         if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libopencv-dev googletest; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-22.04 ]]; then sudo apt-get install -y libcli11-dev; fi
         if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-24.04 ]]; then sudo apt-get install -y libcli11-dev libmsgpack-cxx-dev; fi
@@ -48,23 +50,26 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = apt ]] && echo -Dwrap_mode=default)
+        $([[ ${{matrix.dep}} != apt ]] && echo -Dwrap_mode=forcefallback)
         -Dtest_wait=200
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
+        --force-fallback-for=libcurl
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build --print-errorlog
+      run: meson test -C build --print-errorlog --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'
       run: |
-        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v St | grep -v gnu_cxx"
+        bash -c "! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow"
         bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio"
-        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep utf8"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v codecvt_utf8 | grep utf8"
+        bash -c "! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep vips"
 
     - name: install
       run: meson install -C build

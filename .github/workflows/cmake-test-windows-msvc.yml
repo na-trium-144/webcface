@@ -6,20 +6,23 @@ on:
   pull_request:
     branches: []
 
-env:
-  IMAGEMAGICK_CACHE: 'D:\a\webcface\ImageMagick'
-
 jobs:
   test-windows-msvc:
     strategy:
       matrix:
-        dep: ["source", "static"]
+        arch: ["x86", "x64", "arm64"]
+        dep: ["source"]
+        shared_flag: ["shared"]
         include:
-        # - dep: choco
-        #   shared_flag: shared
-        - dep: source
-          shared_flag: shared
-        - dep: static
+        - arch: x86
+          devcmd: amd64_x86
+        - arch: x64
+          devcmd: amd64
+        - arch: arm64
+          devcmd: amd64_arm64
+        - arch: x64
+          devcmd: amd64
+          dep: static
           shared_flag: static
     runs-on: windows-2019
     steps:
@@ -45,36 +48,9 @@ jobs:
     - name: Add meson to path
       run: echo "c:\Program Files\Meson" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
 
-    # - name: Uninstall ImageMagick
-    #   if: matrix.dep == 'choco'
-    #   uses: crazy-max/ghaction-chocolatey@v3
-    #   with:
-    #     args: uninstall -y imagemagick imagemagick.app
-    # - name: Install ImageMagick
-    #   if: matrix.dep == 'choco'
-    #   uses: crazy-max/ghaction-chocolatey@v3
-    #   with:
-    #     args: install -y imagemagick -PackageParameters InstallDevelopmentHeaders=true
-
-    # - name: Add imagemagick to path
-    #   if: matrix.dep == 'choco'
-    #   run: echo "c:\Program Files\ImageMagick-7.1.1-Q16-HDRI" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-    
-    - name: Restore cached ImageMagick
-      # magickpp-build-msvc ではsharedもstaticも同じようにビルドしてる(installは違うが)
-      id: cache-im-restore
-      uses: actions/cache/restore@v4
-      with:
-        path: |
-          ${{env.IMAGEMAGICK_CACHE}}
-        key: ${{ runner.os }}-${{ hashFiles('meson.build', 'scripts/magick_msvc_*', '.github/workflows/cmake-test-windows-msvc.yml') }}
-    - name: Add ImageMagick to Path
-      if: steps.cache-im-restore.outputs.cache-hit == 'true'
-      run: echo "${{env.IMAGEMAGICK_CACHE}}" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-
     - uses: ilammy/msvc-dev-cmd@v1
       with:
-        arch: amd64_x86
+        arch: ${{matrix.devcmd}}
 
     - name: Setup Meson
       run: >
@@ -84,40 +60,19 @@ jobs:
         -Ddefault_library=${{matrix.shared_flag}}
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
-        -Dcpp_args=-DSTATIC_MAGICK
+        --cross-file scripts/cross/msvc_${{matrix.arch}}
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
       run: |
         meson compile -C build
 
-    # 1回の実行で1回のみsaveされるようにする
-    # restoreとsaveでpathが一致している必要があるらしい
-    - name: Copy ImageMagick directory for cache
-      if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
-      run: |
-        New-Item -Path "${{env.IMAGEMAGICK_CACHE}}" -ItemType Directory -Force
-        New-Item -Path "${{env.IMAGEMAGICK_CACHE}}\include" -ItemType Directory -Force
-        Copy-Item -Path "build\imagemagick-windows\Output\lib"                          -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\lib"
-        Copy-Item -Path "build\imagemagick-windows\Output\bin\*"      -Include "*.exe"           -Destination "${{env.IMAGEMAGICK_CACHE}}"
-        Copy-Item -Path "build\imagemagick-windows\ImageMagick\MagickCore"              -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickCore"
-        Copy-Item -Path "build\imagemagick-windows\ImageMagick\MagickWand"              -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\MagickWand"
-        Copy-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++"   -Recurse -Destination "${{env.IMAGEMAGICK_CACHE}}\include\Magick++"
-        Copy-Item -Path "build\imagemagick-windows\ImageMagick\Magick++\lib\Magick++.h"          -Destination "${{env.IMAGEMAGICK_CACHE}}\include"
-    - name: Save ImageMagick
-      if: steps.cache-im-restore.outputs.cache-hit != 'true' && matrix.dep == 'source'
-      id: cache-im-save
-      uses: actions/cache/save@v4
-      with:
-        path: |
-          ${{env.IMAGEMAGICK_CACHE}}
-        key: ${{ steps.cache-im-restore.outputs.cache-primary-key }}
-
     - name: Test
-      run: meson test -C build --print-errorlog
+      if: matrix.arch != 'arm64'
+      run: meson test -C build --print-errorlog --suite webcface
 
     - name: Check Exported Symbol
-      if: matrix.dep == 'submodule'
+      if: matrix.dep == 'source'
       run: |
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"
@@ -126,13 +81,13 @@ jobs:
       run: meson install -C build
 
     - name: Test CMake with installed package
-      if: matrix.dep != 'static'
+      if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -DCMAKE_GENERATOR_PLATFORM=WIN32
         cmake --build build --config Debug
     - name: Test building with Meson using CMake
-      if: matrix.dep != 'static'
+      if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
         meson setup buildmc --buildtype=debug -Dcmake_prefix_path=${{github.workspace}}/build/install

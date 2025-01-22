@@ -147,3 +147,12 @@ struct Res<Canvas2D>
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::Canvas2D)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Canvas2D>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Canvas2D>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Canvas2D>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Canvas2DOld)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Canvas2DOld>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Canvas2DOld>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Canvas2DOld>)

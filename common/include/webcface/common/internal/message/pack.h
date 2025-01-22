@@ -6,10 +6,18 @@
 #include <msgpack.hpp>
 #include <string>
 #include <cstdint>
-#include <spdlog/logger.h>
 #include <utf8.h>
 #include "webcface/common/val_adaptor.h"
 #include "./base.h"
+
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
+#include <spdlog/logger.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 MSGPACK_ADD_ENUM(webcface::ValType)
 
@@ -19,34 +27,10 @@ struct Ping;
 struct PingStatusReq;
 
 /*!
- * \brief server->client 新しいvalueなどの報告
- *
- * Funcの場合はこれではなくFuncInfoを使用
- *
+ * \brief バイナリを16進数の文字列に変換
+ * \since ver2.6
  */
-template <typename T>
-struct Entry : public MessageBase<T::kind + MessageKind::entry> {
-    unsigned int member_id = 0;
-    SharedString field;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field))
-};
-/*!
- * \brief client->server 以降Recvを送るようリクエスト
- *
- * todo: 解除できるようにする
- *
- */
-template <typename T>
-struct Req : public MessageBase<T::kind + MessageKind::req> {
-    SharedString member;
-    SharedString field;
-    unsigned int req_id = 0;
-    MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", req_id), MSGPACK_NVP("M", member),
-                       MSGPACK_NVP("f", field))
-};
-struct Image;
-template <>
-struct Req<Image>;
+std::string messageTrace(const std::string &message);
 
 /*!
  * \brief msgpackのメッセージをパースし返す

@@ -12,6 +12,7 @@
 #include "webcface/plot.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
+#include <algorithm>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -19,7 +20,6 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-Member Field::member() const { return *this; }
 SharedString Field::lastName8() const {
     auto i = this->field_.u8String().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
@@ -52,80 +52,157 @@ Field Field::child(const SharedString &field) const {
     }
 }
 
-Value Field::value(std::string_view field) const { return child(field); }
-Value Field::value(std::wstring_view field) const { return child(field); }
-Text Field::text(std::string_view field) const { return child(field); }
-Text Field::text(std::wstring_view field) const { return child(field); }
-RobotModel Field::robotModel(std::string_view field) const {
-    return child(field);
+/// \private
+template <typename S>
+static bool hasChildrenT(const Field *this_, S &store) {
+    auto keys = store.getEntry(*this_);
+    auto prefix_with_sep = this_->field_.u8String() + field_separator;
+    for (const auto &f : keys) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            return true;
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
+        }
+    }
+    return false;
 }
-RobotModel Field::robotModel(std::wstring_view field) const {
-    return child(field);
+bool Field::hasChildren() const {
+    auto data = dataLock();
+    return hasChildrenT(this, data->value_store) ||
+           hasChildrenT(this, data->text_store) ||
+           hasChildrenT(this, data->robot_model_store) ||
+           hasChildrenT(this, data->plot_store) ||
+           hasChildrenT(this, data->func_store) ||
+           hasChildrenT(this, data->view_store) ||
+           hasChildrenT(this, data->canvas2d_store) ||
+           hasChildrenT(this, data->canvas3d_store) ||
+           hasChildrenT(this, data->image_store) ||
+           hasChildrenT(this, data->log_store);
 }
-Plot Field::plot(std::string_view field) const { return child(field); }
-Plot Field::plot(std::wstring_view field) const { return child(field); }
-Image Field::image(std::string_view field) const { return child(field); }
-Image Field::image(std::wstring_view field) const { return child(field); }
-Func Field::func(std::string_view field) const { return child(field); }
-Func Field::func(std::wstring_view field) const { return child(field); }
-FuncListener Field::funcListener(std::string_view field) const {
-    return child(field);
-}
-FuncListener Field::funcListener(std::wstring_view field) const {
-    return child(field);
-}
-View Field::view(std::string_view field) const { return child(field); }
-View Field::view(std::wstring_view field) const { return child(field); }
-Canvas3D Field::canvas3D(std::string_view field) const { return child(field); }
-Canvas3D Field::canvas3D(std::wstring_view field) const { return child(field); }
-Canvas2D Field::canvas2D(std::string_view field) const { return child(field); }
-Canvas2D Field::canvas2D(std::wstring_view field) const { return child(field); }
-Log Field::log(std::string_view field) const { return child(field); }
-Log Field::log(std::wstring_view field) const { return child(field); }
 
 /// \private
 template <typename V, typename S>
-static auto entries(const Field *this_, S &store) {
+static void entries(std::vector<V> &ret, const Field *this_, S &store,
+                    bool recurse = true) {
     auto keys = store.getEntry(*this_);
-    std::vector<V> ret;
-    for (const auto &f : keys) {
-        if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+    std::string prefix_with_sep;
+    std::size_t prefix_len = 0;
+    if (!this_->field_.empty()) {
+        prefix_with_sep = this_->field_.u8String() + field_separator;
+        prefix_len = prefix_with_sep.size();
+    }
+    for (auto f : keys) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            if (!recurse) {
+                f = f.substr(0, f.find(field_separator, prefix_len));
+            }
+            if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
+                ret.emplace_back(*this_, f);
+            }
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
         }
     }
+}
+/// \private
+template <typename V, typename S>
+static auto entries(const Field *this_, S &store) {
+    std::vector<V> ret;
+    entries(ret, this_, store);
     return ret;
 }
-std::vector<Value> Field::valueEntries() const {
+std::vector<Field> Field::childrenRecurse() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store);
+    entries(ret, this, data->text_store);
+    entries(ret, this, data->robot_model_store);
+    entries(ret, this, data->plot_store);
+    entries(ret, this, data->func_store);
+    entries(ret, this, data->view_store);
+    entries(ret, this, data->canvas2d_store);
+    entries(ret, this, data->canvas3d_store);
+    entries(ret, this, data->image_store);
+    entries(ret, this, data->log_store);
+    return ret;
+}
+std::vector<Field> Field::children() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store, false);
+    entries(ret, this, data->text_store, false);
+    entries(ret, this, data->robot_model_store, false);
+    entries(ret, this, data->plot_store, false);
+    entries(ret, this, data->func_store, false);
+    entries(ret, this, data->view_store, false);
+    entries(ret, this, data->canvas2d_store, false);
+    entries(ret, this, data->canvas3d_store, false);
+    entries(ret, this, data->image_store, false);
+    entries(ret, this, data->log_store, false);
+    return ret;
+}
+template <typename T, bool>
+std::vector<T> Field::valueEntries() const {
     return entries<Value>(this, dataLock()->value_store);
 }
-std::vector<Text> Field::textEntries() const {
+template <typename T, bool>
+std::vector<T> Field::textEntries() const {
     return entries<Text>(this, dataLock()->text_store);
 }
-std::vector<RobotModel> Field::robotModelEntries() const {
+template <typename T, bool>
+std::vector<T> Field::robotModelEntries() const {
     return entries<RobotModel>(this, dataLock()->robot_model_store);
 }
-std::vector<Plot> Field::plotEntries() const {
+template <typename T, bool>
+std::vector<T> Field::plotEntries() const {
     return entries<Plot>(this, dataLock()->plot_store);
 }
-std::vector<Func> Field::funcEntries() const {
+template <typename T, bool>
+std::vector<T> Field::funcEntries() const {
     return entries<Func>(this, dataLock()->func_store);
 }
-std::vector<View> Field::viewEntries() const {
+template <typename T, bool>
+std::vector<T> Field::viewEntries() const {
     return entries<View>(this, dataLock()->view_store);
 }
-std::vector<Canvas3D> Field::canvas3DEntries() const {
+template <typename T, bool>
+std::vector<T> Field::canvas3DEntries() const {
     return entries<Canvas3D>(this, dataLock()->canvas3d_store);
 }
-std::vector<Canvas2D> Field::canvas2DEntries() const {
+template <typename T, bool>
+std::vector<T> Field::canvas2DEntries() const {
     return entries<Canvas2D>(this, dataLock()->canvas2d_store);
 }
-std::vector<Image> Field::imageEntries() const {
+template <typename T, bool>
+std::vector<T> Field::imageEntries() const {
     return entries<Image>(this, dataLock()->image_store);
 }
-std::vector<Log> Field::logEntries() const {
+template <typename T, bool>
+std::vector<T> Field::logEntries() const {
     return entries<Log>(this, dataLock()->log_store);
 }
+
+template WEBCFACE_DLL std::vector<Value>
+Field::valueEntries<Value, true>() const;
+template WEBCFACE_DLL std::vector<Text> Field::textEntries<Text, true>() const;
+template WEBCFACE_DLL std::vector<RobotModel>
+Field::robotModelEntries<RobotModel, true>() const;
+template WEBCFACE_DLL std::vector<Plot> Field::plotEntries<Plot, true>() const;
+template WEBCFACE_DLL std::vector<Func> Field::funcEntries<Func, true>() const;
+template WEBCFACE_DLL std::vector<View> Field::viewEntries<View, true>() const;
+template WEBCFACE_DLL std::vector<Canvas2D>
+Field::canvas2DEntries<Canvas2D, true>() const;
+template WEBCFACE_DLL std::vector<Canvas3D>
+Field::canvas3DEntries<Canvas3D, true>() const;
+template WEBCFACE_DLL std::vector<Image>
+Field::imageEntries<Image, true>() const;
+template WEBCFACE_DLL std::vector<Log> Field::logEntries<Log, true>() const;
 
 bool Field::expired() const { return data_w.expired(); }
 

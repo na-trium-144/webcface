@@ -3,6 +3,7 @@
 #include <thread>
 #include <iostream>
 #include <chrono>
+#include <fmt/base.h>
 
 int main() {
     webcface::Client wcli("example_view");
@@ -17,8 +18,11 @@ int main() {
             auto v = wcli.view("a");
             v << "hello world" << std::endl;
             v << i << std::endl;
+            fmt::format_to(v.inserter(), "with inserter: {}\n", i);
             v << webcface::button("a",
-                                  [] { std::cout << "hello" << std::endl; });
+                                  [] { std::cout << "hello" << std::endl; })
+                     .width(5)
+                     .height(2);
             v << std::endl;
 
             static webcface::InputRef input_toggle;
@@ -40,6 +44,15 @@ int main() {
               << std::endl;
             // InputRefはstaticでなくてもよい
             // その代わりここの時点でinput_valの値を表示したりということができない
+
+            webcface::InputRef input_multi;
+            v << "multiline:"
+              << webcface::textInput()
+                     .bind(input_multi)
+                     .init("aaa\nbbb\nccc")
+                     .width(10)
+                     .height(5)
+              << std::endl;
 
             static webcface::InputRef input_dec;
             v << webcface::decimalInput("decimal").bind(input_dec).min(-15).max(
@@ -67,6 +80,7 @@ int main() {
                      .min(0)
                      .max(100)
                      .step(10)
+                     .width(10)
               << " => " << input_slider << std::endl;
 
             static webcface::InputRef input_check;

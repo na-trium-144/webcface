@@ -100,8 +100,8 @@ const Log &Log::request() const {
     auto data = dataLock();
     auto req = data->log_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(message::packSingle(
-            message::Req<message::Log>{{}, member_, field_, req}));
+        data->messagePushReq(
+            message::Req<message::Log>{{}, member_, field_, req});
     }
     return *this;
 }

@@ -1,14 +1,174 @@
 project('webcface', 'c', 'cpp',
-  version: '2.5.1',
+  version: '2.7.0',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
-    'buildtype=release',
     'warning_level=3', # everythingは現在たぶん通らない
     'werror=true',
     # 'c_std=c99', # 指定するとlibjpegのビルドが通らない
     'cpp_std=gnu++17,c++17', # spdlogがgnu++必要、webcfaceは17以上必須
-    'wrap_mode=forcefallback',
+    'default_library=shared',
+
+    # options for subproject
+    'msgpackc-cxx:boost=disabled',
+    'msgpackc-cxx:tests=disabled',
+    'msgpackc-cxx:std_variant=false', # msvcでなんかエラーになる
+    'fmt:default_library=static',
+    'fmt:warning_level=0',
+    'fmt:werror=false',
+    'spdlog:tests=disabled',
+    'spdlog:compile_library=true',
+    'spdlog:default_library=static',
+    'spdlog:external_fmt=enabled',
+    'spdlog:std_format=disabled',
+    'curl:warning_level=0',
+    'curl:werror=false',
+    'curl:websockets=enabled',
+    'curl:default_library=static',
+    'curl:tool=disabled',
+    'curl:tests=disabled',
+    'curl:unittests=disabled',
+    'curl:bindlocal=disabled',
+    'curl:brotli=disabled',
+    'curl:doh=disabled',
+    'curl:form-api=disabled',
+    'curl:getoptions=disabled',
+    'curl:gsasl=disabled',
+    'curl:http2=disabled',
+    'curl:ipv6=disabled',
+    'curl:libcurl-option=disabled',
+    'curl:libz=disabled',
+    'curl:netrc=disabled',
+    'curl:parsedate=disabled',
+    'curl:progress-meter=disabled',
+    'curl:psl=disabled',
+    'curl:sspi=disabled',
+    'curl:zstd=disabled',
+    'curl:gss-api=disabled',
+    'curl:idn=disabled',
+    'curl:ntlm=disabled',
+    'curl:ssh=disabled',
+    'curl:ssl=disabled',
+    'curl:tls-srp=disabled',
+    'curl:openssl=disabled',
+    'curl:schannel=disabled',
+    'curl:secure-transport=disabled',
+    'curl:dict=disabled',
+    'curl:file=disabled',
+    'curl:ftp=disabled',
+    'curl:gopher=disabled',
+    'curl:imap=disabled',
+    'curl:ldap=disabled',
+    'curl:ldaps=disabled',
+    'curl:mqtt=disabled',
+    'curl:pop3=disabled',
+    'curl:rtmp=disabled',
+    'curl:rtsp=disabled',
+    'curl:smb=disabled',
+    'curl:smtp=disabled',
+    'curl:telnet=disabled',
+    'curl:tftp=disabled',
+    'libvips:default_library=static',
+    'libvips:warning_level=0',
+    'libvips:werror=false',
+    'libvips:jpeg=enabled',
+    'libvips:spng=enabled',
+    'libvips:webp=enabled',
+    'libvips:zlib=enabled',
+    'libvips:man=false',
+    'libvips:po=false',
+    'libvips:tools=false',
+    'libvips:test=false',
+    'libvips:fuzz=false',
+    'libvips:deprecated=false',
+    'libvips:examples=false',
+    'libvips:modules=disabled',
+    'libvips:introspection=disabled',
+    'libvips:vapi=false',
+    'libvips:cfitsio=disabled',
+    'libvips:cgif=disabled',
+    'libvips:exif=disabled',
+    'libvips:fftw=disabled',
+    'libvips:fontconfig=disabled',
+    'libvips:archive=disabled',
+    'libvips:heif=disabled',
+    'libvips:heif-module=disabled',
+    'libvips:imagequant=disabled',
+    'libvips:jpeg-xl=disabled',
+    'libvips:jpeg-xl-module=disabled',
+    'libvips:lcms=disabled',
+    'libvips:magick=disabled',
+    'libvips:magick-package=',
+    'libvips:magick-module=disabled',
+    'libvips:matio=disabled',
+    'libvips:nifti=disabled',
+    'libvips:openexr=disabled',
+    'libvips:openjpeg=disabled',
+    'libvips:openslide=disabled',
+    'libvips:openslide-module=disabled',
+    'libvips:highway=disabled',
+    'libvips:orc=disabled',
+    'libvips:pangocairo=disabled',
+    'libvips:pdfium=disabled',
+    'libvips:png=disabled',
+    'libvips:poppler=disabled',
+    'libvips:poppler-module=disabled',
+    'libvips:quantizr=disabled',
+    'libvips:rsvg=disabled',
+    'libvips:tiff=disabled',
+    'libvips:nsgif=false',
+    'libvips:ppm=false',
+    'libvips:analyze=false',
+    'libvips:radiance=false',
+    'libjpeg-turbo:default_library=static',
+    'libjpeg-turbo:jpeg-turbo=disabled',
+    'libjpeg-turbo:tests=disabled',
+    'libjpeg-turbo:warning_level=0',
+    'libjpeg-turbo:werror=false',
+    'zlib:default_library=static',
+    'zlib:tests=disabled',
+    'zlib:warning_level=0',
+    'zlib:werror=false',
+    'spng:default_library=static',
+    'spng:warning_level=0',
+    'spng:werror=false',
+    'spng:build_examples=false',
+    'libwebp:default_library=static',
+    'libwebp:cwebp=disabled',
+    'libwebp:dwebp=disabled',
+    'libwebp:webpinfo=disabled',
+    'libwebp:webpmux=disabled',
+    'libwebp:warning_level=0',
+    'libwebp:werror=false',
+    'glib:default_library=static',
+    'glib:warning_level=0',
+    'glib:werror=false',
+    'glib:xattr=false',
+    'glib:selinux=disabled',
+    'glib:libmount=disabled',
+    'glib:man-pages=disabled',
+    'glib:dtrace=disabled',
+    'glib:systemtap=disabled',
+    'glib:sysprof=disabled',
+    'glib:tests=false',
+    'glib:nls=disabled',
+    'glib:glib_debug=disabled',
+    'glib:glib_assert=false',
+    'glib:glib_checks=false',
+    'glib:libelf=disabled',
+    'glib:introspection=disabled',
+    'expat:default_library=static',
+    'expat:warning_level=0',
+    'expat:werror=false',
+    'pcre2:default_library=static',
+    'pcre2:warning_level=0',
+    'pcre2:werror=false',
+    'proxy-libintl:default_library=static',
+    'proxy-libintl:warning_level=0',
+    'proxy-libintl:werror=false',
+    'libffi:default_library=static',
+    'libffi:warning_level=0',
+    'libffi:werror=false',
   ],
 )
 fs = import('fs')
@@ -16,11 +176,11 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 
-webcface_abi_major = '21' # ABIの破壊的変更で1増やす
+webcface_abi_major = '23' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.10.3'
+webcface_webui_version = '1.12.2'
 
-webcface_description = 'Web-based IPC & Dashboard-like UI'
+webcface_description = 'Web-based Communication Framework'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
 webcface_url = 'https://github.com/na-trium-144/webcface'
 
@@ -65,7 +225,6 @@ webcface_system_win32socket = false
 webcface_system_path_windows = false
 webcface_system_add_debug = false
 webcface_system_version_rc = false
-magick_vs = false
 relative_rpath = ''
 if host_machine.system() == 'linux'
   summary('System', 'linux')
@@ -86,7 +245,6 @@ elif host_machine.system() == 'windows'
   if cxx.get_argument_syntax() == 'msvc'
     summary('System', 'windows msvc ' + host_machine.cpu_family())
     webcface_system_add_debug = true
-    magick_vs = true
   else
     summary('System', 'windows mingw')
   endif
@@ -119,11 +277,10 @@ else
 endif
 
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(
+  warning_options_dep = declare_dependency(
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
       '-Wno-attributes',
-      '-Wno-error=psabi', # refer to PR#9
       # crow
       '-Wno-error=type-limits',
       # inside fmt (fmtlib/fmt#3354)
@@ -133,29 +290,29 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
       '-Wno-error=dangling-reference',
       # inside opencv
       '-Wno-error=deprecated-enum-enum-conversion',
-      # inside magick
-      '-Wno-error=ignored-qualifiers',
       # inside msgpack
       '-Wno-error=maybe-uninitialized',
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '-Wno-inline',
     '--system-header-prefix=msgpack.hpp',
+    '--system-header-prefix=fmt/',
     '--system-header-prefix=spdlog/',
     '--system-header-prefix=curl/',
     '--system-header-prefix=crow.h',
-    '--system-header-prefix=Magick++.h',
+    '--system-header-prefix=vips/',
     '--system-header-prefix=opencv2/',
     '--system-header-prefix=utf8.h',
     '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '/wd4251',
     '/wd4275',
     '/wd4661',
+    '/wd4706', # external:anglebracketしているのにvipsのヘッダーから出る
     '/external:anglebrackets',
     '/external:W0',
     '/utf-8',
@@ -165,8 +322,16 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = []
+  warning_options_dep = []
 endif
+wabi_options_dep = declare_dependency(
+  compile_args: cxx.get_supported_arguments(
+    # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+    '-fabi-version=11',
+    '-Wabi',
+    '-Wpsabi',
+  ),
+)
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
 conf_data.set10('WEBCFACE_SYSTEM_DLLEXPORT', webcface_system_dllexport)
@@ -345,59 +510,43 @@ build_cv_examples = get_option('cv_examples').enabled() \
 build_tests = get_option('tests').enabled() \
   or (get_option('tests').allowed() and not meson.is_subproject())
 
-msgpack_cxx_dep = dependency('msgpack-cxx',
-  default_options: [
-    'boost=disabled',
-    'tests=disabled',
-    'std_variant=false', # msvcでなんかエラーになる
-  ],
-)
-spdlog_link_depends = []
-if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('spdlog')
-  spdlog_dep = dependency('spdlog', required: false)
+msgpack_cxx_dep = dependency('msgpack-cxx')
+fmt_dep = dependency('fmt', version: '>=11')
+if fmt_dep.type_name() == 'internal'
+  spdlog_dep = subproject('spdlog').get_variable('spdlog_dep')
 else
-  spdlog_dep = dependency('', required: false)
-endif
-if not spdlog_dep.found()
-  spdlog_proj = subproject('spdlog',
-    default_options: [
-      'tests=disabled',
-      'compile_library=true',
-      'default_library=static',
-      'external_fmt=disabled',
-      'std_format=disabled',
-    ],
-  )
-  spdlog_dep = spdlog_proj.get_variable('spdlog_dep')
-  spdlog_lib = spdlog_proj.get_variable('spdlog_lib', dependency('', required: false))  # disabler() は使えない
-  # webcfaceがsharedで、spdlogがstaticの場合にのみオプションを指定
-  if get_option('default_library') == 'shared' and spdlog_lib.found() and spdlog_lib.full_path().endswith('.a')
-    if webcface_system_exclude_libs
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep],
-        link_args: ['-Wl,--exclude-libs,' + fs.name(spdlog_lib.full_path())],
-      )
-    elif webcface_system_hidden_l
-      spdlog_link_depends += spdlog_lib
-      spdlog_dep = declare_dependency(
-        dependencies: [spdlog_dep.partial_dependency(compile_args: true, includes: true)],
-        link_args: [
-          '-L' + fs.parent(spdlog_lib.full_path()),
-          '-Wl,-hidden-l' + spdlog_lib.name(),
-        ],
-      )
-    endif
-  endif
+  spdlog_dep = dependency('spdlog')
 endif
 utf8cpp_dep = dependency('utf8cpp')
 
-if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('libcurl')
-  curl_dep = dependency('libcurl', required: false)
-else
-  curl_dep = dependency('', required: false)
-endif
-if curl_dep.found()
-  curl_has_ws_support = cxx.run('''
+# curlはvisibilityがhiddenになっている
+curl_dep = dependency('libcurl', version: ['>=7.86.0', '<8.10'])
+# curl 8.10〜8.12 はバグがある: https://github.com/curl/curl/issues/15865
+if curl_dep.type_name() != 'internal'
+  curl_dep_version = curl_dep.version().split('-')[0].split('.')
+  curl_runtime_version_test = cxx.run('''
+    #include <curl/curl.h>
+    #include <cassert>
+    #include <iostream>
+    int main() {
+      auto info = curl_version_info(CURLVERSION_NOW);
+      std::cerr << "version_num = " << std::hex << info->version_num << std::endl;
+      assert(((info->version_num >> 16) & 0xff) == ''' + curl_dep_version[0] + ''');
+      assert(((info->version_num >> 8) & 0xff) == ''' + curl_dep_version[1] + ''');
+      assert(((info->version_num >> 0) & 0xff) == ''' + curl_dep_version[2] + ''');
+    }
+    ''',
+    dependencies: [curl_dep],
+    name: 'curl_runtime_version_test',
+  )
+  assert(curl_runtime_version_test.compiled())
+  if curl_runtime_version_test.returncode() != 0
+    error('Could not run test using libcurl. ' + \
+      'Check the install_name, PATH, LD_LIBRARY_PATH or DYLD_LIBRARY_PATH, ' + \
+      'or if you are unsure set "--force-fallback-for=libcurl" to build libcurl from source.',
+    )
+  endif
+  curl_ws_support_test = cxx.run('''
     #include <curl/curl.h>
     #include <cassert>
     #include <cstddef>
@@ -408,78 +557,22 @@ if curl_dep.found()
     }
     ''',
     dependencies: [curl_dep],
-    name: 'curl_has_ws_support',
+    name: 'curl_ws_support_test',
   )
-  if not curl_has_ws_support.compiled() or curl_has_ws_support.returncode() != 0
-    error('The installed curl has no websocket support, so WebCFace cannot use it.\n' + \
-      'Set "-Dforce_fallback_for=[\'libcurl\']".',
+  assert(curl_ws_support_test.compiled())
+  if curl_ws_support_test.returncode() != 0
+    error('The installed curl has no websocket support, so WebCFace cannot use it. ' + \
+      'Set "--force-fallback-for=libcurl".',
     )
   endif
-else
-  # curlはvisibilityがhiddenになっている
-  curl_dep = subproject('curl',
-    default_options: [
-      'warning_level=0',
-      'werror=false',
-      'websockets=enabled',
-      'default_library=static',
-      'tool=disabled',
-      'tests=disabled',
-      'unittests=disabled',
-      'bindlocal=disabled',
-      'brotli=disabled',
-      'doh=disabled',
-      'form-api=disabled',
-      'getoptions=disabled',
-      'gsasl=disabled',
-      'http2=disabled',
-      'ipv6=disabled',
-      'libcurl-option=disabled',
-      'libz=disabled',
-      'netrc=disabled',
-      'parsedate=disabled',
-      'progress-meter=disabled',
-      'psl=disabled',
-      'sspi=disabled',
-      'zstd=disabled',
-      'gss-api=disabled',
-      'idn=disabled',
-      'ntlm=disabled',
-      'ssh=disabled',
-      'ssl=disabled',
-      'tls-srp=disabled',
-      'openssl=disabled',
-      'schannel=disabled',
-      'secure-transport=disabled',
-      'dict=disabled',
-      'file=disabled',
-      'ftp=disabled',
-      'gopher=disabled',
-      'imap=disabled',
-      'ldap=disabled',
-      'ldaps=disabled',
-      'mqtt=disabled',
-      'pop3=disabled',
-      'rtmp=disabled',
-      'rtsp=disabled',
-      'smb=disabled',
-      'smtp=disabled',
-      'telnet=disabled',
-      'tftp=disabled',
-    ],
-  ).get_variable('curl_dep')
 endif
 
 if build_server
   cli11_dep = dependency('cli11', 'CLI11')
 
-  if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Crow')
-    crow_dep = dependency('Crow', required: false)
-  else
-    crow_dep = dependency('', required: false)
-  endif
-  if crow_dep.found()
-    crow_has_unix_socket_support = cxx.compiles('''
+  crow_dep = dependency('Crow')
+  if crow_dep.type_name() != 'internal'
+    crow_unix_socket_support_test = cxx.compiles('''
       #include <crow.h>
       int main(){
           crow::SimpleApp app;
@@ -490,190 +583,18 @@ if build_server
       }
       ''',
       dependencies: [crow_dep],
-      name: 'crow_has_unix_socket_support',
+      name: 'crow_unix_socket_support_test',
     )
-    if not crow_has_unix_socket_support
-      error('The installed Crow has no unix socket support, so WebCFace cannot use it.\n' + \
-        'Set "-Dforce_fallback_for=[\'Crow\']".',
+    if not crow_unix_socket_support_test
+      error('The installed Crow has no unix socket support, so WebCFace cannot use it. ' + \
+        'Set "--force-fallback-for=Crow".',
       )
     endif
-  else
-    crow_dep = subproject('crow').get_variable('crow_dep')
   endif
 
-  if magick_vs
-    if debug_crt
-      magick_libtype = 'DB'
-    else
-      magick_libtype = 'RL'
-    endif
-    magickpp_dep = dependency('', required: false)
-
-    if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
-      magick = find_program('magick',
-        required: get_option('wrap_mode') == 'nofallback',
-      )
-      if magick.found()
-        find_magick = run_command(py,
-          meson.project_source_root() / 'scripts' / 'magick_msvc_find.py',
-          fs.parent(magick.full_path()),
-          magick_libtype,
-          check: true,
-        ).stdout().strip().split('\n')
-        if find_magick[0] == '' or find_magick[1] == '' or find_magick.length() < 3
-          warning('ImageMagick found but its ' + \
-            (debug_crt ? 'debug' : 'release') + \
-            ' libraries and headers was not found.',
-          )
-        else
-          magick_ver = run_command('magick', '-version', check: false)
-          if magick_ver.returncode() != 0
-            error('Failed to get version information from installed ImageMagick.\n' + \
-              'Set "-Dforce_fallback_for=[\'Magick++\']".\n\n' + \
-              'output:\n' + \
-              magick_ver.stderr(),
-            )
-          elif magick_ver.stdout().contains('OpenMP')
-            error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
-              'Set "-Dforce_fallback_for=[\'Magick++\']".',
-            )
-          endif
-
-          magick_libs = []
-          foreach lib: find_magick
-            if lib.endswith('_.lib')
-              magick_libs += cxx.find_library(
-                lib.strip('.lib'),
-                dirs: [find_magick[1]],
-              )
-            endif
-          endforeach
-          magickpp_dep = declare_dependency(
-            include_directories: include_directories(find_magick[0]),
-            dependencies: magick_libs,
-          )
-        endif
-      endif
-    endif
-
-    if not magickpp_dep.found()
-      message('running magick_msvc_configure.py...')
-      magick_script_args = [
-        meson.project_source_root(),
-        meson.current_build_dir(),
-        magick_libtype,
-        cxx.version(),
-        host_machine.cpu_family(),
-      ]
-      config_magick = run_command(py,
-        meson.project_source_root() / 'scripts' / 'magick_msvc_configure.py',
-        magick_script_args,
-        check: false,
-      )
-      if config_magick.returncode() != 0
-        error('Failed to configure ImageMagick-Windows\n\n' + \
-          'stdout:\n' + \
-          config_magick.stdout() + \
-          '\nstderr:\n' + \
-          config_magick.stderr(),
-        )
-      endif
-      find_magick = run_command(py,
-        meson.project_source_root() / 'scripts' / 'magick_msvc_dep.py',
-        magick_script_args,
-        check: true,
-      ).stdout().strip().split('\n')
-      magick_libs = []
-      foreach lib: find_magick
-        if lib.endswith('_.lib')
-          # must not contain a path segment.
-          magick_libs += lib
-        endif
-      endforeach
-      magickpp_dep = declare_dependency(
-        compile_args: ['-DSTATIC_MAGICK'],
-        include_directories: include_directories(find_magick[0].split(',')),
-        sources: custom_target('imagemagick-windows',
-          build_always_stale: true,
-          command: [py,
-            meson.project_source_root() / 'scripts' / 'magick_msvc_build.py',
-            magick_script_args,
-          ],
-          console: true,
-          output: magick_libs,
-        ),
-      )
-    endif
-
-  else
-    if get_option('wrap_mode') != 'forcefallback' and not get_option('force_fallback_for').contains('Magick++')
-      magickpp_dep = dependency('Magick++', method: 'pkg-config', required: false)
-    else
-      magickpp_dep = dependency('', required: false)
-    endif
-    if magickpp_dep.found()
-      pkg_config = find_program('pkg-config')
-      magickcore_cflags = run_command(
-        pkg_config, '--cflags', 'MagickCore',
-        env: {
-          'PKG_CONFIG_PATH': get_option('pkg_config_path'),
-        },
-        check: true,
-      )
-      if magickcore_cflags.stdout().contains('fopenmp')
-        error('The installed ImageMagick uses openmp, so WebCFace cannot use it.\n' + \
-          'Set "-Dforce_fallback_for=[\'Magick++\']".',
-        )
-      endif
-    else
-      dependency('libjpeg',
-        default_options: [
-          'default_library=static',
-          'jpeg-turbo=disabled',
-          'tests=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('zlib',
-        default_options: [
-          'default_library=static',
-          'tests=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('libpng',
-        default_options: [
-          'default_library=static',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      dependency('libwebp',
-        default_options: [
-          'default_library=static',
-          'cwebp=disabled',
-          'dwebp=disabled',
-          'webpinfo=disabled',
-          'webpmux=disabled',
-          'warning_level=0',
-          'werror=false',
-        ]
-      )
-      magickpp_dep = subproject('imagemagick').get_variable('magickpp_dep')
-    endif
-  endif
-  # if magickpp_dep.version() == 'unknown' or magickpp_dep.version() == 'undefined' or magickpp_dep.version().version_compare('>=7.0.0')
-  # msvcでなぜか version() = '2.0.0' が返るので一旦チェックを無効にしている
-  # (どうせver6以下でビルドすることはほぼない)
-  magickpp_dep = declare_dependency(
-    compile_args: ['-DWEBCFACE_MAGICK_VER7'],
-    dependencies: [magickpp_dep],
-  )
-  # endif
+  libvips_cpp_dep = dependency('vips-cpp')
 else
-  magickpp_dep = disabler()
+  libvips_cpp_dep = disabler()
 endif
 
 if build_examples and build_cv_examples
@@ -770,9 +691,6 @@ webcface_lib = library(webcface_lib_name,
     utf8cpp_dep,
     spdlog_dep,
     curl_dep,
-  ],
-  link_depends: [
-    spdlog_link_depends,
   ],
   version: meson.project_version(),
   soversion: webcface_abi_major,

@@ -106,12 +106,14 @@ class WEBCFACE_DLL Canvas3DComponent {
      * \brief RobotModelを取得
      *
      */
-    std::optional<RobotModel> robotModel() const;
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    std::optional<RobotModel_> robotModel() const;
     /*!
      * \brief Plotを取得
      * \since ver2.6
      */
-    std::optional<Plot> plot() const;
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::optional<Plot_> plot() const;
     /*!
      * \brief Plotの表示サイズ
      * \since ver2.6
@@ -123,6 +125,8 @@ class WEBCFACE_DLL Canvas3DComponent {
      */
     double scaleY() const;
 };
+extern template std::optional<RobotModel>
+Canvas3DComponent::robotModel<RobotModel, true>() const;
 
 /*!
  * \brief Canvas3Dを構築するときに使う一時的なCanvas3DComponent

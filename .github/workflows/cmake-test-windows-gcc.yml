@@ -34,7 +34,7 @@ jobs:
 
     - name: Install dependencies
       if: matrix.dep == 'pacman'
-      run: pacman -S --noconfirm mingw-w64-ucrt-x86_64-msgpack-cxx mingw-w64-ucrt-x86_64-spdlog mingw-w64-ucrt-x86_64-asio mingw-w64-ucrt-x86_64-cli11 mingw-w64-ucrt-x86_64-utf8cpp
+      run: pacman -S --noconfirm mingw-w64-ucrt-x86_64-msgpack-cxx mingw-w64-ucrt-x86_64-spdlog mingw-w64-ucrt-x86_64-asio mingw-w64-ucrt-x86_64-cli11 mingw-w64-ucrt-x86_64-utf8cpp mingw-w64-ucrt-x86_64-libvips
       # msgpack-cxx はmingw64だけ無い
 
     - name: Setup Meson
@@ -44,15 +44,15 @@ jobs:
       run: >
         meson setup build
         --buildtype=debug
-        $([[ ${{matrix.dep}} = pacman ]] && echo -Dwrap_mode=default)
+        $([[ ${{matrix.dep}} != pacman ]] && echo -Dwrap_mode=forcefallback)
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -m '${{github.workspace}}/build/install')
-        "-Dforce_fallback_for=['libcurl']"
+        --force-fallback-for=libcurl
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build --print-errorlog
+      run: meson test -C build --print-errorlog --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'

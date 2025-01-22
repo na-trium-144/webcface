@@ -199,7 +199,8 @@ class WEBCFACE_DLL ViewComponent {
      * \brief クリック時に実行される関数を取得
      *
      */
-    std::optional<Func> onClick() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onClick() const;
     /*!
      * \brief inputの値の変化時に実行される関数を取得
      * \since ver1.10
@@ -210,7 +211,8 @@ class WEBCFACE_DLL ViewComponent {
      * 内部データはonClickと共通
      *
      */
-    std::optional<Func> onChange() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onChange() const;
     /*!
      * \brief inputの現在の値を取得
      * \since ver1.10
@@ -220,7 +222,8 @@ class WEBCFACE_DLL ViewComponent {
      * * ver2.0〜 戻り値をText型からVariant型に変更
      *
      */
-    std::optional<Variant> bind() const;
+    template <WEBCFACE_COMPLETE(Variant)>
+    std::optional<Variant_> bind() const;
 
     /*!
      * \brief 文字色を取得
@@ -257,7 +260,23 @@ class WEBCFACE_DLL ViewComponent {
      *
      */
     std::vector<ValAdaptor> option() const;
+    /*!
+     * \brief 要素の幅を取得する。
+     * \since ver2.6
+     */
+    int width() const;
+    /*!
+     * \brief 要素の高さを取得する。
+     * \since ver2.6
+     */
+    int height() const;
 };
+extern template std::optional<Func>
+ViewComponent::onClick<Func, true>() const;
+extern template std::optional<Func>
+ViewComponent::onChange<Func, true>() const;
+extern template std::optional<Variant>
+ViewComponent::bind<Variant, true>() const;
 
 /*!
  * \brief Viewを構築するときに使う一時的なViewComponent
@@ -588,6 +607,37 @@ class WEBCFACE_DLL TemporalViewComponent {
      */
     TemporalViewComponent &&option(std::vector<ValAdaptor> option) && {
         this->option(std::move(option));
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief 要素の幅を設定する。
+     * \since ver2.6
+     *
+     * * 0または負の値の場合どのように表示されるかは実装依存
+     */
+    TemporalViewComponent &width(int width) &;
+    /*!
+     * \brief 要素の幅を設定する。
+     * \since ver2.6
+     */
+    TemporalViewComponent &&width(int width) && {
+        this->width(width);
+        return std::move(*this);
+    }
+    /*!
+     * \brief 要素の高さを設定する。
+     * \since ver2.6
+     *
+     * * 0または負の値の場合どのように表示されるかは実装依存
+     */
+    TemporalViewComponent &height(int height) &;
+    /*!
+     * \brief 要素の高さを設定する。
+     * \since ver2.6
+     */
+    TemporalViewComponent &&height(int height) && {
+        this->height(height);
         return std::move(*this);
     }
 };

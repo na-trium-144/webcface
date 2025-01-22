@@ -22,11 +22,20 @@
 
 // clang-format off
 /*
-WEBCFACE_DLL: 関数の宣言 (msvc, mingw, unix)
-WEBCFACE_DLL_TEMPLATE: テンプレートクラスの定義 (unix)
-WEBCFACE_DLL_INSTANCE_DECL: 明示的実体化の宣言 (msvc_import, mingw) (unixでは消す:gcc-10でエラー)
-WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
-
+* 関数の宣言 (msvc, mingw, unix)
+    WEBCFACE_DLL return_type WEBCFACE_CALL func_name(args...);
+* クラスの定義 (msvc, mingw, unix)
+    class WEBCFACE_DLL class_name {...};
+* テンプレートクラスの定義 (unix)
+    template <...> class WEBCFACE_DLL_TEMPLATE class_name {...};
+* テンプレートクラスの明示的実体化の宣言 (msvc_import, mingw) (unixでは消す:gcc-10でエラー)
+    extern template class WEBCFACE_DLL_INSTANCE_DECL class_name<...>;
+* テンプレートクラスの明示的実体化の定義 (msvc_export, unix)
+    template class WEBCFACE_DLL_INSTANCE_DEF class_name<...>;
+* テンプレートメンバ関数の明示的実体化の宣言
+    extern template return_type class_name::func_name<...>(args...);
+* テンプレートメンバ関数の明示的実体化の定義
+    template WEBCFACE_DLL return_type class_name::func_name<...>(args...);
 */
 // clang-format on
 
@@ -77,12 +86,12 @@ WEBCFACE_DLL_INSTANCE_DEF: 明示的実体化の定義 (msvc_export, unix)
 // clang-format off
 /*
 calling convention
-
-通常の関数またはstaticメンバ関数(dllexportしているもの)につける。
-メンバ関数はthiscallなのでつけない
-std::function<>の中には要る(ただし型推論ができたりできなかったりする)
-ただしcygwinでstd::functionの中にcdecl宣言するとmanglingがおかしなことになった(なぜ?)
-関数ポインタには要る (typedef return_type (WEBCFACE_CALL *name)(args...); )
+* 通常の関数またはstaticメンバ関数(dllexportしているもの)につける。
+* メンバ関数はthiscallなのでつけない
+* std::function<>の中には要る(ただし型推論ができたりできなかったりする)
+    * ただしcygwinでstd::functionの中にcdecl宣言するとmanglingがおかしなことになった(なぜ?)ので、
+    std::function<>の中では WEBCFACE_CALL_FP をつける(cygwinで消える)
+* 関数ポインタには要る (typedef return_type (WEBCFACE_CALL *name)(args...); )
 
 */
 // clang-format on
@@ -96,6 +105,11 @@ std::function<>の中には要る(ただし型推論ができたりできなか�
 #else // !DLLEXPORT
 #define WEBCFACE_CALL
 #define WEBCFACE_CALL_FP
+#endif
+
+// gccかどうかのチェック: webcfaceを使う側でも必要なので、コンパイル時にチェックする
+#if defined(__GNUC__) && !defined(__clang__)
+#define WEBCFACE_COMPILER_IS_GCC
 #endif
 
 // doxygenを生成するときは namespace webcface だけにする

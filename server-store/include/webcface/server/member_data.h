@@ -133,14 +133,7 @@ struct MemberData {
     explicit MemberData(ServerStorage *store, const wsConnPtr &con,
                         std::string_view remote_addr,
                         const spdlog::sink_ptr &sink,
-                        spdlog::level::level_enum level)
-        : sink(sink), logger_level(level), store(store), con(con),
-          remote_addr(remote_addr) {
-        this->member_id = ++last_member_id;
-        logger = std::make_shared<spdlog::logger>(
-            std::to_string(member_id) + "_(unknown client)", this->sink);
-        logger->set_level(this->logger_level);
-    }
+                        spdlog::level::level_enum level);
     ~MemberData() { onClose(); }
 
     void onConnect();
@@ -158,10 +151,16 @@ struct MemberData {
     int send_len = 0;
     void send();
     void send(const std::string &msg);
+    template <typename T>
+    void send(const T &obj) {
+        logger->debug("-> sending {}", obj);
+        send(message::packSingle(obj));
+    }
 
     template <typename T>
-    void pack(const T &data) {
-        message::pack(send_buffer, send_len, data);
+    void pack(const T &obj) {
+        logger->debug("-> sending {}", obj);
+        message::pack(send_buffer, send_len, obj);
     }
 };
 } // namespace server

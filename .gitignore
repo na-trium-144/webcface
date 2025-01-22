@@ -9,5 +9,10 @@ version.rc
 /Testing/
 /.cache/
 /subprojects/*
-!/subprojects/*.wrap
 !/subprojects/packagefiles/
+!/subprojects/*.wrap
+# from glib:
+/subprojects/gvdb.wrap
+/subprojects/libffi.wrap
+/subprojects/pcre2.wrap
+/subprojects/proxy-libintl.wrap

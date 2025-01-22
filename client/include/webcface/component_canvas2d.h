@@ -132,12 +132,14 @@ class WEBCFACE_DLL Canvas2DComponent {
      * \brief クリック時に実行される関数を取得
      * \since ver1.9
      */
-    std::optional<Func> onClick() const;
+    template <WEBCFACE_COMPLETE(Func)>
+    std::optional<Func_> onClick() const;
     /*!
      * \brief Plotを取得
      * \since ver2.6
      */
-    std::optional<Plot> plot() const;
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::optional<Plot_> plot() const;
     /*!
      * \brief Plotの表示サイズ
      * \since ver2.6
@@ -149,6 +151,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      */
     double scaleY() const;
 };
+extern template std::optional<Func> Canvas2DComponent::onClick<Func, true>() const;
 
 class WEBCFACE_DLL TemporalCanvas2DComponent {
     std::unique_ptr<internal::TemporalCanvas2DComponentData> msg_data;

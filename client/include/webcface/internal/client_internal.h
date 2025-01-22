@@ -8,7 +8,6 @@
 #include <atomic>
 #include <unordered_map>
 #include <cstdlib>
-#include <spdlog/logger.h>
 #include "webcface/common/encoding.h"
 #include "webcface/common/internal/message/image.h"
 #include "webcface/field.h"
@@ -19,11 +18,24 @@
 #include "data_store2.h"
 #include "func_internal.h"
 #include "webcface/image_frame.h"
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
+#include <spdlog/logger.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 WEBCFACE_NS_BEGIN
 
 class Log;
 class Variant;
+
+namespace message {
+template <typename T>
+std::string packSingle(const T &obj);
+}
 
 namespace internal {
 
@@ -55,6 +67,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     void *current_curl_handle = nullptr;
     std::string current_curl_path;
     std::string current_ws_buf = "";
+    std::shared_ptr<void> curl_initializer;
+    std::vector<char> curl_err_buffer;
 
     /*!
      * \brief websocket接続、通信するスレッド
@@ -182,7 +196,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
             : std::unique_lock<std::mutex>(data->ws_m), data(data) {}
         explicit ScopedWsLock(const std::shared_ptr<ClientData> &data)
             : ScopedWsLock(data.get()) {}
-        auto &getData() {
+        WsMutexedData &getData() {
             assert(this->owns_lock());
             return data->ws_data;
         }
@@ -253,7 +267,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
             : std::unique_lock<std::mutex>(data->sync_m), data(data) {}
         explicit ScopedSyncLock(const std::shared_ptr<ClientData> &data)
             : ScopedSyncLock(data.get()) {}
-        auto &getData() {
+        SyncMutexedData &getData() {
             assert(this->owns_lock());
             return data->sync_data;
         }
@@ -265,10 +279,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * Call, Pingなど
      */
-    bool messagePushOnline(std::string &&msg) {
+    template <typename T>
+    bool messagePushOnline(const T &obj) {
         ScopedWsLock lock_ws(this);
         if (lock_ws.getData().connected) {
-            lock_ws.getData().sync_queue.push(std::move(msg));
+            this->logger_internal->debug("-> queued to send: {}", obj);
+            lock_ws.getData().sync_queue.push(message::packSingle(obj));
             this->ws_cond.notify_all();
             return true;
         } else {
@@ -281,15 +297,17 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * Reqはsync_first時にすべて含まれるので。
      */
-    bool messagePushReq(std::string &&msg) {
+    template <typename T>
+    bool messagePushReq(const T &obj) {
         bool has_sync_first;
         {
             ScopedSyncLock lock_s(this);
             has_sync_first = (lock_s.getData().sync_first != std::nullopt);
         }
         if (has_sync_first) {
+            this->logger_internal->debug("-> queued to send: {}", obj);
             ScopedWsLock lock_ws(this);
-            lock_ws.getData().sync_queue.push(std::move(msg));
+            lock_ws.getData().sync_queue.push(message::packSingle(obj));
             this->ws_cond.notify_all();
             return true;
         } else {
@@ -301,12 +319,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      *
      * syncで確実に送信するデータに使う。
      */
-    void messagePushAlways(std::string &&msg) {
+    template <typename T>
+    void messagePushAlways(const T &obj) {
+        this->logger_internal->debug("-> queued to send: {}", obj);
         ScopedWsLock lock_ws(this);
-        lock_ws.getData().sync_queue.push(std::move(msg));
+        lock_ws.getData().sync_queue.push(message::packSingle(obj));
         this->ws_cond.notify_all();
     }
     void messagePushAlways(SyncDataSnapshot &&msg) {
+        this->logger_internal->debug("-> sync data queued");
         ScopedWsLock lock_ws(this);
         lock_ws.getData().sync_queue.push(std::move(msg));
         this->ws_cond.notify_all();

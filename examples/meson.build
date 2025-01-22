@@ -1,31 +1,32 @@
 example_src = [
-  {'src': 'value.cc', 'magick': false, 'cv': false},
-  {'src': 'func.cc', 'magick': false, 'cv': false},
-  {'src': 'log.cc', 'magick': false, 'cv': false},
-  {'src': 'view.cc', 'magick': false, 'cv': false},
-  {'src': 'canvas2d.cc', 'magick': false, 'cv': false},
-  {'src': 'canvas3d.cc', 'magick': false, 'cv': false},
-  {'src': 'recv.cc', 'magick': false, 'cv': false},
-  {'src': 'c_example.c', 'magick': false, 'cv': false},
-  {'src': 'benchmark.cc', 'magick': false, 'cv': false},
-  {'src': 'image-send.cc', 'magick': true, 'cv': false},
-  {'src': 'image-recv.cc', 'magick': true, 'cv': false},
-  {'src': 'cv-send.cc', 'magick': false, 'cv': true},
-  {'src': 'cv-recv.cc', 'magick': false, 'cv': true},
-  {'src': 'tutorial-vis.cc', 'magick': false, 'cv': false},
-  {'src': 'tutorial-send.cc', 'magick': false, 'cv': false},
-  {'src': 'tutorial-recv.cc', 'magick': false, 'cv': false},
+  {'src': 'value.cc', 'libvips': false, 'cv': false},
+  {'src': 'func.cc', 'libvips': false, 'cv': false},
+  {'src': 'log.cc', 'libvips': false, 'cv': false},
+  {'src': 'view.cc', 'libvips': false, 'cv': false},
+  {'src': 'canvas2d.cc', 'libvips': false, 'cv': false},
+  {'src': 'canvas3d.cc', 'libvips': false, 'cv': false},
+  {'src': 'recv.cc', 'libvips': false, 'cv': false},
+  {'src': 'c_example.c', 'libvips': false, 'cv': false},
+  {'src': 'benchmark.cc', 'libvips': false, 'cv': false},
+  {'src': 'image-send.cc', 'libvips': true, 'cv': false},
+  {'src': 'image-recv.cc', 'libvips': true, 'cv': false},
+  {'src': 'cv-send.cc', 'libvips': false, 'cv': true},
+  {'src': 'cv-recv.cc', 'libvips': false, 'cv': true},
+  {'src': 'tutorial-vis.cc', 'libvips': false, 'cv': false},
+  {'src': 'tutorial-send.cc', 'libvips': false, 'cv': false},
+  {'src': 'tutorial-recv.cc', 'libvips': false, 'cv': false},
 ]
 
 foreach e: example_src
   target = fs.replace_suffix(e['src'], '')
   sources = [e['src']]
   dependencies = [
-    warning_options,
+    warning_options_dep,
     webcface_dep,
+    fmt_dep,
   ]
-  if e['magick']
-    dependencies += magickpp_dep
+  if e['libvips']
+    dependencies += libvips_cpp_dep
   endif
   if e['cv']
     dependencies += [

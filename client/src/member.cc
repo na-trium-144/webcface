@@ -13,7 +13,12 @@
 WEBCFACE_NS_BEGIN
 
 // ver2.4〜: nameを省略した場合 "default" として送信される。
-Log Member::log() const { return Log{*this, message::Log::defaultLogName()}; }
+template <typename T, bool>
+T Member::log() const {
+    return Log{*this, message::Log::defaultLogName()};
+}
+template WEBCFACE_DLL Log Member::log<Log, true>() const;
+
 
 const Member &Member::onValueEntry(std::function<void(Value)> callback) const {
     std::lock_guard lock(dataLock()->event_m);

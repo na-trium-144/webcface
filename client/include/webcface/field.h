@@ -9,6 +9,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "webcface/common/encoding.h"
+#include "webcface/complete.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -103,7 +104,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief Memberを返す
      *
      */
-    Member member() const;
+    template <WEBCFACE_COMPLETE(Member)>
+    Member_ member() const {
+        return *this;
+    }
     /*!
      * \brief field名を返す
      *
@@ -171,49 +175,205 @@ struct WEBCFACE_DLL Field : public FieldBase {
      */
     Field operator[](int index) const { return child(index); }
 
-    Value value(std::string_view field = "") const;
-    Value value(std::wstring_view field) const;
-    Text text(std::string_view field = "") const;
-    Text text(std::wstring_view field) const;
-    RobotModel robotModel(std::string_view field = "") const;
-    RobotModel robotModel(std::wstring_view field) const;
-    Plot plot(std::string_view field = "") const;
-    Plot plot(std::wstring_view field) const;
-    Image image(std::string_view field = "") const;
-    Image image(std::wstring_view field) const;
-    Func func(std::string_view field = "") const;
-    Func func(std::wstring_view field) const;
-    FuncListener funcListener(std::string_view field) const;
-    FuncListener funcListener(std::wstring_view field) const;
-    View view(std::string_view field = "") const;
-    View view(std::wstring_view field) const;
-    Canvas3D canvas3D(std::string_view field = "") const;
-    Canvas3D canvas3D(std::wstring_view field) const;
-    Canvas2D canvas2D(std::string_view field = "") const;
-    Canvas2D canvas2D(std::wstring_view field) const;
+    template <WEBCFACE_COMPLETE(Value)>
+    Value_ value(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Value)>
+    Value_ value(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Text)>
+    Text_ text(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Text)>
+    Text_ text(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    RobotModel_ robotModel(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    RobotModel_ robotModel(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Plot)>
+    Plot_ image(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Plot)>
+    Plot_ image(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Image)>
+    Image_ image(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Image)>
+    Image_ image(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Func)>
+    Func_ func(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Func)>
+    Func_ func(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(FuncListener)>
+    FuncListener_ funcListener(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(FuncListener)>
+    FuncListener_ funcListener(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(View)>
+    View_ view(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(View)>
+    View_ view(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas3D)>
+    Canvas3D_ canvas3D(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas3D)>
+    Canvas3D_ canvas3D(std::wstring_view field) const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas2D)>
+    Canvas2D_ canvas2D(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Canvas2D)>
+    Canvas2D_ canvas2D(std::wstring_view field) const {
+        return child(field);
+    }
     /*!
      * \since ver2.4
      */
-    Log log(std::string_view field = "") const;
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::string_view field = "") const {
+        return child(field);
+    }
     /*!
      * \since ver2.4
      */
-    Log log(std::wstring_view field) const;
+    template <WEBCFACE_COMPLETE(Log)>
+    Log_ log(std::wstring_view field) const {
+        return child(field);
+    }
 
 
-    std::vector<Value> valueEntries() const;
-    std::vector<Text> textEntries() const;
-    std::vector<RobotModel> robotModelEntries() const;
-    std::vector<Plot> plotEntries() const;
-    std::vector<Func> funcEntries() const;
-    std::vector<View> viewEntries() const;
-    std::vector<Canvas3D> canvas3DEntries() const;
-    std::vector<Canvas2D> canvas2DEntries() const;
-    std::vector<Image> imageEntries() const;
     /*!
-     * \since ver2.4
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * childrenRecurse() と異なり、
+     * 名前にさらにピリオドが含まれる場合はその前までの名前を返す。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa childrenRecurse(), hasChildren()
      */
-    std::vector<Log> logEntries() const;
+    std::vector<Field> children() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa children(), hasChildren()
+     */
+    std::vector<Field> childrenRecurse() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
+     * \since ver2.6
+     * \sa children(), childrenRecurse()
+     */
+    bool hasChildren() const;
+
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Value)>
+    std::vector<Value_> valueEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Text)>
+    std::vector<Text_> textEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(RobotModel)>
+    std::vector<RobotModel_> robotModelEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているplotのリストを返す。
+     * \since ver2.8
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::vector<Plot_> funcEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Func)>
+    std::vector<Func_> funcEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(View)>
+    std::vector<View_> viewEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Canvas2D)>
+    std::vector<Canvas2D_> canvas2DEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas3Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Canvas3D)>
+    std::vector<Canvas3D_> canvas3DEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Image)>
+    std::vector<Image_> imageEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。
+     * \since ver2.4
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Log)>
+    std::vector<Log_> logEntries() const;
 
     /*!
      * \brief memberがselfならtrue
@@ -226,4 +386,18 @@ struct WEBCFACE_DLL Field : public FieldBase {
     bool operator==(const Field &other) const;
     bool operator!=(const Field &other) const { return !(*this == other); }
 };
+
+extern template std::vector<Value> Field::valueEntries<Value, true>() const;
+extern template std::vector<Text> Field::textEntries<Text, true>() const;
+extern template std::vector<RobotModel>
+Field::robotModelEntries<RobotModel, true>() const;
+extern template std::vector<Func> Field::funcEntries<Func, true>() const;
+extern template std::vector<View> Field::viewEntries<View, true>() const;
+extern template std::vector<Canvas2D>
+Field::canvas2DEntries<Canvas2D, true>() const;
+extern template std::vector<Canvas3D>
+Field::canvas3DEntries<Canvas3D, true>() const;
+extern template std::vector<Image> Field::imageEntries<Image, true>() const;
+extern template std::vector<Log> Field::logEntries<Log, true>() const;
+
 WEBCFACE_NS_END

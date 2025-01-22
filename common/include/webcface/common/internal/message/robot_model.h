@@ -66,5 +66,10 @@ struct Res<RobotModel>
                        MSGPACK_NVP("d", data))
 };
 
-}
+} // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::RobotModel)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::RobotModel>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::RobotModel>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::RobotModel>)
