@@ -57,8 +57,12 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     }
     /*!
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Canvas2D child(int index) const { return this->Field::child(index); }
+    [[deprecated]]
+    Canvas2D child(int index) const {
+        return this->Field::child(std::to_string(index));
+    }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -81,8 +85,12 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Canvas2D operator[](int index) const { return child(index); }
+    [[deprecated]]
+    Canvas2D operator[](int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11

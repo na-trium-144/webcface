@@ -51,16 +51,19 @@ webcface-send
     ```
 
     <span class="since-c">1.11</span>
-    valueに直接`[]` <del>(または`child()`)</del> で配列の要素アクセスが可能です。
+    valueに直接`[]` <del>(または`child()`)</del> (<span class="since-c">2.8</span> または `at()`) で配列の要素アクセスが可能です。
     また、resize() で配列を初期化し push_back() で追加する使い方もできます。
+    ただしValueにセットしたデータはsync等で自動的にリセットされることはないので、push_backとsyncを繰り返す場合は resize(0) や set({}) などで初期化してください。
     ```cpp
     wcli.value("fuga").resize(5);
     for(int i = 0; i < 5; i++){
-        wcli.value("fuga").push_back(i);
+        wcli.value("fuga")[i] = i;
+        // wcli.value("fuga").at(i) も同じ
     }
-    wcli.value("fuga")[3] = 100; // 上書き
-    // wcli.value("fuga").child(3) = 100; としても同じ
+    wcli.value("fuga").push_back(100);
     ```
+    <span class="since-c">2.8</span>
+    `[]`や`at()`は ValueElementRef 型を返すようになりました。使い方は今までと変わりません。
 
 - <b class="tab-title">C</b>
     double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW)
@@ -189,11 +192,15 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
     ```
 
     <span class="since-c">1.11</span>
-    送信時と同様、配列データはchild()または`[]`を使ってもアクセスできます。
+    送信時と同様、配列データは`[]` <del>または`child()`</del> <span class="since-c">2.8</span>または`at()` を使ってもアクセスできます。
     ```cpp
     double hoge = wcli.member("foo").value("hoge")[3].get();
     ```
 
+    <span class="since-c">2.8</span>
+    `size()` で配列データのサイズを取得できます。
+    ただし tryGet() などと同様、まだ受信していないデータに関しては0を返し、リクエストが送られます。
+    
     \warning
     * <span class="since-c">1.11</span>
     Valueオブジェクト同士を `==`, `!=` で比較するとValueが参照するデータの名前が一致するかどうかで判定されます。
