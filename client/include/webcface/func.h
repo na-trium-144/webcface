@@ -542,11 +542,23 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief member内での関数の登録順番号
      * \since ver2.8
-     * 
+     *
      * 関数の情報が存在しない場合、また送信側のクライアントが古い場合0が返る
-     * 
+     *
      */
     int index() const;
+    /*!
+     * \brief indexを変更する
+     * \since ver2.8
+     *
+     * * デフォルトではFuncがsetされた順に 1, 2, 3 ... とindexが割り振られるが、
+     * これを手動で変更することにより、
+     * WebUI等での表示順を変更することができる。
+     * * 関数をsetした後に呼ばなければならない
+     *   * set前に呼ぶと std::invalid_argument
+     *
+     */
+    const Func &setIndex(int index) const;
 
     /*!
      * \brief 戻り値の型を返す
@@ -566,14 +578,14 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 引数の情報を更新する
      *
-     * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
-     *
-     * 関数のセットの後に呼ばなければならない(セット前に呼ぶと
-     * std::invalid_argument) (例えば Func(...).set(...).setArgs({...}) )
-     * また、関数をセットしたあと cli.sync()
+     * * setArgsで渡された引数の情報(名前など)とFuncがすでに持っている引数の情報(型など)がマージされる
+     * * 関数のsetの後に呼ばなければならない
+     *   * set前に呼ぶと std::invalid_argument
+     *   * 例えば `Func(...).set(...).setArgs({...})` のようにする
+     * * また、関数をセットしたあと cli.sync()
      * をする前に呼ばなければならない
-     * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
-     * (一致していない場合 std::invalid_argument )
+     * * 実際にセットした関数の引数の数とargsの要素数は一致していなければならない
+     *   * 一致していない場合 std::invalid_argument
      *
      */
     const Func &setArgs(const std::vector<Arg> &args) const;
@@ -581,8 +593,9 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 戻り値の型の情報を更新する
      * \since ver2.4
      *
-     * set()やsetAsync()で通常の関数をセットした場合戻り値の型は自動的に取得されるので
+     * * set()やsetAsync()で通常の関数をセットした場合戻り値の型は自動的に取得されるので
      * setReturnType() を呼ぶ必要はない。
+     * * 関数をsetする前に呼ぶと std::invalid_argument
      *
      */
     const Func &setReturnType(ValType return_type) const;

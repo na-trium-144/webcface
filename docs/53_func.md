@@ -572,6 +572,27 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 </div>
 
+### Funcの表示順 (index)
+
+WebUI(ver1.13〜)でFunc一覧を表示する際、名前順の表示とFuncが登録された順の表示を切り替えることができます。
+
+Funcが登録された順番(index)は送信側のクライアントライブラリで自動的に管理されますが、
+手動で上書きして表示順を指定することも可能です。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.8</span>
+
+    ```cpp
+    wcli.func("hoge").set(...).setIndex(1);
+    wcli.func("fuga").set(...).setIndex(3);
+    wcli.func("piyo").set(...).setIndex(2);
+    ```
+    のように、関数のsetのあとにindexを指定できます。
+
+</div>
+
 ## 関数の情報の取得
 
 関数の引数や戻り値、(<span class="since-c">2.8</span>関数が登録された順番) の情報を取得できます。
@@ -591,7 +612,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     また、戻り値型は webcface::ValType というenum型で得られます。
 
     <span class="since-c">2.8</span>
-    関数がset()などで登録された順番を Func::index() で取得できます。
+    関数がset()などで登録された順番 (もしくは送信側クライアントが上書きした値) を Func::index() で取得できます。
 
 - <b class="tab-title">JavaScript</b>
     Member.func() でFuncクラスのオブジェクトが得られ、

@@ -141,6 +141,11 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(2).type(), ValType::bool_);
     EXPECT_EQ(f.args(3).type(), ValType::string_);
 
+    // index
+    f.setIndex(100);
+    EXPECT_EQ(f.index(), 100);
+    EXPECT_EQ(func(self_name, "b").index(), 100);
+
     // 関数のパラメーター設定
     f.setArgs({Arg("0").init(1).min(0).max(2), Arg(L"1"),
                Arg("2").option({L"a", L"b", L"c"}),
@@ -162,9 +167,11 @@ TEST_F(FuncTest, funcSet) {
     ASSERT_EQ(f.args(3).option().size(), 3u);
     EXPECT_EQ(f.args(3).option()[2], "c");
     EXPECT_EQ(f.args(3).option()[2], L"c");
+    
+    EXPECT_THROW(f.setArgs({}), std::invalid_argument);
 
     // 未設定の関数呼び出しでエラー
-    EXPECT_THROW(f.setArgs({}), std::invalid_argument);
+    EXPECT_THROW(func(self_name, "c").setIndex(1), std::invalid_argument);
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
     EXPECT_THROW(func("a", "b").set([]() {}), std::invalid_argument);
 }
