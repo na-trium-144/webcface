@@ -105,8 +105,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     };
 
     struct SyncDataFirst {
-        StrMap2<unsigned int> value_req, text_req, robot_model_req, view_req,
-            canvas3d_req, canvas2d_req, image_req, log_req;
+        StrMap2<unsigned int> value_req, text_req, robot_model_req, plot_req,
+            view_req, canvas3d_req, canvas2d_req, image_req, log_req;
         StrMap2<message::ImageReq> image_req_info;
         bool ping_status_req;
         SyncDataSnapshot sync_data;

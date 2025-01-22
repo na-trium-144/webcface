@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include <ostream>
 #include <memory>
 #include <utility>
 #ifdef WEBCFACE_MESON
@@ -21,6 +20,14 @@ struct PlotSeriesData;
 
 class Value;
 
+/*!
+ * \brief Plotのデータセット
+ * \since ver2.6
+ *
+ * 基本的にはいくつかのValueのペア。
+ * 値そのものは保持せず、読み込むValueを参照するのみ。
+ *
+ */
 class PlotSeries {
     std::shared_ptr<message::PlotSeriesData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;

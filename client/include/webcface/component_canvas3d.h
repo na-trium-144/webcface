@@ -303,7 +303,10 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \since ver2.6
      */
     TemporalCanvas3DComponent &scale(double scale_x, double scale_y) &;
-    TemporalCanvas3DComponent &&scale(double scale_x, double scale_y) &&;
+    TemporalCanvas3DComponent &&scale(double scale_x, double scale_y) && {
+        this->scale(scale_x, scale_y);
+        return std::move(*this);
+    }
 };
 
 WEBCFACE_NS_END

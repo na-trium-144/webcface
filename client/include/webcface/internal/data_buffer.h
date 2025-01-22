@@ -2,12 +2,11 @@
 #include "webcface/robot_link.h"
 #include "webcface/view.h"
 #include "webcface/components.h"
+#include "webcface/plot.h"
 #include <sstream>
 #include <memory>
 
 WEBCFACE_NS_BEGIN
-
-class PlotSeries;
 
 namespace internal {
 /*!
