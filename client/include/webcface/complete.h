@@ -36,6 +36,7 @@ define_assert_complete(RobotModel, robot_model.h)
 define_assert_complete(Canvas2D, canvas2d.h)
 define_assert_complete(Canvas3D, canvas3d.h)
 define_assert_complete(Log, log.h)
+define_assert_complete(Plot, plot.h)
 // clang-format on
 
 #undef define_assert_complete

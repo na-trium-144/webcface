@@ -208,11 +208,11 @@ struct WEBCFACE_DLL Field : public FieldBase {
         return child(field);
     }
     template <WEBCFACE_COMPLETE(Plot)>
-    Plot_ image(std::string_view field = "") const {
+    Plot_ plot(std::string_view field = "") const {
         return child(field);
     }
     template <WEBCFACE_COMPLETE(Plot)>
-    Plot_ image(std::wstring_view field) const {
+    Plot_ plot(std::wstring_view field) const {
         return child(field);
     }
     template <WEBCFACE_COMPLETE(Image)>
@@ -337,7 +337,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \sa childrenRecurse()
      */
     template <WEBCFACE_COMPLETE(Plot)>
-    std::vector<Plot_> funcEntries() const;
+    std::vector<Plot_> plotEntries() const;
     /*!
      * \brief 「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。
      * \since ver1.6

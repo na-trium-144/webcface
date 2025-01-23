@@ -52,3 +52,8 @@ struct Res<Plot> : public MessageBase<MessageKind::plot + MessageKind::res> {
 
 } // namespace message
 WEBCFACE_NS_END
+
+WEBCFACE_MESSAGE_FMT(webcface::message::Plot)
+WEBCFACE_MESSAGE_FMT(webcface::message::Res<webcface::message::Plot>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Entry<webcface::message::Plot>)
+WEBCFACE_MESSAGE_FMT(webcface::message::Req<webcface::message::Plot>)

@@ -95,7 +95,6 @@ class WEBCFACE_DLL Plot : protected Field {
     Plot child(std::wstring_view field) const {
         return this->Field::child(field);
     }
-    Plot child(int index) const { return this->Field::child(index); }
     /*!
      * child()と同じ
      *
@@ -112,11 +111,6 @@ class WEBCFACE_DLL Plot : protected Field {
      */
     Plot operator[](const char *field) const { return child(field); }
     Plot operator[](const wchar_t *field) const { return child(field); }
-    /*!
-     * child()と同じ
-     *
-     */
-    Plot operator[](int index) const { return child(index); }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      *

@@ -198,7 +198,8 @@ TemporalCanvas2DComponent &TemporalCanvas2DComponent::onClick(
     return *this;
 }
 
-std::optional<Plot> Canvas2DComponent::plot() const {
+template <typename T, bool>
+std::optional<T> Canvas2DComponent::plot() const {
     checkData();
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type == static_cast<int>(Canvas2DComponentType::plot)) {
@@ -207,6 +208,8 @@ std::optional<Plot> Canvas2DComponent::plot() const {
         return std::nullopt;
     }
 }
+template WEBCFACE_DLL std::optional<Plot>
+Canvas2DComponent::plot<Plot, true>() const;
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::plot(const Plot &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;

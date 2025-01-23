@@ -134,7 +134,8 @@ TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
     msg_data->field_field = static_cast<FieldBase>(field).field_;
     return *this;
 }
-std::optional<Plot> Canvas3DComponent::plot() const {
+template <typename T, bool>
+std::optional<T> Canvas3DComponent::plot() const {
     checkData();
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type == static_cast<int>(Canvas3DComponentType::plot)) {
@@ -143,6 +144,8 @@ std::optional<Plot> Canvas3DComponent::plot() const {
         return std::nullopt;
     }
 }
+template WEBCFACE_DLL std::optional<Plot>
+Canvas3DComponent::plot<Plot, true>() const;
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::plot(const Plot &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;

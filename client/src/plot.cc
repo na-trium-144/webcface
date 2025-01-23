@@ -92,8 +92,8 @@ const Plot &Plot::request() const {
     auto data = dataLock();
     auto req = data->plot_store.addReq(member_, field_);
     if (req) {
-        data->messagePushReq(message::packSingle(
-            message::Req<message::Plot>{{}, member_, field_, req}));
+        data->messagePushReq(
+            message::Req<message::Plot>{{}, member_, field_, req});
     }
     return *this;
 }
