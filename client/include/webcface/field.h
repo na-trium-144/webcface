@@ -157,8 +157,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Field child(int index) const { return child(std::to_string(index)); }
+    [[deprecated]]
+    Field child(int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
@@ -172,8 +176,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Field operator[](int index) const { return child(index); }
+    [[deprecated]]
+    Field operator[](int index) const {
+        return child(std::to_string(index));
+    }
 
     template <WEBCFACE_COMPLETE(Value)>
     Value_ value(std::string_view field = "") const {

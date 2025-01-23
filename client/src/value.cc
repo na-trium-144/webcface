@@ -23,6 +23,7 @@ const Value &Value::request() const {
 const Value &Value::set(double v) const {
     auto last_name = this->lastName();
     auto parent = this->parent();
+    // deprecated in ver2.8
     if (std::all_of(last_name.cbegin(), last_name.cend(),
                     [](unsigned char c) { return std::isdigit(c); })) {
         std::size_t index = std::stoi(std::string(last_name));
@@ -83,6 +84,29 @@ const Value &Value::push_back(double v) const {
     this->set(*pv);
     return *this;
 }
+std::size_t Value::size() const {
+    auto v = dataLock()->value_store.getRecv(*this);
+    request();
+    if (v) {
+        return (**v).size();
+    } else {
+        return 0;
+    }
+}
+
+const ValueElementRef &ValueElementRef::set(double v) const {
+    Value parent = *this;
+    auto pv = parent.tryGetVec();
+    if (pv && index < pv->size()) {
+        pv->at(index) = v;
+        parent.set(*pv);
+    } else {
+        throw std::out_of_range("ValueElementRef::set got index " +
+                                std::to_string(index) + " but size is " +
+                                std::to_string(pv->size()));
+    }
+    return *this;
+}
 
 std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
@@ -90,6 +114,7 @@ std::optional<double> Value::tryGet() const {
     if (v) {
         return (*v)->size() >= 1 ? std::make_optional((**v)[0]) : std::nullopt;
     }
+    // deprecated in ver2.8
     auto last_name = lastName();
     if (std::all_of(last_name.cbegin(), last_name.cend(),
                     [](unsigned char c) { return std::isdigit(c); })) {
@@ -110,6 +135,16 @@ std::optional<std::vector<double>> Value::tryGetVec() const {
         return std::nullopt;
     }
 }
+std::optional<double> ValueElementRef::tryGet() const {
+    Value parent = *this;
+    auto pv = parent.tryGetVec();
+    if (pv && index < pv->size()) {
+        return pv->at(index);
+    } else {
+        return std::nullopt;
+    }
+}
+
 std::chrono::system_clock::time_point Value::time() const {
     return member().syncTime();
 }

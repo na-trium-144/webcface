@@ -14,6 +14,42 @@
 WEBCFACE_NS_BEGIN
 
 /*!
+ * \brief 配列型のValueデータの一部の要素を指定するクラス
+ * \since ver2.8
+ */
+class WEBCFACE_DLL ValueElementRef : protected Field {
+    std::size_t index;
+
+  public:
+    ValueElementRef(const Field &base, std::size_t index)
+        : Field(base), index(index) {}
+
+    /*!
+     * \brief 値をセットする
+     *
+     * * 事前に Value::resize() でサイズを変更しておく必要がある
+     * * データがない場合、範囲外の場合は std::out_of_range を投げる
+     *   * ver2.7以前は Value[i].set() で自動的にリサイズされていたので、異なる挙動になる
+     */
+    const ValueElementRef &set(double v) const;
+    const ValueElementRef &operator=(double v) const { return set(v); }
+
+    /*!
+     * \brief 値があればその要素を返す
+     *
+     * * データがない場合、範囲外の場合はstd::nullopt
+     */
+    std::optional<double> tryGet() const;
+    /*!
+     * \brief 値があればその要素を返す
+     *
+     * * データがない場合、範囲外の場合は0
+     *
+     */
+    double get() const { return tryGet().value_or(0); }
+};
+
+/*!
  * \brief 実数値またはその配列の送受信データを表すクラス
  *
  * コンストラクタではなく Member::value(), Member::values(),
@@ -48,8 +84,12 @@ class WEBCFACE_DLL Value : protected Field {
     }
     /*!
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Value child(int index) const { return this->Field::child(index); }
+    [[deprecated]]
+    Value child(int index) const {
+        return this->Field::child(std::to_string(index));
+    }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -70,10 +110,28 @@ class WEBCFACE_DLL Value : protected Field {
      */
     Value operator[](const wchar_t *field) const { return child(field); }
     /*!
-     * child()と同じ
-     * \since ver1.11
+     * \brief 1次元配列型データの要素を参照する
+     * \since ver2.8
+     *
+     * * ver1.11〜2.7では operator[](int)
+     * は引数を文字列に変換したchildを返していた
+     * * Field::operator[] や他の型の operator[] (すべてver2.6でdeprecated)
+     * とは異なる挙動になる
+     *
+     * \sa at()
      */
-    Value operator[](int index) const { return child(index); }
+    template <typename T,
+              std::enable_if_t<std::is_integral_v<T>, std::nullptr_t> = nullptr>
+    ValueElementRef operator[](T index) const {
+        return ValueElementRef(*this, index);
+    }
+    /*!
+     * \brief 1次元配列型データの要素を参照する
+     * \since ver2.8
+     */
+    ValueElementRef at(std::size_t index) const {
+        return ValueElementRef(*this, index);
+    }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11
@@ -149,6 +207,16 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 値をセット、またはすでに配列がsetされていれば末尾に追加
      */
     const Value &push_back(double v) const;
+    /*!
+     * \brief 配列データのサイズを取得
+     * \since ver2.8
+     * 
+     * * 自身のデータの場合、現在setされているデータのサイズ、またはセットされていなければ0
+     * * 他のmemberのデータの場合、すでに受信したデータのサイズ
+     *   * 受信していない場合は、get()やtryGet()と同様にリクエストを送り、0を返す
+     * * 配列でない数値データ1つの場合、1を返す
+     */
+    std::size_t size() const;
 
     /*!
      * \brief 数値または配列をセットする
