@@ -3,7 +3,6 @@
 #include <set>
 #include <string>
 #include <string_view>
-#include <memory>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -29,24 +28,24 @@ struct SharedStringData;
  * を使用する場合は出力するコンソールのコードページに合わせること
  *
  */
-WEBCFACE_DLL void WEBCFACE_CALL usingUTF8(bool flag);
+WEBCFACE_DLL void WEBCFACE_CALL usingUTF8(bool flag) noexcept;
 /*!
  * \brief webcfaceが使用するエンコーディングを取得する
  * \since ver2.0
  *
  */
-WEBCFACE_DLL bool WEBCFACE_CALL usingUTF8();
+WEBCFACE_DLL bool WEBCFACE_CALL usingUTF8() noexcept;
 
 /*!
  * \brief stringをwstringに変換する
  * \since ver2.0
  */
-WEBCFACE_DLL std::wstring WEBCFACE_CALL toWide(std::string_view name_ref);
+std::wstring toWide(std::string_view name_ref);
 /*!
  * \brief wstringをstringに変換する
  * \since ver2.0
  */
-WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
+std::string toNarrow(std::wstring_view name_ref);
 
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
@@ -66,66 +65,135 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
  * それ以外の場合なにもせずそのままコピーする。
  *
  */
-class WEBCFACE_DLL SharedString {
-    std::shared_ptr<internal::SharedStringData> data;
+class SharedString {
+    internal::SharedStringData *data;
+
+    static WEBCFACE_DLL SharedString WEBCFACE_CALL
+    fromU8String(const char *u8s, std::size_t len);
+    static WEBCFACE_DLL SharedString WEBCFACE_CALL encode(const char *s,
+                                                          std::size_t len);
+    static WEBCFACE_DLL SharedString WEBCFACE_CALL encode(const wchar_t *ws,
+                                                          std::size_t wlen,
+                                                          const char *s,
+                                                          std::size_t slen);
+
+    /*!
+     * \brief 文字列を参照する構造体
+     * \since ver3.0
+     *
+     * data はnull終端された文字列、
+     * size はnull終端を含まない文字列の長さ
+     */
+    template <typename CharT>
+    struct CStrView {
+        const CharT *data;
+        std::size_t size;
+        operator std::basic_string_view<CharT>() const { return {data, size}; }
+    };
+
+    WEBCFACE_DLL CStrView<char> u8CStr() const noexcept;
+    WEBCFACE_DLL CStrView<wchar_t> cDecodeW() const;
+    WEBCFACE_DLL CStrView<char> cDecode() const;
 
   public:
-    SharedString() : data() {}
-    SharedString(std::nullptr_t) : data() {}
-    explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
+    SharedString(std::nullptr_t = nullptr) : data() {}
+    WEBCFACE_DLL SharedString(const SharedString &other) noexcept;
+    WEBCFACE_DLL SharedString &operator=(const SharedString &other) noexcept;
+    WEBCFACE_DLL SharedString(SharedString &&other) noexcept;
+    WEBCFACE_DLL SharedString &operator=(SharedString &&other) noexcept;
+    WEBCFACE_DLL ~SharedString() noexcept;
+    explicit WEBCFACE_DLL
+    SharedString(internal::SharedStringData *&&data) noexcept;
 
-    static SharedString WEBCFACE_CALL fromU8String(std::string_view u8s);
-    static SharedString WEBCFACE_CALL encode(std::string_view s);
-    static SharedString WEBCFACE_CALL
-    encode(std::wstring_view ws, std::string_view s = std::string_view());
+    WEBCFACE_DLL int count() const noexcept;
 
-    const std::string &u8String() const;
-    std::string_view u8StringView() const;
-    const std::string &decode() const;
-    const std::wstring &decodeW() const;
+    static SharedString fromU8String(std::string_view u8s) {
+        return fromU8String(u8s.data(), u8s.size());
+    }
+    static SharedString encode(std::string_view s) {
+        return encode(s.data(), s.size());
+    }
+    static SharedString encode(std::wstring_view ws) {
+        return encode(ws.data(), ws.size(), nullptr, 0);
+    }
 
-    static const std::string &emptyStr();
-    static const std::wstring &emptyStrW();
+    std::string_view u8String() const noexcept { return u8CStr(); }
+    std::string_view u8StringView() const noexcept { return u8CStr(); }
+    std::string_view decode() const noexcept { return cDecode(); }
+    std::wstring_view decodeW() const noexcept { return cDecodeW(); }
 
-    bool empty() const;
-    bool startsWith(std::string_view str) const;
-    bool startsWith(char str) const;
+    static WEBCFACE_DLL CStrView<char> WEBCFACE_CALL emptyStr() noexcept;
+    static WEBCFACE_DLL CStrView<wchar_t> WEBCFACE_CALL emptyStrW() noexcept;
+
+    bool empty() const { return u8String().empty(); }
+    bool startsWith(std::string_view str) const {
+        return u8String().substr(0, str.size()) == str;
+    }
+    bool startsWith(char str) const {
+        return !empty() && u8String().front() == str;
+    }
     SharedString substr(std::size_t pos,
-                        std::size_t len = std::string::npos) const;
-    std::size_t find(char c, std::size_t pos = 0) const;
-
-    bool operator==(const SharedString &other) const;
-    bool operator<=(const SharedString &other) const;
-    bool operator>=(const SharedString &other) const;
-    bool operator!=(const SharedString &other) const;
-    bool operator<(const SharedString &other) const;
-    bool operator>(const SharedString &other) const;
-
-    struct Hash : std::hash<std::string> {
-        Hash() = default;
-        auto operator()(const SharedString &ss) const {
-            return this->std::hash<std::string>::operator()(ss.u8String());
+                        std::size_t len = std::string::npos) const {
+        if (!data) {
+            return *this;
+        } else {
+            return SharedString::fromU8String(u8String().substr(pos, len));
         }
-    };
+    }
+    std::size_t find(char c, std::size_t pos = 0) const {
+        return u8String().find(c, pos);
+    }
+
+    bool operator==(const SharedString &other) const noexcept {
+        return data == other.data || u8String() == other.u8String();
+    }
+    bool operator<=(const SharedString &other) const noexcept {
+        return data == other.data || u8String() <= other.u8String();
+    }
+    bool operator>=(const SharedString &other) const noexcept {
+        return data == other.data || u8String() >= other.u8String();
+    }
+    bool operator!=(const SharedString &other) const noexcept {
+        return !(*this == other);
+    }
+    bool operator<(const SharedString &other) const noexcept {
+        return !(*this >= other);
+    }
+    bool operator>(const SharedString &other) const noexcept {
+        return !(*this <= other);
+    }
+
+    bool operator==(std::string_view other) const noexcept {
+        return u8String() == other;
+    }
+    bool operator<=(std::string_view other) const noexcept {
+        return u8String() <= other;
+    }
+    bool operator>=(std::string_view other) const noexcept {
+        return u8String() >= other;
+    }
+    bool operator!=(std::string_view other) const noexcept {
+        return !(*this == other);
+    }
+    bool operator<(std::string_view other) const noexcept {
+        return !(*this >= other);
+    }
+    bool operator>(std::string_view other) const noexcept {
+        return !(*this <= other);
+    }
 };
 
 template <typename T>
-using StrMap1 = std::map<SharedString, T>;
+using StrMap1 = std::map<SharedString, T, std::less<>>;
 template <typename T>
 using StrMap2 = StrMap1<StrMap1<T>>;
-using StrSet1 = std::set<SharedString>;
+using StrSet1 = std::set<SharedString, std::less<>>;
 using StrSet2 = StrMap1<StrSet1>;
 
 namespace [[deprecated("symbols in webcface::encoding namespace are "
                        "now directly in webcface namespace")]] encoding {
 inline bool usingUTF8() { return webcface::usingUTF8(); }
 inline void usingUTF8(bool flag) { webcface::usingUTF8(flag); }
-inline std::wstring toWide(std::string_view name_ref) {
-    return webcface::toWide(name_ref);
-}
-inline std::string toNarrow(std::wstring_view name) {
-    return webcface::toNarrow(name);
-}
 
 using SharedString = webcface::SharedString;
 

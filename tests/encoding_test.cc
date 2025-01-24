@@ -8,6 +8,29 @@ TEST(EncodingTest, usingUTF8) {
     usingUTF8(false);
     EXPECT_FALSE(usingUTF8());
 }
+TEST(EncodingTest, SharedString) {
+    auto ss = SharedString::fromU8String("test");
+    EXPECT_EQ(ss.u8String(), "test");
+    EXPECT_EQ(ss.count(), 1);
+    auto ss2 = ss;
+    EXPECT_EQ(ss.u8String(), "test");
+    EXPECT_EQ(ss2.u8String(), "test");
+    EXPECT_EQ(ss, ss2);
+    EXPECT_EQ(ss.u8String().data(), ss2.u8String().data());
+    EXPECT_EQ(ss.count(), 2);
+    EXPECT_EQ(ss2.count(), 2);
+
+    auto ss3 = SharedString::fromU8String("test");
+    EXPECT_EQ(ss, ss3);
+    EXPECT_NE(ss.u8String().data(), ss3.u8String().data());
+
+    ss = nullptr;
+    EXPECT_EQ(ss.u8String(), "");
+    EXPECT_EQ(ss, SharedString());
+    EXPECT_EQ(ss2.u8String(), "test");
+    EXPECT_EQ(ss.count(), 0);
+    EXPECT_EQ(ss2.count(), 1);
+}
 TEST(EncodingTest, encode) {
     std::string_view s = "Aあ";
     std::wstring_view w = L"Aあ";

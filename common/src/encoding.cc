@@ -1,7 +1,9 @@
 #include "webcface/common/encoding.h"
+#include <cassert>
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
+#include <atomic>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>
@@ -15,11 +17,19 @@ struct SharedStringData {
     std::string s;
     std::wstring ws;
     std::recursive_mutex m;
-    explicit SharedStringData(std::string_view u8s)
-        : u8s(u8s), s(), ws(), m() {}
-    SharedStringData(std::string_view u8s, std::string_view s,
-                     std::wstring_view ws)
-        : u8s(u8s), s(s), ws(ws), m() {}
+    std::atomic<int> count = 1;
+    SharedStringData(std::string u8s, std::string s = {},
+                     std::wstring ws = {}) noexcept
+        : u8s(std::move(u8s)), s(std::move(s)), ws(std::move(ws)) {}
+    void inc() noexcept {
+        assert(count > 0);
+        count++;
+    }
+    void dec() noexcept {
+        if (--count == 0) {
+            delete this;
+        }
+    }
 };
 
 } // namespace internal
@@ -27,113 +37,116 @@ struct SharedStringData {
 /// \private
 static bool using_utf8 = true;
 
-void usingUTF8(bool flag) { using_utf8 = flag; }
-bool usingUTF8() { return using_utf8; }
+void usingUTF8(bool flag) noexcept { using_utf8 = flag; }
+bool usingUTF8() noexcept { return using_utf8; }
 
-const std::string &SharedString::emptyStr() {
+SharedString::CStrView<char> SharedString::emptyStr() noexcept {
     static std::string empty;
-    return empty;
+    return {empty.c_str(), 0};
 }
-const std::wstring &SharedString::emptyStrW() {
+SharedString::CStrView<wchar_t> SharedString::emptyStrW() noexcept {
     static std::wstring empty;
-    return empty;
+    return {empty.c_str(), 0};
 }
 
-SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
-    : data(std::move(data)) {}
-bool SharedString::operator==(const SharedString &other) const {
-    return this->data == other.data || this->u8String() == other.u8String();
+SharedString::SharedString(const SharedString &other) noexcept
+    : data(other.data) {
+    if (data) {
+        data->inc();
+    }
 }
-bool SharedString::operator<=(const SharedString &other) const {
-    return this->data == other.data || this->u8String() <= other.u8String();
+SharedString &SharedString::operator=(const SharedString &other) noexcept {
+    if (this != &other) {
+        if (data) {
+            data->dec();
+        }
+        data = other.data;
+        if (data) {
+            data->inc();
+        }
+    }
+    return *this;
 }
-bool SharedString::operator>=(const SharedString &other) const {
-    return this->data == other.data || this->u8String() >= other.u8String();
+SharedString::~SharedString() noexcept {
+    if (data) {
+        data->dec();
+    }
 }
-bool SharedString::operator!=(const SharedString &other) const {
-    return this->data != other.data && this->u8String() != other.u8String();
+SharedString::SharedString(SharedString &&other) noexcept : data(other.data) {
+    other.data = nullptr;
 }
-bool SharedString::operator<(const SharedString &other) const {
-    return this->data != other.data && this->u8String() < other.u8String();
+SharedString &SharedString::operator=(SharedString &&other) noexcept {
+    if (this != &other) {
+        if (data) {
+            data->dec();
+        }
+        data = other.data;
+        other.data = nullptr;
+    }
+    return *this;
 }
-bool SharedString::operator>(const SharedString &other) const {
-    return this->data != other.data && this->u8String() > other.u8String();
+SharedString::SharedString(internal::SharedStringData *&&data) noexcept
+    : data(data) {
+    assert(!data || data->count == 1);
 }
 
-SharedString SharedString::fromU8String(std::string_view u8s) {
-    return SharedString(std::make_shared<internal::SharedStringData>(u8s));
+int SharedString::count() const noexcept {
+    if (data) {
+        assert(data->count > 0);
+        return data->count.load();
+    } else {
+        return 0;
+    }
 }
-SharedString SharedString::encode(std::string_view name) {
+
+SharedString SharedString::fromU8String(const char *u8s, std::size_t len) {
+    return SharedString(new internal::SharedStringData(std::string(u8s, len)));
+}
+SharedString SharedString::encode(const char *s, std::size_t len) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
-        auto length = MultiByteToWideChar(
-            CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
+        auto length = MultiByteToWideChar(CP_ACP, 0, s, static_cast<int>(len),
+                                          nullptr, 0);
         std::wstring result_utf16(length, '\0');
-        MultiByteToWideChar(CP_ACP, 0, name.data(),
-                            static_cast<int>(name.size()), result_utf16.data(),
+        MultiByteToWideChar(CP_ACP, 0, s, static_cast<int>(len),
+                            result_utf16.data(),
                             static_cast<int>(result_utf16.length()));
         return encode(result_utf16, name);
     }
 #endif
     // そのままコピー
-    return fromU8String(name);
+    return fromU8String(s, len);
 }
-SharedString SharedString::encode(std::wstring_view name, std::string_view s) {
+SharedString SharedString::encode(const wchar_t *ws, std::size_t wlen,
+                                  const char *s, std::size_t slen) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
-    auto length_utf8 = WideCharToMultiByte(CP_UTF8, 0, name.data(),
-                                           static_cast<int>(name.size()),
-                                           nullptr, 0, nullptr, nullptr);
+    auto length_utf8 = WideCharToMultiByte(
+        CP_UTF8, 0, ws, static_cast<int>(wlen), nullptr, 0, nullptr, nullptr);
     std::string result_utf8(length_utf8, '\0');
-    WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
+    WideCharToMultiByte(CP_UTF8, 0, ws, static_cast<int>(wlen),
                         result_utf8.data(),
                         static_cast<int>(result_utf8.size()), nullptr, nullptr);
-    return SharedString(
-        std::make_shared<internal::SharedStringData>(result_utf8, s, name));
+    return SharedString(new internal::SharedStringData(
+        std::move(result_utf8), s ? std::string(s, slen) : {},
+        std::wstring(ws, wlen)));
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     std::string result_utf8;
-    utf8::utf32to8(name.cbegin(), name.cend(), std::back_inserter(result_utf8));
-    return SharedString(
-        std::make_shared<internal::SharedStringData>(result_utf8, s, name));
+    utf8::utf32to8(ws, ws + wlen, std::back_inserter(result_utf8));
+    return SharedString(new internal::SharedStringData(
+        std::move(result_utf8), s ? std::string(s, slen) : std::string{},
+        std::wstring(ws, wlen)));
 #endif
 }
 
 
-const std::string &SharedString::u8String() const {
+SharedString::CStrView<char> SharedString::u8CStr() const noexcept {
     if (!data) {
         return emptyStr();
     } else {
-        return data->u8s;
-    }
-}
-std::string_view SharedString::u8StringView() const {
-    if (!data) {
-        return std::string_view();
-    } else {
-        return data->u8s;
-    }
-}
-bool SharedString::empty() const { return u8String().empty(); }
-bool SharedString::startsWith(std::string_view str) const {
-    return u8StringView().substr(0, str.size()) == str;
-}
-bool SharedString::startsWith(char str) const {
-    return !u8StringView().empty() && u8StringView()[0] == str;
-}
-SharedString SharedString::substr(std::size_t pos, std::size_t len) const {
-    if (!data) {
-        return *this;
-    } else {
-        return SharedString::fromU8String(u8StringView().substr(pos, len));
-    }
-}
-std::size_t SharedString::find(char c, std::size_t pos) const {
-    if (!data) {
-        return std::string::npos;
-    } else {
-        return u8StringView().find(c, pos);
+        return {data->u8s.c_str(), data->u8s.size()};
     }
 }
 
@@ -157,13 +170,13 @@ std::string toNarrow(std::wstring_view name) {
 #endif
 }
 
-const std::wstring &SharedString::decodeW() const {
+SharedString::CStrView<wchar_t> SharedString::cDecodeW() const {
     if (!data || data->u8s.empty()) {
         return emptyStrW();
     } else {
         std::lock_guard lock(data->m);
         if (!data->ws.empty()) {
-            return data->ws;
+            return {data->ws.c_str(), data->ws.size()};
         } else {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
             static_assert(sizeof(wchar_t) == 2,
@@ -177,7 +190,7 @@ const std::wstring &SharedString::decodeW() const {
                                 result_utf16.data(),
                                 static_cast<int>(result_utf16.length()));
             data->ws = result_utf16;
-            return data->ws;
+            return {data->ws.c_str(), data->ws.size()};
 #else
             static_assert(sizeof(wchar_t) == 4,
                           "Assuming wchar_t is utf-32 on Unix");
@@ -185,7 +198,7 @@ const std::wstring &SharedString::decodeW() const {
             utf8::utf8to32(data->u8s.cbegin(), data->u8s.cend(),
                            std::back_inserter(result_utf32));
             data->ws = result_utf32;
-            return data->ws;
+            return {data->ws.c_str(), data->ws.size()};
 #endif
         }
     }
@@ -210,13 +223,13 @@ std::wstring toWide(std::string_view name_ref) {
 #endif
 }
 
-const std::string &SharedString::decode() const {
+SharedString::CStrView<char> SharedString::cDecode() const {
     if (!data || data->u8s.empty()) {
         return emptyStr();
     } else {
         std::lock_guard lock(data->m);
         if (!data->s.empty()) {
-            return data->s;
+            return {data->s.c_str(), data->s.size()};
         } else {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
             if (!using_utf8) {
@@ -231,11 +244,11 @@ const std::string &SharedString::decode() const {
                     static_cast<int>(result_utf16.length()), result_acp.data(),
                     static_cast<int>(result_acp.size()), nullptr, nullptr);
                 data->s = result_acp;
-                return data->s;
+                return {data->s.c_str(), data->s.size()};
             }
 #endif
             // そのままコピー
-            return data->u8s;
+            return {data->u8s.c_str(), data->u8s.size()};
         }
     }
 }
