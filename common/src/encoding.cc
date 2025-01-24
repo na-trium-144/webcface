@@ -37,8 +37,8 @@ struct SharedStringData {
 /// \private
 static bool using_utf8 = true;
 
-void usingUTF8(bool flag) noexcept { using_utf8 = flag; }
-bool usingUTF8() noexcept { return using_utf8; }
+extern "C" void wcfUsingUTF8(int flag) { using_utf8 = flag; }
+extern "C" int wcfGetUsingUTF8() { return using_utf8; }
 
 SharedString::CStrView<char> SharedString::emptyStr() noexcept {
     static std::string empty;

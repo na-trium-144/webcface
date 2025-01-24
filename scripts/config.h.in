@@ -139,3 +139,11 @@ calling convention
     }
 
 #endif
+
+#ifdef __cplusplus
+#define WEBCFACE_C_BEGIN extern "C" {
+#define WEBCFACE_C_END }
+#else
+#define WEBCFACE_C_BEGIN
+#define WEBCFACE_C_END
+#endif

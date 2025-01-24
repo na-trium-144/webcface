@@ -3,11 +3,7 @@
 #include <set>
 #include <string>
 #include <string_view>
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/webcface-config.h"
-#endif
+#include "c_encoding.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -28,13 +24,13 @@ struct SharedStringData;
  * を使用する場合は出力するコンソールのコードページに合わせること
  *
  */
-WEBCFACE_DLL void WEBCFACE_CALL usingUTF8(bool flag) noexcept;
+void usingUTF8(bool flag) noexcept { wcfUsingUTF8(flag); }
 /*!
  * \brief webcfaceが使用するエンコーディングを取得する
  * \since ver2.0
  *
  */
-WEBCFACE_DLL bool WEBCFACE_CALL usingUTF8() noexcept;
+bool usingUTF8() noexcept { return wcfGetUsingUTF8(); }
 
 /*!
  * \brief stringをwstringに変換する
@@ -63,6 +59,9 @@ std::string toNarrow(std::wstring_view name_ref);
  * usingUTF8(true)の場合なにもせずそのままコピーする。
  * * utf-8→string: windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
+ * * (ver3.0〜) u8String(), decode(), decodeW()
+ * はstringではなくstring_viewに変更
+ *   * ただしいずれもdata()が返すポインタがnull終端であることが保証される
  *
  */
 class SharedString {

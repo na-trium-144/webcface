@@ -4,13 +4,8 @@
 #include <tuple>
 #include <cstdint>
 #include <ostream>
-#include <variant>
 #include "encoding.h"
-#ifdef WEBCFACE_MESON
-#include "webcface-config.h"
-#else
-#include "webcface/common/webcface-config.h"
-#endif
+#include "c_val_adaptor.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -19,12 +14,12 @@ WEBCFACE_NS_BEGIN
  *
  */
 enum class ValType {
-    none_ = 0,
-    string_ = 1,
-    bool_ = 2,
-    int_ = 3,
-    float_ = 4,
-    double_ = 4,
+    none_ = wcfValType::WCF_VAL_NONE,
+    string_ = wcfValType::WCF_VAL_STRING,
+    bool_ = wcfValType::WCF_VAL_BOOL,
+    int_ = wcfValType::WCF_VAL_INT,
+    float_ = wcfValType::WCF_VAL_DOUBLE,
+    double_ = wcfValType::WCF_VAL_DOUBLE,
 };
 /*!
  * \brief TのValTypeを得る
@@ -84,32 +79,37 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
  * 空の状態=空文字列
  *
  */
-class WEBCFACE_DLL ValAdaptor {
+class ValAdaptor {
     /*!
      * 文字列に変換したものを保存
      * デフォルトでu8strの空文字列
      */
     mutable SharedString as_str;
+    double as_double = 0;
+    std::int64_t as_int = 0;
+    ValType type = ValType::none_;
 
-    std::variant<double, std::int64_t> as_val;
-    ValType type;
-
-    enum ValVariant { DOUBLEV = 0, INT64V = 1 };
+    WEBCFACE_DLL void initU8String() const;
+    WEBCFACE_DLL void initString() const;
+    WEBCFACE_DLL void initWString() const;
 
   public:
-    ValAdaptor();
+    ValAdaptor() = default;
 
     /*!
      * \since ver2.0
      */
-    explicit ValAdaptor(const SharedString &str);
+    WEBCFACE_DLL explicit ValAdaptor(const SharedString &str);
     /*!
      * \since ver2.0
      */
-    ValAdaptor &operator=(const SharedString &str);
+    WEBCFACE_DLL ValAdaptor &operator=(const SharedString &str);
 
-    explicit ValAdaptor(std::string_view str);
-    ValAdaptor &operator=(std::string_view str);
+    explicit ValAdaptor(std::string_view str)
+        : ValAdaptor(SharedString::encode(str)) {}
+    ValAdaptor &operator=(std::string_view str) {
+        return *this = SharedString::encode(str);
+    }
     explicit ValAdaptor(const char *str) : ValAdaptor(std::string_view(str)) {}
     ValAdaptor &operator=(const char *str) {
         return *this = std::string_view(str);
@@ -118,11 +118,14 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * \since ver2.0
      */
-    explicit ValAdaptor(std::wstring_view str);
+    explicit ValAdaptor(std::wstring_view str)
+        : ValAdaptor(SharedString::encode(str)) {}
     /*!
      * \since ver2.0
      */
-    ValAdaptor &operator=(std::wstring_view str);
+    ValAdaptor &operator=(std::wstring_view str) {
+        return *this = SharedString::encode(str);
+    }
     /*!
      * \since ver2.0
      */
@@ -135,14 +138,14 @@ class WEBCFACE_DLL ValAdaptor {
         return *this = std::wstring_view(str);
     }
 
-    explicit ValAdaptor(bool value);
-    ValAdaptor &operator=(bool v);
+    WEBCFACE_DLL explicit ValAdaptor(bool value);
+    WEBCFACE_DLL ValAdaptor &operator=(bool v);
 
-    explicit ValAdaptor(std::int64_t value);
-    ValAdaptor &operator=(std::int64_t v);
+    WEBCFACE_DLL explicit ValAdaptor(std::int64_t value);
+    WEBCFACE_DLL ValAdaptor &operator=(std::int64_t v);
 
-    explicit ValAdaptor(double value);
-    ValAdaptor &operator=(double v);
+    WEBCFACE_DLL explicit ValAdaptor(double value);
+    WEBCFACE_DLL ValAdaptor &operator=(double v);
 
     template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
                                                     std::nullptr_t> = nullptr>
@@ -165,80 +168,105 @@ class WEBCFACE_DLL ValAdaptor {
 
     ValType valType() const { return type; }
 
-    static const ValAdaptor &emptyVal();
+    static WEBCFACE_DLL const ValAdaptor &WEBCFACE_CALL emptyVal();
 
     /*!
      * \brief 値が空かどうか調べる
      * \since ver1.11
      */
-    bool empty() const;
+    WEBCFACE_DLL bool empty() const;
 
     /*!
      * \brief 文字列として返す
      * \since ver1.10
      *
-     * std::stringのconst参照を返す。
-     * 参照はこのValAdaptorが破棄されるまで有効
-     *
-     * as_strにstringが格納されていた場合はそれをそのまま返す。
+     * * <del>std::stringのconst参照を返す。</del>
+     * * (ver3.0〜) string_viewを返す。
+     * * 参照はこのValAdaptorが破棄されるまで有効
+     * * as_strにstringが格納されていた場合はそれをそのまま返す。
      * そうでない場合(u8string, wstring, double, int64が格納されている場合)
      * はそれをstringに変換したうえでその参照を返す。
      *
      */
-    const std::string &asStringRef() const;
+    std::string_view asStringRef() const {
+        initString();
+        return as_str.u8String();
+    }
+    /*!
+     * \since ver3.0
+     */
+    const char *asCStr() const { return asStringRef().data(); }
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
      */
-    const std::wstring &asWStringRef() const;
+    std::wstring_view asWStringRef() const {
+        initWString();
+        return as_str.decodeW();
+    }
+    /*!
+     * \since ver3.0
+     */
+    const wchar_t *asWCStr() const { return asWStringRef().data(); }
     /*!
      * \since ver2.0
      */
-    const std::string &asU8StringRef() const;
+    std::string_view asU8StringRef() const {
+        initU8String();
+        return as_str.u8String();
+    }
+    /*!
+     * \since ver3.0
+     */
+    const char *asU8CStr() const { return asU8StringRef().data(); }
+
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
      */
-    std::string asString() const { return asStringRef(); }
+    std::string asString() const { return std::string(asStringRef()); }
     /*!
      * \brief 文字列として返す(コピー) (wstring)
      * \since ver2.0
      */
-    std::wstring asWString() const { return asWStringRef(); }
+    std::wstring asWString() const { return std::wstring(asWStringRef()); }
 
     /*!
-     * ver1.10〜: const参照
+     * * (ver1.10〜) <del>const参照に変更</del>
+     * * (ver3.0〜) string_viewに変更
      */
-    operator const std::string &() const { return asStringRef(); }
+    operator std::string_view() const { return asStringRef(); }
+    /*!
+     * \since ver2.0
+     *
+     * * (ver3.0〜) wstring_viewに変更
+     */
+    operator std::wstring_view() const { return asWStringRef(); }
     /*!
      * \since ver2.0
      */
-    operator const std::wstring &() const { return asWStringRef(); }
+    operator const char *() const { return asCStr(); }
     /*!
      * \since ver2.0
      */
-    operator const char *() const { return asStringRef().c_str(); }
-    /*!
-     * \since ver2.0
-     */
-    operator const wchar_t *() const { return asWStringRef().c_str(); }
+    operator const wchar_t *() const { return asWCStr(); }
 
     /*!
      * \brief 実数として返す
      * \since ver2.0
      */
-    double asDouble() const;
+    WEBCFACE_DLL double asDouble() const;
     /*!
      * \brief int型の整数として返す
      * \since ver2.0
      */
-    int asInt() const;
+    WEBCFACE_DLL int asInt() const;
     /*!
      * \brief long long型の整数として返す
      * \since ver2.0
      */
-    long long asLLong() const;
+    WEBCFACE_DLL long long asLLong() const;
     /*!
      * \brief 数値として返す
      * \since ver1.10
@@ -279,13 +307,13 @@ class WEBCFACE_DLL ValAdaptor {
      * * 数値型が入っていた場合、0でなければtrueを返す
      *
      */
-    bool asBool() const;
+    WEBCFACE_DLL bool asBool() const;
     /*!
      * boolへ変換
      */
     operator bool() const { return asBool(); }
 
-    bool operator==(const ValAdaptor &other) const;
+    WEBCFACE_DLL bool operator==(const ValAdaptor &other) const;
     bool operator!=(const ValAdaptor &other) const { return !(*this == other); }
 
     template <typename T, typename std::enable_if_t<

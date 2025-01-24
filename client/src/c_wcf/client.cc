@@ -2,8 +2,6 @@
 
 extern "C" {
 
-void wcfUsingUTF8(int flag) { usingUTF8(flag); }
-
 wcfClient *wcfInit(const char *name, const char *host, int port) {
     auto wcli = new Client(strOrEmpty(name), host ? host : "127.0.0.1", port);
     wcli_list.push_back(wcli);
