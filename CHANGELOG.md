@@ -6,7 +6,6 @@
 ### Changed
 * webcface-common のビルドにも `-fabi-version=11`と`-Wabi`の指定を追加 (#476)
 <!-- * Ubuntu arm64とarmhfのテストをするCIを追加 (#478) -->
-* macOS以外でも libcurl >=8.10 を除外する制約を追加 (#484)
 <!-- ### Fixed -->
 ### Added
 * installer.sh (#480, #481)
