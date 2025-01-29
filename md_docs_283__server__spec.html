@@ -143,15 +143,15 @@ $(document).ready(function(){initNavTree('md_docs_283__server__spec.html',''); i
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md258">接続</a></li>
-<li class="level1"><a href="#autotoc_md259">切断</a></li>
-<li class="level1"><a href="#autotoc_md260">ping</a></li>
-<li class="level1"><a href="#autotoc_md261">データの送信 (Sync)</a></li>
+<ul><li class="level1"><a href="#autotoc_md259">接続</a></li>
+<li class="level1"><a href="#autotoc_md260">切断</a></li>
+<li class="level1"><a href="#autotoc_md261">ping</a></li>
+<li class="level1"><a href="#autotoc_md262">データの送信 (Sync)</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md257"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md258"></a></p>
 <p>WebCFace Server の動作仕様についてです。 各メッセージのデータ型の説明 <a class="el" href="md_docs_281__message.html">8-1. Message</a> も参照しながら読んでください。</p>
-<h1><a class="anchor" id="autotoc_md258"></a>
+<h1><a class="anchor" id="autotoc_md259"></a>
 接続</h1>
 <ul>
 <li>デフォルトでは7530ポートでlistenします。</li>
@@ -162,18 +162,18 @@ $(document).ready(function(){initNavTree('md_docs_283__server__spec.html',''); i
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md259"></a>
+<h1><a class="anchor" id="autotoc_md260"></a>
 切断</h1>
 <ul>
 <li>クライアントが切断した場合、そのクライアントへの call (81) に対する応答が完了していないものがもしあれば、 call response (82) や call result (83) をそのクライアントに代わってcall呼び出し元に送ります。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md260"></a>
+<h1><a class="anchor" id="autotoc_md261"></a>
 ping</h1>
 <ul>
 <li>一定時間おきに全クライアントに ping (89) を送信し、 ping (89) が返ってくるまでの時間を計測します。</li>
 <li>ping status req (91) を送ってきたメンバーに対しては、全クライアントのping情報を ping status (90) として一定時間おきに送ります。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md261"></a>
+<h1><a class="anchor" id="autotoc_md262"></a>
 データの送信 (Sync)</h1>
 <ul>
 <li>ToDo <del>飽きた</del>あとで続き書く</li>
@@ -190,7 +190,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 27 2025 14:15:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 29 2025 16:38:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

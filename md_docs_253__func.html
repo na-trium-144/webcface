@@ -149,12 +149,13 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </li>
 <li class="level2"><a href="#autotoc_md95">関数をWebUIから隠す</a></li>
 <li class="level2"><a href="#autotoc_md96">FuncListener</a></li>
+<li class="level2"><a href="#autotoc_md97">Funcの表示順 (index)</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md97">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md98">Entry</a></li>
+<li class="level1"><a href="#autotoc_md98">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md99">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md99">関数の実行</a></li>
+<li class="level1"><a href="#autotoc_md100">関数の実行</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md90"></a></p>
@@ -579,25 +580,48 @@ FuncListener</h2>
 <p class="startli">詳細は <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.CallHandle">webcface.CallHandle</a></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md97"></a>
-関数の情報の取得</h1>
-<p>関数の引数や戻り値の情報を取得できます。 他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md97"></a>
+Funcの表示順 (index)</h2>
+<p>WebUI(ver1.13〜)でFunc一覧を表示する際、名前順の表示とFuncが登録された順の表示を切り替えることができます。</p>
+<p>Funcが登録された順番(index)は送信側のクライアントライブラリで自動的に管理されますが、 手動で上書きして表示順を指定することも可能です。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><b class="tab-title">C++</b> Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">std::vector&lt;webcface::Arg&gt; args = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).args();</div>
+<li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.8</span></dd></dl>
+<div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set(...).setIndex(1);</div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;fuga&quot;</span>).set(...).setIndex(3);</div>
+<div class="line">wcli.func(<span class="stringliteral">&quot;piyo&quot;</span>).set(...).setIndex(2);</div>
+</div><!-- fragment --> のように、関数のsetのあとにindexを指定できます。</li>
+<li><b class="tab-title">JavaScript</b> <dl class="section since"><dt>Since</dt><dd><span class="since-js">1.11</span></dd></dl>
+set関数の4番目の引数で指定できます。 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(</div>
+<div class="line">    () =&gt; { /*...*/ }, // 関数</div>
+<div class="line">    valType.float_, // 戻り値の型</div>
+<div class="line">    [...], // 引数の情報</div>
+<div class="line">    1, // index</div>
+<div class="line">);</div>
+</div><!-- fragment --></li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md98"></a>
+関数の情報の取得</h1>
+<p>関数の引数や戻り値、 (<span class="since-c">2.8</span><span class="since-js">1.11</span>関数が登録された順番) の情報を取得できます。 他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><p class="startli"><b class="tab-title">C++</b> Member::func() でFuncクラスのオブジェクトが得られ、 Func::returnType() や Func::args() で関数の引数や戻り値の情報を取得できます。 </p><div class="fragment"><div class="line">std::vector&lt;webcface::Arg&gt; args = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).args();</div>
 <div class="line"><a class="code hl_enumeration" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a> return_type = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).returnType();</div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a></div><div class="ttdeci">ValType</div><div class="ttdoc">引数や戻り値の型を表すenum</div><div class="ttdef"><b>Definition</b> val_adaptor.h:21</div></div>
-</div><!-- fragment --> 引数の情報については <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照 また、戻り値型は <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185" title="引数や戻り値の型を表すenum">webcface::ValType</a> というenum型で得られます。</li>
-<li><b class="tab-title">JavaScript</b> Member.func() でFuncクラスのオブジェクトが得られ、 Func.returnType や Func.args で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">const args = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).args;</div>
+</div><!-- fragment --><p> 引数の情報については <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照 また、戻り値型は <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185" title="引数や戻り値の型を表すenum">webcface::ValType</a> というenum型で得られます。</p>
+<p class="startli"><span class="since-c">2.8</span> 関数がset()などで登録された順番 (もしくは送信側クライアントが上書きした値) を Func::index() で取得できます。</p>
+</li>
+<li><p class="startli"><b class="tab-title">JavaScript</b> Member.func() でFuncクラスのオブジェクトが得られ、 Func.returnType や Func.args で関数の引数や戻り値の情報を取得できます。 </p><div class="fragment"><div class="line">const args = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).args;</div>
 <div class="line">const returnType = wcli.member(&quot;foo&quot;).func(&quot;hoge&quot;).returnType;</div>
-</div><!-- fragment --> 引数の情報については <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照</li>
+</div><!-- fragment --><p> 引数の情報については <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照</p>
+<p class="startli"><span class="since-js">1.11</span> 関数がset()などで登録された順番 (もしくは送信側クライアントが上書きした値) を Func.index で取得できます。</p>
+</li>
 <li><b class="tab-title">Python</b> Member.func() でFuncクラスのオブジェクトが得られ、 Func.return_type や Func.args で関数の引数や戻り値の情報を取得できます。 <div class="fragment"><div class="line">args = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).args</div>
 <div class="line">return_type = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).return_type</div>
 </div><!-- fragment --> 引数の情報については <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.Arg">webcface.Arg</a> を参照</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md98"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md99"></a>
 Entry</h2>
 <p>他のデータ型と同様、関数が存在するかどうかを取得することができます。 詳細は <a class="el" href="md_docs_243__field.html">4-3. Field</a> を参照してください</p>
-<h1><a class="anchor" id="autotoc_md99"></a>
+<h1><a class="anchor" id="autotoc_md100"></a>
 関数の実行</h1>
 <p>他クライアントに登録された関数を呼び出すことができます。 (自分でsetした関数を自分で実行することも一応可能です)</p>
 <p>引数を渡したり、戻り値またはエラーメッセージを取得することができます。</p>
@@ -873,7 +897,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Jan 27 2025 14:15:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Wed Jan 29 2025 16:38:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -298,6 +298,7 @@ var namespacewebcface =
     [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#ace78d3c61398bd3193ccd4734299a614", null ],
     [ "fetched_handles_w", "namespacewebcface_1_1c__wcf.html#a5631a41514663ff1df2efc189cb18a23", null ],
     [ "field_separator", "namespacewebcface.html#abc51f58b171b3f4a8d47a017d22c1c93", null ],
+    [ "func_index_prev", "namespacewebcface.html#a3b17bb5ba11cb1c0ae84a7c1f4818346", null ],
     [ "func_result_list", "namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3", null ],
     [ "func_val_list", "namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32", null ],
     [ "func_val_list_w", "namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d", null ],
