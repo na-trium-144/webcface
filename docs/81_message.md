@@ -101,11 +101,13 @@ data = {
 		x: any | null,
 		o: any[],
 	}[],
+	i: number, // index
 }
 ```
 * クライアント→サーバーに送ると、サーバー→全クライアントに通知します
 	* mはサーバーがセットします
 * func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです
+* <span class="since-c">2.8</span> index 追加 (関数を登録した順番)
 
 ### call (kind = 81)
 ```js

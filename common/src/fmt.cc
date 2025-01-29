@@ -277,8 +277,9 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Canvas2DOld)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::FuncInfo) {
     return fmt::format_to(
-        ctx.out(), "{}-FuncInfo('{}' from member_id={}, {} args, return={})",
-        msg_kind, m.field.decode(), m.member_id, m.args.size(),
+        ctx.out(),
+        "{}-FuncInfo('{}' from member_id={}, index={}, {} args, return={})",
+        msg_kind, m.field.decode(), m.member_id, m.index, m.args.size(),
         webcface::valTypeStr(m.return_type));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Call) {
