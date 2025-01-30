@@ -37,6 +37,7 @@ jobs:
           options: >
             -v ${{ github.workspace }}:/workspace
             -e SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+            -e DEBIAN_FRONTEND=noninteractive
           run: |
             set -e
             apt-get update -q -y
