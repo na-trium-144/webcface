@@ -2,7 +2,7 @@
 <!-- * リリースにおいて重要度の低い変更はコメントアウトで記述 -->
 <!-- * ドキュメントやREADMEの修正等は記述しない -->
 
-## [2.8.0] -
+## [2.8.0] - 2025-01-30
 ### Changed
 * webcface-common のビルドにも `-fabi-version=11`と`-Wabi`の指定を追加 (#476)
 <!-- * Ubuntu arm64とarmhfのテストをするCIを追加 (#478) -->
@@ -11,7 +11,7 @@
 * installer.sh (#480, #481)
 * ValueElementRef, Value::at(), size() (#486)
 	* `Value::operator[](int)` の返り値型が変更になる
-* FuncInfoのindex (#487)
+* FuncをWebUI上で名前順ではなく登録順に並べる機能を追加 (#487)
 	* Func::index(), setIndex()
 
 ## [2.7.0] - 2025-01-17
