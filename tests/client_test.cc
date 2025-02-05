@@ -15,26 +15,31 @@ TEST_F(ClientTest, unixSocketConnection) {
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
+    EXPECT_FALSE(Member(*wcli_).connected());
     wcli_->start();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
+    EXPECT_TRUE(Member(*wcli_).connected());
 }
 TEST_F(ClientTest, connectionByStart) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
+    EXPECT_FALSE(Member(*wcli_).connected());
     wcli_->start();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
+    EXPECT_TRUE(Member(*wcli_).connected());
 }
 TEST_F(ClientTest, connectionByWait) {
     dummy_s = std::make_shared<DummyServer>(false);
     wait();
     EXPECT_FALSE(dummy_s->connected());
     EXPECT_FALSE(wcli_->connected());
+    wcli_->onConnect([&] { ++callback_called; });
     std::promise<void> p;
     auto f = p.get_future();
     std::thread t([&] {
@@ -44,13 +49,16 @@ TEST_F(ClientTest, connectionByWait) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
+    EXPECT_EQ(callback_called, 0);
     dummy_s->waitRecv<message::SyncInit>([&](auto) {});
     EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
               std::future_status::ready);
+    EXPECT_EQ(callback_called, 0);
     dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
     t.join();
     f.get();
     EXPECT_TRUE(wcli_->connected());
+    EXPECT_EQ(callback_called, 1);
 }
 TEST_F(ClientTest, noAutoReconnect) {
     EXPECT_TRUE(wcli_->autoReconnect());
@@ -101,9 +109,26 @@ TEST_F(ClientTest, close) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
+    EXPECT_EQ(callback_called, 0);
     wcli_.reset();
     wait();
     EXPECT_FALSE(dummy_s->connected());
+}
+TEST_F(ClientTest, disconnect) {
+    dummy_s = std::make_shared<DummyServer>(false);
+    wcli_->onDisconnect([&] { ++callback_called; });
+    wcli_->start();
+    while (!dummy_s->connected() || !wcli_->connected()) {
+        wait();
+    }
+    EXPECT_EQ(callback_called, 0);
+    dummy_s.reset();
+    wait();
+    wcli_->sync();
+    wait();
+    wcli_->sync();
+    EXPECT_FALSE(wcli_->connected());
+    EXPECT_EQ(callback_called, 1);
 }
 TEST_F(ClientTest, name) {
     EXPECT_EQ(wcli_->name(), self_name.decode());
@@ -269,9 +294,12 @@ TEST_F(ClientTest, entry) {
         wait();
     }
     wcli_->onMemberEntry(callback<Member>());
+    wcli_->member("a").onConnect(callback<Member>());
+    EXPECT_FALSE(wcli_->member("a").connected());
     dummy_s->send(message::SyncInit{{}, "a"_ss, 10, "b", "1", "12345"});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-    EXPECT_EQ(callback_called, 1);
+    EXPECT_EQ(callback_called, 2);
+    EXPECT_TRUE(wcli_->member("a").connected());
     callback_called = 0;
     EXPECT_EQ(wcli_->members().size(), 1u);
     EXPECT_EQ(wcli_->members()[0].name(), "a");
@@ -387,6 +415,14 @@ TEST_F(ClientTest, entry) {
     dummy_s->send(message::Sync{10, std::chrono::system_clock::now()});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
+    callback_called = 0;
+
+    wcli_->member("a").onDisconnect(callback<Member>());
+    EXPECT_TRUE(wcli_->member("a").connected());
+    dummy_s->send(message::Closed{{}, 10});
+    wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
+    EXPECT_EQ(callback_called, 1);
+    EXPECT_FALSE(wcli_->member("a").connected());
     callback_called = 0;
 }
 TEST_F(ClientTest, childrenEntry) {

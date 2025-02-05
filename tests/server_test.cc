@@ -279,6 +279,10 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.args.size(), 0u);
         EXPECT_EQ(obj.index, 5);
     });
+
+    dummy_c1.reset();
+    dummy_c2->waitRecv<message::Closed>(
+        [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
 }
 TEST_F(ServerTest, log) {
     dummy_c1 = std::make_shared<DummyClient>();

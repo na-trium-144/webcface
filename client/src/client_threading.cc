@@ -113,7 +113,9 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             }
             lock_ws->do_ws_init = false;
             lock_ws->connected = data->current_curl_connected;
-            lock_ws->did_disconnect = false;
+            if (lock_ws->connected) {
+                lock_ws->did_disconnect = false;
+            }
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
             // ここのnotify_allはdo_ws_initのリセットとconnectedの更新を通知
