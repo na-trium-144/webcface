@@ -310,7 +310,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     /*!
      * 存在するメンバーのリスト
      *
-     * 値は接続中true,切断後false
+     * * (ver2.9〜) 値は接続中true,切断後false
+     * * 自身の接続状態はここに含まない
      */
     SharedMutexProxy<StrMap1<bool>> member_entry;
 
@@ -367,8 +368,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * なのでmapになっていないmember_entry_eventもnullの可能性がある
      */
     std::shared_ptr<std::function<void(Member)>> member_entry_event;
+
+    /*!
+     * 自身に対するonConnectイベントもここに入れる
+     * (member_entry とは扱いが異なる)
+     */
     SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Member)>>>>
-        member_connected_event, member_closed_event;
+        member_connected_event, member_disconnected_event;
 
     SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Value)>>>>
         value_change_event;

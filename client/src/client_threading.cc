@@ -79,9 +79,7 @@ void internal::ClientData::close() {
     this->closing.store(true);
     lock_ws.cond().notify_all();
 }
-bool Client::connected() const {
-    return data->ws_data.lock()->connected;
-}
+bool Client::connected() const { return data->ws_data.lock()->connected; }
 void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
@@ -131,8 +129,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                     // nulloptの場合はここでsyncDataFirstを呼ぶ
                     auto lock_s = data->sync_data.lock();
                     if (!lock_s->sync_first) {
-                        lock_s->sync_first =
-                            lock_s->syncDataFirst(data.get());
+                        lock_s->sync_first = lock_s->syncDataFirst(data.get());
                     }
                     sync_first = std::move(*lock_s->sync_first);
                     // data->sync_firstはnulloptでない値が入ったままにしておく
@@ -155,8 +152,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 lock_ws->recv_ready = true;
                 lock_ws.cond().wait_until(
                     lock_ws, *last_recv + std::chrono::microseconds(100), [&] {
-                        return data->closing.load() ||
-                               lock_ws->do_ws_recv ||
+                        return data->closing.load() || lock_ws->do_ws_recv ||
                                !lock_ws->sync_queue.empty();
                     });
                 lock_ws->do_ws_recv = true;
@@ -293,8 +289,7 @@ void internal::ClientData::syncImpl(
         {
             auto lock_s = this->sync_data.lock();
             if (!connected2 && !lock_s->sync_first) {
-                lock_s->sync_first =
-                    lock_s->syncDataFirst(this);
+                lock_s->sync_first = lock_s->syncDataFirst(this);
             } else {
                 auto sync_now_data = lock_s->syncData(this, false);
                 lock_s.unlock();
@@ -317,8 +312,7 @@ void internal::ClientData::syncImpl(
                             !this->auto_reconnect.load());
                 });
             }
-            if (lock_ws->recv_queue.empty() &&
-                !lock_ws->did_disconnect) {
+            if (lock_ws->recv_queue.empty() && !lock_ws->did_disconnect) {
                 // timeoutし、recv準備完了でない場合return
                 break;
             }
@@ -326,21 +320,24 @@ void internal::ClientData::syncImpl(
             // recv_queueにデータが入るまで無制限に待つ
             lock_ws.cond().wait(lock_ws, [&] {
                 return this->closing.load() ||
-                       (!lock_ws->recv_queue.empty() &&
-                        !lock_ws->do_ws_recv) ||
+                       (!lock_ws->recv_queue.empty() && !lock_ws->do_ws_recv) ||
                        lock_ws->did_disconnect ||
-                       (!lock_ws->connected &&
-                        !this->auto_reconnect.load());
+                       (!lock_ws->connected && !this->auto_reconnect.load());
             });
         }
         if (lock_ws->did_disconnect) {
             {
                 ScopedUnlock un(lock_ws);
-                StrMap1<bool> member_entry = this->member_entry.lock().get();
-                for (const auto &it : member_entry) {
+                auto cl = this->member_disconnected_event.lock()
+                              .get()[self_member_name];
+                if (cl && *cl) {
+                    cl->operator()(Field{shared_from_this(), self_member_name});
+                }
+                StrMap1<bool> entry = this->member_entry.lock().get();
+                for (const auto &it : entry) {
                     const auto &name = it.first;
                     this->member_entry.lock().get()[name] = false;
-                    auto cl = this->member_closed_event.lock().get()[name];
+                    cl = this->member_disconnected_event.lock().get()[name];
                     if (cl && *cl) {
                         cl->operator()(Field{shared_from_this(), name});
                     }
@@ -398,8 +395,7 @@ const Client &Client::waitConnection() const {
                 lock_ws->do_ws_init = true;
                 lock_ws.cond().notify_all();
                 lock_ws.cond().wait(lock_ws, [this, &lock_ws] {
-                    return data->closing.load() ||
-                           lock_ws->connected ||
+                    return data->closing.load() || lock_ws->connected ||
                            !lock_ws->do_ws_init;
                 });
             } else {

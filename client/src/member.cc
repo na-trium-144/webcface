@@ -19,6 +19,28 @@ T Member::log() const {
 }
 template WEBCFACE_DLL Log Member::log<Log, true>() const;
 
+bool Member::connected() const {
+    auto data = this->dataLock();
+    if (data->isSelf(*this)) {
+        return data->ws_data.lock()->connected;
+    } else {
+        auto lock_entry = data->member_entry.shared_lock();
+        return lock_entry->count(this->member_) &&
+               lock_entry->at(this->member_);
+    }
+}
+const Member &Member::onDisconnect(
+    std::function<void WEBCFACE_CALL_FP(Member)> callback) const {
+    dataLock()->member_disconnected_event.lock().get()[member_] =
+        std::make_shared<std::function<void(Member)>>(std::move(callback));
+    return *this;
+}
+const Member &Member::onConnect(
+    std::function<void WEBCFACE_CALL_FP(Member)> callback) const {
+    dataLock()->member_connected_event.lock().get()[member_] =
+        std::make_shared<std::function<void(Member)>>(std::move(callback));
+    return *this;
+}
 
 const Member &Member::onValueEntry(std::function<void(Value)> callback) const {
     dataLock()->value_entry_event.lock().get()[member_] =

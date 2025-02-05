@@ -66,6 +66,11 @@ void internal::ClientData::onRecv(
                 lock_ws->sync_init_end = true;
                 lock_ws.cond().notify_all();
             }
+            auto cl =
+                this->member_connected_event.lock().get()[self_member_name];
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), self_member_name});
+            }
             break;
         }
         case MessageKind::ping: {
@@ -368,7 +373,7 @@ void internal::ClientData::onRecv(
             auto name = getMemberNameFromId(r.member_id);
             this->member_entry.lock().get()[name] = false;
             auto cl = findFromMap1(
-                this->member_closed_event.shared_lock().get(), name);
+                this->member_disconnected_event.shared_lock().get(), name);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), name});
             }
