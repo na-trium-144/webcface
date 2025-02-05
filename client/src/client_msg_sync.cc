@@ -301,7 +301,7 @@ std::vector<Member> Client::members() const {
     std::vector<Member> ret;
     ret.reserve(data->member_entry.size());
     for (const auto &m : data->member_entry) {
-        ret.push_back(member(m));
+        ret.push_back(member(m.first));
     }
     return ret;
 }

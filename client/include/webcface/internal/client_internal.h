@@ -153,6 +153,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         std::queue<std::vector<std::pair<int, std::shared_ptr<void>>>>
             recv_queue;
         /*!
+         * 切断時にthread側がtrueにする
+         *
+         * Client側は次のsync()の際にこれがtrueの場合member_entryをリセットしてからfalseに戻す
+         */
+        bool did_disconnect = false;
+        /*!
          * \brief 送信したいメッセージを入れるキュー
          *
          * 接続できていない場合送信されずキューにたまる
@@ -366,7 +372,12 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     onRecv(const std::vector<std::pair<int, std::shared_ptr<void>>> &messages);
 
     std::mutex entry_m;
-    StrSet1 member_entry;
+    /*!
+     * 存在するメンバーのリスト
+     *
+     * 値は接続中true,切断後false
+     */
+    StrMap1<bool> member_entry;
     SyncDataStore2<std::shared_ptr<ValueData>> value_store;
     SyncDataStore2<std::shared_ptr<TextData>> text_store;
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
@@ -423,6 +434,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * なのでmapになっていないmember_entry_eventもnullの可能性がある
      */
     std::shared_ptr<std::function<void(Member)>> member_entry_event;
+    StrMap1<std::shared_ptr<std::function<void(Member)>>>
+        member_connected_event, member_closed_event;
 
     StrMap2<std::shared_ptr<std::function<void(Value)>>> value_change_event;
     StrMap2<std::shared_ptr<std::function<void(Variant)>>> text_change_event;

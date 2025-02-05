@@ -66,9 +66,12 @@ void MemberData::onClose() {
         this->image_cv.notify_all();
     }
     store->forEach([&](auto cd) {
-        std::lock_guard lock_cd(cd->image_m);
-        if (cd->image_req.count(this->name)) {
-            cd->image_cv.notify_all();
+        cd->send(message::Closed{{}, this->member_id});
+        {
+            std::lock_guard lock_cd(cd->image_m);
+            if (cd->image_req.count(this->name)) {
+                cd->image_cv.notify_all();
+            }
         }
     });
     for (auto &v : image_convert_thread) {
@@ -1391,6 +1394,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::log_entry_default:
         case MessageKind::sync_init_end:
         case MessageKind::ping_status:
+        case MessageKind::closed:
             if (!message_kind_warned[kind]) {
                 logger->warn("invalid message kind {}", kind);
                 message_kind_warned[kind] = true;

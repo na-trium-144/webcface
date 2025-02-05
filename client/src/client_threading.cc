@@ -116,6 +116,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             }
             lock_ws.getData().do_ws_init = false;
             lock_ws.getData().connected = data->current_curl_connected;
+            lock_ws.getData().did_disconnect = false;
             last_connected = std::chrono::steady_clock::now();
             last_recv = std::nullopt;
             // ここのnotify_allはdo_ws_initのリセットとconnectedの更新を通知
@@ -228,6 +229,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                 // recv中またはsend中に切断を検知した場合
                 data->self_member_id = std::nullopt;
                 lock_ws.getData().sync_init_end = false;
+                lock_ws.getData().did_disconnect = true;
                 ScopedUnlock un(lock_ws);
                 {
                     ClientData::ScopedSyncLock lock_s(data);
@@ -312,13 +314,15 @@ void internal::ClientData::syncImpl(
                     return this->closing.load() ||
                            (!lock_ws.getData().recv_queue.empty() &&
                             !lock_ws.getData().do_ws_recv) ||
+                           lock_ws.getData().did_disconnect ||
                            (!lock_ws.getData().connected &&
                             !this->auto_reconnect.load());
                 });
             }
-            if (lock_ws.getData().recv_queue.empty()) {
+            if (lock_ws.getData().recv_queue.empty() &&
+                !lock_ws.getData().did_disconnect) {
                 // timeoutし、recv準備完了でない場合return
-                return;
+                break;
             }
         } else {
             // recv_queueにデータが入るまで無制限に待つ
@@ -326,14 +330,38 @@ void internal::ClientData::syncImpl(
                 return this->closing.load() ||
                        (!lock_ws.getData().recv_queue.empty() &&
                         !lock_ws.getData().do_ws_recv) ||
+                       lock_ws.getData().did_disconnect ||
                        (!lock_ws.getData().connected &&
                         !this->auto_reconnect.load());
             });
         }
+        if (lock_ws.getData().did_disconnect) {
+            {
+                ScopedUnlock un(lock_ws);
+                StrMap1<bool> member_entry;
+                {
+                    std::lock_guard lock(this->entry_m);
+                    member_entry = this->member_entry;
+                }
+                for (const auto &it : member_entry) {
+                    const auto &name = it.first;
+                    std::shared_ptr<std::function<void(Member)>> cl;
+                    {
+                        std::lock_guard lock(this->entry_m);
+                        this->member_entry[name] = false;
+                        cl = this->member_closed_event[name];
+                    }
+                    if (cl && *cl) {
+                        cl->operator()(Field{shared_from_this(), name});
+                    }
+                }
+            }
+            lock_ws.getData().did_disconnect = false;
+        }
         if (this->closing.load() ||
             (!lock_ws.getData().connected && !this->auto_reconnect.load())) {
             // close時と接続されてないときreturn
-            return;
+            break;
         }
 
         while (!lock_ws.getData().recv_queue.empty()) {

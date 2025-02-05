@@ -108,7 +108,7 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<webcface::message::PingStatus *>(obj.get());
             this->logger_internal->debug("received {}", r);
             this->ping_status = r.status;
-            StrSet1 members;
+            StrMap1<bool> members;
             {
                 std::lock_guard lock(entry_m);
                 members = this->member_entry;
@@ -121,7 +121,8 @@ void internal::ClientData::onRecv(
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), self_member_name});
             }
-            for (const auto &member_name : members) {
+            for (const auto &it : members) {
+                const auto &member_name = it.first;
                 {
                     std::lock_guard lock(event_m);
                     cl = findFromMap1(this->ping_event, member_name)
@@ -395,7 +396,7 @@ void internal::ClientData::onRecv(
             this->logger_internal->debug("received {}", r);
             {
                 std::lock_guard lock(this->entry_m);
-                this->member_entry.emplace(r.member_name);
+                this->member_entry[r.member_name] = true;
             }
             this->value_store.initMember(r.member_name);
             this->text_store.initMember(r.member_name);
@@ -417,6 +418,28 @@ void internal::ClientData::onRecv(
             }
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), r.member_name});
+            }
+            {
+                std::lock_guard lock(this->entry_m);
+                cl = this->member_connected_event[r.member_name];
+            }
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), r.member_name});
+            }
+            break;
+        }
+        case MessageKind::closed: {
+            auto &r = *static_cast<webcface::message::Closed *>(obj.get());
+            this->logger_internal->debug("received {}", r);
+            auto name = getMemberNameFromId(r.member_id);
+            std::shared_ptr<std::function<void(Member)>> cl;
+            {
+                std::lock_guard lock(this->entry_m);
+                this->member_entry[name] = false;
+                cl = this->member_closed_event[name];
+            }
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), name});
             }
             break;
         }

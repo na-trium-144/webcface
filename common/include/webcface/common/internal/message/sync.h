@@ -152,6 +152,14 @@ struct Sync : public MessageBase<MessageKind::sync> {
     }
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("t", time))
 };
+/*!
+ * \brief クライアントが切断したときに送られる
+ * \since ver2.9
+ */
+struct Closed : public MessageBase<MessageKind::closed> {
+    unsigned int member_id = 0;
+    MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id))
+};
 
 } // namespace message
 WEBCFACE_NS_END
@@ -162,3 +170,4 @@ WEBCFACE_MESSAGE_FMT(webcface::message::Sync)
 WEBCFACE_MESSAGE_FMT(webcface::message::Ping)
 WEBCFACE_MESSAGE_FMT(webcface::message::PingStatus)
 WEBCFACE_MESSAGE_FMT(webcface::message::PingStatusReq)
+WEBCFACE_MESSAGE_FMT(webcface::message::Closed)
