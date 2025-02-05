@@ -90,8 +90,8 @@ Log::Log(const Field &base) : Field(base) {}
 
 const Log &Log::onChange(std::function<void(Log)> callback) const {
     this->request();
-    std::lock_guard lock(this->dataLock()->event_m);
-    this->dataLock()->log_append_event[this->member_][this->field_] =
+    this->dataLock()->log_append_event.lock().get()[this->member_]
+                                                   [this->field_] =
         std::make_shared<std::function<void(Log)>>(std::move(callback));
     return *this;
 }

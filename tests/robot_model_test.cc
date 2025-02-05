@@ -53,12 +53,12 @@ TEST_F(RobotModelTest, field) {
 }
 TEST_F(RobotModelTest, eventTarget) {
     model("a", "b").onChange(callback<RobotModel>());
-    data_->robot_model_change_event["a"_ss]["b"_ss]->operator()(
+    data_->robot_model_change_event.lock().get()["a"_ss]["b"_ss]->operator()(
         field("a", "b"));
     EXPECT_EQ(callback_called, 1);
 }
 TEST_F(RobotModelTest, set) {
-    data_->robot_model_change_event[self_name]["b"_ss] =
+    data_->robot_model_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(RobotModel)>>(callback());
     model(self_name, "b").set({RobotLink{"a", Geometry{}, ViewColor::black}});
     EXPECT_EQ((*data_->robot_model_store.getRecv(self_name, "b"_ss))->size(),
@@ -67,7 +67,7 @@ TEST_F(RobotModelTest, set) {
     EXPECT_THROW(model("a", "b").set({}), std::invalid_argument);
 }
 TEST_F(RobotModelTest, sync) {
-    data_->robot_model_change_event[self_name]["b"_ss] =
+    data_->robot_model_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(RobotModel)>>(callback());
     auto m = model(self_name, "b");
     m << RobotLink{"1", Geometry{}, ViewColor::black};

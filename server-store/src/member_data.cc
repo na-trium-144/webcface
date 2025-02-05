@@ -132,9 +132,9 @@ bool MemberData::hasReq(const SharedString &member) {
                        [](const auto &it) { return it.second > 0; });
 }
 
-std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
-                                                   const SharedString &member,
-                                                   const SharedString &field) {
+std::pair<unsigned int, SharedString>
+findReqField(internal::StrMap2<unsigned int> &req, const SharedString &member,
+             const SharedString &field) {
     for (const auto &req_it : req[member]) {
         if (req_it.first == field) {
             return std::make_pair(req_it.second, nullptr);

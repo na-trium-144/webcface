@@ -86,28 +86,28 @@ TEST_F(DataTest, field) {
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());
-    data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     value("a", "b").onChange(nullptr);
-    EXPECT_FALSE(*data_->value_change_event["a"_ss]["b"_ss]);
+    EXPECT_FALSE(*data_->value_change_event.lock().get()["a"_ss]["b"_ss]);
     value("a", "b").onChange(callbackVoid());
-    data_->value_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     text("a", "b").onChange(callback<Text>());
-    data_->text_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->text_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     log("a", "b").onChange(callback<Log>());
-    data_->log_append_event["a"_ss]["b"_ss]->operator()(field("a"));
+    data_->log_append_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(DataTest, valueSet) {
-    data_->value_change_event[self_name]["b"_ss] =
+    data_->value_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "b").set(123);
     EXPECT_EQ((**data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
@@ -115,7 +115,7 @@ TEST_F(DataTest, valueSet) {
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
 TEST_F(DataTest, valueSetVec) {
-    data_->value_change_event[self_name]["d"_ss] =
+    data_->value_change_event.lock().get()[self_name]["d"_ss] =
         std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "d").set({1, 2, 3, 4, 5});
     value(self_name, "d8").set({true, 2, 3, 4, 5.0});
@@ -201,7 +201,7 @@ static_assert(std::is_same_v<traits::ArraySizeTrait<std::vector<double>,
 // }
 
 TEST_F(DataTest, textSet) {
-    data_->text_change_event[self_name]["b"_ss] =
+    data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set("c");
     EXPECT_EQ(static_cast<std::string>(
@@ -211,7 +211,7 @@ TEST_F(DataTest, textSet) {
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
 }
 TEST_F(DataTest, textSetW) {
-    data_->text_change_event[self_name]["b"_ss] =
+    data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set(L"c");
     EXPECT_EQ(static_cast<std::string>(
@@ -221,7 +221,7 @@ TEST_F(DataTest, textSetW) {
     EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
 }
 // TEST_F(DataTest, variantSet) {
-//     data_->text_change_event[self_name]["b"_ss] =
+//     data_->text_change_event.lock().get()[self_name]["b"_ss] =
 //         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
 //     variant(self_name, "b").set(ValAdaptor(123));
 //     EXPECT_EQ(static_cast<std::string>(

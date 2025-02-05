@@ -276,7 +276,7 @@ TEST_F(ClientTest, entry) {
     EXPECT_EQ(wcli_->members().size(), 1u);
     EXPECT_EQ(wcli_->members()[0].name(), "a");
     EXPECT_EQ(wcli_->members()[0].nameW(), L"a");
-    EXPECT_EQ(data_->member_ids["a"_ss], 10u);
+    EXPECT_EQ(data_->member_ids.lock().get()["a"_ss], 10u);
 
     auto m = wcli_->member("a");
     EXPECT_EQ(m.libName(), "b");

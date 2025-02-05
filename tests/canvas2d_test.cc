@@ -60,12 +60,12 @@ TEST_F(Canvas2DTest, field) {
 }
 TEST_F(Canvas2DTest, eventTarget) {
     canvas("a", "b").onChange(callback<Canvas2D>());
-    data_->canvas2d_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->canvas2d_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas2DTest, set) {
-    data_->canvas2d_change_event[self_name]["b"_ss] =
+    data_->canvas2d_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Canvas2D)>>(callback());
     using namespace webcface::geometries;
 

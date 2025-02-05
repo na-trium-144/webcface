@@ -1,6 +1,4 @@
 #pragma once
-#include <mutex>
-#include <condition_variable>
 #include <vector>
 #include <string>
 #include <memory>
@@ -10,6 +8,7 @@
 #include <cstdlib>
 #include "webcface/common/encoding.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/mutex.h"
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "queue.h"
@@ -116,7 +115,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     std::atomic<bool> closing = false;
 
-    struct WsMutexedData {
+    struct WsData {
         /*!
          * current_curl_connectedがWebSocket::initまたはrecv側の内部で変更されるので、
          * それを呼び出したスレッドがそれをこっちに反映させる
@@ -174,45 +173,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         std::queue<std::variant<std::string, SyncDataSnapshot>> sync_queue;
     };
 
-  private:
-    WsMutexedData ws_data;
-    std::mutex ws_m;
-
-  public:
-    /*!
-     * \brief ws_thread, recv_thread, queue 間の同期
-     *
-     * ws_dataの中身
-     * (closing, connected, do_ws_init, do_ws_recv,
-     *  sync_queue, recv_queue, sync_init_end)
-     * が変化した時notifyする
-     *
-     */
-    std::condition_variable ws_cond;
-
-    /*!
-     * std::unique_lockのように使い、lockしている間だけWsMutexedDataにアクセスできる
-     */
-    class ScopedWsLock : public std::unique_lock<std::mutex> {
-        ClientData *data;
-
-      public:
-        explicit ScopedWsLock(ClientData *data)
-            : std::unique_lock<std::mutex>(data->ws_m), data(data) {}
-        explicit ScopedWsLock(const std::shared_ptr<ClientData> &data)
-            : ScopedWsLock(data.get()) {}
-        WsMutexedData &getData() {
-            assert(this->owns_lock());
-            return data->ws_data;
-        }
-    };
+    MutexProxy<WsData> ws_data;
 
     /*!
      * ただの設定フラグなのでmutexやcondとは無関係
      */
     std::atomic<bool> auto_reconnect = true;
 
-    struct SyncMutexedData {
+    struct SyncData {
         /*!
          * 次回接続後一番最初に送信するメッセージ
          *
@@ -249,34 +217,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         SyncDataSnapshot syncData(internal::ClientData *this_, bool is_first);
     };
 
-  private:
-    SyncMutexedData sync_data;
-    /*!
-     * sync_first,syncData(),syncDataFirst()呼び出しをガードするmutex
-     *
-     * ws_mとsync_mを両方同時にロックすることがないようにする
-     *
-     * sync_queueへのpush時にはこれではなくws_mのロックが必要 (ややこしい)
-     */
-    std::mutex sync_m;
-
-  public:
-    /*!
-     * std::unique_lockのように使い、lockしている間だけSyncMutexedDataにアクセスできる
-     */
-    class ScopedSyncLock : public std::unique_lock<std::mutex> {
-        ClientData *data;
-
-      public:
-        explicit ScopedSyncLock(ClientData *data)
-            : std::unique_lock<std::mutex>(data->sync_m), data(data) {}
-        explicit ScopedSyncLock(const std::shared_ptr<ClientData> &data)
-            : ScopedSyncLock(data.get()) {}
-        SyncMutexedData &getData() {
-            assert(this->owns_lock());
-            return data->sync_data;
-        }
-    };
+    MutexProxy<SyncData> sync_data;
 
     /*!
      * 接続中の場合メッセージをキューに入れtrueを返し、
@@ -286,11 +227,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     template <typename T>
     bool messagePushOnline(const T &obj) {
-        ScopedWsLock lock_ws(this);
-        if (lock_ws.getData().connected) {
+        auto lock_ws = this->ws_data.lock();
+        if (lock_ws->connected) {
             this->logger_internal->debug("-> queued to send: {}", obj);
-            lock_ws.getData().sync_queue.push(message::packSingle(obj));
-            this->ws_cond.notify_all();
+            lock_ws->sync_queue.push(message::packSingle(obj));
+            lock_ws.cond().notify_all();
             return true;
         } else {
             return false;
@@ -304,16 +245,11 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      */
     template <typename T>
     bool messagePushReq(const T &obj) {
-        bool has_sync_first;
-        {
-            ScopedSyncLock lock_s(this);
-            has_sync_first = (lock_s.getData().sync_first != std::nullopt);
-        }
-        if (has_sync_first) {
+        if (this->sync_data.lock()->sync_first != std::nullopt) {
             this->logger_internal->debug("-> queued to send: {}", obj);
-            ScopedWsLock lock_ws(this);
-            lock_ws.getData().sync_queue.push(message::packSingle(obj));
-            this->ws_cond.notify_all();
+            auto lock_ws = this->ws_data.lock();
+            lock_ws->sync_queue.push(message::packSingle(obj));
+            lock_ws.cond().notify_all();
             return true;
         } else {
             return false;
@@ -327,15 +263,15 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     template <typename T>
     void messagePushAlways(const T &obj) {
         this->logger_internal->debug("-> queued to send: {}", obj);
-        ScopedWsLock lock_ws(this);
-        lock_ws.getData().sync_queue.push(message::packSingle(obj));
-        this->ws_cond.notify_all();
+        auto lock_ws = this->ws_data.lock();
+        lock_ws->sync_queue.push(message::packSingle(obj));
+        lock_ws.cond().notify_all();
     }
     void messagePushAlways(SyncDataSnapshot &&msg) {
         this->logger_internal->debug("-> sync data queued");
-        ScopedWsLock lock_ws(this);
-        lock_ws.getData().sync_queue.push(std::move(msg));
-        this->ws_cond.notify_all();
+        auto lock_ws = this->ws_data.lock();
+        lock_ws->sync_queue.push(std::move(msg));
+        lock_ws.cond().notify_all();
     }
 
     std::string packSyncDataFirst(const SyncDataFirst &data);
@@ -371,13 +307,13 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     void
     onRecv(const std::vector<std::pair<int, std::shared_ptr<void>>> &messages);
 
-    std::mutex entry_m;
     /*!
      * 存在するメンバーのリスト
      *
      * 値は接続中true,切断後false
      */
-    StrMap1<bool> member_entry;
+    SharedMutexProxy<StrMap1<bool>> member_entry;
+
     SyncDataStore2<std::shared_ptr<ValueData>> value_store;
     SyncDataStore2<std::shared_ptr<TextData>> text_store;
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
@@ -394,16 +330,17 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * \brief listenerがfetchするの待ちの関数呼び出しをためておく
      *
      */
-    StrMap1<Queue<FuncCallHandle>> func_listener_handlers;
+    MutexProxy<StrMap1<Queue<FuncCallHandle>>> func_listener_handlers;
 
-    StrMap1<unsigned int> member_ids;
-    std::unordered_map<unsigned int, std::string> member_lib_name,
-        member_lib_ver, member_addr;
+    SharedMutexProxy<StrMap1<unsigned int>> member_ids;
+    SharedMutexProxy<std::unordered_map<unsigned int, std::string>>
+        member_lib_name, member_lib_ver, member_addr;
     const SharedString &getMemberNameFromId(unsigned int id) const {
         if (self_member_id && *self_member_id == id) {
             return self_member_name;
         }
-        for (const auto &it : member_ids) {
+        auto lock_member_ids = member_ids.shared_lock();
+        for (const auto &it : lock_member_ids.get()) {
             if (it.second == id) {
                 return it.first;
             }
@@ -415,18 +352,14 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         if (name == self_member_name && self_member_id) {
             return *self_member_id;
         }
-        auto it = member_ids.find(name);
-        if (it != member_ids.end()) {
+        auto lock_member_ids = member_ids.shared_lock();
+        auto it = lock_member_ids->find(name);
+        if (it != lock_member_ids->end()) {
             return it->second;
         }
         return 0;
     }
 
-    /*!
-     * \brief コールバックリスト(のmapなど)にアクセスするときにロック
-     *
-     */
-    std::mutex event_m;
     /*!
      * 各種イベントはコールバックを登録しようとした時(EventTargetの初期化時)
      * にはじめて初期化する。
@@ -434,43 +367,53 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
      * なのでmapになっていないmember_entry_eventもnullの可能性がある
      */
     std::shared_ptr<std::function<void(Member)>> member_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Member)>>>
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Member)>>>>
         member_connected_event, member_closed_event;
 
-    StrMap2<std::shared_ptr<std::function<void(Value)>>> value_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Variant)>>> text_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Image)>>> image_change_event;
-    StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Value)>>>>
+        value_change_event;
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Variant)>>>>
+        text_change_event;
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Image)>>>>
+        image_change_event;
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>>
         robot_model_change_event;
-    StrMap2<std::shared_ptr<std::function<void(View)>>> view_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Canvas3D)>>>
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(View)>>>>
+        view_change_event;
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Canvas3D)>>>>
         canvas3d_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Canvas2D)>>>
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Canvas2D)>>>>
         canvas2d_change_event;
-    StrMap2<std::shared_ptr<std::function<void(Log)>>> log_append_event;
-    StrMap1<std::shared_ptr<std::function<void(Member)>>> sync_event,
-        ping_event;
-    StrMap1<std::shared_ptr<std::function<void(Value)>>> value_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Text)>>> text_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Func)>>> func_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(View)>>> view_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Image)>>> image_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(RobotModel)>>>
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Log)>>>>
+        log_append_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Member)>>>>
+        sync_event, ping_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Value)>>>>
+        value_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Text)>>>>
+        text_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Func)>>>>
+        func_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(View)>>>>
+        view_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Image)>>>>
+        image_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(RobotModel)>>>>
         robot_model_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Canvas3D)>>>
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Canvas3D)>>>>
         canvas3d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>>
         canvas2d_entry_event;
-    StrMap1<std::shared_ptr<std::function<void(Log)>>> log_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Log)>>>>
+        log_entry_event;
 
     std::shared_ptr<spdlog::logger> logger_internal;
-    std::mutex logger_m;
-    StrMap1<std::unique_ptr<std::streambuf>> logger_buf;
-    StrMap1<std::unique_ptr<std::ostream>> logger_os;
-    StrMap1<std::unique_ptr<std::wstreambuf>> logger_buf_w;
-    StrMap1<std::unique_ptr<std::wostream>> logger_os_w;
+    SharedMutexProxy<StrMap1<std::unique_ptr<std::streambuf>>> logger_buf;
+    SharedMutexProxy<StrMap1<std::unique_ptr<std::ostream>>> logger_os;
+    SharedMutexProxy<StrMap1<std::unique_ptr<std::wstreambuf>>> logger_buf_w;
+    SharedMutexProxy<StrMap1<std::unique_ptr<std::wostream>>> logger_os_w;
 
-    std::string svr_name, svr_version, svr_hostname;
+    SharedMutexProxy<std::string> svr_name, svr_version, svr_hostname;
 
     std::shared_ptr<std::unordered_map<unsigned int, int>> ping_status =
         nullptr;

@@ -11,6 +11,7 @@
 #include <spdlog/common.h>
 #include <spdlog/logger.h>
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/map.h"
 #include "webcface/common/internal/message/pack.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
@@ -25,7 +26,7 @@
 WEBCFACE_NS_BEGIN
 namespace server {
 
-std::pair<unsigned int, SharedString> findReqField(StrMap2<unsigned int> &req,
+std::pair<unsigned int, SharedString> findReqField(internal::StrMap2<unsigned int> &req,
                                                    const SharedString &member,
                                                    const SharedString &field);
 
@@ -60,14 +61,14 @@ struct MemberData {
      * entry非表示のものも含む。
      *
      */
-    StrMap1<std::shared_ptr<std::vector<double>>> value;
-    StrMap1<std::shared_ptr<ValAdaptor>> text;
-    StrMap1<std::shared_ptr<message::FuncInfo>> func;
-    StrMap1<message::ViewData> view;
-    StrMap1<message::Canvas3DData> canvas3d;
-    StrMap1<message::Canvas2DData> canvas2d;
+    internal::StrMap1<std::shared_ptr<std::vector<double>>> value;
+    internal::StrMap1<std::shared_ptr<ValAdaptor>> text;
+    internal::StrMap1<std::shared_ptr<message::FuncInfo>> func;
+    internal::StrMap1<message::ViewData> view;
+    internal::StrMap1<message::Canvas3DData> canvas3d;
+    internal::StrMap1<message::Canvas2DData> canvas2d;
 
-    StrMap1<message::ImageFrame> image;
+    internal::StrMap1<message::ImageFrame> image;
     /*!
      * 画像が変化したことを知らせるcv
      * リクエストする側のcvに対して、リクエストする側も画像送信側もnotifyする
@@ -83,35 +84,35 @@ struct MemberData {
      * 自分の画像が変化したことをスレッドに知らせる
      * リクエストされてるメンバーのcvを起こしに行く
      */
-    StrMap1<int> image_changed;
+    internal::StrMap1<int> image_changed;
     /*!
      * リクエストが変化したことをスレッドに知らせる
      */
-    StrMap2<int> image_req_changed;
+    internal::StrMap2<int> image_req_changed;
     /*!
      * 画像をそれぞれのリクエストに合わせて変換するスレッド
      * (リクエスト側がもつ)
      */
-    StrMap2<message::ImageReq> image_req_info;
+    internal::StrMap2<message::ImageReq> image_req_info;
 
     std::chrono::system_clock::time_point last_sync_time;
     //! リクエストしているmember,nameのペア
-    StrMap2<unsigned int> value_req, text_req, view_req, image_req,
+    internal::StrMap2<unsigned int> value_req, text_req, view_req, image_req,
         view_old_req, robot_model_req, canvas3d_req, canvas3d_old_req,
         canvas2d_req, canvas2d_old_req, log_req;
 
     // image_convert_thread[imageのmember][imageのfield] =
     // imageを変換してthisに送るスレッド
-    StrMap2<std::optional<std::thread>> image_convert_thread;
+    internal::StrMap2<std::optional<std::thread>> image_convert_thread;
     void imageConvertThreadMain(const SharedString &member,
                                 const SharedString &field);
-    StrMap1<std::vector<std::shared_ptr<message::RobotLink>>> robot_model;
+    internal::StrMap1<std::vector<std::shared_ptr<message::RobotLink>>> robot_model;
 
     bool hasReq(const SharedString &member);
     //! 古いLogリクエスト ("default"のログを古いメッセージ形式で返す)
-    StrSet1 log_req_default;
+    internal::StrSet1 log_req_default;
     //! ログ全履歴
-    StrMap1<std::shared_ptr<std::deque<message::LogLine>>> log;
+    internal::StrMap1<std::shared_ptr<std::deque<message::LogLine>>> log;
     /*!
      * \brief まだ完了していない自分へのcall呼び出しのリスト
      *

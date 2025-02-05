@@ -45,11 +45,9 @@ const Value &Value::set(std::vector<double> v) const {
     auto data = setCheck();
     data->value_store.setSend(
         *this, std::make_shared<std::vector<double>>(std::move(v)));
-    std::shared_ptr<std::function<void(Value)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->value_change_event[this->member_][this->field_];
-    }
+    auto change_event =
+        internal::findFromMap2(data->value_change_event.shared_lock().get(),
+                               this->member_, this->field_);
     if (change_event && *change_event) {
         change_event->operator()(*this);
     }
@@ -58,8 +56,7 @@ const Value &Value::set(std::vector<double> v) const {
 const Value &Value::onChange(std::function<void(Value)> callback) const {
     this->request();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->value_change_event[this->member_][this->field_] =
+    data->value_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(Value)>>(std::move(callback));
     return *this;
 }

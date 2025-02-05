@@ -2,6 +2,7 @@
 #include <deque>
 #include <mutex>
 #include <optional>
+#include "webcface/common/internal/map.h"
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "webcface/common/val_adaptor.h"

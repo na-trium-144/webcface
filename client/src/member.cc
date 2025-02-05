@@ -21,65 +21,55 @@ template WEBCFACE_DLL Log Member::log<Log, true>() const;
 
 
 const Member &Member::onValueEntry(std::function<void(Value)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->value_entry_event[member_] =
+    dataLock()->value_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Value)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onTextEntry(std::function<void(Text)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->text_entry_event[member_] =
+    dataLock()->text_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Text)>>(std::move(callback));
     return *this;
 }
 const Member &
 Member::onRobotModelEntry(std::function<void(RobotModel)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->robot_model_entry_event[member_] =
+    dataLock()->robot_model_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(RobotModel)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onFuncEntry(std::function<void(Func)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->func_entry_event[member_] =
+    dataLock()->func_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Func)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onViewEntry(std::function<void(View)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->view_entry_event[member_] =
+    dataLock()->view_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(View)>>(std::move(callback));
     return *this;
 }
 const Member &
 Member::onCanvas3DEntry(std::function<void(Canvas3D)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->canvas3d_entry_event[member_] =
+    dataLock()->canvas3d_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Canvas3D)>>(std::move(callback));
     return *this;
 }
 const Member &
 Member::onCanvas2DEntry(std::function<void(Canvas2D)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->canvas2d_entry_event[member_] =
+    dataLock()->canvas2d_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Canvas2D)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onImageEntry(std::function<void(Image)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->image_entry_event[member_] =
+    dataLock()->image_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Image)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onLogEntry(std::function<void(Log)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->log_entry_event[member_] =
+    dataLock()->log_entry_event.lock().get()[member_] =
         std::make_shared<std::function<void(Log)>>(std::move(callback));
     return *this;
 }
 const Member &Member::onSync(std::function<void(Member)> callback) const {
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->sync_event[member_] =
+    dataLock()->sync_event.lock().get()[member_] =
         std::make_shared<std::function<void(Member)>>(std::move(callback));
     return *this;
 }
@@ -103,8 +93,9 @@ std::chrono::system_clock::time_point Member::syncTime() const {
 const std::string &Member::libName() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
-    if (data->member_lib_name.count(m_id)) {
-        return data->member_lib_name.at(m_id);
+    auto lock_name = data->member_lib_name.shared_lock();
+    if (lock_name->count(m_id)) {
+        return lock_name->at(m_id);
     } else {
         return SharedString::emptyStr();
     }
@@ -112,8 +103,9 @@ const std::string &Member::libName() const {
 const std::string &Member::libVersion() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
-    if (data->member_lib_ver.count(m_id)) {
-        return data->member_lib_ver.at(m_id);
+    auto lock_ver = data->member_lib_ver.shared_lock();
+    if (lock_ver->count(m_id)) {
+        return lock_ver->at(m_id);
     } else {
         return SharedString::emptyStr();
     }
@@ -121,8 +113,9 @@ const std::string &Member::libVersion() const {
 const std::string &Member::remoteAddr() const {
     auto data = dataLock();
     auto m_id = data->getMemberIdFromName(member_);
-    if (data->member_addr.count(m_id)) {
-        return data->member_addr.at(m_id);
+    auto lock_addr = data->member_addr.shared_lock();
+    if (lock_addr->count(m_id)) {
+        return lock_addr->at(m_id);
     } else {
         return SharedString::emptyStr();
     }
@@ -140,8 +133,7 @@ std::optional<int> Member::pingStatus() const {
 }
 const Member &Member::onPing(std::function<void(Member)> callback) const {
     dataLock()->pingStatusReq();
-    std::lock_guard lock(dataLock()->event_m);
-    dataLock()->ping_event[member_] =
+    dataLock()->ping_event.lock().get()[member_] =
         std::make_shared<std::function<void(Member)>>(std::move(callback));
     return *this;
 }
