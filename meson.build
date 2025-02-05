@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '2.5.2',
+  version: '2.8.0',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -176,9 +176,9 @@ cmake = import('cmake')
 cxx = meson.get_compiler('cpp')
 py = find_program('python3')
 
-webcface_abi_major = '21' # ABIの破壊的変更で1増やす
-webcface_abi_minor = '0' # ABIの追加で1増やす
-webcface_webui_version = '1.11.0'
+webcface_abi_major = '23' # ABIの破壊的変更で1増やす
+webcface_abi_minor = '1' # ABIの追加で1増やす
+webcface_webui_version = '1.13.0'
 
 webcface_description = 'Web-based Communication Framework'
 webcface_contact = 'na-trium-144@users.noreply.github.com'
@@ -277,11 +277,10 @@ else
 endif
 
 if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(
+  warning_options_dep = declare_dependency(
     compile_args: cxx.get_supported_arguments(
       '-Wno-inline',
       '-Wno-attributes',
-      '-Wno-error=psabi', # refer to PR#9
       # crow
       '-Wno-error=type-limits',
       # inside fmt (fmtlib/fmt#3354)
@@ -296,7 +295,7 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
     )
   )
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '-Wno-inline',
     '--system-header-prefix=msgpack.hpp',
     '--system-header-prefix=fmt/',
@@ -309,7 +308,7 @@ elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
     '--system-header-prefix=CLI/',
   ])
 elif cxx.get_argument_syntax() == 'msvc'
-  warning_options = declare_dependency(compile_args: [
+  warning_options_dep = declare_dependency(compile_args: [
     '/wd4251',
     '/wd4275',
     '/wd4661',
@@ -323,8 +322,16 @@ else
   warning('Unsupported compiler id \'' + cxx.get_id() + '\', ' + \
     'compiler argument syntax \'' + cxx.get_argument_syntax() + '\'',
   )
-  warning_options = []
+  warning_options_dep = []
 endif
+wabi_options_dep = declare_dependency(
+  compile_args: cxx.get_supported_arguments(
+    # https://gcc.gnu.org/onlinedocs/gcc/C_002b_002b-Dialect-Options.html
+    '-fabi-version=11',
+    '-Wabi',
+    '-Wpsabi',
+  ),
+)
 
 conf_data.set10('WEBCFACE_SYSTEM_VISIBILITY', webcface_system_visibility)
 conf_data.set10('WEBCFACE_SYSTEM_DLLEXPORT', webcface_system_dllexport)
@@ -513,7 +520,7 @@ endif
 utf8cpp_dep = dependency('utf8cpp')
 
 # curlはvisibilityがhiddenになっている
-curl_dep = dependency('libcurl')
+curl_dep = dependency('libcurl', version: '>=7.86.0')
 if curl_dep.type_name() != 'internal'
   if host_machine.system() == 'darwin' and \
       curl_dep.version().version_compare('>=8.10.0') and \

@@ -101,11 +101,13 @@ data = {
 		x: any | null,
 		o: any[],
 	}[],
+	i: number, // index
 }
 ```
 * クライアント→サーバーに送ると、サーバー→全クライアントに通知します
 	* mはサーバーがセットします
 * func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです
+* <span class="since-c">2.8</span> index 追加 (関数を登録した順番)
 
 ### call (kind = 81)
 ```js
@@ -238,6 +240,8 @@ data = {
 			ix?: number | null, // max
 			is?: number | null, // step
 			io?: string[] | number[], // option
+			w?: number, // width
+			h?: number, // height
 		},
 		id: {...},
 		...
@@ -249,6 +253,7 @@ data = {
 * 各要素にはid(string)が割り当てられており、それぞれの要素のデータ(d)とidの並び順(l)に分けて送信します
 * データは前回のsyncから変更された要素のみを送ります
 * idの並び順はviewの全要素のidのリスト、または前回から変更されていない場合はnullを送ります
+* <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> w (width), h (height) 追加
 
 ### view entry (kind = 29)
 * value entryと同様
@@ -687,6 +692,6 @@ data = {
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-5. webcface-tui](75_tui.md) | [8-2. Client Spec](82_client_spec.md) |
+| [7-6. webcface-notepad](76_notepad.md) | [8-2. Client Spec](82_client_spec.md) |
 
 </div>

@@ -572,9 +572,45 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 </div>
 
+### Funcの表示順 (index)
+
+WebUI(ver1.13〜)でFunc一覧を表示する際、名前順の表示とFuncが登録された順の表示を切り替えることができます。
+
+Funcが登録された順番(index)は送信側のクライアントライブラリで自動的に管理されますが、
+手動で上書きして表示順を指定することも可能です。
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.8</span>
+
+    ```cpp
+    wcli.func("hoge").set(...).setIndex(1);
+    wcli.func("fuga").set(...).setIndex(3);
+    wcli.func("piyo").set(...).setIndex(2);
+    ```
+    のように、関数のsetのあとにindexを指定できます。
+
+- <b class="tab-title">JavaScript</b>
+    \since <span class="since-js">1.11</span>
+
+    set関数の4番目の引数で指定できます。
+    ```ts
+    wcli.func("hoge").set(
+        () => { /*...*/ }, // 関数
+        valType.float_, // 戻り値の型
+        [...], // 引数の情報
+        1, // index
+    );
+    ```
+
+</div>
+
 ## 関数の情報の取得
 
-関数の引数や戻り値の情報を取得できます。
+関数の引数や戻り値、
+(<span class="since-c">2.8</span><span class="since-js">1.11</span>関数が登録された順番)
+の情報を取得できます。
 他のデータ型と違ってデータをリクエストする機能はなく、
 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。
 
@@ -590,6 +626,9 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     引数の情報については webcface::Arg を参照
     また、戻り値型は webcface::ValType というenum型で得られます。
 
+    <span class="since-c">2.8</span>
+    関数がset()などで登録された順番 (もしくは送信側クライアントが上書きした値) を Func::index() で取得できます。
+
 - <b class="tab-title">JavaScript</b>
     Member.func() でFuncクラスのオブジェクトが得られ、
     Func.returnType や Func.args で関数の引数や戻り値の情報を取得できます。
@@ -598,6 +637,9 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     const returnType = wcli.member("foo").func("hoge").returnType;
     ```
     引数の情報については [Arg](https://na-trium-144.github.io/webcface-js/interfaces/Arg.html) を参照
+
+    <span class="since-js">1.11</span>
+    関数がset()などで登録された順番 (もしくは送信側クライアントが上書きした値) を Func.index で取得できます。
 
 - <b class="tab-title">Python</b>
     Member.func() でFuncクラスのオブジェクトが得られ、
@@ -612,8 +654,8 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
 
 ### Entry
 
-Valueと同様、関数が存在するかどうかを取得することができます。
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
+他のデータ型と同様、関数が存在するかどうかを取得することができます。
+詳細は [4-3. Field](./43_field.md) を参照してください
 
 ## 関数の実行
 

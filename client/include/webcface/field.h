@@ -156,8 +156,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Field child(int index) const { return child(std::to_string(index)); }
+    [[deprecated]]
+    Field child(int index) const {
+        return child(std::to_string(index));
+    }
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
@@ -171,8 +175,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
+     * \deprecated ver2.8〜
      */
-    Field operator[](int index) const { return child(index); }
+    [[deprecated]]
+    Field operator[](int index) const {
+        return child(std::to_string(index));
+    }
 
     template <WEBCFACE_COMPLETE(Value)>
     Value_ value(std::string_view field = "") const {
@@ -261,24 +269,100 @@ struct WEBCFACE_DLL Field : public FieldBase {
         return child(field);
     }
 
+
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * childrenRecurse() と異なり、
+     * 名前にさらにピリオドが含まれる場合はその前までの名前を返す。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa childrenRecurse(), hasChildren()
+     */
+    std::vector<Field> children() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)
+     * \since ver2.6
+     *
+     * * データ型を問わずすべてのデータを列挙する。
+     * * 同名で複数のデータが存在する場合も1回のみカウントする。
+     *
+     * \sa children(), hasChildren()
+     */
+    std::vector<Field> childrenRecurse() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す
+     * \since ver2.6
+     * \sa children(), childrenRecurse()
+     */
+    bool hasChildren() const;
+
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Value)>
     std::vector<Value_> valueEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Text)>
     std::vector<Text_> textEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(RobotModel)>
     std::vector<RobotModel_> robotModelEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Func)>
     std::vector<Func_> funcEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているviewのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(View)>
     std::vector<View_> viewEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Canvas2D)>
     std::vector<Canvas2D_> canvas2DEntries() const;
+    /*!
+     * \brief
+     * 「(thisの名前).(追加の名前)」で公開されているcanvas3Dのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Canvas3D)>
     std::vector<Canvas3D_> canvas3DEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。
+     * \since ver1.6
+     * \sa childrenRecurse()
+     */
     template <WEBCFACE_COMPLETE(Image)>
     std::vector<Image_> imageEntries() const;
     /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。
      * \since ver2.4
+     * \sa childrenRecurse()
      */
     template <WEBCFACE_COMPLETE(Log)>
     std::vector<Log_> logEntries() const;
@@ -295,17 +379,17 @@ struct WEBCFACE_DLL Field : public FieldBase {
     bool operator!=(const Field &other) const { return !(*this == other); }
 };
 
-extern template std::vector<Value> Field::valueEntries<Value, nullptr>() const;
-extern template std::vector<Text> Field::textEntries<Text, nullptr>() const;
+extern template std::vector<Value> Field::valueEntries<Value, true>() const;
+extern template std::vector<Text> Field::textEntries<Text, true>() const;
 extern template std::vector<RobotModel>
-Field::robotModelEntries<RobotModel, nullptr>() const;
-extern template std::vector<Func> Field::funcEntries<Func, nullptr>() const;
-extern template std::vector<View> Field::viewEntries<View, nullptr>() const;
+Field::robotModelEntries<RobotModel, true>() const;
+extern template std::vector<Func> Field::funcEntries<Func, true>() const;
+extern template std::vector<View> Field::viewEntries<View, true>() const;
 extern template std::vector<Canvas2D>
-Field::canvas2DEntries<Canvas2D, nullptr>() const;
+Field::canvas2DEntries<Canvas2D, true>() const;
 extern template std::vector<Canvas3D>
-Field::canvas3DEntries<Canvas3D, nullptr>() const;
-extern template std::vector<Image> Field::imageEntries<Image, nullptr>() const;
-extern template std::vector<Log> Field::logEntries<Log, nullptr>() const;
+Field::canvas3DEntries<Canvas3D, true>() const;
+extern template std::vector<Image> Field::imageEntries<Image, true>() const;
+extern template std::vector<Log> Field::logEntries<Log, true>() const;
 
 WEBCFACE_NS_END

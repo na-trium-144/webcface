@@ -27,6 +27,6 @@ Usage: webcface-tui [OPTIONS] [field...]
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-4. webcface-ls](74_ls.md) | [8-1. Message](81_message.md) |
+| [7-4. webcface-ls](74_ls.md) | [7-6. webcface-notepad](76_notepad.md) |
 
 </div>

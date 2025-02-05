@@ -11,6 +11,7 @@
 #include "webcface/log.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
+#include <algorithm>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -51,72 +52,148 @@ Field Field::child(const SharedString &field) const {
 }
 
 /// \private
-template <typename V, typename S>
-static auto entries(const Field *this_, S &store) {
+template <typename S>
+static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    std::vector<V> ret;
+    auto prefix_with_sep = this_->field_.u8String() + field_separator;
     for (const auto &f : keys) {
-        if (this_->field_.empty() ||
-            f.startsWith(this_->field_.u8String() + field_separator)) {
-            ret.emplace_back(this_->child(f));
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            return true;
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
         }
     }
+    return false;
+}
+bool Field::hasChildren() const {
+    auto data = dataLock();
+    return hasChildrenT(this, data->value_store) ||
+           hasChildrenT(this, data->text_store) ||
+           hasChildrenT(this, data->robot_model_store) ||
+           hasChildrenT(this, data->func_store) ||
+           hasChildrenT(this, data->view_store) ||
+           hasChildrenT(this, data->canvas2d_store) ||
+           hasChildrenT(this, data->canvas3d_store) ||
+           hasChildrenT(this, data->image_store) ||
+           hasChildrenT(this, data->log_store);
+}
+
+/// \private
+template <typename V, typename S>
+static void entries(std::vector<V> &ret, const Field *this_, S &store,
+                    bool recurse = true) {
+    auto keys = store.getEntry(*this_);
+    std::string prefix_with_sep;
+    std::size_t prefix_len = 0;
+    if (!this_->field_.empty()) {
+        prefix_with_sep = this_->field_.u8String() + field_separator;
+        prefix_len = prefix_with_sep.size();
+    }
+    for (auto f : keys) {
+        // mapはkeyでソートされているので
+        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+            if (!recurse) {
+                f = f.substr(0, f.find(field_separator, prefix_len));
+            }
+            if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
+                ret.emplace_back(*this_, f);
+            }
+        } else if (f.u8String() < prefix_with_sep) {
+            continue;
+        } else {
+            break;
+        }
+    }
+}
+/// \private
+template <typename V, typename S>
+static auto entries(const Field *this_, S &store) {
+    std::vector<V> ret;
+    entries(ret, this_, store);
     return ret;
 }
-template <typename T, std::nullptr_t>
+std::vector<Field> Field::childrenRecurse() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store);
+    entries(ret, this, data->text_store);
+    entries(ret, this, data->robot_model_store);
+    entries(ret, this, data->func_store);
+    entries(ret, this, data->view_store);
+    entries(ret, this, data->canvas2d_store);
+    entries(ret, this, data->canvas3d_store);
+    entries(ret, this, data->image_store);
+    entries(ret, this, data->log_store);
+    return ret;
+}
+std::vector<Field> Field::children() const {
+    auto data = dataLock();
+    std::vector<Field> ret;
+    entries(ret, this, data->value_store, false);
+    entries(ret, this, data->text_store, false);
+    entries(ret, this, data->robot_model_store, false);
+    entries(ret, this, data->func_store, false);
+    entries(ret, this, data->view_store, false);
+    entries(ret, this, data->canvas2d_store, false);
+    entries(ret, this, data->canvas3d_store, false);
+    entries(ret, this, data->image_store, false);
+    entries(ret, this, data->log_store, false);
+    return ret;
+}
+template <typename T, bool>
 std::vector<T> Field::valueEntries() const {
     return entries<Value>(this, dataLock()->value_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::textEntries() const {
     return entries<Text>(this, dataLock()->text_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::robotModelEntries() const {
     return entries<RobotModel>(this, dataLock()->robot_model_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::funcEntries() const {
     return entries<Func>(this, dataLock()->func_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::viewEntries() const {
     return entries<View>(this, dataLock()->view_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::canvas3DEntries() const {
     return entries<Canvas3D>(this, dataLock()->canvas3d_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::canvas2DEntries() const {
     return entries<Canvas2D>(this, dataLock()->canvas2d_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::imageEntries() const {
     return entries<Image>(this, dataLock()->image_store);
 }
-template <typename T, std::nullptr_t>
+template <typename T, bool>
 std::vector<T> Field::logEntries() const {
     return entries<Log>(this, dataLock()->log_store);
 }
 
 template WEBCFACE_DLL std::vector<Value>
-Field::valueEntries<Value, nullptr>() const;
-template WEBCFACE_DLL std::vector<Text>
-Field::textEntries<Text, nullptr>() const;
+Field::valueEntries<Value, true>() const;
+template WEBCFACE_DLL std::vector<Text> Field::textEntries<Text, true>() const;
 template WEBCFACE_DLL std::vector<RobotModel>
-Field::robotModelEntries<RobotModel, nullptr>() const;
-template WEBCFACE_DLL std::vector<Func>
-Field::funcEntries<Func, nullptr>() const;
-template WEBCFACE_DLL std::vector<View>
-Field::viewEntries<View, nullptr>() const;
+Field::robotModelEntries<RobotModel, true>() const;
+template WEBCFACE_DLL std::vector<Func> Field::funcEntries<Func, true>() const;
+template WEBCFACE_DLL std::vector<View> Field::viewEntries<View, true>() const;
 template WEBCFACE_DLL std::vector<Canvas2D>
-Field::canvas2DEntries<Canvas2D, nullptr>() const;
+Field::canvas2DEntries<Canvas2D, true>() const;
 template WEBCFACE_DLL std::vector<Canvas3D>
-Field::canvas3DEntries<Canvas3D, nullptr>() const;
+Field::canvas3DEntries<Canvas3D, true>() const;
 template WEBCFACE_DLL std::vector<Image>
-Field::imageEntries<Image, nullptr>() const;
-template WEBCFACE_DLL std::vector<Log> Field::logEntries<Log, nullptr>() const;
+Field::imageEntries<Image, true>() const;
+template WEBCFACE_DLL std::vector<Log> Field::logEntries<Log, true>() const;
 
 bool Field::expired() const { return data_w.expired(); }
 

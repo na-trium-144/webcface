@@ -106,6 +106,23 @@ std::vector<Arg> Func::args() const {
 bool Func::exists() const {
     return dataLock()->func_store.getEntry(member_).count(field_);
 }
+int Func::index() const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
+    if (func_info) {
+        return (*func_info)->index;
+    } else {
+        return 0;
+    }
+}
+const Func &Func::setIndex(int index) const {
+    auto func_info = dataLock()->func_store.getRecv(*this);
+    if (!func_info) {
+        throw std::invalid_argument("setIndex failed: Func not set");
+    } else {
+        (*func_info)->index = index;
+        return *this;
+    }
+}
 
 const Func &Func::setArgs(const std::vector<Arg> &args) const {
     auto func_info = setCheck()->func_store.getRecv(*this);

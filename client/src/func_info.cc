@@ -26,6 +26,7 @@ void Arg::mergeConfig(const Arg &other) {
     if (other.msg_data) {
         if (!this->msg_data) {
             this->msg_data = other.msg_data;
+            this->msg_data->type_ = this->type_;
         } else {
             if (!other.msg_data->name_.empty()) {
                 this->msg_data->name_ = other.msg_data->name_;
@@ -57,6 +58,9 @@ const std::wstring &Arg::nameW() const {
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {
     this->type_ = type;
+    if (this->msg_data) {
+        this->msg_data->type_ = type;
+    }
     return *this;
 }
 std::optional<ValAdaptor> Arg::init() const {
@@ -117,8 +121,18 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
     return os;
 }
 
+static std::atomic<int> func_index_prev = 0;
+internal::FuncInfo::FuncInfo()
+    : Field(), return_type(ValType::none_), args(), func_impl(),
+      index(++func_index_prev) {}
+internal::FuncInfo::FuncInfo(const Field &base, ValType return_type,
+                             std::optional<std::vector<Arg>> &&args,
+                             std::function<Func::FuncType> &&func_impl)
+    : Field(base), return_type(return_type), args(std::move(args)),
+      func_impl(std::move(func_impl)), index(++func_index_prev) {}
+
 internal::FuncInfo::FuncInfo(const message::FuncInfo &m)
-    : return_type(m.return_type), args(), func_impl(nullptr) {
+    : return_type(m.return_type), args(), func_impl(nullptr), index(m.index) {
     args.emplace();
     args->reserve(m.args.size());
     for (const auto &a : m.args) {
@@ -126,7 +140,7 @@ internal::FuncInfo::FuncInfo(const message::FuncInfo &m)
     }
 }
 message::FuncInfo internal::FuncInfo::toMessage(const SharedString &field) {
-    message::FuncInfo m{0, field, return_type, {}};
+    message::FuncInfo m{0, field, return_type, {}, index};
     if (args.has_value()) {
         m.args.reserve(args->size());
         for (auto &a : *args) {

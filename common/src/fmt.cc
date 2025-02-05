@@ -1,15 +1,23 @@
-#include <webcface/common/internal/message/value.h>
-#include <webcface/common/internal/message/text.h>
-#include <webcface/common/internal/message/view.h>
-#include <webcface/common/internal/message/canvas2d.h>
-#include <webcface/common/internal/message/canvas3d.h>
-#include <webcface/common/internal/message/image.h>
-#include <webcface/common/internal/message/func.h>
-#include <webcface/common/internal/message/log.h>
-#include <webcface/common/internal/message/robot_model.h>
-#include <webcface/common/internal/message/sync.h>
+#include "webcface/common/internal/message/value.h"
+#include "webcface/common/internal/message/text.h"
+#include "webcface/common/internal/message/view.h"
+#include "webcface/common/internal/message/canvas2d.h"
+#include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/func.h"
+#include "webcface/common/internal/message/log.h"
+#include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/sync.h"
+
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wabi"
+#endif
 #include <fmt/std.h>
 #include <fmt/chrono.h>
+#ifdef WEBCFACE_COMPILER_IS_GCC
+#pragma GCC diagnostic pop
+#endif
 
 #define WEBCFACE_MESSAGE_FMT_DEF(Type)                                         \
     auto fmt::formatter<Type>::format([[maybe_unused]] const Type &m,          \
@@ -269,8 +277,9 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Canvas2DOld)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::FuncInfo) {
     return fmt::format_to(
-        ctx.out(), "{}-FuncInfo('{}' from member_id={}, {} args, return={})",
-        msg_kind, m.field.decode(), m.member_id, m.args.size(),
+        ctx.out(),
+        "{}-FuncInfo('{}' from member_id={}, index={}, {} args, return={})",
+        msg_kind, m.field.decode(), m.member_id, m.index, m.args.size(),
         webcface::valTypeStr(m.return_type));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Call) {

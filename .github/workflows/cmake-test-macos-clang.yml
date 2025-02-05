@@ -25,7 +25,7 @@ jobs:
       env:
         HOMEBREW_NO_AUTO_UPDATE: 1
       run: |
-        brew update --preinstall
+        brew update
         brew install meson
         if [[ ${{matrix.dep}} = brew ]]; then brew tap na-trium-144/webcface; fi
         if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv vips curl crow-unix-socket || true; fi

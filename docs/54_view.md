@@ -395,6 +395,7 @@ v.sync();
 viewに入力欄を表示します。
 
 - textInput: 文字列入力
+  - <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> height プロパティを2以上にすることで複数行入力欄になります。
 - decimalInput: 小数入力
 - numberInput: 整数の入力
 - selectInput: リストから値を選択させる
@@ -577,11 +578,17 @@ viewに入力欄を表示します。
 各ViewComponentには以下のオプションを指定することができます。
 (要素の種類によっては効果がないものもあります)
 
+* id: <span class="since-c">2.5</span><span class="since-py">3.0</span> インタラクティブな要素に指定するID
+    * 指定する場合は一意な文字列を指定してください。
 * textColor: 文字の色を変更します。
     * WebUIではデフォルトは黒です
 * bgColor: 背景色を変更します。
     * WebUIではデフォルトは緑です
-* 各種inputに指定できるオプション
+* width, height: <span class="since-c">2.6</span><span class="since-js">1.10</span><span class="since-py">3.1</span> 要素の幅、高さを指定します。
+    * サイズの単位、0または負の場合の表示方法は実装依存です。
+    * WebUIでは正の整数を指定すると 指定した値 \* 1em になります
+    * デフォルトでは0になっています。
+* 各種inputに指定できる入力データのオプション
 ([Func](./53_func.md)のArgオプションと同様です。)
     * init: 初期値
     * min: 最小値, max: 最大値 (decimalInput, numberInput, sliderInputのみ)
@@ -740,27 +747,10 @@ ViewComponent::id() で各要素に割り振られたid(文字列)を取得で�
 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ)
 同じbutton、同じinputには常に同じidが振られます。
 
-### 時刻
+## Entry, イベントについて
 
-~~View::time()~~ でその値が送信されたとき(そのMemberがsync()したとき)の時刻が得られます。  
-<span class="since-c">1.7</span>
-<span class="since-js">1.6</span>
-<span class="since-py"></span>
-Member::syncTime() に統一しました。詳細は [5-1. Value](./51_value.md) を参照
+[4-3. Field](43_field.md) に移動しました。そちらを参照してください
 
-### Entry
-
-Valueと同様、データ自体を受信しなくてもデータが存在するかどうかは取得することができます。
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
-
-### Event
-
-受信したデータが変化したときにコールバックを呼び出すことができます。
-コールバックを設定することでもその値はリクエストされます。
-
-また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Member::onSync() が使えます
-
-使い方は [Value](./51_value.md) と同様なのでそちらを参照してください
 
 <div class="section_buttons">
 
