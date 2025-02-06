@@ -56,7 +56,7 @@ DummyServer::~DummyServer() {
 }
 DummyServer::DummyServer(bool use_unix)
     : t([this, use_unix] {
-          static int sn = 0;
+          static std::atomic<int> sn = 0;
           dummy_logger =
               spdlog::stdout_color_mt("dummy_server_" + std::to_string(sn++));
           dummy_logger->set_level(spdlog::level::trace);

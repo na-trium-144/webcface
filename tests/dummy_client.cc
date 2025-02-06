@@ -14,7 +14,7 @@ DummyClient::~DummyClient() {
 }
 DummyClient::DummyClient(bool use_unix)
     : t([this, use_unix] {
-          static int sn = 1;
+          static std::atomic<int> sn = 1;
           internal::WebSocket::globalInit();
           CURL *handle = curl_easy_init();
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
