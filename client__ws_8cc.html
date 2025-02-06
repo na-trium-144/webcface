@@ -140,9 +140,9 @@ $(document).ready(function(){initNavTree('client__ws_8cc.html',''); initResizabl
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">client_ws.cc File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -161,11 +161,6 @@ Include dependency graph for client_ws.cc:</div>
 <div class="center"><iframe scrolling="no" frameborder="0" src="client__ws_8cc__incl.svg" width="2891" height="682"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html">CurlInitializer</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
@@ -179,6 +174,10 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:af7c198880f60a01d7cb5e6b9b41f58cf"><td class="memItemLeft" align="right" valign="top">static std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#af7c198880f60a01d7cb5e6b9b41f58cf">getCurlError</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data, CURLcode res)</td></tr>
 <tr class="separator:af7c198880f60a01d7cb5e6b9b41f58cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cca4cba99adbab281dc1c973018217e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a5cca4cba99adbab281dc1c973018217e">globalInit</a> ()</td></tr>
+<tr class="separator:a5cca4cba99adbab281dc1c973018217e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35a33245a12d2cef3aaa7558e11c876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#ab35a33245a12d2cef3aaa7558e11c876">globalDeinit</a> ()</td></tr>
+<tr class="separator:ab35a33245a12d2cef3aaa7558e11c876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9edb9a94135ef05398d4618b01c427e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a9edb9a94135ef05398d4618b01c427e3">init</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data)</td></tr>
 <tr class="memdesc:a9edb9a94135ef05398d4618b01c427e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebSocketに接続する  <br /></td></tr>
 <tr class="separator:a9edb9a94135ef05398d4618b01c427e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -191,6 +190,13 @@ Functions</h2></td></tr>
 <tr class="memitem:af75ac6f28fd6ff155128c8075a6569bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd">send</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data, const std::string &amp;msg)</td></tr>
 <tr class="memdesc:af75ac6f28fd6ff155128c8075a6569bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">メッセージを送信する  <br /></td></tr>
 <tr class="separator:af75ac6f28fd6ff155128c8075a6569bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a60285bf997af98469a95980499815801"><td class="memItemLeft" align="right" valign="top">static std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a60285bf997af98469a95980499815801">init_m</a></td></tr>
+<tr class="separator:a60285bf997af98469a95980499815801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a431a3f39b3e403840350b736d13b38e4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a431a3f39b3e403840350b736d13b38e4">global_init_count</a> = 0</td></tr>
+<tr class="separator:a431a3f39b3e403840350b736d13b38e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -198,7 +204,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="client__ws_8cc.html">client_ws.cc</a></li>
-    <li class="footer">Generated on Thu Jan 30 2025 14:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Feb 6 2025 13:58:49 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

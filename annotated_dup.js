@@ -93,9 +93,6 @@ var annotated_dup =
         [ "Sphere", "structwebcface_1_1components_1_1geometries_1_1Sphere.html", "structwebcface_1_1components_1_1geometries_1_1Sphere" ]
       ] ],
       [ "internal", "namespacewebcface_1_1internal.html", [
-        [ "WebSocket", "namespacewebcface_1_1internal_1_1WebSocket.html", [
-          [ "CurlInitializer", "structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html", "structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer" ]
-        ] ],
         [ "Canvas2DDataBuf", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html", "classwebcface_1_1internal_1_1Canvas2DDataBuf" ],
         [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", "structwebcface_1_1internal_1_1ClientData" ],
         [ "DataSetBuffer", "classwebcface_1_1internal_1_1DataSetBuffer.html", "classwebcface_1_1internal_1_1DataSetBuffer" ],

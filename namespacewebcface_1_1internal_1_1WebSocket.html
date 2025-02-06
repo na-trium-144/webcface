@@ -140,19 +140,18 @@ $(document).ready(function(){initNavTree('namespacewebcface_1_1internal_1_1WebSo
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">webcface::internal::WebSocket Namespace Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html">CurlInitializer</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a5cca4cba99adbab281dc1c973018217e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a5cca4cba99adbab281dc1c973018217e">globalInit</a> ()</td></tr>
+<tr class="separator:a5cca4cba99adbab281dc1c973018217e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab35a33245a12d2cef3aaa7558e11c876"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#ab35a33245a12d2cef3aaa7558e11c876">globalDeinit</a> ()</td></tr>
+<tr class="separator:ab35a33245a12d2cef3aaa7558e11c876"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9edb9a94135ef05398d4618b01c427e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a9edb9a94135ef05398d4618b01c427e3">init</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data)</td></tr>
 <tr class="memdesc:a9edb9a94135ef05398d4618b01c427e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">WebSocketに接続する  <br /></td></tr>
 <tr class="separator:a9edb9a94135ef05398d4618b01c427e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -167,6 +166,13 @@ Functions</h2></td></tr>
 <tr class="separator:af75ac6f28fd6ff155128c8075a6569bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7c198880f60a01d7cb5e6b9b41f58cf"><td class="memItemLeft" align="right" valign="top">static std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#af7c198880f60a01d7cb5e6b9b41f58cf">getCurlError</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt; &amp;data, CURLcode res)</td></tr>
 <tr class="separator:af7c198880f60a01d7cb5e6b9b41f58cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a60285bf997af98469a95980499815801"><td class="memItemLeft" align="right" valign="top">static std::mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a60285bf997af98469a95980499815801">init_m</a></td></tr>
+<tr class="separator:a60285bf997af98469a95980499815801"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a431a3f39b3e403840350b736d13b38e4"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html#a431a3f39b3e403840350b736d13b38e4">global_init_count</a> = 0</td></tr>
+<tr class="separator:a431a3f39b3e403840350b736d13b38e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a9edb79f3cfdfb2f0d2cd1b589a930e5f" name="a9edb79f3cfdfb2f0d2cd1b589a930e5f"></a>
@@ -222,6 +228,41 @@ Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab35a33245a12d2cef3aaa7558e11c876" name="ab35a33245a12d2cef3aaa7558e11c876"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab35a33245a12d2cef3aaa7558e11c876">&#9670;&#160;</a></span>globalDeinit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void globalDeinit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a5cca4cba99adbab281dc1c973018217e" name="a5cca4cba99adbab281dc1c973018217e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cca4cba99adbab281dc1c973018217e">&#9670;&#160;</a></span>globalInit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void globalInit </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>curlの初期化処理が確実に1回呼ばれるようにし、 globalInitが呼ばれた回数と同じだけDeinitが呼ばれたときにcleanupする </p>
 
 </div>
 </div>
@@ -307,13 +348,58 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a id="a431a3f39b3e403840350b736d13b38e4" name="a431a3f39b3e403840350b736d13b38e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a431a3f39b3e403840350b736d13b38e4">&#9670;&#160;</a></span>global_init_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int global_init_count = 0</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a60285bf997af98469a95980499815801" name="a60285bf997af98469a95980499815801"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60285bf997af98469a95980499815801">&#9670;&#160;</a></span>init_m</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::mutex init_m</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal_1_1WebSocket.html">WebSocket</a></li>
-    <li class="footer">Generated on Thu Jan 30 2025 14:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Feb 6 2025 13:58:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -1,6 +1,16 @@
 var namespacewebcface_1_1internal =
 [
-    [ "WebSocket", "namespacewebcface_1_1internal_1_1WebSocket.html", "namespacewebcface_1_1internal_1_1WebSocket" ],
+    [ "WebSocket", "namespacewebcface_1_1internal_1_1WebSocket.html", [
+      [ "close", "namespacewebcface_1_1internal_1_1WebSocket.html#a9edb79f3cfdfb2f0d2cd1b589a930e5f", null ],
+      [ "getCurlError", "namespacewebcface_1_1internal_1_1WebSocket.html#af7c198880f60a01d7cb5e6b9b41f58cf", null ],
+      [ "globalDeinit", "namespacewebcface_1_1internal_1_1WebSocket.html#ab35a33245a12d2cef3aaa7558e11c876", null ],
+      [ "globalInit", "namespacewebcface_1_1internal_1_1WebSocket.html#a5cca4cba99adbab281dc1c973018217e", null ],
+      [ "init", "namespacewebcface_1_1internal_1_1WebSocket.html#a9edb9a94135ef05398d4618b01c427e3", null ],
+      [ "recv", "namespacewebcface_1_1internal_1_1WebSocket.html#ae57c4645b559951f5644623d91ae362c", null ],
+      [ "send", "namespacewebcface_1_1internal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd", null ],
+      [ "global_init_count", "namespacewebcface_1_1internal_1_1WebSocket.html#a431a3f39b3e403840350b736d13b38e4", null ],
+      [ "init_m", "namespacewebcface_1_1internal_1_1WebSocket.html#a60285bf997af98469a95980499815801", null ]
+    ] ],
     [ "Canvas2DDataBuf", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html", "classwebcface_1_1internal_1_1Canvas2DDataBuf" ],
     [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", "structwebcface_1_1internal_1_1ClientData" ],
     [ "DataSetBuffer", "classwebcface_1_1internal_1_1DataSetBuffer.html", "classwebcface_1_1internal_1_1DataSetBuffer" ],

@@ -21,7 +21,6 @@ var searchData=
   ['circle_18',['Circle',['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle'],['../structwebcface_1_1components_1_1geometries_1_1Circle.html',1,'Circle']]],
   ['client_19',['Client',['../classwebcface_1_1Client.html',1,'webcface']]],
   ['clientdata_20',['ClientData',['../structwebcface_1_1internal_1_1ClientData.html',1,'webcface::internal']]],
-  ['curlinitializer_21',['CurlInitializer',['../structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html',1,'webcface::internal::WebSocket']]],
-  ['customlogger_22',['CustomLogger',['../classwebcface_1_1server_1_1CustomLogger.html',1,'webcface::server']]],
-  ['cylinder_23',['Cylinder',['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder']]]
+  ['customlogger_21',['CustomLogger',['../classwebcface_1_1server_1_1CustomLogger.html',1,'webcface::server']]],
+  ['cylinder_22',['Cylinder',['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder'],['../structwebcface_1_1components_1_1geometries_1_1Cylinder.html',1,'Cylinder']]]
 ];

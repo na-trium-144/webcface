@@ -4,7 +4,7 @@ var searchData=
   ['_7ebasicloggerbuf_1',['~BasicLoggerBuf',['../classwebcface_1_1BasicLoggerBuf.html#aab5ffb9cfcb7dd11f91137ae239693a1',1,'webcface::BasicLoggerBuf']]],
   ['_7ecanvas2ddatabuf_2',['~Canvas2DDataBuf',['../classwebcface_1_1internal_1_1Canvas2DDataBuf.html#a6c999465b513a938a0d7834c0253c851',1,'webcface::internal::Canvas2DDataBuf']]],
   ['_7eclient_3',['~Client',['../classwebcface_1_1Client.html#a37731a8f5dd5caca4cc2ddb8b556cd6c',1,'webcface::Client']]],
-  ['_7ecurlinitializer_4',['~CurlInitializer',['../structwebcface_1_1internal_1_1WebSocket_1_1CurlInitializer.html#a73b5792e32de3606a8108f466ff24daa',1,'webcface::internal::WebSocket::CurlInitializer']]],
+  ['_7eclientdata_4',['~ClientData',['../structwebcface_1_1internal_1_1ClientData.html#ac8ad1cac97096793572e6b25080ab32c',1,'webcface::internal::ClientData']]],
   ['_7edatasetbuffer_5',['~DataSetBuffer',['../classwebcface_1_1internal_1_1DataSetBuffer.html#a64eb3a88092fd95c321fee2920554882',1,'webcface::internal::DataSetBuffer']]],
   ['_7einputref_6',['~InputRef',['../classwebcface_1_1InputRef.html#a426a9bb66a0d861cf5fa495c2be6892d',1,'webcface::InputRef']]],
   ['_7ememberdata_7',['~MemberData',['../structwebcface_1_1server_1_1MemberData.html#aa0e9e0f882a054ce8cd951bd53b745c7',1,'webcface::server::MemberData']]],

@@ -15,7 +15,7 @@
 <polygon fill="white" stroke="#666666" points="168,-41 0,-41 0,0 168,0 168,-41"/>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">SyncDataStore2&lt; std</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::shared_ptr&lt; webcface</text>
-<text text-anchor="middle" x="84" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::message::Canvas2DData &gt; &gt;</text>
+<text text-anchor="middle" x="84" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::message::Canvas3DData &gt; &gt;</text>
 </a>
 </g>
 </g>

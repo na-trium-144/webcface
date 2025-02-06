@@ -31,6 +31,8 @@ var searchData=
   ['getter_28',['getter',['../structwebcface_1_1internal_1_1PromiseData.html#afa232430800d915ccd4be08026e0da22',1,'webcface::internal::PromiseData']]],
   ['gettime_29',['getTime',['../structwebcface_1_1message_1_1Sync.html#ab636bb5870aadd185be752cd2fa719a4',1,'webcface::message::Sync']]],
   ['getvec_30',['getVec',['../classwebcface_1_1Value.html#a46b4ed2c2d37bf7c5b9c9450b88fb118',1,'webcface::Value']]],
-  ['getw_31',['getW',['../classwebcface_1_1Text.html#a7b92ad41bb81c3e7fab9ec790737854f',1,'webcface::Text::getW()'],['../classwebcface_1_1Log.html#aefb22f7329c38540160a020c2890e161',1,'webcface::Log::getW()']]],
-  ['getwcli_32',['getWcli',['../namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae',1,'webcface::getWcli()'],['../namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae',1,'webcface::c_wcf::getWcli()']]]
+  ['getw_31',['getW',['../classwebcface_1_1Log.html#aefb22f7329c38540160a020c2890e161',1,'webcface::Log::getW()'],['../classwebcface_1_1Text.html#a7b92ad41bb81c3e7fab9ec790737854f',1,'webcface::Text::getW()']]],
+  ['getwcli_32',['getWcli',['../namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae',1,'webcface::getWcli()'],['../namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae',1,'webcface::c_wcf::getWcli()']]],
+  ['globaldeinit_33',['globalDeinit',['../namespacewebcface_1_1internal_1_1WebSocket.html#ab35a33245a12d2cef3aaa7558e11c876',1,'webcface::internal::WebSocket']]],
+  ['globalinit_34',['globalInit',['../namespacewebcface_1_1internal_1_1WebSocket.html#a5cca4cba99adbab281dc1c973018217e',1,'webcface::internal::WebSocket']]]
 ];

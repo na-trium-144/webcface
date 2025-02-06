@@ -175,6 +175,12 @@ Classes</h2></td></tr>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a41d7177ed5bf105a2835275fc0c2e4ac"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a41d7177ed5bf105a2835275fc0c2e4ac">ClientData</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;<a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b">host</a>=nullptr, int <a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a63c89c04d1feae07ca35558055155ffb">port</a>=-1)</td></tr>
 <tr class="separator:a41d7177ed5bf105a2835275fc0c2e4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f921605927cd51e95e4b394759ec37b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a0f921605927cd51e95e4b394759ec37b">ClientData</a> (const <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp;)=delete</td></tr>
+<tr class="separator:a0f921605927cd51e95e4b394759ec37b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa94c857a92834b57e17194f98953a278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#aa94c857a92834b57e17194f98953a278">operator=</a> (const <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp;)=delete</td></tr>
+<tr class="separator:aa94c857a92834b57e17194f98953a278"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8ad1cac97096793572e6b25080ab32c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ac8ad1cac97096793572e6b25080ab32c">~ClientData</a> ()</td></tr>
+<tr class="separator:ac8ad1cac97096793572e6b25080ab32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5ae591df94fc66ccb85cbb6565368bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a5ae591df94fc66ccb85cbb6565368bca">close</a> ()</td></tr>
 <tr class="separator:a5ae591df94fc66ccb85cbb6565368bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d582963e9e3bc398aae2d0f5a6fe8c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a55d582963e9e3bc398aae2d0f5a6fe8c">isSelf</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base) const</td></tr>
@@ -233,8 +239,6 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a591e347c290dd1030675c7f56a13ed98"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2405d3888727e8b9d81e466db15fa725"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a2405d3888727e8b9d81e466db15fa725">current_ws_buf</a> = &quot;&quot;</td></tr>
 <tr class="separator:a2405d3888727e8b9d81e466db15fa725"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace575e50d22b2fb342184815fb2cc2aa"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ace575e50d22b2fb342184815fb2cc2aa">curl_initializer</a></td></tr>
-<tr class="separator:ace575e50d22b2fb342184815fb2cc2aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b37d20238d1dc19c24d9df8f237d5fe"><td class="memItemLeft" align="right" valign="top">std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a4b37d20238d1dc19c24d9df8f237d5fe">curl_err_buffer</a></td></tr>
 <tr class="separator:a4b37d20238d1dc19c24d9df8f237d5fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a177dbf20b799483063395f54b12992fd"><td class="memItemLeft" align="right" valign="top">std::thread&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a177dbf20b799483063395f54b12992fd">ws_thread</a></td></tr>
@@ -352,7 +356,7 @@ Public Attributes</h2></td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a41d7177ed5bf105a2835275fc0c2e4ac" name="a41d7177ed5bf105a2835275fc0c2e4ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41d7177ed5bf105a2835275fc0c2e4ac">&#9670;&#160;</a></span>ClientData()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a41d7177ed5bf105a2835275fc0c2e4ac">&#9670;&#160;</a></span>ClientData() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -389,6 +393,49 @@ Public Attributes</h2></td></tr>
 <span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
   </tr>
 </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0f921605927cd51e95e4b394759ec37b" name="a0f921605927cd51e95e4b394759ec37b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f921605927cd51e95e4b394759ec37b">&#9670;&#160;</a></span>ClientData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac8ad1cac97096793572e6b25080ab32c" name="ac8ad1cac97096793572e6b25080ab32c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8ad1cac97096793572e6b25080ab32c">&#9670;&#160;</a></span>~ClientData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">~<a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
 </div><div class="memdoc">
 
 </div>
@@ -641,6 +688,32 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>受信時の処理 </p>
+
+</div>
+</div>
+<a id="aa94c857a92834b57e17194f98953a278" name="aa94c857a92834b57e17194f98953a278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa94c857a92834b57e17194f98953a278">&#9670;&#160;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp; operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &amp;&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">delete</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -927,20 +1000,6 @@ struct SyncDataFirst {
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;char&gt; curl_err_buffer</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ace575e50d22b2fb342184815fb2cc2aa" name="ace575e50d22b2fb342184815fb2cc2aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace575e50d22b2fb342184815fb2cc2aa">&#9670;&#160;</a></span>curl_initializer</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;void&gt; curl_initializer</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1734,7 +1793,7 @@ struct SyncDataFirst {
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Thu Jan 30 2025 14:58:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Feb 6 2025 13:58:50 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
