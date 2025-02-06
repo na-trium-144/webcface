@@ -5,37 +5,6 @@ extern "C" {
 #endif
 
 /*!
- * \brief int型のwcfMultiValを構築
- * \since ver1.5
- */
-WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValI(int value);
-/*!
- * \brief int型のwcfMultiValWを構築
- * \since ver2.0
- */
-WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWI(int value);
-/*!
- * \brief double型のwcfMultiValを構築
- * \since ver1.5
- */
-WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValD(double value);
-/*!
- * \brief double型のwcfMultiValWを構築
- * \since ver2.0
- */
-WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWD(double value);
-/*!
- * \brief 文字列型のwcfMultiValを構築
- * \since ver1.5
- */
-WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValS(const char *value);
-/*!
- * \brief 文字列型のwcfMultiValWを構築 (wstring)
- * \since ver2.0
- */
-WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWS(const wchar_t *value);
-
-/*!
  * \brief 関数を呼び出す
  * \since ver1.5
  * \param wcli Clientポインタ

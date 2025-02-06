@@ -111,12 +111,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief field名を返す
      *
      */
-    const std::string &name() const { return field_.decode(); }
+    std::string_view name() const { return field_.decode(); }
     /*!
      * \brief field名を返す (wstring)
      * \since ver2.0
      */
-    const std::wstring &nameW() const { return field_.decodeW(); }
+    std::wstring_view nameW() const { return field_.decodeW(); }
 
   protected:
     SharedString lastName8() const;
@@ -128,12 +128,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11
      */
-    std::string lastName() const { return lastName8().decode(); }
+    std::string lastName() const { return std::string(lastName8().decode()); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
      * \since ver2.0
      */
-    std::wstring lastNameW() const { return lastName8().decodeW(); }
+    std::wstring lastNameW() const { return std::wstring(lastName8().decodeW()); }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11

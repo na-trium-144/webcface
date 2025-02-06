@@ -217,42 +217,7 @@ static wcfStatus wcfFuncFetchCallT(wcfClient *wcli, const CharT *field,
     }
 }
 
-/// \private
-template <typename CharT>
-static auto wcfValTI(int value) {
-    typename CharType<CharT>::CVal val;
-    val.as_int = value;
-    val.as_double = 0;
-    val.as_str = 0;
-    return val;
-}
-/// \private
-template <typename CharT>
-static auto wcfValTD(double value) {
-    typename CharType<CharT>::CVal val;
-    val.as_int = 0;
-    val.as_double = value;
-    val.as_str = 0;
-    return val;
-}
-/// \private
-template <typename CharT>
-static auto wcfValTS(const CharT *value) {
-    typename CharType<CharT>::CVal val;
-    val.as_int = 0;
-    val.as_double = 0;
-    val.as_str = value;
-    return val;
-}
-
 extern "C" {
-wcfMultiVal wcfValI(int value) { return wcfValTI<char>(value); }
-wcfMultiVal wcfValD(double value) { return wcfValTD<char>(value); }
-wcfMultiVal wcfValS(const char *value) { return wcfValTS<char>(value); }
-wcfMultiValW wcfValWI(int value) { return wcfValTI<wchar_t>(value); }
-wcfMultiValW wcfValWD(double value) { return wcfValTD<wchar_t>(value); }
-wcfMultiValW wcfValWS(const wchar_t *value) { return wcfValTS<wchar_t>(value); }
-
 wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
                      const wcfMultiVal *args, int arg_size,
                      wcfMultiVal **result) {

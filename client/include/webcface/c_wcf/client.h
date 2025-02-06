@@ -5,20 +5,6 @@ extern "C" {
 #endif
 
 /*!
- * \brief webcfaceが使用するエンコーディングを設定する
- * \since ver2.0
- *
- * * windowsでは、false(0)の場合webcfaceの各種クラスのインタフェースで使われる
- * char* をすべてANSIエンコーディングとみなし、
- * 内部でutf8と相互変換する。
- * * デフォルトは true(1) (以前のバージョンとの互換性のため)
- * * unixでは効果がない(この設定に関わらず文字列はすべてutf8とみなされ相互変換は行われない)
- * * wchar_t* 型の文字列には影響しない
- * 
- */
-WEBCFACE_DLL void WEBCFACE_CALL wcfUsingUTF8(int flag);
-
-/*!
  * \brief クライアントを初期化する
  * \since ver1.5
  * \param name 名前 (ver1.7〜:NULLも可)
