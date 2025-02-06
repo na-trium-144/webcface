@@ -43,6 +43,11 @@ internal::ClientData::ClientData(const SharedString &name,
     } else {
         logger_internal->set_level(spdlog::level::off);
     }
+    internal::WebSocket::globalInit();
+}
+internal::ClientData::~ClientData() {
+    join();
+    internal::WebSocket::globalDeinit();
 }
 
 Client::~Client() {

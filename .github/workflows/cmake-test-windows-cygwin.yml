@@ -57,7 +57,8 @@ jobs:
 
     - name: Test
       shell: C:\cygwin\bin\bash.exe '{0}'
-      run: meson test -C build --print-errorlog --suite webcface
+      run: meson test -C build --print-errorlog --no-stdsplit --suite webcface
+    # mesonが古いので--max-lines指定できない
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'

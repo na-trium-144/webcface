@@ -4,15 +4,18 @@
 #include <thread>
 #include "dummy_client.h"
 #include "webcface/common/internal/unix_path.h"
+#include "webcface/internal/client_ws.h"
 
 using namespace webcface;
 DummyClient::~DummyClient() {
     closing.store(true);
     t.join();
+    internal::WebSocket::globalDeinit();
 }
 DummyClient::DummyClient(bool use_unix)
     : t([this, use_unix] {
-          static int sn = 1;
+          static std::atomic<int> sn = 1;
+          internal::WebSocket::globalInit();
           CURL *handle = curl_easy_init();
           curl_easy_setopt(handle, CURLOPT_VERBOSE, 1L);
           if (use_unix) {
