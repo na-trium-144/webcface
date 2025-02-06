@@ -32,17 +32,23 @@ getCurlError(const std::shared_ptr<internal::ClientData> &data, CURLcode res) {
     return {};
 }
 
-struct CurlInitializer {
-    CurlInitializer() {
+static std::mutex init_m;
+static int global_init_count = 0;
+void globalInit() {
+    std::lock_guard lock(init_m);
+    if (global_init_count++ == 0) {
         curl_global_init(CURL_GLOBAL_ALL);
         curl_global_trace("+ws");
     }
-    ~CurlInitializer() { curl_global_cleanup(); }
-};
+}
+void globalDeinit() {
+    std::lock_guard lock(init_m);
+    if (--global_init_count == 0) {
+        curl_global_cleanup();
+    }
+}
 
 void init(const std::shared_ptr<internal::ClientData> &data) {
-    data->curl_initializer = std::make_shared<CurlInitializer>();
-
     if (data->host.empty()) {
         data->host = SharedString::fromU8String("127.0.0.1");
     }

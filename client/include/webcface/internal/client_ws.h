@@ -6,6 +6,13 @@ namespace internal {
 namespace WebSocket {
 
 /*!
+ * curlの初期化処理が確実に1回呼ばれるようにし、
+ * globalInitが呼ばれた回数と同じだけDeinitが呼ばれたときにcleanupする
+ */
+void globalInit();
+void globalDeinit();
+
+/*!
  * \brief WebSocketに接続する
  *
  * 成功すると

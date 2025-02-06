@@ -47,6 +47,9 @@ extern std::atomic<int> log_keep_lines;
 struct ClientData : std::enable_shared_from_this<ClientData> {
     explicit ClientData(const SharedString &name,
                         const SharedString &host = nullptr, int port = -1);
+    ClientData(const ClientData&) = delete;
+    ClientData &operator=(const ClientData&) = delete;
+    ~ClientData();
 
     void close();
 
@@ -67,7 +70,6 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     void *current_curl_handle = nullptr;
     std::string current_curl_path;
     std::string current_ws_buf = "";
-    std::shared_ptr<void> curl_initializer;
     std::vector<char> curl_err_buffer;
 
     /*!
