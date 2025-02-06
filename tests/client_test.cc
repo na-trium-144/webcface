@@ -117,6 +117,7 @@ TEST_F(ClientTest, close) {
 TEST_F(ClientTest, disconnect) {
     dummy_s = std::make_shared<DummyServer>(false);
     wcli_->onDisconnect([&] { ++callback_called; });
+    wcli_->autoReconnect(false);
     wcli_->start();
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
