@@ -75,12 +75,12 @@ class WEBCFACE_DLL Member : protected Field {
     template <WEBCFACE_COMPLETE(Log)>
     Log_ log() const;
 
-    using Field::children;
-    using Field::childrenRecurse;
-    using Field::hasChildren;
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;
+    using Field::children;
+    using Field::childrenRecurse;
     using Field::funcEntries;
+    using Field::hasChildren;
     using Field::imageEntries;
     using Field::logEntries;
     using Field::robotModelEntries;
@@ -122,9 +122,18 @@ class WEBCFACE_DLL Member : protected Field {
     [[deprecated]] std::vector<Image> images() const;
 
     /*!
+     * \brief Memberのデータが存在するかどうかを返す
+     * \since ver2.9
+     *
+     * * connected()
+     * とは異なり、切断後もサーバーにデータが残っていてまだデータを受信でき、trueになる場合がある
+     *
+     */
+    bool exists() const;
+    /*!
      * \brief Memberがサーバーに接続できているときtrueを返す
      * \since ver2.9
-     * 
+     *
      * * 自身を表すMemberに対する connected() は、Client::connected() と同じ。
      * * 自身のサーバーとの通信が切断された場合、全メンバーについてfalseとなる
      */
