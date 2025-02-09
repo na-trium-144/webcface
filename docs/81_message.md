@@ -50,6 +50,16 @@ data = {
 	* クライアントはwaitConnection()でこれが送られてくるまで待機します
 * <span class="since-c">2.0</span> member id 追加 (sync init をしたメンバーのid)
 
+### closed (kind = 93)
+\since <span class="since-c">2.9</span>
+
+```js
+data = {
+	m: number, // member id
+}
+```
+* クライアントが切断したとき、サーバーからクライアントに送られます
+
 ### ping (kind = 89)
 ```js
 data = {}

@@ -54,6 +54,14 @@ Memberクラスから実際にそれぞれのデータにアクセスする方�
 
 このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。
 
+## Field系クラスの扱いについて
+
+Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも webcface::Field を継承している) について、
+
+* それぞれコンストラクタが用意されていますが、正しくClientクラスから生成したオブジェクトでないと内部のデータにアクセスしようとするときに std::runtime_error (pythonでは RuntimeError) を投げます。
+* 構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。
+* オブジェクトのコピー、ムーブは可能です。
+
 ## members
 
 現在サーバーに接続されているメンバーのリストが得られます
@@ -101,13 +109,34 @@ Memberクラスから実際にそれぞれのデータにアクセスする方�
 
 </div>
 
-## Field系クラスの扱いについて
+## Entry
 
-Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも webcface::Field を継承している) について、
+<div class="tabbed">
 
-* それぞれコンストラクタが用意されていますが、正しくClientクラスから生成したオブジェクトでないと内部のデータにアクセスしようとするときに std::runtime_error (pythonでは RuntimeError) を投げます。
-* 構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。
-* オブジェクトのコピー、ムーブは可能です。
+- <b class="tab-title">C++</b>
+    \since <span class="since-c">2.9</span>
+
+    Member::exists() で、指定した名前のメンバーが存在するかどうかを調べることができます。
+    ```cpp
+    if(wcli.member("foo").exists()){
+        // ...
+    }
+    ```
+
+    また、 Member::connected() で、指定した名前のメンバーが接続中かどうかを調べることができます。
+    WebCFaceではメンバーが切断したあともサーバーにデータが残っており受信できる場合がありますが、その場合はexists()はtrueですがconnected()はfalseを返します。
+    ```cpp
+    if(wcli.member("foo").connected()){
+        // ...
+    }
+    ```
+
+    \warning
+    クライアント自身がサーバーから切断されている場合、他のすべてのメンバーについて connected() = false が返ります。
+
+    <span></span>
+
+</div>
 
 ## Event
 
@@ -125,14 +154,35 @@ Memberクラスおよびこれ以降説明する各種データ型のクラス (
     ```cpp
     wcli.onMemberEntry([](webcface::Member m){/* ... */});
     ```
-    * <span class="since-c">2.0</span>
-    Client::waitConnection() を使う場合、
-    クライアントはサーバーに接続し、発見したすべてのメンバーについてonMemberEntryコールバックを呼んでからreturnします。
 
     \note
     <span class="since-c">2.0</span>
     onMemberEntryに限らず、webcfaceが受け取る関数オブジェクトは基本的にコピーではなくムーブされます。
 
+    <span class="since-c">2.9</span>
+    Member::onConnect() で、指定した名前のメンバーが接続されたときに実行するコールバックを設定できます。
+    onConnect はonMemberEntryの直後に呼び出されます。
+    また、メンバーが一度切断された後再接続された場合も呼び出されます。
+    ```cpp
+    wcli.member("foo").onConnect([](webcface::Member m){/* ... */});
+    ```
+
+    <span class="since-c">2.9</span>
+    Member::onDisconnect() で、指定した名前のメンバーが切断されたときに実行するコールバックを設定できます。
+    ```cpp
+    wcli.member("foo").onDisconnect([](webcface::Member m){/* ... */});
+    ```
+
+    \warning
+    クライアント自身がサーバーから切断されたとき、Client::onDisconnected()だけでなく他のすべてのメンバーについてMember::onDisconnect()イベントのコールバックが呼ばれます。
+
+    \note
+    <span class="since-c">2.0</span>
+    Client::waitConnection() を使う場合、
+    クライアントはサーバーに接続し、発見したすべてのメンバーについてonMemberEntry,onConnectコールバックを呼んでからreturnします。
+
+    <span></span>
+    
 - <b class="tab-title">C</b>
     \since <span class="since-c">2.0</span>
 

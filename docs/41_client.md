@@ -60,7 +60,6 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     * <span class="since-c">2.0</span>
     `Client::start()` の代わりに `Client::waitConnection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
         * waitConnectionは通信完了までの間loopSync()を呼び出します。 詳細は後述の送受信の説明を参照
-    * 接続できているかどうかは `Client::connected()` で取得できます。
     * 通信が切断された場合は自動で再接続します。
         * <span class="since-c">1.11.1</span>
     `Client::autoReconnect(false)`をすると自動で再接続しなくなります。
@@ -107,7 +106,6 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
     * <span class="since-c">2.0</span>
     `wcfStart()` の代わりに `wcfWaitConnection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
         * wcfWaitConnectionは通信完了までの間wcfLoopSync()を呼び出します。
-    * 接続できているかどうかは `wcfIsConnected()` で取得できます。
     * 通信が切断された場合は自動で再接続します。
 
     \note
@@ -155,7 +153,6 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
     <span></span>
 
-    * 接続できているかどうかは `wcli.connected` で取得できます。
     * 通信が切断された場合は自動で再接続します。
 
     \warning
@@ -180,7 +177,6 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
         * <span class="since-py">2.0</span>
     `start()` の代わりに `wait_connection()` を使うと接続が完了してEntry(=他のクライアントが送信しているデータのリスト)をすべて受信するまで待機することができます。
         * waitConnectionは通信完了までの間sync()を呼び出します。 詳細は後述の送受信の説明を参照
-    * 接続できているかどうかは `wcli.connected` で取得できます。
     * 通信が切断された場合は自動で再接続します。
         * <span class="since-py">2.0</span>
         Clientの引数に `auto_reconnect=False`を指定すると自動で再接続しなくなります。
@@ -198,6 +194,8 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 </div>
 
+### 接続後
+
 クライアントが正常に接続できると、サーバーのログに
 ```
 [info] Successfully connected and initialized.
@@ -207,6 +205,62 @@ Client オブジェクトを作り、start() を呼ぶことでサーバーへ�
 
 プログラムを起動できたら、WebUIを開いてみましょう。
 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。
+
+## 接続状態の確認
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    接続できているかどうかは `Client::connected()` で取得できます。
+    ```cpp
+    if(wcli.connected()){
+        // 接続中
+    }
+    ```
+
+    <span class="since-c">2.9</span>
+    Client::onConnect() で、接続が完了したときに呼ばれるコールバックを設定できます。
+    autoReconnectが有効の場合は、再接続時にも呼ばれます。
+    waitConnectionを使用した場合は、waitConnectionはコールバックを呼び出してからreturnします。
+    ```cpp
+    wcli.onConnect([](){
+        // 接続完了時の処理
+    });
+    ```
+
+    <span class="since-c">2.9</span>
+    Client::onDisconnect() で、接続が切断されたときに呼ばれるコールバックを設定できます。
+    より正確には、通信が切断されて以降で最初のsync()の中で呼ばれます。
+    ```cpp
+    wcli.onDisconnect([](){
+        // 切断時の処理
+    });
+    ```
+
+- <b class="tab-title">C</b>
+    接続できているかどうかは `wcfIsConnected()` で取得できます。
+    ```c
+    if(wcfIsConnected(wcli)){
+        // 接続中
+    }
+    ```
+
+- <b class="tab-title">JavaScript</b>
+    接続できているかどうかは `wcli.connected` で取得できます。
+    ```ts
+    if(wcli.connected){
+        // 接続中
+    }
+    ```
+
+- <b class="tab-title">Python</b>
+    接続できているかどうかは `wcli.connected` で取得できます。
+    ```python
+    if wcli.connected:
+        # 接続中
+    ```
+
+</div>
 
 ## Encoding
 
@@ -272,7 +326,7 @@ C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を�
 
     \warning
     * <span class="since-c">2.0</span>
-    これ以降の章で扱う各種データの受信時にコールバックを設定できますが、それはsync()を呼んだスレッドで実行されます。
+    Client::onConnect, onDisconnect や、これ以降の章で扱う各種データの受信時などにコールバックを設定できますが、それはいずれもsync()を呼んだスレッドで実行されます。
     そのため長時間かかるコールバックを登録した場合、その間sync()を呼んだメインスレッドがブロックされるだけでなく、他のデータの受信もできなくなるため注意してください。
 
     \warning

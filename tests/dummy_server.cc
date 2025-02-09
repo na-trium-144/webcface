@@ -41,6 +41,8 @@ class CustomLogger : public crow::ILogHandler {
 };
 
 DummyServer::~DummyServer() {
+    // stopしてjoinしているが、それでもportがopenしたままになる場合がある...
+    // https://github.com/CrowCpp/Crow/issues/713
     try {
         if (connPtr) {
             reinterpret_cast<crow::websocket::connection *>(connPtr)->send_binary("");

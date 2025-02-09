@@ -42,11 +42,9 @@ const Image &Image::request(std::optional<int> rows, std::optional<int> cols,
 const Image &Image::set(const ImageFrame &img) const {
     auto data = setCheck();
     data->image_store.setSend(*this, img);
-    std::shared_ptr<std::function<void(Image)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->image_change_event[this->member_][this->field_];
-    }
+    auto change_event =
+        internal::findFromMap2(data->image_change_event.shared_lock().get(),
+                               this->member_, this->field_);
     if (change_event && *change_event) {
         change_event->operator()(*this);
     }
@@ -55,8 +53,7 @@ const Image &Image::set(const ImageFrame &img) const {
 const Image &Image::onChange(std::function<void(Image)> callback) const {
     this->tryRequest();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->image_change_event[this->member_][this->field_] =
+    data->image_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(Image)>>(std::move(callback));
     return *this;
 }

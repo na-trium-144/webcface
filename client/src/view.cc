@@ -49,11 +49,9 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
     }
     data->view_store.setSend(target_, components_p);
 
-    std::shared_ptr<std::function<void(View)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->view_change_event[target_.member_][target_.field_];
-    }
+    auto change_event =
+        internal::findFromMap2(data->view_change_event.shared_lock().get(),
+                               target_.member_, target_.field_);
     if (change_event && *change_event) {
         change_event->operator()(target_);
     }
@@ -61,8 +59,7 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
 const View &View::onChange(std::function<void(View)> callback) const {
     this->request();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->view_change_event[this->member_][this->field_] =
+    data->view_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(View)>>(std::move(callback));
     return *this;
 }

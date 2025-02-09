@@ -50,11 +50,9 @@ const Variant &Variant::request() const {
 const Variant &Variant::set(const ValAdaptor &v) const {
     auto data = setCheck();
     data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
-    std::shared_ptr<std::function<void(Variant)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->text_change_event[this->member_][this->field_];
-    }
+    auto change_event =
+        internal::findFromMap2(data->text_change_event.shared_lock().get(),
+                               this->member_, this->field_);
     if (change_event && *change_event) {
         change_event->operator()(*this);
     }
@@ -63,8 +61,7 @@ const Variant &Variant::set(const ValAdaptor &v) const {
 const Variant &Variant::onChange(std::function<void(Variant)> callback) const {
     this->request();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->text_change_event[this->member_][this->field_] =
+    data->text_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(Variant)>>(std::move(callback));
     return *this;
 }

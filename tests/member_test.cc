@@ -77,43 +77,43 @@ TEST_F(MemberTest, getEntry) {
 }
 TEST_F(MemberTest, eventTarget) {
     member("a").onValueEntry(callback<Value>());
-    data_->value_entry_event["a"_ss]->operator()(field("a", "a"));
+    data_->value_entry_event.lock().get()["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onTextEntry(callback<Text>());
-    data_->text_entry_event["a"_ss]->operator()(field("a", "a"));
+    data_->text_entry_event.lock().get()["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onFuncEntry(callback<Func>());
-    data_->func_entry_event["a"_ss]->operator()(field("a", "a"));
+    data_->func_entry_event.lock().get()["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onViewEntry(callback<View>());
-    data_->view_entry_event["a"_ss]->operator()(field("a", "a"));
+    data_->view_entry_event.lock().get()["a"_ss]->operator()(field("a", "a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     member("a").onSync(callback<Member>());
-    data_->sync_event["a"_ss]->operator()(field("a"));
+    data_->sync_event.lock().get()["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     member("a").onPing(callback<Member>());
-    data_->ping_event["a"_ss]->operator()(field("a"));
+    data_->ping_event.lock().get()["a"_ss]->operator()(field("a"));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->ping_status_req);
     callback_called = 0;
 }
 TEST_F(MemberTest, libVersion) {
-    data_->member_ids["a"_ss] = 1;
-    data_->member_lib_name[1] = "aaa";
-    data_->member_lib_ver[1] = "bbb";
-    data_->member_addr[1] = "ccc";
+    data_->member_ids.lock().get()["a"_ss] = 1;
+    data_->member_lib_name.lock().get()[1] = "aaa";
+    data_->member_lib_ver.lock().get()[1] = "bbb";
+    data_->member_addr.lock().get()[1] = "ccc";
     EXPECT_EQ(member("a").libName(), "aaa");
     EXPECT_EQ(member("a").libVersion(), "bbb");
     EXPECT_EQ(member("a").remoteAddr(), "ccc");
 }
 TEST_F(MemberTest, PingStatus) {
-    data_->member_ids["a"_ss] = 1;
+    data_->member_ids.lock().get()["a"_ss] = 1;
     data_->ping_status =
         std::make_shared<std::unordered_map<unsigned int, int>>(
             std::unordered_map<unsigned int, int>{{1, 10}});

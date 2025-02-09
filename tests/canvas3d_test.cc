@@ -60,12 +60,12 @@ TEST_F(Canvas3DTest, field) {
 }
 TEST_F(Canvas3DTest, eventTarget) {
     canvas("a", "b").onChange(callback<Canvas3D>());
-    data_->canvas3d_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->canvas3d_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(Canvas3DTest, set) {
-    data_->canvas3d_change_event[self_name]["b"_ss] =
+    data_->canvas3d_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Canvas3D)>>(callback());
     using namespace webcface::geometries;
     using namespace webcface::robot_joints;

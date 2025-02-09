@@ -173,12 +173,12 @@ TEST_F(ImageTest, field) {
 }
 TEST_F(ImageTest, eventTarget) {
     image("a", "b").onChange(callback<Image>());
-    data_->image_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->image_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ImageTest, imageSet) {
-    data_->image_change_event[self_name]["b"_ss] =
+    data_->image_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Image)>>(callback());
     auto dp = std::make_shared<std::vector<unsigned char>>(100 * 100 * 3);
     image(self_name, "b")

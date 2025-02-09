@@ -2,6 +2,7 @@
 #include <mutex>
 #include <optional>
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/map.h"
 #include "webcface/field.h"
 
 WEBCFACE_NS_BEGIN

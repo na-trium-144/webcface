@@ -1,6 +1,7 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
+#include <map>
 #include <optional>
 #include <unordered_map>
 #include <vector>

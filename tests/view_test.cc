@@ -68,12 +68,12 @@ TEST_F(ViewTest, field) {
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").onChange(callback<View>());
-    data_->view_change_event["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->view_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
 TEST_F(ViewTest, viewSet) {
-    data_->view_change_event[self_name]["b"_ss] =
+    data_->view_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(View)>>(callback());
     using namespace webcface::ViewComponents;
     auto v = view(self_name, "b");

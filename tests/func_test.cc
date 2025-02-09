@@ -167,7 +167,7 @@ TEST_F(FuncTest, funcSet) {
     ASSERT_EQ(f.args(3).option().size(), 3u);
     EXPECT_EQ(f.args(3).option()[2], "c");
     EXPECT_EQ(f.args(3).option()[2], L"c");
-    
+
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
 
     // 未設定の関数呼び出しでエラー
@@ -398,18 +398,18 @@ TEST_F(FuncTest, funcRunRemote) {
     EXPECT_FALSE(res.found());
     EXPECT_TRUE(res.isError());
     {
-        internal::ClientData::ScopedWsLock lock_ws(data_);
-        EXPECT_TRUE(lock_ws.getData().sync_queue.empty());
-        lock_ws.getData().connected = true;
+        auto lock_ws = data_->ws_data.lock();
+        EXPECT_TRUE(lock_ws->sync_queue.empty());
+        lock_ws->connected = true;
     }
     res = func("a", "b").runAsync(1.23, true, "abc");
     EXPECT_FALSE(res.reached());
     bool call_msg_found = false;
     {
-        internal::ClientData::ScopedWsLock lock_ws(data_);
-        while (!lock_ws.getData().sync_queue.empty()) {
-            auto msg = lock_ws.getData().sync_queue.front();
-            lock_ws.getData().sync_queue.pop();
+        auto lock_ws = data_->ws_data.lock();
+        while (!lock_ws->sync_queue.empty()) {
+            auto msg = lock_ws->sync_queue.front();
+            lock_ws->sync_queue.pop();
             if (std::get<0>(msg) ==
                 message::packSingle(message::Call{
                     1,

@@ -65,6 +65,10 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Sync) {
     return fmt::format_to(ctx.out(), "{}-Sync(member_id={}, time={:%T})",
                           msg_kind, m.member_id, m.getTime());
 }
+WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Closed) {
+    return fmt::format_to(ctx.out(), "{}-Closed(member_id={})", msg_kind,
+                          m.member_id);
+}
 
 /// \private
 template <typename T,
