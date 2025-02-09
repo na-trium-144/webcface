@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.8.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -143,12 +143,12 @@ $(document).ready(function(){initNavTree('md_docs_284__versioning.html',''); ini
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md269">Message Compatibility</a></li>
-<li class="level1"><a href="#autotoc_md270">ABI Compatibility</a></li>
+<ul><li class="level1"><a href="#autotoc_md274">Message Compatibility</a></li>
+<li class="level1"><a href="#autotoc_md275">ABI Compatibility</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md268"></a></p>
-<h1><a class="anchor" id="autotoc_md269"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md273"></a></p>
+<h1><a class="anchor" id="autotoc_md274"></a>
 Message Compatibility</h1>
 <p>C/C++のWebCFaceライブラリと、JavaScript、PythonのWebCFaceライブラリはバージョン番号が異なりますが、 通信されるメッセージ仕様の互換性は以下のとおりです。</p>
 <p>それぞれのクライアントのバージョンと比べてサーバーのバージョンが同じか新しい必要があります。 サーバーよりクライアントのほうが新しい場合の動作は保証しません。</p>
@@ -174,13 +174,13 @@ Message Compatibility</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2.1〜2.3   </td><td class="markdownTableBodyNone">2.0   </td><td class="markdownTableBodyNone">1.8   </td><td class="markdownTableBodyNone">1.8.1〜1.8.3   </td><td class="markdownTableBodyNone">LogEntry    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2.4   </td><td class="markdownTableBodyNone">2.1〜2.4   </td><td class="markdownTableBodyNone">1.9〜1.10   </td><td class="markdownTableBodyNone">1.9〜1.12   </td><td class="markdownTableBodyNone">Log (kind=85 → 8)    </td></tr>
+<td class="markdownTableBodyNone">2.4   </td><td class="markdownTableBodyNone">2.1〜2.4   </td><td class="markdownTableBodyNone">1.9〜1.10   </td><td class="markdownTableBodyNone">1.9〜1.14   </td><td class="markdownTableBodyNone">Log (kind=85 → 8)    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2.5〜2.8   </td><td class="markdownTableBodyNone">3.0〜3.1   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">View (3→9), Canvas2D (4→10), 3D (7→11)    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">2.9   </td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">Closed (kind=93)   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md270"></a>
+<h1><a class="anchor" id="autotoc_md275"></a>
 ABI Compatibility</h1>
 <p>WebCFaceは共有ライブラリであり、WebCFaceを使ったアプリケーションをビルドしたときと異なるバージョンのWebCFaceライブラリを使って実行することもできます。 ABIのメジャーバージョン(小数点より左)が一致し、かつマイナーバージョン(小数点より右)がビルド時より新しいものであれば正常動作することが保証されます。</p>
 <p>ABIのメジャーバージョンはライブラリのファイル名に</p><ul>
@@ -228,9 +228,11 @@ ABI Compatibility</h1>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2.6   </td><td class="markdownTableBodyNone">22.0   </td><td class="markdownTableBodyNone"></td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone">2.7   </td><td class="markdownTableBodyNone">23.0   </td><td class="markdownTableBodyNone">2.2.0    </td></tr>
+<td class="markdownTableBodyNone">2.7   </td><td class="markdownTableBodyNone">23.0   </td><td class="markdownTableBodyNone">2.2〜2.3    </td></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone">2.8   </td><td class="markdownTableBodyNone">23.1   </td><td class="markdownTableBodyNone"></td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone">2.9   </td><td class="markdownTableBodyNone">23.2   </td><td class="markdownTableBodyNone"></td></tr>
 </table>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
@@ -244,7 +246,7 @@ ABI Compatibility</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Feb 9 2025 06:49:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Feb 9 2025 08:20:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

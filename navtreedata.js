@@ -25,30 +25,30 @@
 var NAVTREE =
 [
   [ "WebCFace", "index.html", [
-    [ "WebCFace", "index.html#autotoc_md271", [
-      [ "Table of contents", "index.html#autotoc_md272", null ],
-      [ "Features", "index.html#autotoc_md273", [
-        [ "Easy to Setup", "index.html#autotoc_md274", null ],
-        [ "Inter-Process Communication", "index.html#autotoc_md275", null ],
-        [ "WebUI", "index.html#autotoc_md276", null ],
-        [ "WebCFace-Tools", "index.html#autotoc_md277", null ]
+    [ "WebCFace", "index.html#autotoc_md276", [
+      [ "Table of contents", "index.html#autotoc_md277", null ],
+      [ "Features", "index.html#autotoc_md278", [
+        [ "Easy to Setup", "index.html#autotoc_md279", null ],
+        [ "Inter-Process Communication", "index.html#autotoc_md280", null ],
+        [ "WebUI", "index.html#autotoc_md281", null ],
+        [ "WebCFace-Tools", "index.html#autotoc_md282", null ]
       ] ],
-      [ "Documentation", "index.html#autotoc_md280", null ],
-      [ "Links", "index.html#autotoc_md281", null ],
-      [ "Installation", "index.html#autotoc_md282", [
-        [ "Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)", "index.html#autotoc_md283", [
-          [ "Deb Package", "index.html#autotoc_md284", null ],
-          [ "Unzip manually (Linux)", "index.html#autotoc_md285", null ],
-          [ "macOS", "index.html#autotoc_md286", null ]
+      [ "Documentation", "index.html#autotoc_md285", null ],
+      [ "Links", "index.html#autotoc_md286", null ],
+      [ "Installation", "index.html#autotoc_md287", [
+        [ "Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)", "index.html#autotoc_md288", [
+          [ "Deb Package", "index.html#autotoc_md289", null ],
+          [ "Unzip manually (Linux)", "index.html#autotoc_md290", null ],
+          [ "macOS", "index.html#autotoc_md291", null ]
         ] ],
-        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md287", null ],
-        [ "Windows MSVC (x86, x64)", "index.html#autotoc_md288", null ],
-        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md289", [
-          [ "webcface-server", "index.html#autotoc_md290", null ],
-          [ "webcface-tools", "index.html#autotoc_md291", null ]
+        [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md292", null ],
+        [ "Windows MSVC (x86, x64)", "index.html#autotoc_md293", null ],
+        [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md294", [
+          [ "webcface-server", "index.html#autotoc_md295", null ],
+          [ "webcface-tools", "index.html#autotoc_md296", null ]
         ] ]
       ] ],
-      [ "License", "index.html#autotoc_md292", null ]
+      [ "License", "index.html#autotoc_md297", null ]
     ] ],
     [ "1-1. Tutorial (Visualizing)", "md_docs_211__tutorial__vis.html", [
       [ "WebCFaceのインストール", "md_docs_211__tutorial__vis.html#autotoc_md1", null ],
@@ -279,105 +279,112 @@ var NAVTREE =
     [ "7-6. webcface-notepad", "md_docs_276__notepad.html", [
       [ "コマンドライン引数", "md_docs_276__notepad.html#autotoc_md184", null ]
     ] ],
+    [ "7-7. webcface-joystick", "md_docs_277__joystick.html", [
+      [ "コマンドライン引数", "md_docs_277__joystick.html#autotoc_md186", [
+        [ "使い方", "md_docs_277__joystick.html#autotoc_md187", null ]
+      ] ],
+      [ "WebUIから送信する (webui-joystick)", "md_docs_277__joystick.html#autotoc_md188", null ],
+      [ "受信プログラム例", "md_docs_277__joystick.html#autotoc_md189", null ]
+    ] ],
     [ "8-1. Message", "md_docs_281__message.html", [
-      [ "Sync", "md_docs_281__message.html#autotoc_md186", [
-        [ "sync init (kind = 80)", "md_docs_281__message.html#autotoc_md187", null ],
-        [ "sync init end (kind = 88)", "md_docs_281__message.html#autotoc_md188", null ],
-        [ "closed (kind = 93)", "md_docs_281__message.html#autotoc_md189", null ],
-        [ "ping (kind = 89)", "md_docs_281__message.html#autotoc_md190", null ],
-        [ "ping status (kind = 90)", "md_docs_281__message.html#autotoc_md191", null ],
-        [ "ping status req (kind = 91)", "md_docs_281__message.html#autotoc_md192", null ],
-        [ "sync (kind = 87)", "md_docs_281__message.html#autotoc_md193", null ]
+      [ "Sync", "md_docs_281__message.html#autotoc_md191", [
+        [ "sync init (kind = 80)", "md_docs_281__message.html#autotoc_md192", null ],
+        [ "sync init end (kind = 88)", "md_docs_281__message.html#autotoc_md193", null ],
+        [ "closed (kind = 93)", "md_docs_281__message.html#autotoc_md194", null ],
+        [ "ping (kind = 89)", "md_docs_281__message.html#autotoc_md195", null ],
+        [ "ping status (kind = 90)", "md_docs_281__message.html#autotoc_md196", null ],
+        [ "ping status req (kind = 91)", "md_docs_281__message.html#autotoc_md197", null ],
+        [ "sync (kind = 87)", "md_docs_281__message.html#autotoc_md198", null ]
       ] ],
-      [ "Func", "md_docs_281__message.html#autotoc_md194", [
-        [ "func info (kind = 84)", "md_docs_281__message.html#autotoc_md195", null ],
-        [ "call (kind = 81)", "md_docs_281__message.html#autotoc_md196", null ],
-        [ "call response (kind = 82)", "md_docs_281__message.html#autotoc_md197", null ],
-        [ "call result (kind = 83)", "md_docs_281__message.html#autotoc_md198", null ]
+      [ "Func", "md_docs_281__message.html#autotoc_md199", [
+        [ "func info (kind = 84)", "md_docs_281__message.html#autotoc_md200", null ],
+        [ "call (kind = 81)", "md_docs_281__message.html#autotoc_md201", null ],
+        [ "call response (kind = 82)", "md_docs_281__message.html#autotoc_md202", null ],
+        [ "call result (kind = 83)", "md_docs_281__message.html#autotoc_md203", null ]
       ] ],
-      [ "Value", "md_docs_281__message.html#autotoc_md199", [
-        [ "value (kind = 0)", "md_docs_281__message.html#autotoc_md200", null ],
-        [ "value entry (kind = 20)", "md_docs_281__message.html#autotoc_md201", null ],
-        [ "value req (kind = 40)", "md_docs_281__message.html#autotoc_md202", null ],
-        [ "value res (kind = 60)", "md_docs_281__message.html#autotoc_md203", null ]
+      [ "Value", "md_docs_281__message.html#autotoc_md204", [
+        [ "value (kind = 0)", "md_docs_281__message.html#autotoc_md205", null ],
+        [ "value entry (kind = 20)", "md_docs_281__message.html#autotoc_md206", null ],
+        [ "value req (kind = 40)", "md_docs_281__message.html#autotoc_md207", null ],
+        [ "value res (kind = 60)", "md_docs_281__message.html#autotoc_md208", null ]
       ] ],
-      [ "Text", "md_docs_281__message.html#autotoc_md204", [
-        [ "text (kind = 1)", "md_docs_281__message.html#autotoc_md205", null ],
-        [ "text entry (kind = 21)", "md_docs_281__message.html#autotoc_md206", null ],
-        [ "text req (kind = 41)", "md_docs_281__message.html#autotoc_md207", null ],
-        [ "text res (kind = 61)", "md_docs_281__message.html#autotoc_md208", null ]
+      [ "Text", "md_docs_281__message.html#autotoc_md209", [
+        [ "text (kind = 1)", "md_docs_281__message.html#autotoc_md210", null ],
+        [ "text entry (kind = 21)", "md_docs_281__message.html#autotoc_md211", null ],
+        [ "text req (kind = 41)", "md_docs_281__message.html#autotoc_md212", null ],
+        [ "text res (kind = 61)", "md_docs_281__message.html#autotoc_md213", null ]
       ] ],
-      [ "View", "md_docs_281__message.html#autotoc_md209", [
-        [ "view (kind = 9)", "md_docs_281__message.html#autotoc_md210", null ],
-        [ "view entry (kind = 29)", "md_docs_281__message.html#autotoc_md211", null ],
-        [ "view req (kind = 49)", "md_docs_281__message.html#autotoc_md212", null ],
-        [ "view res (kind = 69)", "md_docs_281__message.html#autotoc_md213", null ],
-        [ "view old (kind = 3)", "md_docs_281__message.html#autotoc_md214", null ],
-        [ "view old entry (kind = 23)", "md_docs_281__message.html#autotoc_md215", null ],
-        [ "view old req (kind = 43)", "md_docs_281__message.html#autotoc_md216", null ],
-        [ "view old res (kind = 63)", "md_docs_281__message.html#autotoc_md217", null ]
+      [ "View", "md_docs_281__message.html#autotoc_md214", [
+        [ "view (kind = 9)", "md_docs_281__message.html#autotoc_md215", null ],
+        [ "view entry (kind = 29)", "md_docs_281__message.html#autotoc_md216", null ],
+        [ "view req (kind = 49)", "md_docs_281__message.html#autotoc_md217", null ],
+        [ "view res (kind = 69)", "md_docs_281__message.html#autotoc_md218", null ],
+        [ "view old (kind = 3)", "md_docs_281__message.html#autotoc_md219", null ],
+        [ "view old entry (kind = 23)", "md_docs_281__message.html#autotoc_md220", null ],
+        [ "view old req (kind = 43)", "md_docs_281__message.html#autotoc_md221", null ],
+        [ "view old res (kind = 63)", "md_docs_281__message.html#autotoc_md222", null ]
       ] ],
-      [ "Image", "md_docs_281__message.html#autotoc_md218", [
-        [ "image (kind = 5)", "md_docs_281__message.html#autotoc_md219", null ],
-        [ "image entry (kind = 25)", "md_docs_281__message.html#autotoc_md220", null ],
-        [ "image req (kind = 45)", "md_docs_281__message.html#autotoc_md221", null ],
-        [ "image res (kind = 65)", "md_docs_281__message.html#autotoc_md222", null ]
+      [ "Image", "md_docs_281__message.html#autotoc_md223", [
+        [ "image (kind = 5)", "md_docs_281__message.html#autotoc_md224", null ],
+        [ "image entry (kind = 25)", "md_docs_281__message.html#autotoc_md225", null ],
+        [ "image req (kind = 45)", "md_docs_281__message.html#autotoc_md226", null ],
+        [ "image res (kind = 65)", "md_docs_281__message.html#autotoc_md227", null ]
       ] ],
-      [ "Canvas2D", "md_docs_281__message.html#autotoc_md223", [
-        [ "canvas2d (kind = 10)", "md_docs_281__message.html#autotoc_md224", null ],
-        [ "canvas2d entry (kind = 30)", "md_docs_281__message.html#autotoc_md225", null ],
-        [ "canvas2d req (kind = 50)", "md_docs_281__message.html#autotoc_md226", null ],
-        [ "canvas2d res (kind = 70)", "md_docs_281__message.html#autotoc_md227", null ],
-        [ "canvas2d old (kind = 4)", "md_docs_281__message.html#autotoc_md228", null ],
-        [ "canvas2d old entry (kind = 24)", "md_docs_281__message.html#autotoc_md229", null ],
-        [ "canvas2d old req (kind = 44)", "md_docs_281__message.html#autotoc_md230", null ],
-        [ "canvas2d old res (kind = 64)", "md_docs_281__message.html#autotoc_md231", null ]
+      [ "Canvas2D", "md_docs_281__message.html#autotoc_md228", [
+        [ "canvas2d (kind = 10)", "md_docs_281__message.html#autotoc_md229", null ],
+        [ "canvas2d entry (kind = 30)", "md_docs_281__message.html#autotoc_md230", null ],
+        [ "canvas2d req (kind = 50)", "md_docs_281__message.html#autotoc_md231", null ],
+        [ "canvas2d res (kind = 70)", "md_docs_281__message.html#autotoc_md232", null ],
+        [ "canvas2d old (kind = 4)", "md_docs_281__message.html#autotoc_md233", null ],
+        [ "canvas2d old entry (kind = 24)", "md_docs_281__message.html#autotoc_md234", null ],
+        [ "canvas2d old req (kind = 44)", "md_docs_281__message.html#autotoc_md235", null ],
+        [ "canvas2d old res (kind = 64)", "md_docs_281__message.html#autotoc_md236", null ]
       ] ],
-      [ "Canvas3D", "md_docs_281__message.html#autotoc_md232", [
-        [ "canvas3d (kind = 11)", "md_docs_281__message.html#autotoc_md233", null ],
-        [ "canvas3d entry (kind = 31)", "md_docs_281__message.html#autotoc_md234", null ],
-        [ "canvas3d req (kind = 51)", "md_docs_281__message.html#autotoc_md235", null ],
-        [ "canvas3d res (kind = 71)", "md_docs_281__message.html#autotoc_md236", null ],
-        [ "canvas3d old (kind = 7)", "md_docs_281__message.html#autotoc_md237", null ],
-        [ "canvas3d old entry (kind = 27)", "md_docs_281__message.html#autotoc_md238", null ],
-        [ "canvas3d old req (kind = 47)", "md_docs_281__message.html#autotoc_md239", null ],
-        [ "canvas3d old res (kind = 67)", "md_docs_281__message.html#autotoc_md240", null ]
+      [ "Canvas3D", "md_docs_281__message.html#autotoc_md237", [
+        [ "canvas3d (kind = 11)", "md_docs_281__message.html#autotoc_md238", null ],
+        [ "canvas3d entry (kind = 31)", "md_docs_281__message.html#autotoc_md239", null ],
+        [ "canvas3d req (kind = 51)", "md_docs_281__message.html#autotoc_md240", null ],
+        [ "canvas3d res (kind = 71)", "md_docs_281__message.html#autotoc_md241", null ],
+        [ "canvas3d old (kind = 7)", "md_docs_281__message.html#autotoc_md242", null ],
+        [ "canvas3d old entry (kind = 27)", "md_docs_281__message.html#autotoc_md243", null ],
+        [ "canvas3d old req (kind = 47)", "md_docs_281__message.html#autotoc_md244", null ],
+        [ "canvas3d old res (kind = 67)", "md_docs_281__message.html#autotoc_md245", null ]
       ] ],
-      [ "RobotModel", "md_docs_281__message.html#autotoc_md241", [
-        [ "robotmodel (kind = 6)", "md_docs_281__message.html#autotoc_md242", null ],
-        [ "robotmodel entry (kind = 26)", "md_docs_281__message.html#autotoc_md243", null ],
-        [ "robotmodel req (kind = 46)", "md_docs_281__message.html#autotoc_md244", null ],
-        [ "robotmodel res (kind = 66)", "md_docs_281__message.html#autotoc_md245", null ]
+      [ "RobotModel", "md_docs_281__message.html#autotoc_md246", [
+        [ "robotmodel (kind = 6)", "md_docs_281__message.html#autotoc_md247", null ],
+        [ "robotmodel entry (kind = 26)", "md_docs_281__message.html#autotoc_md248", null ],
+        [ "robotmodel req (kind = 46)", "md_docs_281__message.html#autotoc_md249", null ],
+        [ "robotmodel res (kind = 66)", "md_docs_281__message.html#autotoc_md250", null ]
       ] ],
-      [ "Log", "md_docs_281__message.html#autotoc_md246", [
-        [ "log (kind = 8)", "md_docs_281__message.html#autotoc_md247", null ],
-        [ "log entry (kind = 28)", "md_docs_281__message.html#autotoc_md248", null ],
-        [ "log req (kind = 48)", "md_docs_281__message.html#autotoc_md249", null ],
-        [ "log res (kind = 68)", "md_docs_281__message.html#autotoc_md250", null ],
-        [ "log_default (kind = 85)", "md_docs_281__message.html#autotoc_md251", null ],
-        [ "log_entry_default (kind = 92)", "md_docs_281__message.html#autotoc_md252", null ],
-        [ "log_req_default (kind = 86)", "md_docs_281__message.html#autotoc_md253", null ]
+      [ "Log", "md_docs_281__message.html#autotoc_md251", [
+        [ "log (kind = 8)", "md_docs_281__message.html#autotoc_md252", null ],
+        [ "log entry (kind = 28)", "md_docs_281__message.html#autotoc_md253", null ],
+        [ "log req (kind = 48)", "md_docs_281__message.html#autotoc_md254", null ],
+        [ "log res (kind = 68)", "md_docs_281__message.html#autotoc_md255", null ],
+        [ "log_default (kind = 85)", "md_docs_281__message.html#autotoc_md256", null ],
+        [ "log_entry_default (kind = 92)", "md_docs_281__message.html#autotoc_md257", null ],
+        [ "log_req_default (kind = 86)", "md_docs_281__message.html#autotoc_md258", null ]
       ] ]
     ] ],
     [ "8-2. Client Spec", "md_docs_282__client__spec.html", [
-      [ "接続", "md_docs_282__client__spec.html#autotoc_md255", null ],
-      [ "切断", "md_docs_282__client__spec.html#autotoc_md256", null ],
-      [ "ping", "md_docs_282__client__spec.html#autotoc_md257", null ],
-      [ "データの送信 (Sync)", "md_docs_282__client__spec.html#autotoc_md258", null ],
-      [ "データの一覧 (Entry)", "md_docs_282__client__spec.html#autotoc_md259", null ],
-      [ "データのリクエスト (req)", "md_docs_282__client__spec.html#autotoc_md260", null ],
-      [ "Funcの定義", "md_docs_282__client__spec.html#autotoc_md261", null ],
-      [ "Funcの呼び出し (Call)", "md_docs_282__client__spec.html#autotoc_md262", null ]
+      [ "接続", "md_docs_282__client__spec.html#autotoc_md260", null ],
+      [ "切断", "md_docs_282__client__spec.html#autotoc_md261", null ],
+      [ "ping", "md_docs_282__client__spec.html#autotoc_md262", null ],
+      [ "データの送信 (Sync)", "md_docs_282__client__spec.html#autotoc_md263", null ],
+      [ "データの一覧 (Entry)", "md_docs_282__client__spec.html#autotoc_md264", null ],
+      [ "データのリクエスト (req)", "md_docs_282__client__spec.html#autotoc_md265", null ],
+      [ "Funcの定義", "md_docs_282__client__spec.html#autotoc_md266", null ],
+      [ "Funcの呼び出し (Call)", "md_docs_282__client__spec.html#autotoc_md267", null ]
     ] ],
     [ "8-3. Server Spec", "md_docs_283__server__spec.html", [
-      [ "接続", "md_docs_283__server__spec.html#autotoc_md264", null ],
-      [ "切断", "md_docs_283__server__spec.html#autotoc_md265", null ],
-      [ "ping", "md_docs_283__server__spec.html#autotoc_md266", null ],
-      [ "データの送信 (Sync)", "md_docs_283__server__spec.html#autotoc_md267", null ]
+      [ "接続", "md_docs_283__server__spec.html#autotoc_md269", null ],
+      [ "切断", "md_docs_283__server__spec.html#autotoc_md270", null ],
+      [ "ping", "md_docs_283__server__spec.html#autotoc_md271", null ],
+      [ "データの送信 (Sync)", "md_docs_283__server__spec.html#autotoc_md272", null ]
     ] ],
     [ "8-4. Versioning", "md_docs_284__versioning.html", [
-      [ "Message Compatibility", "md_docs_284__versioning.html#autotoc_md269", null ],
-      [ "ABI Compatibility", "md_docs_284__versioning.html#autotoc_md270", null ]
+      [ "Message Compatibility", "md_docs_284__versioning.html#autotoc_md274", null ],
+      [ "ABI Compatibility", "md_docs_284__versioning.html#autotoc_md275", null ]
     ] ],
     [ "Deprecated List", "deprecated.html", null ],
     [ "Todo List", "todo.html", null ],
@@ -442,19 +449,19 @@ var NAVTREEINDEX =
 "component__view_8h.html#a5dcc1f15d6a60ca34207565aeb74124a",
 "functions_vars_m.html",
 "md_docs_263__canvas3d.html#autotoc_md149",
-"namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850a07bb28478030fc8b86da84000c9860d3",
-"namespacewebcface_1_1message.html#abcfd96b0be942012c2f4641b4741a31ea84746ad530563de3445efec60aa7ff59",
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1Req_3_01webcface_1_1message_1_1Canvas3DOld_01_4_01_4.html#aab8bee81c5a849b3015388c1b5a5851f",
-"structwebcface_1_1Field.html#ad94b6c150c7b59d1ac12ee7948390e08",
-"structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html#a7dbbffdf993d69066a26605e6d783d8e",
-"structwebcface_1_1components_1_1geometries_1_1Polygon.html",
-"structwebcface_1_1internal_1_1ClientData.html#af6db4cbbb6a0079dffbd4bd0a8e1c803",
-"structwebcface_1_1internal_1_1PromiseData.html#ab07b199cb1224a6964d1806c33536cdc",
-"structwebcface_1_1message_1_1Canvas2D.html#a89f6abd564014faeff7cd20c340a9c7d",
-"structwebcface_1_1message_1_1Log.html#ad5a4760db27f8fcd5c4028bb15f80ad9",
-"structwebcface_1_1message_1_1Res_3_01Value_01_4.html",
-"structwebcface_1_1server_1_1MemberData.html#a58b4513004386764ad18495026002d47",
-"unix__path_8cc.html#a6f66b6ebca37cbc0fd22190142e37fb3"
+"namespacewebcface.html#a6f5942a3079ae6efe81ef8679c1f7450",
+"namespacewebcface_1_1message.html#ab72e620a597e5f750b2c9b3391e84dedabdd166af3a63f7be696dd17a218a6ffb",
+"structfmt_1_1formatter_3_01webcface_1_1message_1_1Req_3_01webcface_1_1message_1_1Canvas2D_01_4_01_4.html",
+"structwebcface_1_1Field.html#acf5927541460ab74dbb1d5d5fe7f7329",
+"structwebcface_1_1c__wcf_1_1CharType_3_01wchar__t_01_4.html#a69512b2aa192fed472b3309ebde30225",
+"structwebcface_1_1components_1_1geometries_1_1Plane.html#af3bacf3afa9e7caee98244adae772d76",
+"structwebcface_1_1internal_1_1ClientData.html#aeb8d33f449fe5013ede79a28d633234f",
+"structwebcface_1_1internal_1_1PromiseData.html#a9cc502fa5f1e458be33c883965a3f963",
+"structwebcface_1_1message_1_1Canvas2D.html",
+"structwebcface_1_1message_1_1Log.html#a93f7b0e006da417a088ac06725272753",
+"structwebcface_1_1message_1_1Res_3_01Text_01_4.html#ac98c164c2140de31bc0c688ebcdcf0d2",
+"structwebcface_1_1server_1_1MemberData.html#a4afdb99f1381e8e8e173cac5858eea09",
+"unix__path_8cc.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

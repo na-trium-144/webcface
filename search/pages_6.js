@@ -5,5 +5,6 @@ var searchData=
   ['7_2d3_2e_20webcface_2dcv_2dcapture_20_28deleted_29_2',['7-3. webcface-cv-capture (deleted)',['../md_docs_273__cv__capture.html',1,'']]],
   ['7_2d4_2e_20webcface_2dls_3',['7-4. webcface-ls',['../md_docs_274__ls.html',1,'']]],
   ['7_2d5_2e_20webcface_2dtui_4',['7-5. webcface-tui',['../md_docs_275__tui.html',1,'']]],
-  ['7_2d6_2e_20webcface_2dnotepad_5',['7-6. webcface-notepad',['../md_docs_276__notepad.html',1,'']]]
+  ['7_2d6_2e_20webcface_2dnotepad_5',['7-6. webcface-notepad',['../md_docs_276__notepad.html',1,'']]],
+  ['7_2d7_2e_20webcface_2djoystick_6',['7-7. webcface-joystick',['../md_docs_277__joystick.html',1,'']]]
 ];
