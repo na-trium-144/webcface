@@ -702,6 +702,6 @@ data = {
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-6. webcface-notepad](76_notepad.md) | [8-2. Client Spec](82_client_spec.md) |
+| [7-7. webcface-joystick](77_joystick.md) | [8-2. Client Spec](82_client_spec.md) |
 
 </div>

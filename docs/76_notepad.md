@@ -15,6 +15,7 @@ Usage: webcface-notepad [OPTIONS] [filename]
 * `-h`: ヘルプを表示します。
 * `-a address`: 接続するサーバーのアドレスです。省略時は127.0.0.1になります。
 * `-p port`: 接続するサーバーのポートです。省略時は7530になります。
+* `-m name`: Viewを送信するメンバー名です。省略時は `webcface-notepad` になります。
 * `-s width height`: テキスト入力欄のサイズを変更できます。省略時は 30 10 です。
 * `filename`: 入力されたテキストをファイルに保存します。
 
@@ -22,6 +23,6 @@ Usage: webcface-notepad [OPTIONS] [filename]
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-5. webcface-tui](75_tui.md) | [8-1. Message](81_message.md) |
+| [7-5. webcface-tui](75_tui.md) | [7-7. webcface-joystick](77_joystick.md) |
 
 </div>
