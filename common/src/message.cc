@@ -128,6 +128,7 @@ unpack(const std::string &message,
                 MSG_PARSE(Ping)
                 MSG_PARSE(PingStatus)
                 MSG_PARSE(PingStatusReq)
+                MSG_PARSE(Closed)
 
 #undef MSG_PARSE_DATA
 #undef MSG_PARSE

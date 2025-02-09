@@ -137,12 +137,13 @@ class FuncResultStore {
  * ver2.4〜: args が空vectorではなくstd::nulloptの場合、
  * 引数の個数が確定していないことを表し、
  * あとから setArgs() で個数を変更することができる
- * 
+ *
  */
 struct FuncInfo : public Field {
     ValType return_type;
     std::optional<std::vector<Arg>> args;
     std::function<Func::FuncType> func_impl;
+    int index;
 
     /*!
      * \brief func_implをこのスレッドで実行
@@ -165,11 +166,10 @@ struct FuncInfo : public Field {
      */
     void run(webcface::message::Call &&call);
 
-    FuncInfo() : Field(), return_type(ValType::none_), args(), func_impl() {}
-    FuncInfo(const Field &base, ValType return_type, std::optional<std::vector<Arg>> &&args,
-             std::function<Func::FuncType> &&func_impl)
-        : Field(base), return_type(return_type), args(std::move(args)),
-          func_impl(std::move(func_impl)) {}
+    FuncInfo();
+    FuncInfo(const Field &base, ValType return_type,
+             std::optional<std::vector<Arg>> &&args,
+             std::function<Func::FuncType> &&func_impl);
     FuncInfo(const message::FuncInfo &m);
     message::FuncInfo toMessage(const SharedString &field);
 };

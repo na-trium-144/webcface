@@ -49,6 +49,7 @@ enum MessageKindEnum {
     ping_status = 90,
     ping_status_req = 91,
     log_entry_default = 92,
+    closed = 93,
 };
 }
 

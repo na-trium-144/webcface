@@ -28,7 +28,7 @@ jobs:
         brew update
         brew install meson
         if [[ ${{matrix.dep}} = brew ]]; then brew tap na-trium-144/webcface; fi
-        if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv vips curl-ws crow-unix-socket || true; fi
+        if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv vips curl crow-unix-socket || true; fi
     # - name: Install Nasm
     #   if: matrix.dep == 'framework'
     #   env:
@@ -44,14 +44,14 @@ jobs:
         -Dtest_wait=1000
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
-        "-Dpkg_config_path=['$(brew --prefix)/opt/curl-ws/lib/pkgconfig']"
+        "-Dpkg_config_path=['$(brew --prefix)/opt/curl/lib/pkgconfig']"
         "-Dcmake_prefix_path=['$(brew --prefix)/opt/crow-unix-socket']"
       # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
       # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
-      run: meson test -C build --print-errorlog --suite webcface
+      run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'

@@ -96,8 +96,9 @@ struct Arg {
     std::vector<ValAdaptor> option_;
     Arg() = default;
     Arg(const SharedString &name, ValType type,
-        const std::optional<ValAdaptor> &init, const std::optional<double> &min_,
-        const std::optional<double> &max_, const std::vector<ValAdaptor> &option)
+        const std::optional<ValAdaptor> &init,
+        const std::optional<double> &min_, const std::optional<double> &max_,
+        const std::vector<ValAdaptor> &option)
         : name_(name), type_(type), init_(init), min_(min_), max_(max_),
           option_(option) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("n", name_), MSGPACK_NVP("t", type_),
@@ -109,16 +110,19 @@ struct FuncInfo : public MessageBase<MessageKind::func_info> {
     SharedString field;
     ValType return_type;
     std::vector<std::shared_ptr<Arg>> args;
+    int index = 0;
     FuncInfo() = default;
     FuncInfo(unsigned int member_id, const SharedString &field,
-             ValType return_type, const std::vector<std::shared_ptr<Arg>> &args)
+             ValType return_type, const std::vector<std::shared_ptr<Arg>> &args,
+             int index)
         : member_id(member_id), field(field), return_type(return_type),
-          args(args) {}
+          args(args), index(index) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("m", member_id), MSGPACK_NVP("f", field),
-                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args))
+                       MSGPACK_NVP("r", return_type), MSGPACK_NVP("a", args),
+                       MSGPACK_NVP("i", index))
 };
 
-}
+} // namespace message
 WEBCFACE_NS_END
 
 WEBCFACE_MESSAGE_FMT(webcface::message::FuncInfo)

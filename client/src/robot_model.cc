@@ -40,12 +40,9 @@ void internal::DataSetBuffer<RobotLink>::onSync() {
     }
     auto data = target_.setCheck();
     data->robot_model_store.setSend(target_, ls);
-    std::shared_ptr<std::function<void(RobotModel)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event =
-            data->robot_model_change_event[target_.member_][target_.field_];
-    }
+    auto change_event = internal::findFromMap2(
+        data->robot_model_change_event.shared_lock().get(), target_.member_,
+        target_.field_);
     if (change_event && *change_event) {
         change_event->operator()(target_);
     }
@@ -54,8 +51,7 @@ const RobotModel &
 RobotModel::onChange(std::function<void(RobotModel)> callback) const {
     this->request();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->robot_model_change_event[this->member_][this->field_] =
+    data->robot_model_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(RobotModel)>>(std::move(callback));
     return *this;
 }

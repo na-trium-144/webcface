@@ -69,7 +69,7 @@ jobs:
 
     - name: Test
       if: matrix.arch != 'arm64'
-      run: meson test -C build --print-errorlog --suite webcface
+      run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'

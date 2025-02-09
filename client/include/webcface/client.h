@@ -69,8 +69,41 @@ class WEBCFACE_DLL Client : public Member {
     /*!
      * \brief サーバーに接続できているときtrueを返す
      *
+     * * (ver2.9〜) Member::connected() と同じ。
      */
     bool connected() const;
+
+    /*!
+     * \brief 切断したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback 引数をとらない関数
+     *
+     * * 通信が切断されて以降で最初のsync()の中で呼ばれる
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Client &onDisconnect(F callback) const {
+        this->Member::onDisconnect(
+            [callback = std::move(callback)](const auto &) { callback(); });
+        return *this;
+    }
+    /*!
+     * \brief サーバーに接続したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback 引数をとらない関数
+     *
+     * * sync() または waitConnection() の中で、
+     * 各種Entryイベントをすべて呼び終わったあと、
+     * waitConnection() がreturnするまえに呼ばれる。
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Client &onConnect(F callback) const {
+        this->Member::onConnect(
+            [callback = std::move(callback)](const auto &) { callback(); });
+        return *this;
+    }
+
     /*!
      * \brief 接続を切りClientを破棄
      *

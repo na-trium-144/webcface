@@ -50,6 +50,16 @@ data = {
 	* クライアントはwaitConnection()でこれが送られてくるまで待機します
 * <span class="since-c">2.0</span> member id 追加 (sync init をしたメンバーのid)
 
+### closed (kind = 93)
+\since <span class="since-c">2.9</span>
+
+```js
+data = {
+	m: number, // member id
+}
+```
+* クライアントが切断したとき、サーバーからクライアントに送られます
+
 ### ping (kind = 89)
 ```js
 data = {}
@@ -101,11 +111,13 @@ data = {
 		x: any | null,
 		o: any[],
 	}[],
+	i: number, // index
 }
 ```
 * クライアント→サーバーに送ると、サーバー→全クライアントに通知します
 	* mはサーバーがセットします
 * func infoを送らなくても関数の呼び出しは可能なので、非表示にしたい関数はfunc infoを送らなければよいです
+* <span class="since-c">2.8</span> index 追加 (関数を登録した順番)
 
 ### call (kind = 81)
 ```js
@@ -690,6 +702,6 @@ data = {
 
 | Previous |     Next |
 |:---------|---------:|
-| [7-6. webcface-notepad](76_notepad.md) | [8-2. Client Spec](82_client_spec.md) |
+| [7-7. webcface-joystick](77_joystick.md) | [8-2. Client Spec](82_client_spec.md) |
 
 </div>

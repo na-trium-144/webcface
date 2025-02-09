@@ -75,12 +75,12 @@ class WEBCFACE_DLL Member : protected Field {
     template <WEBCFACE_COMPLETE(Log)>
     Log_ log() const;
 
-    using Field::children;
-    using Field::childrenRecurse;
-    using Field::hasChildren;
     using Field::canvas2DEntries;
     using Field::canvas3DEntries;
+    using Field::children;
+    using Field::childrenRecurse;
     using Field::funcEntries;
+    using Field::hasChildren;
     using Field::imageEntries;
     using Field::logEntries;
     using Field::robotModelEntries;
@@ -120,6 +120,68 @@ class WEBCFACE_DLL Member : protected Field {
      * \deprecated 1.6で imageEntries() に変更
      */
     [[deprecated]] std::vector<Image> images() const;
+
+    /*!
+     * \brief Memberのデータが存在するかどうかを返す
+     * \since ver2.9
+     *
+     * * connected()
+     * とは異なり、切断後もサーバーにデータが残っていてまだデータを受信でき、trueになる場合がある
+     *
+     */
+    bool exists() const;
+    /*!
+     * \brief Memberがサーバーに接続できているときtrueを返す
+     * \since ver2.9
+     *
+     * * 自身を表すMemberに対する connected() は、Client::connected() と同じ。
+     * * 自身のサーバーとの通信が切断された場合、全メンバーについてfalseとなる
+     */
+    bool connected() const;
+    /*!
+     * \brief Memberが切断したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback Member型の引数(thisが渡される)を1つ取る関数
+     *
+     * * 自身のサーバーとの通信が切断された場合も、全メンバーについて呼び出される。
+     */
+    const Member &
+    onDisconnect(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
+    /*!
+     * \brief Memberが切断したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback 引数をとらない関数
+     *
+     * * 自身のサーバーとの通信が切断された場合も、全メンバーについて呼び出される。
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Member &onDisconnect(F callback) const {
+        return onDisconnect(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
+    /*!
+     * \brief Memberがサーバーに接続したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback Member型の引数(thisが渡される)を1つ取る関数
+     *
+     * * Client::onMemberEntry の直後に呼び出される。
+     */
+    const Member &
+    onConnect(std::function<void WEBCFACE_CALL_FP(Member)> callback) const;
+    /*!
+     * \brief Memberがサーバーに接続したときに呼び出されるコールバックを設定
+     * \since ver2.9
+     * \param callback 引数をとらない関数
+     *
+     * * Client::onMemberEntry の直後に呼び出される。
+     */
+    template <typename F, typename std::enable_if_t<std::is_invocable_v<F>,
+                                                    std::nullptr_t> = nullptr>
+    const Member &onConnect(F callback) const {
+        return onConnect(
+            [callback = std::move(callback)](const auto &) { callback(); });
+    }
 
     /*!
      * \brief valueが追加された時のイベント

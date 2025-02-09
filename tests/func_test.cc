@@ -118,6 +118,8 @@ TEST_F(FuncTest, funcSet) {
     // 関数セットしreturnTypeとargsのチェック
     auto f = func(self_name, "a");
     f.set([]() {});
+    EXPECT_EQ(f.index(), 1);
+    EXPECT_EQ(func(self_name, "a").index(), 1);
     EXPECT_EQ((*data_->func_store.getRecv(self_name, "a"_ss))->return_type,
               ValType::none_);
     EXPECT_EQ(f.returnType(), ValType::none_);
@@ -130,12 +132,19 @@ TEST_F(FuncTest, funcSet) {
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
     f.set([](int, double, bool, const std::string &) { return 0; });
+    EXPECT_EQ(f.index(), 2);
+    EXPECT_EQ(func(self_name, "b").index(), 2);
     EXPECT_EQ(f.returnType(), ValType::int_);
     EXPECT_EQ(f.args().size(), 4u);
     EXPECT_EQ(f.args(0).type(), ValType::int_);
     EXPECT_EQ(f.args(1).type(), ValType::double_);
     EXPECT_EQ(f.args(2).type(), ValType::bool_);
     EXPECT_EQ(f.args(3).type(), ValType::string_);
+
+    // index
+    f.setIndex(100);
+    EXPECT_EQ(f.index(), 100);
+    EXPECT_EQ(func(self_name, "b").index(), 100);
 
     // 関数のパラメーター設定
     f.setArgs({Arg("0").init(1).min(0).max(2), Arg(L"1"),
@@ -159,8 +168,10 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(f.args(3).option()[2], "c");
     EXPECT_EQ(f.args(3).option()[2], L"c");
 
-    // 未設定の関数呼び出しでエラー
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
+
+    // 未設定の関数呼び出しでエラー
+    EXPECT_THROW(func(self_name, "c").setIndex(1), std::invalid_argument);
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
     EXPECT_THROW(func("a", "b").set([]() {}), std::invalid_argument);
 }
@@ -387,18 +398,18 @@ TEST_F(FuncTest, funcRunRemote) {
     EXPECT_FALSE(res.found());
     EXPECT_TRUE(res.isError());
     {
-        internal::ClientData::ScopedWsLock lock_ws(data_);
-        EXPECT_TRUE(lock_ws.getData().sync_queue.empty());
-        lock_ws.getData().connected = true;
+        auto lock_ws = data_->ws_data.lock();
+        EXPECT_TRUE(lock_ws->sync_queue.empty());
+        lock_ws->connected = true;
     }
     res = func("a", "b").runAsync(1.23, true, "abc");
     EXPECT_FALSE(res.reached());
     bool call_msg_found = false;
     {
-        internal::ClientData::ScopedWsLock lock_ws(data_);
-        while (!lock_ws.getData().sync_queue.empty()) {
-            auto msg = lock_ws.getData().sync_queue.front();
-            lock_ws.getData().sync_queue.pop();
+        auto lock_ws = data_->ws_data.lock();
+        while (!lock_ws->sync_queue.empty()) {
+            auto msg = lock_ws->sync_queue.front();
+            lock_ws->sync_queue.pop();
             if (std::get<0>(msg) ==
                 message::packSingle(message::Call{
                     1,

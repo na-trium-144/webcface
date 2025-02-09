@@ -179,7 +179,7 @@ TEST(ClientDataTest, self) {
 }
 TEST(ClientDataTest, memberIds) {
     ClientData data("test"_ss);
-    data.member_ids["a"_ss] = 1;
+    data.member_ids.lock().get()["a"_ss] = 1;
     EXPECT_EQ(data.getMemberNameFromId(1), "a"_ss);
     EXPECT_EQ(data.getMemberNameFromId(2), ""_ss);
     EXPECT_EQ(data.getMemberNameFromId(0), ""_ss);

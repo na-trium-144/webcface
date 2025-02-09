@@ -2,6 +2,7 @@
 #include "./base.h"
 #include "webcface/common/encoding.h"
 #include "webcface/common/val_adaptor.h"
+#include <map>
 #include <optional>
 #include <unordered_map>
 

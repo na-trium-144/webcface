@@ -199,6 +199,59 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
 
 </div>
 
+### 名前などの操作
+
+<div class="tabbed">
+
+- <b class="tab-title">C++</b>
+    Field::member() でそのFieldが所属するMemberを取得できます。
+    ```cpp
+    assert(wcli.child("pos.x").member().name() == wcli.name());
+    assert(wcli.member("foo").child("pos.x").member().name() == "foo");
+    ```
+
+    Field::name(), (<span class="since-c">2.0</span> nameW()) で名前を取得できます。
+    ```cpp
+    assert(wcli.child("pos.x").name() == "pos.x");
+    ```
+
+    child() とは逆に、Field::parent() でグループのField
+    (nameの最後のピリオドの前までのField) を取得できます。
+    ```cpp
+    assert(wcli.child("pos.x").parent().name() == "pos");
+    ```
+
+    Field::lastName() (<span class="since-c">2.0</span> lastNameW()) でピリオドで区切られた最後の部分を取り出すことができます。
+    ```cpp
+    assert(wcli.child("pos.x").lastName() == "x");
+    ```
+
+- <b class="tab-title">JavaScript</b>
+    Field.member でそのFieldが所属するMemberを取得できます。
+    ```ts
+    assert(wcli.child("pos.x").member.name == wcli.name);
+    assert(wcli.member("foo").child("pos.x").member.name == "foo");
+    ```
+
+    Field.name で名前を取得できます。
+    ```ts
+    assert(wcli.child("pos.x").name == "pos.x");
+    ```
+
+- <b class="tab-title">Python</b>
+    Field.member でそのFieldが所属するMemberを取得できます。
+    ```python
+    assert wcli.child("pos.x").member.name == wcli.name
+    assert wcli.member("foo").child("pos.x").member.name == "foo"
+    ```
+
+    Field.name で名前を取得できます。
+    ```python
+    assert wcli.child("pos.x").name == "pos.x"
+    ```
+
+</div>
+
 ## 基本的な通信の仕様
 
 クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。

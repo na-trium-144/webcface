@@ -79,7 +79,7 @@ foreach case: test_parsed
     args: [
       '--gtest_filter=' + case,
       '--gtest_catch_exceptions=0',
-      '--gtest_break_on_failure',
+      '--gtest_throw_on_failure',
     ],
     is_parallel: false,
     env: {

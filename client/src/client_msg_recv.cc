@@ -26,39 +26,12 @@
 WEBCFACE_NS_BEGIN
 
 /// \private
-template <typename M, typename K1, typename K2>
-static auto findFromMap2(const M &map, const K1 &key1, const K2 &key2)
-    -> std::optional<std::decay_t<decltype(map.at(key1).at(key2))>> {
-    auto s_it = map.find(key1);
-    if (s_it != map.end()) {
-        auto it = s_it->second.find(key2);
-        if (it != s_it->second.end()) {
-            return it->second;
-        }
-    }
-    return std::nullopt;
-}
-/// \private
-template <typename M, typename K1>
-static auto findFromMap1(const M &map, const K1 &key1)
-    -> std::optional<std::decay_t<decltype(map.at(key1))>> {
-    auto it = map.find(key1);
-    if (it != map.end()) {
-        return it->second;
-    }
-    return std::nullopt;
-}
-/// \private
 template <typename Msg, typename T, typename S, typename E>
 static void onRecvRes(internal::ClientData *this_, const Msg &r, T &&data,
                       S &store, const E &event) {
     auto [member, field] = store.getReq(r.req_id, r.sub_field);
     store.setRecv(member, field, std::forward<T>(data));
-    std::decay_t<decltype(event.at(member).at(field))> cl;
-    {
-        std::lock_guard lock(this_->event_m);
-        cl = findFromMap2(event, member, field).value_or(nullptr);
-    }
+    auto cl = internal::findFromMap2(event.shared_lock().get(), member, field);
     if (cl && *cl) {
         cl->operator()(Field{this_->shared_from_this(), member, field});
     }
@@ -69,11 +42,7 @@ static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
                         const E &event) {
     auto member = this_->getMemberNameFromId(r.member_id);
     store.setEntry(member, r.field);
-    std::decay_t<decltype(event.at(member))> cl;
-    {
-        std::lock_guard lock(this_->event_m);
-        cl = findFromMap1(event, member).value_or(nullptr);
-    }
+    auto cl = internal::findFromMap1(event.shared_lock().get(), member);
     if (cl && *cl) {
         cl->operator()(Field{this_->shared_from_this(), member, r.field});
     }
@@ -90,14 +59,19 @@ void internal::ClientData::onRecv(
         case MessageKind::sync_init_end: {
             auto &r = *static_cast<webcface::message::SyncInitEnd *>(obj.get());
             this->logger_internal->debug("received {}", r);
-            this->svr_name = r.svr_name;
-            this->svr_version = r.ver;
+            this->svr_name.lock().get() = r.svr_name;
+            this->svr_version.lock().get() = r.ver;
             this->self_member_id.emplace(r.member_id);
-            this->svr_hostname = r.hostname;
+            this->svr_hostname.lock().get() = r.hostname;
             {
-                ScopedWsLock lock_ws(this);
-                lock_ws.getData().sync_init_end = true;
-                this->ws_cond.notify_all();
+                auto lock_ws = this->ws_data.lock();
+                lock_ws->sync_init_end = true;
+                lock_ws.cond().notify_all();
+            }
+            auto cl =
+                this->member_connected_event.lock().get()[self_member_name];
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), self_member_name});
             }
             break;
         }
@@ -110,25 +84,16 @@ void internal::ClientData::onRecv(
             auto &r = *static_cast<webcface::message::PingStatus *>(obj.get());
             this->logger_internal->debug("received {}", r);
             this->ping_status = r.status;
-            StrSet1 members;
-            {
-                std::lock_guard lock(entry_m);
-                members = this->member_entry;
-            }
-            std::shared_ptr<std::function<void(Member)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = this->ping_event[self_member_name];
-            }
+            auto members = this->member_entry.shared_lock().get();
+            auto cl = findFromMap1(this->ping_event.shared_lock().get(),
+                                   self_member_name);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), self_member_name});
             }
-            for (const auto &member_name : members) {
-                {
-                    std::lock_guard lock(event_m);
-                    cl = findFromMap1(this->ping_event, member_name)
-                             .value_or(nullptr);
-                }
+            for (const auto &it : members) {
+                const auto &member_name = it.first;
+                cl = findFromMap1(this->ping_event.shared_lock().get(),
+                                  member_name);
                 if (cl && *cl) {
                     cl->operator()(Field{shared_from_this(), member_name});
                 }
@@ -205,12 +170,8 @@ void internal::ClientData::onRecv(
                 auto id = SharedString::fromU8String(d.first);
                 vb_prev->components[id.u8String()] = d.second;
             }
-            std::shared_ptr<std::function<void(View)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = findFromMap2(this->view_change_event, member, field)
-                         .value_or(nullptr);
-            }
+            auto cl = findFromMap2(this->view_change_event.shared_lock().get(),
+                                   member, field);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
@@ -240,12 +201,8 @@ void internal::ClientData::onRecv(
                 auto id = SharedString::fromU8String(d.first);
                 vv_prev->components[id.u8String()] = d.second;
             }
-            std::shared_ptr<std::function<void(Canvas3D)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = findFromMap2(this->canvas3d_change_event, member, field)
-                         .value_or(nullptr);
-            }
+            auto cl = findFromMap2(
+                this->canvas3d_change_event.shared_lock().get(), member, field);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
@@ -277,12 +234,8 @@ void internal::ClientData::onRecv(
                 auto id = SharedString::fromU8String(d.first);
                 vv_prev->components[id.u8String()] = d.second;
             }
-            std::shared_ptr<std::function<void(Canvas2D)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = findFromMap2(this->canvas2d_change_event, member, field)
-                         .value_or(nullptr);
-            }
+            auto cl = findFromMap2(
+                this->canvas2d_change_event.shared_lock().get(), member, field);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
@@ -324,12 +277,8 @@ void internal::ClientData::onRecv(
             for (auto lit = r_begin; lit != r_end; lit++) {
                 (*log_s)->data.emplace_back(*lit);
             }
-            std::shared_ptr<std::function<void(Log)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = findFromMap2(this->log_append_event, member, field)
-                         .value_or(nullptr);
-            }
+            auto cl = findFromMap2(this->log_append_event.shared_lock().get(),
+                                   member, field);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, field});
             }
@@ -401,10 +350,7 @@ void internal::ClientData::onRecv(
         case MessageKind::sync_init: {
             auto &r = *static_cast<webcface::message::SyncInit *>(obj.get());
             this->logger_internal->debug("received {}", r);
-            {
-                std::lock_guard lock(this->entry_m);
-                this->member_entry.emplace(r.member_name);
-            }
+            this->member_entry.lock().get()[r.member_name] = true;
             this->value_store.initMember(r.member_name);
             this->text_store.initMember(r.member_name);
             this->func_store.initMember(r.member_name);
@@ -415,17 +361,30 @@ void internal::ClientData::onRecv(
             this->canvas3d_store.initMember(r.member_name);
             this->canvas2d_store.initMember(r.member_name);
             this->log_store.initMember(r.member_name);
-            this->member_ids[r.member_name] = r.member_id;
-            this->member_lib_name[r.member_id] = r.lib_name;
-            this->member_lib_ver[r.member_id] = r.lib_ver;
-            this->member_addr[r.member_id] = r.addr;
-            std::shared_ptr<std::function<void(Member)>> cl;
-            {
-                std::lock_guard lock(this->entry_m);
-                cl = this->member_entry_event;
-            }
+            this->member_ids.lock().get()[r.member_name] = r.member_id;
+            this->member_lib_name.lock().get()[r.member_id] = r.lib_name;
+            this->member_lib_ver.lock().get()[r.member_id] = r.lib_ver;
+            this->member_addr.lock().get()[r.member_id] = r.addr;
+            auto cl = this->member_entry_event;
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), r.member_name});
+            }
+            cl = findFromMap1(this->member_connected_event.shared_lock().get(),
+                              r.member_name);
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), r.member_name});
+            }
+            break;
+        }
+        case MessageKind::closed: {
+            auto &r = *static_cast<webcface::message::Closed *>(obj.get());
+            this->logger_internal->debug("received {}", r);
+            auto name = getMemberNameFromId(r.member_id);
+            this->member_entry.lock().get()[name] = false;
+            auto cl = findFromMap1(
+                this->member_disconnected_event.shared_lock().get(), name);
+            if (cl && *cl) {
+                cl->operator()(Field{shared_from_this(), name});
             }
             break;
         }
@@ -506,12 +465,8 @@ void internal::ClientData::onRecv(
             this->func_store.setEntry(member, r.field);
             this->func_store.setRecv(member, r.field,
                                      std::make_shared<FuncInfo>(r));
-            std::shared_ptr<std::function<void(Func)>> cl;
-            {
-                std::lock_guard lock(event_m);
-                cl = findFromMap1(this->func_entry_event, member)
-                         .value_or(nullptr);
-            }
+            auto cl = findFromMap1(this->func_entry_event.shared_lock().get(),
+                                   member);
             if (cl && *cl) {
                 cl->operator()(Field{shared_from_this(), member, r.field});
             }
@@ -555,11 +510,7 @@ void internal::ClientData::onRecv(
         }
     }
     for (const auto &m : sync_members) {
-        std::shared_ptr<std::function<void(Member)>> cl;
-        {
-            std::lock_guard lock(event_m);
-            cl = findFromMap1(this->sync_event, m).value_or(nullptr);
-        }
+        auto cl = findFromMap1(this->sync_event.shared_lock().get(), m);
         if (cl && *cl) {
             cl->operator()(Field{shared_from_this(), m});
         }
