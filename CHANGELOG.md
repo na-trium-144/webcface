@@ -2,6 +2,15 @@
 <!-- * リリースにおいて重要度の低い変更はコメントアウトで記述 -->
 <!-- * ドキュメントやREADMEの修正等は記述しない -->
 
+## [2.9.0] - 2025-02-09
+### Added
+* Closedメッセージ (#503)
+	* Member::exists(), connected(), onConnect(), onDisconnect()
+	* Client::onConnect(), onDisconnect()
+<!-- * rust風のmutex管理クラス internal::MutexProxy, internal::SharedMutexProxy をつくった -->
+### Fixed
+* マルチスレッドでのWebCFaceクライアントの初期化処理を修正 (#504)
+
 ## [2.8.0] - 2025-01-30
 ### Changed
 * webcface-common のビルドにも `-fabi-version=11`と`-Wabi`の指定を追加 (#476)
