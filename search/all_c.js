@@ -17,7 +17,7 @@ var searchData=
   ['datasetbuffer_3c_20temporalviewcomponent_20_3e_14',['DataSetBuffer&lt; TemporalViewComponent &gt;',['../classwebcface_1_1internal_1_1DataSetBuffer.html',1,'webcface::internal']]],
   ['debug_15',['debug',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5be0fd270d9cbf6a0b7445db855089da',1,'webcface::level']]],
   ['decimal_5finput_16',['decimal_input',['../namespacewebcface.html#a11040d82967b60182816ddc035d07c28a29e02fcff6a4cb52e04414d454774759',1,'webcface']]],
-  ['decimalinput_17',['decimalInput',['../namespacewebcface_1_1components.html#abe96f44ae231c8fb3ff05541e6df46de',1,'webcface::components::decimalInput()'],['../namespacewebcface_1_1components.html#abe96f44ae231c8fb3ff05541e6df46de',1,'webcface::decimalInput(std::wstring_view text)'],['../namespacewebcface_1_1components.html#af2b209ef172447ae27d815e2d3a5f852',1,'webcface::decimalInput(std::string_view text=&quot;&quot;)'],['../namespacewebcface_1_1components.html#af2b209ef172447ae27d815e2d3a5f852',1,'webcface::components::decimalInput()']]],
+  ['decimalinput_17',['decimalInput',['../namespacewebcface_1_1components.html#abe96f44ae231c8fb3ff05541e6df46de',1,'webcface::components::decimalInput()'],['../namespacewebcface_1_1components.html#abe96f44ae231c8fb3ff05541e6df46de',1,'webcface::decimalInput()'],['../namespacewebcface_1_1components.html#af2b209ef172447ae27d815e2d3a5f852',1,'webcface::components::decimalInput()'],['../namespacewebcface_1_1components.html#af2b209ef172447ae27d815e2d3a5f852',1,'webcface::decimalInput()']]],
   ['decode_18',['decode',['../classwebcface_1_1SharedString.html#a53296adc755db10d722302fa14c08f3f',1,'webcface::SharedString']]],
   ['decodew_19',['decodeW',['../classwebcface_1_1SharedString.html#ada77eae6d2ac7b223188c31f5ab8f30e',1,'webcface::SharedString']]],
   ['def_5ftypes_2eh_20',['def_types.h',['../def__types_8h.html',1,'']]],
@@ -26,9 +26,10 @@ var searchData=
   ['deprecated_20list_23',['Deprecated List',['../deprecated.html',1,'']]],
   ['detectwsl1_24',['detectWSL1',['../namespacewebcface_1_1internal.html#a6e2d4741011d4256173c3fa335809d64',1,'webcface::internal']]],
   ['detectwsl2_25',['detectWSL2',['../namespacewebcface_1_1internal.html#a133fac0549803267565a9c07f0f45b68',1,'webcface::internal']]],
-  ['dir_2ecc_26',['dir.cc',['../dir_8cc.html',1,'']]],
-  ['dir_2eh_27',['dir.h',['../dir_8h.html',1,'']]],
-  ['do_5fws_5finit_28',['do_ws_init',['../structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html#aca3bb1f15de8217014145111f65bc1be',1,'webcface::internal::ClientData::WsMutexedData']]],
-  ['do_5fws_5frecv_29',['do_ws_recv',['../structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html#a5805c512558747900b64ff5a8d10a010',1,'webcface::internal::ClientData::WsMutexedData']]],
-  ['double_5f_30',['double_',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9',1,'webcface']]]
+  ['did_5fdisconnect_26',['did_disconnect',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#a389b5cd557588d921a3b4d2a32165536',1,'webcface::internal::ClientData::WsData']]],
+  ['dir_2ecc_27',['dir.cc',['../dir_8cc.html',1,'']]],
+  ['dir_2eh_28',['dir.h',['../dir_8h.html',1,'']]],
+  ['do_5fws_5finit_29',['do_ws_init',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#aca3bb1f15de8217014145111f65bc1be',1,'webcface::internal::ClientData::WsData']]],
+  ['do_5fws_5frecv_30',['do_ws_recv',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#a5805c512558747900b64ff5a8d10a010',1,'webcface::internal::ClientData::WsData']]],
+  ['double_5f_31',['double_',['../namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9',1,'webcface']]]
 ];

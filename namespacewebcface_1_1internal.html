@@ -173,10 +173,17 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1LogData.html">LogData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1MutexProxy.html">MutexProxy</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">RustのMutexのようにデータを保護するクラス  <a href="classwebcface_1_1internal_1_1MutexProxy.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1PromiseData.html">PromiseData</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">PromiseとCallHandleのデータを保持するクラス  <a href="structwebcface_1_1internal_1_1PromiseData.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1RobotLinkData.html">RobotLinkData</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1ScopedLock.html">ScopedLock</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SharedMutexProxy.html">SharedMutexProxy</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">SharedStringData</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,11 +216,27 @@ Typedefs</h2></td></tr>
 <tr class="separator:ab2432f0cfb8d951a2b09fc21191e3d2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acec0de5d5a2a408a7cf843cd3e4e2501"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#acec0de5d5a2a408a7cf843cd3e4e2501">ImageData</a> = <a class="el" href="classwebcface_1_1ImageFrame.html">ImageFrame</a></td></tr>
 <tr class="separator:acec0de5d5a2a408a7cf843cd3e4e2501"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a0d36dc9b88af5a365f951294574095"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:a7a0d36dc9b88af5a365f951294574095"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a> = std::map&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>, T &gt;</td></tr>
+<tr class="separator:a7a0d36dc9b88af5a365f951294574095"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5eab460a31c187724b48a8773dbb40"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:abd5eab460a31c187724b48a8773dbb40"><td class="memTemplItemLeft" align="right" valign="top">using&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a> = <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; T &gt; &gt;</td></tr>
+<tr class="separator:abd5eab460a31c187724b48a8773dbb40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6b473f4adca237a3e8cc413871a4e99"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a> = std::set&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt;</td></tr>
+<tr class="separator:ac6b473f4adca237a3e8cc413871a4e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa211fead709a7546b1b6416379df5449"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#aa211fead709a7546b1b6416379df5449">StrSet2</a> = <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; <a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a> &gt;</td></tr>
+<tr class="separator:aa211fead709a7546b1b6416379df5449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
 <tr class="memitem:afd83eaea48642bb91173288271a8f398"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#afd83eaea48642bb91173288271a8f398">wsThreadMain</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a> &gt; &amp;data)</td></tr>
 <tr class="separator:afd83eaea48642bb91173288271a8f398"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f22accd7c7a6e45592fa3eb5b14a00"><td class="memTemplParams" colspan="2">template&lt;typename M , typename K1 , typename K2 &gt; </td></tr>
+<tr class="memitem:aa7f22accd7c7a6e45592fa3eb5b14a00"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#aa7f22accd7c7a6e45592fa3eb5b14a00">findFromMap2</a> (const M &amp;map, const K1 &amp;key1, const K2 &amp;key2) -&gt; std::decay_t&lt; decltype(map.at(key1).at(key2))&gt;</td></tr>
+<tr class="separator:aa7f22accd7c7a6e45592fa3eb5b14a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71d02be9d9d534c8e9442a0fa41c561c"><td class="memTemplParams" colspan="2">template&lt;typename M , typename K1 &gt; </td></tr>
+<tr class="memitem:a71d02be9d9d534c8e9442a0fa41c561c"><td class="memTemplItemLeft" align="right" valign="top">static auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#a71d02be9d9d534c8e9442a0fa41c561c">findFromMap1</a> (const M &amp;map, const K1 &amp;key1) -&gt; std::decay_t&lt; decltype(map.at(key1))&gt;</td></tr>
+<tr class="separator:a71d02be9d9d534c8e9442a0fa41c561c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a128100029ac970e04ef5082c5ceb6b91"><td class="memItemLeft" align="right" valign="top">std_fs::path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1internal.html#a128100029ac970e04ef5082c5ceb6b91">unixSocketPath</a> (int port)</td></tr>
 <tr class="memdesc:a128100029ac970e04ef5082c5ceb6b91"><td class="mdescLeft">&#160;</td><td class="mdescRight">unix socket のパス  <br /></td></tr>
 <tr class="separator:a128100029ac970e04ef5082c5ceb6b91"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,6 +307,66 @@ Variables</h2></td></tr>
 
 </div>
 </div>
+<a id="a7a0d36dc9b88af5a365f951294574095" name="a7a0d36dc9b88af5a365f951294574095"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a0d36dc9b88af5a365f951294574095">&#9670;&#160;</a></span>StrMap1</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a> =  std::map&lt;<a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>, T&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abd5eab460a31c187724b48a8773dbb40" name="abd5eab460a31c187724b48a8773dbb40"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5eab460a31c187724b48a8773dbb40">&#9670;&#160;</a></span>StrMap2</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1internal.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a> =  <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt;<a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt;T&gt; &gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac6b473f4adca237a3e8cc413871a4e99" name="ac6b473f4adca237a3e8cc413871a4e99"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac6b473f4adca237a3e8cc413871a4e99">&#9670;&#160;</a></span>StrSet1</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a> =  std::set&lt;<a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa211fead709a7546b1b6416379df5449" name="aa211fead709a7546b1b6416379df5449"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa211fead709a7546b1b6416379df5449">&#9670;&#160;</a></span>StrSet2</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">using <a class="el" href="namespacewebcface_1_1internal.html#aa211fead709a7546b1b6416379df5449">StrSet2</a> =  <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt;<a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a>&gt;</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a9906851c9d11cd85f47588bc9d89d6e8" name="a9906851c9d11cd85f47588bc9d89d6e8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9906851c9d11cd85f47588bc9d89d6e8">&#9670;&#160;</a></span>TextData</h2>
 
@@ -348,6 +431,88 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>wsl2ならtrue </p>
+
+</div>
+</div>
+<a id="a71d02be9d9d534c8e9442a0fa41c561c" name="a71d02be9d9d534c8e9442a0fa41c561c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71d02be9d9d534c8e9442a0fa41c561c">&#9670;&#160;</a></span>findFromMap1()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename M , typename K1 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto findFromMap1 </td>
+          <td>(</td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const K1 &amp;&#160;</td>
+          <td class="paramname"><em>key1</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::decay_t&lt;decltype(map.at(key1))&gt; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa7f22accd7c7a6e45592fa3eb5b14a00" name="aa7f22accd7c7a6e45592fa3eb5b14a00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7f22accd7c7a6e45592fa3eb5b14a00">&#9670;&#160;</a></span>findFromMap2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename M , typename K1 , typename K2 &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static auto findFromMap2 </td>
+          <td>(</td>
+          <td class="paramtype">const M &amp;&#160;</td>
+          <td class="paramname"><em>map</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const K1 &amp;&#160;</td>
+          <td class="paramname"><em>key1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const K2 &amp;&#160;</td>
+          <td class="paramname"><em>key2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td> -&gt; std::decay_t&lt;decltype(map.at(key1).at(key2))&gt; </td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -517,7 +682,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li>
-    <li class="footer">Generated on Thu Feb 6 2025 13:59:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Feb 9 2025 06:49:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

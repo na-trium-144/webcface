@@ -34,6 +34,7 @@ var base_8h =
       [ "ping", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
       [ "ping_status", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
       [ "ping_status_req", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ],
-      [ "log_entry_default", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484ab4701b841457e023ed74fd921d4c2349", null ]
+      [ "log_entry_default", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484ab4701b841457e023ed74fd921d4c2349", null ],
+      [ "closed", "base_8h.html#a1432d06fc2e2d1f6da93d1c04dec4484a45ed087f4658fecf38ff1f88bbbdfc51", null ]
     ] ]
 ];

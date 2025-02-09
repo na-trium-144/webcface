@@ -143,37 +143,38 @@ $(document).ready(function(){initNavTree('md_docs_282__client__spec.html',''); i
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md250">接続</a></li>
-<li class="level1"><a href="#autotoc_md251">切断</a></li>
-<li class="level1"><a href="#autotoc_md252">ping</a></li>
-<li class="level1"><a href="#autotoc_md253">データの送信 (Sync)</a></li>
-<li class="level1"><a href="#autotoc_md254">データの一覧 (Entry)</a></li>
-<li class="level1"><a href="#autotoc_md255">データのリクエスト (req)</a></li>
-<li class="level1"><a href="#autotoc_md256">Funcの定義</a></li>
-<li class="level1"><a href="#autotoc_md257">Funcの呼び出し (Call)</a></li>
+<ul><li class="level1"><a href="#autotoc_md255">接続</a></li>
+<li class="level1"><a href="#autotoc_md256">切断</a></li>
+<li class="level1"><a href="#autotoc_md257">ping</a></li>
+<li class="level1"><a href="#autotoc_md258">データの送信 (Sync)</a></li>
+<li class="level1"><a href="#autotoc_md259">データの一覧 (Entry)</a></li>
+<li class="level1"><a href="#autotoc_md260">データのリクエスト (req)</a></li>
+<li class="level1"><a href="#autotoc_md261">Funcの定義</a></li>
+<li class="level1"><a href="#autotoc_md262">Funcの呼び出し (Call)</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md249"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md254"></a></p>
 <p>WebCFace Client の動作仕様についてです。 各メッセージのデータ型の説明 <a class="el" href="md_docs_281__message.html">8-1. Message</a> も参照しながら読んでください。</p>
-<h1><a class="anchor" id="autotoc_md250"></a>
+<h1><a class="anchor" id="autotoc_md255"></a>
 接続</h1>
 <ul>
 <li>サーバーのアドレス(デフォルトでは7530ポート)にWebSocketで接続します。</li>
 <li>接続できたら、まずクライアント側が sync init (80) のメッセージを送信します</li>
 <li>その後サーバー側から 他のクライアント(=member)に関する sync init (80), 各種データ型の entry (20〜) と、最後に sync init end (88) が送られてくることで接続は完了です。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md251"></a>
+<h1><a class="anchor" id="autotoc_md256"></a>
 切断</h1>
 <ul>
 <li>切断時に送信するべきメッセージは特にありません。そのままWebSocketを切断すればよいです。</li>
+<li>他のメンバーが切断したとき、サーバーから closed (93) が送られてきます。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md252"></a>
+<h1><a class="anchor" id="autotoc_md257"></a>
 ping</h1>
 <ul>
 <li>サーバーから一定時間おきに ping (89) が送られてきたら、クライアントは ping (89) を送り返してください。</li>
 <li>ping値の情報を取得したい場合は、 ping status req (91) を送ってください。 その後一定時間おきに ping status (90) が送られてきます。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md258"></a>
 データの送信 (Sync)</h1>
 <ul>
 <li>データを送信する場合、同時刻のデータとして送信したいものをすべてまとめて1回のArrayで送ります</li>
@@ -190,7 +191,7 @@ ping</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md254"></a>
+<h1><a class="anchor" id="autotoc_md259"></a>
 データの一覧 (Entry)</h1>
 <ul>
 <li>サーバーに新しく他の(無名でない)member(クライアント)が接続したとき、そのmemberの情報が sync init (80) としてサーバーから送られてきます。</li>
@@ -202,7 +203,7 @@ ping</h1>
 <li>クライアントがデータを送信する際にはサーバーにEntryを送る必要はないです。</li>
 <li>名前が半角ピリオドから始まるデータについては、Entryは送られてきません。 (Reqを送ることでデータを受信することはできます)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md255"></a>
+<h1><a class="anchor" id="autotoc_md260"></a>
 データのリクエスト (req)</h1>
 <ul>
 <li>データを受信するには、まず各種データ型のリクエスト (Req) を送る必要があります。<ul>
@@ -223,7 +224,7 @@ ping</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md256"></a>
+<h1><a class="anchor" id="autotoc_md261"></a>
 Funcの定義</h1>
 <ul>
 <li>クライアントはFuncを定義した場合、 func info (84) を送信することができます。<ul>
@@ -238,7 +239,7 @@ Funcの定義</h1>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md257"></a>
+<h1><a class="anchor" id="autotoc_md262"></a>
 Funcの呼び出し (Call)</h1>
 <ul>
 <li>Funcを呼び出したい場合、 call (81) を送信します。<ul>
@@ -268,7 +269,7 @@ Funcの呼び出し (Call)</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Feb 6 2025 13:59:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Feb 9 2025 06:49:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

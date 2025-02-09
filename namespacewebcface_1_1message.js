@@ -30,7 +30,8 @@ var namespacewebcface_1_1message =
         [ "ping", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aad2de303cb1ea37f4a3bd91f5ef4c29f", null ],
         [ "ping_status", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cb8db73d08e6f71fe9d47fb44fdc9a5", null ],
         [ "ping_status_req", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a0cf9ec07dc822afa5e1ec58e04e513fd", null ],
-        [ "log_entry_default", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ab4701b841457e023ed74fd921d4c2349", null ]
+        [ "log_entry_default", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484ab4701b841457e023ed74fd921d4c2349", null ],
+        [ "closed", "namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a45ed087f4658fecf38ff1f88bbbdfc51", null ]
       ] ]
     ] ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", "structwebcface_1_1message_1_1Arg" ],
@@ -45,6 +46,7 @@ var namespacewebcface_1_1message =
     [ "Canvas3DComponentData", "structwebcface_1_1message_1_1Canvas3DComponentData.html", "structwebcface_1_1message_1_1Canvas3DComponentData" ],
     [ "Canvas3DData", "structwebcface_1_1message_1_1Canvas3DData.html", "structwebcface_1_1message_1_1Canvas3DData" ],
     [ "Canvas3DOld", "structwebcface_1_1message_1_1Canvas3DOld.html", "structwebcface_1_1message_1_1Canvas3DOld" ],
+    [ "Closed", "structwebcface_1_1message_1_1Closed.html", "structwebcface_1_1message_1_1Closed" ],
     [ "Entry", "structwebcface_1_1message_1_1Entry.html", "structwebcface_1_1message_1_1Entry" ],
     [ "FuncInfo", "structwebcface_1_1message_1_1FuncInfo.html", "structwebcface_1_1message_1_1FuncInfo" ],
     [ "Image", "structwebcface_1_1message_1_1Image.html", "structwebcface_1_1message_1_1Image" ],

@@ -205,6 +205,26 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a45ca97bd85fbb26eefa7b5133f3287f4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Image.html">Image</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a45ca97bd85fbb26eefa7b5133f3287f4">images</a> () const</td></tr>
 <tr class="memdesc:a45ca97bd85fbb26eefa7b5133f3287f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">このmemberが公開しているimageのリストを返す。  <br /></td></tr>
 <tr class="separator:a45ca97bd85fbb26eefa7b5133f3287f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#aa7d8623150e6d43ab4bf7493aa8cbc1a">exists</a> () const</td></tr>
+<tr class="memdesc:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberのデータが存在するかどうかを返す  <br /></td></tr>
+<tr class="separator:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#aa0fd96bc25e3d509fb54028c2e4b91f6">connected</a> () const</td></tr>
+<tr class="memdesc:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberがサーバーに接続できているときtrueを返す  <br /></td></tr>
+<tr class="separator:aa0fd96bc25e3d509fb54028c2e4b91f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9f7a3bf59c8014e0b8550ec14fabbd9f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a9f7a3bf59c8014e0b8550ec14fabbd9f">onDisconnect</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; callback) const</td></tr>
+<tr class="memdesc:a9f7a3bf59c8014e0b8550ec14fabbd9f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが切断したときに呼び出されるコールバックを設定  <br /></td></tr>
+<tr class="separator:a9f7a3bf59c8014e0b8550ec14fabbd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac44c234e7bab1a782bfd24d59b6bb792"><td class="memTemplParams" colspan="2">template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ac44c234e7bab1a782bfd24d59b6bb792"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#ac44c234e7bab1a782bfd24d59b6bb792">onDisconnect</a> (F callback) const</td></tr>
+<tr class="memdesc:ac44c234e7bab1a782bfd24d59b6bb792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberが切断したときに呼び出されるコールバックを設定  <br /></td></tr>
+<tr class="separator:ac44c234e7bab1a782bfd24d59b6bb792"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a382badde179b5a1ea0675cb0e827ad20"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a382badde179b5a1ea0675cb0e827ad20">onConnect</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt; callback) const</td></tr>
+<tr class="memdesc:a382badde179b5a1ea0675cb0e827ad20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberがサーバーに接続したときに呼び出されるコールバックを設定  <br /></td></tr>
+<tr class="separator:a382badde179b5a1ea0675cb0e827ad20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60296f724be5eeeef856a04fc64cbbfc"><td class="memTemplParams" colspan="2">template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a60296f724be5eeeef856a04fc64cbbfc"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a60296f724be5eeeef856a04fc64cbbfc">onConnect</a> (F callback) const</td></tr>
+<tr class="memdesc:a60296f724be5eeeef856a04fc64cbbfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberがサーバーに接続したときに呼び出されるコールバックを設定  <br /></td></tr>
+<tr class="separator:a60296f724be5eeeef856a04fc64cbbfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a915ef0684abee06830c9117847b22495"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a915ef0684abee06830c9117847b22495">onValueEntry</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Value.html">Value</a>)&gt; callback) const</td></tr>
 <tr class="memdesc:a915ef0684abee06830c9117847b22495"><td class="mdescLeft">&#160;</td><td class="mdescRight">valueが追加された時のイベント  <br /></td></tr>
 <tr class="separator:a915ef0684abee06830c9117847b22495"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -336,15 +356,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a041285967ea9c2cae8d9170af4223b76"><td class="memTemplParams" colspan="2">template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteView &lt;   std::enable_if_t&lt;std::is_same_v&lt; View_,  View &gt;,  View_&gt;&gt;()&gt; </td></tr>
 <tr class="memitem:a041285967ea9c2cae8d9170af4223b76"><td class="memTemplItemLeft" align="right" valign="top">View_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a041285967ea9c2cae8d9170af4223b76">view</a> (std::wstring_view field) const</td></tr>
 <tr class="separator:a041285967ea9c2cae8d9170af4223b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa6c846f5e833330d08bb196b087830ce"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#aa6c846f5e833330d08bb196b087830ce">children</a> () const</td></tr>
-<tr class="memdesc:aa6c846f5e833330d08bb196b087830ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト  <br /></td></tr>
-<tr class="separator:aa6c846f5e833330d08bb196b087830ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850">childrenRecurse</a> () const</td></tr>
-<tr class="memdesc:a9765227c8f4bcdc87b9a5c4f57124850"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)  <br /></td></tr>
-<tr class="separator:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abae2ef4777ea28fa9acc234111dc84eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#abae2ef4777ea28fa9acc234111dc84eb">hasChildren</a> () const</td></tr>
-<tr class="memdesc:abae2ef4777ea28fa9acc234111dc84eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す  <br /></td></tr>
-<tr class="separator:abae2ef4777ea28fa9acc234111dc84eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplParams" colspan="2">template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </td></tr>
 <tr class="memitem:af64f0121c51589922b7ed04cf31563c7"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Canvas2D_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#af64f0121c51589922b7ed04cf31563c7">canvas2DEntries</a> () const</td></tr>
 <tr class="memdesc:af64f0121c51589922b7ed04cf31563c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。  <br /></td></tr>
@@ -359,6 +370,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
 <tr class="memitem:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#adc5fec0b3ffefe176ec7aef5b77ee1f0">canvas3DEntries</a> () const</td></tr>
 <tr class="separator:adc5fec0b3ffefe176ec7aef5b77ee1f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6c846f5e833330d08bb196b087830ce"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#aa6c846f5e833330d08bb196b087830ce">children</a> () const</td></tr>
+<tr class="memdesc:aa6c846f5e833330d08bb196b087830ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト  <br /></td></tr>
+<tr class="separator:aa6c846f5e833330d08bb196b087830ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="structwebcface_1_1Field.html">Field</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850">childrenRecurse</a> () const</td></tr>
+<tr class="memdesc:a9765227c8f4bcdc87b9a5c4f57124850"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)  <br /></td></tr>
+<tr class="separator:a9765227c8f4bcdc87b9a5c4f57124850"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplParams" colspan="2">template&lt;typename Func_  = Func, bool  = ::webcface::traits::assertCompleteFunc &lt;   std::enable_if_t&lt;std::is_same_v&lt; Func_,  Func &gt;,  Func_&gt;&gt;()&gt; </td></tr>
 <tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Func_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">funcEntries</a> () const</td></tr>
 <tr class="memdesc:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。  <br /></td></tr>
@@ -366,6 +383,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplParams" colspan="2">template&lt;typename T , bool &gt; </td></tr>
 <tr class="memitem:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; T &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#ab3ebb40ac598f0fa353e8cb8d9c6c7c2">funcEntries</a> () const</td></tr>
 <tr class="separator:ab3ebb40ac598f0fa353e8cb8d9c6c7c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abae2ef4777ea28fa9acc234111dc84eb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#abae2ef4777ea28fa9acc234111dc84eb">hasChildren</a> () const</td></tr>
+<tr class="memdesc:abae2ef4777ea28fa9acc234111dc84eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているデータが存在するかどうかを返す  <br /></td></tr>
+<tr class="separator:abae2ef4777ea28fa9acc234111dc84eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplParams" colspan="2">template&lt;typename Image_  = Image, bool  = ::webcface::traits::assertCompleteImage &lt;   std::enable_if_t&lt;std::is_same_v&lt; Image_,  Image &gt;,  Image_&gt;&gt;()&gt; </td></tr>
 <tr class="memitem:a866326e5bc56f5fb6b349ad91896479c"><td class="memTemplItemLeft" align="right" valign="top">std::vector&lt; Image_ &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Member.html#a866326e5bc56f5fb6b349ad91896479c">imageEntries</a> () const</td></tr>
 <tr class="memdesc:a866326e5bc56f5fb6b349ad91896479c"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」で公開されているimageのリストを返す。  <br /></td></tr>
@@ -626,25 +646,6 @@ template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCo
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , bool &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &gt; canvas2DEntries&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>, true &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="af64f0121c51589922b7ed04cf31563c7" name="af64f0121c51589922b7ed04cf31563c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af64f0121c51589922b7ed04cf31563c7">&#9670;&#160;</a></span>canvas2DEntries() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
 template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCompleteCanvas2D &lt;   std::enable_if_t&lt;std::is_same_v&lt; Canvas2D_,  Canvas2D &gt;,  Canvas2D_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
@@ -659,6 +660,25 @@ template&lt;typename Canvas2D_  = Canvas2D, bool  = ::webcface::traits::assertCo
 <p>「(thisの名前).(追加の名前)」で公開されているcanvas2Dのリストを返す。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="af64f0121c51589922b7ed04cf31563c7" name="af64f0121c51589922b7ed04cf31563c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64f0121c51589922b7ed04cf31563c7">&#9670;&#160;</a></span>canvas2DEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a> &gt; canvas2DEntries&lt; <a class="el" href="classwebcface_1_1Canvas2D.html">Canvas2D</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -917,6 +937,30 @@ template&lt;typename T , bool &gt; </div>
 
 </div>
 </div>
+<a id="aa0fd96bc25e3d509fb54028c2e4b91f6" name="aa0fd96bc25e3d509fb54028c2e4b91f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0fd96bc25e3d509fb54028c2e4b91f6">&#9670;&#160;</a></span>connected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool connected </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Memberがサーバーに接続できているときtrueを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9</dd></dl>
+<ul>
+<li>自身を表すMemberに対する <a class="el" href="classwebcface_1_1Member.html#aa0fd96bc25e3d509fb54028c2e4b91f6" title="Memberがサーバーに接続できているときtrueを返す">connected()</a> は、Client::connected() と同じ。</li>
+<li>自身のサーバーとの通信が切断された場合、全メンバーについてfalseとなる </li>
+</ul>
+
+</div>
+</div>
 <a id="a725c14e25d8d4e15eb297b926aec13bf" name="a725c14e25d8d4e15eb297b926aec13bf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a725c14e25d8d4e15eb297b926aec13bf">&#9670;&#160;</a></span>dataLock()</h2>
 
@@ -941,6 +985,29 @@ template&lt;typename T , bool &gt; </div>
 </div><div class="memdoc">
 
 <p>data_wをlockし、失敗したらruntime_errorを投げる </p>
+
+</div>
+</div>
+<a id="aa7d8623150e6d43ab4bf7493aa8cbc1a" name="aa7d8623150e6d43ab4bf7493aa8cbc1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa7d8623150e6d43ab4bf7493aa8cbc1a">&#9670;&#160;</a></span>exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool exists </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Memberのデータが存在するかどうかを返す </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9</dd></dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Member.html#aa0fd96bc25e3d509fb54028c2e4b91f6" title="Memberがサーバーに接続できているときtrueを返す">connected()</a> とは異なり、切断後もサーバーにデータが残っていてまだデータを受信でき、trueになる場合がある </li>
+</ul>
 
 </div>
 </div>
@@ -1533,25 +1600,6 @@ template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , bool &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt; logEntries&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a>, true &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a91500f66e86a02b1e57fb0f96ef99989" name="a91500f66e86a02b1e57fb0f96ef99989"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91500f66e86a02b1e57fb0f96ef99989">&#9670;&#160;</a></span>logEntries() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
 template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog &lt;   std::enable_if_t&lt;std::is_same_v&lt; Log_,  Log &gt;,  Log_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
@@ -1566,6 +1614,25 @@ template&lt;typename Log_  = Log, bool  = ::webcface::traits::assertCompleteLog 
 <p>「(thisの名前).(追加の名前)」で公開されているlogのリストを返す。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver2.4 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="a91500f66e86a02b1e57fb0f96ef99989" name="a91500f66e86a02b1e57fb0f96ef99989"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91500f66e86a02b1e57fb0f96ef99989">&#9670;&#160;</a></span>logEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt; logEntries&lt; <a class="el" href="classwebcface_1_1Log.html">Log</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -1704,6 +1771,146 @@ template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertComple
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a60296f724be5eeeef856a04fc64cbbfc" name="a60296f724be5eeeef856a04fc64cbbfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60296f724be5eeeef856a04fc64cbbfc">&#9670;&#160;</a></span>onConnect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp; onConnect </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Memberがサーバーに接続したときに呼び出されるコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数をとらない関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Client.html#a41c3c7861db3d0b61a9e651cd59e6923" title="Memberが追加された時のイベント">Client::onMemberEntry</a> の直後に呼び出される。 </li>
+</ul>
+
+</div>
+</div>
+<a id="a382badde179b5a1ea0675cb0e827ad20" name="a382badde179b5a1ea0675cb0e827ad20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a382badde179b5a1ea0675cb0e827ad20">&#9670;&#160;</a></span>onConnect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp; onConnect </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Memberがサーバーに接続したときに呼び出されるコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>Member型の引数(thisが渡される)を1つ取る関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<ul>
+<li><a class="el" href="classwebcface_1_1Client.html#a41c3c7861db3d0b61a9e651cd59e6923" title="Memberが追加された時のイベント">Client::onMemberEntry</a> の直後に呼び出される。 </li>
+</ul>
+
+</div>
+</div>
+<a id="ac44c234e7bab1a782bfd24d59b6bb792" name="ac44c234e7bab1a782bfd24d59b6bb792"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac44c234e7bab1a782bfd24d59b6bb792">&#9670;&#160;</a></span>onDisconnect() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename F , typename std::enable_if_t&lt; std::is_invocable_v&lt; F &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp; onDisconnect </td>
+          <td>(</td>
+          <td class="paramtype">F&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Memberが切断したときに呼び出されるコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>引数をとらない関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<ul>
+<li>自身のサーバーとの通信が切断された場合も、全メンバーについて呼び出される。 </li>
+</ul>
+
+</div>
+</div>
+<a id="a9f7a3bf59c8014e0b8550ec14fabbd9f" name="a9f7a3bf59c8014e0b8550ec14fabbd9f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9f7a3bf59c8014e0b8550ec14fabbd9f">&#9670;&#160;</a></span>onDisconnect() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="classwebcface_1_1Member.html">Member</a> &amp; onDisconnect </td>
+          <td>(</td>
+          <td class="paramtype">std::function&lt; void(<a class="el" href="classwebcface_1_1Member.html">Member</a>)&gt;&#160;</td>
+          <td class="paramname"><em>callback</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Memberが切断したときに呼び出されるコールバックを設定 </p>
+<dl class="section since"><dt>Since</dt><dd>ver2.9 </dd></dl>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">callback</td><td>Member型の引数(thisが渡される)を1つ取る関数</td></tr>
+  </table>
+  </dd>
+</dl>
+<ul>
+<li>自身のサーバーとの通信が切断された場合も、全メンバーについて呼び出される。 </li>
+</ul>
 
 </div>
 </div>
@@ -2415,6 +2622,25 @@ template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::asse
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModelEntries&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afee6e2a9a95ba2541bf0ff302b426523" name="afee6e2a9a95ba2541bf0ff302b426523"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afee6e2a9a95ba2541bf0ff302b426523">&#9670;&#160;</a></span>robotModelEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
 template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::assertCompleteRobotModel &lt;   std::enable_if_t&lt;std::is_same_v&lt; RobotModel_,  RobotModel &gt;,  RobotModel_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
@@ -2429,25 +2655,6 @@ template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::asse
 <p>「(thisの名前).(追加の名前)」で公開されているrobotModelのリストを返す。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
-
-</div>
-</div>
-<a id="afee6e2a9a95ba2541bf0ff302b426523" name="afee6e2a9a95ba2541bf0ff302b426523"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afee6e2a9a95ba2541bf0ff302b426523">&#9670;&#160;</a></span>robotModelEntries() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , bool &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a> &gt; robotModelEntries&lt; <a class="el" href="classwebcface_1_1RobotModel.html">RobotModel</a>, true &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -2580,6 +2787,25 @@ template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteTe
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a> &gt; textEntries&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6f0461788d6228e196254a794dc57ace" name="a6f0461788d6228e196254a794dc57ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f0461788d6228e196254a794dc57ace">&#9670;&#160;</a></span>textEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
 template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteText &lt;   std::enable_if_t&lt;std::is_same_v&lt; Text_,  Text &gt;,  Text_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
@@ -2594,25 +2820,6 @@ template&lt;typename Text_  = Text, bool  = ::webcface::traits::assertCompleteTe
 <p>「(thisの名前).(追加の名前)」で公開されているtextのリストを返す。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
-
-</div>
-</div>
-<a id="a6f0461788d6228e196254a794dc57ace" name="a6f0461788d6228e196254a794dc57ace"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f0461788d6228e196254a794dc57ace">&#9670;&#160;</a></span>textEntries() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T , bool &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a> &gt; textEntries&lt; <a class="el" href="classwebcface_1_1Text.html">Text</a>, true &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
@@ -2698,25 +2905,6 @@ template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertComplete
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , bool &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a> &gt; valueEntries&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a>, true &gt; </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="ac8cc11afdd37eec02b77c8b5e2c5b058" name="ac8cc11afdd37eec02b77c8b5e2c5b058"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac8cc11afdd37eec02b77c8b5e2c5b058">&#9670;&#160;</a></span>valueEntries() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
 template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertCompleteValue &lt;   std::enable_if_t&lt;std::is_same_v&lt; Value_,  Value &gt;,  Value_&gt;&gt;()&gt; </div>
       <table class="memname">
         <tr>
@@ -2731,6 +2919,25 @@ template&lt;typename Value_  = Value, bool  = ::webcface::traits::assertComplete
 <p>「(thisの名前).(追加の名前)」で公開されているvalueのリストを返す。 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.6 </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Member.html#a9765227c8f4bcdc87b9a5c4f57124850" title="「(thisの名前).(追加の名前)」で公開されているデータのリスト(再帰)">childrenRecurse()</a> </dd></dl>
+
+</div>
+</div>
+<a id="ac8cc11afdd37eec02b77c8b5e2c5b058" name="ac8cc11afdd37eec02b77c8b5e2c5b058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8cc11afdd37eec02b77c8b5e2c5b058">&#9670;&#160;</a></span>valueEntries() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , bool &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">template std::vector&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a> &gt; valueEntries&lt; <a class="el" href="classwebcface_1_1Value.html">Value</a>, true &gt; </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -2980,7 +3187,7 @@ template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteVi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Member.html">Member</a></li>
-    <li class="footer">Generated on Thu Feb 6 2025 13:59:03 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Feb 9 2025 06:49:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

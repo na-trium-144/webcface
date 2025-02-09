@@ -4,10 +4,6 @@ var namespacewebcface =
     [ "components", "namespacewebcface_1_1components.html", "namespacewebcface_1_1components" ],
     [ "encoding", "namespacewebcface_1_1encoding.html", [
       [ "SharedString", "namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130", null ],
-      [ "StrMap1", "namespacewebcface_1_1encoding.html#a90c05c74798a38d04baedac8459a2da5", null ],
-      [ "StrMap2", "namespacewebcface_1_1encoding.html#a5a2d3933cb3b7e879545b4ea4ebf013a", null ],
-      [ "StrSet1", "namespacewebcface_1_1encoding.html#ac4a63a49456338c2a9df7934d7d02f96", null ],
-      [ "StrSet2", "namespacewebcface_1_1encoding.html#a7ec4740046d3756407b405cfd14fb241", null ],
       [ "ValAdaptor", "namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7", null ],
       [ "ValType", "namespacewebcface_1_1encoding.html#a56edf887ceae8de891981698e7868696", null ],
       [ "argToTuple", "namespacewebcface_1_1encoding.html#a9dce36907abe060456a9c44877032b19", null ],
@@ -109,10 +105,6 @@ var namespacewebcface =
     [ "LoggerBuf", "namespacewebcface.html#a5d0220b13276ff62ae5c0c6793aae628", null ],
     [ "LoggerBufW", "namespacewebcface.html#ad129abf240c40c4cab70ab8fae7973f9", null ],
     [ "Rect", "namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4", null ],
-    [ "StrMap1", "namespacewebcface.html#a7a0d36dc9b88af5a365f951294574095", null ],
-    [ "StrMap2", "namespacewebcface.html#abd5eab460a31c187724b48a8773dbb40", null ],
-    [ "StrSet1", "namespacewebcface.html#ac6b473f4adca237a3e8cc413871a4e99", null ],
-    [ "StrSet2", "namespacewebcface.html#aa211fead709a7546b1b6416379df5449", null ],
     [ "AxisSequence", "namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850", [
       [ "ZXZ", "namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850abeb48dd84f8c9fa0f7b96e0b37efa3f3", null ],
       [ "XYX", "namespacewebcface.html#a7795005546b43cd39adb81c8b52b0850a14f73cdf715a90c270fef41c547860b8", null ],

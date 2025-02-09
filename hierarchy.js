@@ -95,6 +95,7 @@ var hierarchy =
       [ "formatter< webcface::message::Canvas2DOld >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Canvas2DOld_01_4.html", null ],
       [ "formatter< webcface::message::Canvas3D >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Canvas3D_01_4.html", null ],
       [ "formatter< webcface::message::Canvas3DOld >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Canvas3DOld_01_4.html", null ],
+      [ "formatter< webcface::message::Closed >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Closed_01_4.html", null ],
       [ "formatter< webcface::message::Entry< webcface::message::Canvas2D > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Canvas2D_01_4_01_4.html", null ],
       [ "formatter< webcface::message::Entry< webcface::message::Canvas2DOld > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Canvas2DOld_01_4_01_4.html", null ],
       [ "formatter< webcface::message::Entry< webcface::message::Canvas3D > >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Canvas3D_01_4_01_4.html", null ],
@@ -185,6 +186,9 @@ var hierarchy =
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
+    [ "Lock", null, [
+      [ "ScopedLock< Proxy, Lock >", "classwebcface_1_1internal_1_1ScopedLock.html", null ]
+    ] ],
     [ "LogData", "structwebcface_1_1internal_1_1LogData.html", null ],
     [ "LogLine", "structwebcface_1_1message_1_1LogLine.html", null ],
     [ "LogLineData", "structwebcface_1_1LogLineData.html", [
@@ -225,6 +229,9 @@ var hierarchy =
     ] ],
     [ "MessageBase< MessageKind::canvas3d_old+MessageKind::res >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Res< Canvas3DOld >", "structwebcface_1_1message_1_1Res_3_01Canvas3DOld_01_4.html", null ]
+    ] ],
+    [ "MessageBase< MessageKind::closed >", "structwebcface_1_1message_1_1MessageBase.html", [
+      [ "Closed", "structwebcface_1_1message_1_1Closed.html", null ]
     ] ],
     [ "MessageBase< MessageKind::func_info >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "FuncInfo", "structwebcface_1_1message_1_1FuncInfo.html", null ]
@@ -307,6 +314,10 @@ var hierarchy =
     [ "MessageBase< T::kind+MessageKind::req >", "structwebcface_1_1message_1_1MessageBase.html", [
       [ "Req< T >", "structwebcface_1_1message_1_1Req.html", null ]
     ] ],
+    [ "MutexProxy< T >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
+    [ "MutexProxy< StrMap1< webcface::Queue< webcface::CallHandle > > >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
+    [ "MutexProxy< webcface::internal::ClientData::SyncData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
+    [ "MutexProxy< webcface::internal::ClientData::WsData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
@@ -332,6 +343,33 @@ var hierarchy =
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1server_1_1Server.html", null ],
     [ "ServerStorage", "classwebcface_1_1server_1_1ServerStorage.html", null ],
+    [ "SharedMutexProxy< T >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< std::string >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< std::unordered_map< unsigned int, std::string > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< bool > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Canvas2D)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Canvas3D)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Func)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Image)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Log)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Member)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::RobotModel)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Text)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::Value)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::shared_ptr< std::function< void(webcface::View)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::unique_ptr< std::ostream > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::unique_ptr< std::streambuf > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::unique_ptr< std::wostream > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< std::unique_ptr< std::wstreambuf > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap1< unsigned int > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Canvas2D)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Canvas3D)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Image)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Log)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::RobotModel)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Value)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Variant)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
+    [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::View)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
     [ "SharedString", "classwebcface_1_1SharedString.html", null ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", null ],
     [ "Size", "classwebcface_1_1Size.html", null ],
@@ -342,6 +380,7 @@ var hierarchy =
     [ "stringbuf", null, [
       [ "ViewBuf", "classwebcface_1_1internal_1_1ViewBuf.html", null ]
     ] ],
+    [ "SyncData", "structwebcface_1_1internal_1_1ClientData_1_1SyncData.html", null ],
     [ "SyncDataStore1< T >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
@@ -354,7 +393,6 @@ var hierarchy =
     [ "SyncDataStore2< std::shared_ptr< webcface::message::ViewData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::ValAdaptor > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::ImageFrame, webcface::message::ImageReq >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1SyncMutexedData.html", null ],
     [ "TemporalCanvas2DComponent", "classwebcface_1_1TemporalCanvas2DComponent.html", null ],
     [ "TemporalCanvas3DComponent", "classwebcface_1_1TemporalCanvas3DComponent.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "structwebcface_1_1TemporalComponent.html", null ],
@@ -363,10 +401,6 @@ var hierarchy =
     ] ],
     [ "TemporalRobotJointData", "structwebcface_1_1internal_1_1TemporalRobotJointData.html", null ],
     [ "TemporalViewComponent", "classwebcface_1_1TemporalViewComponent.html", null ],
-    [ "unique_lock", null, [
-      [ "ScopedSyncLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedSyncLock.html", null ],
-      [ "ScopedWsLock", "classwebcface_1_1internal_1_1ClientData_1_1ScopedWsLock.html", null ]
-    ] ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ],
     [ "ViewComponentData", "structwebcface_1_1message_1_1ViewComponentData.html", [
@@ -379,5 +413,5 @@ var hierarchy =
     [ "wcfMultiValW", "structwcfMultiValW.html", null ],
     [ "wcfViewComponent", "structwcfViewComponent.html", null ],
     [ "wcfViewComponentW", "structwcfViewComponentW.html", null ],
-    [ "WsMutexedData", "structwebcface_1_1internal_1_1ClientData_1_1WsMutexedData.html", null ]
+    [ "WsData", "structwebcface_1_1internal_1_1ClientData_1_1WsData.html", null ]
 ];
