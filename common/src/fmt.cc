@@ -4,6 +4,7 @@
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/plot.h"
 #include "webcface/common/internal/message/func.h"
 #include "webcface/common/internal/message/log.h"
 #include "webcface/common/internal/message/robot_model.h"
@@ -150,6 +151,18 @@ WEBCFACE_MESSAGE_FMT_DEF(
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(RobotModel)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(RobotModel)
+
+WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Plot) {
+    return fmt::format_to(ctx.out(), "{}-Plot('{}', size={})", msg_kind,
+                          m.field.decode(), m.data.size());
+}
+WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Plot>) {
+    return fmt::format_to(ctx.out(), "{}-PlotRes(req_id={} + '{}', size={})",
+                          msg_kind, m.req_id, m.sub_field.decode(),
+                          m.data.size());
+}
+WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Plot)
+WEBCFACE_MESSAGE_FMT_DEF_REQ(Plot)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Log) {
     return fmt::format_to(ctx.out(), "{}-Log('{}', {} lines)", msg_kind,

@@ -3,6 +3,7 @@
 #include "webcface/common/internal/message/view.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
+#include "webcface/common/internal/message/plot.h"
 #include "webcface/field.h"
 #include <type_traits>
 #include "webcface/internal/func_internal.h"
@@ -22,6 +23,16 @@ static bool shouldSend(const T &prev, const T &current) {
     if constexpr (std::is_same_v<T, std::shared_ptr<ValueData>> ||
                   std::is_same_v<T, std::shared_ptr<TextData>>) {
         return *prev != *current;
+    } else if constexpr (std::is_same_v<T, PlotData>) {
+        if (prev.size() != current.size()) {
+            return true;
+        }
+        for (std::size_t i = 0; i < prev.size(); i++) {
+            if (*prev.at(i) != *current.at(i)) {
+                return true;
+            }
+        }
+        return false;
     } else if constexpr (std::is_same_v<T, std::string>) {
         return prev != current;
     } else if constexpr (std::is_same_v<T, std::shared_ptr<FuncData>>) {
@@ -270,5 +281,6 @@ template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>, int>;
 template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>, int>;
 template class SyncDataStore2<ImageData, message::ImageReq>;
 template class SyncDataStore2<std::shared_ptr<LogData>, int>;
+template class SyncDataStore2<PlotData, int>;
 } // namespace internal
 WEBCFACE_NS_END

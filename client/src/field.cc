@@ -9,6 +9,7 @@
 #include "webcface/canvas2d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/log.h"
+#include "webcface/plot.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
 #include <algorithm>
@@ -73,6 +74,7 @@ bool Field::hasChildren() const {
     return hasChildrenT(this, data->value_store) ||
            hasChildrenT(this, data->text_store) ||
            hasChildrenT(this, data->robot_model_store) ||
+           hasChildrenT(this, data->plot_store) ||
            hasChildrenT(this, data->func_store) ||
            hasChildrenT(this, data->view_store) ||
            hasChildrenT(this, data->canvas2d_store) ||
@@ -121,6 +123,7 @@ std::vector<Field> Field::childrenRecurse() const {
     entries(ret, this, data->value_store);
     entries(ret, this, data->text_store);
     entries(ret, this, data->robot_model_store);
+    entries(ret, this, data->plot_store);
     entries(ret, this, data->func_store);
     entries(ret, this, data->view_store);
     entries(ret, this, data->canvas2d_store);
@@ -135,6 +138,7 @@ std::vector<Field> Field::children() const {
     entries(ret, this, data->value_store, false);
     entries(ret, this, data->text_store, false);
     entries(ret, this, data->robot_model_store, false);
+    entries(ret, this, data->plot_store, false);
     entries(ret, this, data->func_store, false);
     entries(ret, this, data->view_store, false);
     entries(ret, this, data->canvas2d_store, false);
@@ -154,6 +158,10 @@ std::vector<T> Field::textEntries() const {
 template <typename T, bool>
 std::vector<T> Field::robotModelEntries() const {
     return entries<RobotModel>(this, dataLock()->robot_model_store);
+}
+template <typename T, bool>
+std::vector<T> Field::plotEntries() const {
+    return entries<Plot>(this, dataLock()->plot_store);
 }
 template <typename T, bool>
 std::vector<T> Field::funcEntries() const {
@@ -185,6 +193,7 @@ Field::valueEntries<Value, true>() const;
 template WEBCFACE_DLL std::vector<Text> Field::textEntries<Text, true>() const;
 template WEBCFACE_DLL std::vector<RobotModel>
 Field::robotModelEntries<RobotModel, true>() const;
+template WEBCFACE_DLL std::vector<Plot> Field::plotEntries<Plot, true>() const;
 template WEBCFACE_DLL std::vector<Func> Field::funcEntries<Func, true>() const;
 template WEBCFACE_DLL std::vector<View> Field::viewEntries<View, true>() const;
 template WEBCFACE_DLL std::vector<Canvas2D>

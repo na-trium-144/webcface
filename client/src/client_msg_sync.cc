@@ -10,10 +10,12 @@
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/robot_model.h"
+#include "webcface/common/internal/message/plot.h"
 #include "webcface/internal/logger.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
+#include "webcface/plot.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -32,6 +34,7 @@ internal::ClientData::SyncData::syncDataFirst(internal::ClientData *this_) {
     data.text_req = this_->text_store.transferReq();
     data.view_req = this_->view_store.transferReq();
     data.robot_model_req = this_->robot_model_store.transferReq();
+    data.plot_req = this_->plot_store.transferReq();
     data.canvas3d_req = this_->canvas3d_store.transferReq();
     data.canvas2d_req = this_->canvas2d_store.transferReq();
     {
@@ -94,6 +97,13 @@ std::string internal::ClientData::packSyncDataFirst(const SyncDataFirst &data) {
                                 {}, v.first, v2.first, v2.second});
         }
     }
+    for (const auto &v : data.plot_req) {
+        for (const auto &v2 : v.second) {
+            message::pack(
+                buffer, len,
+                message::Req<message::Plot>{{}, v.first, v2.first, v2.second});
+        }
+    }
     for (const auto &v : data.canvas3d_req) {
         for (const auto &v2 : v.second) {
             packWithLogging(logger_internal, buffer, len,
@@ -143,6 +153,8 @@ internal::ClientData::SyncData::syncData(internal::ClientData *this_,
     data.text_data = this_->text_store.transferSend(is_first);
     // std::lock_guard robot_model_lock(this_->robot_model_store.mtx);
     data.robot_model_data = this_->robot_model_store.transferSend(is_first);
+    // std::lock_guard plot_lock(this_->plot_store.mtx);
+    data.plot_data = this_->plot_store.transferSend(is_first);
     {
         std::lock_guard view_lock(this_->view_store.mtx);
         data.view_prev = this_->view_store.getSendPrev(is_first);
@@ -198,6 +210,14 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
         }
         packWithLogging(logger_internal, buffer, len,
                         message::RobotModel{v.first, links});
+    }
+    for (const auto &v : data.plot_data) {
+        std::vector<std::shared_ptr<message::PlotSeriesData>> series_data;
+        series_data.reserve(v.second.size());
+        for (std::size_t i = 0; i < v.second.size(); i++) {
+            series_data.emplace_back(v.second.at(i));
+        }
+        message::pack(buffer, len, message::Plot{v.first, series_data});
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
