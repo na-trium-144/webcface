@@ -70,11 +70,10 @@ void internal::DataSetBuffer<PlotSeries>::onSync() {
         series_data.push_back(components_[i].msg_data);
     }
     data->plot_store.setSend(target_, series_data);
-    std::shared_ptr<std::function<void(Plot)>> change_event;
-    {
-        std::lock_guard lock(data->event_m);
-        change_event = data->plot_change_event[target_.member_][target_.field_];
-    }
+
+    auto change_event =
+        internal::findFromMap2(data->plot_change_event.shared_lock().get(),
+                               target_.member_, target_.field_);
     if (change_event && *change_event) {
         change_event->operator()(target_);
     }
@@ -82,8 +81,7 @@ void internal::DataSetBuffer<PlotSeries>::onSync() {
 const Plot &Plot::onChange(std::function<void(Plot)> callback) const {
     this->request();
     auto data = dataLock();
-    std::lock_guard lock(data->event_m);
-    data->plot_change_event[this->member_][this->field_] =
+    data->plot_change_event.lock().get()[this->member_][this->field_] =
         std::make_shared<std::function<void(Plot)>>(std::move(callback));
     return *this;
 }
