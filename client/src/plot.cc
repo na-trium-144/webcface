@@ -22,6 +22,66 @@ PlotSeries::PlotSeries(const std::vector<Value> &values)
 PlotSeries::PlotSeries(const Value &value_x, const Value &value_y)
     : PlotSeries(std::vector<Value>{value_x, value_y}) {}
 
+void PlotSeries::checkData() const {
+    if (!this->msg_data) {
+        throw std::runtime_error("Accessed empty PlotSeries");
+    }
+}
+
+template <typename T, bool>
+std::vector<T> PlotSeries::values() const {
+    checkData();
+    std::vector<Value> v;
+    auto data = this->data_w.lock();
+    for (std::size_t i = 0; i < this->msg_data->value_member.size() &&
+                            i < this->msg_data->value_field.size();
+         i++) {
+        v.push_back(Value{Field{data, this->msg_data->value_member[i],
+                                this->msg_data->value_field[i]}});
+    }
+    return v;
+}
+template WEBCFACE_DLL std::vector<Value>
+PlotSeries::values<Value, true>() const;
+
+ViewColor PlotSeries::color() const {
+    checkData();
+    return static_cast<ViewColor>(this->msg_data->color);
+}
+PlotSeries &PlotSeries::color(ViewColor color) & {
+    checkData();
+    this->msg_data->color = static_cast<int>(color);
+    return *this;
+}
+
+double PlotSeries::xMin() const {
+    checkData();
+    return this->msg_data->range[0];
+}
+double PlotSeries::xMax() const {
+    checkData();
+    return this->msg_data->range[1];
+}
+double PlotSeries::yMin() const {
+    checkData();
+    return this->msg_data->range[2];
+}
+double PlotSeries::yMax() const {
+    checkData();
+    return this->msg_data->range[3];
+}
+PlotSeries &PlotSeries::xRange(double x_min, double x_max) & {
+    checkData();
+    this->msg_data->range[0] = x_min;
+    this->msg_data->range[1] = x_max;
+    return *this;
+}
+PlotSeries &PlotSeries::yRange(double y_min, double y_max) & {
+    checkData();
+    this->msg_data->range[2] = y_min;
+    this->msg_data->range[3] = y_max;
+    return *this;
+}
 
 Plot::Plot()
     : Field(), sb(std::make_shared<internal::DataSetBuffer<PlotSeries>>()) {}

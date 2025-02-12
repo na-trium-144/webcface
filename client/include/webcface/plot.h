@@ -8,6 +8,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "components.h"
+#include "webcface/complete.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -34,6 +35,8 @@ class PlotSeries {
 
     PlotSeries(const std::vector<Value> &values);
 
+    void checkData() const;
+
   public:
     PlotSeries() = default;
     PlotSeries(const Value &value_x, const Value &value_y);
@@ -43,14 +46,31 @@ class PlotSeries {
 
     friend internal::DataSetBuffer<PlotSeries>;
 
-    std::vector<Value> values() const;
+    template <WEBCFACE_COMPLETE(Value)>
+    std::vector<Value_> values() const;
+
     ViewColor color() const;
     PlotSeries &color(ViewColor color) &;
     PlotSeries &&color(ViewColor color) && {
         this->color(color);
         return std::move(*this);
     }
+    double xMin() const;
+    double xMax() const;
+    double yMin() const;
+    double yMax() const;
+    PlotSeries &xRange(double x_min, double x_max) &;
+    PlotSeries &&xRange(double x_min, double x_max) &&{
+        this->xRange(x_min, x_max);
+        return std::move(*this);
+    }
+    PlotSeries &yRange(double y_min, double y_max) &;
+    PlotSeries &&yRange(double y_min, double y_max) &&{
+        this->yRange(y_min, y_max);
+        return std::move(*this);
+    }
 };
+extern template std::vector<Value> PlotSeries::values<Value, true>() const;
 
 /*!
  * \brief Plotの送受信データを表すクラス

@@ -14,6 +14,7 @@ namespace message {
 struct PlotSeriesData {
     std::vector<SharedString> value_member, value_field;
     int color = 0;
+    std::array<double, 4> range;
 
     bool operator==(const PlotSeriesData &other) const {
         return value_member == other.value_member &&
@@ -24,7 +25,8 @@ struct PlotSeriesData {
     }
 
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("V", value_member),
-                       MSGPACK_NVP("v", value_field), MSGPACK_NVP("c", color))
+                       MSGPACK_NVP("v", value_field), MSGPACK_NVP("c", color),
+                       MSGPACK_NVP("r", range))
 };
 
 struct Plot : public MessageBase<MessageKind::plot> {
