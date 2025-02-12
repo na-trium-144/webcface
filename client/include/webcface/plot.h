@@ -21,6 +21,13 @@ struct PlotSeriesData;
 
 class Value;
 
+enum class PlotSeriesType {
+    trace1 = 1,
+    trace2 = 2,
+    scatter2 = 3,
+    line2 = 4,
+};
+
 /*!
  * \brief Plotのデータセット
  * \since ver2.6
@@ -29,22 +36,22 @@ class Value;
  * 値そのものは保持せず、読み込むValueを参照するのみ。
  *
  */
-class PlotSeries {
+class WEBCFACE_DLL PlotSeries {
     std::shared_ptr<message::PlotSeriesData> msg_data;
     std::weak_ptr<internal::ClientData> data_w;
-
-    PlotSeries(const std::vector<Value> &values);
 
     void checkData() const;
 
   public:
     PlotSeries() = default;
-    PlotSeries(const Value &value_x, const Value &value_y);
+    PlotSeries(PlotSeriesType type, const std::vector<Value> &values);
     PlotSeries(const std::shared_ptr<message::PlotSeriesData> &msg_data,
                const std::weak_ptr<internal::ClientData> &data_w)
         : msg_data(msg_data), data_w(data_w) {}
 
     friend internal::DataSetBuffer<PlotSeries>;
+
+    PlotSeriesType type() const;
 
     template <WEBCFACE_COMPLETE(Value)>
     std::vector<Value_> values() const;
@@ -60,17 +67,26 @@ class PlotSeries {
     double yMin() const;
     double yMax() const;
     PlotSeries &xRange(double x_min, double x_max) &;
-    PlotSeries &&xRange(double x_min, double x_max) &&{
+    PlotSeries &&xRange(double x_min, double x_max) && {
         this->xRange(x_min, x_max);
         return std::move(*this);
     }
     PlotSeries &yRange(double y_min, double y_max) &;
-    PlotSeries &&yRange(double y_min, double y_max) &&{
+    PlotSeries &&yRange(double y_min, double y_max) && {
         this->yRange(y_min, y_max);
         return std::move(*this);
     }
 };
 extern template std::vector<Value> PlotSeries::values<Value, true>() const;
+
+inline namespace plot_series {
+WEBCFACE_DLL PlotSeries trace1(webcface::Value &y);
+WEBCFACE_DLL PlotSeries trace2(webcface::Value &x, webcface::Value &y);
+WEBCFACE_DLL PlotSeries scatter2(webcface::Value &xPoints,
+                                 webcface::Value &yPoints);
+WEBCFACE_DLL PlotSeries line2(webcface::Value &xPoints,
+                              webcface::Value &yPoints);
+} // namespace plot_series
 
 /*!
  * \brief Plotの送受信データを表すクラス

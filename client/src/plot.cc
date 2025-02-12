@@ -6,8 +6,9 @@
 #include "webcface/internal/client_internal.h"
 
 WEBCFACE_NS_BEGIN
-PlotSeries::PlotSeries(const std::vector<Value> &values)
+PlotSeries::PlotSeries(PlotSeriesType type, const std::vector<Value> &values)
     : msg_data(std::make_shared<message::PlotSeriesData>()), data_w() {
+    this->msg_data->type = static_cast<int>(type);
     this->msg_data->value_member.reserve(values.size());
     this->msg_data->value_field.reserve(values.size());
     for (const auto &v : values) {
@@ -19,13 +20,16 @@ PlotSeries::PlotSeries(const std::vector<Value> &values)
         }
     }
 }
-PlotSeries::PlotSeries(const Value &value_x, const Value &value_y)
-    : PlotSeries(std::vector<Value>{value_x, value_y}) {}
 
 void PlotSeries::checkData() const {
     if (!this->msg_data) {
         throw std::runtime_error("Accessed empty PlotSeries");
     }
+}
+
+PlotSeriesType PlotSeries::type() const {
+    checkData();
+    return static_cast<PlotSeriesType>(this->msg_data->type);
 }
 
 template <typename T, bool>
@@ -82,6 +86,20 @@ PlotSeries &PlotSeries::yRange(double y_min, double y_max) & {
     this->msg_data->range[3] = y_max;
     return *this;
 }
+
+PlotSeries plot_series::trace1(webcface::Value &y) {
+    return PlotSeries(PlotSeriesType::trace1, {y});
+}
+PlotSeries plot_series::trace2(webcface::Value &x, webcface::Value &y) {
+    return PlotSeries(PlotSeriesType::trace2, {x, y});
+}
+PlotSeries plot_series::scatter2(webcface::Value &x, webcface::Value &y) {
+    return PlotSeries(PlotSeriesType::scatter2, {x, y});
+}
+PlotSeries plot_series::line2(webcface::Value &x, webcface::Value &y) {
+    return PlotSeries(PlotSeriesType::line2, {x, y});
+}
+
 
 Plot::Plot()
     : Field(), sb(std::make_shared<internal::DataSetBuffer<PlotSeries>>()) {}
