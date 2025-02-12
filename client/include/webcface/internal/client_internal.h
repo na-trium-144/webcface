@@ -94,6 +94,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         StrMap1<std::shared_ptr<ValueData>> value_data;
         StrMap1<std::shared_ptr<TextData>> text_data;
         StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
+        StrMap1<PlotData> plot_data;
         StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
         StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev,
             canvas3d_data;
@@ -105,8 +106,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     };
 
     struct SyncDataFirst {
-        StrMap2<unsigned int> value_req, text_req, robot_model_req, view_req,
-            canvas3d_req, canvas2d_req, image_req, log_req;
+        StrMap2<unsigned int> value_req, text_req, robot_model_req, plot_req,
+            view_req, canvas3d_req, canvas2d_req, image_req, log_req;
         StrMap2<message::ImageReq> image_req_info;
         bool ping_status_req;
         SyncDataSnapshot sync_data;
@@ -323,6 +324,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
     SyncDataStore2<std::shared_ptr<RobotModelData>> robot_model_store;
+    SyncDataStore2<PlotData> plot_store;
     SyncDataStore2<std::shared_ptr<message::Canvas3DData>> canvas3d_store;
     SyncDataStore2<std::shared_ptr<message::Canvas2DData>> canvas2d_store;
     SyncDataStore2<std::shared_ptr<LogData>> log_store;
@@ -386,6 +388,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         image_change_event;
     SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(RobotModel)>>>>
         robot_model_change_event;
+    SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Plot)>>>>
+        plot_change_event;
     SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(View)>>>>
         view_change_event;
     SharedMutexProxy<StrMap2<std::shared_ptr<std::function<void(Canvas3D)>>>>
@@ -408,6 +412,8 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
         image_entry_event;
     SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(RobotModel)>>>>
         robot_model_entry_event;
+    SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Plot)>>>>
+        plot_entry_event;
     SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Canvas3D)>>>>
         canvas3d_entry_event;
     SharedMutexProxy<StrMap1<std::shared_ptr<std::function<void(Canvas2D)>>>>

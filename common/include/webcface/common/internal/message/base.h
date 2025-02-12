@@ -31,6 +31,7 @@ enum MessageKindEnum {
     view = 9,
     canvas2d = 10,
     canvas3d = 11,
+    plot = 12,
     entry = 20,
     req = 40,
     res = 60,

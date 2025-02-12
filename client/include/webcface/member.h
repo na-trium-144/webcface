@@ -53,6 +53,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::text;
     using Field::value;
     using Field::view;
+    using Field::plot;
 
     /*!
      * \since ver2.4
@@ -87,6 +88,7 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::textEntries;
     using Field::valueEntries;
     using Field::viewEntries;
+    using Field::plotEntries;
     /*!
      * \brief このmemberが公開しているvalueのリストを返す。
      * \deprecated 1.6で valueEntries() に変更

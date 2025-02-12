@@ -25,6 +25,7 @@ class Image;
 class Func;
 class FuncListener;
 class RobotModel;
+class Plot;
 class Canvas2D;
 class Canvas3D;
 class Log;
@@ -206,6 +207,14 @@ struct WEBCFACE_DLL Field : public FieldBase {
     RobotModel_ robotModel(std::wstring_view field) const {
         return child(field);
     }
+    template <WEBCFACE_COMPLETE(Plot)>
+    Plot_ plot(std::string_view field = "") const {
+        return child(field);
+    }
+    template <WEBCFACE_COMPLETE(Plot)>
+    Plot_ plot(std::wstring_view field) const {
+        return child(field);
+    }
     template <WEBCFACE_COMPLETE(Image)>
     Image_ image(std::string_view field = "") const {
         return child(field);
@@ -322,6 +331,13 @@ struct WEBCFACE_DLL Field : public FieldBase {
      */
     template <WEBCFACE_COMPLETE(RobotModel)>
     std::vector<RobotModel_> robotModelEntries() const;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」で公開されているplotのリストを返す。
+     * \since ver2.8
+     * \sa childrenRecurse()
+     */
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::vector<Plot_> plotEntries() const;
     /*!
      * \brief 「(thisの名前).(追加の名前)」で公開されているfuncのリストを返す。
      * \since ver1.6
