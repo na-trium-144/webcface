@@ -1,9 +1,9 @@
 [wrap-git]
 url = https://github.com/gabime/spdlog.git
-revision = v1.15.0
+revision = v1.15.3
 depth = 1
 patch_directory = spdlog
-# meson.build copied from wrapdb 1.15.0-1 and modified
+# meson.build copied from wrapdb 1.15.3-2 and modified
 
 [provide]
 spdlog = spdlog_dep
