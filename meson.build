@@ -579,21 +579,21 @@ if build_server
 
   crow_dep = dependency('Crow')
   if crow_dep.type_name() != 'internal'
-    crow_unix_socket_support_test = cxx.compiles('''
+    crow_local_socket_support_test = cxx.compiles('''
       #include <crow.h>
       int main(){
           crow::SimpleApp app;
           CROW_ROUTE(app, "/")([](){
               return "Hello world";
           });
-          app.unix_path("/tmp/test.sock").multithreaded().run();
+          app.local_socket_path("/tmp/test.sock").multithreaded().run();
       }
       ''',
       dependencies: [crow_dep],
-      name: 'crow_unix_socket_support_test',
+      name: 'crow_local_socket_support_test',
     )
-    if not crow_unix_socket_support_test
-      error('The installed Crow has no unix socket support, so WebCFace cannot use it. ' + \
+    if not crow_local_socket_support_test
+      error('The installed Crow has no local socket support, so WebCFace cannot use it. ' + \
         'Set "--force-fallback-for=Crow".',
       )
     endif

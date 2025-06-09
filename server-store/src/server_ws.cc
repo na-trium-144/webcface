@@ -75,7 +75,7 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
         if (unix_path == nullptr) {
             crow_app->port(port);
         } else {
-            crow_app->unix_path(unix_path);
+            crow_app->local_socket_path(unix_path);
         }
         crow_app->loglevel(crow::LogLevel::Warning);
 
