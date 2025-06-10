@@ -95,8 +95,9 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
                 on_open(&conn, conn.get_remote_ip().c_str());
             })
             .onclose([on_close](crow::websocket::connection &conn,
-                                const std::string &reason) {
-                on_close(&conn, reason.c_str());
+                                const std::string &reason,
+                                std::uint16_t status) {
+                on_close(&conn, reason.c_str(), status);
             })
             .onmessage([on_message](crow::websocket::connection &conn,
                                     const std::string &data,

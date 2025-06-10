@@ -86,7 +86,7 @@ DummyServer::DummyServer(bool use_unix)
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
               })
-              .onclose([&](crow::websocket::connection &, const std::string &) {
+              .onclose([&](crow::websocket::connection &, const std::string &, std::uint16_t) {
                   std::lock_guard lock(server_m);
                   connPtr = nullptr;
                   dummy_logger->info("ws_close");

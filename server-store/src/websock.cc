@@ -54,8 +54,7 @@ void Server::pingThreadMain() {
             }
         });
         store->ping_status = new_ping_status;
-        auto msg =
-            message::PingStatus{{}, store->ping_status};
+        auto msg = message::PingStatus{{}, store->ping_status};
         store->forEach([&](auto cd) {
             cd->sendPing();
             if (cd->ping_status_req) {
@@ -149,8 +148,11 @@ Server::Server(std::uint16_t port, int level, int keep_log,
         store->newClient(conn, ip, sink,
                          static_cast<spdlog::level::level_enum>(level));
     };
-    auto close_callback = [this](void *conn, const char * /*reason*/) {
+    auto close_callback = [this, logger](void *conn, const char *reason,
+                                         std::uint16_t status) {
         std::lock_guard lock(server_mtx);
+        logger->info("websocket connection closed with status {}, reason: {}",
+                     status, reason);
         store->removeClient(conn);
     };
     auto message_callback = [this](void *conn, const char *data,
