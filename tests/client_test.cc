@@ -50,7 +50,7 @@ TEST_F(ClientTest, connectionByWait) {
         wait();
     }
     EXPECT_EQ(callback_called, 0);
-    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    dummy_s->waitRecv<message::SyncInit>([&](const auto &) {});
     EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
               std::future_status::ready);
     EXPECT_EQ(callback_called, 0);
@@ -78,7 +78,7 @@ TEST_F(ClientTest, noAutoReconnect) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    dummy_s->waitRecv<message::SyncInit>([&](const auto &) {});
     dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
     t.join();
     EXPECT_TRUE(dummy_s->connected());
@@ -267,7 +267,7 @@ TEST_F(ClientTest, ping) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    dummy_s->waitRecv<message::SyncInit>([&](const auto &) {});
     dummy_s->send(message::SyncInitEnd{{}, "", "", 42, ""});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Ping{});

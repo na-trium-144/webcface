@@ -46,7 +46,7 @@ void Server::pingThreadMain() {
         }
         auto new_ping_status =
             std::make_shared<std::unordered_map<unsigned int, int>>();
-        store->forEach([&](auto cd) {
+        store->forEach([&](const auto &cd) {
             if (cd->last_ping_duration) {
                 new_ping_status->emplace(
                     cd->member_id,
@@ -56,7 +56,7 @@ void Server::pingThreadMain() {
         store->ping_status = new_ping_status;
         auto msg =
             message::PingStatus{{}, store->ping_status};
-        store->forEach([&](auto cd) {
+        store->forEach([&](const auto &cd) {
             cd->sendPing();
             if (cd->ping_status_req) {
                 cd->send(msg);

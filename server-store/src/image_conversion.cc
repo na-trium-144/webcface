@@ -38,7 +38,7 @@ void MemberData::imageConvertThreadMain(const SharedString &member,
     while (true) {
         store->findAndDo(
             member,
-            [&](auto cd) {
+            [&](const auto &cd) {
                 while (!cd->closing.load() && !this->closing.load()) {
                     message::ImageFrame img;
                     {
