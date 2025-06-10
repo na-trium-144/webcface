@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/na-trium-144/Crow.git
-revision = 9976407b1c6134b7da0917c56d9d0786a7644cda
+revision = 27b257766929cf3bb3d116559a2e87c263856c61
 depth = 1
 patch_directory = crow
 
