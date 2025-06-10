@@ -11,17 +11,18 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        clang: [7, 13, 15, 17]
+        clang: [7, 20, 14, 18]
         include:
-        - os: ubuntu-20.04
-          clang: 7
-        - os: ubuntu-20.04
-          clang: 13
+        # https://github.com/KyleMayes/install-llvm-action/blob/master/assets.json の最新と最古
         - os: ubuntu-22.04
-          clang: 15
+          clang: 7
         - os: ubuntu-24.04
-          clang: 17
-
+          clang: 20
+        # https://pkgs.org/download/clang にあわせる
+        - os: ubuntu-22.04
+          clang: 14
+        - os: ubuntu-24.04
+          clang: 18
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
@@ -38,7 +39,7 @@ jobs:
     - name: Install meson
       run: pip install meson || pip install --break-system-packages meson
     - name: Install clang
-      uses: KyleMayes/install-llvm-action@v1
+      uses: KyleMayes/install-llvm-action@master
       with:
         version: "${{matrix.clang}}"
     - name: Setup Meson
@@ -56,7 +57,7 @@ jobs:
     - name: Test
       run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
     - name: clang-tidy
-      if: matrix.clang == '17' && matrix.dep == 'apt'
+      if: matrix.clang == '20' && matrix.dep == 'apt'
       run: python3 scripts/clang-tidy.py 4
     # - name: clang-format-check
     #   if: matrix.clang == '17' && matrix.dep == 'apt'
