@@ -21,7 +21,8 @@ jobs:
         # https://pkgs.org/download/clang にあわせる
         - os: ubuntu-22.04
           clang: 14
-        - os: ubuntu-24.04
+        - os: ubuntu-22.04
+        # - os: ubuntu-24.04  -> libtinfo.so.5: no such file or directory
           clang: 18
     runs-on: ${{matrix.os}}
     steps:
