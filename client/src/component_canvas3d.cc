@@ -33,11 +33,14 @@ TemporalCanvas3DComponent::TemporalCanvas3DComponent(
 }
 TemporalCanvas3DComponent &
 TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
-    msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
-        *other.msg_data);
+    if (this != &other && other.msg_data) {
+        msg_data = std::make_unique<internal::TemporalCanvas3DComponentData>(
+            *other.msg_data);
+    }
     return *this;
 }
-TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept {}
+// todo: なぜviewとcanvas2dにはmoveコンストラクタが(=default で)用意されているのにcanvas3dには無い?
+TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept = default;
 
 void Canvas3DComponent::checkData() const {
     if (!this->msg_data) {
