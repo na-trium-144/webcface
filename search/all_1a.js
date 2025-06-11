@@ -65,7 +65,7 @@ var searchData=
   ['robot_5flink_5finternal_2eh_62',['robot_link_internal.h',['../robot__link__internal_8h.html',1,'']]],
   ['robot_5fmodel_63',['robot_model',['../namespacewebcface.html#ae4f79363f6fbf146d1a71f07a2e42155a62f0410e1f33e82ebb526dac91059087',1,'webcface::robot_model'],['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1f82b99b22bbc3a04f791f54c6cce572',1,'webcface::message::MessageKind::robot_model'],['../structwebcface_1_1server_1_1MemberData.html#adc137b491e9423dc3d488276ef9bdbc2',1,'webcface::server::MemberData::robot_model']]],
   ['robot_5fmodel_2ecc_64',['robot_model.cc',['../robot__model_8cc.html',1,'']]],
-  ['robot_5fmodel_2eh_65',['robot_model.h',['../client_2include_2webcface_2robot__model_8h.html',1,'(Global Namespace)'],['../common_2include_2webcface_2common_2internal_2message_2robot__model_8h.html',1,'(Global Namespace)']]],
+  ['robot_5fmodel_2eh_65',['robot_model.h',['../common_2include_2webcface_2common_2internal_2message_2robot__model_8h.html',1,'(Global Namespace)'],['../client_2include_2webcface_2robot__model_8h.html',1,'(Global Namespace)']]],
   ['robot_5fmodel_5fchange_5fevent_66',['robot_model_change_event',['../structwebcface_1_1internal_1_1ClientData.html#a52470b62d2d55024af02cdfd10888ea7',1,'webcface::internal::ClientData']]],
   ['robot_5fmodel_5fentry_5fevent_67',['robot_model_entry_event',['../structwebcface_1_1internal_1_1ClientData.html#ad17c4c26b9f0b4fc99691ed18d958caa',1,'webcface::internal::ClientData']]],
   ['robot_5fmodel_5freq_68',['robot_model_req',['../structwebcface_1_1server_1_1MemberData.html#ac48028f9cdd92df09680d1a55ef2c1e1',1,'webcface::server::MemberData']]],
