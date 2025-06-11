@@ -31,19 +31,17 @@ TemporalCanvas2DComponent::TemporalCanvas2DComponent(
 }
 TemporalCanvas2DComponent &
 TemporalCanvas2DComponent::operator=(const TemporalCanvas2DComponent &other) {
-    msg_data = std::make_unique<internal::TemporalCanvas2DComponentData>(
-        *other.msg_data);
+    if (this != &other && other.msg_data) {
+        msg_data = std::make_unique<internal::TemporalCanvas2DComponentData>(
+            *other.msg_data);
+    }
     return *this;
 }
 TemporalCanvas2DComponent::TemporalCanvas2DComponent(
-    TemporalCanvas2DComponent &&other) noexcept
-    : msg_data(std::move(other.msg_data)) {}
+    TemporalCanvas2DComponent &&other) noexcept = default;
 TemporalCanvas2DComponent &TemporalCanvas2DComponent::operator=(
-    TemporalCanvas2DComponent &&other) noexcept {
-    msg_data = std::move(other.msg_data);
-    return *this;
-}
-TemporalCanvas2DComponent::~TemporalCanvas2DComponent() noexcept {}
+    TemporalCanvas2DComponent &&other) noexcept = default;
+TemporalCanvas2DComponent::~TemporalCanvas2DComponent() noexcept = default;
 
 void Canvas2DComponent::checkData() const {
     if (!this->msg_data) {
