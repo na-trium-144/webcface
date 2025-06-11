@@ -58,7 +58,7 @@ TEST_F(ServerTest, sync) {
         EXPECT_FALSE(obj.hostname.empty());
     });
     dummy_c2->recv<message::SyncInit>(
-        [&](auto) { ADD_FAILURE() << "should not receive syncinit"; },
+        [&](const auto &) { ADD_FAILURE() << "should not receive syncinit"; },
         [&]() {});
 
     dummy_c3->send(message::SyncInit{{}, "c3"_ss, 0, "a", "1", ""});

@@ -35,7 +35,7 @@ void MemberData::onClose() {
     logger->info("connection closed");
     closing.store(true);
     for (const auto &pm : pending_calls) {
-        store->findAndDo(pm.first, [&](auto cd) {
+        store->findAndDo(pm.first, [&](const auto &cd) {
             for (const auto &pi : pm.second) {
                 switch (pi.second) {
                 case 2:
@@ -65,7 +65,7 @@ void MemberData::onClose() {
         std::lock_guard lock(this->image_m);
         this->image_cv.notify_all();
     }
-    store->forEach([&](auto cd) {
+    store->forEach([&](const auto &cd) {
         cd->send(message::Closed{{}, this->member_id});
         {
             std::lock_guard lock_cd(cd->image_m);
@@ -209,14 +209,14 @@ void MemberData::onRecv(const std::string &message) {
                     this->member_id, member_id_before);
                 this->logger->info("successfully connected and initialized.");
                 // 全クライアントに新しいMemberを通知
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->member_id != this->member_id) {
                         cd->pack(v);
                     }
                 });
             }
             // 逆に新しいMemberに他の全Memberのentryを通知
-            store->forEachWithName([&](auto cd) {
+            store->forEachWithName([&](const auto &cd) {
                 if (cd->member_id != this->member_id) {
                     this->pack(cd->init_data);
 
@@ -309,7 +309,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             v.member_id = this->member_id;
             // 1つ以上リクエストしているクライアントにはsyncの情報を流す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 if (cd->hasReq(this->name)) {
                     cd->pack(v);
                 }
@@ -323,7 +323,7 @@ void MemberData::onRecv(const std::string &message) {
             // そのままターゲットのクライアントに送る
             store->findConnectedAndDo(
                 v.target_member_id,
-                [&](auto cd) {
+                [&](const auto &cd) {
                     cd->pack(v);
                     cd->pending_calls[this->member_id][v.caller_id] = 2;
                 },
@@ -341,7 +341,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             this->pending_calls[v.caller_member_id][v.caller_id] = 1;
             // そのままcallerに送る
-            store->findAndDo(v.caller_member_id, [&](auto cd) { cd->pack(v); });
+            store->findAndDo(v.caller_member_id, [&](const auto &cd) { cd->pack(v); });
             break;
         }
         case MessageKind::call_result: {
@@ -349,7 +349,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             this->pending_calls[v.caller_member_id][v.caller_id] = 0;
             // そのままcallerに送る
-            store->findAndDo(v.caller_member_id, [&](auto cd) { cd->pack(v); });
+            store->findAndDo(v.caller_member_id, [&](const auto &cd) { cd->pack(v); });
             break;
         }
         case MessageKind::value: {
@@ -357,7 +357,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->value.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::Value>{
@@ -367,7 +367,7 @@ void MemberData::onRecv(const std::string &message) {
             }
             this->value[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 auto req_field =
                     findReqField(cd->value_req, this->name, v.field);
                 auto &req_id = req_field.first;
@@ -384,7 +384,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->text.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::Text>{
@@ -394,7 +394,7 @@ void MemberData::onRecv(const std::string &message) {
             }
             this->text[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 auto req_field =
                     findReqField(cd->text_req, this->name, v.field);
                 auto &req_id = req_field.first;
@@ -411,7 +411,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->robot_model.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
                                  webcface::message::RobotModel>{
@@ -421,7 +421,7 @@ void MemberData::onRecv(const std::string &message) {
             }
             this->robot_model[v.field] = v.data;
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 auto req_field =
                     findReqField(cd->robot_model_req, this->name, v.field);
                 auto &req_id = req_field.first;
@@ -439,7 +439,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::View>{
@@ -476,7 +476,7 @@ void MemberData::onRecv(const std::string &message) {
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->view_req, this->name, v.field);
@@ -512,7 +512,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::View>{
@@ -543,7 +543,7 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff[id] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->view_req, this->name, v.field);
@@ -576,7 +576,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
                                  webcface::message::Canvas3D>{
@@ -616,7 +616,7 @@ void MemberData::onRecv(const std::string &message) {
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->canvas3d_req, this->name, v.field);
@@ -652,7 +652,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
                                  webcface::message::Canvas3D>{
@@ -688,7 +688,7 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff[id] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->canvas3d_req, this->name, v.field);
@@ -721,7 +721,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->canvas2d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
                                  webcface::message::Canvas2D>{
@@ -763,7 +763,7 @@ void MemberData::onRecv(const std::string &message) {
                 }
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->canvas2d_req, this->name, v.field);
@@ -799,7 +799,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->canvas2d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<
                                  webcface::message::Canvas2D>{
@@ -835,7 +835,7 @@ void MemberData::onRecv(const std::string &message) {
                 new_diff[id] = d.second;
             }
             // このvalueをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 {
                     auto req_field =
                         findReqField(cd->canvas2d_req, this->name, v.field);
@@ -868,7 +868,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", v);
             if (!this->image.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(
                             webcface::message::Entry<webcface::message::Image>{
@@ -879,14 +879,14 @@ void MemberData::onRecv(const std::string &message) {
             // このimageをsubscribeしてるところに送り返す
             {
                 std::vector<std::unique_ptr<std::lock_guard<std::mutex>>> locks;
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     locks.emplace_back(
                         std::make_unique<std::lock_guard<std::mutex>>(
                             cd->image_m));
                 });
                 this->image[v.field] = v;
                 this->image_changed[v.field]++;
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->image_req.count(this->name)) {
                         cd->image_cv.notify_all();
                     }
@@ -925,7 +925,7 @@ void MemberData::onRecv(const std::string &message) {
                     log_data->pop_front();
                 }
                 this->log.emplace(field, log_data);
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->name != this->name) {
                         cd->pack(webcface::message::Entry<message::Log>{
                             {}, this->member_id, field});
@@ -958,7 +958,7 @@ void MemberData::onRecv(const std::string &message) {
                 }
             }
             // このlogをsubscribeしてるところに送り返す
-            store->forEach([&](auto cd) {
+            store->forEach([&](const auto &cd) {
                 auto req_field = findReqField(cd->log_req, this->name, field);
                 auto &req_id = req_field.first;
                 auto &sub_field = req_field.second;
@@ -978,7 +978,7 @@ void MemberData::onRecv(const std::string &message) {
             v.member_id = this->member_id;
             if (!this->func.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
-                store->forEach([&](auto cd) {
+                store->forEach([&](const auto &cd) {
                     if (cd->member_id != this->member_id) {
                         cd->pack(v);
                     }
@@ -992,7 +992,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::Value> *>(obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1023,7 +1023,7 @@ void MemberData::onRecv(const std::string &message) {
                     obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1054,7 +1054,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1085,7 +1085,7 @@ void MemberData::onRecv(const std::string &message) {
                     obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1117,7 +1117,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1158,7 +1158,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1190,7 +1190,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1232,7 +1232,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1265,7 +1265,7 @@ void MemberData::onRecv(const std::string &message) {
                 obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
                     this->pack(webcface::message::Sync{cd->member_id,
                                                        cd->last_sync_time});
@@ -1329,7 +1329,7 @@ void MemberData::onRecv(const std::string &message) {
                     obj.get());
             logger->debug("received {}", s);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 // if (!this->hasReq(s.member)) {
                 //     this->pack(webcface::message::Sync{cd->member_id,
                 //                                        cd->last_sync_time});
@@ -1360,7 +1360,7 @@ void MemberData::onRecv(const std::string &message) {
             logger->debug("received {}", s);
             this->log_req_default.insert(s.member);
             // 指定した値を返す
-            store->findAndDo(s.member, [&](auto cd) {
+            store->findAndDo(s.member, [&](const auto &cd) {
                 if (cd->log.count(message::Log::defaultLogName())) {
                     auto log_data = cd->log.at(message::Log::defaultLogName());
                     this->pack(

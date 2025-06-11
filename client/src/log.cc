@@ -45,13 +45,13 @@ template <typename CharT>
 BasicLoggerBuf<CharT>::BasicLoggerBuf(internal::ClientData *data_p,
                                       const SharedString &field)
     : std::basic_streambuf<CharT>(), data_p(data_p), field(field) {
-    this->setp(buf, buf + sizeof(buf));
+    this->setp(buf, buf + buf_size);
 }
 template <typename CharT>
 typename BasicLoggerBuf<CharT>::int_type
 BasicLoggerBuf<CharT>::overflow(int_type c) {
     overflow_buf.append(buf, this->pptr() - this->pbase());
-    this->setp(buf, buf + sizeof(buf));
+    this->setp(buf, buf + buf_size);
     if (c != traits_type::eof()) {
         this->sputc(static_cast<char_type>(c));
     }
@@ -80,7 +80,7 @@ int BasicLoggerBuf<CharT>::sync() {
         std::fputc('\n', stderr);
         overflow_buf = overflow_buf.substr(n + 1);
     }
-    this->setp(buf, buf + sizeof(buf));
+    this->setp(buf, buf + buf_size);
     return 0;
 }
 template class BasicLoggerBuf<char>;

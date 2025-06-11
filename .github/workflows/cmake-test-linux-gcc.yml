@@ -11,11 +11,11 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        gcc_ver: [7, 9, 11, 13, 14]
+        gcc_ver: [9, 11, 13, 14]
         include:
-        - os: ubuntu-20.04
-          gcc_ver: 7
-        - os: ubuntu-20.04
+        # - os: ubuntu-20.04
+        #   gcc_ver: 7
+        - os: ubuntu-22.04
           gcc_ver: 9
         - os: ubuntu-22.04
           gcc_ver: 11
@@ -24,7 +24,7 @@ jobs:
         - os: ubuntu-24.04
           gcc_ver: 14
         - dep: static
-          os: ubuntu-20.04
+          os: ubuntu-22.04
           gcc_ver: 9
     runs-on: ${{matrix.os}}
     steps:

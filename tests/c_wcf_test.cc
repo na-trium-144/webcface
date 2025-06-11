@@ -85,7 +85,7 @@ TEST_F(CClientTest, connectionByWait) {
     while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
         wait();
     }
-    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    dummy_s->waitRecv<message::SyncInit>([&](const auto &) {});
     EXPECT_NE(f.wait_for(std::chrono::milliseconds(0)),
               std::future_status::ready);
     dummy_s->send(message::SyncInitEnd{{}, "", "", 0, ""});
@@ -135,7 +135,7 @@ TEST_F(CClientTest, serverVersion) {
     while (!dummy_s->connected() || !wcfIsConnected(wcli_)) {
         wait();
     }
-    dummy_s->waitRecv<message::SyncInit>([&](auto) {});
+    dummy_s->waitRecv<message::SyncInit>([&](const auto &) {});
     dummy_s->send(message::SyncInitEnd{{}, "a", "1", 0, "b"});
     wait();
     using namespace std::string_literals;
