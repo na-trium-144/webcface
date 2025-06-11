@@ -521,11 +521,10 @@ utf8cpp_dep = dependency('utf8cpp')
 # curlはvisibilityがhiddenになっている
 curl_dep = dependency('libcurl', version: '>=7.86.0')
 if curl_dep.type_name() != 'internal'
-  if host_machine.system() == 'darwin' and \
-      curl_dep.version().version_compare('>=8.10.0') and \
+  if curl_dep.version().version_compare('>=8.10.0') and \
       curl_dep.version().version_compare('<8.12.0')
     # https://github.com/curl/curl/issues/15865
-    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug on MacOS. ' +
+    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug. ' +
       'Use other versions or set "--force-fallback-for=libcurl".',
     )
   endif
