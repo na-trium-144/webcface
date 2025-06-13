@@ -52,9 +52,11 @@ jobs:
         arch: ${{matrix.devcmd}}
 
     - name: Setup Meson
+      # meson1.8のバグで、subprojectのbuildtypeも指定しないといけない
       run: >
         meson setup build
         --buildtype=debug
+        -Dglib:buildtype=debug -Dlibffi:buildtype=debug -Dproxy-libintl:buildtype=debug -Dlibvips:buildtype=debug
         -Dtest_wait=1000
         -Ddefault_library=${{matrix.shared_flag}}
         --prefix=${{github.workspace}}/build/install
