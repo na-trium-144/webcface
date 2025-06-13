@@ -51,7 +51,7 @@ MinGWは MSYS2 の UCRT64 環境
 またfmt>=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。
 * libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。
 * crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。
-    * 現在はこの機能はリリースされておらず、 na-trium-144/Crow のフォークの [5f5372e](https://github.com/na-trium-144/Crow/commit/5f5372ed80860dfcef788972bb0fd3972f715842) のコミットでしかビルドできません。
+    * 現在はこの機能はリリースされておらず、[PR#803](https://github.com/CrowCpp/Crow/pull/803) のコードが必要です。
 * OpenCVはインストールされていない場合でもソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。
 
 <details><summary>Ubuntu</summary>
