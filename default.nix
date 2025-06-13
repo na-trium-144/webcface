@@ -4,6 +4,8 @@
   webui_version ? "1.14.0",
 }:
 let
+  doCheckArg = doCheck;
+
   crow = pkgs.crow.overrideAttrs (oldAttrs: {
     src = pkgs.fetchFromGitHub {
       owner = "na-trium-144";
@@ -26,11 +28,22 @@ let
     propagatedBuildInputs = [ pkgs.fmt_11 ];
   });
 in
-pkgs.stdenv.mkDerivation {
+pkgs.stdenv.mkDerivation rec {
   pname = "webcface";
   version = "2.9.0";
 
-  src = ./.;
+  srcs = [
+    (builtins.path {
+      path = ./.;
+      name = pname;
+    })
+    (builtins.fetchTarball {
+      url = "https://github.com/na-trium-144/webcface-webui/releases/download/v${webui_version}/webcface-webui_${webui_version}.tar.gz";
+      sha256 = "sha256:0kvh3jszzp1jan3xxgxk81yyvqw8vgv10zrycq0ikyhmmzrsr2pq";
+      name = "webcface-webui";
+    })
+  ];
+  sourceRoot = pname;
 
   nativeBuildInputs = [
     pkgs.meson
@@ -62,10 +75,10 @@ pkgs.stdenv.mkDerivation {
   mesonFlags = ["-Ddownload_webui=disabled"]
     ++ (if doCheck then [ "-Dtests=enabled" ] else [ "-Dtests=disabled" ]);
   
-  doCheck = doCheck;
+  doCheck = doCheckArg;
 
   postInstall = ''
-    mkdir -p $out/share/webcface
-    python3 $src/scripts/fetch_webui.py ${webui_version} $out/share/webcface
+    mkdir -p $out/share/webcface/
+    cp -r ../../webcface-webui $out/share/webcface/dist
   '';
 }
