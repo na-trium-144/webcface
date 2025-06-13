@@ -3,6 +3,8 @@
 <!-- * ドキュメントやREADMEの修正等は記述しない -->
 
 ## main
+### Added
+* default.nix (#513)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed

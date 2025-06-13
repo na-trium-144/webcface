@@ -7,7 +7,7 @@ option('cv_examples', type: 'feature', value: 'auto',
 option('tests', type: 'feature', value: 'auto',
   description: 'Build tests. (auto = enabled when WebCFace is top-level.)',
 )
-option('test_wait', type: 'integer', min: 1, value: 10,
+option('test_wait', type: 'integer', min: 1, value: 100,
   description: 'Delays of wait() in tests, in milliseconds',
 )
 option('test_maxlen', type: 'integer', min: 10, value: 1000000,
