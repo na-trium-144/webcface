@@ -14,6 +14,5 @@ version.rc
 # from glib:
 /subprojects/gvdb.wrap
 /subprojects/libffi.wrap
-/subprojects/pcre2.wrap
 /subprojects/proxy-libintl.wrap
 /subprojects/sysprof.wrap
