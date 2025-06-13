@@ -1,6 +1,7 @@
 {
   pkgs ? import <nixpkgs> {},
   doCheck ? false,
+  webui_version ? "1.14.0",
 }:
 let
   crow = pkgs.crow.overrideAttrs (oldAttrs: {
@@ -36,6 +37,7 @@ pkgs.stdenv.mkDerivation {
     pkgs.ninja
     pkgs.pkg-config
     pkgs.cmake
+    pkgs.python3Minimal
   ];
   buildInputs = [
     pkgs.gcc
@@ -59,5 +61,11 @@ pkgs.stdenv.mkDerivation {
 
   mesonFlags = ["-Ddownload_webui=disabled"]
     ++ (if doCheck then [ "-Dtests=enabled" ] else [ "-Dtests=disabled" ]);
+  
   doCheck = doCheck;
+
+  postInstall = ''
+    mkdir -p $out/share/webcface
+    python3 $src/scripts/fetch_webui.py ${webui_version} $out/share/webcface
+  '';
 }
