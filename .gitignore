@@ -8,6 +8,7 @@ build*/
 version.rc
 /Testing/
 /.cache/
+/result
 /subprojects/*
 !/subprojects/packagefiles/
 !/subprojects/*.wrap
