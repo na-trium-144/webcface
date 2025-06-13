@@ -7,7 +7,7 @@ source_hash = 0f58bb95fc330c8a46eeb3df5701b0d90c9d9bfcc42bd1cd08791d12551d4400
 patch_filename = curl_8.8.0-1_patch.zip
 patch_url = https://wrapdb.mesonbuild.com/v2/curl_8.8.0-1/get_patch
 patch_hash = 477a00240fc4e85cfa632b1a9389c56d5a82c30a520da2454d9abccef7c79c82
-wrapdb_version = 8.8.0-1
+# do not update this from wrapdb, until another wrap newer than 8.12 is released
 
 [provide]
 dependency_names = libcurl

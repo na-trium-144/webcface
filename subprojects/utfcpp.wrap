@@ -1,13 +1,13 @@
 [wrap-file]
-directory = utfcpp-4.0.5
-source_url = https://github.com/nemtrif/utfcpp/archive/refs/tags/v4.0.5.tar.gz
-source_filename = utfcpp-4.0.5.tar.gz
-source_hash = ffc668a310e77607d393f3c18b32715f223da1eac4c4d6e0579a11df8e6b59cf
-patch_filename = utfcpp_4.0.5-1_patch.zip
-patch_url = https://wrapdb.mesonbuild.com/v2/utfcpp_4.0.5-1/get_patch
-patch_hash = bedf83d77b07a2fb84582722aaf748498cab0267b023ff8460dae3730a2d0819
-source_fallback_url = https://github.com/mesonbuild/wrapdb/releases/download/utfcpp_4.0.5-1/utfcpp-4.0.5.tar.gz
-wrapdb_version = 4.0.5-1
+directory = utfcpp-4.0.6
+source_url = https://github.com/nemtrif/utfcpp/archive/refs/tags/v4.0.6.tar.gz
+source_filename = utfcpp-4.0.6.tar.gz
+source_hash = 6920a6a5d6a04b9a89b2a89af7132f8acefd46e0c2a7b190350539e9213816c0
+patch_filename = utfcpp_4.0.6-1_patch.zip
+patch_url = https://wrapdb.mesonbuild.com/v2/utfcpp_4.0.6-1/get_patch
+patch_hash = 49fac3078123b02019498cb58cd6d27df789ea831400b328360cca6533c3b6af
+source_fallback_url = https://github.com/mesonbuild/wrapdb/releases/download/utfcpp_4.0.6-1/utfcpp-4.0.6.tar.gz
+wrapdb_version = 4.0.6-1
 
 [provide]
 utf8cpp = utfcpp_dep

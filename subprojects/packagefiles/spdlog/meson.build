@@ -1,7 +1,7 @@
 project(
   'spdlog',
   'cpp',
-  version: '1.15.0',
+  version: '1.15.3',
   license: 'MIT',
   meson_version: '>=0.56.0',
 )
@@ -17,15 +17,23 @@ if meson.get_compiler('cpp').get_argument_syntax() == 'msvc'
   spdlog_compile_args += '/utf-8'
 endif
 
-if meson.get_compiler('cpp').has_header_symbol('format', '__cpp_lib_format', required: get_option('std_format'))
+if meson.get_compiler('cpp').has_header_symbol(
+  'format',
+  '__cpp_lib_format',
+  required: get_option('std_format'),
+)
   spdlog_compile_args += '-DSPDLOG_USE_STD_FORMAT'
-  fmt_dep = dependency('', required: false)
+  fmt_dep = dependency(
+    '',
+    required: false,
+  )
 else
-  fmt_dep = dependency('fmt', version: '>=8.1', required: get_option('external_fmt'))
-  if fmt_dep.found()
-    spdlog_dependencies += fmt_dep
-    spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
-  endif
+  fmt_dep = dependency(
+    'fmt',
+    version: '>=11.0.0',
+  )
+  spdlog_dependencies += fmt_dep
+  spdlog_compile_args += '-DSPDLOG_FMT_EXTERNAL'
 endif
 
 if get_option('compile_library')

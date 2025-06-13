@@ -86,7 +86,7 @@ DummyServer::DummyServer(bool use_unix)
                   connPtr = &conn;
                   dummy_logger->info("ws_open");
               })
-              .onclose([&](crow::websocket::connection &, const std::string &) {
+              .onclose([&](crow::websocket::connection &, const std::string &, std::uint16_t) {
                   std::lock_guard lock(server_m);
                   connPtr = nullptr;
                   dummy_logger->info("ws_close");
@@ -105,7 +105,7 @@ DummyServer::DummyServer(bool use_unix)
           if (use_unix) {
               auto unix_path = internal::unixSocketPath(17530);
               internal::initUnixSocket(unix_path, dummy_logger);
-              server.unix_path(unix_path.string()).run();
+              server.local_socket_path(unix_path.string()).run();
           } else {
               server.port(17530).run();
           }

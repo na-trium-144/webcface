@@ -75,7 +75,7 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
         if (unix_path == nullptr) {
             crow_app->port(port);
         } else {
-            crow_app->unix_path(unix_path);
+            crow_app->local_socket_path(unix_path);
         }
         crow_app->loglevel(crow::LogLevel::Warning);
 
@@ -95,8 +95,9 @@ AppWrapper::AppWrapper(const LoggerCallback &callback, const char *static_dir_s,
                 on_open(&conn, conn.get_remote_ip().c_str());
             })
             .onclose([on_close](crow::websocket::connection &conn,
-                                const std::string &reason) {
-                on_close(&conn, reason.c_str());
+                                const std::string &reason,
+                                std::uint16_t status) {
+                on_close(&conn, reason.c_str(), status);
             })
             .onmessage([on_message](crow::websocket::connection &conn,
                                     const std::string &data,

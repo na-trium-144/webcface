@@ -14,7 +14,7 @@ using wsConnPtr = void *;
 
 using LoggerCallback = std::function<void(const char *, std::size_t, int)>;
 using OpenCallback = std::function<void(void *, const char *)>;
-using CloseCallback = std::function<void(void *, const char *)>;
+using CloseCallback = std::function<void(void *, const char *, std::uint16_t)>;
 using MessageCallback = std::function<void(void *, const char *, std::size_t)>;
 
 class AppWrapper {

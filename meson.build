@@ -19,7 +19,6 @@ project('webcface', 'c', 'cpp',
     'spdlog:tests=disabled',
     'spdlog:compile_library=true',
     'spdlog:default_library=static',
-    'spdlog:external_fmt=enabled',
     'spdlog:std_format=disabled',
     'curl:warning_level=0',
     'curl:werror=false',
@@ -522,11 +521,10 @@ utf8cpp_dep = dependency('utf8cpp')
 # curlはvisibilityがhiddenになっている
 curl_dep = dependency('libcurl', version: '>=7.86.0')
 if curl_dep.type_name() != 'internal'
-  if host_machine.system() == 'darwin' and \
-      curl_dep.version().version_compare('>=8.10.0') and \
+  if curl_dep.version().version_compare('>=8.10.0') and \
       curl_dep.version().version_compare('<8.12.0')
     # https://github.com/curl/curl/issues/15865
-    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug on MacOS. ' +
+    error('The WebSocket support in libcurl versions 8.10.0 through 8.12.0 has a bug. ' +
       'Use other versions or set "--force-fallback-for=libcurl".',
     )
   endif
@@ -579,21 +577,21 @@ if build_server
 
   crow_dep = dependency('Crow')
   if crow_dep.type_name() != 'internal'
-    crow_unix_socket_support_test = cxx.compiles('''
+    crow_local_socket_support_test = cxx.compiles('''
       #include <crow.h>
       int main(){
           crow::SimpleApp app;
           CROW_ROUTE(app, "/")([](){
               return "Hello world";
           });
-          app.unix_path("/tmp/test.sock").multithreaded().run();
+          app.local_socket_path("/tmp/test.sock").multithreaded().run();
       }
       ''',
       dependencies: [crow_dep],
-      name: 'crow_unix_socket_support_test',
+      name: 'crow_local_socket_support_test',
     )
-    if not crow_unix_socket_support_test
-      error('The installed Crow has no unix socket support, so WebCFace cannot use it. ' + \
+    if not crow_local_socket_support_test
+      error('The installed Crow has no local socket support, so WebCFace cannot use it. ' + \
         'Set "--force-fallback-for=Crow".',
       )
     endif
