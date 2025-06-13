@@ -97,7 +97,7 @@ var searchData=
   ['clientscopy_94',['clientsCopy',['../classwebcface_1_1server_1_1ServerStorage.html#a1e89320dafda1eb3b871c219c6b165e1',1,'webcface::server::ServerStorage']]],
   ['clientsendall_95',['clientSendAll',['../classwebcface_1_1server_1_1ServerStorage.html#a937b33f9efb3d5d56b0ba71669ed2d96',1,'webcface::server::ServerStorage']]],
   ['close_96',['close',['../classwebcface_1_1server_1_1AppWrapper.html#af828c35c1ad0d288176f3e82c2ab4dc9',1,'webcface::server::AppWrapper::close()'],['../structwebcface_1_1internal_1_1ClientData.html#a5ae591df94fc66ccb85cbb6565368bca',1,'webcface::internal::ClientData::close()'],['../classwebcface_1_1Client.html#a5fd80091ac52e8b1b6d74707237e08d9',1,'webcface::Client::close()'],['../namespacewebcface_1_1internal_1_1WebSocket.html#a9edb79f3cfdfb2f0d2cd1b589a930e5f',1,'webcface::internal::WebSocket::close()']]],
-  ['closecallback_97',['CloseCallback',['../namespacewebcface_1_1server.html#a5a2989f14df9001171964f8f44851ae8',1,'webcface::server']]],
+  ['closecallback_97',['CloseCallback',['../namespacewebcface_1_1server.html#a02a2b918a1c3964e1d58c688b91a85e0',1,'webcface::server']]],
   ['closed_98',['closed',['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a45ed087f4658fecf38ff1f88bbbdfc51',1,'webcface::message::MessageKind']]],
   ['closed_99',['Closed',['../structwebcface_1_1message_1_1Closed.html',1,'webcface::message']]],
   ['closing_100',['closing',['../structwebcface_1_1internal_1_1ClientData.html#ac12c0189fb9871dca59ac653ce95b4cf',1,'webcface::internal::ClientData::closing'],['../structwebcface_1_1server_1_1MemberData.html#ac12c0189fb9871dca59ac653ce95b4cf',1,'webcface::server::MemberData::closing']]],

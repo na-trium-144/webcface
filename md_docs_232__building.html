@@ -189,7 +189,7 @@ Dependencies</h2>
 <li>spdlogは <code>SPDLOG_FMT_EXTERNAL</code> が有効になっている必要があります。 またfmt&gt;=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。</li>
 <li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。</li>
 <li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。<ul>
-<li>現在はこの機能はリリースされておらず、 na-trium-144/Crow のフォークの <a href="https://github.com/na-trium-144/Crow/commit/5f5372ed80860dfcef788972bb0fd3972f715842">5f5372e</a> のコミットでしかビルドできません。</li>
+<li>現在はこの機能はリリースされておらず、<a href="https://github.com/CrowCpp/Crow/pull/803">PR#803</a> のコードが必要です。</li>
 </ul>
 </li>
 <li>OpenCVはインストールされていない場合でもソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。</li>
@@ -348,7 +348,7 @@ tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Wed Jun 11 2025 04:28:31 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Jun 13 2025 03:12:02 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
