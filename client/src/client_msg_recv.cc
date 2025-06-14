@@ -8,6 +8,7 @@
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/message/plot.h"
 #include "webcface/log.h"
 #include "webcface/member.h"
 #include "webcface/view.h"
@@ -17,6 +18,7 @@
 #include "webcface/text.h"
 #include "webcface/canvas3d.h"
 #include "webcface/canvas2d.h"
+#include "webcface/plot.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/component_internal.h"
 #include "webcface/internal/robot_link_internal.h"
@@ -25,10 +27,10 @@ WEBCFACE_NS_BEGIN
 
 /// \private
 template <typename Msg, typename T, typename S, typename E>
-static void onRecvRes(internal::ClientData *this_, const Msg &r, const T &data,
+static void onRecvRes(internal::ClientData *this_, const Msg &r, T &&data,
                       S &store, const E &event) {
     auto [member, field] = store.getReq(r.req_id, r.sub_field);
-    store.setRecv(member, field, data);
+    store.setRecv(member, field, std::forward<T>(data));
     auto cl = internal::findFromMap2(event.shared_lock().get(), member, field);
     if (cl && *cl) {
         cl->operator()(Field{this_->shared_from_this(), member, field});
@@ -136,6 +138,12 @@ void internal::ClientData::onRecv(
             }
             onRecvRes(this, r, links_data, this->robot_model_store,
                       this->robot_model_change_event);
+            break;
+        }
+        case MessageKind::plot + MessageKind::res: {
+            auto &r = *static_cast<message::Res<message::Plot> *>(obj.get());
+            onRecvRes(this, r, std::move(r.data), this->plot_store,
+                      this->plot_change_event);
             break;
         }
         case MessageKind::view + MessageKind::res: {
@@ -349,6 +357,7 @@ void internal::ClientData::onRecv(
             this->view_store.initMember(r.member_name);
             this->image_store.initMember(r.member_name);
             this->robot_model_store.initMember(r.member_name);
+            this->plot_store.initMember(r.member_name);
             this->canvas3d_store.initMember(r.member_name);
             this->canvas2d_store.initMember(r.member_name);
             this->log_store.initMember(r.member_name);
@@ -428,6 +437,12 @@ void internal::ClientData::onRecv(
                         this->robot_model_entry_event);
             break;
         }
+        case MessageKind::entry + MessageKind::plot: {
+            auto &r = *static_cast<
+                webcface::message::Entry<webcface::message::Plot> *>(obj.get());
+            onRecvEntry(this, r, this->plot_store, this->plot_entry_event);
+            break;
+        }
         case MessageKind::entry + MessageKind::image: {
             auto &r = *static_cast<
                 webcface::message::Entry<webcface::message::Image> *>(
@@ -463,6 +478,7 @@ void internal::ClientData::onRecv(
         case MessageKind::canvas3d:
         case MessageKind::canvas2d:
         case MessageKind::robot_model:
+        case MessageKind::plot:
         case MessageKind::image:
         case MessageKind::value + MessageKind::req:
         case MessageKind::text + MessageKind::req:
@@ -470,6 +486,7 @@ void internal::ClientData::onRecv(
         case MessageKind::canvas3d + MessageKind::req:
         case MessageKind::canvas2d + MessageKind::req:
         case MessageKind::robot_model + MessageKind::req:
+        case MessageKind::plot + MessageKind::req:
         case MessageKind::image + MessageKind::req:
         case MessageKind::ping_status_req:
         case MessageKind::log + MessageKind::req:

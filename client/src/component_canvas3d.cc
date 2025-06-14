@@ -1,4 +1,5 @@
 #include "webcface/robot_model.h"
+#include "webcface/plot.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/internal/component_internal.h"
 
@@ -134,6 +135,40 @@ TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
     msg_data->data_w = static_cast<Field>(field).data_w;
     msg_data->field_member = static_cast<FieldBase>(field).member_;
     msg_data->field_field = static_cast<FieldBase>(field).field_;
+    return *this;
+}
+template <typename T, bool>
+std::optional<T> Canvas3DComponent::plot() const {
+    checkData();
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type == static_cast<int>(Canvas3DComponentType::plot)) {
+        return Field{data_w, *msg_data->field_member, *msg_data->field_field};
+    } else {
+        return std::nullopt;
+    }
+}
+template WEBCFACE_DLL std::optional<Plot>
+Canvas3DComponent::plot<Plot, true>() const;
+TemporalCanvas3DComponent &
+TemporalCanvas3DComponent::plot(const Plot &field) & {
+    msg_data->data_w = static_cast<Field>(field).data_w;
+    msg_data->field_member = static_cast<FieldBase>(field).member_;
+    msg_data->field_field = static_cast<FieldBase>(field).field_;
+    return *this;
+}
+
+double Canvas3DComponent::scaleX() const {
+    checkData();
+    return msg_data->scale_x;
+}
+double Canvas3DComponent::scaleY() const {
+    checkData();
+    return msg_data->scale_y;
+}
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::scale(double scale_x,
+                                                            double scale_y) & {
+    msg_data->scale_x = scale_x;
+    msg_data->scale_y = scale_y;
     return *this;
 }
 

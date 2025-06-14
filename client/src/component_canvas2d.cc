@@ -1,6 +1,7 @@
 #include "webcface/component_canvas2d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/component_internal.h"
+#include "webcface/plot.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -195,5 +196,39 @@ TemporalCanvas2DComponent &TemporalCanvas2DComponent::onClick(
     return *this;
 }
 
+template <typename T, bool>
+std::optional<T> Canvas2DComponent::plot() const {
+    checkData();
+    if (msg_data->field_member && msg_data->field_field &&
+        msg_data->type == static_cast<int>(Canvas2DComponentType::plot)) {
+        return Field{data_w, *msg_data->field_member, *msg_data->field_field};
+    } else {
+        return std::nullopt;
+    }
+}
+template WEBCFACE_DLL std::optional<Plot>
+Canvas2DComponent::plot<Plot, true>() const;
+TemporalCanvas2DComponent &
+TemporalCanvas2DComponent::plot(const Plot &field) & {
+    msg_data->data_w = static_cast<Field>(field).data_w;
+    msg_data->field_member = static_cast<FieldBase>(field).member_;
+    msg_data->field_field = static_cast<FieldBase>(field).field_;
+    return *this;
+}
+
+double Canvas2DComponent::scaleX() const {
+    checkData();
+    return msg_data->scale_x;
+}
+double Canvas2DComponent::scaleY() const {
+    checkData();
+    return msg_data->scale_y;
+}
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::scale(double scale_x,
+                                                            double scale_y) & {
+    msg_data->scale_x = scale_x;
+    msg_data->scale_y = scale_y;
+    return *this;
+}
 
 WEBCFACE_NS_END

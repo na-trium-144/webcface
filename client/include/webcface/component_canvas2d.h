@@ -22,6 +22,7 @@ struct TemporalCanvas2DComponentData;
 enum class Canvas2DComponentType {
     geometry = 0,
     text = 3,
+    plot = 4,
 };
 /*!
  * \brief Canvas2Dの各要素を表すクラス。
@@ -133,6 +134,22 @@ class WEBCFACE_DLL Canvas2DComponent {
      */
     template <WEBCFACE_COMPLETE(Func)>
     std::optional<Func_> onClick() const;
+    /*!
+     * \brief Plotを取得
+     * \since ver2.6
+     */
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::optional<Plot_> plot() const;
+    /*!
+     * \brief Plotの表示サイズ
+     * \since ver2.6
+     */
+    double scaleX() const;
+    /*!
+     * \brief Plotの表示サイズ
+     * \since ver2.6
+     */
+    double scaleY() const;
 };
 extern template std::optional<Func> Canvas2DComponent::onClick<Func, true>() const;
 
@@ -353,6 +370,25 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
 
     TemporalCanvas2DComponent &onClick(
         const std::shared_ptr<std::function<void WEBCFACE_CALL_FP()>> &func);
+
+    /*!
+     * \since ver2.6
+     */
+    TemporalCanvas2DComponent &plot(const Plot &plot) &;
+    TemporalCanvas2DComponent &&plot(const Plot &plot) && {
+        this->plot(plot);
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief Plotの表示サイズを指定
+     * \since ver2.6
+     */
+    TemporalCanvas2DComponent &scale(double scale_x, double scale_y) &;
+    TemporalCanvas2DComponent &&scale(double scale_x, double scale_y) && {
+        this->scale(scale_x, scale_y);
+        return std::move(*this);
+    }
 };
 
 WEBCFACE_NS_END

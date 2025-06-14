@@ -129,6 +129,9 @@ bool MemberData::hasReq(const SharedString &member) {
                        [](const auto &it) { return it.second > 0; }) ||
            std::any_of(this->canvas2d_old_req[member].begin(),
                        this->canvas2d_old_req[member].end(),
+                       [](const auto &it) { return it.second > 0; }) ||
+           std::any_of(this->plot_req[member].begin(),
+                       this->plot_req[member].end(),
                        [](const auto &it) { return it.second > 0; });
 }
 
@@ -276,6 +279,15 @@ void MemberData::onRecv(const std::string &message) {
                             this->pack(webcface::message::Entry<
                                        webcface::message::Image>{
                                 {}, cd->member_id, f.first});
+                        }
+                    }
+                    for (const auto &f : cd->plot) {
+                        if (!f.first.startsWith(field_separator)) {
+                            this->pack(webcface::message::Entry<
+                                       webcface::message::Plot>{
+                                {}, cd->member_id, f.first});
+                            logger->trace("send plot_entry {} of member {}",
+                                          f.first.decode(), cd->member_id);
                         }
                     }
                     for (const auto &f : cd->log) {
@@ -430,6 +442,37 @@ void MemberData::onRecv(const std::string &message) {
                     cd->pack(
                         webcface::message::Res<webcface::message::RobotModel>(
                             req_id, sub_field, v.data));
+                }
+            });
+            break;
+        }
+        case MessageKind::plot: {
+            auto &v = *static_cast<webcface::message::Plot *>(obj.get());
+            logger->debug("plot {}", v.field.decode());
+            if (!this->plot.count(v.field) &&
+                !v.field.startsWith(field_separator)) {
+                store->forEach([&](auto cd) {
+                    if (cd->name != this->name) {
+                        cd->pack(
+                            webcface::message::Entry<webcface::message::Plot>{
+                                {}, this->member_id, v.field});
+                        cd->logger->trace("send plot_entry {} of member {}",
+                                          v.field.decode(), this->member_id);
+                    }
+                });
+            }
+            this->plot[v.field] = v.data;
+            // このvalueをsubscribeしてるところに送り返す
+            store->forEach([&](auto cd) {
+                auto req_field =
+                    findReqField(cd->plot_req, this->name, v.field);
+                auto &req_id = req_field.first;
+                auto &sub_field = req_field.second;
+                if (req_id > 0) {
+                    cd->pack(webcface::message::Res<webcface::message::Plot>(
+                        req_id, sub_field, v.data));
+                    cd->logger->trace("send plot_res, req_id={} + '{}'", req_id,
+                                      sub_field.decode());
                 }
             });
             break;
@@ -1079,6 +1122,41 @@ void MemberData::onRecv(const std::string &message) {
             robot_model_req[s.member][s.field] = s.req_id;
             break;
         }
+        case MessageKind::req + MessageKind::plot: {
+            auto &s =
+                *static_cast<webcface::message::Req<webcface::message::Plot> *>(
+                    obj.get());
+            logger->debug("request plot ({}): {} from {}", s.req_id,
+                          s.field.decode(), s.member.decode());
+            // 指定した値を返す
+            store->findAndDo(s.member, [&](auto cd) {
+                if (!this->hasReq(s.member)) {
+                    this->pack(webcface::message::Sync{cd->member_id,
+                                                       cd->last_sync_time});
+                    logger->trace("send sync {}", this->member_id);
+                }
+                for (const auto &it : cd->plot) {
+                    if (it.first == s.field ||
+                        it.first.startsWith(s.field.u8String() +
+                                            field_separator)) {
+                        SharedString sub_field;
+                        if (it.first == s.field) {
+                        } else {
+                            sub_field = SharedString::fromU8String(
+                                it.first.u8String().substr(
+                                    s.field.u8String().size() + 1));
+                        }
+                        this->pack(
+                            webcface::message::Res<webcface::message::Plot>{
+                                s.req_id, sub_field, it.second});
+                        logger->trace("send plot_res, req_id={} + '{}'",
+                                      s.req_id, sub_field.decode());
+                    }
+                }
+            });
+            plot_req[s.member][s.field] = s.req_id;
+            break;
+        }
         case MessageKind::req + MessageKind::view: {
             auto &s =
                 *static_cast<webcface::message::Req<webcface::message::View> *>(
@@ -1375,6 +1453,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::res + MessageKind::text:
         case MessageKind::entry + MessageKind::robot_model:
         case MessageKind::res + MessageKind::robot_model:
+        case MessageKind::entry + MessageKind::plot:
+        case MessageKind::res + MessageKind::plot:
         case MessageKind::entry + MessageKind::view:
         case MessageKind::res + MessageKind::view:
         case MessageKind::entry + MessageKind::view_old:

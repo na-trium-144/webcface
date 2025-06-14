@@ -22,6 +22,7 @@ webcface_client_src = [
   'src/canvas2d.cc',
   'src/value.cc',
   'src/view.cc',
+  'src/plot.cc',
   'src/image.cc',
   'src/image_frame.cc',
   'src/version.cc',

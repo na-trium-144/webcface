@@ -63,6 +63,7 @@ class WEBCFACE_DLL Value : protected Field {
     Value(const Field &base, const SharedString &field)
         : Value(Field{base, field}) {}
 
+    friend class PlotSeries;
     using Field::lastName;
     using Field::member;
     using Field::name;

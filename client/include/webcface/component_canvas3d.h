@@ -21,6 +21,7 @@ enum class Canvas3DComponentType {
     geometry = 0,
     robot_model = 1,
     // scatter = 2,
+    plot = 4,
 };
 
 /*!
@@ -107,6 +108,22 @@ class WEBCFACE_DLL Canvas3DComponent {
      */
     template <WEBCFACE_COMPLETE(RobotModel)>
     std::optional<RobotModel_> robotModel() const;
+    /*!
+     * \brief Plotを取得
+     * \since ver2.6
+     */
+    template <WEBCFACE_COMPLETE(Plot)>
+    std::optional<Plot_> plot() const;
+    /*!
+     * \brief Plotの表示サイズ
+     * \since ver2.6
+     */
+    double scaleX() const;
+    /*!
+     * \brief Plotの表示サイズ
+     * \since ver2.6
+     */
+    double scaleY() const;
 };
 extern template std::optional<RobotModel>
 Canvas3DComponent::robotModel<RobotModel, true>() const;
@@ -270,6 +287,24 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
     TemporalCanvas3DComponent &&angle(const std::wstring &joint_name,
                                       double angle) && {
         this->angle(joint_name, angle);
+        return std::move(*this);
+    }
+    /*!
+     * \since ver2.6
+     */
+    TemporalCanvas3DComponent &plot(const Plot &plot) &;
+    TemporalCanvas3DComponent &&plot(const Plot &plot) && {
+        this->plot(plot);
+        return std::move(*this);
+    }
+
+    /*!
+     * \brief Plotの表示サイズを指定
+     * \since ver2.6
+     */
+    TemporalCanvas3DComponent &scale(double scale_x, double scale_y) &;
+    TemporalCanvas3DComponent &&scale(double scale_x, double scale_y) && {
+        this->scale(scale_x, scale_y);
         return std::move(*this);
     }
 };

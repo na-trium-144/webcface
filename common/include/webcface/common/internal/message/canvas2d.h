@@ -24,6 +24,8 @@ struct Canvas2DComponentData {
     std::vector<double> properties;
     std::optional<SharedString> on_click_member, on_click_field;
     SharedString text;
+    std::optional<SharedString> field_member, field_field;
+    double scale_x = 1, scale_y = 1;
     Canvas2DComponentData() = default;
     bool operator==(const Canvas2DComponentData &other) const {
         return type == other.type && origin_pos == other.origin_pos &&
@@ -32,7 +34,9 @@ struct Canvas2DComponentData {
                geometry_type == other.geometry_type &&
                properties == other.properties &&
                on_click_member == other.on_click_member &&
-               on_click_field == other.on_click_field && text == other.text;
+               on_click_field == other.on_click_field && text == other.text &&
+               field_field == other.field_field && scale_x == other.scale_x &&
+               scale_y == other.scale_y;
     }
     bool operator!=(const Canvas2DComponentData &other) const {
         return !(*this == other);
@@ -43,7 +47,10 @@ struct Canvas2DComponentData {
                        MSGPACK_NVP("gt", geometry_type),
                        MSGPACK_NVP("gp", properties),
                        MSGPACK_NVP("L", on_click_member),
-                       MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text))
+                       MSGPACK_NVP("l", on_click_field), MSGPACK_NVP("x", text),
+                       MSGPACK_NVP("fm", field_member),
+                       MSGPACK_NVP("ff", field_field),
+                       MSGPACK_NVP("sx", scale_x), MSGPACK_NVP("sy", scale_y))
 };
 struct Canvas2DData {
     double width = 0, height = 0;

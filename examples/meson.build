@@ -3,6 +3,7 @@ example_src = [
   {'src': 'func.cc', 'libvips': false, 'cv': false},
   {'src': 'log.cc', 'libvips': false, 'cv': false},
   {'src': 'view.cc', 'libvips': false, 'cv': false},
+  {'src': 'plot.cc', 'libvips': false, 'cv': false},
   {'src': 'canvas2d.cc', 'libvips': false, 'cv': false},
   {'src': 'canvas3d.cc', 'libvips': false, 'cv': false},
   {'src': 'recv.cc', 'libvips': false, 'cv': false},
