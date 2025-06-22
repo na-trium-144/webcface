@@ -631,6 +631,7 @@ if build_tests
   gtest_dep = dependency('gtest', main: true,
     fallback: ['gtest', 'gtest_main_dep'],
   )
+  benchmark_dep = dependency('benchmark')
 endif
 
 summary('Build server',
@@ -746,6 +747,7 @@ if build_examples
 endif
 if build_tests
   subdir('tests')
+  subdir('benchmarks')
 endif
 
 headers = run_command(py,
