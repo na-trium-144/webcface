@@ -168,6 +168,7 @@ project('webcface', 'c', 'cpp',
     'libffi:default_library=static',
     'libffi:warning_level=0',
     'libffi:werror=false',
+    'google-benchmark:werror=false',
   ],
 )
 fs = import('fs')

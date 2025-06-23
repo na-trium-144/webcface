@@ -36,5 +36,8 @@ webcface_benchmark = executable('webcface-benchmark',
   dependencies: test_dependencies,
   link_with: test_link_libs,
   link_args: test_link_args,
+  cpp_args: [
+    '-DWEBCFACE_BUILDING',
+  ],
 )
 benchmark('webcface-benchmark', webcface_benchmark)
