@@ -40,10 +40,6 @@ webcface_benchmark = executable('webcface-benchmark',
     '-DWEBCFACE_BUILDING',
   ],
 )
-min_time = 5
 benchmark('webcface-benchmark', webcface_benchmark,
-  args: [
-    '--benchmark_min_time=' + min_time.to_string(),
-  ],
-  timeout: (min_time + 1) * 24,
+  timeout: 120,
 )
