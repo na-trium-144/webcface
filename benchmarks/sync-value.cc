@@ -7,7 +7,7 @@
 
 static void SyncMultipleValue(benchmark::State &state) {
     webcface::server::Server server(27530, 0);
-    webcface::Client wcli1("bench1");
+    webcface::Client wcli1("bench1", "127.0.0.1", 27530);
     wcli1.waitConnection();
     std::vector<std::string> names(state.range(0));
     for (int i = 0; i < state.range(0); i++) {

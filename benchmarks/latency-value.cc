@@ -8,7 +8,8 @@
 
 static void LatencyMultipleValue(benchmark::State &state) {
     webcface::server::Server server(27530, 0);
-    webcface::Client wcli1("bench1"), wcli2("bench2");
+    webcface::Client wcli1("bench1", "127.0.0.1", 27530),
+        wcli2("bench2", "127.0.0.1", 27530);
     wcli1.waitConnection();
     wcli2.waitConnection();
     auto bench1_recv = wcli2.member(wcli1.name());
