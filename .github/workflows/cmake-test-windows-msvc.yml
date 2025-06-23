@@ -15,16 +15,20 @@ jobs:
         shared_flag: ["shared"]
         include:
         - arch: x86
+          runner: windows-2019
           devcmd: amd64_x86
         - arch: x64
+          runner: windows-2019
           devcmd: amd64
         - arch: arm64
+          runner: windows-11-arm
           devcmd: amd64_arm64
         - arch: x64
           devcmd: amd64
+          runner: windows-2019
           dep: static
           shared_flag: static
-    runs-on: windows-2019
+    runs-on: ${{matrix.runner}}
     steps:
     - uses: actions/checkout@v4
     # - run: git submodule update --init
@@ -69,8 +73,9 @@ jobs:
         meson compile -C build
 
     - name: Test
-      if: matrix.arch != 'arm64'
       run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+    - name: Benchmark
+      run: meson test --benchmark -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'source'
