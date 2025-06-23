@@ -9,6 +9,7 @@
 
 static std::unique_ptr<webcface::server::Server> server;
 static std::unique_ptr<webcface::Client> wcli1, wcli2;
+static std::unique_ptr<std::thread> sync_thread;
 static std::atomic<int> recv_c;
 static std::vector<std::string> names;
 static void DoSetup(const benchmark::State &state){
@@ -18,6 +19,7 @@ static void DoSetup(const benchmark::State &state){
     wcli2 = std::make_unique<webcface::Client>("bench2", "127.0.0.1", 27530);
     wcli1->waitConnection();
     wcli2->waitConnection();
+    sync_thread = std::make_unique<std::thread>([&]{wcli2->loopSync();});
     names.resize(state.range(0));
     for (int i = 0; i < state.range(0); i++) {
         names[i] = std::string("test_") + std::to_string(i);
@@ -26,6 +28,9 @@ static void DoSetup(const benchmark::State &state){
 }
 static void DoTeardown(const benchmark::State &){
     wcli1.reset();
+    wcli2->close();
+    sync_thread->join();
+    sync_thread.reset();
     wcli2.reset();
     server.reset();
 }
@@ -38,7 +43,6 @@ static void LatencyMultipleValue(benchmark::State &state) {
         }
         wcli1->sync();
         do {
-            wcli2->sync();
         } while (recv_c.load() < state.range(0));
     }
 }
