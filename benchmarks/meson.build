@@ -37,4 +37,9 @@ webcface_benchmark = executable('webcface-benchmark',
   link_with: test_link_libs,
   link_args: test_link_args,
 )
-benchmark('webcface-benchmark', webcface_benchmark)
+benchmark('webcface-benchmark', webcface_benchmark,
+  env: {
+    'WEBCFACE_TRACE': '1',
+  },
+  timeout: 300,
+)
