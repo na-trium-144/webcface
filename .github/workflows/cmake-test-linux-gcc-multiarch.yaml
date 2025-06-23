@@ -46,7 +46,7 @@ jobs:
             meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/workspace/build/install -Dtest_wait=200
             meson compile -C build || meson compile -C build
             meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
-            meson test --benchmark -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+            meson test --benchmark -C build --verbose --suite webcface
             ! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx
             ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog
             ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt

@@ -54,7 +54,7 @@ jobs:
     - name: Test
       run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
     - name: Benchmark
-      run: meson test --benchmark -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+      run: meson test --benchmark -C build --verbose --suite webcface
 
     - name: Check Exported Symbol
       if: matrix.dep == 'submodule'
