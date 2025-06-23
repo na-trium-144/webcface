@@ -5,7 +5,7 @@
 #include <atomic>
 
 static void SyncLongText(benchmark::State &state) {
-    server::Server server(27530, 0);
+    webcface::server::Server server(27530, 0);
     webcface::Client wcli1("bench1"), wcli2("bench2");
     wcli1.waitConnection();
     wcli2.waitConnection();

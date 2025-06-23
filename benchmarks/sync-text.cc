@@ -4,7 +4,7 @@
 #include <webcface/server/server.h>
 
 static void SyncLongText(benchmark::State &state) {
-    server::Server server(27530, 0);
+    webcface::server::Server server(27530, 0);
     webcface::Client wcli1("bench1");
     wcli1.waitConnection();
     unsigned char c = ' ';
