@@ -1,6 +1,9 @@
 benchmark_src = [
   'main.cc',
-  'self-value.cc',
+  'sync-value.cc',
+  'sync-text.cc',
+  'latency-value.cc',
+  'latency-text.cc',
 ]
 test_dependencies = [
   warning_options_dep,
