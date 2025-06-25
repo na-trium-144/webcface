@@ -334,6 +334,14 @@ if(WEBCFACE_TEST)
     endif()
 endif()
 
+FetchContent_Declare(
+  benchmark
+  GIT_REPOSITORY https://github.com/google/benchmark.git
+  GIT_TAG main
+)
+set(BENCHMARK_ENABLE_TESTING OFF CACHE INTERNAL "" FORCE)
+FetchContent_MakeAvailable(benchmark)
+
 ###############################################################################
 include(CheckCXXCompilerFlag)
 function(add_cxx_compile_options_if FLAG NAME)
@@ -571,6 +579,18 @@ if(WEBCFACE_TEST)
     include(GoogleTest)
     gtest_discover_tests(${PROJECT_NAME}-test DISCOVERY_TIMEOUT 600)
 endif()
+
+    add_executable(${PROJECT_NAME}-benchmark
+        benchmarks/main.cc
+        benchmarks/sync-value.cc
+        benchmarks/sync-text.cc
+        benchmarks/latency-value.cc
+        benchmarks/latency-text.cc
+    )
+    target_link_libraries(${PROJECT_NAME}-benchmark PRIVATE
+        ${PROJECT_NAME}
+        benchmark::benchmark
+    )
 
 ###############################################################################
 # https://qiita.com/modapone/items/8f97425b6167cffc815c
