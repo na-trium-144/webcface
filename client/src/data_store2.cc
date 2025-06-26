@@ -49,7 +49,7 @@ void SyncDataStore2<T, ReqT>::setSend(const FieldBase &base, const T &data) {
 template <typename T, typename ReqT>
 void SyncDataStore2<T, ReqT>::setSend(const SharedString &name, const T &data) {
     std::lock_guard lock(mtx);
-    data_send[name] = data;
+    data_send.emplace_back(name, data);
     // auto &recv_self = data_recv[self_member_name];
     // recv_self[name] = data; // 送信後に自分の値を参照する用
 }
@@ -149,9 +149,10 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
                                                   const SharedString &name) {
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
-        auto it = data_send.find(name);
-        if (it != data_send.end()) {
-            return it->second;
+        for(const auto &it: data_send){
+            if(it.first == name){
+                return it.second;
+            }
         }
     }
     // addReq(from, name);
