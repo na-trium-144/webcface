@@ -149,9 +149,10 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
                                                   const SharedString &name) {
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
-        for(const auto &it: data_send){
-            if(it.first == name){
-                return it.second;
+        // emplace_backしているので後ろが最新
+        for(int i = static_cast<int>(data_send.size()) - 1; i >= 0; i++){
+            if(data_send[i].first == name){
+                return data_send[i].second;
             }
         }
     }
