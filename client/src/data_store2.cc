@@ -150,7 +150,7 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
         // emplace_backしているので後ろが最新
-        for(int i = static_cast<int>(data_send.size()) - 1; i >= 0; i++){
+        for(int i = static_cast<int>(data_send.size()) - 1; i >= 0; i--){
             if(data_send[i].first == name){
                 return data_send[i].second;
             }
