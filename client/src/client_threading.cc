@@ -51,6 +51,7 @@ internal::ClientData::~ClientData() {
 }
 
 Client::~Client() {
+    this->sanity.check();
     data->close();
     data->join();
 }
@@ -76,6 +77,7 @@ void internal::ClientData::start() {
     // }
 }
 const Client &Client::close() const {
+    this->sanity.check();
     data->close();
     return *this;
 }
@@ -84,7 +86,10 @@ void internal::ClientData::close() {
     this->closing.store(true);
     lock_ws.cond().notify_all();
 }
-bool Client::connected() const { return data->ws_data.lock()->connected; }
+bool Client::connected() const {
+    this->sanity.check();
+    return data->ws_data.lock()->connected;
+}
 void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
     if (data->port <= 0) {
         return;
@@ -388,10 +393,12 @@ void internal::syncThreadMain(const std::shared_ptr<ClientData> &data) {
 */
 
 const Client &Client::start() const {
+    this->sanity.check();
     data->start();
     return *this;
 }
 const Client &Client::waitConnection() const {
+    this->sanity.check();
     data->start();
     bool first_loop = true;
     while (!data->closing.load()) {
@@ -438,10 +445,14 @@ const Client &Client::waitConnection() const {
 // }
 
 const Client &Client::autoReconnect(bool enabled) const {
+    this->sanity.check();
     data->auto_reconnect.store(enabled);
     return *this;
 }
-bool Client::autoReconnect() const { return data->auto_reconnect.load(); }
+bool Client::autoReconnect() const {
+    this->sanity.check();
+    return data->auto_reconnect.load();
+}
 
 
 WEBCFACE_NS_END

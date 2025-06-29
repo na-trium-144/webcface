@@ -296,6 +296,7 @@ std::vector<Member> Client::members() {
     return static_cast<const Client *>(this)->members();
 }
 std::vector<Member> Client::members() const {
+    this->sanity.check();
     auto lock_entry = data->member_entry.shared_lock();
     std::vector<Member> ret;
     ret.reserve(lock_entry->size());
@@ -306,6 +307,7 @@ std::vector<Member> Client::members() const {
 }
 const Client &
 Client::onMemberEntry(std::function<void(Member)> callback) const {
+    this->sanity.check();
     data->member_entry_event =
         std::make_shared<std::function<void(Member)>>(std::move(callback));
     return *this;
@@ -322,9 +324,11 @@ getLoggerBuf(const std::shared_ptr<internal::ClientData> &data,
     return lock_logger_buf->at(field).get();
 }
 std::streambuf *Client::loggerStreamBuf() const {
+    this->sanity.check();
     return getLoggerBuf(data, message::Log::defaultLogName());
 }
 std::streambuf *Client::loggerStreamBuf(std::string_view name) const {
+    this->sanity.check();
     return getLoggerBuf(data, SharedString::encode(name));
 }
 // \private
@@ -339,9 +343,11 @@ getLoggerBufW(const std::shared_ptr<internal::ClientData> &data,
     return lock_logger_buf->at(field).get();
 }
 std::wstreambuf *Client::loggerWStreamBuf() const {
+    this->sanity.check();
     return getLoggerBufW(data, message::Log::defaultLogName());
 }
 std::wstreambuf *Client::loggerWStreamBuf(std::wstring_view name) const {
+    this->sanity.check();
     return getLoggerBufW(data, SharedString::encode(name));
 }
 // \private
@@ -356,9 +362,11 @@ getLoggerOS(const std::shared_ptr<internal::ClientData> &data,
     return *lock_logger_os->at(field);
 }
 std::ostream &Client::loggerOStream() const {
+    this->sanity.check();
     return getLoggerOS(data, message::Log::defaultLogName());
 }
 std::ostream &Client::loggerOStream(std::string_view name) const {
+    this->sanity.check();
     return getLoggerOS(data, SharedString::encode(name));
 }
 // \private
@@ -373,18 +381,23 @@ getLoggerWOS(const std::shared_ptr<internal::ClientData> &data,
     return *lock_logger_os->at(field);
 }
 std::wostream &Client::loggerWOStream() const {
+    this->sanity.check();
     return getLoggerWOS(data, message::Log::defaultLogName());
 }
 std::wostream &Client::loggerWOStream(std::wstring_view name) const {
+    this->sanity.check();
     return getLoggerWOS(data, SharedString::encode(name));
 }
 const std::string &Client::serverVersion() const {
+    this->sanity.check();
     return data->svr_version.shared_lock().get();
 }
 const std::string &Client::serverName() const {
+    this->sanity.check();
     return data->svr_name.shared_lock().get();
 }
 const std::string &Client::serverHostName() const {
+    this->sanity.check();
     return data->svr_hostname.shared_lock().get();
 }
 

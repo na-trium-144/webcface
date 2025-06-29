@@ -235,6 +235,7 @@ class WEBCFACE_DLL Client : public Member {
 
   private:
     Member member(const SharedString &name) const {
+        this->sanity.check();
         if (name.empty()) {
             return *this;
         } else {

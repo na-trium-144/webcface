@@ -70,7 +70,10 @@ struct WEBCFACE_DLL FieldBase {
  *
  */
 struct WEBCFACE_DLL Field : public FieldBase {
+  protected:
     SanityChecker sanity;
+
+  public:
     /*!
      * \brief ClientDataの参照
      *
