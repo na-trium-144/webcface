@@ -1,6 +1,9 @@
 #pragma once
 #include <mutex>
 #include <optional>
+#if WEBCFACE_SYSTEM_DLLEXPORT
+#include <chrono>
+#endif
 #include "webcface/common/encoding.h"
 #include "webcface/common/internal/map.h"
 #include "webcface/field.h"
