@@ -7,7 +7,6 @@ example_src = [
   {'src': 'canvas3d.cc', 'libvips': false, 'cv': false},
   {'src': 'recv.cc', 'libvips': false, 'cv': false},
   {'src': 'c_example.c', 'libvips': false, 'cv': false},
-  {'src': 'benchmark.cc', 'libvips': false, 'cv': false},
   {'src': 'image-send.cc', 'libvips': true, 'cv': false},
   {'src': 'image-recv.cc', 'libvips': true, 'cv': false},
   {'src': 'cv-send.cc', 'libvips': false, 'cv': true},

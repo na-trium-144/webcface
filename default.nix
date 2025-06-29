@@ -59,6 +59,7 @@ pkgs.stdenv.mkDerivation rec {
     crow
     curl
     pkgs.fmt_11
+    pkgs.gbenchmark
     pkgs.gtest
     pkgs.vips
     pkgs.msgpack-cxx

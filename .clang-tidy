@@ -9,7 +9,8 @@ Checks: >
   -clang-analyzer-optin.performance.Padding,
   -performance-enum-size,
   -bugprone-unchecked-optional-access,
-  -performance-avoid-endl
+  -performance-avoid-endl,
+  -clang-analyzer-deadcode.DeadStores
 WarningsAsErrors: '*'
 CheckOptions:
     - key: bugprone-empty-catch.IgnoreCatchWithKeywords

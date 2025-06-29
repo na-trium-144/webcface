@@ -58,6 +58,8 @@ jobs:
       run: meson compile -C build || meson compile -C build
     - name: Test
       run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+    - name: Benchmark
+      run: meson test --benchmark -C build --verbose --suite webcface
     - name: clang-tidy
       if: matrix.clang == '20' && matrix.dep == 'apt'
       run: python3 scripts/clang-tidy.py 4
