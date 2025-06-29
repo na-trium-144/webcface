@@ -748,7 +748,9 @@ if build_examples
 endif
 if build_tests
   subdir('tests')
-  subdir('benchmarks')
+  if build_server
+    subdir('benchmarks')
+  endif
 endif
 
 headers = run_command(py,
