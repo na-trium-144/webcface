@@ -80,9 +80,11 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(text("a", "b").child(L"c").name(), "b.c");
     EXPECT_EQ(log("a", "b").member().name(), "a");
 
-    EXPECT_THROW(Value().tryGet(), std::runtime_error);
-    EXPECT_THROW(Text().tryGet(), std::runtime_error);
-    EXPECT_THROW(Log().tryGet(), std::runtime_error);
+    EXPECT_THROW(Value().tryGet(), SanityFailure);
+    EXPECT_THROW(Text().tryGet(), SanityFailure);
+    EXPECT_THROW(Log().tryGet(), SanityFailure);
+    Value *v;
+    EXPECT_THROW(v->tryGet(), SanityFailure);
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());

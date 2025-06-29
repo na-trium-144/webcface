@@ -195,13 +195,17 @@ template WEBCFACE_DLL std::vector<Image>
 Field::imageEntries<Image, true>() const;
 template WEBCFACE_DLL std::vector<Log> Field::logEntries<Log, true>() const;
 
-bool Field::expired() const { return data_w.expired(); }
+bool Field::expired() const {
+    sanity.check();
+    return data_w.expired();
+}
 
 std::shared_ptr<internal::ClientData> Field::dataLock() const {
+    sanity.check();
     if (auto data = data_w.lock()) {
         return data;
     }
-    throw std::runtime_error("Cannot access client data");
+    throw SanityFailure();
 }
 
 std::shared_ptr<internal::ClientData> Field::setCheck() const {
