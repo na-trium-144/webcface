@@ -27,7 +27,7 @@ static void DoTeardown(const benchmark::State &){
 }
 static void SyncLongText(benchmark::State &state) {
     for (auto _ : state) {
-        std::string str(state.range(0), c);
+        std::string str(static_cast<std::size_t>(state.range(0)), c);
         wcli1->text("test") = str;
         c = (c - 32 + 1) % (127 - 32) + 32;
         wcli1->sync();
