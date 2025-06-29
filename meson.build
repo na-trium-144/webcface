@@ -632,7 +632,9 @@ if build_tests
   gtest_dep = dependency('gtest', main: true,
     fallback: ['gtest', 'gtest_main_dep'],
   )
-  benchmark_dep = dependency('benchmark')
+  if build_server
+    benchmark_dep = dependency('benchmark')
+  endif
 endif
 
 summary('Build server',
