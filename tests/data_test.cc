@@ -83,8 +83,22 @@ TEST_F(DataTest, field) {
     EXPECT_THROW(Value().tryGet(), SanityFailure);
     EXPECT_THROW(Text().tryGet(), SanityFailure);
     EXPECT_THROW(Log().tryGet(), SanityFailure);
+
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4700)
+#else
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wuninitialized"
+#pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
+#endif
     Value *v;
     EXPECT_THROW(v->tryGet(), SanityFailure);
+#ifdef _MSC_VER
+#pragma warning(pop)
+#else
+#pragma GCC diagnostic pop
+#endif
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());
