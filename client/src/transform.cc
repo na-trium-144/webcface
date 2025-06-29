@@ -1,6 +1,6 @@
-#include "webcface/exception.h"
 #define _USE_MATH_DEFINES // NOLINT
 #include "webcface/transform.h"
+#include "webcface/exception.h"
 #include <cmath>
 #include <stdexcept>
 
