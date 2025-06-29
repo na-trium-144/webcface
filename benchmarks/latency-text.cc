@@ -32,7 +32,7 @@ static void DoTeardown(const benchmark::State &){
 static void LatencyLongText(benchmark::State &state) {
     for (auto _ : state) {
         recv_c.store(0);
-        wcli1->text("test") = std::string(state.range(0), c);
+        wcli1->text("test") = std::string(static_cast<std::size_t>(state.range(0)), c);
         c = (c - 32 + 1) % (127 - 32) + 32;
         wcli1->sync();
         do {

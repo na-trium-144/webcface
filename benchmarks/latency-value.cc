@@ -20,7 +20,7 @@ static void DoSetup(const benchmark::State &state){
     wcli1->waitConnection();
     wcli2->waitConnection();
     sync_thread = std::make_unique<std::thread>([&]{wcli2->loopSync();});
-    names.resize(state.range(0));
+    names.resize(static_cast<std::size_t>(state.range(0)));
     for (int i = 0; i < state.range(0); i++) {
         names[i] = std::string("test_") + std::to_string(i);
         wcli2->member(wcli1->name()).value(names[i]).onChange([&](const auto &) { recv_c++; });
