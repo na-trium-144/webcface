@@ -113,7 +113,7 @@ class FuncResultStore {
         if (it != promises.end()) {
             return it->second;
         } else {
-            throw std::out_of_range("caller id not found");
+            throw PromiseError("caller id not found");
         }
     }
     /*!
@@ -126,7 +126,7 @@ class FuncResultStore {
         if (it != promises.end()) {
             promises.erase(it);
         } else {
-            throw std::out_of_range("caller id not found");
+            throw PromiseError("caller id not found");
         }
     }
 };
@@ -155,7 +155,7 @@ struct FuncInfo : public Field {
         if (func_impl) {
             func_impl(handle);
         } else {
-            throw std::runtime_error("func_impl is null");
+            throw SanityError("func_impl is null");
         }
     }
 

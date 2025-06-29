@@ -5,11 +5,6 @@
 
 WEBCFACE_NS_BEGIN
 
-FuncNotFound::FuncNotFound(const FieldBase &base)
-    : std::runtime_error("member(\"" + base.member_.decode() + "\")" +
-                         ".func(\"" + base.field_.decode() + "\") is not set") {
-}
-
 Promise internal::PromiseData::getter() {
     std::lock_guard lock(m);
     return Promise(base, shared_from_this(), started_f, result_f);
@@ -65,7 +60,7 @@ void CallHandle::reach(bool found) const {
             }
             data->cond.notify_all();
         } else {
-            throw std::runtime_error("CallHandle::reach called twice");
+            throw PromiseError("CallHandle::reach called twice");
         }
     } else {
         throw invalidHandle();
@@ -91,7 +86,7 @@ void CallHandle::respond(const ValAdaptor &value) const {
             data->callFinishEvent();
             data->cond.notify_all();
         } else {
-            throw std::runtime_error(
+            throw PromiseError(
                 "already responded or rejected with this CallHandle");
         }
     } else {
@@ -106,14 +101,14 @@ void CallHandle::reject(const ValAdaptor &message) const {
             data->is_error = true;
             data->rejection = message;
             try {
-                throw std::runtime_error(message.asStringRef().c_str());
+                throw std::runtime_error(message.asStringRef());
             } catch (...) {
                 data->result_p.set_exception(std::current_exception());
             }
             data->callFinishEvent();
             data->cond.notify_all();
         } else {
-            throw std::runtime_error(
+            throw PromiseError(
                 "already responded or rejected with this CallHandle");
         }
     } else {
@@ -286,14 +281,14 @@ const std::wstring &Promise::rejectionW() const {
 // }
 
 std::runtime_error &Promise::invalidPromise() {
-    static std::runtime_error invalid_promise("Promise does not have valid "
-                                              "pointer to function call");
+    static SanityError invalid_promise("Promise does not have valid "
+                                       "pointer to function call");
     return invalid_promise;
 }
 
 std::runtime_error &CallHandle::invalidHandle() {
-    static std::runtime_error invalid_handle("CallHandle does not have valid "
-                                             "pointer to function call");
+    static SanityError invalid_handle("CallHandle does not have valid "
+                                      "pointer to function call");
     return invalid_handle;
 }
 

@@ -14,6 +14,7 @@
 * MacOS以外でもcurl8.10〜8.12に対してはビルド前にエラーを出すようにした
 * DataStore2::data_sendをmapからvectorに変更、sync()を1割高速化 (#515)
 * std::condition_variableを使わずpollingするようにし、sync()を3割高速化 (#515)
+* クライアントの投げる例外の型をすべて独自のクラスに変更、メッセージを改善 (#518)
 
 ## [2.9.0] - 2025-02-09
 ### Added

@@ -1,5 +1,6 @@
 #define _USE_MATH_DEFINES // NOLINT
 #include "webcface/transform.h"
+#include "webcface/exception.h"
 #include <cmath>
 #include <stdexcept>
 
@@ -89,7 +90,8 @@ Rotation::eulerToMatrix(const std::array<double, 3> &rot, AxisSequence axis) {
             {{-c1 * s2, s1, c1 * c2}},
         }};
     default:
-        throw std::invalid_argument("Invalid axis sequence");
+        throw InvalidArgument("Invalid axis sequence " +
+                              std::to_string(static_cast<int>(axis)));
     }
 }
 
@@ -168,7 +170,8 @@ matrixToProperEuler(const std::array<std::array<double, 3>, 3> &rmat,
         cc_ca = rmat[0][0];
         break;
     default:
-        throw std::invalid_argument("Invalid axis sequence");
+        throw InvalidArgument("Invalid axis sequence " +
+                              std::to_string(static_cast<int>(axis)));
     }
     if ((isZero(sa_sb) && isZero(ca_sb)) || (isZero(sc_sb) && isZero(cc_sb))) {
         return {{
@@ -246,7 +249,8 @@ matrixToTaitBryanEuler(const std::array<std::array<double, 3>, 3> &rmat,
         cc_ca = rmat[0][0];
         break;
     default:
-        throw std::invalid_argument("Invalid axis sequence");
+        throw InvalidArgument("Invalid axis sequence " +
+                              std::to_string(static_cast<int>(axis)));
     }
     if ((isZero(sa_cb) && isZero(ca_cb)) || (isZero(sc_cb) && isZero(cc_cb))) {
         return {{
@@ -283,7 +287,8 @@ Rotation::matrixToEuler(const std::array<std::array<double, 3>, 3> &rmat,
     case AxisSequence::ZXY:
         return matrixToTaitBryanEuler(rmat, axis);
     default:
-        throw std::invalid_argument("Invalid axis sequence");
+        throw InvalidArgument("Invalid axis sequence " +
+                              std::to_string(static_cast<int>(axis)));
     }
 }
 

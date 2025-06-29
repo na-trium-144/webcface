@@ -3,6 +3,7 @@
 #include "func_result.h"
 #include "arg.h"
 #include "trait.h"
+#include "exception.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

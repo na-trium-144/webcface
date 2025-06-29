@@ -98,9 +98,9 @@ const ValueElementRef &ValueElementRef::set(double v) const {
         pv->at(index) = v;
         parent.set(*pv);
     } else {
-        throw std::out_of_range("ValueElementRef::set got index " +
-                                std::to_string(index) + " but size is " +
-                                std::to_string(pv->size()));
+        throw OutOfRange("ValueElementRef::set got index " +
+                         std::to_string(index) + " but size is " +
+                         std::to_string(pv->size()));
     }
     return *this;
 }

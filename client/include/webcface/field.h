@@ -87,12 +87,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
         : FieldBase(base, field), data_w(base.data_w) {}
 
     /*!
-     * \brief data_wをlockし、失敗したらruntime_errorを投げる
+     * \brief data_wをlockし、失敗したらSanityErrorを投げる
      *
      */
     std::shared_ptr<internal::ClientData> dataLock() const;
     /*!
-     * \brief data_wをlockし、memberがselfではなければinvalid_argumentを投げる
+     * \brief data_wをlockし、memberがselfではなければIntrusionを投げる
      *
      */
     std::shared_ptr<internal::ClientData> setCheck() const;

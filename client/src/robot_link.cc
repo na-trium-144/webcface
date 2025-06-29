@@ -1,4 +1,5 @@
 #include "webcface/robot_link.h"
+#include "webcface/exception.h"
 #include "webcface/internal/robot_link_internal.h"
 #include <algorithm>
 
@@ -57,8 +58,8 @@ RobotLink::RobotLink(const SharedString &name, const RobotJoint &joint,
     if (joint.msg_data) {
         // 別のmodelからlinkデータをコピーしようとした?
         // todo
-        throw std::runtime_error("Unexpected joint data (msg_data is not null) "
-                                 "in constructor of RobotLink");
+        throw SanityError("Unexpected joint data (msg_data is not null) "
+                          "in constructor of RobotLink");
     }
     msg_data->geometry_type = static_cast<int>(geometry.type);
     msg_data->geometry_properties = geometry.properties;
@@ -70,7 +71,7 @@ RobotLink::lockJoints(const std::vector<SharedString> &link_names) const {
     if (msg_data) {
         msg_data->lockJoints(link_names);
     } else {
-        throw std::runtime_error("Uninitialized link passed to RobotModel");
+        throw SanityError("Uninitialized link passed to RobotModel");
     }
     return msg_data;
 }

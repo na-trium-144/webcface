@@ -1,3 +1,4 @@
+#include "webcface/exception.h"
 #include "webcface/robot_model.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/internal/component_internal.h"
@@ -39,12 +40,13 @@ TemporalCanvas3DComponent::operator=(const TemporalCanvas3DComponent &other) {
     }
     return *this;
 }
-// todo: なぜviewとcanvas2dにはmoveコンストラクタが(=default で)用意されているのにcanvas3dには無い?
+// todo: なぜviewとcanvas2dにはmoveコンストラクタが(=default
+// で)用意されているのにcanvas3dには無い?
 TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept = default;
 
 void Canvas3DComponent::checkData() const {
     if (!this->msg_data) {
-        throw std::runtime_error("Accessed empty Canvas3DComponent");
+        throw SanityError("Accessed empty Canvas3DComponent");
     }
 }
 
@@ -154,9 +156,8 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         }
         return *this;
     } else {
-        throw std::invalid_argument(
-            "Tried to set TemporalCanvas3DComponent::angles "
-            "but robotModel not defined");
+        throw InvalidArgument("Tried to set TemporalCanvas3DComponent::angles "
+                              "but robotModel not defined");
     }
 }
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
@@ -176,9 +177,8 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         }
         return *this;
     } else {
-        throw std::invalid_argument(
-            "Tried to set TemporalCanvas3DComponent::angles "
-            "but robotModel not defined");
+        throw InvalidArgument("Tried to set TemporalCanvas3DComponent::angles "
+                              "but robotModel not defined");
     }
 }
 TemporalCanvas3DComponent &
@@ -198,9 +198,8 @@ TemporalCanvas3DComponent::angle(const std::string &joint_name,
         }
         return *this;
     } else {
-        throw std::invalid_argument(
-            "Tried to set TemporalCanvas3DComponent::angles "
-            "but robotModel not defined");
+        throw InvalidArgument("Tried to set TemporalCanvas3DComponent::angles "
+                              "but robotModel not defined");
     }
 }
 TemporalCanvas3DComponent &
@@ -220,9 +219,8 @@ TemporalCanvas3DComponent::angle(const std::wstring &joint_name,
         }
         return *this;
     } else {
-        throw std::invalid_argument(
-            "Tried to set TemporalCanvas3DComponent::angles "
-            "but robotModel not defined");
+        throw InvalidArgument("Tried to set TemporalCanvas3DComponent::angles "
+                              "but robotModel not defined");
     }
 }
 
