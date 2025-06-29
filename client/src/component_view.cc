@@ -136,7 +136,7 @@ TemporalViewComponent::lockTmp(
                    !msg_data->on_click_func_tmp) {
             on_click.set(std::move(*msg_data->on_change_func_tmp));
         } else {
-            throw std::runtime_error("Both onClick and onChange are set");
+            throw InvalidArgument("Both onClick and onChange are set");
         }
         onClick(on_click);
     }

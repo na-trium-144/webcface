@@ -26,14 +26,15 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
 };
 
 /*!
- * \brief Clientが破棄されたあとにフィールドにアクセスした場合に発生する例外
+ * \brief 未初期化の変数にアクセスした場合に発生する例外
  * \since ver2.10
  * 
- * ver2.9までは std::runtime_error を投げていた
+ * * Clientが破棄されたあとにフィールドにアクセスした場合など
+ * * ver2.9までは std::runtime_error を投げていた
  * 
  */
 struct WEBCFACE_DLL SanityError : public std::runtime_error {
-    explicit SanityError(const char *message) noexcept;
+    explicit SanityError(const char *message);
 };
 /*!
  * \brief 自分以外のmemberのフィールドに値を設定しようとしたときに発生する例外
@@ -46,5 +47,37 @@ struct WEBCFACE_DLL Intrusion : public std::invalid_argument {
     explicit Intrusion(const FieldBase &base);
 };
 
+/*!
+ * \brief Funcの実行結果の処理中に発生した例外
+ * \since ver2.10
+ * 
+ * * ver2.9までは std::runtime_error を投げていた
+ * * 実行結果として返されるエラーそのものはPromiseErrorではなく std::runtime_error
+ * 
+ * \todo std::future_error はlogic_errorを継承している。合わせるべきか？
+ * 
+ */
+struct WEBCFACE_DLL PromiseError : public std::runtime_error {
+    explicit PromiseError(const char *message);
+};
+
+/*!
+ * \brief その他のパラメーターエラー
+ * \since ver2.10
+ * 
+ */
+struct WEBCFACE_DLL InvalidArgument : public std::invalid_argument {
+    explicit InvalidArgument(const char *message);
+    explicit InvalidArgument(const std::string &message);
+};
+/*!
+ * \brief その他のパラメーターエラー
+ * \since ver2.10
+ * 
+ */
+struct WEBCFACE_DLL OutOfRange : public std::out_of_range {
+    explicit OutOfRange(const char *message);
+    explicit OutOfRange(const std::string &message);
+};
 
 WEBCFACE_NS_END
