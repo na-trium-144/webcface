@@ -36,15 +36,6 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(send.size(), 0u);
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
-    s2.setSend("a"_ss, "zzzzzz");
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "zzzzzz");
-    s2.setSend("a"_ss, "b"); // 一度違うデータを送ってから同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
-    send = s2.transferSend(false);
-    EXPECT_FALSE(send.count("a"_ss));
-    EXPECT_EQ(send.size(), 0u);
-    EXPECT_EQ(s2.transferSend(true).size(), 1u);
-
     s2.setSend("a"_ss, "c"); // 違うデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "c");
     send = s2.transferSend(false);

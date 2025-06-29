@@ -8,6 +8,10 @@
 #include <mutex>
 #include <cassert>
 #include <condition_variable>
+#include <atomic>
+#include <thread>
+#include <chrono>
+#include "./unlock.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -27,6 +31,62 @@ class ScopedLock : public Lock {
         return &p->data;
     }
     [[nodiscard]] auto &cond() { return p->cond; }
+};
+
+class PollingConditionVariable {
+    inline static constexpr std::chrono::microseconds poll_interval{1};
+    std::atomic<int> notified;
+
+public:
+    PollingConditionVariable(): notified(0){}
+    void notify_all(){
+        ++notified;
+    }
+    void wait(std::unique_lock<std::mutex> &lock){
+        int notify_target = notified.load();
+        ScopedUnlock un(lock);
+        while(notified.load() == notify_target){
+            std::this_thread::sleep_for(poll_interval);
+        }
+    }
+    template <typename Pred>
+    void wait(std::unique_lock<std::mutex> &lock, Pred pred){
+        while(!pred()){
+            ScopedUnlock un(lock);
+            std::this_thread::sleep_for(poll_interval);
+        }
+    }
+    template <typename Clock, typename Duration>
+    std::cv_status wait_until(std::unique_lock<std::mutex> &lock, const std::chrono::time_point<Clock, Duration>&abs){
+        int notify_target = notified.load();
+        ScopedUnlock un(lock);
+        while(notified.load() == notify_target){
+            if(Clock::now() >= abs){
+                return std::cv_status::timeout;
+            }
+            std::this_thread::sleep_for(poll_interval);
+        }
+        return std::cv_status::no_timeout;
+    }
+    template <typename Clock, typename Duration, typename Pred>
+    bool wait_until(std::unique_lock<std::mutex> &lock, const std::chrono::time_point<Clock, Duration>&abs, Pred pred){
+        while(!pred()){
+            if(Clock::now() >= abs){
+                return false;
+            }
+            ScopedUnlock un(lock);
+            std::this_thread::sleep_for(poll_interval);
+        }
+        return true;
+    }
+    template <typename Rep, typename Period>
+    auto wait_for(std::unique_lock<std::mutex> &lock, const std::chrono::duration<Rep, Period>&rel){
+        return wait_until(lock, std::chrono::steady_clock::now() + rel);
+    }
+    template <typename Rep, typename Period, typename Pred>
+    auto wait_for(std::unique_lock<std::mutex> &lock, const std::chrono::duration<Rep, Period>&rel, Pred pred){
+        return wait_until(lock, std::chrono::steady_clock::now() + rel, pred);
+    }
 };
 
 /*!
@@ -49,7 +109,7 @@ template <typename T>
 class MutexProxy {
     T data;
     mutable std::mutex m;
-    mutable std::condition_variable cond;
+    mutable PollingConditionVariable cond;
 
   public:
     template <typename Proxy, typename Lock>

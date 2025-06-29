@@ -1,5 +1,7 @@
 #pragma once
 #include <deque>
+#include <vector>
+#include <utility>
 #include <mutex>
 #include <optional>
 #include "webcface/common/internal/map.h"
@@ -9,6 +11,7 @@
 
 WEBCFACE_NS_BEGIN
 namespace internal {
+
 /*!
  * \brief 送受信するデータを保持するクラス
  *
@@ -22,9 +25,11 @@ template <typename T, typename ReqT = int>
 class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
+     * 
+     * ver2.10〜 mapをvectorに変えたので重複がありえる。
      *
      */
-    StrMap1<T> data_send;
+    std::vector<std::pair<SharedString, T>> data_send;
     StrMap1<T> data_send_prev;
     /*!
      * \brief 送信済みデータ&受信済みデータ

@@ -168,6 +168,7 @@ project('webcface', 'c', 'cpp',
     'libffi:default_library=static',
     'libffi:warning_level=0',
     'libffi:werror=false',
+    'google-benchmark:werror=false',
   ],
 )
 fs = import('fs')
@@ -631,6 +632,9 @@ if build_tests
   gtest_dep = dependency('gtest', main: true,
     fallback: ['gtest', 'gtest_main_dep'],
   )
+  if build_server
+    benchmark_dep = dependency('benchmark')
+  endif
 endif
 
 summary('Build server',
@@ -746,6 +750,9 @@ if build_examples
 endif
 if build_tests
   subdir('tests')
+  if build_server
+    subdir('benchmarks')
+  endif
 endif
 
 headers = run_command(py,
