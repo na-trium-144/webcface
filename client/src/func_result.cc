@@ -5,11 +5,6 @@
 
 WEBCFACE_NS_BEGIN
 
-FuncNotFound::FuncNotFound(const FieldBase &base)
-    : std::runtime_error("member(\"" + base.member_.decode() + "\")" +
-                         ".func(\"" + base.field_.decode() + "\") is not set") {
-}
-
 Promise internal::PromiseData::getter() {
     std::lock_guard lock(m);
     return Promise(base, shared_from_this(), started_f, result_f);

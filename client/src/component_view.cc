@@ -101,7 +101,7 @@ TemporalViewComponent::~TemporalViewComponent() noexcept = default;
 
 void ViewComponent::checkData() const {
     if (!this->msg_data) {
-        throw std::runtime_error("Accessed empty ViewComponent");
+        throw SanityError("Accessed empty ViewComponent");
     }
 }
 

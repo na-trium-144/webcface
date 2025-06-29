@@ -1,3 +1,4 @@
+#include "webcface/exception.h"
 #include "webcface/robot_model.h"
 #include "webcface/component_canvas3d.h"
 #include "webcface/internal/component_internal.h"
@@ -44,7 +45,7 @@ TemporalCanvas3DComponent::~TemporalCanvas3DComponent() noexcept = default;
 
 void Canvas3DComponent::checkData() const {
     if (!this->msg_data) {
-        throw std::runtime_error("Accessed empty Canvas3DComponent");
+        throw SanityError("Accessed empty Canvas3DComponent");
     }
 }
 

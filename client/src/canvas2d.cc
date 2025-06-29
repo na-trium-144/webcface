@@ -5,6 +5,7 @@
 #include "webcface/member.h"
 #include "webcface/internal/data_buffer.h"
 #include "webcface/internal/component_internal.h"
+#include "webcface/exception.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -29,7 +30,7 @@ template <>
 void internal::DataSetBuffer<TemporalCanvas2DComponent>::onSync() {
     auto c2buf = dynamic_cast<Canvas2DDataBuf *>(this);
     if (!c2buf) {
-        throw std::runtime_error("Failed to access Canvas2DDataBuf");
+        throw SanityError("Failed to access Canvas2DDataBuf");
     }
     c2buf->checkSize();
 

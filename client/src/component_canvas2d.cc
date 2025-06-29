@@ -1,6 +1,7 @@
 #include "webcface/component_canvas2d.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/component_internal.h"
+#include "webcface/exception.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -45,7 +46,7 @@ TemporalCanvas2DComponent::~TemporalCanvas2DComponent() noexcept = default;
 
 void Canvas2DComponent::checkData() const {
     if (!this->msg_data) {
-        throw std::runtime_error("Accessed empty Canvas2DComponent");
+        throw SanityError("Accessed empty Canvas2DComponent");
     }
 }
 
