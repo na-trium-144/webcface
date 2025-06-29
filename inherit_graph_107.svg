@@ -15,7 +15,7 @@
 <polygon fill="white" stroke="#666666" points="133,-41 0,-41 0,0 133,0 133,-41"/>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">MutexProxy&lt; webcface</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::internal::ClientData</text>
-<text text-anchor="middle" x="66.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::WsData &gt;</text>
+<text text-anchor="middle" x="66.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::SyncData &gt;</text>
 </a>
 </g>
 </g>

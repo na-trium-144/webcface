@@ -1,0 +1,5 @@
+<map id="SanityError" name="SanityError">
+<area shape="rect" id="Node000001" title="未初期化の変数にアクセスした場合に発生する例外" alt="" coords="13,79,108,104"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,116,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="63,44,63,79,58,79,58,44"/>
+</map>

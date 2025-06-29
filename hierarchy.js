@@ -183,6 +183,10 @@ var hierarchy =
     ] ],
     [ "InputRef", "classwebcface_1_1InputRef.html", null ],
     [ "InputRefState", "structwebcface_1_1internal_1_1InputRefState.html", null ],
+    [ "invalid_argument", null, [
+      [ "Intrusion", "structwebcface_1_1Intrusion.html", null ],
+      [ "InvalidArgument", "structwebcface_1_1InvalidArgument.html", null ]
+    ] ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
@@ -318,6 +322,9 @@ var hierarchy =
     [ "MutexProxy< StrMap1< webcface::Queue< webcface::CallHandle > > >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
     [ "MutexProxy< webcface::internal::ClientData::SyncData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
     [ "MutexProxy< webcface::internal::ClientData::WsData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
+    [ "out_of_range", null, [
+      [ "OutOfRange", "structwebcface_1_1OutOfRange.html", null ]
+    ] ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
     [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", null ],
@@ -339,7 +346,9 @@ var hierarchy =
       [ "Transform", "classwebcface_1_1Transform.html", null ]
     ] ],
     [ "runtime_error", null, [
-      [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ]
+      [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ],
+      [ "PromiseError", "structwebcface_1_1PromiseError.html", null ],
+      [ "SanityError", "structwebcface_1_1SanityError.html", null ]
     ] ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1server_1_1Server.html", null ],

@@ -533,10 +533,10 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa3ada8194f5f6df572bc2f00e3c9d579"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1FieldBase.html#aa3ada8194f5f6df572bc2f00e3c9d579">operator!=</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;rhs) const</td></tr>
 <tr class="separator:aa3ada8194f5f6df572bc2f00e3c9d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a725c14e25d8d4e15eb297b926aec13bf"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a725c14e25d8d4e15eb297b926aec13bf">dataLock</a> () const</td></tr>
-<tr class="memdesc:a725c14e25d8d4e15eb297b926aec13bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、失敗したらruntime_errorを投げる  <br /></td></tr>
+<tr class="memdesc:a725c14e25d8d4e15eb297b926aec13bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、失敗したらSanityErrorを投げる  <br /></td></tr>
 <tr class="separator:a725c14e25d8d4e15eb297b926aec13bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6aae196570f9dc73d6768aaaeb146220"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1ClientData.html">internal::ClientData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6aae196570f9dc73d6768aaaeb146220">setCheck</a> () const</td></tr>
-<tr class="memdesc:a6aae196570f9dc73d6768aaaeb146220"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければinvalid_argumentを投げる  <br /></td></tr>
+<tr class="memdesc:a6aae196570f9dc73d6768aaaeb146220"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_wをlockし、memberがselfではなければIntrusionを投げる  <br /></td></tr>
 <tr class="separator:a6aae196570f9dc73d6768aaaeb146220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
 <tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1348,7 +1348,7 @@ template&lt;typename Canvas3D_  = Canvas3D, bool  = ::webcface::traits::assertCo
 </table>
 </div><div class="memdoc">
 
-<p>data_wをlockし、失敗したらruntime_errorを投げる </p>
+<p>data_wをlockし、失敗したらSanityErrorを投げる </p>
 
 </div>
 </div>
@@ -3837,7 +3837,7 @@ template&lt;typename RobotModel_  = RobotModel, bool  = ::webcface::traits::asse
 </table>
 </div><div class="memdoc">
 
-<p>data_wをlockし、memberがselfではなければinvalid_argumentを投げる </p>
+<p>data_wをlockし、memberがselfではなければIntrusionを投げる </p>
 
 </div>
 </div>
@@ -4463,7 +4463,7 @@ template&lt;typename View_  = View, bool  = ::webcface::traits::assertCompleteVi
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Client.html">Client</a></li>
-    <li class="footer">Generated on Sun Jun 29 2025 14:47:10 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Jun 29 2025 17:18:26 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

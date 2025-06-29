@@ -13,6 +13,7 @@ var dir_8bd58ff883f4686dab3daf23d9479d3b =
     [ "component_canvas3d.h", "component__canvas3d_8h.html", "component__canvas3d_8h" ],
     [ "component_view.h", "component__view_8h.html", "component__view_8h" ],
     [ "components.h", "components_8h.html", "components_8h" ],
+    [ "exception.h", "exception_8h.html", "exception_8h" ],
     [ "field.h", "field_8h.html", "field_8h" ],
     [ "func.h", "client_2include_2webcface_2func_8h.html", "client_2include_2webcface_2func_8h" ],
     [ "func_info.h", "func__info_8h.html", null ],

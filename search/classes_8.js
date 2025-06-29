@@ -4,5 +4,7 @@ var searchData=
   ['imageframe_1',['ImageFrame',['../classwebcface_1_1ImageFrame.html',1,'ImageFrame'],['../structwebcface_1_1message_1_1ImageFrame.html',1,'ImageFrame']]],
   ['imagereq_2',['ImageReq',['../structwebcface_1_1message_1_1ImageReq.html',1,'webcface::message']]],
   ['inputref_3',['InputRef',['../classwebcface_1_1InputRef.html',1,'webcface']]],
-  ['inputrefstate_4',['InputRefState',['../structwebcface_1_1internal_1_1InputRefState.html',1,'webcface::internal']]]
+  ['inputrefstate_4',['InputRefState',['../structwebcface_1_1internal_1_1InputRefState.html',1,'webcface::internal']]],
+  ['intrusion_5',['Intrusion',['../structwebcface_1_1Intrusion.html',1,'webcface']]],
+  ['invalidargument_6',['InvalidArgument',['../structwebcface_1_1InvalidArgument.html',1,'webcface']]]
 ];
