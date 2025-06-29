@@ -19,6 +19,7 @@ var namespacewebcface_1_1internal =
     [ "InputRefState", "structwebcface_1_1internal_1_1InputRefState.html", "structwebcface_1_1internal_1_1InputRefState" ],
     [ "LogData", "structwebcface_1_1internal_1_1LogData.html", "structwebcface_1_1internal_1_1LogData" ],
     [ "MutexProxy", "classwebcface_1_1internal_1_1MutexProxy.html", "classwebcface_1_1internal_1_1MutexProxy" ],
+    [ "PollingConditionVariable", "classwebcface_1_1internal_1_1PollingConditionVariable.html", "classwebcface_1_1internal_1_1PollingConditionVariable" ],
     [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", "structwebcface_1_1internal_1_1PromiseData" ],
     [ "RobotLinkData", "structwebcface_1_1internal_1_1RobotLinkData.html", "structwebcface_1_1internal_1_1RobotLinkData" ],
     [ "ScopedLock", "classwebcface_1_1internal_1_1ScopedLock.html", "classwebcface_1_1internal_1_1ScopedLock" ],

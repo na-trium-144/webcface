@@ -5,5 +5,7 @@ var searchData=
   ['server_5fws_2eh_2',['server_ws.h',['../server__ws_8h.html',1,'']]],
   ['store_2ecc_3',['store.cc',['../store_8cc.html',1,'']]],
   ['store_2eh_4',['store.h',['../store_8h.html',1,'']]],
-  ['sync_2eh_5',['sync.h',['../sync_8h.html',1,'']]]
+  ['sync_2dtext_2ecc_5',['sync-text.cc',['../sync-text_8cc.html',1,'']]],
+  ['sync_2dvalue_2ecc_6',['sync-value.cc',['../sync-value_8cc.html',1,'']]],
+  ['sync_2eh_7',['sync.h',['../sync_8h.html',1,'']]]
 ];

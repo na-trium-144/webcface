@@ -324,6 +324,7 @@ var hierarchy =
     [ "Point", "classwebcface_1_1Point.html", [
       [ "Transform", "classwebcface_1_1Transform.html", null ]
     ] ],
+    [ "PollingConditionVariable", "classwebcface_1_1internal_1_1PollingConditionVariable.html", null ],
     [ "Polygon", "structwebcface_1_1components_1_1geometries_1_1Polygon.html", null ],
     [ "Polygon", "structwebcface_1_1components_1_1geometries_1_1Polygon.html", null ],
     [ "Polygon", "structwebcface_1_1components_1_1geometries_1_1Polygon.html", null ],
