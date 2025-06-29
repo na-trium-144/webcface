@@ -296,6 +296,7 @@ if cxx.get_id() == 'gcc' and cxx.get_argument_syntax() != 'msvc'
 elif cxx.get_id() == 'clang' and cxx.get_argument_syntax() != 'msvc'
   warning_options_dep = declare_dependency(compile_args: [
     '-Wno-inline',
+    '-Wno-unknown-warning-option',
     '--system-header-prefix=msgpack.hpp',
     '--system-header-prefix=fmt/',
     '--system-header-prefix=spdlog/',
