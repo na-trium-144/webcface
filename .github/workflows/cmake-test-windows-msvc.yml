@@ -13,6 +13,7 @@ jobs:
         arch: ["x86", "x64", "arm64"]
         dep: ["source"]
         shared_flag: ["shared"]
+        unity: ["on"]
         include:
         - arch: x86
           runner: windows-2019
@@ -28,6 +29,11 @@ jobs:
           runner: windows-2019
           dep: static
           shared_flag: static
+        - arch: x64
+          devcmd: amd64
+          runner: windows-2019
+          dep: source
+          unity: "off"
     runs-on: ${{matrix.runner}}
     steps:
     - uses: actions/checkout@v4
@@ -66,7 +72,7 @@ jobs:
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
         --cross-file scripts/cross/msvc_${{matrix.arch}}
-        --unity=on
+        --unity=${{matrix.unity}}
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile

@@ -12,6 +12,7 @@ jobs:
       matrix:
         dep: ["apt", "source"]
         clang: [7, 20, 14, 18]
+        unity: ["on"]
         include:
         # https://github.com/KyleMayes/install-llvm-action/blob/master/assets.json の最新と最古
         - os: ubuntu-22.04
@@ -21,6 +22,9 @@ jobs:
         # https://pkgs.org/download/clang にあわせる
         - os: ubuntu-22.04
           clang: 14
+        - os: ubuntu-22.04
+          clang: 14
+          unity: "off"
         - os: ubuntu-22.04
         # - os: ubuntu-24.04  -> libtinfo.so.5: no such file or directory
           clang: 18
@@ -54,7 +58,7 @@ jobs:
         $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=200
         --force-fallback-for=libcurl
-        --unity=on
+        --unity=${{matrix.unity}}
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
