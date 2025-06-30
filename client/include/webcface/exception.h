@@ -62,7 +62,7 @@ struct WEBCFACE_DLL Intrusion : public std::invalid_argument {
  * \since ver2.10
  * 
  * * ver2.9までは std::runtime_error を投げていた
- * * 実行結果として返されるエラーそのものはPromiseErrorではなく std::runtime_error
+ * * 実行結果として返されるエラーそのものはPromiseErrorではなくRejection
  * 
  * \todo std::future_error はlogic_errorを継承している。合わせるべきか？
  * 
