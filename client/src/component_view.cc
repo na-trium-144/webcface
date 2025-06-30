@@ -1,4 +1,6 @@
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES // NOLINT
+#endif
 #include <cmath>
 #include "webcface/component_view.h"
 #include "webcface/internal/client_internal.h"

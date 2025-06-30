@@ -1,4 +1,6 @@
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES // NOLINT
+#endif
 #include "webcface/transform.h"
 #include "webcface/exception.h"
 #include <cmath>

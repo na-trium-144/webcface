@@ -27,10 +27,11 @@ jobs:
         - dep: static
           os: ubuntu-22.04
           gcc_ver: 9
+          unity: "on"
         - dep: source
-          unity: "off"
           os: ubuntu-22.04
           gcc_ver: 9
+          unity: "off"
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4

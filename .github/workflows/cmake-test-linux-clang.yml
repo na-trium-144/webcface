@@ -22,7 +22,8 @@ jobs:
         # https://pkgs.org/download/clang にあわせる
         - os: ubuntu-22.04
           clang: 14
-        - os: ubuntu-22.04
+        - dep: source
+          os: ubuntu-22.04
           clang: 14
           unity: "off"
         - os: ubuntu-22.04

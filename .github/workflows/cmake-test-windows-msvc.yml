@@ -29,10 +29,12 @@ jobs:
           runner: windows-2019
           dep: static
           shared_flag: static
+          unity: "on"
         - arch: x64
           devcmd: amd64
           runner: windows-2019
           dep: source
+          shared_flag: shared
           unity: "off"
     runs-on: ${{matrix.runner}}
     steps:
