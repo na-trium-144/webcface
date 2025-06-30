@@ -10,6 +10,11 @@ FuncNotFound::FuncNotFound(const FieldBase &base)
                          "\"), "
                          "or client not connected to server") {}
 
+Rejection::Rejection(const FieldBase &base, const std::string &message)
+    : std::runtime_error("member(\"" + base.member_.decode() + "\").func(\"" +
+                         base.field_.decode() +
+                         "\") rejected: " + message) {}
+
 SanityError::SanityError(const char *message) : std::runtime_error(message) {}
 
 Intrusion::Intrusion(const FieldBase &base)
