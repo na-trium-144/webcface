@@ -184,6 +184,7 @@ var hierarchy =
     [ "InputRef", "classwebcface_1_1InputRef.html", null ],
     [ "InputRefState", "structwebcface_1_1internal_1_1InputRefState.html", null ],
     [ "invalid_argument", null, [
+      [ "FuncSignatureMismatch", "structwebcface_1_1FuncSignatureMismatch.html", null ],
       [ "Intrusion", "structwebcface_1_1Intrusion.html", null ],
       [ "InvalidArgument", "structwebcface_1_1InvalidArgument.html", null ]
     ] ],

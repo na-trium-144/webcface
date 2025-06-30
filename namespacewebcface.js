@@ -62,6 +62,7 @@ var namespacewebcface =
     [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],
     [ "FuncListener", "classwebcface_1_1FuncListener.html", "classwebcface_1_1FuncListener" ],
     [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", "structwebcface_1_1FuncNotFound" ],
+    [ "FuncSignatureMismatch", "structwebcface_1_1FuncSignatureMismatch.html", "structwebcface_1_1FuncSignatureMismatch" ],
     [ "Geometry", "structwebcface_1_1Geometry.html", "structwebcface_1_1Geometry" ],
     [ "Image", "classwebcface_1_1Image.html", "classwebcface_1_1Image" ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html", "classwebcface_1_1ImageFrame" ],

@@ -73,9 +73,10 @@ var searchData=
   ['funcreturntypecheck_3c_20std_3a_3ais_5fsame_5fv_3c_20ret_2c_20void_20_3e_7c_7cstd_3a_3ais_5fconstructible_5fv_3c_20valadaptor_2c_20ret_20_3e_20_3e_70',['FuncReturnTypeCheck&lt; std::is_same_v&lt; Ret, void &gt;||std::is_constructible_v&lt; ValAdaptor, Ret &gt; &gt;',['../structwebcface_1_1traits_1_1FuncReturnTypeCheck.html',1,'webcface::traits']]],
   ['funcreturntypecheck_3c_20true_20_3e_71',['FuncReturnTypeCheck&lt; true &gt;',['../structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html',1,'webcface::traits']]],
   ['funcreturntypetrait_72',['FuncReturnTypeTrait',['../structwebcface_1_1traits_1_1FuncReturnTypeTrait.html',1,'webcface::traits']]],
-  ['funcsignaturetrait_73',['FuncSignatureTrait',['../structwebcface_1_1traits_1_1FuncSignatureTrait.html',1,'webcface::traits']]],
-  ['funcsignaturetrait_3c_20ret_28_2a_29_28args_2e_2e_2e_29_3e_74',['FuncSignatureTrait&lt; Ret(*)(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html',1,'webcface::traits']]],
-  ['funcsignaturetrait_3c_20ret_28args_2e_2e_2e_29_3e_75',['FuncSignatureTrait&lt; Ret(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html',1,'webcface::traits']]],
-  ['funcsignaturetrait_3c_20ret_28t_3a_3a_2a_29_28args_2e_2e_2e_29_20const_20_3e_76',['FuncSignatureTrait&lt; Ret(T::*)(Args...) const &gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html',1,'webcface::traits']]],
-  ['funcsignaturetrait_3c_20ret_28t_3a_3a_2a_29_28args_2e_2e_2e_29_3e_77',['FuncSignatureTrait&lt; Ret(T::*)(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html',1,'webcface::traits']]]
+  ['funcsignaturemismatch_73',['FuncSignatureMismatch',['../structwebcface_1_1FuncSignatureMismatch.html',1,'webcface']]],
+  ['funcsignaturetrait_74',['FuncSignatureTrait',['../structwebcface_1_1traits_1_1FuncSignatureTrait.html',1,'webcface::traits']]],
+  ['funcsignaturetrait_3c_20ret_28_2a_29_28args_2e_2e_2e_29_3e_75',['FuncSignatureTrait&lt; Ret(*)(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html',1,'webcface::traits']]],
+  ['funcsignaturetrait_3c_20ret_28args_2e_2e_2e_29_3e_76',['FuncSignatureTrait&lt; Ret(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html',1,'webcface::traits']]],
+  ['funcsignaturetrait_3c_20ret_28t_3a_3a_2a_29_28args_2e_2e_2e_29_20const_20_3e_77',['FuncSignatureTrait&lt; Ret(T::*)(Args...) const &gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html',1,'webcface::traits']]],
+  ['funcsignaturetrait_3c_20ret_28t_3a_3a_2a_29_28args_2e_2e_2e_29_3e_78',['FuncSignatureTrait&lt; Ret(T::*)(Args...)&gt;',['../structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html',1,'webcface::traits']]]
 ];
