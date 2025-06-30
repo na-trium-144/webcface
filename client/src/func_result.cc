@@ -50,12 +50,10 @@ void CallHandle::reach(bool found) const {
             if (!found) {
                 data->finished = true;
                 data->is_error = true;
-                try {
-                    throw FuncNotFound(*this);
-                } catch (const FuncNotFound &e) {
-                    data->rejection = SharedString::encode(e.what());
-                    data->result_p.set_exception(std::current_exception());
-                }
+                data->rejection =
+                    SharedString::encode(FuncNotFound(*this).what());
+                data->result_p.set_exception(
+                    std::make_exception_ptr(FuncNotFound(*this)));
                 data->callFinishEvent();
             }
             data->cond.notify_all();
@@ -100,11 +98,8 @@ void CallHandle::reject(const ValAdaptor &message) const {
             data->finished = true;
             data->is_error = true;
             data->rejection = message;
-            try {
-                throw Rejection(data->base, message.asStringRef());
-            } catch (const Rejection &) {
-                data->result_p.set_exception(std::current_exception());
-            }
+            data->result_p.set_exception(std::make_exception_ptr(
+                Rejection(data->base, message.asStringRef())));
             data->callFinishEvent();
             data->cond.notify_all();
         } else {
