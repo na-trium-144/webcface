@@ -18,6 +18,10 @@ Intrusion::Intrusion(const FieldBase &base)
 
 PromiseError::PromiseError(const char *message) : std::runtime_error(message) {}
 
+FuncSignatureMismatch::FuncSignatureMismatch(const char *message)
+    : std::invalid_argument(message) {}
+FuncSignatureMismatch::FuncSignatureMismatch(const std::string &message)
+    : std::invalid_argument(message) {}
 InvalidArgument::InvalidArgument(const char *message)
     : std::invalid_argument(message) {}
 InvalidArgument::InvalidArgument(const std::string &message)

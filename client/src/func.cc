@@ -117,7 +117,7 @@ int Func::index() const {
 const Func &Func::setIndex(int index) const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (!func_info) {
-        throw InvalidArgument(
+        throw FuncSignatureMismatch(
             "Func::setIndex: Cannot set index before function itself");
     } else {
         (*func_info)->index = index;
@@ -128,12 +128,12 @@ const Func &Func::setIndex(int index) const {
 const Func &Func::setArgs(const std::vector<Arg> &args) const {
     auto func_info = setCheck()->func_store.getRecv(*this);
     if (!func_info) {
-        throw InvalidArgument(
+        throw FuncSignatureMismatch(
             "Func::setArgs: Cannot set args before function itself");
     } else {
         if ((*func_info)->args.has_value()) {
             if ((*func_info)->args->size() != args.size()) {
-                throw InvalidArgument(
+                throw FuncSignatureMismatch(
                     "Func::setArgs: Number of arguments does not match, given "
                     "parameters: " +
                     std::to_string(args.size()) + " actual arguments: " +
@@ -151,8 +151,9 @@ const Func &Func::setArgs(const std::vector<Arg> &args) const {
 const Func &Func::setReturnType(ValType return_type) const {
     auto func_info = setCheck()->func_store.getRecv(*this);
     if (!func_info) {
-        throw InvalidArgument("Func::setReturnType: Cannot set return type "
-                              "before function itself");
+        throw FuncSignatureMismatch(
+            "Func::setReturnType: Cannot set return type "
+            "before function itself");
     } else {
         (*func_info)->return_type = return_type;
         return *this;

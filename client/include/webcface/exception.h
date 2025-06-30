@@ -62,6 +62,16 @@ struct WEBCFACE_DLL PromiseError : public std::runtime_error {
 };
 
 /*!
+ * \brief Funcにセットしようとしたパラメーターが実際の関数と一致しない場合の例外
+ * \since ver2.10
+ * 
+ */
+struct WEBCFACE_DLL FuncSignatureMismatch : public std::invalid_argument {
+    explicit FuncSignatureMismatch(const char *message);
+    explicit FuncSignatureMismatch(const std::string &message);
+};
+
+/*!
  * \brief その他のパラメーターエラー
  * \since ver2.10
  * 
