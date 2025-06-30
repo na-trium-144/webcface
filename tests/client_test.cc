@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include "client_test.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/canvas3d.h"

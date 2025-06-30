@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include "client_test.h"
 #include "webcface/common/internal/message/func.h"
 #include "webcface/common/internal/message/sync.h"

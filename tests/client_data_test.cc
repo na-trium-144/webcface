@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
@@ -5,10 +6,6 @@
 
 using namespace webcface;
 using namespace webcface::internal;
-
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class SyncDataStore2Test : public ::testing::Test {
   protected:

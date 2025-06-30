@@ -45,6 +45,7 @@ jobs:
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
         "-Dpkg_config_path=['$(brew --prefix)/opt/curl/lib/pkgconfig','$(brew --prefix)/opt/vips-lite/lib/pkgconfig']"
+        --unity=on
       # "-Dcmake_prefix_path=['$(brew --prefix)/opt/crow-unix-socket']"
       # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
       # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
@@ -123,6 +124,7 @@ jobs:
         -Dtest_wait=1000
         --prefix=${{github.workspace}}/build/install
         --cross-file scripts/cross/macos_arm64
+        --unity=on
 
     - name: Compile
       run: meson compile -C build || meson compile -C build

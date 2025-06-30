@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include "webcface/common/internal/message/pack.h"
 #include "webcface/common/internal/message/func.h"
 #include <gtest/gtest.h>
@@ -7,15 +8,7 @@
 #include <stdexcept>
 #include <thread>
 
-#ifndef WEBCFACE_TEST_TIMEOUT
-#define WEBCFACE_TEST_TIMEOUT 10
-#endif
-
 using namespace webcface;
-
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class FuncTest : public ::testing::Test {
   protected:

@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include "webcface/common/internal/message/pack.h"
 #include "webcface/common/internal/message/func.h"
 #include <gtest/gtest.h>
@@ -18,18 +19,6 @@
 #include "dummy_server.h"
 
 using namespace webcface;
-
-#ifndef WEBCFACE_TEST_TIMEOUT
-#define WEBCFACE_TEST_TIMEOUT 10
-#endif
-
-static void wait() {
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-}
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class CClientTest : public ::testing::Test {
   protected:

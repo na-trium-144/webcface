@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
@@ -5,10 +6,6 @@
 #include <stdexcept>
 
 using namespace webcface;
-
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class ImageFrameTest : public ::testing::Test {
   protected:

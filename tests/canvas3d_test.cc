@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include <gtest/gtest.h>
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/internal/client_internal.h"
@@ -8,10 +9,6 @@
 #include <stdexcept>
 
 using namespace webcface;
-
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class Canvas3DTest : public ::testing::Test {
   protected:

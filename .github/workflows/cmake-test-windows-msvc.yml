@@ -66,6 +66,7 @@ jobs:
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
         --cross-file scripts/cross/msvc_${{matrix.arch}}
+        --unity=on
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile

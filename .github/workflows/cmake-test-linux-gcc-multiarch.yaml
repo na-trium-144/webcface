@@ -43,7 +43,7 @@ jobs:
             apt-get install -q -y build-essential gcc-14 g++-14 cmake python3-pip file git python3-pip ninja-build zip pkg-config
             pip install meson --break-system-packages
             cd /workspace
-            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/workspace/build/install -Dtest_wait=200
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/workspace/build/install -Dtest_wait=200 --unity=on
             meson compile -C build || meson compile -C build
             meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
             meson test --benchmark -C build --verbose --suite webcface
