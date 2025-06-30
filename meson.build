@@ -175,6 +175,7 @@ project('webcface', 'c', 'cpp',
     'libffi:werror=false',
     'libffi:unity=off',
     'google-benchmark:werror=false',
+    'google-benchmark:tests=disabled',
   ],
 )
 fs = import('fs')
