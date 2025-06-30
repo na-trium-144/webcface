@@ -349,6 +349,7 @@ var hierarchy =
     [ "runtime_error", null, [
       [ "FuncNotFound", "structwebcface_1_1FuncNotFound.html", null ],
       [ "PromiseError", "structwebcface_1_1PromiseError.html", null ],
+      [ "Rejection", "structwebcface_1_1Rejection.html", null ],
       [ "SanityError", "structwebcface_1_1SanityError.html", null ]
     ] ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],

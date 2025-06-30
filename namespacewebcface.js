@@ -82,6 +82,7 @@ var namespacewebcface =
     [ "Promise", "classwebcface_1_1Promise.html", "classwebcface_1_1Promise" ],
     [ "PromiseError", "structwebcface_1_1PromiseError.html", "structwebcface_1_1PromiseError" ],
     [ "Queue", "classwebcface_1_1Queue.html", "classwebcface_1_1Queue" ],
+    [ "Rejection", "structwebcface_1_1Rejection.html", "structwebcface_1_1Rejection" ],
     [ "RobotJoint", "classwebcface_1_1RobotJoint.html", "classwebcface_1_1RobotJoint" ],
     [ "RobotLink", "classwebcface_1_1RobotLink.html", "classwebcface_1_1RobotLink" ],
     [ "RobotModel", "classwebcface_1_1RobotModel.html", "classwebcface_1_1RobotModel" ],
