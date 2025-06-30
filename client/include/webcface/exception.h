@@ -24,6 +24,16 @@ struct FieldBase;
 struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
     explicit FuncNotFound(const FieldBase &base);
 };
+/*!
+ * \brief Funcがrejectした(例外を投げた)場合の例外
+ * \since ver2.10
+ * 
+ * ver2.9までは std::runtime_error を投げていた
+ * 
+ */
+struct WEBCFACE_DLL Rejection : public std::runtime_error {
+    explicit Rejection(const FieldBase &base, const std::string &message);
+};
 
 /*!
  * \brief 未初期化の変数にアクセスした場合に発生する例外

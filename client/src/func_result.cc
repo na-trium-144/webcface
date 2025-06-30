@@ -101,8 +101,8 @@ void CallHandle::reject(const ValAdaptor &message) const {
             data->is_error = true;
             data->rejection = message;
             try {
-                throw std::runtime_error(message.asStringRef());
-            } catch (...) {
+                throw Rejection(data->base, message.asStringRef());
+            } catch (const Rejection &) {
                 data->result_p.set_exception(std::current_exception());
             }
             data->callFinishEvent();
