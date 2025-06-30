@@ -1,4 +1,6 @@
+#ifndef _USE_MATH_DEFINES
 #define _USE_MATH_DEFINES // NOLINT
+#endif
 #include <webcface/client.h>
 #include <webcface/canvas3d.h>
 #include <chrono>
