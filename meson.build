@@ -472,7 +472,10 @@ webcface_config_args = [
   '-DWEBCFACE_MESON',
 ]
 if get_option('unity') == 'on' or (get_option('unity') == 'subprojects' and meson.is_subproject())
-  webcface_config_args += '-DWEBCFACE_UNITY'
+  webcface_config_args += [
+    '-DWEBCFACE_UNITY',
+    '-D_USE_MATH_DEFINES',
+  ]
 endif
 webcface_config_dep = declare_dependency(
   include_directories: [webcface_config_inc],
