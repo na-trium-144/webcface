@@ -117,7 +117,8 @@ int Func::index() const {
 const Func &Func::setIndex(int index) const {
     auto func_info = dataLock()->func_store.getRecv(*this);
     if (!func_info) {
-        throw std::invalid_argument("setIndex failed: Func not set");
+        throw FuncSignatureMismatch(
+            "Func::setIndex: Cannot set index before function itself");
     } else {
         (*func_info)->index = index;
         return *this;
@@ -127,14 +128,16 @@ const Func &Func::setIndex(int index) const {
 const Func &Func::setArgs(const std::vector<Arg> &args) const {
     auto func_info = setCheck()->func_store.getRecv(*this);
     if (!func_info) {
-        throw std::invalid_argument("setArgs failed: Func not set");
+        throw FuncSignatureMismatch(
+            "Func::setArgs: Cannot set args before function itself");
     } else {
         if ((*func_info)->args.has_value()) {
             if ((*func_info)->args->size() != args.size()) {
-                throw std::invalid_argument(
-                    "setArgs failed: Number of args does not match, size: " +
-                    std::to_string(args.size()) +
-                    " actual: " + std::to_string((*func_info)->args->size()));
+                throw FuncSignatureMismatch(
+                    "Func::setArgs: Number of arguments does not match, given "
+                    "parameters: " +
+                    std::to_string(args.size()) + " actual arguments: " +
+                    std::to_string((*func_info)->args->size()));
             }
             for (std::size_t i = 0; i < args.size(); i++) {
                 (*func_info)->args->at(i).mergeConfig(args[i]);
@@ -148,7 +151,9 @@ const Func &Func::setArgs(const std::vector<Arg> &args) const {
 const Func &Func::setReturnType(ValType return_type) const {
     auto func_info = setCheck()->func_store.getRecv(*this);
     if (!func_info) {
-        throw std::invalid_argument("setReturnType failed: Func not set");
+        throw FuncSignatureMismatch(
+            "Func::setReturnType: Cannot set return type "
+            "before function itself");
     } else {
         (*func_info)->return_type = return_type;
         return *this;

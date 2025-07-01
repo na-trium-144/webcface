@@ -2,6 +2,7 @@
 #include "component_view.h"
 #include "component_canvas2d.h"
 #include "component_canvas3d.h"
+#include "webcface/exception.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -423,7 +424,9 @@ struct Line {
     const Geometry &base;
     explicit Line(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 6) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 6 "
+                                  "properties for Line, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Point begin() const {
@@ -444,14 +447,16 @@ struct Polygon {
     const Geometry &base;
     explicit Polygon(const Geometry &rg) : base(rg) {
         if (base.properties.size() % 3 != 0 || size() == 0) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected "
+                                  "properties multiple of 3 for Polygon, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     std::size_t size() const { return base.properties.size() / 3; }
     Point at(std::size_t i) const {
         if (i >= size()) {
-            throw std::out_of_range("Polygon::at(" + std::to_string(i) +
-                                    "), size = " + std::to_string(size()));
+            throw OutOfRange("Polygon::at(" + std::to_string(i) +
+                             "), size = " + std::to_string(size()));
         }
         return Point{base.properties[i * 3 + 0], base.properties[i * 3 + 1],
                      base.properties[i * 3 + 2]};
@@ -472,7 +477,9 @@ struct Plane {
     const Geometry &base;
     explicit Plane(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 8) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 8 "
+                                  "properties for Plane, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Transform origin() const {
@@ -526,7 +533,9 @@ struct Box {
     const Geometry &base;
     explicit Box(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 6) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 6 "
+                                  "properties for Box, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Point vertex1() const {
@@ -549,7 +558,9 @@ struct Circle {
     const Geometry &base;
     explicit Circle(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 7) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 7 "
+                                  "properties for Circle, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Transform origin() const {
@@ -576,7 +587,9 @@ struct Cylinder {
     const Geometry &base;
     explicit Cylinder(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 8) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 8 "
+                                  "properties for Cylinder, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Transform origin() const {
@@ -600,7 +613,9 @@ struct Sphere {
     const Geometry &base;
     explicit Sphere(const Geometry &rg) : base(rg) {
         if (base.properties.size() != 4) {
-            throw std::invalid_argument("number of properties does not match");
+            throw InvalidArgument("Geometry type does not match: expected 4 "
+                                  "properties for Sphere, got " +
+                                  std::to_string(base.properties.size()));
         }
     }
     Point origin() const {

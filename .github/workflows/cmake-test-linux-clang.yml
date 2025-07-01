@@ -11,13 +11,16 @@ jobs:
     strategy:
       matrix:
         dep: ["apt", "source"]
-        clang: [7, 20, 14, 18]
+        clang: [7, 14, 18]
+        unity: ["on"]
         include:
         # https://github.com/KyleMayes/install-llvm-action/blob/master/assets.json の最新と最古
         - os: ubuntu-22.04
           clang: 7
-        - os: ubuntu-24.04
+        - dep: source
+          os: ubuntu-24.04
           clang: 20
+          unity: "off"
         # https://pkgs.org/download/clang にあわせる
         - os: ubuntu-22.04
           clang: 14
@@ -54,6 +57,7 @@ jobs:
         $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=200
         --force-fallback-for=libcurl
+        --unity=${{matrix.unity}}
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

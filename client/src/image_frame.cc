@@ -3,6 +3,7 @@
 
 #include "webcface/image_frame.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/exception.h"
 
 WEBCFACE_NS_BEGIN
 
@@ -44,7 +45,11 @@ ImageFrame::ImageFrame(const Size &size,
     : size_(size), data_(data), color_mode_(color_mode), cmp_mode_(cmp_mode) {
     if (cmp_mode == ImageCompressMode::raw &&
         rows() * cols() * channels() != static_cast<int>(data->size())) {
-        throw std::invalid_argument("data size does not match");
+        throw InvalidArgument(
+            "ImageFrame data size (" + std::to_string(data->size()) +
+            ") does not match with size parameters (" + std::to_string(rows()) +
+            " * " + std::to_string(cols()) + " * " +
+            std::to_string(channels()) + ")");
     }
 }
 ImageFrame::ImageFrame(const Size &size, const void *data,
@@ -72,7 +77,8 @@ int ImageFrame::channels() const {
     case ImageColorMode::rgba:
         return 4;
     default:
-        throw std::invalid_argument("unknown color format");
+        throw InvalidArgument("unknown color format " +
+                              std::to_string(static_cast<int>(color_mode_)));
     }
 }
 

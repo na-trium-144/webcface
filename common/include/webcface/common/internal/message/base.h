@@ -7,8 +7,13 @@
 #include "./fmt.h"
 #include "webcface/common/val_adaptor.h"
 
+#ifdef WEBCFACE_UNITY
+#include "./pack.h"
+#else
+// pack,unpackをする必要がない場合その宣言とmsgpackのincludeを省略する
 #ifndef MSGPACK_DEFINE_MAP
 #define MSGPACK_DEFINE_MAP(...)
+#endif
 #endif
 
 WEBCFACE_NS_BEGIN

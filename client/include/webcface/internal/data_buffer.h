@@ -120,7 +120,8 @@ class ViewBuf final : public std::stringbuf,
      *
      */
     void addVC(TemporalViewComponent &&vc);
-    void addText(std::string_view text, const TemporalViewComponent *vc = nullptr);
+    void addText(std::string_view text,
+                 const TemporalViewComponent *vc = nullptr);
     void syncSetBuf() { this->DataSetBuffer<TemporalViewComponent>::sync(); }
 
     explicit ViewBuf();
@@ -138,10 +139,10 @@ class Canvas2DDataBuf final : public DataSetBuffer<TemporalCanvas2DComponent> {
         : DataSetBuffer<TemporalCanvas2DComponent>(base) {}
     void onAdd() override { checkSize(); }
     void checkSize() const {
-        if (width_ <= 0 && height_ <= 0) {
-            throw std::invalid_argument("Canvas2D size is invalid (" +
-                                        std::to_string(width_) + ", " +
-                                        std::to_string(height_) + ")");
+        if (width_ <= 0 || height_ <= 0) {
+            throw InvalidArgument("invalid Canvas2D size (" +
+                                  std::to_string(width_) + ", " +
+                                  std::to_string(height_) + ")");
         }
     }
     void init(double width, double height) {

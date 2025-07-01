@@ -3,6 +3,7 @@
 #include "func_result.h"
 #include "arg.h"
 #include "trait.h"
+#include "exception.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -496,7 +497,7 @@ class WEBCFACE_DLL Func : protected Field {
         p.waitFinish();
         if (p.found()) {
             if (p.isError()) {
-                throw std::runtime_error(p.rejection());
+                throw Rejection(*this, p.rejection());
             } else {
                 return p.response();
             }

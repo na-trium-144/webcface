@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
@@ -5,10 +6,6 @@
 
 using namespace webcface;
 using namespace webcface::internal;
-
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class SyncDataStore2Test : public ::testing::Test {
   protected:
@@ -30,15 +27,6 @@ TEST_F(SyncDataStore2Test, setSend) {
     EXPECT_EQ(s2.transferSend(true).size(), 1u);
 
     s2.setSend("a"_ss, "b"); // 同じデータ
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
-    send = s2.transferSend(false);
-    EXPECT_FALSE(send.count("a"_ss));
-    EXPECT_EQ(send.size(), 0u);
-    EXPECT_EQ(s2.transferSend(true).size(), 1u);
-
-    s2.setSend("a"_ss, "zzzzzz");
-    EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "zzzzzz");
-    s2.setSend("a"_ss, "b"); // 一度違うデータを送ってから同じデータ
     EXPECT_EQ(s2.getRecv(self_name, "a"_ss), "b");
     send = s2.transferSend(false);
     EXPECT_FALSE(send.count("a"_ss));

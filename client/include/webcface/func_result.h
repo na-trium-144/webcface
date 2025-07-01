@@ -20,19 +20,6 @@ struct FuncInfo;
 struct ClientData;
 } // namespace internal
 
-/*!
- * \brief Funcの実行ができなかった場合発生する例外
- *
- * ValueやTextで参照先が見つからなかった場合はこれではなく単にnulloptが返る
- *
- * MSVCではexceptionをexportしないほうがよいらしくC4275警告を出すが、
- * Macではexportしないとcatchできなくなる
- *
- */
-struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
-    explicit FuncNotFound(const FieldBase &base);
-};
-
 #ifdef _MSC_VER
 #pragma warning(push)
 #pragma warning(disable : 4996)

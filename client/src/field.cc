@@ -9,6 +9,7 @@
 #include "webcface/canvas2d.h"
 #include "webcface/canvas3d.h"
 #include "webcface/log.h"
+#include "webcface/exception.h"
 #include "webcface/internal/client_internal.h"
 #include <stdexcept>
 #include <algorithm>
@@ -201,14 +202,14 @@ std::shared_ptr<internal::ClientData> Field::dataLock() const {
     if (auto data = data_w.lock()) {
         return data;
     }
-    throw std::runtime_error("Cannot access client data");
+    throw SanityError(
+        "Tried to access uninitialized or destroyed WebCFace Client");
 }
 
 std::shared_ptr<internal::ClientData> Field::setCheck() const {
     auto data = dataLock();
     if (!data->isSelf(*this)) {
-        throw std::invalid_argument(
-            "Cannot set data to member other than self");
+        throw Intrusion(*this);
     }
     return data;
 }

@@ -302,11 +302,7 @@ void internal::ClientData::onRecv(
                 if (!r.started) {
                     this->func_result_store.removeResult(r.caller_id);
                 }
-            } catch (const std::runtime_error &e) {
-                this->logger_internal->error(
-                    "error receiving call response id={}: {}", r.caller_id,
-                    e.what());
-            } catch (const std::out_of_range &e) {
+            } catch (const std::exception &e) {
                 this->logger_internal->error(
                     "error receiving call response id={}: {}", r.caller_id,
                     e.what());
@@ -328,13 +324,9 @@ void internal::ClientData::onRecv(
                     // todo: 戻り値の型?
                 }
                 this->func_result_store.removeResult(r.caller_id);
-            } catch (const std::runtime_error &e) {
+            } catch (const std::exception &e) {
                 this->logger_internal->error(
                     "error receiving call result id={}: {}", r.caller_id,
-                    e.what());
-            } catch (const std::out_of_range &e) {
-                this->logger_internal->error(
-                    "error receiving call response id={}: {}", r.caller_id,
                     e.what());
             }
             break;

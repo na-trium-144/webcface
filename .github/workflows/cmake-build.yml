@@ -48,7 +48,7 @@ jobs:
             apt-get install -q -y build-essential cmake file git python3-pip ninja-build zip pkg-config
             pip3 install meson
             cd /workspace
-            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/opt/webcface -Dversion_suffix= -Ddownload_webui=disabled -Dpkgconfig.relocatable=true --unity=on
             meson compile -C build || meson compile -C build
             DESTDIR=/workspace/dist meson install -C build --skip-subprojects
 
@@ -153,6 +153,7 @@ jobs:
         -Ddownload_webui=disabled
         -Dpkgconfig.relocatable=true
         $([[ ${{matrix.arch}} = arm64 ]] && echo --cross-file scripts/cross/macos_arm64)
+        --unity=on
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: install
@@ -212,10 +213,10 @@ jobs:
           devcmd: amd64_x86
         - arch: x64
           devcmd: amd64
-        # - arch: arm64
-        #   devcmd: amd64_arm64
-    runs-on: windows-2019
-    name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
+        - arch: arm64
+          devcmd: amd64_arm64
+    runs-on: windows-2022
+    name: Build on Windows-2022 ${{matrix.arch}} ${{matrix.buildtype}}
     steps:
     - uses: actions/checkout@v4
     - name: Install Meson
@@ -241,6 +242,7 @@ jobs:
         -Dserver=disabled
         "-Dpkgconfig.relocatable=true"
         --cross-file scripts/cross/msvc_${{matrix.arch}}
+        --unity=on
     - name: Setup Meson release
       if: matrix.buildtype == 'release'
       run: >
@@ -253,6 +255,7 @@ jobs:
         -Dtests=disabled
         "-Dpkgconfig.relocatable=true"
         --cross-file scripts/cross/msvc_${{matrix.arch}}
+        --unity=on
     - name: Compile
       run: |
         meson compile -C build
