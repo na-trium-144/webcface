@@ -11,24 +11,26 @@ jobs:
     strategy:
       matrix:
         arch: ["x86", "x64", "arm64"]
+        runner: ["windows-2022"]
         dep: ["source"]
         shared_flag: ["shared"]
         include:
         - arch: x86
-          runner: windows-2022
           devcmd: amd64_x86
         - arch: x64
-          runner: windows-2022
           devcmd: amd64
         - arch: arm64
-          runner: windows-2022
           devcmd: amd64_arm64
         - arch: arm64
           runner: windows-11-arm
           devcmd: arm64
+          dep: source
+          shared_flag: shared
         - arch: x64
           runner: windows-2025
           devcmd: amd64
+          dep: source
+          shared_flag: shared
         - arch: x64
           devcmd: amd64
           runner: windows-2022
