@@ -472,7 +472,7 @@ You can download the exe or zip file for Windows from the [webcface-package repo
     * To use command-line tools or import it with Meson or CMake, you need to manually add the bin/ in the extracted webcface directory to the PATH environment variable.
 * You need to install the [latest Visual C++ Redistributable Package](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version) if it's not installed.
 * It should work on relatively new Windows 10 or later. It has not been tested on older Windows.
-* Since it is built with the latest version of Visual Studio 2019, linking to the webcface library from older versions of Visual Studio may not work properly.
+* Since it is built with the latest version of Visual Studio 2022, linking to the webcface library from older versions of Visual Studio may not work properly.
 
 MinGW binaries are not distributed at this time (please build from source)
 
@@ -494,7 +494,7 @@ MinGW binaries are not distributed at this time (please build from source)
 > * [最新の Visual C++ 再頒布可能パッケージ](https://learn.microsoft.com/ja-jp/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
 > がインストールされていない場合はインストールする必要があります。
 > * 比較的新しいWindows10以上であれば動作するはずです。古いWindowsでは動作確認していません。
-> * いずれも最新バージョンの Visual Studio 2019 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
+> * いずれも最新バージョンの Visual Studio 2022 でビルドしているため、それよりも古い Visual Studio からwebcfaceライブラリにリンクすると正常動作しないかもしれません。
 > 
 > MinGW用バイナリは今のところ配布していません(ソースからビルドしてください)
 
