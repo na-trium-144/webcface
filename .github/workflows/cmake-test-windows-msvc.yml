@@ -11,23 +11,31 @@ jobs:
     strategy:
       matrix:
         arch: ["x86", "x64", "arm64"]
+        runner: ["windows-2022"]
         dep: ["source"]
         shared_flag: ["shared"]
         unity: ["on"]
         include:
         - arch: x86
-          runner: windows-2019
           devcmd: amd64_x86
         - arch: x64
-          runner: windows-2019
           devcmd: amd64
         - arch: arm64
-          runner: windows-11-arm
           devcmd: amd64_arm64
+        - arch: arm64
+          runner: windows-11-arm
+          devcmd: arm64
+          dep: source
+          shared_flag: shared
+        - arch: x64
+          runner: windows-2025
+          devcmd: amd64
+          dep: source
+          shared_flag: shared
         - arch: x64
           devcmd: amd64
-          runner: windows-2019
-          dep: static
+          runner: windows-2022
+          dep: source
           shared_flag: static
           unity: "on"
         - arch: x64
@@ -82,12 +90,14 @@ jobs:
         meson compile -C build
 
     - name: Test
+      if: matrix.devcmd != 'amd64_arm64'
       run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
     - name: Benchmark
+      if: matrix.devcmd != 'amd64_arm64'
       run: meson test --benchmark -C build --verbose --suite webcface
 
     - name: Check Exported Symbol
-      if: matrix.dep == 'source'
+      if: matrix.dep == 'source' && matrix.devcmd != 'arm64'
       run: |
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" &&      dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf"
         C:\msys64\usr\bin\bash.exe -c "export PATH=\"/usr/bin:$PATH\" && [[ $(dumpbin //exports build/*webcface*.dll | grep -A 10000 RVA | grep -B 10000 Summary | grep -v webcface | grep -v wcf | wc -l) = 4 ]]"

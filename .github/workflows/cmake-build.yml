@@ -213,10 +213,10 @@ jobs:
           devcmd: amd64_x86
         - arch: x64
           devcmd: amd64
-        # - arch: arm64
-        #   devcmd: amd64_arm64
-    runs-on: windows-2019
-    name: Build on Windows-2019 ${{matrix.arch}} ${{matrix.buildtype}}
+        - arch: arm64
+          devcmd: amd64_arm64
+    runs-on: windows-2022
+    name: Build on Windows-2022 ${{matrix.arch}} ${{matrix.buildtype}}
     steps:
     - uses: actions/checkout@v4
     - name: Install Meson
