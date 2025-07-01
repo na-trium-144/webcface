@@ -13,7 +13,7 @@ var searchData=
   ['send_5flen_10',['send_len',['../structwebcface_1_1server_1_1MemberData.html#a87a99f62a98bec91542c1bc1d1a18ba5',1,'webcface::server::MemberData']]],
   ['sendping_11',['sendPing',['../structwebcface_1_1server_1_1MemberData.html#ae1340d1280818fa14b61e2bf6e637366',1,'webcface::server::MemberData']]],
   ['sent_5flines_12',['sent_lines',['../structwebcface_1_1internal_1_1LogData.html#a1bed73df9aee16153d0c574f480ed97b',1,'webcface::internal::LogData']]],
-  ['server_13',['server',['../latency-text_8cc.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'server:&#160;latency-text.cc'],['../latency-value_8cc.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'server:&#160;latency-value.cc'],['../classwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage::server']]],
+  ['server_13',['server',['../namespaceBM__LatencyLongText.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'BM_LatencyLongText::server'],['../namespaceBM__LatencyMultipleValue.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'BM_LatencyMultipleValue::server'],['../classwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage::server']]],
   ['server_14',['Server',['../classwebcface_1_1server_1_1Server.html#a55738b58645ac50e1fc5ea04d8195839',1,'webcface::server::Server::Server(std::uint16_t port, int level, int keep_log=1000, spdlog::sink_ptr sink=nullptr, std::shared_ptr&lt; spdlog::logger &gt; logger=nullptr)'],['../classwebcface_1_1server_1_1Server.html#aca339e57a30b1c2a5e0b9ee496353536',1,'webcface::server::Server::Server(const Server &amp;)=delete'],['../classwebcface_1_1server_1_1Server.html#a524b25f7f21b5687d141037b130dd4e6',1,'webcface::server::Server::Server(Server &amp;&amp;)=delete'],['../classwebcface_1_1server_1_1Server.html',1,'Server']]],
   ['server_2eh_15',['server.h',['../server_2server_8h.html',1,'(Global Namespace)'],['../server_8h.html',1,'(Global Namespace)']]],
   ['server_5fping_5fwait_16',['server_ping_wait',['../classwebcface_1_1server_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245',1,'webcface::server::Server']]],
@@ -115,7 +115,7 @@ var searchData=
   ['sync_5finit_112',['sync_init',['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a3e39a679980a898b394a7b68f942b913',1,'webcface::message::MessageKind::sync_init'],['../structwebcface_1_1server_1_1MemberData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8',1,'webcface::server::MemberData::sync_init']]],
   ['sync_5finit_5fend_113',['sync_init_end',['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484a1379e3327a8a978798a0986b0782e2cd',1,'webcface::message::MessageKind::sync_init_end'],['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#a58c7facb25080a3b127ced037129ef98',1,'webcface::internal::ClientData::WsData::sync_init_end']]],
   ['sync_5fqueue_114',['sync_queue',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#ae7e18e346511472d846f4779aa202138',1,'webcface::internal::ClientData::WsData']]],
-  ['sync_5fthread_115',['sync_thread',['../latency-value_8cc.html#ac6921c4f62258da5292e151a7b0797bf',1,'sync_thread:&#160;latency-value.cc'],['../latency-text_8cc.html#ac6921c4f62258da5292e151a7b0797bf',1,'sync_thread:&#160;latency-text.cc']]],
+  ['sync_5fthread_115',['sync_thread',['../namespaceBM__LatencyMultipleValue.html#ac6921c4f62258da5292e151a7b0797bf',1,'BM_LatencyMultipleValue::sync_thread'],['../namespaceBM__LatencyLongText.html#ac6921c4f62258da5292e151a7b0797bf',1,'BM_LatencyLongText::sync_thread']]],
   ['sync_5ftime_5fstore_116',['sync_time_store',['../structwebcface_1_1internal_1_1ClientData.html#aa89dd080f4853bbd8e89ea4815256cce',1,'webcface::internal::ClientData']]],
   ['syncdata_117',['syncData',['../structwebcface_1_1internal_1_1ClientData_1_1SyncData.html#ae4bb1359dbadbf4ee308d36f7c4c1d97',1,'webcface::internal::ClientData::SyncData']]],
   ['syncdata_118',['SyncData',['../structwebcface_1_1internal_1_1ClientData_1_1SyncData.html',1,'webcface::internal::ClientData']]],
@@ -135,8 +135,8 @@ var searchData=
   ['syncimpl_132',['syncImpl',['../structwebcface_1_1internal_1_1ClientData.html#a99832ffc61cf60b3538c8f57da9080be',1,'webcface::internal::ClientData']]],
   ['syncinit_133',['SyncInit',['../structwebcface_1_1message_1_1SyncInit.html',1,'webcface::message']]],
   ['syncinitend_134',['SyncInitEnd',['../structwebcface_1_1message_1_1SyncInitEnd.html',1,'webcface::message']]],
-  ['synclongtext_135',['SyncLongText',['../sync-text_8cc.html#af1447239471a7fdb86f37b419738d649',1,'sync-text.cc']]],
-  ['syncmultiplevalue_136',['SyncMultipleValue',['../sync-value_8cc.html#ad428bfa5477ffdacb34b8648beaf1d24',1,'sync-value.cc']]],
+  ['synclongtext_135',['SyncLongText',['../sync-text_8cc.html#af694ca4d1c835f124b55d6b5d40da112',1,'sync-text.cc']]],
+  ['syncmultiplevalue_136',['SyncMultipleValue',['../sync-value_8cc.html#ad66e533251a9449ac4799fda6b78d46a',1,'sync-value.cc']]],
   ['syncsetbuf_137',['syncSetBuf',['../classwebcface_1_1internal_1_1ViewBuf.html#adacae394aa1dc37109abcfd804ff09a6',1,'webcface::internal::ViewBuf']]],
   ['synctime_138',['syncTime',['../classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b',1,'webcface::Member']]]
 ];

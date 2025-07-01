@@ -318,10 +318,9 @@ Entry</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 例えば <del>Member::values() で</del> <span class="since-c">1.6</span> Member::valueEntries() でそのMemberが送信しているvalueのリストが得られます。</p>
 <p class="startli"><a class="el" href="md_docs_252__text.html">Text</a>, <a class="el" href="md_docs_253__func.html">Func</a>, <a class="el" href="md_docs_254__view.html">View</a> など他のデータ型に関しても同様に <code>textEntries()</code>, <code>funcEntries()</code>, <code>viewEntries()</code> などで取得できます。</p>
-<div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> &amp;<a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>: wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).valueEntries()){</div>
+<div class="fragment"><div class="line"><span class="keywordflow">for</span>(<span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> &amp;v: wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).valueEntries()){</div>
 <div class="line">    <span class="comment">// ...</span></div>
 <div class="line">}</div>
-<div class="ttc" id="alatency-value_8cc_html_ac8859e8c1ce357c4c8b37bbb1936ba1c"><div class="ttname"><a href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a></div><div class="ttdeci">static int v</div><div class="ttdef"><b>Definition</b> latency-value.cc:37</div></div>
 </div><!-- fragment --><p class="startli"><span class="since-c">2.1</span> Value::exists() でそのデータが送信されているかどうかを確認できます。 tryGet() と違い、データそのものを受信するリクエストは送られません。 他のデータ型に関しても同様に <code>Text::exists()</code>, <code>Func::exists()</code>, <code>View::exists()</code> などが使えます。</p>
 <p class="startli"><span class="since-c">1.11</span> Field::valueEntries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">std::vector&lt;webcface::Value&gt; values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).valueEntries();</div>
 <div class="line"><span class="comment">// pos.x, pos.y などのvalueが得られる</span></div>
@@ -362,7 +361,7 @@ Entry イベント</h3>
 <p>イベントの詳細な使い方はMemberEntryと同様です(<a class="el" href="md_docs_242__member.html">Member</a> のページを参照してください)。 このクライアントが接続する前から存在したデータについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
 <p>ValueEntryではデータの存在を知ることしかできません。 データの内容を取得するにはコールバックの中で改めてget()やrequest()を呼ぶか、 後述のValueChangeイベントを使ってください。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
-<li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> Member::onValueEntry() でコールバックを設定できます。 新しく追加されたValueの情報が引数に渡されます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> <a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>){ <span class="comment">/* ... */</span> });</div>
+<li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> Member::onValueEntry() でコールバックを設定できます。 新しく追加されたValueの情報が引数に渡されます。 </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onValueEntry([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 </div><!-- fragment --><p> ver1.11以前では <code>.onValueEntry().appendListener(...)</code></p>
 <p class="startli">他のデータ型に関しても同様に <code>onTextEntry()</code>, <code>onFuncEntry()</code>, <code>onViewEntry()</code> などが使えます。</p>
 <dl class="section note"><dt>Note</dt><dd><ul>
@@ -435,7 +434,7 @@ Change イベント, Sync イベント</h3>
 <p>イベントの詳細な使い方はonMemberEntryと同様です(<a class="el" href="md_docs_242__member.html">Member</a> のページを参照してください)。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> <span class="since-c">2.0</span> Value::onChange(), Member::onSync() でコールバックを設定できます。 他のデータ型についても同様です。</p>
-<p class="startli">引数にはそれぞれそのValue自身,Member自身が渡されます。 (キャプチャでも同じことができるのでなくてもよい) </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> <a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>){ <span class="comment">/* ... */</span> });</div>
+<p class="startli">引数にはそれぞれそのValue自身,Member自身が渡されます。 (キャプチャでも同じことができるのでなくてもよい) </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){ <span class="comment">/* ... */</span> });</div>
 <div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onSync([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){ <span class="comment">/* ... */</span> });</div>
 <div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:23</div></div>
 </div><!-- fragment --><ul>
@@ -445,8 +444,8 @@ Change イベント, Sync イベント</h3>
 </div><!-- fragment --> (ver1.11以前は appendListener())</li>
 </ul>
 <p class="startli">すべてのデータを受信したい場合は ValueEntry イベントの中でonChangeを設定すると可能です。 </p><div class="fragment"><div class="line">wcli.onMemberEntry([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
-<div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#a915ef0684abee06830c9117847b22495">onValueEntry</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> <a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>){</div>
-<div class="line">        <a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> <a class="code hl_variable" href="latency-value_8cc.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>){</div>
+<div class="line">    m.<a class="code hl_function" href="classwebcface_1_1Member.html#a915ef0684abee06830c9117847b22495">onValueEntry</a>([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
+<div class="line">        v.onChange([](<a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> v){</div>
 <div class="line">            <span class="comment">// ...</span></div>
 <div class="line">        });</div>
 <div class="line">    });</div>
@@ -527,7 +526,7 @@ Python 〜ver1.1の仕様</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Jul 1 2025 01:11:42 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Tue Jul 1 2025 03:49:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

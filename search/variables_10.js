@@ -3,7 +3,7 @@ var searchData=
   ['reach_5fevent_0',['reach_event',['../structwebcface_1_1internal_1_1PromiseData.html#a1a2609dbab2836c580768fc7758a4ac8',1,'webcface::internal::PromiseData']]],
   ['reach_5fevent_5fdone_1',['reach_event_done',['../structwebcface_1_1internal_1_1PromiseData.html#a325da057def02dc497dac7227e354d2d',1,'webcface::internal::PromiseData']]],
   ['reached_2',['reached',['../structwebcface_1_1internal_1_1PromiseData.html#a08f982de6905916ce462be89bb3eafe8',1,'webcface::internal::PromiseData']]],
-  ['recv_5fc_3',['recv_c',['../latency-value_8cc.html#ae348d7d42880bc6b3be00d4859f1633c',1,'recv_c:&#160;latency-value.cc'],['../latency-text_8cc.html#ae348d7d42880bc6b3be00d4859f1633c',1,'recv_c:&#160;latency-text.cc']]],
+  ['recv_5fc_3',['recv_c',['../namespaceBM__LatencyMultipleValue.html#ae348d7d42880bc6b3be00d4859f1633c',1,'BM_LatencyMultipleValue::recv_c'],['../namespaceBM__LatencyLongText.html#ae348d7d42880bc6b3be00d4859f1633c',1,'BM_LatencyLongText::recv_c']]],
   ['recv_5fqueue_4',['recv_queue',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#aa2f7d841ab39be5c743a4ff486662971',1,'webcface::internal::ClientData::WsData']]],
   ['recv_5fready_5',['recv_ready',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#aa01401fdeda45a2af8b88ba585af6677',1,'webcface::internal::ClientData::WsData']]],
   ['rejection_6',['rejection',['../structwebcface_1_1internal_1_1PromiseData.html#a4a2d1f2e45da3f4c385ff3e084af6802',1,'webcface::internal::PromiseData']]],

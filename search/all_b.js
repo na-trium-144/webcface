@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['c_0',['c',['../sync-text_8cc.html#a089aacf63ed94ae0e667bb8f6db3e853',1,'c:&#160;sync-text.cc'],['../latency-text_8cc.html#a089aacf63ed94ae0e667bb8f6db3e853',1,'c:&#160;latency-text.cc']]],
+  ['c_0',['c',['../namespaceBM__SyncLongText.html#a089aacf63ed94ae0e667bb8f6db3e853',1,'BM_SyncLongText::c'],['../namespaceBM__LatencyLongText.html#a089aacf63ed94ae0e667bb8f6db3e853',1,'BM_LatencyLongText::c']]],
   ['c_5fargs_5f_1',['c_args_',['../structwebcface_1_1internal_1_1PromiseData.html#ab3eee1d3593c456113c3628c0db6b499',1,'webcface::internal::PromiseData']]],
   ['c_5fwcf_2eh_2',['c_wcf.h',['../c__wcf_8h.html',1,'']]],
   ['c_5fwcf_5finternal_2eh_3',['c_wcf_internal.h',['../c__wcf__internal_8h.html',1,'']]],

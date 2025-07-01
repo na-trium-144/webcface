@@ -6,7 +6,7 @@ var searchData=
   ['send_5fbuffer_3',['send_buffer',['../structwebcface_1_1server_1_1MemberData.html#a28beb71e3568e218778f423fd95ed391',1,'webcface::server::MemberData']]],
   ['send_5flen_4',['send_len',['../structwebcface_1_1server_1_1MemberData.html#a87a99f62a98bec91542c1bc1d1a18ba5',1,'webcface::server::MemberData']]],
   ['sent_5flines_5',['sent_lines',['../structwebcface_1_1internal_1_1LogData.html#a1bed73df9aee16153d0c574f480ed97b',1,'webcface::internal::LogData']]],
-  ['server_6',['server',['../latency-value_8cc.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'server:&#160;latency-value.cc'],['../latency-text_8cc.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'server:&#160;latency-text.cc'],['../classwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage::server']]],
+  ['server_6',['server',['../namespaceBM__LatencyMultipleValue.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'BM_LatencyMultipleValue::server'],['../namespaceBM__LatencyLongText.html#a58f7dd81b5e77f4600523e9af0a5007f',1,'BM_LatencyLongText::server'],['../classwebcface_1_1server_1_1ServerStorage.html#a5d5d629095a6204c2e04e4150860275c',1,'webcface::server::ServerStorage::server']]],
   ['server_5fping_5fwait_7',['server_ping_wait',['../classwebcface_1_1server_1_1Server.html#a4898db8d9fe1cf7bf83e4c7ac242a245',1,'webcface::server::Server']]],
   ['sink_8',['sink',['../structwebcface_1_1server_1_1MemberData.html#a11573073f52fb4b379c28b67a1a9799c',1,'webcface::server::MemberData']]],
   ['size_5f_9',['size_',['../classwebcface_1_1ImageFrame.html#af413506ef7c7376c1ea8ca4622cb1ada',1,'webcface::ImageFrame']]],
@@ -29,6 +29,6 @@ var searchData=
   ['sync_5finit_26',['sync_init',['../structwebcface_1_1server_1_1MemberData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8',1,'webcface::server::MemberData']]],
   ['sync_5finit_5fend_27',['sync_init_end',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#a58c7facb25080a3b127ced037129ef98',1,'webcface::internal::ClientData::WsData']]],
   ['sync_5fqueue_28',['sync_queue',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html#ae7e18e346511472d846f4779aa202138',1,'webcface::internal::ClientData::WsData']]],
-  ['sync_5fthread_29',['sync_thread',['../latency-text_8cc.html#ac6921c4f62258da5292e151a7b0797bf',1,'sync_thread:&#160;latency-text.cc'],['../latency-value_8cc.html#ac6921c4f62258da5292e151a7b0797bf',1,'sync_thread:&#160;latency-value.cc']]],
+  ['sync_5fthread_29',['sync_thread',['../namespaceBM__LatencyLongText.html#ac6921c4f62258da5292e151a7b0797bf',1,'BM_LatencyLongText::sync_thread'],['../namespaceBM__LatencyMultipleValue.html#ac6921c4f62258da5292e151a7b0797bf',1,'BM_LatencyMultipleValue::sync_thread']]],
   ['sync_5ftime_5fstore_30',['sync_time_store',['../structwebcface_1_1internal_1_1ClientData.html#aa89dd080f4853bbd8e89ea4815256cce',1,'webcface::internal::ClientData']]]
 ];

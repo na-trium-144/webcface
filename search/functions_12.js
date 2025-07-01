@@ -49,8 +49,8 @@ var searchData=
   ['syncdatastore1_46',['SyncDataStore1',['../classwebcface_1_1internal_1_1SyncDataStore1.html#a7f85a33fa90881891777c600d6f83f3b',1,'webcface::internal::SyncDataStore1']]],
   ['syncdatastore2_47',['SyncDataStore2',['../classwebcface_1_1internal_1_1SyncDataStore2.html#a4a9cb78edff6a2ca423f8e07ea3dd569',1,'webcface::internal::SyncDataStore2']]],
   ['syncimpl_48',['syncImpl',['../structwebcface_1_1internal_1_1ClientData.html#a99832ffc61cf60b3538c8f57da9080be',1,'webcface::internal::ClientData']]],
-  ['synclongtext_49',['SyncLongText',['../sync-text_8cc.html#af1447239471a7fdb86f37b419738d649',1,'sync-text.cc']]],
-  ['syncmultiplevalue_50',['SyncMultipleValue',['../sync-value_8cc.html#ad428bfa5477ffdacb34b8648beaf1d24',1,'sync-value.cc']]],
+  ['synclongtext_49',['SyncLongText',['../sync-text_8cc.html#af694ca4d1c835f124b55d6b5d40da112',1,'sync-text.cc']]],
+  ['syncmultiplevalue_50',['SyncMultipleValue',['../sync-value_8cc.html#ad66e533251a9449ac4799fda6b78d46a',1,'sync-value.cc']]],
   ['syncsetbuf_51',['syncSetBuf',['../classwebcface_1_1internal_1_1ViewBuf.html#adacae394aa1dc37109abcfd804ff09a6',1,'webcface::internal::ViewBuf']]],
   ['synctime_52',['syncTime',['../classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b',1,'webcface::Member']]]
 ];

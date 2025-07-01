@@ -1,9 +1,9 @@
 var latency_value_8cc =
 [
-    [ "BENCHMARK", "latency-value_8cc.html#a8944d6801f444c6d48d862398496fe7d", null ],
-    [ "DoSetup", "latency-value_8cc.html#afc3130464faab23d16667008da2821f0", null ],
-    [ "DoTeardown", "latency-value_8cc.html#aa1f406b95dab19815d8a6396e71e79ee", null ],
-    [ "LatencyMultipleValue", "latency-value_8cc.html#a7b6b5c43c04cabf3a01a709f5ead981c", null ],
+    [ "BENCHMARK", "latency-value_8cc.html#a95b3fbaa45869fe6fa73545232e995bd", null ],
+    [ "DoSetup", "latency-value_8cc.html#ae2e023131860628fce577e9debe161e5", null ],
+    [ "DoTeardown", "latency-value_8cc.html#ad019e181a9b9e04be219f10d5865ff99", null ],
+    [ "LatencyMultipleValue", "latency-value_8cc.html#a87541ca7675a3d2f99e52c8be38276cc", null ],
     [ "names", "latency-value_8cc.html#a9c4192866025823ecd5592526c757c0b", null ],
     [ "recv_c", "latency-value_8cc.html#ae348d7d42880bc6b3be00d4859f1633c", null ],
     [ "server", "latency-value_8cc.html#a58f7dd81b5e77f4600523e9af0a5007f", null ],

@@ -416,7 +416,6 @@ var NAVTREE =
       [ "File Members", "globals.html", [
         [ "All", "globals.html", "globals_dup" ],
         [ "Functions", "globals_func.html", "globals_func" ],
-        [ "Variables", "globals_vars.html", null ],
         [ "Typedefs", "globals_type.html", null ],
         [ "Enumerations", "globals_enum.html", null ],
         [ "Enumerator", "globals_eval.html", null ],
@@ -449,20 +448,20 @@ var NAVTREEINDEX =
 "classwebcface_1_1server_1_1ServerStorage.html#aff1553af2826942cfd0ffcf74e100f31",
 "component__view_8cc.html",
 "functions_o.html",
-"md_docs_252__text.html#autotoc_md90",
-"namespacewebcface.html#a11040d82967b60182816ddc035d07c28a1cb251ec0d568de6a929b520c4aed8d1",
-"namespacewebcface_1_1encoding.html#a54e0d3d7c5de948abb1cacf599743264",
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1Entry_3_01webcface_1_1message_1_1Canvas2D_01_4_01_4.html#a7130e1a8e45a7c0a391a99190bff8f98",
-"structwebcface_1_1Field.html#a6f0461788d6228e196254a794dc57ace",
-"structwebcface_1_1TemporalComponent.html#aa7983a916e0e249118efad5470f8ee8e",
-"structwebcface_1_1components_1_1geometries_1_1Line.html",
-"structwebcface_1_1internal_1_1ClientData.html#a55d582963e9e3bc398aae2d0f5a6fe8c",
-"structwebcface_1_1internal_1_1FuncInfo.html#ad5123f286651762b463402568c9c1a8c",
-"structwebcface_1_1internal_1_1TemporalViewComponentData.html#a45fb6de0b5002feb0203ac9f32f536c2",
-"structwebcface_1_1message_1_1Entry.html#ae9313ec6cb5a526764b6163a3148970b",
-"structwebcface_1_1message_1_1Res_3_01Canvas3DOld_01_4.html#a96ee7b5c169962a0b98333baa6a7d56f",
-"structwebcface_1_1message_1_1View.html#ab9964b82de855999fb10907cfd5762a4",
-"structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html#a187a077b8c6557d8129024de88da0ae4"
+"md_docs_253__func.html#autotoc_md100",
+"namespacemembers_func_s.html",
+"namespacewebcface_1_1components_1_1geometries.html#aa25707cc05d2efb06fc117f36986ecb6",
+"structfmt_1_1formatter_3_01webcface_1_1message_1_1CallResult_01_4.html#a2feda2b9392db2e4767dea22df467d5e",
+"structwebcface_1_1Field.html#a310bd45025f17fed63d4f97f542c4683",
+"structwebcface_1_1TemporalComponent.html#a70a3c8bb0bd38879827c8d1456f2e91f",
+"structwebcface_1_1components_1_1geometries_1_1Cylinder.html#a80401d480f15e1418a3274a2b2b51649",
+"structwebcface_1_1internal_1_1ClientData.html#a31bd2a91b436f3a290cde7380240477e",
+"structwebcface_1_1internal_1_1FuncInfo.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29",
+"structwebcface_1_1internal_1_1TemporalRobotJointData.html#a79dea7ed146af26ff4a0ba4bf5c83eee",
+"structwebcface_1_1message_1_1Canvas3DOld.html#a8b13bdf398a3697b2bb7125debce52bf",
+"structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a201f37b2142b2ec0737b6f96d332198c",
+"structwebcface_1_1message_1_1Text.html#a93f7b0e006da417a088ac06725272753",
+"structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html#a9e561eeb220ff324a48f912cb851e2a2"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
