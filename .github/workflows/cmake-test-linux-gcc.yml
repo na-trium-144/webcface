@@ -12,6 +12,7 @@ jobs:
       matrix:
         dep: ["apt", "source"]
         gcc_ver: [9, 11, 13, 14]
+        unity: ["on"]
         include:
         # - os: ubuntu-20.04
         #   gcc_ver: 7
@@ -26,6 +27,11 @@ jobs:
         - dep: static
           os: ubuntu-22.04
           gcc_ver: 9
+          unity: "on"
+        - dep: source
+          os: ubuntu-22.04
+          gcc_ver: 9
+          unity: "off"
     runs-on: ${{matrix.os}}
     steps:
     - uses: actions/checkout@v4
@@ -55,6 +61,7 @@ jobs:
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=${{github.workspace}}/build/install
         --force-fallback-for=libcurl
+        --unity=${{matrix.unity}}
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

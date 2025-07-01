@@ -1,3 +1,4 @@
+#include "test_common.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
 #include <webcface/member.h>
@@ -7,17 +8,6 @@
 #include <chrono>
 
 using namespace webcface;
-
-#ifndef WEBCFACE_TEST_TIMEOUT
-#define WEBCFACE_TEST_TIMEOUT 10
-#endif
-static void wait() {
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-}
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class FuncListenerTest : public ::testing::Test {
   protected:

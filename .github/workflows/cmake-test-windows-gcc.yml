@@ -11,6 +11,10 @@ jobs:
     strategy:
       matrix:
         dep: ["pacman", "source", "static"]
+        unity: ["on"]
+        include:
+        - dep: source
+          unity: "off"
     runs-on: windows-latest
     defaults:
       run:
@@ -49,6 +53,7 @@ jobs:
         $([[ ${{matrix.dep}} = static ]] && echo -Ddefault_library=static)
         --prefix=$(cygpath -m '${{github.workspace}}/build/install')
         --force-fallback-for=libcurl
+        --unity=${{matrix.unity}}
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

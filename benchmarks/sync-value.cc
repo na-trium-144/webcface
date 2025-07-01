@@ -6,34 +6,37 @@
 #include <vector>
 #include <iostream>
 
-// static std::unique_ptr<webcface::server::Server> server;
-static std::unique_ptr<webcface::Client> wcli1;
-// static std::unique_ptr<std::thread> sync_thread;
-static std::vector<std::string> names;
-static void DoSetup(const benchmark::State &state){
-    // std::cerr << "-- SyncMultipleValue " << state.range(0) << std::endl;
-    // server = std::make_unique<webcface::server::Server>(27530, 4);
-    wcli1 = std::make_unique<webcface::Client>("bench1", "127.0.0.1", 27530);
-    // wcli2 = std::make_unique<webcface::Client>("bench2", "127.0.0.1", 27530);
-    // wcli1->waitConnection();
-    // wcli2->waitConnection();
-    // sync_thread = std::make_unique<std::thread>([&]{wcli2->loopSync();});
-    names.resize(static_cast<std::size_t>(state.range(0)));
-    for (int i = 0; i < state.range(0); i++) {
-        names[i] = std::string("test_") + std::to_string(i);
+namespace BM_SyncMultipleValue {
+    // std::unique_ptr<webcface::server::Server> server;
+    std::unique_ptr<webcface::Client> wcli1;
+    // std::unique_ptr<std::thread> sync_thread;
+    std::vector<std::string> names;
+    void DoSetup(const benchmark::State &state){
+        // std::cerr << "-- SyncMultipleValue " << state.range(0) << std::endl;
+        // server = std::make_unique<webcface::server::Server>(27530, 4);
+        wcli1 = std::make_unique<webcface::Client>("bench1", "127.0.0.1", 27530);
+        // wcli2 = std::make_unique<webcface::Client>("bench2", "127.0.0.1", 27530);
+        // wcli1->waitConnection();
+        // wcli2->waitConnection();
+        // sync_thread = std::make_unique<std::thread>([&]{wcli2->loopSync();});
+        names.resize(static_cast<std::size_t>(state.range(0)));
+        for (int i = 0; i < state.range(0); i++) {
+            names[i] = std::string("test_") + std::to_string(i);
+        }
     }
-}
-static void DoTeardown(const benchmark::State &){
-    wcli1.reset();
-    // wcli2->close();
-    // sync_thread->join();
-    // sync_thread.reset();
-    // wcli2.reset();
-    // server.reset();
-}
+    void DoTeardown(const benchmark::State &){
+        wcli1.reset();
+        // wcli2->close();
+        // sync_thread->join();
+        // sync_thread.reset();
+        // wcli2.reset();
+        // server.reset();
+    }
 
-static int v = 0;
-static void SyncMultipleValue(benchmark::State &state) {
+    int v = 0;
+}
+void SyncMultipleValue(benchmark::State &state) {
+    using namespace BM_SyncMultipleValue;
     for (auto _ : state) {
         for (const std::string &n : names) {
             wcli1->value(n) = ++v;
@@ -45,4 +48,4 @@ static void SyncMultipleValue(benchmark::State &state) {
         // state.ResumeTiming();
     }
 }
-BENCHMARK(SyncMultipleValue)->RangeMultiplier(4)->Range(1, 1024)->Setup(DoSetup)->Teardown(DoTeardown);
+BENCHMARK(SyncMultipleValue)->RangeMultiplier(4)->Range(1, 1024)->Setup(BM_SyncMultipleValue::DoSetup)->Teardown(BM_SyncMultipleValue::DoTeardown);

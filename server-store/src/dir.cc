@@ -10,6 +10,9 @@ namespace std_fs = std::filesystem;
 #endif
 
 #if WEBCFACE_SYSTEM_PATH_WINDOWS
+#if WEBCFACE_SYSTEM_WIN32SOCKET && defined(WEBCFACE_UNITY)
+#include <winsock2.h>
+#endif
 #include <windows.h>
 #elif __APPLE__
 #include <mach-o/dyld.h>

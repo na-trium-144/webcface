@@ -1,3 +1,4 @@
+#pragma once
 #include "webcface/common/internal/message/pack.h"
 #include <atomic>
 #include <vector>

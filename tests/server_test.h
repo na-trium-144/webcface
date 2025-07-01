@@ -1,3 +1,5 @@
+#pragma once
+#include "test_common.h"
 #include "dummy_client.h"
 #include <gtest/gtest.h>
 #include "webcface/internal/client_internal.h"
@@ -8,22 +10,7 @@
 #include <webcface/robot_model.h>
 #include <webcface/canvas3d.h>
 #include <webcface/canvas2d.h>
-#include <thread>
 #include <iostream>
-
-using namespace webcface;
-
-#ifndef WEBCFACE_TEST_TIMEOUT
-#define WEBCFACE_TEST_TIMEOUT 10
-#endif
-
-static void wait() {
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-}
-static SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
-}
 
 class ServerTest : public ::testing::Test {
   protected:

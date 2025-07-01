@@ -14,6 +14,7 @@ jobs:
         runner: ["windows-2022"]
         dep: ["source"]
         shared_flag: ["shared"]
+        unity: ["on"]
         include:
         - arch: x86
           devcmd: amd64_x86
@@ -26,16 +27,25 @@ jobs:
           devcmd: arm64
           dep: source
           shared_flag: shared
+          unity: "on"
         - arch: x64
           runner: windows-2025
           devcmd: amd64
           dep: source
           shared_flag: shared
+          unity: "on"
         - arch: x64
           devcmd: amd64
           runner: windows-2022
           dep: source
           shared_flag: static
+          unity: "on"
+        - arch: x64
+          devcmd: amd64
+          runner: windows-2022
+          dep: source
+          shared_flag: shared
+          unity: "off"
     runs-on: ${{matrix.runner}}
     steps:
     - uses: actions/checkout@v4
@@ -74,6 +84,7 @@ jobs:
         --prefix=${{github.workspace}}/build/install
         -Dwrap_mode=default
         --cross-file scripts/cross/msvc_${{matrix.arch}}
+        --unity=${{matrix.unity}}
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile

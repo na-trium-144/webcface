@@ -1,14 +1,10 @@
+#include "test_common.h"
 #include <spdlog/logger.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <thread>
 #include "dummy_server.h"
 #include <crow.h>
 #include "webcface/common/internal/unix_path.h"
-
-static void wait() {
-    std::this_thread::sleep_for(
-        std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-}
 
 using namespace webcface;
 

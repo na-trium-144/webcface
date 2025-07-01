@@ -119,15 +119,18 @@ project('webcface', 'c', 'cpp',
     'libvips:ppm=false',
     'libvips:analyze=false',
     'libvips:radiance=false',
+    'libvips:unity=off',
     'libjpeg-turbo:default_library=static',
     'libjpeg-turbo:jpeg-turbo=disabled',
     'libjpeg-turbo:tests=disabled',
     'libjpeg-turbo:warning_level=0',
     'libjpeg-turbo:werror=false',
+    'libjpeg-turbo:unity=off',
     'zlib:default_library=static',
     'zlib:tests=disabled',
     'zlib:warning_level=0',
     'zlib:werror=false',
+    'zlib:unity=off',
     'spng:default_library=static',
     'spng:warning_level=0',
     'spng:werror=false',
@@ -139,6 +142,7 @@ project('webcface', 'c', 'cpp',
     'libwebp:webpmux=disabled',
     'libwebp:warning_level=0',
     'libwebp:werror=false',
+    'libwebp:unity=off',
     'glib:default_library=static',
     'glib:warning_level=0',
     'glib:werror=false',
@@ -156,6 +160,7 @@ project('webcface', 'c', 'cpp',
     'glib:glib_checks=false',
     'glib:libelf=disabled',
     'glib:introspection=disabled',
+    'glib:unity=off',
     'expat:default_library=static',
     'expat:warning_level=0',
     'expat:werror=false',
@@ -168,7 +173,11 @@ project('webcface', 'c', 'cpp',
     'libffi:default_library=static',
     'libffi:warning_level=0',
     'libffi:werror=false',
+    'libffi:unity=off',
+    'gtest:default_library=static',
+    'google-benchmark:default_library=static',
     'google-benchmark:werror=false',
+    'google-benchmark:tests=disabled',
   ],
 )
 fs = import('fs')
@@ -461,11 +470,18 @@ configure_file(
   install_dir: get_option('includedir') / 'webcface' / 'common',
 )
 webcface_config_inc = include_directories('.')
+webcface_config_args = [
+  '-DWEBCFACE_MESON',
+]
+if get_option('unity') == 'on' or (get_option('unity') == 'subprojects' and meson.is_subproject())
+  webcface_config_args += [
+    '-DWEBCFACE_UNITY',
+    '-D_USE_MATH_DEFINES',
+  ]
+endif
 webcface_config_dep = declare_dependency(
   include_directories: [webcface_config_inc],
-  compile_args: [
-    '-DWEBCFACE_MESON',
-  ],
+  compile_args: webcface_config_args,
 )
 version_rc_in = meson.project_source_root() / 'scripts' / 'version.rc.in'
 
