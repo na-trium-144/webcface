@@ -15,7 +15,7 @@ webcface ver1 をソースからビルドしたい場合は、[v1](https://githu
     * インストール済みの依存ライブラリを使用するためには CMake や pkgcong (pkg-config) も必要になります
 * Linux (x86_64, arm64, armhf) は gcc-9 以上と clang-7 以上、
 Mac (x86_64, arm64) は macOS13 (Ventura) 以上、
-Windowsは Visual Studio 2019 の x86, x64, arm64、
+Windowsは Visual Studio 2022 の x86, x64, arm64、
 MinGWは MSYS2 の UCRT64 環境
 でのビルドをテストしています。
 それより前のバージョンでも動く可能性はあります。
