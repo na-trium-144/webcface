@@ -10,6 +10,7 @@
 #include "webcface/robot_link.h"
 #include "webcface/internal/robot_link_internal.h"
 #include "webcface/log.h"
+#include "webcface/num_vector.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -263,7 +264,7 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 }
 
 template class SyncDataStore2<std::string, int>; // test用
-template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+template class SyncDataStore2<NumVector, int>;
 template class SyncDataStore2<std::shared_ptr<TextData>, int>;
 template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
 template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;

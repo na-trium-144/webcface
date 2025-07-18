@@ -192,8 +192,8 @@ struct Canvas2DData;
 struct Canvas3DData;
 struct ImageReq;
 } // namespace message
+class NumVector;
 namespace internal {
-using ValueData = std::vector<double>;
 using TextData = ValAdaptor;
 using FuncData = FuncInfo;
 using RobotModelData = std::vector<std::shared_ptr<internal::RobotLinkData>>;
@@ -220,7 +220,7 @@ struct LogData {
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+extern template class SyncDataStore2<NumVector, int>;
 extern template class SyncDataStore2<std::shared_ptr<TextData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;

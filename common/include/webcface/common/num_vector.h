@@ -21,7 +21,7 @@ WEBCFACE_NS_BEGIN
  * 
  */
 class NumVector {
-    std::variant<std::shared_ptr<std::vector<double>>, double> data;
+    std::variant<double, std::shared_ptr<std::vector<double>>> data;
 
 public:
     NumVector(double v = 0): data(v){}
@@ -57,45 +57,45 @@ public:
     double &operator[](std::size_t index){
         switch(data.index()){
         case 0:
-            return (*std::get<0>(data))[index];
+            return std::get<0>(data);
         case 1:
-            return std::get<1>(data);
+            return (*std::get<1>(data))[index];
         }
     }
     const double &operator[](std::size_t index) const {
         switch(data.index()){
         case 0:
-            return (*std::get<0>(data))[index];
+            return std::get<0>(data);
         case 1:
-            return std::get<1>(data);
+            return (*std::get<1>(data))[index];
         }
     }
     double &at(std::size_t index){
         switch(data.index()){
         case 0:
-            if(index >= std::get<0>(data)->size()){
-                throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is " + std::to_string(std::get<0>(data)->size()));
-            }
-            return (*std::get<0>(data))[index];
-        case 1:
             if(index >= 1){
                 throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is 1");
             }
-            return std::get<1>(data);
+            return std::get<0>(data);
+        case 1:
+            if(index >= std::get<1>(data)->size()){
+                throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is " + std::to_string(std::get<1>(data)->size()));
+            }
+            return (*std::get<1>(data))[index];
         }
     }
     const double &at(std::size_t index) const{
         switch(data.index()){
         case 0:
-            if(index >= std::get<0>(data)->size()){
-                throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is " + std::to_string(std::get<0>(data)->size()));
-            }
-            return (*std::get<0>(data).vec)[index];
-        case 1:
             if(index >= 1){
                 throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is 1");
             }
-            return std::get<1>(data);
+            return std::get<0>(data);
+        case 1:
+            if(index >= std::get<1>(data)->size()){
+                throw std::out_of_range("NumVector::at() got index " + std::to_string(index) + ", but size is " + std::to_string(std::get<1>(data)->size()));
+            }
+            return (*std::get<1>(data).vec)[index];
         }
     }
 
@@ -129,16 +129,16 @@ public:
             new_size = 1;
         }
         switch(data.index()){
-        case 0:{
-            std::get<0>(data)->resize(new_size);
-            break;
-        }
         case 1:{
             if(new_size >= 2){
                 std::vector<double> vec(new_size);
-                vec[0] = std::get<1>(data);
+                vec[0] = std::get<0>(data);
                 data.emplace<std::shared_ptr<std::vector<double>>>(std::make_shared<std::vector<double>>(std::move(vec)));
             }
+            break;
+        }
+        case 1:{
+            std::get<1>(data)->resize(new_size);
             break;
         }
         }
@@ -146,12 +146,12 @@ public:
     void push_back(double v){
         switch(data.index()){
         case 0:{
-            std::get<0>(data)->push_back(v);
+            std::vector<double> vec = {std::get<0>(data), v};
+            data.emplace<std::shared_ptr<std::vector<double>>>(std::make_shared<std::vector<double>>(std::move(vec)));
             break;
         }
         case 1:{
-            std::vector<double> vec = {std::get<1>(data), v};
-            data.emplace<std::shared_ptr<std::vector<double>>>(std::make_shared<std::vector<double>>(std::move(vec)));
+            std::get<1>(data)->push_back(v);
             break;
         }
         }
@@ -159,9 +159,9 @@ public:
     std::size_t size() const{
         switch(data.index()){
         case 0:
-            return std::get<0>(data)->size();
-        case 1:
             return 1;
+        case 1:
+            return std::get<1>(data)->size();
         }
     }
 };
