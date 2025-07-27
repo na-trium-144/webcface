@@ -20,8 +20,9 @@ namespace internal {
  */
 template <typename T>
 static bool shouldSend(const T &prev, const T &current) {
-    if constexpr (std::is_same_v<T, std::shared_ptr<ValueData>> ||
-                  std::is_same_v<T, std::shared_ptr<TextData>>) {
+    if constexpr (std::is_same_v<T, NumVector>) {
+        return prev != current;
+    } else if constexpr (std::is_same_v<T, std::shared_ptr<TextData>>) {
         return *prev != *current;
     } else if constexpr (std::is_same_v<T, std::string>) {
         return prev != current;

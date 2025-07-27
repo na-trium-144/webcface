@@ -152,18 +152,23 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
 
     template <>
     struct convert<webcface::message::NumVector> {
-        msgpack::object const &operator()(msgpack::object const &o,
-                                          webcface::message::NumVector &v) const {
-            if(o.via.array.size == 0){
+        msgpack::object const &
+        operator()(msgpack::object const &o,
+                   webcface::message::NumVector &v) const {
+            if (o.type != msgpack::type::ARRAY) {
+                throw msgpack::type_error();
+            }
+            if (o.via.array.size == 0) {
                 v.data.emplace<double>(0);
-            }else if (o.via.array.size == 1){
-                v.data.emplace<double>(o.via.array.ptr[0]);
-            }else{
-                auto vec = std::make_shared<std::vector<double>>(o.via.array.size);
-                for(std::size_t i = 0; i < o.via.array.size; i++){
+            } else if (o.via.array.size == 1) {
+                v.data.emplace<double>(o.via.array.ptr[0].as<double>());
+            } else {
+                auto vec =
+                    std::make_shared<std::vector<double>>(o.via.array.size);
+                for (std::size_t i = 0; i < o.via.array.size; i++) {
                     vec->at(i) = o.via.array.ptr[i].as<double>();
                 }
-                v.data.emplace(vec);
+                v.data.emplace<std::shared_ptr<std::vector<double>>>(vec);
             }
             return o;
         }
@@ -171,16 +176,17 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     template <>
     struct pack<webcface::message::NumVector> {
         template <typename Stream>
-        msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
-                                            const webcface::message::NumVector &v) {
-            switch(v.data.index()){
+        msgpack::packer<Stream> &
+        operator()(msgpack::packer<Stream> &o,
+                   const webcface::message::NumVector &v) {
+            switch (v.data.index()) {
             case 0:
                 o.pack_array(1);
                 o.pack(std::get<0>(v.data));
                 break;
             case 1:
-                o.pack_array(std::get<1>(v.data).size());
-                for(auto val: std::get<1>(v.data)){
+                o.pack_array(std::get<1>(v.data)->size());
+                for (auto val : *std::get<1>(v.data)) {
                     o.pack(val);
                 }
                 break;

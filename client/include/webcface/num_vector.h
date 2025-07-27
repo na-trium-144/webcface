@@ -70,6 +70,9 @@ class WEBCFACE_DLL NumVector {
     void resize(std::size_t new_size);
     void push_back(double v);
     std::size_t size() const;
+
+    bool operator==(const NumVector &other) const;
+    bool operator!=(const NumVector &other) const { return !(*this == other); }
 };
 
 WEBCFACE_NS_END
