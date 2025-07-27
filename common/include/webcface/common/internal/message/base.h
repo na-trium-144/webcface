@@ -8,6 +8,7 @@
 #include "webcface/common/val_adaptor.h"
 #include <memory>
 #include <variant>
+#include <vector>
 
 #ifdef WEBCFACE_UNITY
 #include "./pack.h"
