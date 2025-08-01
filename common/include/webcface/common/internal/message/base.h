@@ -102,9 +102,5 @@ struct Image;
 template <>
 struct Req<Image>;
 
-struct NumVector {
-    std::variant<double, std::shared_ptr<std::vector<double>>> data;
-};
-
 } // namespace message
 WEBCFACE_NS_END

@@ -2,7 +2,6 @@
 #include <memory>
 #include <variant>
 #include <vector>
-#include "./array_like.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -10,9 +9,6 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace message {
-struct NumVector;
-}
 /**
  * \brief shared_ptrで管理されているdoubleのvector
  * \since ver2.10
@@ -29,9 +25,6 @@ class WEBCFACE_DLL NumVector {
   public:
     NumVector(double v = 0);
     NumVector(std::vector<double> vec);
-
-    NumVector(const message::NumVector &msg);
-    operator message::NumVector() const;
 
     operator const std::vector<double>&() const;
 
@@ -59,7 +52,6 @@ class WEBCFACE_DLL MutableNumVector : public NumVector {
   public:
     MutableNumVector(double v = 0) : NumVector(v){}
     MutableNumVector(std::vector<double> vec): NumVector(std::move(vec)) {}
-    MutableNumVector(const message::NumVector &msg) : NumVector(msg){}
 
     void assign(double v);
     NumVector &operator=(double v) {
@@ -67,25 +59,19 @@ class WEBCFACE_DLL MutableNumVector : public NumVector {
         return *this;
     }
     void assign(std::vector<double> vec);
-    template <typename R,
-              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk>
-    void assign(const R &range) {
-        assign(traits::arrayLikeToVector(range));
-    }
-    template <typename R,
-              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk>
-    NumVector &operator=(const R &range) {
-        assign(range);
-        return *this;
-    }
 
     operator const std::vector<double>&() const = delete;
 
+    using NumVector::operator[];
     double &operator[](std::size_t index) { return at(index); }
+    using NumVector::at;
     double &at(std::size_t index);
 
+    using NumVector::data;
     double *data() { return &at(0); }
+    using NumVector::begin;
     double *begin() { return &at(0); }
+    using NumVector::end;
     double *end() { return begin() + size(); }
 
     void resize(std::size_t new_size);

@@ -88,28 +88,24 @@ static std::optional<int> toInt(const std::optional<T> &v) {
 }
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Value) {
-    switch (m.data.data.index()) {
-    case 0:
+    if(m.data.size() <= 1) {
         return fmt::format_to(ctx.out(), "{}-Value('{}', {})", msg_kind,
-                              m.field.decode(), std::get<0>(m.data.data));
-    case 1:
-    default:
+                              m.field.decode(), m.data[0]);
+    }else{
         return fmt::format_to(ctx.out(), "{}-Value('{}', <{} values>)",
                               msg_kind, m.field.decode(),
-                              std::get<1>(m.data.data)->size());
+                              m.data.size());
     }
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Value>) {
-    switch (m.data.data.index()) {
-    case 0:
+    if(m.data.size() <= 1) {
         return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
                               msg_kind, m.req_id, m.sub_field.decode(),
-                              std::get<0>(m.data.data));
-    case 1:
-    default:
+                              m.data[0]);
+    }else{
         return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
                               msg_kind, m.req_id, m.sub_field.decode(),
-                              std::get<1>(m.data.data)->size());
+                              m.data.size());
     }
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Value)

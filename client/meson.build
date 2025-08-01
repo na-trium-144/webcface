@@ -30,7 +30,6 @@ webcface_client_src = [
   'src/component_canvas2d.cc',
   'src/component_view.cc',
   'src/transform.cc',
-  'src/num_vector.cc',
   'src/c_wcf/client.cc',
   'src/c_wcf/member.cc',
   'src/c_wcf/value.cc',

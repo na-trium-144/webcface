@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utf8.h>
 #include "webcface/common/val_adaptor.h"
+#include "webcface/common/num_vector.h"
 #include "./base.h"
 
 #ifdef WEBCFACE_COMPILER_IS_GCC
@@ -151,45 +152,36 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     };
 
     template <>
-    struct convert<webcface::message::NumVector> {
+    struct convert<webcface::MutableNumVector> {
         msgpack::object const &
         operator()(msgpack::object const &o,
-                   webcface::message::NumVector &v) const {
+                   webcface::MutableNumVector &v) const {
             if (o.type != msgpack::type::ARRAY) {
                 throw msgpack::type_error();
             }
             if (o.via.array.size == 0) {
-                v.data.emplace<double>(0);
+                v.assign(0);
             } else if (o.via.array.size == 1) {
-                v.data.emplace<double>(o.via.array.ptr[0].as<double>());
+                v.assign(o.via.array.ptr[0].as<double>());
             } else {
-                auto vec =
-                    std::make_shared<std::vector<double>>(o.via.array.size);
+                std::vector<double> vec(o.via.array.size);
                 for (std::size_t i = 0; i < o.via.array.size; i++) {
-                    vec->at(i) = o.via.array.ptr[i].as<double>();
+                    vec.at(i) = o.via.array.ptr[i].as<double>();
                 }
-                v.data.emplace<std::shared_ptr<std::vector<double>>>(vec);
+                v.assign(std::move(vec));
             }
             return o;
         }
     };
     template <>
-    struct pack<webcface::message::NumVector> {
+    struct pack<webcface::MutableNumVector> {
         template <typename Stream>
         msgpack::packer<Stream> &
         operator()(msgpack::packer<Stream> &o,
-                   const webcface::message::NumVector &v) {
-            switch (v.data.index()) {
-            case 0:
-                o.pack_array(1);
-                o.pack(std::get<0>(v.data));
-                break;
-            case 1:
-                o.pack_array(std::get<1>(v.data)->size());
-                for (auto val : *std::get<1>(v.data)) {
-                    o.pack(val);
-                }
-                break;
+                   const webcface::MutableNumVector &v) {
+            o.pack_array(v.size());
+            for (auto val : v) {
+                o.pack(val);
             }
             return o;
         }

@@ -5,7 +5,7 @@
 #include <chrono>
 #include "field.h"
 #include "array_like.h"
-#include "num_vector.h"
+#include "webcface/common/num_vector.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else

@@ -61,7 +61,7 @@ struct MemberData {
      * entry非表示のものも含む。
      *
      */
-    internal::StrMap1<message::NumVector> value;
+    internal::StrMap1<MutableNumVector> value;
     internal::StrMap1<std::shared_ptr<ValAdaptor>> text;
     internal::StrMap1<std::shared_ptr<message::FuncInfo>> func;
     internal::StrMap1<message::ViewData> view;

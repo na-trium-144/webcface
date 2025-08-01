@@ -1,6 +1,7 @@
 webcface_common_src = [
   'src/encoding.cc',
   'src/fmt.cc',
+  'src/num_vector.cc',
   'src/val_adaptor.cc',
   'src/message.cc',
   'src/unix_path.cc',

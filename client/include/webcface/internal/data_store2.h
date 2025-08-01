@@ -8,7 +8,7 @@
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "webcface/common/val_adaptor.h"
-#include "webcface/num_vector.h"
+#include "webcface/common/num_vector.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

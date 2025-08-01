@@ -10,7 +10,7 @@
 #include "webcface/robot_link.h"
 #include "webcface/internal/robot_link_internal.h"
 #include "webcface/log.h"
-#include "webcface/num_vector.h"
+#include "webcface/common/num_vector.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

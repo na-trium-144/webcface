@@ -1,12 +1,8 @@
-#include <webcface/num_vector.h>
-#include <webcface/common/internal/message/base.h>
+#include <webcface/common/num_vector.h>
+#include <stdexcept>
+#include <string>
 
 WEBCFACE_NS_BEGIN
-
-NumVector::NumVector(const message::NumVector &msg) : data_(msg.data) {}
-NumVector::operator message::NumVector() const {
-    return message::NumVector{data_};
-}
 
 NumVector::NumVector(double v) : data_(v) {}
 void MutableNumVector::assign(double v) { data_.emplace<double>(v); }
@@ -27,7 +23,7 @@ NumVector::operator const std::vector<double>&() const {
 
 double &MutableNumVector::at(std::size_t index) {
     if (index >= size()) {
-        throw OutOfRange("NumVector::at() got index " + std::to_string(index) +
+        throw std::out_of_range("NumVector::at() got index " + std::to_string(index) +
                          ", but size is " + std::to_string(size()));
     }
     switch (data_.index()) {
@@ -40,7 +36,7 @@ double &MutableNumVector::at(std::size_t index) {
 }
 const double &NumVector::at(std::size_t index) const {
     if (index >= size()) {
-        throw OutOfRange("NumVector::at() got index " + std::to_string(index) +
+        throw std::out_of_range("NumVector::at() got index " + std::to_string(index) +
                          ", but size is " + std::to_string(size()));
     }
     switch (data_.index()) {
