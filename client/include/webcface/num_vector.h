@@ -23,17 +23,43 @@ struct NumVector;
  *
  */
 class WEBCFACE_DLL NumVector {
-    std::variant<double, std::shared_ptr<std::vector<double>>> data_;
+  protected:
+    mutable std::variant<double, std::shared_ptr<std::vector<double>>> data_;
 
   public:
     NumVector(double v = 0);
     NumVector(std::vector<double> vec);
-    template <typename R,
-              typename traits::ArrayLikeTrait<R>::ArrayLike = traits::TraitOk>
-    NumVector(const R &range) : NumVector(traits::arrayLikeToVector(range)) {}
 
     NumVector(const message::NumVector &msg);
     operator message::NumVector() const;
+
+    operator const std::vector<double>&() const;
+
+    const double &operator[](std::size_t index) const { return at(index); }
+    const double &at(std::size_t index) const;
+
+    const double *data() const { return &at(0); }
+    const double *begin() const { return &at(0); }
+    const double *end() const { return begin() + size(); }
+    const double *cbegin() const { return &at(0); }
+    const double *cend() const { return begin() + size(); }
+
+    std::size_t size() const;
+
+    bool operator==(const NumVector &other) const;
+    bool operator!=(const NumVector &other) const { return !(*this == other); }
+};
+
+/**
+ * \brief shared_ptrで管理されているdoubleのvector
+ * \since ver2.10
+ *
+ */
+class WEBCFACE_DLL MutableNumVector : public NumVector {
+  public:
+    MutableNumVector(double v = 0) : NumVector(v){}
+    MutableNumVector(std::vector<double> vec): NumVector(std::move(vec)) {}
+    MutableNumVector(const message::NumVector &msg) : NumVector(msg){}
 
     void assign(double v);
     NumVector &operator=(double v) {
@@ -53,26 +79,17 @@ class WEBCFACE_DLL NumVector {
         return *this;
     }
 
+    operator const std::vector<double>&() const = delete;
+
     double &operator[](std::size_t index) { return at(index); }
-    const double &operator[](std::size_t index) const { return at(index); }
     double &at(std::size_t index);
-    const double &at(std::size_t index) const;
 
     double *data() { return &at(0); }
-    const double *data() const { return &at(0); }
     double *begin() { return &at(0); }
     double *end() { return begin() + size(); }
-    const double *begin() const { return &at(0); }
-    const double *end() const { return begin() + size(); }
-    const double *cbegin() const { return &at(0); }
-    const double *cend() const { return begin() + size(); }
 
     void resize(std::size_t new_size);
     void push_back(double v);
-    std::size_t size() const;
-
-    bool operator==(const NumVector &other) const;
-    bool operator!=(const NumVector &other) const { return !(*this == other); }
 };
 
 WEBCFACE_NS_END

@@ -9,16 +9,23 @@ NumVector::operator message::NumVector() const {
 }
 
 NumVector::NumVector(double v) : data_(v) {}
-void NumVector::assign(double v) { data_.emplace<double>(v); }
+void MutableNumVector::assign(double v) { data_.emplace<double>(v); }
 
 NumVector::NumVector(std::vector<double> vec)
     : data_(std::make_shared<std::vector<double>>(std::move(vec))) {}
-void NumVector::assign(std::vector<double> vec) {
+void MutableNumVector::assign(std::vector<double> vec) {
     data_.emplace<std::shared_ptr<std::vector<double>>>(
         std::make_shared<std::vector<double>>(std::move(vec)));
 }
 
-double &NumVector::at(std::size_t index) {
+NumVector::operator const std::vector<double>&() const {
+    if(data_.index() == 0){
+        data_.emplace<std::shared_ptr<std::vector<double>>>(std::make_shared<std::vector<double>>(std::vector<double>{at(0)}));
+    }
+    return *std::get<1>(data_);
+}
+
+double &MutableNumVector::at(std::size_t index) {
     if (index >= size()) {
         throw OutOfRange("NumVector::at() got index " + std::to_string(index) +
                          ", but size is " + std::to_string(size()));
@@ -45,7 +52,7 @@ const double &NumVector::at(std::size_t index) const {
     }
 }
 
-void NumVector::resize(std::size_t new_size) {
+void MutableNumVector::resize(std::size_t new_size) {
     if (new_size == 0) {
         new_size = 1;
     }
@@ -66,7 +73,7 @@ void NumVector::resize(std::size_t new_size) {
     }
     }
 }
-void NumVector::push_back(double v) {
+void MutableNumVector::push_back(double v) {
     switch (data_.index()) {
     case 0: {
         std::vector<double> vec = {std::get<0>(data_), v};

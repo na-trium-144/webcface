@@ -108,7 +108,7 @@ TEST_F(DataTest, valueSet) {
     data_->value_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Value)>>(callback<Value>());
     value(self_name, "b").set(123);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "b"_ss)).at(0), 123);
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(value("a", "b").set(123), std::invalid_argument);
 }
@@ -142,24 +142,24 @@ TEST_F(DataTest, valueSetVec) {
     EXPECT_EQ(d6.at(4).tryGet().value(), 5);
     value(self_name, "d7").resize(5);
     EXPECT_EQ(callback_called, 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).at(0), 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d2"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d3"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d4"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d5"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(0), 1);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(1), 2);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(2), 3);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(3), 4);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
-    EXPECT_EQ((**data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d2"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d2"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d2"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d3"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d4"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d5"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(0), 1);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(1), 2);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(2), 3);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(3), 4);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d6"_ss)).at(4), 5);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d7"_ss)).size(), 5u);
+    EXPECT_EQ((*data_->value_store.getRecv(self_name, "d8"_ss)).size(), 5u);
 }
 // TEST_F(DataTest, ArrayLike){
 static_assert(traits::IsArrayLike<std::vector<double>>::value);
@@ -231,9 +231,7 @@ TEST_F(DataTest, textSetW) {
 // }
 
 TEST_F(DataTest, valueGet) {
-    data_->value_store.setRecv(
-        "a"_ss, "b"_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>({123})));
+    data_->value_store.setRecv("a"_ss, "b"_ss, MutableNumVector{123});
     EXPECT_EQ(value("a", "b").tryGet().value(), 123);
     EXPECT_EQ(value("a", "b").get(), 123);
     EXPECT_EQ(value("a", "c").tryGet(), std::nullopt);

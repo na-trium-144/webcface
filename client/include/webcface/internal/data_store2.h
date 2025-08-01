@@ -193,7 +193,6 @@ struct Canvas2DData;
 struct Canvas3DData;
 struct ImageReq;
 } // namespace message
-class NumVector;
 namespace internal {
 using TextData = ValAdaptor;
 using FuncData = FuncInfo;
@@ -221,7 +220,7 @@ struct LogData {
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<NumVector, int>;
+extern template class SyncDataStore2<MutableNumVector, int>;
 extern template class SyncDataStore2<std::shared_ptr<TextData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
