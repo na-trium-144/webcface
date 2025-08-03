@@ -96,6 +96,9 @@ class WEBCFACE_DLL ValAdaptor {
 
     enum ValVariant { DOUBLEV = 0, INT64V = 1 };
 
+    void initStr() const;
+    void initWStr() const;
+
   public:
     ValAdaptor();
 
@@ -108,32 +111,18 @@ class WEBCFACE_DLL ValAdaptor {
      */
     ValAdaptor &operator=(const SharedString &str);
 
-    explicit ValAdaptor(std::string_view str);
-    ValAdaptor &operator=(std::string_view str);
-    explicit ValAdaptor(const char *str) : ValAdaptor(std::string_view(str)) {}
-    ValAdaptor &operator=(const char *str) {
-        return *this = std::string_view(str);
-    }
-
     /*!
-     * \since ver2.0
+     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * wchar_t* を受け取るコンストラクタを String に置き換え
+     *
      */
-    explicit ValAdaptor(std::wstring_view str);
+    explicit ValAdaptor(String str);
     /*!
-     * \since ver2.0
+     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * wchar_t* を受け取るコンストラクタを String に置き換え
+     *
      */
-    ValAdaptor &operator=(std::wstring_view str);
-    /*!
-     * \since ver2.0
-     */
-    explicit ValAdaptor(const wchar_t *str)
-        : ValAdaptor(std::wstring_view(str)) {}
-    /*!
-     * \since ver2.0
-     */
-    ValAdaptor &operator=(const wchar_t *str) {
-        return *this = std::wstring_view(str);
-    }
+    ValAdaptor &operator=(String str);
 
     explicit ValAdaptor(bool value);
     ValAdaptor &operator=(bool v);
@@ -180,49 +169,108 @@ class WEBCFACE_DLL ValAdaptor {
      * std::stringのconst参照を返す。
      * 参照はこのValAdaptorが破棄されるまで有効
      *
+     * \deprecated ver2.10〜
+     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * コピーなしで文字列を参照するには asStringView() を使用すること。
+     */
+    [[deprecated("(ver2.10〜) use asStringView() instead")]] const std::string &
+    asStringRef() const;
+    /*!
+     * \brief 文字列として返す
+     * \since ver2.10
+     *
+     * 参照はこのValAdaptorが破棄されるまで有効
+     *
      * as_strにstringが格納されていた場合はそれをそのまま返す。
      * そうでない場合(u8string, wstring, double, int64が格納されている場合)
      * はそれをstringに変換したうえでその参照を返す。
      *
      */
-    const std::string &asStringRef() const;
+    std::string_view asStringView() const;
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
+     * \deprecated ver2.10〜
+     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * コピーなしで文字列を参照するには asWStringView() を使用すること。
      */
-    const std::wstring &asWStringRef() const;
+    [[deprecated(
+        "(ver2.10〜) use asWStringView() instead")]] const std::wstring &
+    asWStringRef() const;
+    /*!
+     * \brief 文字列として返す (wstring)
+     * \since ver2.10
+     *
+     * 参照はこのValAdaptorが破棄されるまで有効
+     *
+     * as_strにwstringが格納されていた場合はそれをそのまま返す。
+     * そうでない場合(u8string, string, double, int64が格納されている場合)
+     * はそれをwstringに変換したうえでその参照を返す。
+     */
+    std::wstring_view asWStringView() const;
     /*!
      * \since ver2.0
+     * \deprecated ver2.10〜
      */
-    const std::string &asU8StringRef() const;
+    [[deprecated(
+        "(ver2.10〜) use asU8StringView() instead")]] const std::string &
+    asU8StringRef() const;
+    /*!
+     * \since ver2.10
+     */
+    std::string_view asU8StringView() const;
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
      */
-    std::string asString() const { return asStringRef(); }
+    std::string asString() const { return std::string(asStringView()); }
     /*!
      * \brief 文字列として返す(コピー) (wstring)
      * \since ver2.0
      */
-    std::wstring asWString() const { return asWStringRef(); }
+    std::wstring asWString() const { return std::wstring(asWStringView()); }
+    /*!
+     * \brief null終端の文字列を返す
+     * \since ver2.10
+     *
+     * ポインタはこのValAdaptorが破棄されるまで有効
+     *
+     * as_strにstringが格納されていた場合はそれをそのまま返す。
+     * そうでない場合(u8string, string, double, int64が格納されている場合)
+     * はそれをstringに変換したうえでその参照を返す。
+     */
+    const char *asCStr() const;
+    /*!
+     * \brief null終端の文字列を返す (wstring)
+     * \since ver2.0
+     *
+     * ポインタはこのValAdaptorが破棄されるまで有効
+     *
+     * as_strにwstringが格納されていた場合はそれをそのまま返す。
+     * そうでない場合(u8string, string, double, int64が格納されている場合)
+     * はそれをwstringに変換したうえでその参照を返す。
+     */
+    const wchar_t *asWCStr() const;
 
     /*!
-     * ver1.10〜: const参照
+     * \since ver2.10
+     *
+     * 以前の const std::string& を置き換え
      */
-    operator const std::string &() const { return asStringRef(); }
+    operator std::string_view() const { return asStringView(); }
+    /*!
+     * \since ver2.10
+     */
+    operator std::wstring_view() const { return asWStringView(); }
     /*!
      * \since ver2.0
      */
-    operator const std::wstring &() const { return asWStringRef(); }
+    operator const char *() const { return asCStr(); }
     /*!
      * \since ver2.0
      */
-    operator const char *() const { return asStringRef().c_str(); }
-    /*!
-     * \since ver2.0
-     */
-    operator const wchar_t *() const { return asWStringRef().c_str(); }
+    operator const wchar_t *() const { return asWCStr(); }
 
     /*!
      * \brief 実数として返す

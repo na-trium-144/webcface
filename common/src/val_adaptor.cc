@@ -16,18 +16,11 @@ ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
     return *this;
 }
 
-ValAdaptor::ValAdaptor(std::string_view str)
-    : as_str(SharedString::encode(str)), type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(std::string_view str) {
-    as_str = SharedString::encode(str);
-    type = ValType::string_;
-    return *this;
-}
-
-ValAdaptor::ValAdaptor(std::wstring_view str)
-    : as_str(SharedString::encode(str)), type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(std::wstring_view str) {
-    as_str = SharedString::encode(str);
+ValAdaptor::ValAdaptor(String str)
+    : as_str(std::move(static_cast<SharedString &>(str))),
+      type(ValType::string_) {}
+ValAdaptor &ValAdaptor::operator=(String str) {
+    as_str = std::move(static_cast<SharedString &>(str));
     type = ValType::string_;
     return *this;
 }
@@ -63,7 +56,7 @@ bool ValAdaptor::empty() const {
     }
 }
 
-const std::string &ValAdaptor::asStringRef() const {
+void ValAdaptor::initStr() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
@@ -74,10 +67,8 @@ const std::string &ValAdaptor::asStringRef() const {
                 SharedString::encode(std::to_string(std::get<INT64V>(as_val)));
         }
     }
-    return as_str.decode();
 }
-
-const std::wstring &ValAdaptor::asWStringRef() const {
+void ValAdaptor::initWStr() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
@@ -88,27 +79,63 @@ const std::wstring &ValAdaptor::asWStringRef() const {
                 SharedString::encode(std::to_wstring(std::get<INT64V>(as_val)));
         }
     }
-    return as_str.decodeW();
+}
+std::string_view ValAdaptor::asStringView() const {
+    initStr();
+    return as_str.decode().std();
+}
+const char *ValAdaptor::asCStr() const {
+    initStr();
+    return as_str.decode().c_str;
+}
+const std::string &ValAdaptor::asStringRef() const {
+    initStr();
+    if (!as_str.decode().container) {
+        // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
+        as_str = SharedString::fromU8String(
+            std::string(as_str.u8StringView().std()));
+        assert(as_str.decode().container);
+    }
+    return *as_str.decode().container;
+}
+std::wstring_view ValAdaptor::asWStringView() const {
+    initWStr();
+    return as_str.decodeW().std();
+}
+const wchar_t *ValAdaptor::asWCStr() const {
+    initWStr();
+    return as_str.decodeW().c_str;
+}
+const std::wstring &ValAdaptor::asWStringRef() const {
+    initWStr();
+    if (!as_str.decodeW().container) {
+        // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
+        as_str = SharedString::fromU8String(
+            std::string(as_str.u8StringView().std()));
+        assert(as_str.decodeW().container);
+    }
+    return *as_str.decodeW().container;
 }
 
+std::string_view ValAdaptor::asU8StringView() const {
+    initStr();
+    return as_str.u8StringView().std();
+}
 const std::string &ValAdaptor::asU8StringRef() const {
-    if (as_str.empty() && valType() != ValType::none_ &&
-        valType() != ValType::string_) {
-        if (as_val.index() == DOUBLEV) {
-            as_str = SharedString::fromU8String(
-                std::to_string(std::get<DOUBLEV>(as_val)));
-        } else {
-            as_str = SharedString::fromU8String(
-                std::to_string(std::get<INT64V>(as_val)));
-        }
+    initStr();
+    if (!as_str.u8StringView().container) {
+        // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
+        as_str = SharedString::fromU8String(
+            std::string(as_str.u8StringView().std()));
+        assert(as_str.u8StringView().container);
     }
-    return as_str.u8String();
+    return *as_str.u8StringView().container;
 }
 
 double ValAdaptor::asDouble() const {
     if (type == ValType::string_) {
         try {
-            return std::stod(asStringRef());
+            return std::stod(asCStr());
         } catch (...) {
             return 0;
         }
@@ -124,7 +151,7 @@ double ValAdaptor::asDouble() const {
 int ValAdaptor::asInt() const {
     if (type == ValType::string_) {
         try {
-            return std::stoi(asStringRef());
+            return std::stoi(asCStr());
         } catch (...) {
             return 0;
         }
@@ -140,7 +167,7 @@ int ValAdaptor::asInt() const {
 long long ValAdaptor::asLLong() const {
     if (type == ValType::string_) {
         try {
-            return std::stoll(asStringRef());
+            return std::stoll(asCStr());
         } catch (...) {
             return 0;
         }

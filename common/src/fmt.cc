@@ -21,28 +21,29 @@
 
 #define WEBCFACE_MESSAGE_FMT_DEF(Type)                                         \
     auto fmt::formatter<Type>::format([[maybe_unused]] const Type &m,          \
-                                      format_context &ctx)                     \
-        const -> format_context::iterator
+                                      format_context &ctx) const               \
+        -> format_context::iterator
 #define WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Type)                                   \
     WEBCFACE_MESSAGE_FMT_DEF(                                                  \
         webcface::message::Entry<webcface::message::Type>) {                   \
         return fmt::format_to(ctx.out(),                                       \
                               "{}-" #Type "Entry('{}' from member_id={})",     \
-                              msg_kind, m.field.decode(), m.member_id);        \
+                              msg_kind, m.field.decode().std(), m.member_id);  \
     }
 #define WEBCFACE_MESSAGE_FMT_DEF_REQ(Type)                                     \
     WEBCFACE_MESSAGE_FMT_DEF(                                                  \
         webcface::message::Req<webcface::message::Type>) {                     \
         return fmt::format_to(                                                 \
             ctx.out(), "{}-" #Type "Req('{}' from member '{}' as req_id={})",  \
-            msg_kind, m.field.decode(), m.member.decode(), m.req_id);          \
+            msg_kind, m.field.decode().std(), m.member.decode().std(),         \
+            m.req_id);                                                         \
     }
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::SyncInit) {
     return fmt::format_to(ctx.out(),
                           "{}-SyncInit('{}', member_id={}, lib_name='{}', "
                           "lib_ver='{}', addr='{}')",
-                          msg_kind, m.member_name.decode(), m.member_id,
+                          msg_kind, m.member_name.decode().std(), m.member_id,
                           m.lib_name, m.lib_ver, m.addr);
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::SyncInitEnd) {
@@ -97,11 +98,11 @@ static std::string fmtValue(const std::vector<double> &v) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Value) {
     return fmt::format_to(ctx.out(), "{}-Value('{}', {})", msg_kind,
-                          m.field.decode(), fmtValue(*m.data));
+                          m.field.decode().std(), fmtValue(*m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Value>) {
     return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
-                          msg_kind, m.req_id, m.sub_field.decode(),
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
                           fmtValue(*m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Value)
@@ -111,15 +112,16 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Value)
 static std::string fmtValAdaptor(const webcface::ValAdaptor &v) {
     switch (v.valType()) {
     case webcface::ValType::string_:
-        if (v.asStringRef().size() <= 10) {
-            return "'" + v.asStringRef() + "'";
+        if (v.asStringView().size() <= 10) {
+            return webcface::strJoin<char>("'", v.asStringView(), "'");
         } else {
-            return "'" + v.asStringRef().substr(0, 10) + "'...";
+            return webcface::strJoin<char>("'", v.asStringView().substr(0, 10),
+                                           "'...");
         }
     case webcface::ValType::int_:
     case webcface::ValType::float_:
     case webcface::ValType::bool_:
-        return v.asStringRef();
+        return v.asString();
     case webcface::ValType::none_:
         return "<none>";
     default:
@@ -128,11 +130,11 @@ static std::string fmtValAdaptor(const webcface::ValAdaptor &v) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Text) {
     return fmt::format_to(ctx.out(), "{}-Text('{}', {})", msg_kind,
-                          m.field.decode(), fmtValAdaptor(*m.data));
+                          m.field.decode().std(), fmtValAdaptor(*m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Text>) {
     return fmt::format_to(ctx.out(), "{}-TextRes(req_id={} + '{}', {})",
-                          msg_kind, m.req_id, m.sub_field.decode(),
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
                           fmtValAdaptor(*m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Text)
@@ -140,20 +142,20 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Text)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::RobotModel) {
     return fmt::format_to(ctx.out(), "{}-RobotModel('{}', size={})", msg_kind,
-                          m.field.decode(), m.data.size());
+                          m.field.decode().std(), m.data.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(
     webcface::message::Res<webcface::message::RobotModel>) {
     return fmt::format_to(
         ctx.out(), "{}-RobotModelRes(req_id={} + '{}', size={})", msg_kind,
-        m.req_id, m.sub_field.decode(), m.data.size());
+        m.req_id, m.sub_field.decode().std(), m.data.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(RobotModel)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(RobotModel)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Log) {
     return fmt::format_to(ctx.out(), "{}-Log('{}', {} lines)", msg_kind,
-                          m.field.decode(), m.log->size());
+                          m.field.decode().std(), m.log->size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::LogDefault) {
     return fmt::format_to(ctx.out(), "{}-LogDefault(member_id={}, {} lines)",
@@ -161,7 +163,7 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::LogDefault) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::LogReqDefault) {
     return fmt::format_to(ctx.out(), "{}-LogReqDefault(from '{}')", msg_kind,
-                          m.member.decode());
+                          m.member.decode().std());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::LogEntryDefault) {
     return fmt::format_to(ctx.out(), "{}-LogEntryDefault(member_id={})",
@@ -169,7 +171,7 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::LogEntryDefault) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Log>) {
     return fmt::format_to(ctx.out(), "{}-LogRes(req_id={} + '{}', {} lines)",
-                          msg_kind, m.req_id, m.sub_field.decode(),
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
                           m.log->size());
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Log)
@@ -178,7 +180,7 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Log)
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Image) {
     return fmt::format_to(
         ctx.out(), "{}-Image('{}', {} x {}, {} bytes, color={}, compress={})",
-        msg_kind, m.field.decode(), m.width_, m.height_,
+        msg_kind, m.field.decode().std(), m.width_, m.height_,
         m.data_ ? m.data_->size() : 0, toInt(m.color_mode_),
         toInt(m.cmp_mode_));
 }
@@ -186,8 +188,8 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Image>) {
     return fmt::format_to(ctx.out(),
                           "{}-ImageRes(req_id={} + '{}', {} x {}, {} bytes, "
                           "color={}, compress={})",
-                          msg_kind, m.req_id, m.sub_field.decode(), m.width_,
-                          m.height_, m.data_ ? m.data_->size() : 0,
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
+                          m.width_, m.height_, m.data_ ? m.data_->size() : 0,
                           toInt(m.color_mode_), toInt(m.cmp_mode_));
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Image)
@@ -195,77 +197,80 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Req<webcface::message::Image>) {
     return fmt::format_to(ctx.out(),
                           "{}-ImageReq('{}' from member '{}' as req_id={}, {} "
                           "x {}, color={}, cmp={}, q={}, r={})",
-                          msg_kind, m.field.decode(), m.member.decode(),
-                          m.req_id, m.rows, m.cols, toInt(m.color_mode),
-                          toInt(m.cmp_mode), m.quality, m.frame_rate);
+                          msg_kind, m.field.decode().std(),
+                          m.member.decode().std(), m.req_id, m.rows, m.cols,
+                          toInt(m.color_mode), toInt(m.cmp_mode), m.quality,
+                          m.frame_rate);
 }
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::View) {
     return fmt::format_to(ctx.out(), "{}-View('{}', {} diffs)", msg_kind,
-                          m.field.decode(), m.data_diff.size());
+                          m.field.decode().std(), m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::View>) {
     return fmt::format_to(ctx.out(), "{}-ViewRes(req_id={} + '{}', {} diffs)",
-                          msg_kind, m.req_id, m.sub_field.decode(),
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
                           m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(View)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(View)
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::ViewOld) {
     return fmt::format_to(ctx.out(), "{}-ViewOld('{}', {} diffs, length={})",
-                          msg_kind, m.field.decode(), m.data_diff.size(),
+                          msg_kind, m.field.decode().std(), m.data_diff.size(),
                           m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::ViewOld>) {
     return fmt::format_to(
         ctx.out(), "{}-ViewOldRes(req_id={} + '{}', {} diffs, length={})",
-        msg_kind, m.req_id, m.sub_field.decode(), m.data_diff.size(), m.length);
+        msg_kind, m.req_id, m.sub_field.decode().std(), m.data_diff.size(),
+        m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(ViewOld)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(ViewOld)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Canvas3D) {
     return fmt::format_to(ctx.out(), "{}-Canvas3D('{}', {} diffs)", msg_kind,
-                          m.field.decode(), m.data_diff.size());
+                          m.field.decode().std(), m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Canvas3D>) {
     return fmt::format_to(
         ctx.out(), "{}-Canvas3DRes(req_id={} + '{}', {} diffs)", msg_kind,
-        m.req_id, m.sub_field.decode(), m.data_diff.size());
+        m.req_id, m.sub_field.decode().std(), m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Canvas3D)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Canvas3D)
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Canvas3DOld) {
     return fmt::format_to(ctx.out(),
                           "{}-Canvas3DOld('{}', {} diffs, length={})", msg_kind,
-                          m.field.decode(), m.data_diff.size(), m.length);
+                          m.field.decode().std(), m.data_diff.size(), m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF(
     webcface::message::Res<webcface::message::Canvas3DOld>) {
     return fmt::format_to(
         ctx.out(), "{}-Canvas3DOldRes(req_id={} + '{}', {} diffs, length={})",
-        msg_kind, m.req_id, m.sub_field.decode(), m.data_diff.size(), m.length);
+        msg_kind, m.req_id, m.sub_field.decode().std(), m.data_diff.size(),
+        m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Canvas3DOld)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Canvas3DOld)
 
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Canvas2D) {
     return fmt::format_to(ctx.out(), "{}-Canvas2D('{}', {} x {}, {} diffs)",
-                          msg_kind, m.field.decode(), m.width, m.height,
+                          msg_kind, m.field.decode().std(), m.width, m.height,
                           m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Canvas2D>) {
     return fmt::format_to(ctx.out(),
                           "{}-Canvas2DRes(req_id={} + '{}', {} x {}, {} diffs)",
-                          msg_kind, m.req_id, m.sub_field.decode(), m.width,
-                          m.height, m.data_diff.size());
+                          msg_kind, m.req_id, m.sub_field.decode().std(),
+                          m.width, m.height, m.data_diff.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Canvas2D)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Canvas2D)
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Canvas2DOld) {
     return fmt::format_to(ctx.out(),
                           "{}-Canvas2DOld('{}', {} x {}, {} diffs, length={})",
-                          msg_kind, m.field.decode(), m.width, m.height,
+                          msg_kind, m.field.decode().std(), m.width, m.height,
                           m.data_diff.size(), m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF(
@@ -273,7 +278,7 @@ WEBCFACE_MESSAGE_FMT_DEF(
     return fmt::format_to(
         ctx.out(),
         "{}-Canvas2DOldRes(req_id={} + '{}', {} x {}, {} diffs, length={})",
-        msg_kind, m.req_id, m.sub_field.decode(), m.width, m.height,
+        msg_kind, m.req_id, m.sub_field.decode().std(), m.width, m.height,
         m.data_diff.size(), m.length);
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Canvas2DOld)
@@ -283,7 +288,7 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::FuncInfo) {
     return fmt::format_to(
         ctx.out(),
         "{}-FuncInfo('{}' from member_id={}, index={}, {} args, return={})",
-        msg_kind, m.field.decode(), m.member_id, m.index, m.args.size(),
+        msg_kind, m.field.decode().std(), m.member_id, m.index, m.args.size(),
         webcface::valTypeStr(m.return_type));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Call) {
@@ -291,7 +296,8 @@ WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Call) {
                           "{}-Call(caller_id={} from member_id={}, to '{}' of "
                           "member_id={}, {} args)",
                           msg_kind, m.caller_id, m.caller_member_id,
-                          m.field.decode(), m.target_member_id, m.args.size());
+                          m.field.decode().std(), m.target_member_id,
+                          m.args.size());
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::CallResponse) {
     return fmt::format_to(
