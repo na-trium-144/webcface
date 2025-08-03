@@ -62,6 +62,8 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
  * usingUTF8(true)の場合なにもせずそのままコピーする。
  * * utf-8→string: windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
+ * * ver2.10〜 staticな生文字列ポインタをstring_viewとして保持することを可能にした。
+ * その場合string_viewの範囲外だがNULL終端であることが保証される。
  *
  */
 class WEBCFACE_DLL SharedString {
@@ -72,15 +74,16 @@ class WEBCFACE_DLL SharedString {
     SharedString(std::nullptr_t) : data() {}
     explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
 
-    static SharedString WEBCFACE_CALL fromU8String(std::string_view u8s);
-    static SharedString WEBCFACE_CALL encode(std::string_view s);
-    static SharedString WEBCFACE_CALL
-    encode(std::wstring_view ws, std::string_view s = std::string_view());
+    static SharedString WEBCFACE_CALL fromU8String(std::string u8s);
+    static SharedString WEBCFACE_CALL fromU8StringStatic(const char *u8s, std::size_t N);
+    static SharedString WEBCFACE_CALL encode(std::string s);
+    static SharedString WEBCFACE_CALL encodeStatic(const char *s, std::size_t N);
+    static SharedString WEBCFACE_CALL encode(std::wstring ws);
+    static SharedString WEBCFACE_CALL encodeStatic(const wchar_t *ws, std::size_t N);
 
-    const std::string &u8String() const;
     std::string_view u8StringView() const;
-    const std::string &decode() const;
-    const std::wstring &decodeW() const;
+    std::string_view decode() const;
+    std::wstring_view decodeW() const;
 
     static const std::string &emptyStr();
     static const std::wstring &emptyStrW();
