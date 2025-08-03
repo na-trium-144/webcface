@@ -49,6 +49,7 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
  * \since ver2.0
+ * \sa String
  *
  * * 初期状態ではdataがnullptr、またはu8stringのみ値を持ちstringとwstringは空
  * * コピーするとdataのポインタ(shared_ptr)のみをコピーし、
@@ -62,7 +63,8 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
  * usingUTF8(true)の場合なにもせずそのままコピーする。
  * * utf-8→string: windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
- * * ver2.10〜 staticな生文字列ポインタをstring_viewとして保持することを可能にした。
+ * * ver2.10〜
+ * staticな生文字列ポインタをstring_viewとして保持することを可能にした。
  * その場合string_viewの範囲外だがNULL終端であることが保証される。
  *
  */
@@ -75,11 +77,14 @@ class WEBCFACE_DLL SharedString {
     explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
 
     static SharedString WEBCFACE_CALL fromU8String(std::string u8s);
-    static SharedString WEBCFACE_CALL fromU8StringStatic(const char *u8s, std::size_t N);
+    static SharedString WEBCFACE_CALL fromU8StringStatic(const char *u8s,
+                                                         std::size_t N);
     static SharedString WEBCFACE_CALL encode(std::string s);
-    static SharedString WEBCFACE_CALL encodeStatic(const char *s, std::size_t N);
+    static SharedString WEBCFACE_CALL encodeStatic(const char *s,
+                                                   std::size_t N);
     static SharedString WEBCFACE_CALL encode(std::wstring ws);
-    static SharedString WEBCFACE_CALL encodeStatic(const wchar_t *ws, std::size_t N);
+    static SharedString WEBCFACE_CALL encodeStatic(const wchar_t *ws,
+                                                   std::size_t N);
 
     std::string_view u8StringView() const;
     std::string_view decode() const;
@@ -108,6 +113,29 @@ class WEBCFACE_DLL SharedString {
             return this->std::hash<std::string>::operator()(ss.u8String());
         }
     };
+};
+
+/*!
+ * \brief SharedString のpublicなコンストラクタインタフェース (入力専用)
+ * \since ver2.10
+ *
+ * * stringまたはwstringを受け取り、保持する
+ * * windowsではusingUTF8(false)の場合毎回ANSIからutf8へエンコーディングの変換を行うが、
+ * usingUTF8(true)の場合なにもせずそのままコピーする。
+ * * 生文字列リテラルを渡した場合に限り、コピーせずポインタで保持する。
+ *
+ */
+class String : public SharedString {
+  public:
+    String() : SharedString() {}
+    String(std::string s) : SharedString(SharedString::encode(std::move(s))) {}
+    String(std::wstring s) : SharedString(SharedString::encode(std::move(s))) {}
+    template <std::size_t N>
+    String(const char (&static_str)[N])
+        : SharedString(SharedString::encodeStatic(static_str, N)) {}
+    template <std::size_t N>
+    String(const wchar_t (&static_str)[N])
+        : SharedString(SharedString::encodeStatic(static_str, N)) {}
 };
 
 namespace [[deprecated("symbols in webcface::encoding namespace are "
