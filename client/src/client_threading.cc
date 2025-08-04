@@ -35,7 +35,7 @@ internal::ClientData::ClientData(const SharedString &name,
     static auto stderr_sink =
         std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     logger_internal = std::make_shared<spdlog::logger>(
-        "webcface_internal(" + name.decode() + ")", stderr_sink);
+        strJoin<char>("webcface_internal(", name.decode(), ")"), stderr_sink);
     if (std::getenv("WEBCFACE_TRACE") != nullptr) {
         logger_internal->set_level(spdlog::level::trace);
     } else if (std::getenv("WEBCFACE_VERBOSE") != nullptr) {

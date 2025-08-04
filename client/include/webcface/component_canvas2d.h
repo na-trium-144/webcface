@@ -174,13 +174,11 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
+     * 
+     * ver2.10〜 String 型で置き換え
+     * 
      */
-    TemporalCanvas2DComponent &id(std::string_view id);
-    /*!
-     * \brief idを設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas2DComponent &id(std::wstring_view id);
+    TemporalCanvas2DComponent &id(String id);
     /*!
      * \brief 要素の移動・回転
      *
@@ -263,27 +261,18 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \since ver1.9
      *
      * (ver2.0からstring_viewに変更)
+     * (ver2.10〜 String 型に変更)
      *
      */
-    TemporalCanvas2DComponent &text(std::string_view text) &;
+    TemporalCanvas2DComponent &text(String text) &;
     /*!
      * \since ver2.5
+     * 
+     * (ver2.10〜 String 型に変更)
+     * 
      */
-    TemporalCanvas2DComponent &&text(std::string_view text) && {
-        this->text(text);
-        return std::move(*this);
-    }
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.0
-     */
-    TemporalCanvas2DComponent &text(std::wstring_view text) &;
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas2DComponent &&text(std::wstring_view text) && {
-        this->text(text);
+    TemporalCanvas2DComponent &&text(String text) && {
+        this->text(std::move(text));
         return std::move(*this);
     }
     /*!

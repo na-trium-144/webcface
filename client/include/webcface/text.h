@@ -194,16 +194,11 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
+     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * 
      */
-    Text child(std::string_view field) const {
-        return this->Field::child(field);
-    }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    Text child(std::wstring_view field) const {
-        return this->Field::child(field);
+    Text child(String field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver1.11
@@ -216,22 +211,20 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * child()と同じ
      * \since ver1.11
+     * 
+     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * 
      */
-    Text operator[](std::string_view field) const { return child(field); }
-    /*!
-     * child()と同じ
-     * \since ver2.0
-     */
-    Text operator[](std::wstring_view field) const { return child(field); }
-    /*!
-     * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver1.11
-     */
-    Text operator[](const char *field) const { return child(field); }
-    /*!
-     * \since ver2.0
-     */
-    Text operator[](const wchar_t *field) const { return child(field); }
+    Text operator[](String field) const { return child(std::move(field)); }
+    // /*!
+    //  * operator[](long, const char *)と解釈されるのを防ぐための定義
+    //  * \since ver1.11
+    //  */
+    // Text operator[](const char *field) const { return child(field); }
+    // /*!
+    //  * \since ver2.0
+    //  */
+    // Text operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -292,35 +285,21 @@ class WEBCFACE_DLL Text : protected Variant {
      * \brief 文字列をセットする
      *
      * (ver2.0からstd::stringをstd::string_viewに変更)
-     *
+     * (ver2.0からstd::wstring対応、ver2.10からString型に変更)
      */
-    const Text &set(std::string_view v) const {
-        this->Variant::set(ValAdaptor{v});
-        return *this;
-    }
-    /*!
-     * \brief 文字列をセットする (wstring)
-     * \since ver2.0
-     */
-    const Text &set(std::wstring_view v) const {
-        this->Variant::set(ValAdaptor{v});
+    const Text &set(String v) const {
+        this->Variant::set(ValAdaptor{std::move(v)});
         return *this;
     }
 
     /*!
      * \brief 文字列をセットする
      *
+     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * 
      */
-    const Text &operator=(std::string_view v) const {
-        this->set(v);
-        return *this;
-    }
-    /*!
-     * \brief 文字列をセットする (wstring)
-     * \since ver2.0
-     */
-    const Text &operator=(std::wstring_view v) const {
-        this->set(v);
+    const Text &operator=(String v) const {
+        this->set(std::move(v));
         return *this;
     }
 

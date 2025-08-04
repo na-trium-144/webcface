@@ -154,13 +154,11 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
+     * 
+     * ver2.10〜 String 型で置き換え
+     * 
      */
-    TemporalCanvas3DComponent &id(std::string_view id);
-    /*!
-     * \brief idを設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas3DComponent &id(std::wstring_view id);
+    TemporalCanvas3DComponent &id(String id);
     /*!
      * \brief 要素の移動
      *
