@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <string_view>
 #include <vector>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"

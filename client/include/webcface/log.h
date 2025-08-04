@@ -45,14 +45,22 @@ class LogLine : private LogLineData {
     LogLine(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }
-    const std::string &message() const { return message_.decode(); };
+    /*!
+     * * ver2.10〜 StringViewに変更
+     *
+     */
+    StringView message() const { return message_.decode(); };
 };
 class LogLineW : private LogLineData {
   public:
     LogLineW(const LogLineData &ll) : LogLineData(ll) {}
     int level() const { return level_; }
     std::chrono::system_clock::time_point time() const { return time_; }
-    const std::wstring &message() const { return message_.decodeW(); };
+    /*!
+     * * ver2.10〜 WStringViewに変更
+     *
+     */
+    WStringView message() const { return message_.decodeW(); };
 };
 
 /*!
@@ -77,11 +85,11 @@ class WEBCFACE_DLL Log : protected Field {
     /*!
      * \brief Clientが保持するログの行数を設定する。
      * \since ver2.1
-     * 
+     *
      * * この行数以上のログが送られてきたら古いログから順に削除され、get()で取得できなくなる。
      * * デフォルトは1000
      * * 負の値を設定すると無制限に保持する。
-     * 
+     *
      */
     static void WEBCFACE_CALL keepLines(int n);
 
@@ -113,7 +121,8 @@ class WEBCFACE_DLL Log : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) const {
+    [[deprecated]]
+    void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -173,45 +182,25 @@ class WEBCFACE_DLL Log : protected Field {
      * \brief ログを1行追加
      * \since ver2.0
      *
-     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     * * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     * * ver2.10〜 String型に変更
      *
      */
-    const Log &append(int level, std::string_view message) const {
+    const Log &append(int level, String message) const {
         return append({level, std::chrono::system_clock::now(),
-                       SharedString::encode(message)});
+                       static_cast<SharedString &>(message)});
     }
     /*!
      * \brief ログを1行追加
      * \since ver2.0
      *
-     * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     * * sync()時にサーバーに送られる。コンソールへの出力などはされない
+     * * ver2.10〜 String型に変更
      *
      */
     const Log &append(int level, std::chrono::system_clock::time_point time,
-                      std::string_view message) const {
-        return append({level, time, SharedString::encode(message)});
-    }
-    /*!
-     * \brief ログを1行追加 (wstring)
-     * \since ver2.0
-     *
-     * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     *
-     */
-    const Log &append(int level, std::wstring_view message) const {
-        return append({level, std::chrono::system_clock::now(),
-                       SharedString::encode(message)});
-    }
-    /*!
-     * \brief ログを1行追加 (wstring)
-     * \since ver2.0
-     *
-     * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     *
-     */
-    const Log &append(int level, std::chrono::system_clock::time_point time,
-                      std::wstring_view message) const {
-        return append({level, time, SharedString::encode(message)});
+                      String message) const {
+        return append({level, time, static_cast<SharedString &>(message)});
     }
 
     /*!

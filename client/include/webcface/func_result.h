@@ -5,7 +5,6 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include <optional>
-#include <string>
 #include <future>
 #include <memory>
 #include <stdexcept>
@@ -59,8 +58,9 @@ class WEBCFACE_DLL Promise : Field {
      * started.get(), started.wait() 使用時の注意はwaitReach()を参照。
      *
      */
-    [[deprecated("use reached(), found() or waitReach()")]]
-    std::shared_future<bool> started;
+    [[deprecated(
+        "use reached(), found() or waitReach()")]] std::shared_future<bool>
+        started;
     /*!
      * \brief 関数の実行が完了した時戻り値が入る
      *
@@ -72,8 +72,10 @@ class WEBCFACE_DLL Promise : Field {
      * を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。
      *
      */
-    [[deprecated("use finished(), response(), rejection(), or waitFinish()")]]
-    std::shared_future<ValAdaptor> result;
+    [[deprecated(
+        "use finished(), response(), rejection(), or waitFinish()")]] std::
+        shared_future<ValAdaptor>
+            result;
 
   private:
     void waitReachImpl(std::optional<std::chrono::microseconds> timeout) const;
@@ -173,14 +175,19 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す
      * \since ver2.0
      *
+     * ver2.10〜 StringView型に変更
+     *
      */
-    const std::string &rejection() const;
+    StringView rejection() const;
     /*!
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す (wstring)
      * \since ver2.0
      * \sa rejection()
+     *
+     * ver2.10〜 WStringView型に変更
+     *
      */
-    const std::wstring &rejectionW() const;
+    WStringView rejectionW() const;
 
     /*!
      * \brief 関数の実行が完了するまで待機
@@ -394,18 +401,11 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver1.11まで: 2回呼ぶと std::future_error を投げ、
      * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
+     * * ver2.0〜 wstring対応、ver2.10〜 String型に変更
      *
      */
-    void reject(std::string_view message) const { reject(ValAdaptor(message)); }
-    /*!
-     * \brief 関数の結果を例外として送信する (wstring)
-     * \since ver2.0
-     *
-     * * respondable() がfalseの場合 std::runtime_error を投げる
-     *
-     */
-    void reject(std::wstring_view message) const {
-        reject(ValAdaptor(message));
+    void reject(String message) const {
+        reject(ValAdaptor(std::move(message)));
     }
 
     /*!

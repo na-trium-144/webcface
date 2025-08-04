@@ -2,12 +2,26 @@
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
+#include <cassert>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>
 #endif
 
 WEBCFACE_NS_BEGIN
+
+template <typename CharT>
+TStringView<CharT>::TStringView(const CharT *data, std::size_t size,
+                                const std::basic_string<CharT> *container)
+    : std::basic_string_view<CharT>(data, size), c_str_(data),
+      container_(container) {
+    assert(data[size] == static_cast<CharT>(0));
+    if (container_) {
+        assert(container->c_str() == data);
+    }
+}
+template class WEBCFACE_DLL_INSTANCE_DEF TStringView<char>;
+template class WEBCFACE_DLL_INSTANCE_DEF TStringView<wchar_t>;
 
 namespace internal {
 

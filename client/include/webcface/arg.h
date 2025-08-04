@@ -16,7 +16,7 @@ WEBCFACE_NS_BEGIN
 namespace message {
 struct Arg;
 }
-namespace internal{
+namespace internal {
 struct FuncInfo;
 }
 
@@ -68,24 +68,25 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief 引数名を設定する。
      *
+     * ver2.0〜wstring対応、ver2.10〜 String 型に変更
      */
-    Arg(std::string_view name) : Arg(SharedString::encode(name)) {}
-    /*!
-     * \brief 引数名を設定する。(wstring)
-     * \since ver2.0
-     */
-    Arg(std::wstring_view name) : Arg(SharedString::encode(name)) {}
+    Arg(String name) : Arg(static_cast<SharedString &>(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
      *
+     * ver2.10〜 StringView に変更
+     *
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief 引数の名前を取得する。(wstring)
      * \since ver2.0
+     *
+     * ver2.10〜 WStringView に変更
+     *
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief 引数の型を取得する。
      *

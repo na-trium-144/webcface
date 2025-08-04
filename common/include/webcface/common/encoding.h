@@ -2,7 +2,6 @@
 #include <string>
 #include <string_view>
 #include <memory>
-#include <cassert>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -55,20 +54,13 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
  *
  */
 template <typename CharT>
-class TStringView : public std::basic_string_view<CharT> {
+class WEBCFACE_DLL_TEMPLATE TStringView : public std::basic_string_view<CharT> {
     const CharT *c_str_;
     const std::basic_string<CharT> *container_;
 
   public:
     TStringView(const CharT *data, std::size_t size,
-                const std::basic_string<CharT> *container)
-        : std::basic_string_view<CharT>(data, size), c_str_(data),
-          container_(container) {
-        assert(data[size] == static_cast<CharT>(0));
-        if (container_) {
-            assert(container->c_str() == data);
-        }
-    }
+                const std::basic_string<CharT> *container);
     /*!
      * \brief null終端の文字列ポインタを返す
      *
@@ -81,6 +73,10 @@ class TStringView : public std::basic_string_view<CharT> {
     const std::basic_string<CharT> *container() const { return container_; }
 };
 
+#if WEBCFACE_SYSTEM_DLLEXPORT
+extern template class WEBCFACE_DLL_INSTANCE_DECL TStringView<char>;
+extern template class WEBCFACE_DLL_INSTANCE_DECL TStringView<wchar_t>;
+#endif
 using StringView = TStringView<char>;
 using WStringView = TStringView<wchar_t>;
 
@@ -162,8 +158,22 @@ class WEBCFACE_DLL SharedString {
 class String : public SharedString {
   public:
     String() : SharedString() {}
-    String(std::string s) : SharedString(SharedString::encode(std::move(s))) {}
-    String(std::wstring s) : SharedString(SharedString::encode(std::move(s))) {}
+    // move
+    String(std::string &&s)
+        : SharedString(SharedString::encode(std::move(s))) {}
+    String(std::wstring &&s)
+        : SharedString(SharedString::encode(std::move(s))) {}
+    // copy
+    template <typename T,
+              typename std::enable_if_t<std::is_constructible_v<std::string, T>,
+                                        nullptr_t> = nullptr>
+    String(const T &s) : SharedString(SharedString::encode(std::string(s))) {}
+    template <typename T, typename std::enable_if_t<
+                              !std::is_constructible_v<std::string, T> &&
+                                  std::is_constructible_v<std::wstring, T>,
+                              nullptr_t> = nullptr>
+    String(const T &s) : SharedString(SharedString::encode(std::wstring(s))) {}
+    // c-string ptr
     template <std::size_t N>
     String(const char (&static_str)[N])
         : SharedString(SharedString::encodeStatic(

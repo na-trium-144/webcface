@@ -1,4 +1,5 @@
 #include "webcface/common/val_adaptor.h"
+#include <cassert>
 
 WEBCFACE_NS_BEGIN
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
