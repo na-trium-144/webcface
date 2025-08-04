@@ -50,24 +50,39 @@ WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 /*!
  * \brief null終端であることが保証されたstring_view
  * \since ver2.10
+ *
+ * std::string_view に c_str() メンバ関数を追加したもの。
+ *
  */
 template <typename CharT>
-struct TerminatedStringView {
-    const CharT *c_str;
-    std::size_t size;
-    const std::basic_string<CharT> *container;
-    TerminatedStringView(const CharT *data, std::size_t size,
-                         const std::basic_string<CharT> *container)
-        : c_str(data), size(size), container(container) {
+class TStringView : public std::basic_string_view<CharT> {
+    const CharT *c_str_;
+    const std::basic_string<CharT> *container_;
+
+  public:
+    TStringView(const CharT *data, std::size_t size,
+                const std::basic_string<CharT> *container)
+        : std::basic_string_view<CharT>(data, size), c_str_(data),
+          container_(container) {
         assert(data[size] == static_cast<CharT>(0));
-        if (container) {
+        if (container_) {
             assert(container->c_str() == data);
         }
     }
-    std::basic_string_view<CharT> std() const {
-        return std::basic_string_view<CharT>(c_str, size);
-    }
+    /*!
+     * \brief null終端の文字列ポインタを返す
+     *
+     */
+    const CharT *c_str() const { return c_str_; }
+    /*!
+     * 内部処理用
+     *
+     */
+    const std::basic_string<CharT> *container() const { return container_; }
 };
+
+using StringView = TStringView<char>;
+using WStringView = TStringView<wchar_t>;
 
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
@@ -100,21 +115,18 @@ class WEBCFACE_DLL SharedString {
     explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
 
     static SharedString WEBCFACE_CALL fromU8String(std::string u8s);
-    static SharedString WEBCFACE_CALL
-    fromU8StringStatic(TerminatedStringView<char> u8s);
+    static SharedString WEBCFACE_CALL fromU8StringStatic(StringView u8s);
     static SharedString WEBCFACE_CALL encode(std::string s);
-    static SharedString WEBCFACE_CALL
-    encodeStatic(TerminatedStringView<char> s);
+    static SharedString WEBCFACE_CALL encodeStatic(StringView s);
     static SharedString WEBCFACE_CALL encode(std::wstring ws);
-    static SharedString WEBCFACE_CALL
-    encodeStatic(TerminatedStringView<wchar_t> ws);
+    static SharedString WEBCFACE_CALL encodeStatic(WStringView ws);
 
-    TerminatedStringView<char> u8StringView() const;
-    TerminatedStringView<char> decode() const;
-    TerminatedStringView<wchar_t> decodeW() const;
+    StringView u8StringView() const;
+    StringView decode() const;
+    WStringView decodeW() const;
 
-    static TerminatedStringView<char> emptyStr();
-    static TerminatedStringView<wchar_t> emptyStrW();
+    static StringView emptyStr();
+    static WStringView emptyStrW();
 
     bool empty() const;
     bool startsWith(std::string_view str) const;
@@ -155,11 +167,11 @@ class String : public SharedString {
     template <std::size_t N>
     String(const char (&static_str)[N])
         : SharedString(SharedString::encodeStatic(
-              TerminatedStringView<char>(static_str, N - 1, nullptr))) {}
+              StringView(static_str, N - 1, nullptr))) {}
     template <std::size_t N>
     String(const wchar_t (&static_str)[N])
         : SharedString(SharedString::encodeStatic(
-              TerminatedStringView<wchar_t>(static_str, N - 1, nullptr))) {}
+              WStringView(static_str, N - 1, nullptr))) {}
 };
 
 /*!

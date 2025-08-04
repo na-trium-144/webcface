@@ -11,7 +11,6 @@
 #include "webcface/log.h"
 #include "webcface/exception.h"
 #include "webcface/internal/client_internal.h"
-#include <stdexcept>
 #include <algorithm>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
@@ -21,24 +20,24 @@
 
 WEBCFACE_NS_BEGIN
 SharedString Field::lastName8() const {
-    auto i = this->field_.u8String().rfind(field_separator);
+    auto i = this->field_.u8StringView().rfind(field_separator);
     if (i != std::string::npos && i != 0 &&
-        !(i == 1 && this->field_.u8String()[0] == field_separator)) {
+        !(i == 1 && this->field_.u8StringView()[0] == field_separator)) {
         return SharedString::fromU8String(
-            this->field_.u8StringView().substr(i + 1));
+            std::string(this->field_.u8StringView().substr(i + 1)));
     } else {
         return this->field_;
     }
 }
 
 Field Field::parent() const {
-    int l = static_cast<int>(this->field_.u8String().size()) -
-            static_cast<int>(lastName8().u8String().size()) - 1;
+    int l = static_cast<int>(this->field_.u8StringView().size()) -
+            static_cast<int>(lastName8().u8StringView().size()) - 1;
     if (l < 0) {
         l = 0;
     }
-    return Field{*this, SharedString::fromU8String(
-                            this->field_.u8StringView().substr(0, l))};
+    return Field{*this, SharedString::fromU8String(std::string(
+                            this->field_.u8StringView().substr(0, l)))};
 }
 Field Field::child(const SharedString &field) const {
     if (this->field_.empty()) {
@@ -46,9 +45,9 @@ Field Field::child(const SharedString &field) const {
     } else if (field.empty()) {
         return *this;
     } else {
-        return Field{*this, SharedString::fromU8String(this->field_.u8String() +
-                                                       field_separator +
-                                                       field.u8String())};
+        return Field{*this, SharedString::fromU8String(strJoin(
+                                this->field_.u8StringView(), field_separator,
+                                field.u8StringView()))};
     }
 }
 
@@ -56,12 +55,13 @@ Field Field::child(const SharedString &field) const {
 template <typename S>
 static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    auto prefix_with_sep = this_->field_.u8String() + field_separator;
+    auto prefix_with_sep =
+        strJoin(this_->field_.u8StringView(), field_separator);
     for (const auto &f : keys) {
         // mapはkeyでソートされているので
         if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
             return true;
-        } else if (f.u8String() < prefix_with_sep) {
+        } else if (f.u8StringView() < prefix_with_sep) {
             continue;
         } else {
             break;
@@ -90,7 +90,8 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
     std::string prefix_with_sep;
     std::size_t prefix_len = 0;
     if (!this_->field_.empty()) {
-        prefix_with_sep = this_->field_.u8String() + field_separator;
+        prefix_with_sep =
+            strJoin(this_->field_.u8StringView(), field_separator);
         prefix_len = prefix_with_sep.size();
     }
     for (auto f : keys) {
@@ -102,7 +103,7 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
             if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
                 ret.emplace_back(*this_, f);
             }
-        } else if (f.u8String() < prefix_with_sep) {
+        } else if (f.u8StringView() < prefix_with_sep) {
             continue;
         } else {
             break;

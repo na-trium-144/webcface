@@ -80,62 +80,51 @@ void ValAdaptor::initWStr() const {
         }
     }
 }
-std::string_view ValAdaptor::asStringView() const {
+StringView ValAdaptor::asStringView() const {
     initStr();
-    return as_str.decode().std();
-}
-const char *ValAdaptor::asCStr() const {
-    initStr();
-    return as_str.decode().c_str;
+    return as_str.decode();
 }
 const std::string &ValAdaptor::asStringRef() const {
     initStr();
-    if (!as_str.decode().container) {
+    if (!as_str.decode().container()) {
         // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
-        as_str = SharedString::fromU8String(
-            std::string(as_str.u8StringView().std()));
-        assert(as_str.decode().container);
+        as_str = SharedString::fromU8String(std::string(as_str.u8StringView()));
+        assert(as_str.decode().container());
     }
-    return *as_str.decode().container;
+    return *as_str.decode().container();
 }
-std::wstring_view ValAdaptor::asWStringView() const {
+WStringView ValAdaptor::asWStringView() const {
     initWStr();
-    return as_str.decodeW().std();
-}
-const wchar_t *ValAdaptor::asWCStr() const {
-    initWStr();
-    return as_str.decodeW().c_str;
+    return as_str.decodeW();
 }
 const std::wstring &ValAdaptor::asWStringRef() const {
     initWStr();
-    if (!as_str.decodeW().container) {
+    if (!as_str.decodeW().container()) {
         // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
-        as_str = SharedString::fromU8String(
-            std::string(as_str.u8StringView().std()));
-        assert(as_str.decodeW().container);
+        as_str = SharedString::fromU8String(std::string(as_str.u8StringView()));
+        assert(as_str.decodeW().container());
     }
-    return *as_str.decodeW().container;
+    return *as_str.decodeW().container();
 }
 
-std::string_view ValAdaptor::asU8StringView() const {
+StringView ValAdaptor::asU8StringView() const {
     initStr();
-    return as_str.u8StringView().std();
+    return as_str.u8StringView();
 }
 const std::string &ValAdaptor::asU8StringRef() const {
     initStr();
-    if (!as_str.u8StringView().container) {
+    if (!as_str.u8StringView().container()) {
         // std::stringコンテナを使用しないポインタを保持していた場合、コピーを作成して上書き
-        as_str = SharedString::fromU8String(
-            std::string(as_str.u8StringView().std()));
-        assert(as_str.u8StringView().container);
+        as_str = SharedString::fromU8String(std::string(as_str.u8StringView()));
+        assert(as_str.u8StringView().container());
     }
-    return *as_str.u8StringView().container;
+    return *as_str.u8StringView().container();
 }
 
 double ValAdaptor::asDouble() const {
     if (type == ValType::string_) {
         try {
-            return std::stod(asCStr());
+            return std::stod(asU8StringView().c_str());
         } catch (...) {
             return 0;
         }
@@ -151,7 +140,7 @@ double ValAdaptor::asDouble() const {
 int ValAdaptor::asInt() const {
     if (type == ValType::string_) {
         try {
-            return std::stoi(asCStr());
+            return std::stoi(asU8StringView().c_str());
         } catch (...) {
             return 0;
         }
@@ -167,7 +156,7 @@ int ValAdaptor::asInt() const {
 long long ValAdaptor::asLLong() const {
     if (type == ValType::string_) {
         try {
-            return std::stoll(asCStr());
+            return std::stoll(asU8StringView().c_str());
         } catch (...) {
             return 0;
         }

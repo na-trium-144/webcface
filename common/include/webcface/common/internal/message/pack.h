@@ -92,7 +92,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
                                             const webcface::SharedString &v) {
-            o.pack(v.u8String());
+            o.pack(v.u8StringView());
             return o;
         }
     };
@@ -143,7 +143,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 break;
             case webcface::ValType::string_:
             default:
-                o.pack(v.asU8StringRef());
+                o.pack(v.asU8StringView());
                 break;
             }
             return o;

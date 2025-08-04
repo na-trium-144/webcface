@@ -171,13 +171,12 @@ class WEBCFACE_DLL ValAdaptor {
      *
      * \deprecated ver2.10〜
      * 内部の仕様変更により文字列のコピーが発生する可能性がある。
-     * コピーなしで文字列を参照するには asStringView() または asCStr()
-     * を使用すること。
+     * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() or asCStr() instead")]]
+    [[deprecated("(ver2.10〜) use asStringView() instead")]]
     const std::string &asStringRef() const;
     /*!
-     * \brief 文字列として返す
+     * \brief null終端の文字列の参照として返す
      * \since ver2.10
      *
      * 参照はこのValAdaptorが破棄されるまで有効
@@ -187,7 +186,7 @@ class WEBCFACE_DLL ValAdaptor {
      * はそれをstringに変換したうえでその参照を返す。
      *
      */
-    std::string_view asStringView() const;
+    StringView asStringView() const;
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.0
@@ -197,10 +196,10 @@ class WEBCFACE_DLL ValAdaptor {
      * コピーなしで文字列を参照するには asWStringView() または asWCStr()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() or asWCStr() instead")]]
+    [[deprecated("(ver2.10〜) use asWStringView() instead")]]
     const std::wstring &asWStringRef() const;
     /*!
-     * \brief 文字列として返す (wstring)
+     * \brief null終端の文字列の参照として返す (wstring)
      * \since ver2.10
      *
      * 参照はこのValAdaptorが破棄されるまで有効
@@ -209,7 +208,7 @@ class WEBCFACE_DLL ValAdaptor {
      * そうでない場合(u8string, string, double, int64が格納されている場合)
      * はそれをwstringに変換したうえでその参照を返す。
      */
-    std::wstring_view asWStringView() const;
+    WStringView asWStringView() const;
     /*!
      * \since ver2.0
      * \deprecated ver2.10〜
@@ -219,7 +218,7 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * \since ver2.10
      */
-    std::string_view asU8StringView() const;
+    StringView asU8StringView() const;
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
@@ -230,28 +229,6 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      */
     std::wstring asWString() const { return std::wstring(asWStringView()); }
-    /*!
-     * \brief null終端の文字列を返す
-     * \since ver2.10
-     *
-     * ポインタはこのValAdaptorが破棄されるまで有効
-     *
-     * as_strにstringが格納されていた場合はそれをそのまま返す。
-     * そうでない場合(u8string, string, double, int64が格納されている場合)
-     * はそれをstringに変換したうえでその参照を返す。
-     */
-    const char *asCStr() const;
-    /*!
-     * \brief null終端の文字列を返す (wstring)
-     * \since ver2.0
-     *
-     * ポインタはこのValAdaptorが破棄されるまで有効
-     *
-     * as_strにwstringが格納されていた場合はそれをそのまま返す。
-     * そうでない場合(u8string, string, double, int64が格納されている場合)
-     * はそれをwstringに変換したうえでその参照を返す。
-     */
-    const wchar_t *asWCStr() const;
 
     /*!
      * \since ver2.10
@@ -266,11 +243,11 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * \since ver2.0
      */
-    operator const char *() const { return asCStr(); }
+    operator const char *() const { return asStringView().c_str(); }
     /*!
      * \since ver2.0
      */
-    operator const wchar_t *() const { return asWCStr(); }
+    operator const wchar_t *() const { return asWStringView().c_str(); }
 
     /*!
      * \brief 実数として返す
