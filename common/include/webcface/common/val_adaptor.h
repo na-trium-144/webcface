@@ -25,6 +25,7 @@ enum class ValType {
     int_ = 3,
     float_ = 4,
     double_ = 4,
+    vec_ = 16,
 };
 /*!
  * \brief TのValTypeを得る
