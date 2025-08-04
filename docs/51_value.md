@@ -36,19 +36,19 @@ webcface-send
     wcli.value("fuga").set({1, 2, 3, 4, 5});
     ```
 
-    \note
-    webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。([msgpack/msgpack-c#1017](https://github.com/msgpack/msgpack-c/issues/1017))
-
-    \note
-    <span class="since-c">1.7</span>
-    配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
-    要素の型はdoubleに変換可能ならなんでもokです。
-
     set() の代わりに代入演算子(Value::operator=)でも同様のことができます。
     また、 operator+= など、doubleやintの変数で使える各種演算子も使えます
     ```cpp
     wcli.value("hoge") = 5;
     ```
+
+    \note
+    * webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。
+    * <span class="since-c">1.7</span>
+    配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
+    要素の型はdoubleに変換可能ならなんでもokです。
+    * <span class="since-c">2.10</span>
+    要素数0の配列を渡した場合、要素数1で値が0になります。
 
     <span class="since-c">1.11</span>
     valueに直接`[]` <del>(または`child()`)</del> (<span class="since-c">2.8</span> または `at()`) で配列の要素アクセスが可能です。
@@ -76,6 +76,11 @@ webcface-send
     wcfValueSetVecD(wcli, "fuga", value, 5);
     ```
     で送信できます。
+
+    \note
+    * webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。
+    * <span class="since-c">2.10</span>
+    要素数0の配列を渡した場合、要素数1で値が0になります。
 
 - <b class="tab-title">JavaScript</b>
     Value.set() でデータを代入し、Client.sync()することで送信されます。
@@ -172,14 +177,17 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
 
     ```cpp
     std::optional<double> hoge = wcli.member("foo").value("hoge").tryGet();
-    std::optional<std::vector<double>> hoge = wcli.member("foo").value("hoge").tryGetVec();
+    std::optional<webcface::NumVector> hoge = wcli.member("foo").value("hoge").tryGetVec();
     ```
     * 値をまだ受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。
         * リクエストは <del>次にClient::sync()したときに</del>
         <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * Value::get(), Value::getVec() はstd::nulloptの代わりに0を返します。
-    * また、doubleやstd::vector\<double\> などの型にキャストすることでも同様に値が得られます。
+    * <span class="since-c">2.10</span> tryGetVec(), getVec() は webcface::NumVector 型で配列データを返します。 (以前は std::vector\<double\> を返していた)
+        * NumVectorはshared_ptrで配列データの参照を保持しており、コピー時にコストがかかりません。
+        * std::vector\<double\>にキャストすることも可能です。
+    * また、Valueを直接 double や NumVector, std::vector\<double\> などの型にキャストすることでも同様に値が得られます。
 
     <span class="since-c">1.7</span>
     Value::request() で明示的にリクエストを送信することもできます。

@@ -17,7 +17,7 @@ TEST_F(ServerTest, value) {
     dummy_c1->send(message::Value{
         {},
         "a"_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{3, 4, 5})});
+        MutableNumVector(std::vector<double>{3, 4, 5})});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "a"_ss, 1});
@@ -26,8 +26,8 @@ TEST_F(ServerTest, value) {
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
-        EXPECT_EQ(obj.data->size(), 3u);
-        EXPECT_EQ(obj.data->at(0), 3);
+        EXPECT_EQ(obj.data.size(), 3u);
+        EXPECT_EQ(obj.data.at(0), 3);
     });
     dummy_c2->recvClear();
 
@@ -35,14 +35,14 @@ TEST_F(ServerTest, value) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Value{{},
                                   "a"_ss,
-                                  std::make_shared<std::vector<double>>(
+                                  MutableNumVector(
                                       std::vector<double>{6, 7, 8, 9})});
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
         EXPECT_EQ(obj.sub_field.u8String(), "");
-        EXPECT_EQ(obj.data->size(), 4u);
-        EXPECT_EQ(obj.data->at(0), 6);
+        EXPECT_EQ(obj.data.size(), 4u);
+        EXPECT_EQ(obj.data.at(0), 6);
     });
 }
 TEST_F(ServerTest, text) {

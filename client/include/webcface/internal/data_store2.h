@@ -8,6 +8,7 @@
 #include "webcface/field.h"
 #include "webcface/log.h"
 #include "webcface/common/val_adaptor.h"
+#include "webcface/common/num_vector.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -193,7 +194,6 @@ struct Canvas3DData;
 struct ImageReq;
 } // namespace message
 namespace internal {
-using ValueData = std::vector<double>;
 using TextData = ValAdaptor;
 using FuncData = FuncInfo;
 using RobotModelData = std::vector<std::shared_ptr<internal::RobotLinkData>>;
@@ -220,7 +220,7 @@ struct LogData {
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
 extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<std::shared_ptr<ValueData>, int>;
+extern template class SyncDataStore2<MutableNumVector, int>;
 extern template class SyncDataStore2<std::shared_ptr<TextData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
 extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;

@@ -140,8 +140,8 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.data->size(), 1u);
-        EXPECT_EQ(obj.data->at(0), 5);
+        EXPECT_EQ(obj.data.size(), 1u);
+        EXPECT_EQ(obj.data.at(0), 5);
     });
     dummy_s->recvClear();
 
@@ -150,10 +150,10 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(obj.data->size(), 3u);
-        EXPECT_EQ(obj.data->at(0), 1);
-        EXPECT_EQ(obj.data->at(1), 1.5);
-        EXPECT_EQ(obj.data->at(2), 2);
+        EXPECT_EQ(obj.data.size(), 3u);
+        EXPECT_EQ(obj.data.at(0), 1);
+        EXPECT_EQ(obj.data.at(1), 1.5);
+        EXPECT_EQ(obj.data.at(2), 2);
     });
     dummy_s->recvClear();
 }
@@ -179,11 +179,11 @@ TEST_F(CClientTest, valueReq) {
     });
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
+        MutableNumVector(std::vector<double>{1, 1.5, 2})});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 1.5, 2})});
+        MutableNumVector(std::vector<double>{1, 1.5, 2})});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);

@@ -87,22 +87,26 @@ static std::optional<int> toInt(const std::optional<T> &v) {
     }
 }
 
-/// \private
-static std::string fmtValue(const std::vector<double> &v) {
-    if (v.size() == 1) {
-        return std::to_string(v[0]);
-    } else {
-        return "<" + std::to_string(v.size()) + " values>";
+WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Value) {
+    if(m.data.size() <= 1) {
+        return fmt::format_to(ctx.out(), "{}-Value('{}', {})", msg_kind,
+                              m.field.decode(), m.data[0]);
+    }else{
+        return fmt::format_to(ctx.out(), "{}-Value('{}', <{} values>)",
+                              msg_kind, m.field.decode(),
+                              m.data.size());
     }
 }
-WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Value) {
-    return fmt::format_to(ctx.out(), "{}-Value('{}', {})", msg_kind,
-                          m.field.decode(), fmtValue(*m.data));
-}
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Value>) {
-    return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
-                          msg_kind, m.req_id, m.sub_field.decode(),
-                          fmtValue(*m.data));
+    if(m.data.size() <= 1) {
+        return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
+                              msg_kind, m.req_id, m.sub_field.decode(),
+                              m.data[0]);
+    }else{
+        return fmt::format_to(ctx.out(), "{}-ValueRes(req_id={} + '{}', {})",
+                              msg_kind, m.req_id, m.sub_field.decode(),
+                              m.data.size());
+    }
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Value)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Value)

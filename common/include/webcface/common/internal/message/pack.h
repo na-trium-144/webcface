@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <utf8.h>
 #include "webcface/common/val_adaptor.h"
+#include "webcface/common/num_vector.h"
 #include "./base.h"
 
 #ifdef WEBCFACE_COMPILER_IS_GCC
@@ -78,6 +79,35 @@ namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     namespace adaptor {
 
+    /*!
+     * 値がint64_t, uint64_t, floatに収まる場合小さい型でpackする
+     * msgpack-c++ <=6 ではmsgpack内でやってくれていたが、ver7からは自分で実装する必要がある
+     * https://github.com/msgpack/msgpack-c/issues/1017
+     * https://github.com/msgpack/msgpack-c/pull/1144
+     * int型の中でさらに小さい型にするのはmsgpackがやってくれるっぽい?
+     */
+    template<>
+    struct pack<double> {
+        template <typename Stream>
+        packer<Stream>& operator()(msgpack::packer<Stream>& o, double v) const {
+            if(v == v) { // check for nan
+                // compare d to limits to avoid undefined behaviour
+                if(v >= 0 && v <= double(std::numeric_limits<uint64_t>::max()) && v == static_cast<double>(static_cast<uint64_t>(v))) {
+                    o.pack_uint64(static_cast<std::uint64_t>(v));
+                    return o;
+                } else if(v < 0 && v >= double(std::numeric_limits<int64_t>::min()) && v == static_cast<double>(static_cast<int64_t>(v))) {
+                    o.pack_int64(static_cast<std::int64_t>(v));
+                    return o;
+                } else if(std::abs(v) <= std::numeric_limits<float>::max() && v == static_cast<double>(static_cast<float>(v))){
+                    o.pack_float(static_cast<float>(v));
+                    return o;
+                }
+            }
+            o.pack_double(v);
+            return o;
+        }
+    };
+
     template <>
     struct convert<webcface::SharedString> {
         msgpack::object const &operator()(msgpack::object const &o,
@@ -145,6 +175,42 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
             default:
                 o.pack(v.asU8StringRef());
                 break;
+            }
+            return o;
+        }
+    };
+
+    template <>
+    struct convert<webcface::MutableNumVector> {
+        msgpack::object const &
+        operator()(msgpack::object const &o,
+                   webcface::MutableNumVector &v) const {
+            if (o.type != msgpack::type::ARRAY) {
+                throw msgpack::type_error();
+            }
+            if (o.via.array.size == 0) {
+                v.assign(0);
+            } else if (o.via.array.size == 1) {
+                v.assign(o.via.array.ptr[0].as<double>());
+            } else {
+                std::vector<double> vec(o.via.array.size);
+                for (std::size_t i = 0; i < o.via.array.size; i++) {
+                    vec.at(i) = o.via.array.ptr[i].as<double>();
+                }
+                v.assign(std::move(vec));
+            }
+            return o;
+        }
+    };
+    template <>
+    struct pack<webcface::MutableNumVector> {
+        template <typename Stream>
+        msgpack::packer<Stream> &
+        operator()(msgpack::packer<Stream> &o,
+                   const webcface::MutableNumVector &v) {
+            o.pack_array(static_cast<std::uint32_t>(v.size()));
+            for (auto val : v) {
+                o.pack(val);
             }
             return o;
         }

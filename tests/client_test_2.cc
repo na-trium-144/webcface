@@ -14,17 +14,17 @@ TEST_F(ClientTest, valueSend) {
         wait();
     }
     data_->value_store.setSend(
-        "a"_ss, std::make_shared<std::vector<double>>(std::vector<double>{5}));
+        "a"_ss, MutableNumVector(std::vector<double>{5}));
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(obj.data->size(), 1u);
-        EXPECT_EQ(obj.data->at(0), 5);
+        EXPECT_EQ(obj.data.size(), 1u);
+        EXPECT_EQ(obj.data.at(0), 5);
     });
     dummy_s->recvClear();
 
     data_->value_store.setSend(
-        "a"_ss, std::make_shared<std::vector<double>>(std::vector<double>{5}));
+        "a"_ss, MutableNumVector(std::vector<double>{5}));
     wcli_->sync();
     wait();
     dummy_s->recv<message::Value>(
@@ -32,14 +32,14 @@ TEST_F(ClientTest, valueSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->value_store.setSend("a"_ss, std::make_shared<std::vector<double>>(
+    data_->value_store.setSend("a"_ss, MutableNumVector(
                                            std::vector<double>{5, 2}));
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
         EXPECT_EQ(obj.field.u8String(), "a");
-        ASSERT_EQ(obj.data->size(), 2u);
-        EXPECT_EQ(obj.data->at(0), 5);
-        EXPECT_EQ(obj.data->at(1), 2);
+        ASSERT_EQ(obj.data.size(), 2u);
+        EXPECT_EQ(obj.data.at(0), 5);
+        EXPECT_EQ(obj.data.at(1), 2);
     });
 }
 TEST_F(ClientTest, valueReq) {
@@ -57,22 +57,18 @@ TEST_F(ClientTest, valueReq) {
     wcli_->member("a").value("b").onChange(callback<Value>());
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+        MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Value>{
         1, "c"_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+        MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(static_cast<std::vector<double>>(
-                  *data_->value_store.getRecv("a"_ss, "b"_ss).value())
-                  .size(),
+    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b"_ss).value().size(),
               3u);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b.c"_ss).has_value());
-    EXPECT_EQ(static_cast<std::vector<double>>(
-                  *data_->value_store.getRecv("a"_ss, "b.c"_ss).value())
-                  .size(),
+    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b.c"_ss).value().size(),
               3u);
 }
 TEST_F(ClientTest, valueReqTiming) {

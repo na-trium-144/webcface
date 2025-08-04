@@ -5,6 +5,7 @@
 #include <chrono>
 #include "field.h"
 #include "array_like.h"
+#include "webcface/common/num_vector.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -63,6 +64,8 @@ class WEBCFACE_DLL Value : protected Field {
     Value(const Field &base, const SharedString &field)
         : Value(Field{base, field}) {}
 
+    friend class ValueElementRef;
+    
     using Field::lastName;
     using Field::member;
     using Field::name;
@@ -254,9 +257,12 @@ class WEBCFACE_DLL Value : protected Field {
     std::optional<double> tryGet() const;
     /*!
      * \brief 値をvectorで返す
+     * 
+     * ver2.10〜 `std::vector<double>` から webcface::NumVector 型に変更
+     * (NumVectorはvectorのconst参照にキャスト可能)
      *
      */
-    std::optional<std::vector<double>> tryGetVec() const;
+    std::optional<NumVector> tryGetVec() const;
     /*!
      * \brief 値を返す
      *
@@ -265,12 +271,19 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 値をvectorで返す
      *
+     * ver2.10〜 `std::vector<double>` から webcface::NumVector 型に変更
+     * (NumVectorはvectorのconst参照にキャスト可能)
+     *
      */
-    std::vector<double> getVec() const {
+    NumVector getVec() const {
         return tryGetVec().value_or(std::vector<double>{});
     }
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
+    /*!
+     * \since ver2.10
+     */
+    operator NumVector() const { return getVec(); }
 
     /*!
      * \brief このフィールドにデータが存在すればtrue
