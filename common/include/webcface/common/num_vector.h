@@ -27,6 +27,10 @@ class WEBCFACE_DLL NumVector {
     NumVector(double v = 0);
     NumVector(std::vector<double> vec);
 
+    /*!
+     * 参照はこのNumVectorが破棄されるまで有効
+     *
+     */
     operator const std::vector<double>&() const;
 
     const double &operator[](std::size_t index) const { return at(index); }
