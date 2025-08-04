@@ -1,6 +1,5 @@
 #pragma once
 #include <memory>
-#include <variant>
 #include <vector>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
@@ -20,7 +19,9 @@ WEBCFACE_NS_BEGIN
  */
 class WEBCFACE_DLL NumVector {
   protected:
-    mutable std::variant<double, std::shared_ptr<std::vector<double>>> data_;
+    mutable std::shared_ptr<std::vector<double>> data_;
+    // data_がnullptrでない場合、first_の値がdata_[0]と同期している保証はない
+    double first_;
 
   public:
     NumVector(double v = 0);

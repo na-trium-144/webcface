@@ -4,21 +4,21 @@
 
 WEBCFACE_NS_BEGIN
 
-NumVector::NumVector(double v) : data_(v) {}
-void MutableNumVector::assign(double v) { data_.emplace<double>(v); }
+NumVector::NumVector(double v) : data_(), first_(v) {}
+void MutableNumVector::assign(double v) { first_ = v; data_ = nullptr; }
 
 NumVector::NumVector(std::vector<double> vec)
-    : data_(std::make_shared<std::vector<double>>(std::move(vec))) {}
+    : data_(std::make_shared<std::vector<double>>(std::move(vec))), first_(data_->at(0)) {}
 void MutableNumVector::assign(std::vector<double> vec) {
-    data_.emplace<std::shared_ptr<std::vector<double>>>(
-        std::make_shared<std::vector<double>>(std::move(vec)));
+    data_ = std::make_shared<std::vector<double>>(std::move(vec));
+    first_ = data_->at(0);
 }
 
 NumVector::operator const std::vector<double>&() const {
-    if(data_.index() == 0){
-        data_.emplace<std::shared_ptr<std::vector<double>>>(std::make_shared<std::vector<double>>(std::vector<double>{at(0)}));
+    if(!data_){
+        data_ = std::make_shared<std::vector<double>>(std::vector<double>{first_});
     }
-    return *std::get<1>(data_);
+    return *data_;
 }
 
 double &MutableNumVector::at(std::size_t index) {
@@ -26,12 +26,10 @@ double &MutableNumVector::at(std::size_t index) {
         throw std::out_of_range("NumVector::at() got index " + std::to_string(index) +
                          ", but size is " + std::to_string(size()));
     }
-    switch (data_.index()) {
-    case 0:
-        return std::get<0>(data_);
-    case 1:
-    default:
-        return (*std::get<1>(data_))[index];
+    if(data_){
+        return data_->at(0);
+    }else{
+        return first_;
     }
 }
 const double &NumVector::at(std::size_t index) const {
@@ -39,12 +37,10 @@ const double &NumVector::at(std::size_t index) const {
         throw std::out_of_range("NumVector::at() got index " + std::to_string(index) +
                          ", but size is " + std::to_string(size()));
     }
-    switch (data_.index()) {
-    case 0:
-        return std::get<0>(data_);
-    case 1:
-    default:
-        return (*std::get<1>(data_))[index];
+    if(data_){
+        return data_->at(0);
+    }else{
+        return first_;
     }
 }
 
@@ -52,56 +48,36 @@ void MutableNumVector::resize(std::size_t new_size) {
     if (new_size == 0) {
         new_size = 1;
     }
-    switch (data_.index()) {
-    case 0: {
-        if (new_size >= 2) {
-            std::vector<double> vec(new_size);
-            vec[0] = std::get<0>(data_);
-            data_.emplace<std::shared_ptr<std::vector<double>>>(
-                std::make_shared<std::vector<double>>(std::move(vec)));
-        }
-        break;
-    }
-    case 1:
-    default: {
-        std::get<1>(data_)->resize(new_size);
-        break;
-    }
+    if(data_){
+        data_->resize(new_size);
+    }else{
+        std::vector<double> vec(new_size);
+        vec[0] = first_;
+        data_ = std::make_shared<std::vector<double>>(std::move(vec));
     }
 }
 void MutableNumVector::push_back(double v) {
-    switch (data_.index()) {
-    case 0: {
-        std::vector<double> vec = {std::get<0>(data_), v};
-        data_.emplace<std::shared_ptr<std::vector<double>>>(
-            std::make_shared<std::vector<double>>(std::move(vec)));
-        break;
-    }
-    case 1:
-    default: {
-        std::get<1>(data_)->push_back(v);
-        break;
-    }
+    if(data_){
+        data_->push_back(v);
+    }else{
+        std::vector<double> vec = {first_, v};
+        data_ = std::make_shared<std::vector<double>>(std::move(vec));
     }
 }
 std::size_t NumVector::size() const {
-    switch (data_.index()) {
-    case 0:
+    if(data_){
+        return data_->size();
+    }else{
         return 1;
-    case 1:
-    default:
-        return std::get<1>(data_)->size();
     }
 }
 
 bool NumVector::operator==(const NumVector &other) const {
-    if (data_.index() == 0 && other.data_.index() == 0 &&
-        std::get<0>(data_) == std::get<0>(other.data_)) {
+    if (!data_ && !other.data_ &&
+        first_ == other.first_) {
         return true;
     }
-    if (data_.index() == 1 && other.data_.index() == 1 &&
-        std::get<1>(data_) == std::get<1>(other.data_) // ポインタ比較
-    ) {
+    if (data_ && other.data_ && data_ == other.data_ /* ポインタ比較 */) {
         return true;
     }
     if (size() != other.size()) {

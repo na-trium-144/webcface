@@ -129,7 +129,7 @@ TEST_F(ServerTest, entry) {
     wait();
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
     dummy_c1->send(
-        message::Value{{}, "a"_ss, std::make_shared<std::vector<double>>(1)});
+        message::Value{{}, "a"_ss, MutableNumVector(1)});
     dummy_c1->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
     dummy_c1->send(message::RobotModel{
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
@@ -216,7 +216,7 @@ TEST_F(ServerTest, entry) {
 
     // c1にentryを追加する
     dummy_c1->send(
-        message::Value{{}, "b"_ss, std::make_shared<std::vector<double>>(1)});
+        message::Value{{}, "b"_ss, MutableNumVector(1)});
     dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
         EXPECT_EQ(obj.field.u8String(), "b");
