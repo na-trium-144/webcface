@@ -13,20 +13,20 @@ using namespace webcface;
 
 TEST(NumVectorTest, DefaultConstructor) {
     MutableNumVector v;
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 0.0);
 }
 
 TEST(NumVectorTest, ConstructorWithSingleValue) {
     MutableNumVector v(1.23);
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 1.23);
 }
 
 TEST(NumVectorTest, ConstructorWithVector) {
     std::vector<double> data = {1.1, 2.2, 3.3};
     MutableNumVector v(data);
-    EXPECT_EQ(v.size(), 3);
+    EXPECT_EQ(v.size(), 3u);
     EXPECT_DOUBLE_EQ(v[0], 1.1);
     EXPECT_DOUBLE_EQ(v[1], 2.2);
     EXPECT_DOUBLE_EQ(v[2], 3.3);
@@ -35,7 +35,7 @@ TEST(NumVectorTest, ConstructorWithVector) {
 TEST(NumVectorTest, ConstructorWithEmptyVector) {
     // 仕様: 要素数0にはならず、その場合要素数1で値が0となる
     MutableNumVector v(std::vector<double>{});
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 0.0);
 }
 
@@ -62,14 +62,14 @@ TEST(NumVectorTest, CopyIsShallow) {
 TEST(NumVectorTest, AssignSingleValue) {
     MutableNumVector v({1.0, 2.0});
     v.assign(4.56);
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 4.56);
 }
 
 TEST(NumVectorTest, AssignmentOperatorSingleValue) {
     MutableNumVector v({1.0, 2.0});
     v = 4.56;
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 4.56);
 }
 
@@ -77,7 +77,7 @@ TEST(NumVectorTest, AssignVector) {
     MutableNumVector v(9.9);
     std::vector<double> data = {4.4, 5.5};
     v.assign(data);
-    EXPECT_EQ(v.size(), 2);
+    EXPECT_EQ(v.size(), 2u);
     EXPECT_DOUBLE_EQ(v[0], 4.4);
     EXPECT_DOUBLE_EQ(v[1], 5.5);
 }
@@ -85,7 +85,7 @@ TEST(NumVectorTest, AssignVector) {
 TEST(NumVectorTest, AssignEmptyVector) {
     MutableNumVector v({1.0, 2.0});
     v.assign(std::vector<double>{});
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 0.0);
 }
 
@@ -134,20 +134,20 @@ TEST(NumVectorTest, Resize) {
 
     // サイズを大きくする
     v.resize(3);
-    EXPECT_EQ(v.size(), 3);
+    EXPECT_EQ(v.size(), 3u);
     EXPECT_DOUBLE_EQ(v[0], 1.0);
     EXPECT_DOUBLE_EQ(v[1], 0.0); // 新しい要素は0で初期化される想定
     EXPECT_DOUBLE_EQ(v[2], 0.0);
 
     // サイズを小さくする
     v.resize(2);
-    EXPECT_EQ(v.size(), 2);
+    EXPECT_EQ(v.size(), 2u);
     EXPECT_DOUBLE_EQ(v[0], 1.0);
     EXPECT_DOUBLE_EQ(v[1], 0.0);
 
     // サイズを0にする（仕様に基づき、サイズ1で値0になる）
     v.resize(0);
-    EXPECT_EQ(v.size(), 1);
+    EXPECT_EQ(v.size(), 1u);
     EXPECT_DOUBLE_EQ(v[0], 0.0);
 }
 
@@ -155,13 +155,13 @@ TEST(NumVectorTest, PushBack) {
     // 要素1の状態からpush_back
     MutableNumVector v(1.1);
     v.push_back(2.2);
-    EXPECT_EQ(v.size(), 2);
+    EXPECT_EQ(v.size(), 2u);
     EXPECT_DOUBLE_EQ(v[0], 1.1);
     EXPECT_DOUBLE_EQ(v[1], 2.2);
 
     // さらにもう一つ追加
     v.push_back(3.3);
-    EXPECT_EQ(v.size(), 3);
+    EXPECT_EQ(v.size(), 3u);
     EXPECT_DOUBLE_EQ(v[2], 3.3);
 }
 
@@ -216,7 +216,7 @@ TEST(NumVectorTest, ShallowCopyWithBaseClass) {
     NumVector base_v = mut_v; // 基底クラスへコピー
 
     // コピー先が正しいことを確認 (constアクセス)
-    EXPECT_EQ(base_v.size(), 2);
+    EXPECT_EQ(base_v.size(), 2u);
     EXPECT_DOUBLE_EQ(base_v[0], 10.0);
     EXPECT_DOUBLE_EQ(base_v[1], 20.0);
 
