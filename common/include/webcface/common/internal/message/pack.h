@@ -208,7 +208,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         msgpack::packer<Stream> &
         operator()(msgpack::packer<Stream> &o,
                    const webcface::MutableNumVector &v) {
-            o.pack_array(v.size());
+            o.pack_array(static_cast<std::uint32_t>(v.size()));
             for (auto val : v) {
                 o.pack(val);
             }
