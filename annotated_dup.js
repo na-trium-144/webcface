@@ -233,6 +233,8 @@ var annotated_dup =
       [ "LogLineData", "structwebcface_1_1LogLineData.html", "structwebcface_1_1LogLineData" ],
       [ "LogLineW", "classwebcface_1_1LogLineW.html", "classwebcface_1_1LogLineW" ],
       [ "Member", "classwebcface_1_1Member.html", "classwebcface_1_1Member" ],
+      [ "MutableNumVector", "classwebcface_1_1MutableNumVector.html", "classwebcface_1_1MutableNumVector" ],
+      [ "NumVector", "classwebcface_1_1NumVector.html", "classwebcface_1_1NumVector" ],
       [ "OutOfRange", "structwebcface_1_1OutOfRange.html", "structwebcface_1_1OutOfRange" ],
       [ "Plane", "structwebcface_1_1components_1_1geometries_1_1Plane.html", "structwebcface_1_1components_1_1geometries_1_1Plane" ],
       [ "Point", "classwebcface_1_1Point.html", "classwebcface_1_1Point" ],

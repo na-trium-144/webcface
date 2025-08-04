@@ -9,7 +9,7 @@ var searchData=
   ['encode_6',['encode',['../classwebcface_1_1SharedString.html#a3e936a52df79f27832b3519b4359b60c',1,'webcface::SharedString::encode(std::string_view s)'],['../classwebcface_1_1SharedString.html#ac0bd46eeb65fc365478c900b6684991c',1,'webcface::SharedString::encode(std::wstring_view ws, std::string_view s=std::string_view())']]],
   ['encoding_2ecc_7',['encoding.cc',['../encoding_8cc.html',1,'']]],
   ['encoding_2eh_8',['encoding.h',['../encoding_2encoding_8h.html',1,'(Global Namespace)'],['../common_2encoding_8h.html',1,'(Global Namespace)']]],
-  ['end_9',['end',['../structwebcface_1_1components_1_1geometries_1_1Line.html#a131cc23b57022a9d4384d9205eadf18b',1,'webcface::components::geometries::Line']]],
+  ['end_9',['end',['../structwebcface_1_1components_1_1geometries_1_1Line.html#a131cc23b57022a9d4384d9205eadf18b',1,'webcface::components::geometries::Line::end()'],['../classwebcface_1_1NumVector.html#aa3170aa181d9ff728d0a4c1b02097616',1,'webcface::NumVector::end()'],['../classwebcface_1_1MutableNumVector.html#a39ea9716de3a651f162c15c419808728',1,'webcface::MutableNumVector::end()'],['../classwebcface_1_1MutableNumVector.html#aa3170aa181d9ff728d0a4c1b02097616',1,'webcface::MutableNumVector::end() const']]],
   ['entry_10',['entry',['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5',1,'webcface::message::MessageKind']]],
   ['entry_11',['Entry',['../structwebcface_1_1message_1_1Entry.html',1,'webcface::message']]],
   ['error_12',['error',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66ad606e435413ea0944dd00d49e901e4ed',1,'webcface::level']]],

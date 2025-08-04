@@ -818,9 +818,9 @@
 <g id="Node000009" class="node">
 <title>Node9</title>
 <g id="a_Node000009"><a xlink:href="classwebcface_1_1internal_1_1SyncDataStore2.html" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="752,-536.03 594,-536.03 594,-506.03 752,-506.03 752,-536.03"/>
-<text text-anchor="start" x="602" y="-524.03" font-family="Helvetica,sans-Serif" font-size="10.00">SyncDataStore2&lt; std</text>
-<text text-anchor="middle" x="673" y="-513.03" font-family="Helvetica,sans-Serif" font-size="10.00">::shared_ptr&lt; ValueData &gt; &gt;</text>
+<polygon fill="white" stroke="#666666" points="749,-536.03 597,-536.03 597,-506.03 749,-506.03 749,-536.03"/>
+<text text-anchor="start" x="605" y="-524.03" font-family="Helvetica,sans-Serif" font-size="10.00">SyncDataStore2&lt; webcface</text>
+<text text-anchor="middle" x="673" y="-513.03" font-family="Helvetica,sans-Serif" font-size="10.00">::MutableNumVector &gt;</text>
 </a>
 </g>
 </g>
@@ -828,8 +828,8 @@
 <g id="edge9_Node000001_Node000009" class="edge">
 <title>Node9&#45;&gt;Node1</title>
 <g id="a_edge9_Node000001_Node000009"><a xlink:title=" ">
-<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M760.64,-537.89C763.3,-540.02 765.78,-542.39 768,-545.03 800.6,-583.74 753.13,-733.56 786,-772.03 825.49,-818.26 878.63,-758.58 919,-804.03 948.02,-836.71 966.33,-1164.14 969.5,-1225.24"/>
-<polygon fill="#9a32cd" stroke="#9a32cd" points="762.39,-534.85 752.13,-532.21 758.5,-540.67 762.39,-534.85"/>
+<path fill="none" stroke="#9a32cd" stroke-dasharray="5,2" d="M757.75,-535.72C761.53,-538.38 764.99,-541.46 768,-545.03 800.6,-583.74 753.13,-733.56 786,-772.03 825.49,-818.26 878.63,-758.58 919,-804.03 948.02,-836.71 966.33,-1164.14 969.5,-1225.24"/>
+<polygon fill="#9a32cd" stroke="#9a32cd" points="759.4,-532.64 749.01,-530.57 755.85,-538.67 759.4,-532.64"/>
 </a>
 </g>
 <text text-anchor="middle" x="852.5" y="-807.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> value_store</text>
@@ -848,12 +848,11 @@
 <g id="edge10_Node000009_Node000010" class="edge">
 <title>Node10&#45;&gt;Node9</title>
 <g id="a_edge10_Node000009_Node000010"><a xlink:title=" ">
-<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M288.04,-315.24C293.94,-359.21 312.84,-449.34 371,-492.03 434.9,-538.94 528.14,-540.6 593.88,-534.07"/>
+<path fill="none" stroke="orange" stroke-dasharray="5,2" d="M288.04,-315.24C293.94,-359.21 312.84,-449.34 371,-492.03 435.86,-539.64 530.93,-540.64 596.8,-533.78"/>
 <polygon fill="orange" stroke="orange" points="291.49,-314.61 286.8,-305.11 284.54,-315.46 291.49,-314.61"/>
 </a>
 </g>
-<text text-anchor="start" x="417.5" y="-550.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; std::shared_ptr&lt;</text>
-<text text-anchor="middle" x="465.5" y="-539.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> ValueData &gt; &gt;</text>
+<text text-anchor="middle" x="465.5" y="-539.03" font-family="Helvetica,sans-Serif" font-size="10.00" fill="grey"> &lt; webcface::MutableNumVector &gt;</text>
 </g>
 <!-- Node11 -->
 <g id="Node000011" class="node">

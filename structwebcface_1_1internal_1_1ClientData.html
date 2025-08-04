@@ -250,8 +250,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a27272f4c6cd9e83965b7aeb0a5105765"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c83dbbc88e7d110b2d654891874672"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SharedMutexProxy.html">SharedMutexProxy</a>&lt; <a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; bool &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#af1c83dbbc88e7d110b2d654891874672">member_entry</a></td></tr>
 <tr class="separator:af1c83dbbc88e7d110b2d654891874672"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a9490455bd1d113019a7362d474ecb7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; std::shared_ptr&lt; <a class="el" href="namespacewebcface_1_1internal.html#a22c693261d3f39842ecb4f56e8604cf1">ValueData</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a6a9490455bd1d113019a7362d474ecb7">value_store</a></td></tr>
-<tr class="separator:a6a9490455bd1d113019a7362d474ecb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0160702d1af014a367df160f8cdcfd56"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; <a class="el" href="classwebcface_1_1MutableNumVector.html">MutableNumVector</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a0160702d1af014a367df160f8cdcfd56">value_store</a></td></tr>
+<tr class="separator:a0160702d1af014a367df160f8cdcfd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a282bdd0f1e0e63dd25584d54d3de234a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; std::shared_ptr&lt; <a class="el" href="namespacewebcface_1_1internal.html#a9906851c9d11cd85f47588bc9d89d6e8">TextData</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#a282bdd0f1e0e63dd25584d54d3de234a">text_store</a></td></tr>
 <tr class="separator:a282bdd0f1e0e63dd25584d54d3de234a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab38b749c819e1616f5854c147563bdd6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt; std::shared_ptr&lt; <a class="el" href="namespacewebcface_1_1internal.html#a33c459d57e812ca4e6e9191947cc8ead">FuncData</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html#ab38b749c819e1616f5854c147563bdd6">func_store</a></td></tr>
@@ -960,7 +960,7 @@ template&lt;typename T &gt; </div>
      &amp;zwj;/
 </pre><p> std::thread sync_thread; </p><pre class="fragment">struct SyncDataSnapshot {
     std::chrono::system_clock::time_point time;
-    StrMap1&lt;std::shared_ptr&lt;ValueData&gt;&gt; value_data;
+    StrMap1&lt;MutableNumVector&gt; value_data;
     StrMap1&lt;std::shared_ptr&lt;TextData&gt;&gt; text_data;
     StrMap1&lt;std::shared_ptr&lt;RobotModelData&gt;&gt; robot_model_data;
     StrMap1&lt;std::shared_ptr&lt;message::ViewData&gt;&gt; view_prev, view_data;
@@ -1686,14 +1686,14 @@ struct SyncDataFirst {
 
 </div>
 </div>
-<a id="a6a9490455bd1d113019a7362d474ecb7" name="a6a9490455bd1d113019a7362d474ecb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a9490455bd1d113019a7362d474ecb7">&#9670;&#160;</a></span>value_store</h2>
+<a id="a0160702d1af014a367df160f8cdcfd56" name="a0160702d1af014a367df160f8cdcfd56"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0160702d1af014a367df160f8cdcfd56">&#9670;&#160;</a></span>value_store</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;std::shared_ptr&lt;<a class="el" href="namespacewebcface_1_1internal.html#a22c693261d3f39842ecb4f56e8604cf1">ValueData</a>&gt; &gt; value_store</td>
+          <td class="memname"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a>&lt;<a class="el" href="classwebcface_1_1MutableNumVector.html">MutableNumVector</a>&gt; value_store</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1788,7 +1788,7 @@ struct SyncDataFirst {
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1ClientData.html">ClientData</a></li>
-    <li class="footer">Generated on Mon Aug 4 2025 08:45:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

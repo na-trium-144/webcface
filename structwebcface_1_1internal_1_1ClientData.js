@@ -78,7 +78,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "text_store", "structwebcface_1_1internal_1_1ClientData.html#a282bdd0f1e0e63dd25584d54d3de234a", null ],
     [ "value_change_event", "structwebcface_1_1internal_1_1ClientData.html#a43fe14c94037fc52d42a9f047642f90f", null ],
     [ "value_entry_event", "structwebcface_1_1internal_1_1ClientData.html#a9e53c361eb1703d81da1e8dd98d6e3d4", null ],
-    [ "value_store", "structwebcface_1_1internal_1_1ClientData.html#a6a9490455bd1d113019a7362d474ecb7", null ],
+    [ "value_store", "structwebcface_1_1internal_1_1ClientData.html#a0160702d1af014a367df160f8cdcfd56", null ],
     [ "view_change_event", "structwebcface_1_1internal_1_1ClientData.html#a57a998a41c22090088b95a4f22041a2e", null ],
     [ "view_entry_event", "structwebcface_1_1internal_1_1ClientData.html#ac35600eedb9461420735ae7c9d514ab6", null ],
     [ "view_store", "structwebcface_1_1internal_1_1ClientData.html#adf204bcfc54fb137df1d0197cf623e8a", null ],

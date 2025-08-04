@@ -152,164 +152,224 @@ $(document).ready(function(){initNavTree('pack_8h_source.html',''); initResizabl
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;cstdint&gt;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;utf8.h&gt;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;<a class="code" href="common_2val__adaptor_8h.html">webcface/common/val_adaptor.h</a>&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="base_8h.html">./base.h</a>&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wabi&quot;</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>MSGPACK_ADD_ENUM(<a class="code hl_enumeration" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a>)</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><a class="code hl_define" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="keyword">namespace </span>message {</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">struct </span>Ping;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">struct </span>PingStatusReq;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#aa2619ac9929b790908f9c65878601825">messageTrace</a>(<span class="keyword">const</span> std::string &amp;message);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>std::vector&lt;std::pair&lt;int, std::shared_ptr&lt;void&gt;&gt;&gt;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span><a class="code hl_function" href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a>(<span class="keyword">const</span> std::string &amp;message,</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>       <span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">   48</a></span>std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">packSingle</a>(<span class="keyword">const</span> T &amp;obj) {</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    msgpack::type::tuple&lt;int, T&gt; src(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T::kind), obj);</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    std::stringstream buffer;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    msgpack::pack(buffer, src);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordflow">return</span> buffer.str();</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">   60</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>(std::stringstream &amp;buffer, <span class="keywordtype">int</span> &amp;len, <span class="keyword">const</span> T &amp;obj) {</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    msgpack::pack(buffer, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T::kind));</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    msgpack::pack(buffer, obj);</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    len += 2;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">   66</a></span><span class="keyword">inline</span> std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">packDone</a>(std::stringstream &amp;buffer, <span class="keywordtype">int</span> len) {</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    std::stringstream buffer2;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    msgpack::packer packer(buffer2);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    packer.pack_array(len);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    buffer2 &lt;&lt; buffer.rdbuf();</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    <span class="keywordflow">return</span> buffer2.str();</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>}</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>} <span class="comment">// namespace message</span></div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span><span class="keyword">namespace </span>msgpack {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    <span class="keyword">namespace </span>adaptor {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::SharedString&gt; {</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>                                          <a class="code hl_class" href="classwebcface_1_1SharedString.html">webcface::SharedString</a> &amp;v)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            v = <a class="code hl_function" href="classwebcface_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>                std::string(o.via.bin.ptr, o.via.bin.size)));</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        }</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    };</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130">SharedString</a>&gt; {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1SharedString.html">webcface::SharedString</a> &amp;v) {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            o.pack(<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.u8String());</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        }</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    };</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">ValAdaptor</a>&gt; {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                                          <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>            <span class="keywordflow">switch</span> (o.type) {</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT32:</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT64:</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.f64;</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keywordflow">case</span> msgpack::type::POSITIVE_INTEGER:</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.u64;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>            <span class="keywordflow">case</span> msgpack::type::NEGATIVE_INTEGER:</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.i64;</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <span class="keywordflow">case</span> msgpack::type::BOOLEAN:</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.boolean;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>            <span class="keywordflow">case</span> msgpack::type::BIN:</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            <span class="keywordflow">case</span> msgpack::type::STR:</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = <a class="code hl_function" href="classwebcface_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                    std::string(o.via.bin.ptr, o.via.bin.size)));</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                <span class="keywordflow">throw</span> msgpack::type_error();</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            }</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="num__vector_8h.html">webcface/common/num_vector.h</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="base_8h.html">./base.h</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wabi&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#endif</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>MSGPACK_ADD_ENUM(<a class="code hl_enumeration" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a>)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><a class="code hl_define" href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span>message {</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">struct </span>Ping;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span><span class="keyword">struct </span>PingStatusReq;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#aa2619ac9929b790908f9c65878601825">messageTrace</a>(<span class="keyword">const</span> std::string &amp;message);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>std::vector&lt;std::pair&lt;int, std::shared_ptr&lt;void&gt;&gt;&gt;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><a class="code hl_function" href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">unpack</a>(<span class="keyword">const</span> std::string &amp;message,</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>       <span class="keyword">const</span> std::shared_ptr&lt;spdlog::logger&gt; &amp;logger);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">   49</a></span>std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">packSingle</a>(<span class="keyword">const</span> T &amp;obj) {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    msgpack::type::tuple&lt;int, T&gt; src(<span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T::kind), obj);</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    std::stringstream buffer;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    msgpack::pack(buffer, src);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> buffer.str();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>}</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">   61</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>(std::stringstream &amp;buffer, <span class="keywordtype">int</span> &amp;len, <span class="keyword">const</span> T &amp;obj) {</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    msgpack::pack(buffer, <span class="keyword">static_cast&lt;</span><span class="keywordtype">int</span><span class="keyword">&gt;</span>(T::kind));</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    msgpack::pack(buffer, obj);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    len += 2;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>}</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">   67</a></span><span class="keyword">inline</span> std::string <a class="code hl_function" href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">packDone</a>(std::stringstream &amp;buffer, <span class="keywordtype">int</span> len) {</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    std::stringstream buffer2;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    msgpack::packer packer(buffer2);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>    packer.pack_array(len);</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    buffer2 &lt;&lt; buffer.rdbuf();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    <span class="keywordflow">return</span> buffer2.str();</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>}</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>} <span class="comment">// namespace message</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="keyword">namespace </span>msgpack {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    <span class="keyword">namespace </span>adaptor {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    <span class="keyword">template</span>&lt;&gt;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    <span class="keyword">struct </span>pack&lt;double&gt; {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        packer&lt;Stream&gt;&amp; operator()(msgpack::packer&lt;Stream&gt;&amp; o, <span class="keywordtype">double</span> v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">if</span>(v == v) { <span class="comment">// check for nan</span></div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>                <span class="comment">// compare d to limits to avoid undefined behaviour</span></div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>                <span class="keywordflow">if</span>(v &gt;= 0 &amp;&amp; v &lt;= <span class="keywordtype">double</span>(std::numeric_limits&lt;uint64_t&gt;::max()) &amp;&amp; v == <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>uint64_t<span class="keyword">&gt;</span>(v))) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>                    o.pack_uint64(<span class="keyword">static_cast&lt;</span>std::uint64_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(v &lt; 0 &amp;&amp; v &gt;= <span class="keywordtype">double</span>(std::numeric_limits&lt;int64_t&gt;::min()) &amp;&amp; v == <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span>int64_t<span class="keyword">&gt;</span>(v))) {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    o.pack_int64(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                } <span class="keywordflow">else</span> <span class="keywordflow">if</span>(std::abs(v) &lt;= std::numeric_limits&lt;float&gt;::max() &amp;&amp; v == <span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(v))){</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    o.pack_float(<span class="keyword">static_cast&lt;</span><span class="keywordtype">float</span><span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>                    <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>                }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            }</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            o.pack_double(v);</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    };</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130">SharedString</a>&gt; {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                                          <a class="code hl_class" href="classwebcface_1_1SharedString.html">webcface::SharedString</a> &amp;v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>            <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = <a class="code hl_function" href="classwebcface_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                std::string(o.via.bin.ptr, o.via.bin.size)));</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    };</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130">SharedString</a>&gt; {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1SharedString.html">webcface::SharedString</a> &amp;v) {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>            o.pack(<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.u8String());</div>
 <div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>            <span class="keywordflow">return</span> o;</div>
 <div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        }</div>
 <div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    };</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">ValAdaptor</a>&gt; {</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v) {</div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.valType()) {</div>
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b">webcface::ValType::bool_</a>:</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53">webcface::ValType::int_</a>:</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>                o.pack(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">webcface::ValType::float_</a>:</div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(v));</div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093">webcface::ValType::string_</a>:</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <span class="keywordflow">default</span>:</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                o.pack(<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.asU8StringRef());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">ValAdaptor</a>&gt; {</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>                                          <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>            <span class="keywordflow">switch</span> (o.type) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT32:</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keywordflow">case</span> msgpack::type::FLOAT64:</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.f64;</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>            <span class="keywordflow">case</span> msgpack::type::POSITIVE_INTEGER:</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.u64;</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>            <span class="keywordflow">case</span> msgpack::type::NEGATIVE_INTEGER:</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.i64;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>            <span class="keywordflow">case</span> msgpack::type::BOOLEAN:</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = o.via.boolean;</div>
 <div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>                <span class="keywordflow">break</span>;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            }</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        }</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    };</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    <span class="keyword">struct </span>EmptyConvert {</div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o, T &amp;)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>            <span class="keywordflow">case</span> msgpack::type::BIN:</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">case</span> msgpack::type::STR:</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a> = <a class="code hl_function" href="classwebcface_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a>(utf8::replace_invalid(</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>                    std::string(o.via.bin.ptr, o.via.bin.size)));</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                <span class="keywordflow">throw</span> msgpack::type_error();</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>            }</div>
 <div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>            <span class="keywordflow">return</span> o;</div>
 <div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        }</div>
 <div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    };</div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">struct </span>EmptyPack {</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::<a class="code hl_typedef" href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">ValAdaptor</a>&gt; {</div>
 <div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
 <div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                                            <span class="keyword">const</span> T &amp;) {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            o.pack_map(0);</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <span class="keywordflow">return</span> o;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        }</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    };</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::Ping&gt;</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        : <span class="keyword">public</span> EmptyConvert&lt;webcface::message::Ping&gt; {};</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::PingStatusReq&gt;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        : <span class="keyword">public</span> EmptyConvert&lt;webcface::message::PingStatusReq&gt; {};</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::Ping&gt;</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        : <span class="keyword">public</span> EmptyPack&lt;webcface::message::Ping&gt; {};</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    <span class="keyword">template</span> &lt;&gt;</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::PingStatusReq&gt;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        : <span class="keyword">public</span> EmptyPack&lt;webcface::message::PingStatusReq&gt; {};</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    } <span class="comment">// namespace adaptor</span></div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>}</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>} <span class="comment">// namespace msgpack</span></div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>                                            <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &amp;v) {</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            <span class="keywordflow">switch</span> (<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.valType()) {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b">webcface::ValType::bool_</a>:</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">bool</span><span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53">webcface::ValType::int_</a>:</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                o.pack(<span class="keyword">static_cast&lt;</span>std::int64_t<span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">webcface::ValType::float_</a>:</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                o.pack(<span class="keyword">static_cast&lt;</span><span class="keywordtype">double</span><span class="keyword">&gt;</span>(v));</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            <span class="keywordflow">case</span> <a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093">webcface::ValType::string_</a>:</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                o.pack(<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.asU8StringRef());</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>            }</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    };</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::MutableNumVector&gt; {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        msgpack::object <span class="keyword">const</span> &amp;</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        operator()(msgpack::object <span class="keyword">const</span> &amp;o,</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                   <a class="code hl_class" href="classwebcface_1_1MutableNumVector.html">webcface::MutableNumVector</a> &amp;v)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="keywordflow">if</span> (o.type != msgpack::type::ARRAY) {</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>                <span class="keywordflow">throw</span> msgpack::type_error();</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            }</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            <span class="keywordflow">if</span> (o.via.array.size == 0) {</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.assign(0);</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (o.via.array.size == 1) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.assign(o.via.array.ptr[0].as&lt;<span class="keywordtype">double</span>&gt;());</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                std::vector&lt;double&gt; vec(o.via.array.size);</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>                <span class="keywordflow">for</span> (std::size_t i = 0; i &lt; o.via.array.size; i++) {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>                    vec.at(i) = o.via.array.ptr[i].as&lt;<span class="keywordtype">double</span>&gt;();</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>                }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>                <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.assign(std::move(vec));</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            }</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>        }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>    };</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::MutableNumVector&gt; {</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        msgpack::packer&lt;Stream&gt; &amp;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                   <span class="keyword">const</span> <a class="code hl_class" href="classwebcface_1_1MutableNumVector.html">webcface::MutableNumVector</a> &amp;v) {</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            o.pack_array(<span class="keyword">static_cast&lt;</span>std::uint32_t<span class="keyword">&gt;</span>(<a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>.size()));</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> val : <a class="code hl_variable" href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">v</a>) {</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                o.pack(val);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            }</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        }</div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>    };</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span> </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>    <span class="keyword">struct </span>EmptyConvert {</div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        msgpack::object <span class="keyword">const</span> &amp;operator()(msgpack::object <span class="keyword">const</span> &amp;o, T &amp;)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        }</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>    };</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    <span class="keyword">struct </span>EmptyPack {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="keyword">template</span> &lt;<span class="keyword">typename</span> Stream&gt;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        msgpack::packer&lt;Stream&gt; &amp;operator()(msgpack::packer&lt;Stream&gt; &amp;o,</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>                                            <span class="keyword">const</span> T &amp;) {</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            o.pack_map(0);</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            <span class="keywordflow">return</span> o;</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        }</div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    };</div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::Ping&gt;</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        : <span class="keyword">public</span> EmptyConvert&lt;webcface::message::Ping&gt; {};</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>    <span class="keyword">struct </span>convert&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::PingStatusReq&gt;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        : <span class="keyword">public</span> EmptyConvert&lt;webcface::message::PingStatusReq&gt; {};</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::Ping&gt;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        : <span class="keyword">public</span> EmptyPack&lt;webcface::message::Ping&gt; {};</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keyword">template</span> &lt;&gt;</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    <span class="keyword">struct </span><a class="code hl_function" href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">pack</a>&lt;<a class="code hl_namespace" href="namespacewebcface.html">webcface</a>::message::PingStatusReq&gt;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        : <span class="keyword">public</span> EmptyPack&lt;webcface::message::PingStatusReq&gt; {};</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span> </div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>    } <span class="comment">// namespace adaptor</span></div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>}</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>} <span class="comment">// namespace msgpack</span></div>
 <div class="ttc" id="abase_8h_html"><div class="ttname"><a href="base_8h.html">base.h</a></div></div>
+<div class="ttc" id="aclasswebcface_1_1MutableNumVector_html"><div class="ttname"><a href="classwebcface_1_1MutableNumVector.html">webcface::MutableNumVector</a></div><div class="ttdoc">shared_ptrで管理されているdoubleのvector</div><div class="ttdef"><b>Definition</b> num_vector.h:56</div></div>
 <div class="ttc" id="aclasswebcface_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:67</div></div>
 <div class="ttc" id="aclasswebcface_1_1SharedString_html_abce45bbc14557a38457b458d47a884aa"><div class="ttname"><a href="classwebcface_1_1SharedString.html#abce45bbc14557a38457b458d47a884aa">webcface::SharedString::fromU8String</a></div><div class="ttdeci">static SharedString fromU8String(std::string_view u8s)</div><div class="ttdef"><b>Definition</b> encoding.cc:63</div></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val_adaptor.h:87</div></div>
@@ -317,10 +377,10 @@ $(document).ready(function(){initNavTree('pack_8h_source.html',''); initResizabl
 <div class="ttc" id="anamespaceBM__LatencyMultipleValue_html_ac8859e8c1ce357c4c8b37bbb1936ba1c"><div class="ttname"><a href="namespaceBM__LatencyMultipleValue.html#ac8859e8c1ce357c4c8b37bbb1936ba1c">BM_LatencyMultipleValue::v</a></div><div class="ttdeci">int v</div><div class="ttdef"><b>Definition</b> latency-value.cc:38</div></div>
 <div class="ttc" id="anamespacewebcface_1_1encoding_html_a550473881c99b6af91d111e8dbabc2b7"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">webcface::encoding::ValAdaptor</a></div><div class="ttdeci">webcface::ValAdaptor ValAdaptor</div><div class="ttdef"><b>Definition</b> val_adaptor.h:350</div></div>
 <div class="ttc" id="anamespacewebcface_1_1encoding_html_af8fad778eb294331af6e13c219f77130"><div class="ttname"><a href="namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130">webcface::encoding::SharedString</a></div><div class="ttdeci">webcface::SharedString SharedString</div><div class="ttdef"><b>Definition</b> encoding.h:121</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_html_a0368ef47eb403e45018a73ef46c90c62"><div class="ttname"><a href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">webcface::message::packDone</a></div><div class="ttdeci">std::string packDone(std::stringstream &amp;buffer, int len)</div><div class="ttdef"><b>Definition</b> pack.h:66</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> pack.h:60</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_html_a0368ef47eb403e45018a73ef46c90c62"><div class="ttname"><a href="namespacewebcface_1_1message.html#a0368ef47eb403e45018a73ef46c90c62">webcface::message::packDone</a></div><div class="ttdeci">std::string packDone(std::stringstream &amp;buffer, int len)</div><div class="ttdef"><b>Definition</b> pack.h:67</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_html_a36879effdf16e6acdd563b41fb630f35"><div class="ttname"><a href="namespacewebcface_1_1message.html#a36879effdf16e6acdd563b41fb630f35">webcface::message::pack</a></div><div class="ttdeci">void pack(std::stringstream &amp;buffer, int &amp;len, const T &amp;obj)</div><div class="ttdoc">メッセージをシリアル化しbufferに追加</div><div class="ttdef"><b>Definition</b> pack.h:61</div></div>
 <div class="ttc" id="anamespacewebcface_1_1message_html_a80e74661d4870765688ab1b4ffc0a496"><div class="ttname"><a href="namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496">webcface::message::unpack</a></div><div class="ttdeci">std::vector&lt; std::pair&lt; int, std::shared_ptr&lt; void &gt; &gt; &gt; unpack(const std::string &amp;message, const std::shared_ptr&lt; spdlog::logger &gt; &amp;logger)</div><div class="ttdoc">msgpackのメッセージをパースし返す</div><div class="ttdef"><b>Definition</b> message.cc:53</div></div>
-<div class="ttc" id="anamespacewebcface_1_1message_html_a965c311b611151d72a5129362ea11618"><div class="ttname"><a href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">webcface::message::packSingle</a></div><div class="ttdeci">std::string packSingle(const T &amp;obj)</div><div class="ttdoc">メッセージ1つを要素数2の配列としてシリアル化</div><div class="ttdef"><b>Definition</b> pack.h:48</div></div>
+<div class="ttc" id="anamespacewebcface_1_1message_html_a965c311b611151d72a5129362ea11618"><div class="ttname"><a href="namespacewebcface_1_1message.html#a965c311b611151d72a5129362ea11618">webcface::message::packSingle</a></div><div class="ttdeci">std::string packSingle(const T &amp;obj)</div><div class="ttdoc">メッセージ1つを要素数2の配列としてシリアル化</div><div class="ttdef"><b>Definition</b> pack.h:49</div></div>
 <div class="ttc" id="anamespacewebcface_1_1message_html_aa2619ac9929b790908f9c65878601825"><div class="ttname"><a href="namespacewebcface_1_1message.html#aa2619ac9929b790908f9c65878601825">webcface::message::messageTrace</a></div><div class="ttdeci">std::string messageTrace(const std::string &amp;message)</div><div class="ttdoc">バイナリを16進数の文字列に変換</div><div class="ttdef"><b>Definition</b> message.cc:16</div></div>
 <div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> arg.h:14</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a></div><div class="ttdeci">ValType</div><div class="ttdoc">引数や戻り値の型を表すenum</div><div class="ttdef"><b>Definition</b> val_adaptor.h:21</div></div>
@@ -328,6 +388,7 @@ $(document).ready(function(){initNavTree('pack_8h_source.html',''); initResizabl
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ab83ea326a525123719676faab2944093">webcface::ValType::string_</a></div><div class="ttdeci">@ string_</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53">webcface::ValType::int_</a></div><div class="ttdeci">@ int_</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">webcface::ValType::float_</a></div><div class="ttdeci">@ float_</div></div>
+<div class="ttc" id="anum__vector_8h_html"><div class="ttname"><a href="num__vector_8h.html">num_vector.h</a></div></div>
 <div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:118</div></div>
 <div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:117</div></div>
 </div><!-- fragment --></div><!-- contents -->
@@ -336,7 +397,7 @@ $(document).ready(function(){initNavTree('pack_8h_source.html',''); initResizabl
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html">common</a></li><li class="navelem"><a class="el" href="dir_11fbc4217d50ab21044e5ad6614aede5.html">include</a></li><li class="navelem"><a class="el" href="dir_691cd2f0393d009848f7dbc991939c45.html">webcface</a></li><li class="navelem"><a class="el" href="dir_c6f8b713f490183ef4573a582b3d24eb.html">common</a></li><li class="navelem"><a class="el" href="dir_1c12ecd836656bb3bc10d23ecddfe48f.html">internal</a></li><li class="navelem"><a class="el" href="dir_8efb265f184e2da02acee1416832a7a4.html">message</a></li><li class="navelem"><a class="el" href="pack_8h.html">pack.h</a></li>
-    <li class="footer">Generated on Mon Aug 4 2025 08:45:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

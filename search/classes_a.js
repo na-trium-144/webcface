@@ -42,8 +42,9 @@ var searchData=
   ['messagebase_3c_20messagekind_3a_3aview_5fold_2bmessagekind_3a_3ares_20_3e_39',['MessageBase&lt; MessageKind::view_old+MessageKind::res &gt;',['../structwebcface_1_1message_1_1MessageBase.html',1,'webcface::message']]],
   ['messagebase_3c_20t_3a_3akind_2bmessagekind_3a_3aentry_20_3e_40',['MessageBase&lt; T::kind+MessageKind::entry &gt;',['../structwebcface_1_1message_1_1MessageBase.html',1,'webcface::message']]],
   ['messagebase_3c_20t_3a_3akind_2bmessagekind_3a_3areq_20_3e_41',['MessageBase&lt; T::kind+MessageKind::req &gt;',['../structwebcface_1_1message_1_1MessageBase.html',1,'webcface::message']]],
-  ['mutexproxy_42',['MutexProxy',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
-  ['mutexproxy_3c_20strmap1_3c_20webcface_3a_3aqueue_3c_20webcface_3a_3acallhandle_20_3e_20_3e_20_3e_43',['MutexProxy&lt; StrMap1&lt; webcface::Queue&lt; webcface::CallHandle &gt; &gt; &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
-  ['mutexproxy_3c_20webcface_3a_3ainternal_3a_3aclientdata_3a_3asyncdata_20_3e_44',['MutexProxy&lt; webcface::internal::ClientData::SyncData &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
-  ['mutexproxy_3c_20webcface_3a_3ainternal_3a_3aclientdata_3a_3awsdata_20_3e_45',['MutexProxy&lt; webcface::internal::ClientData::WsData &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]]
+  ['mutablenumvector_42',['MutableNumVector',['../classwebcface_1_1MutableNumVector.html',1,'webcface']]],
+  ['mutexproxy_43',['MutexProxy',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
+  ['mutexproxy_3c_20strmap1_3c_20webcface_3a_3aqueue_3c_20webcface_3a_3acallhandle_20_3e_20_3e_20_3e_44',['MutexProxy&lt; StrMap1&lt; webcface::Queue&lt; webcface::CallHandle &gt; &gt; &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
+  ['mutexproxy_3c_20webcface_3a_3ainternal_3a_3aclientdata_3a_3asyncdata_20_3e_45',['MutexProxy&lt; webcface::internal::ClientData::SyncData &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]],
+  ['mutexproxy_3c_20webcface_3a_3ainternal_3a_3aclientdata_3a_3awsdata_20_3e_46',['MutexProxy&lt; webcface::internal::ClientData::WsData &gt;',['../classwebcface_1_1internal_1_1MutexProxy.html',1,'webcface::internal']]]
 ];

@@ -172,18 +172,27 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <li><p class="startli"><b class="tab-title">C++</b> Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
 <div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>).set(5);</div>
 <div class="line">wcli.value(<span class="stringliteral">&quot;fuga&quot;</span>).set({1, 2, 3, 4, 5});</div>
-</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>webcfaceのvalueは浮動小数型のみを扱いますが、値が整数だった場合シリアライズ時に自動的に整数型として送受信されるようなので、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。(<a href="https://github.com/msgpack/msgpack-c/issues/1017">msgpack/msgpack-c#1017</a>)</dd>
-<dd>
-<span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</dd></dl>
-<p>set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
-</div><!-- fragment --><p class="startli"><span class="since-c">1.11</span> valueに直接<code>[]</code> <del>(または<code>child()</code>)</del> (<span class="since-c">2.8</span> または <code>at()</code>) で配列の要素アクセスが可能です。 また、resize() で配列を初期化し push_back() で追加する使い方もできます。 ただしValueにセットしたデータはsync等で自動的にリセットされることはないので、push_backとsyncを繰り返す場合は resize(0) や set({}) などで初期化してください。 <code>cpp wcli.value("fuga").resize(5); for(int i = 0; i &lt; 5; i++){ wcli.value("fuga")[i] = i; // wcli.value("fuga").at(i) も同じ } wcli.value("fuga").push_back(100); </code> <span class="since-c">2.8</span> <code>[]</code>や<code>at()</code>は ValueElementRef 型を返すようになりました。使い方は今までと変わりません。</p>
+</div><!-- fragment --><p class="startli">set() の代わりに代入演算子(Value::operator=)でも同様のことができます。 また、 operator+= など、doubleやintの変数で使える各種演算子も使えます </p><div class="fragment"><div class="line">wcli.value(<span class="stringliteral">&quot;hoge&quot;</span>) = 5;</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
+<li>webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。</li>
+<li><span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</li>
+<li><span class="since-c">2.10</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
+</ul>
+</dd></dl>
+<p><span class="since-c">1.11</span> valueに直接<code>[]</code> <del>(または<code>child()</code>)</del> (<span class="since-c">2.8</span> または <code>at()</code>) で配列の要素アクセスが可能です。 また、resize() で配列を初期化し push_back() で追加する使い方もできます。 ただしValueにセットしたデータはsync等で自動的にリセットされることはないので、push_backとsyncを繰り返す場合は resize(0) や set({}) などで初期化してください。 <code>cpp wcli.value("fuga").resize(5); for(int i = 0; i &lt; 5; i++){ wcli.value("fuga")[i] = i; // wcli.value("fuga").at(i) も同じ } wcli.value("fuga").push_back(100); </code> <span class="since-c">2.8</span> <code>[]</code>や<code>at()</code>は ValueElementRef 型を返すようになりました。使い方は今までと変わりません。</p>
 </li>
-<li><b class="tab-title">C</b> double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW) <div class="fragment"><div class="line"><a class="code hl_function" href="client_2include_2webcface_2c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, 123.45);</div>
+<li><p class="startli"><b class="tab-title">C</b> double型の単一の値は wcfValueSet, (<span class="since-c">2.0</span> wcfValueSetW) </p><div class="fragment"><div class="line"><a class="code hl_function" href="client_2include_2webcface_2c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a>(wcli, <span class="stringliteral">&quot;hoge&quot;</span>, 123.45);</div>
 <div class="ttc" id="aclient_2include_2webcface_2c__wcf_2value_8h_html_aa11a6ea52672771139a39b354bd78346"><div class="ttname"><a href="client_2include_2webcface_2c__wcf_2value_8h.html#aa11a6ea52672771139a39b354bd78346">wcfValueSet</a></div><div class="ttdeci">wcfStatus wcfValueSet(wcfClient *wcli, const char *field, double value)</div><div class="ttdoc">単一の値を送信する</div><div class="ttdef"><b>Definition</b> value.cc:111</div></div>
-</div><!-- fragment --> 配列データは wcfValueSetVecD, (<span class="since-c">2.0</span> wcfValueSetVecDW) <div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5] = {1, 2, 3, 4, 5};</div>
+</div><!-- fragment --><p> 配列データは wcfValueSetVecD, (<span class="since-c">2.0</span> wcfValueSetVecDW) </p><div class="fragment"><div class="line"><span class="keywordtype">double</span> value[5] = {1, 2, 3, 4, 5};</div>
 <div class="line"><a class="code hl_function" href="client_2include_2webcface_2c__wcf_2value_8h.html#a28bdf7e1102e753766f30043725ec516">wcfValueSetVecD</a>(wcli, <span class="stringliteral">&quot;fuga&quot;</span>, value, 5);</div>
 <div class="ttc" id="aclient_2include_2webcface_2c__wcf_2value_8h_html_a28bdf7e1102e753766f30043725ec516"><div class="ttname"><a href="client_2include_2webcface_2c__wcf_2value_8h.html#a28bdf7e1102e753766f30043725ec516">wcfValueSetVecD</a></div><div class="ttdeci">wcfStatus wcfValueSetVecD(wcfClient *wcli, const char *field, const double *values, int size)</div><div class="ttdoc">複数の値を送信する(doubleの配列)</div><div class="ttdef"><b>Definition</b> value.cc:117</div></div>
-</div><!-- fragment --> で送信できます。</li>
+</div><!-- fragment --><p> で送信できます。</p>
+<dl class="section note"><dt>Note</dt><dd><ul>
+<li>webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。</li>
+<li><span class="since-c">2.10</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
+</ul>
+</dd></dl>
+</li>
 <li><b class="tab-title">JavaScript</b> Value.set() でデータを代入し、Client.sync()することで送信されます。 <div class="fragment"><div class="line">wcli.value(&quot;hoge&quot;).set(5);</div>
 <div class="line">wcli.value(&quot;fuga&quot;).set([1, 2, 3, 4, 5]);</div>
 </div><!-- fragment --></li>
@@ -251,7 +260,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <li><p class="startli"><b class="tab-title">C++</b> Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
 <div class="fragment"><div class="line">std::optional&lt;double&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
-<div class="line">std::optional&lt;std::vector&lt;double&gt;&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
+<div class="line">std::optional&lt;webcface::NumVector&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>).tryGetVec();</div>
 </div><!-- fragment --><ul>
 <li>値をまだ受信していない場合 tryGet(), tryGetVec() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。<ul>
 <li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-c">1.2</span>自動的に別スレッドで送信されます。</li>
@@ -259,7 +268,12 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </ul>
 </li>
 <li>Value::get(), Value::getVec() はstd::nulloptの代わりに0を返します。</li>
-<li>また、doubleやstd::vector&lt;double&gt; などの型にキャストすることでも同様に値が得られます。</li>
+<li><span class="since-c">2.10</span> tryGetVec(), getVec() は <a class="el" href="classwebcface_1_1NumVector.html" title="shared_ptrで管理されているdoubleのvector">webcface::NumVector</a> 型で配列データを返します。 (以前は std::vector&lt;double&gt; を返していた)<ul>
+<li>NumVectorはshared_ptrで配列データの参照を保持しており、コピー時にコストがかかりません。</li>
+<li>std::vector&lt;double&gt;にキャストすることも可能です。</li>
+</ul>
+</li>
+<li>また、Valueを直接 double や NumVector, std::vector&lt;double&gt; などの型にキャストすることでも同様に値が得られます。</li>
 </ul>
 <p class="startli"><span class="since-c">1.7</span> Value::request() で明示的にリクエストを送信することもできます。</p>
 <p class="startli"><span class="since-c">1.8</span> std::ostreamにValueを直接渡して表示することもできます。 まだ受信していない場合nullと表示されます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
@@ -341,7 +355,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 4 2025 08:45:52 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

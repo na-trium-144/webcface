@@ -323,6 +323,9 @@ var hierarchy =
     [ "MutexProxy< StrMap1< webcface::Queue< webcface::CallHandle > > >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
     [ "MutexProxy< webcface::internal::ClientData::SyncData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
     [ "MutexProxy< webcface::internal::ClientData::WsData >", "classwebcface_1_1internal_1_1MutexProxy.html", null ],
+    [ "NumVector", "classwebcface_1_1NumVector.html", [
+      [ "MutableNumVector", "classwebcface_1_1MutableNumVector.html", null ]
+    ] ],
     [ "out_of_range", null, [
       [ "OutOfRange", "structwebcface_1_1OutOfRange.html", null ]
     ] ],
@@ -397,7 +400,6 @@ var hierarchy =
     [ "SyncDataStore1< std::chrono::system_clock::time_point >", "classwebcface_1_1internal_1_1SyncDataStore1.html", null ],
     [ "SyncDataStore2< T, ReqT >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< RobotModelData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< std::shared_ptr< ValueData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::internal::FuncInfo > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::internal::LogData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::message::Canvas2DData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
@@ -405,6 +407,7 @@ var hierarchy =
     [ "SyncDataStore2< std::shared_ptr< webcface::message::ViewData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::ValAdaptor > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::ImageFrame, webcface::message::ImageReq >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< webcface::MutableNumVector >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "TemporalCanvas2DComponent", "classwebcface_1_1TemporalCanvas2DComponent.html", null ],
     [ "TemporalCanvas3DComponent", "classwebcface_1_1TemporalCanvas3DComponent.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "structwebcface_1_1TemporalComponent.html", null ],
