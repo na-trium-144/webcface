@@ -30,7 +30,8 @@ class WEBCFACE_DLL ValueElementRef : protected Field {
      *
      * * 事前に Value::resize() でサイズを変更しておく必要がある
      * * データがない場合、範囲外の場合は std::out_of_range を投げる
-     *   * ver2.7以前は Value[i].set() で自動的にリサイズされていたので、異なる挙動になる
+     *   * ver2.7以前は Value[i].set()
+     * で自動的にリサイズされていたので、異なる挙動になる
      */
     const ValueElementRef &set(double v) const;
     const ValueElementRef &operator=(double v) const { return set(v); }
@@ -65,7 +66,7 @@ class WEBCFACE_DLL Value : protected Field {
         : Value(Field{base, field}) {}
 
     friend class ValueElementRef;
-    
+
     using Field::lastName;
     using Field::member;
     using Field::name;
@@ -74,7 +75,7 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
-     * 
+     *
      */
     Value child(String field) const {
         return this->Field::child(static_cast<SharedString &>(field));
@@ -90,20 +91,36 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
-     * 
+     *
      * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
-     * 
+     *
      */
     Value operator[](String field) const { return child(std::move(field)); }
-    // /*!
-    //  * operator[](long, const char *)と解釈されるのを防ぐための定義
-    //  * \since ver1.11
-    //  */
-    // Value operator[](const char *field) const { return child(field); }
-    // /*!
-    //  * \since ver2.0
-    //  */
-    // Value operator[](const wchar_t *field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     */
+    Value operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver2.0
+     */
+    Value operator[](const wchar_t *field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Value operator[](const char (&static_str)[N]) {
+        return child(String(static_str));
+    }
+    /*!
+     * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Value operator[](const wchar_t (&static_str)[N]) {
+        return child(String(static_str));
+    }
     /*!
      * \brief 1次元配列型データの要素を参照する
      * \since ver2.8
@@ -161,7 +178,8 @@ class WEBCFACE_DLL Value : protected Field {
      *
      */
     template <typename T>
-    [[deprecated]] void appendListener(T &&callback) const {
+    [[deprecated]]
+    void appendListener(T &&callback) const {
         onChange(std::forward<T>(callback));
     }
 
@@ -205,10 +223,11 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 配列データのサイズを取得
      * \since ver2.8
-     * 
+     *
      * * 自身のデータの場合、現在setされているデータのサイズ、またはセットされていなければ0
      * * 他のmemberのデータの場合、すでに受信したデータのサイズ
-     *   * 受信していない場合は、get()やtryGet()と同様にリクエストを送り、0を返す
+     *   *
+     * 受信していない場合は、get()やtryGet()と同様にリクエストを送り、0を返す
      * * 配列でない数値データ1つの場合、1を返す
      */
     std::size_t size() const;
@@ -250,7 +269,7 @@ class WEBCFACE_DLL Value : protected Field {
     std::optional<double> tryGet() const;
     /*!
      * \brief 値をvectorで返す
-     * 
+     *
      * ver2.10〜 `std::vector<double>` から webcface::NumVector 型に変更
      * (NumVectorはvectorのconst参照にキャスト可能)
      *
@@ -291,7 +310,8 @@ class WEBCFACE_DLL Value : protected Field {
      * \brief syncの時刻を返す
      * \deprecated 1.7で Member::syncTime() に変更
      */
-    [[deprecated]] std::chrono::system_clock::time_point time() const;
+    [[deprecated]]
+    std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

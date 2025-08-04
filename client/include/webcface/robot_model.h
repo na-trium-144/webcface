@@ -66,15 +66,6 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * 
      */
     RobotModel operator[](String field) const { return child(std::move(field)); }
-    // /*!
-    //  * operator[](long, const char *)と解釈されるのを防ぐための定義
-    //  * \since ver1.11
-    //  */
-    // RobotModel operator[](const char *field) const { return child(field); }
-    // /*!
-    //  * \since ver2.0
-    //  */
-    // RobotModel operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11

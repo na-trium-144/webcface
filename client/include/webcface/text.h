@@ -216,15 +216,34 @@ class WEBCFACE_DLL Text : protected Variant {
      * 
      */
     Text operator[](String field) const { return child(std::move(field)); }
-    // /*!
-    //  * operator[](long, const char *)と解釈されるのを防ぐための定義
-    //  * \since ver1.11
-    //  */
-    // Text operator[](const char *field) const { return child(field); }
-    // /*!
-    //  * \since ver2.0
-    //  */
-    // Text operator[](const wchar_t *field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver1.11
+     * 
+     * Variantがlongに変換可能なため。
+     * 
+     */
+    Text operator[](const char *field) const { return child(field); }
+    /*!
+     * \since ver2.0
+     */
+    Text operator[](const wchar_t *field) const { return child(field); }
+    /*!
+     * operator[](long, const char *)と解釈されるのを防ぐための定義
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Text operator[](const char (&static_str)[N]) {
+        return child(String(static_str));
+    }
+    /*!
+     * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Text operator[](const wchar_t (&static_str)[N]) {
+        return child(String(static_str));
+    }
     /*!
      * child()と同じ
      * \since ver1.11

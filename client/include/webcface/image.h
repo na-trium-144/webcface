@@ -58,15 +58,6 @@ class WEBCFACE_DLL Image : protected Field {
      * 
      */
     Image operator[](String field) const { return child(std::move(field)); }
-    // /*!
-    //  * operator[](long, const char *)と解釈されるのを防ぐための定義
-    //  * \since ver1.11
-    //  */
-    // Image operator[](const char *field) const { return child(field); }
-    // /*!
-    //  * \since ver2.0
-    //  */
-    // Image operator[](const wchar_t *field) const { return child(field); }
     /*!
      * child()と同じ
      * \since ver1.11
