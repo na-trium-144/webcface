@@ -6,6 +6,8 @@
 ### Added
 * default.nix (#513)
 * benchmark (#515)
+* NumVectorクラス (#516)
+	* Value::getVec() の返す型をstd::vectorからNumVectorに変更
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed
