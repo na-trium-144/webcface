@@ -52,7 +52,7 @@ TEST(NumVectorTest, CopyIsShallow) {
 
     // v1をリサイズ
     v1.push_back(4.0);
-    EXPECT_EQ(v2.size(), 4); // v2のサイズも変わる
+    EXPECT_EQ(v2.size(), 4u); // v2のサイズも変わる
     EXPECT_EQ(v1, v2);
 }
 
