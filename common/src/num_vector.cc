@@ -5,13 +5,31 @@
 WEBCFACE_NS_BEGIN
 
 NumVector::NumVector(double v) : data_(), first_(v) {}
-void MutableNumVector::assign(double v) { first_ = v; data_ = nullptr; }
+void MutableNumVector::assign(double v) { data_ = nullptr; first_ = v; }
 
-NumVector::NumVector(std::vector<double> vec)
-    : data_(std::make_shared<std::vector<double>>(std::move(vec))), first_(data_->at(0)) {}
+NumVector::NumVector(std::vector<double> vec){
+    if(vec.size() == 0){
+        data_ = nullptr;
+        first_ = 0;
+    }else if(vec.size() == 1){
+        data_ = nullptr;
+        first_ = vec[0];
+    }else{
+        data_ = std::make_shared<std::vector<double>>(std::move(vec));
+        first_ = data_->at(0);
+    }
+}
 void MutableNumVector::assign(std::vector<double> vec) {
-    data_ = std::make_shared<std::vector<double>>(std::move(vec));
-    first_ = data_->at(0);
+    if(vec.size() == 0){
+        data_ = nullptr;
+        first_ = 0;
+    }else if(vec.size() == 1){
+        data_ = nullptr;
+        first_ = vec[0];
+    }else{
+        data_ = std::make_shared<std::vector<double>>(std::move(vec));
+        first_ = data_->at(0);
+    }
 }
 
 NumVector::operator const std::vector<double>&() const {
@@ -47,6 +65,7 @@ const double &NumVector::at(std::size_t index) const {
 void MutableNumVector::resize(std::size_t new_size) {
     if (new_size == 0) {
         new_size = 1;
+        at(0) = 0;
     }
     if(data_){
         data_->resize(new_size);
