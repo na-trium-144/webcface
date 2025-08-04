@@ -23,28 +23,34 @@ const Value &Value::request() const {
 const Value &Value::set(double v) const {
     auto last_name = this->lastName();
     auto parent = this->parent();
+    auto data = setCheck();
     // deprecated in ver2.8
     if (std::all_of(last_name.cbegin(), last_name.cend(),
                     [](unsigned char c) { return std::isdigit(c); })) {
         std::size_t index = std::stoi(std::string(last_name));
-        auto pv = parent.tryGetVec();
+        auto pv = data->value_store.getRecv(parent);
         if (pv && index < pv->size() + 10) { // てきとう
             while (pv->size() <= index) {
                 pv->push_back(0);
             }
             pv->at(index) = v;
-            parent.set(*pv);
+            data->value_store.setSend(parent, *pv);
             return *this;
         }
     }
-    set(std::vector<double>{v});
+    data->value_store.setSend(*this, MutableNumVector{v});
+    auto change_event =
+        internal::findFromMap2(data->value_change_event.shared_lock().get(),
+                               this->member_, this->field_);
+    if (change_event && *change_event) {
+        change_event->operator()(*this);
+    }
     return *this;
 }
 
 const Value &Value::set(std::vector<double> v) const {
     auto data = setCheck();
-    data->value_store.setSend(
-        *this, std::make_shared<std::vector<double>>(std::move(v)));
+    data->value_store.setSend(*this, MutableNumVector{std::move(v)});
     auto change_event =
         internal::findFromMap2(data->value_change_event.shared_lock().get(),
                                this->member_, this->field_);
@@ -62,30 +68,32 @@ const Value &Value::onChange(std::function<void(Value)> callback) const {
 }
 
 const Value &Value::resize(std::size_t size) const {
-    auto pv = this->tryGetVec();
+    auto data = setCheck();
+    auto pv = data->value_store.getRecv(*this);
     if (pv) {
         pv->resize(size);
     } else {
-        pv.emplace(size);
+        pv.emplace(std::vector<double>(size));
     }
-    this->set(*pv);
+    data->value_store.setSend(*this, *pv);
     return *this;
 }
 const Value &Value::push_back(double v) const {
-    auto pv = this->tryGetVec();
+    auto data = setCheck();
+    auto pv = data->value_store.getRecv(*this);
     if (pv) {
         pv->push_back(v);
     } else {
-        pv.emplace({v});
+        pv.emplace(v);
     }
-    this->set(*pv);
+    data->value_store.setSend(*this, *pv);
     return *this;
 }
 std::size_t Value::size() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return (**v).size();
+        return v->size();
     } else {
         return 0;
     }
@@ -93,10 +101,11 @@ std::size_t Value::size() const {
 
 const ValueElementRef &ValueElementRef::set(double v) const {
     Value parent = *this;
-    auto pv = parent.tryGetVec();
+    auto data = setCheck();
+    auto pv = data->value_store.getRecv(parent);
     if (pv && index < pv->size()) {
         pv->at(index) = v;
-        parent.set(*pv);
+        data->value_store.setRecv(parent, *pv);
     } else {
         throw OutOfRange("ValueElementRef::set got index " +
                          std::to_string(index) + " but size is " +
@@ -109,7 +118,7 @@ std::optional<double> Value::tryGet() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->size() >= 1 ? std::make_optional((**v)[0]) : std::nullopt;
+        return std::make_optional((*v)[0]);
     }
     // deprecated in ver2.8
     auto last_name = lastName();
@@ -123,11 +132,11 @@ std::optional<double> Value::tryGet() const {
     }
     return std::nullopt;
 }
-std::optional<std::vector<double>> Value::tryGetVec() const {
+std::optional<NumVector> Value::tryGetVec() const {
     auto v = dataLock()->value_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return std::nullopt;
     }

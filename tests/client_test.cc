@@ -194,7 +194,7 @@ TEST_F(ClientTest, syncThread) {
     wait();
     dummy_s->send(message::Res<message::Value>{
         1, ""_ss,
-        std::make_shared<std::vector<double>>(std::vector<double>{1, 2, 3})});
+        MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
 }

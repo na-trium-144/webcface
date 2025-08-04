@@ -6,6 +6,8 @@
 ### Added
 * default.nix (#513)
 * benchmark (#515)
+* NumVectorクラス (#516)
+	* Value::getVec() の返す型をstd::vectorからNumVectorに変更
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed
@@ -16,6 +18,7 @@
 * DataStore2::data_sendをmapからvectorに変更、sync()を1割高速化 (#515)
 * std::condition_variableを使わずpollingするようにし、sync()を3割高速化 (#515)
 * クライアントの投げる例外の型をすべて独自のクラスに変更、メッセージを改善 (#518)
+* msgpackでシリアライズ時にdoubleをintやfloatに変換可能なら変換してからpackするようにした (#516)
 
 ## [2.9.0] - 2025-02-09
 ### Added

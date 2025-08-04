@@ -12,6 +12,7 @@ test_src = [
   'logger_test.cc',
   'encoding_test.cc',
   'transform_test.cc',
+  'num_vector_test.cc',
 ]
 test_dependencies = [
   warning_options_dep,
