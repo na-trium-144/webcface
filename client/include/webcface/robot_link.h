@@ -56,13 +56,18 @@ class WEBCFACE_DLL RobotJoint {
     /*!
      * \brief jointの名前を取得
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief jointの名前を取得 (wstring)
      * \since ver2.0
+     * 
+     * ver2.10〜 std::wstringの参照から WStringView に変更
+     * 
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief 親リンクを取得
      * \since ver2.0
@@ -230,13 +235,18 @@ class WEBCFACE_DLL RobotLink {
     /*!
      * \brief 名前を取得
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief 名前を取得 (wstring)
      * \since ver2.0
+     * 
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief jointを取得
      *

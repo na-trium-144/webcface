@@ -193,7 +193,7 @@ class WEBCFACE_DLL ValAdaptor {
      * \sa asStringRef()
      * \deprecated ver2.10〜
      * 内部の仕様変更により文字列のコピーが発生する可能性がある。
-     * コピーなしで文字列を参照するには asWStringView() または asWCStr()
+     * コピーなしで文字列を参照するには asWStringView()
      * を使用すること。
      */
     [[deprecated("(ver2.10〜) use asWStringView() instead")]]
