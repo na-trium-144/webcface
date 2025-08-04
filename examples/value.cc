@@ -9,6 +9,7 @@ int main() {
 
     // wcli.value("test").set(0);
     wcli.value("test") = 0;
+    wcli.value("test_int") = 0;
 
     webcface::Field field = wcli.child("sub_field");
     field.value("a") = 1;         // wcli.value("sub_field.a")
@@ -31,6 +32,7 @@ int main() {
 
         // valueを更新
         wcli.value("test") = i;
+        wcli.value("test_int") = static_cast<int>(i);
         wcli.value("not_frequent") = static_cast<int>(i / 10);
 
         i += 0.5;

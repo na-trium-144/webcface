@@ -79,6 +79,35 @@ namespace msgpack {
 MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     namespace adaptor {
 
+    /*!
+     * 値がint64_t, uint64_t, floatに収まる場合小さい型でpackする
+     * msgpack-c++ <=6 ではmsgpack内でやってくれていたが、ver7からは自分で実装する必要がある
+     * https://github.com/msgpack/msgpack-c/issues/1017
+     * https://github.com/msgpack/msgpack-c/pull/1144
+     * int型の中でさらに小さい型にするのはmsgpackがやってくれるっぽい?
+     */
+    template<>
+    struct pack<double> {
+        template <typename Stream>
+        packer<Stream>& operator()(msgpack::packer<Stream>& o, double v) const {
+            if(v == v) { // check for nan
+                // compare d to limits to avoid undefined behaviour
+                if(v >= 0 && v <= double(std::numeric_limits<uint64_t>::max()) && v == static_cast<double>(static_cast<uint64_t>(v))) {
+                    o.pack_uint64(static_cast<std::uint64_t>(v));
+                    return o;
+                } else if(v < 0 && v >= double(std::numeric_limits<int64_t>::min()) && v == static_cast<double>(static_cast<int64_t>(v))) {
+                    o.pack_int64(static_cast<std::int64_t>(v));
+                    return o;
+                } else if(std::abs(v) <= std::numeric_limits<float>::max() && v == static_cast<double>(static_cast<float>(v))){
+                    o.pack_float(static_cast<float>(v));
+                    return o;
+                }
+            }
+            o.pack_double(v);
+            return o;
+        }
+    };
+
     template <>
     struct convert<webcface::SharedString> {
         msgpack::object const &operator()(msgpack::object const &o,
