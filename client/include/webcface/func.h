@@ -2,7 +2,7 @@
 #include "webcface/common/val_adaptor.h"
 #include "func_result.h"
 #include "arg.h"
-#include "trait.h"
+#include "webcface/common/trait.h"
 #include "exception.h"
 
 WEBCFACE_NS_BEGIN
