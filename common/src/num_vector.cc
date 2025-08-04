@@ -27,7 +27,7 @@ double &MutableNumVector::at(std::size_t index) {
                          ", but size is " + std::to_string(size()));
     }
     if(data_){
-        return data_->at(0);
+        return data_->at(index);
     }else{
         return first_;
     }
@@ -38,7 +38,7 @@ const double &NumVector::at(std::size_t index) const {
                          ", but size is " + std::to_string(size()));
     }
     if(data_){
-        return data_->at(0);
+        return data_->at(index);
     }else{
         return first_;
     }
