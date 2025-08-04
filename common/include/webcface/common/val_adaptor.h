@@ -171,10 +171,11 @@ class WEBCFACE_DLL ValAdaptor {
      *
      * \deprecated ver2.10〜
      * 内部の仕様変更により文字列のコピーが発生する可能性がある。
-     * コピーなしで文字列を参照するには asStringView() を使用すること。
+     * コピーなしで文字列を参照するには asStringView() または asCStr()
+     * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() instead")]] const std::string &
-    asStringRef() const;
+    [[deprecated("(ver2.10〜) use asStringView() or asCStr() instead")]]
+    const std::string &asStringRef() const;
     /*!
      * \brief 文字列として返す
      * \since ver2.10
@@ -193,11 +194,11 @@ class WEBCFACE_DLL ValAdaptor {
      * \sa asStringRef()
      * \deprecated ver2.10〜
      * 内部の仕様変更により文字列のコピーが発生する可能性がある。
-     * コピーなしで文字列を参照するには asWStringView() を使用すること。
+     * コピーなしで文字列を参照するには asWStringView() または asWCStr()
+     * を使用すること。
      */
-    [[deprecated(
-        "(ver2.10〜) use asWStringView() instead")]] const std::wstring &
-    asWStringRef() const;
+    [[deprecated("(ver2.10〜) use asWStringView() or asWCStr() instead")]]
+    const std::wstring &asWStringRef() const;
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.10
@@ -213,9 +214,8 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      * \deprecated ver2.10〜
      */
-    [[deprecated(
-        "(ver2.10〜) use asU8StringView() instead")]] const std::string &
-    asU8StringRef() const;
+    [[deprecated("(ver2.10〜) use asU8StringView() instead")]]
+    const std::string &asU8StringRef() const;
     /*!
      * \since ver2.10
      */
@@ -298,8 +298,8 @@ class WEBCFACE_DLL ValAdaptor {
      *
      */
     template <typename T>
-    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double
-    as() const {
+    [[deprecated("use asDouble(), asInt() or asLLong() instead")]]
+    double as() const {
         return static_cast<T>(asDouble());
     }
     /*!
