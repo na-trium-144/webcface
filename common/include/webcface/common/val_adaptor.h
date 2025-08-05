@@ -129,11 +129,13 @@ class WEBCFACE_DLL ValAdaptor {
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
      *
      */
-    template <typename Bool, typename std::enable_if_t<std::is_same_v<Bool, bool>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename Bool,
+              typename std::enable_if_t<std::is_same_v<Bool, bool>,
+                                        std::nullptr_t> = nullptr>
     explicit ValAdaptor(Bool value);
-    template <typename Bool, typename std::enable_if_t<std::is_same_v<Bool, bool>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename Bool,
+              typename std::enable_if_t<std::is_same_v<Bool, bool>,
+                                        std::nullptr_t> = nullptr>
     ValAdaptor &operator=(Bool v);
 
     explicit ValAdaptor(std::int64_t value);
@@ -243,19 +245,6 @@ class WEBCFACE_DLL ValAdaptor {
     std::wstring asWString() const { return std::wstring(asWStringView()); }
 
     /*!
-     * <del>ver1.10〜: const参照</del>
-     * ver2.10〜: コピー
-     *
-     */
-    operator std::string() const { return asString(); }
-    /*!
-     * \since ver2.0
-     *
-     * ver2.10〜: const参照ではなくコピーに変更
-     *
-     */
-    operator std::wstring() const { return asWString(); }
-    /*!
      * \since ver2.10
      */
     operator std::string_view() const { return asStringView(); }
@@ -264,6 +253,21 @@ class WEBCFACE_DLL ValAdaptor {
      */
     operator std::wstring_view() const { return asWStringView(); }
     /*!
+     * <del>ver1.10〜: const参照</del>
+     * ver2.10〜: コピーにし、かつexplicitに変更
+     * ただしFuncに登録する関数の引数としてstd::stringを用いる際には暗黙的にstatic_castされる
+     *
+     */
+    explicit operator std::string() const { return asString(); }
+    /*!
+     * \since ver2.0
+     *
+     * ver2.10〜: const参照ではなくコピーにし、かつexplicitに変更
+     * ただしFuncに登録する関数の引数としてstd::wstringを用いる際には暗黙的にstatic_castされる
+     *
+     */
+    explicit operator std::wstring() const { return asWString(); }
+    /*!
      * \since ver2.0
      */
     operator const char *() const { return asStringView().c_str(); }
@@ -271,6 +275,7 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      */
     operator const wchar_t *() const { return asWStringView().c_str(); }
+
     /*!
      * \brief 実数として返す
      * \since ver2.0

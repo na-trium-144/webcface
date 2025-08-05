@@ -23,6 +23,14 @@ template <typename T>
 using InvokeSignature =
     decltype(getInvokeSignature(std::declval<std::decay_t<T>>()));
 
+// ValAdaptorからstringへは暗黙変換できないようにしているが、
+// Funcの引数では例外的にstringを許可する
+template <typename T>
+constexpr bool isArgTypeSupportedByWebCFaceFunc =
+    std::is_convertible_v<ValAdaptor, T> ||
+    std::is_convertible_v<std::string, T> ||
+    std::is_convertible_v<std::wstring, T>;
+
 template <bool>
 struct FuncArgTypeCheck {};
 template <>
@@ -31,7 +39,7 @@ struct FuncArgTypeCheck<true> {
 };
 template <typename... Args>
 struct FuncArgTypesTrait
-    : FuncArgTypeCheck<(std::is_convertible_v<ValAdaptor, Args> && ...)> {};
+    : FuncArgTypeCheck<(isArgTypeSupportedByWebCFaceFunc<Args> && ...)> {};
 
 template <bool>
 struct FuncReturnTypeCheck {};

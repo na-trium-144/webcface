@@ -66,6 +66,8 @@ class TStringView : public std::basic_string_view<CharT> {
      *
      */
     const CharT *c_str() const { return this->data(); }
+
+    operator const CharT *() const { return this->data(); }
 };
 
 using StringView = TStringView<char>;
