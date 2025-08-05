@@ -1,4 +1,3 @@
-#pragma once
 #include <webcface/common/smr/allocator.h>
 
 WEBCFACE_NS_BEGIN
