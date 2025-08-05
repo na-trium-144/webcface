@@ -85,22 +85,22 @@ void internal::RobotLinkData::lockJoints(
     }
 }
 
-const std::string &RobotJoint::name() const {
+StringView RobotJoint::name() const {
     if (msg_data) {
         return msg_data->joint_name.decode();
     } else if (temp_data) {
         return temp_data->name.decode();
     } else {
-        return SharedString::emptyStr();
+        return SharedString::emptyStrView();
     }
 }
-const std::wstring &RobotJoint::nameW() const {
+WStringView RobotJoint::nameW() const {
     if (msg_data) {
         return msg_data->joint_name.decodeW();
     } else if (temp_data) {
         return temp_data->name.decodeW();
     } else {
-        return SharedString::emptyStrW();
+        return SharedString::emptyStrViewW();
     }
 }
 std::optional<RobotLink> RobotJoint::parent() const {
@@ -139,18 +139,18 @@ double RobotJoint::angle() const {
     }
 }
 
-const std::string &RobotLink::name() const {
+StringView RobotLink::name() const {
     if (msg_data) {
         return msg_data->name.decode();
     } else {
-        return SharedString::emptyStr();
+        return SharedString::emptyStrView();
     }
 }
-const std::wstring &RobotLink::nameW() const {
+WStringView RobotLink::nameW() const {
     if (msg_data) {
         return msg_data->name.decodeW();
     } else {
-        return SharedString::emptyStrW();
+        return SharedString::emptyStrViewW();
     }
 }
 RobotJoint RobotLink::joint() const { return RobotJoint(msg_data); }

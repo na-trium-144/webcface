@@ -29,6 +29,7 @@ class Canvas3D;
 class Log;
 
 constexpr char field_separator = '.';
+constexpr std::string_view field_separator_sv = ".";
 
 /*!
  * \brief メンバ名とデータ名を持つクラス

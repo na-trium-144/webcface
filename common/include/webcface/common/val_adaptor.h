@@ -166,15 +166,14 @@ class WEBCFACE_DLL ValAdaptor {
      * \brief 文字列として返す
      * \since ver1.10
      *
-     * std::stringのconst参照を返す。
-     * 参照はこのValAdaptorが破棄されるまで有効
+     * <del>std::stringのconst参照を返す。参照はこのValAdaptorが破棄されるまで有効</del>
      *
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 互換性のために残しているが、内部の仕様変更によりstringのconst参照ではなく文字列のコピーが返る。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() instead")]]
-    const std::string &asStringRef() const;
+    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    std::string asStringRef() const { return asString(); }
     /*!
      * \brief null終端の文字列の参照として返す
      * \since ver2.10
@@ -192,12 +191,12 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      * \sa asStringRef()
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 互換性のために残しているが、内部の仕様変更によりwstringのconst参照ではなく文字列のコピーが返る。
      * コピーなしで文字列を参照するには asWStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() instead")]]
-    const std::wstring &asWStringRef() const;
+    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    std::wstring asWStringRef() const { return asWString(); }
     /*!
      * \brief null終端の文字列の参照として返す (wstring)
      * \since ver2.10
@@ -209,12 +208,6 @@ class WEBCFACE_DLL ValAdaptor {
      * はそれをwstringに変換したうえでその参照を返す。
      */
     WStringView asWStringView() const;
-    /*!
-     * \since ver2.0
-     * \deprecated ver2.10〜
-     */
-    [[deprecated("(ver2.10〜) use asU8StringView() instead")]]
-    const std::string &asU8StringRef() const;
     /*!
      * \since ver2.10
      */
@@ -240,14 +233,6 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.10
      */
     operator std::wstring_view() const { return asWStringView(); }
-    /*!
-     * \since ver2.0
-     */
-    operator const char *() const { return asStringView().c_str(); }
-    /*!
-     * \since ver2.0
-     */
-    operator const wchar_t *() const { return asWStringView().c_str(); }
 
     /*!
      * \brief 実数として返す

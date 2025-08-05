@@ -42,7 +42,7 @@ struct Canvas3DComponentData {
                        MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
 };
 struct Canvas3DData {
-    std::map<std::string, std::shared_ptr<Canvas3DComponentData>> components;
+    std::map<std::string, std::shared_ptr<Canvas3DComponentData>, std::less<>> components;
     std::vector<SharedString> data_ids;
     Canvas3DData() = default;
 };

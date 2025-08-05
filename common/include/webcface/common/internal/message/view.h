@@ -63,7 +63,7 @@ struct ViewComponentData {
  *
  */
 struct ViewData {
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>>
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>, std::less<>>
         components;
     std::vector<SharedString> data_ids;
 };

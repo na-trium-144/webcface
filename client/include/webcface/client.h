@@ -40,11 +40,10 @@ class WEBCFACE_DLL Client : public Member {
      * \arg port サーバーのポート
      *
      */
-    explicit Client(String name,
-                    String host = "127.0.0.1",
+    explicit Client(String name, String host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
-        : Client(static_cast<SharedString &>(name), static_cast<SharedString &>(host), port) {
-    }
+        : Client(static_cast<SharedString &>(name),
+                 static_cast<SharedString &>(host), port) {}
 
     explicit Client(const SharedString &name, const SharedString &host,
                     int port);
@@ -288,7 +287,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver2.10〜 String 型に変更
      *
      */
-    std::streambuf *loggerStreamBuf(String name) const;
+    std::streambuf *loggerStreamBuf(const String &name) const;
     /*!
      * \brief webcfaceに出力するostream
      *
@@ -310,7 +309,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver2.10〜 String 型に変更
      *
      */
-    std::ostream &loggerOStream(String name) const;
+    std::ostream &loggerOStream(const String &name) const;
     /*!
      * \brief webcfaceに出力するwstreambuf
      * \since ver2.0
@@ -325,7 +324,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver2.10〜 String 型に変更
      *
      */
-    std::wstreambuf *loggerWStreamBuf(String name) const;
+    std::wstreambuf *loggerWStreamBuf(const String &name) const;
     /*!
      * \brief webcfaceに出力するwostream
      * \since ver2.0
@@ -340,7 +339,7 @@ class WEBCFACE_DLL Client : public Member {
      * * ver2.10〜 String 型に変更
      *
      */
-    std::wostream &loggerWOStream(String name) const;
+    std::wostream &loggerWOStream(const String &name) const;
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

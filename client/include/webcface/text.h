@@ -85,10 +85,11 @@ class WEBCFACE_DLL Variant : protected Field {
     /*!
      * \brief 値を取得する
      *
-     * 参照は少なくとも次のClient::sync()までは有効
+     * <del>参照は少なくとも次のClient::sync()までは有効</del>
+     * ver2.10〜 ValAdaptorをコピーで返すように変更
      *
      */
-    const ValAdaptor &get() const;
+    ValAdaptor get() const;
 
     template <typename T,
               typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
@@ -104,27 +105,26 @@ class WEBCFACE_DLL Variant : protected Field {
     /*!
      * \brief 文字列として返す
      *
-     * std::stringのconst参照を返す。
-     * 参照は少なくとも次のClient::sync()までは有効
+     * <del>std::stringのconst参照を返す。参照は少なくとも次のClient::sync()までは有効</del>
      *
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() instead")]]
-    const std::string &asStringRef() const {
-        return get().asStringRef();
+    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    std::string asStringRef() const {
+        return asString();
     }
     /*!
      * \brief 文字列として返す (wstring)
      * \sa asStringRef()
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() instead")]]
-    const std::wstring &asWStringRef() const {
-        return get().asWStringRef();
+    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    std::wstring asWStringRef() const {
+        return asWString();
     }
     /*!
      * \brief null終端の文字列の参照として返す
@@ -366,22 +366,28 @@ class WEBCFACE_DLL Text : protected Variant {
      * \brief 文字列を返す
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
-     * * ver2.0〜 stringに戻した
+     * * <del>ver2.0〜 stringに戻した</del>
+     * * ver2.10〜 StringViewに変更
+     * * 参照は少なくとも次のClient::sync()までは有効
      *
      */
-    std::optional<std::string> tryGet() const;
+    std::optional<StringView> tryGet() const;
     /*!
      * \brief 文字列を返す (wstring)
      * \since ver2.0
+     *
+     * * ver2.10〜 WStringViewに変更
+     * * 参照は少なくとも次のClient::sync()までは有効
+     *
      */
-    std::optional<std::wstring> tryGetW() const;
+    std::optional<WStringView> tryGetW() const;
     /*!
      * \brief 文字列を返す (const参照)
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
-     * * ver2.0〜 stringに戻した
-     * * ver2.0〜 const参照に変更
-     * 参照は少なくとも次のClient::sync()までは有効
+     * * <del>ver2.0〜 stringに戻した</del>
+     * * <del>ver2.0〜 const参照に変更</del>
+     * * 参照は少なくとも次のClient::sync()までは有効
      * * ver2.10〜 StringViewに変更
      *
      */
@@ -509,12 +515,13 @@ class WEBCFACE_DLL InputRef {
     /*!
      * \brief 値を返す
      *
-     * * ver1.11からconst参照
+     * * <del>ver1.11からconst参照</del>
      *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
-     *   * ver2.0〜: 参照は少なくとも次のClient::sync()までは有効
+     *   * <del>ver2.0〜: 参照は少なくとも次のClient::sync()までは有効</del>
+     * * ver2.10〜 ValAdaptorをコピーで返すように変更
      *
      */
-    const ValAdaptor &get() const;
+    ValAdaptor get() const;
 
     /*!
      * \brief 値を返す
@@ -537,31 +544,31 @@ class WEBCFACE_DLL InputRef {
      * \brief 文字列として返す
      * \since ver1.11
      *
-     * * std::stringのconst参照を返す。
+     * * <del>std::stringのconst参照を返す。</del>
      *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
      *   * ver2.0〜: 参照は少なくとも次のClient::sync()までは有効
      *
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() instead")]]
-    const std::string &asStringRef() const {
-        return get().asStringRef();
+    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    std::string asStringRef() const {
+        return asString();
     }
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
      * \deprecated ver2.10〜
-     * 内部の仕様変更により文字列のコピーが発生する可能性がある。
+     * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asWStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() instead")]]
-    const std::wstring &asWStringRef() const {
-        return get().asWStringRef();
+    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    std::wstring asWStringRef() const {
+        return asWString();
     }
     /*!
      * \brief null終端の文字列の参照として返す

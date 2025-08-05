@@ -120,7 +120,7 @@ class ViewBuf final : public std::stringbuf,
      *
      */
     void addVC(TemporalViewComponent &&vc);
-    void addText(String text,
+    void addText(std::string_view text,
                  const TemporalViewComponent *vc = nullptr);
     void syncSetBuf() { this->DataSetBuffer<TemporalViewComponent>::sync(); }
 

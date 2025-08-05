@@ -18,7 +18,7 @@ Variant::Variant(const Field &base) : Field(base) {}
 InputRef::InputRef() : state(std::make_shared<internal::InputRefState>()) {}
 void InputRef::lockTo(const Variant &target) { state->field = target; }
 Variant &InputRef::lockedField() const { return state->field; }
-const ValAdaptor &InputRef::get() const {
+ValAdaptor InputRef::get() const {
     if (lockedField().expired()) {
         return ValAdaptor::emptyVal();
     } else {
@@ -75,7 +75,7 @@ std::optional<ValAdaptor> Variant::tryGet() const {
         return std::nullopt;
     }
 }
-const ValAdaptor &Variant::get() const {
+ValAdaptor Variant::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
@@ -84,40 +84,40 @@ const ValAdaptor &Variant::get() const {
         return ValAdaptor::emptyVal();
     }
 }
-std::optional<std::string> Text::tryGet() const {
+std::optional<StringView> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asString();
+        return (*v)->asStringView();
     } else {
         return std::nullopt;
     }
 }
-const std::string &Text::get() const {
+StringView Text::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asStringRef();
+        return (*v)->asStringView();
     } else {
-        return SharedString::emptyStr();
+        return SharedString::emptyStrView();
     }
 }
-std::optional<std::wstring> Text::tryGetW() const {
+std::optional<WStringView> Text::tryGetW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWString();
+        return (*v)->asWStringView();
     } else {
         return std::nullopt;
     }
 }
-const std::wstring &Text::getW() const {
+WStringView Text::getW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWStringRef();
+        return (*v)->asWStringView();
     } else {
-        return SharedString::emptyStrW();
+        return SharedString::emptyStrViewW();
     }
 }
 

@@ -81,24 +81,30 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
 
     /*!
      * 値がint64_t, uint64_t, floatに収まる場合小さい型でpackする
-     * msgpack-c++ <=6 ではmsgpack内でやってくれていたが、ver7からは自分で実装する必要がある
+     * msgpack-c++ <=6
+     * ではmsgpack内でやってくれていたが、ver7からは自分で実装する必要がある
      * https://github.com/msgpack/msgpack-c/issues/1017
      * https://github.com/msgpack/msgpack-c/pull/1144
      * int型の中でさらに小さい型にするのはmsgpackがやってくれるっぽい?
      */
-    template<>
+    template <>
     struct pack<double> {
         template <typename Stream>
-        packer<Stream>& operator()(msgpack::packer<Stream>& o, double v) const {
-            if(v == v) { // check for nan
+        packer<Stream> &operator()(msgpack::packer<Stream> &o, double v) const {
+            if (v == v) { // check for nan
                 // compare d to limits to avoid undefined behaviour
-                if(v >= 0 && v <= double(std::numeric_limits<uint64_t>::max()) && v == static_cast<double>(static_cast<uint64_t>(v))) {
+                if (v >= 0 &&
+                    v <= double(std::numeric_limits<uint64_t>::max()) &&
+                    v == static_cast<double>(static_cast<uint64_t>(v))) {
                     o.pack_uint64(static_cast<std::uint64_t>(v));
                     return o;
-                } else if(v < 0 && v >= double(std::numeric_limits<int64_t>::min()) && v == static_cast<double>(static_cast<int64_t>(v))) {
+                } else if (v < 0 &&
+                           v >= double(std::numeric_limits<int64_t>::min()) &&
+                           v == static_cast<double>(static_cast<int64_t>(v))) {
                     o.pack_int64(static_cast<std::int64_t>(v));
                     return o;
-                } else if(std::abs(v) <= std::numeric_limits<float>::max() && v == static_cast<double>(static_cast<float>(v))){
+                } else if (std::abs(v) <= std::numeric_limits<float>::max() &&
+                           v == static_cast<double>(static_cast<float>(v))) {
                     o.pack_float(static_cast<float>(v));
                     return o;
                 }
@@ -122,7 +128,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
         template <typename Stream>
         msgpack::packer<Stream> &operator()(msgpack::packer<Stream> &o,
                                             const webcface::SharedString &v) {
-            o.pack(v.u8StringView());
+            o.pack(std::string_view(v.u8StringView()));
             return o;
         }
     };
@@ -173,7 +179,7 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
                 break;
             case webcface::ValType::string_:
             default:
-                o.pack(v.asU8StringView());
+                o.pack(std::string_view(v.asU8StringView()));
                 break;
             }
             return o;
@@ -182,9 +188,8 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
 
     template <>
     struct convert<webcface::MutableNumVector> {
-        msgpack::object const &
-        operator()(msgpack::object const &o,
-                   webcface::MutableNumVector &v) const {
+        msgpack::object const &operator()(msgpack::object const &o,
+                                          webcface::MutableNumVector &v) const {
             if (o.type != msgpack::type::ARRAY) {
                 throw msgpack::type_error();
             }

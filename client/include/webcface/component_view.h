@@ -148,9 +148,10 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 StringView型で置き換え
      *
      */
-    std::string id() const;
+    StringView id() const;
     /*!
      * \brief そのview内で一意のid (wstring)
      * \since ver2.5
@@ -158,9 +159,10 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * view作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 WStringView型で置き換え
      *
      */
-    std::wstring idW() const;
+    WStringView idW() const;
 
     /*!
      * \brief 要素の比較
@@ -188,13 +190,18 @@ class WEBCFACE_DLL ViewComponent {
     /*!
      * \brief 表示する文字列を取得
      *
+     * * ver2.10〜 StringView型で置き換え
+     *
      */
-    std::string text() const;
+    StringView text() const;
     /*!
      * \brief 表示する文字列を取得 (wstring)
      * \since ver2.0
+     *
+     * * ver2.10〜 WStringView型で置き換え
+     *
      */
-    std::wstring textW() const;
+    WStringView textW() const;
     /*!
      * \brief クリック時に実行される関数を取得
      *
@@ -271,10 +278,8 @@ class WEBCFACE_DLL ViewComponent {
      */
     int height() const;
 };
-extern template std::optional<Func>
-ViewComponent::onClick<Func, true>() const;
-extern template std::optional<Func>
-ViewComponent::onChange<Func, true>() const;
+extern template std::optional<Func> ViewComponent::onClick<Func, true>() const;
+extern template std::optional<Func> ViewComponent::onChange<Func, true>() const;
 extern template std::optional<Variant>
 ViewComponent::bind<Variant, true>() const;
 
@@ -328,9 +333,9 @@ class WEBCFACE_DLL TemporalViewComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
-     * 
+     *
      * ver2.10〜 String 型で置き換え
-     * 
+     *
      */
     TemporalViewComponent &id(String id);
     /*!
@@ -343,9 +348,9 @@ class WEBCFACE_DLL TemporalViewComponent {
     TemporalViewComponent &text(String text) &;
     /*!
      * \since ver2.5
-     * 
+     *
      * (ver2.10〜 String 型で置き換え)
-     * 
+     *
      */
     TemporalViewComponent &&text(String text) && {
         this->text(std::move(text));

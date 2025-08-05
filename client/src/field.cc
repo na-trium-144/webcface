@@ -46,7 +46,7 @@ Field Field::child(const SharedString &field) const {
         return *this;
     } else {
         return Field{*this, SharedString::fromU8String(strJoin(
-                                this->field_.u8StringView(), field_separator,
+                                this->field_.u8StringView(), field_separator_sv,
                                 field.u8StringView()))};
     }
 }
@@ -56,7 +56,7 @@ template <typename S>
 static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
     auto prefix_with_sep =
-        strJoin(this_->field_.u8StringView(), field_separator);
+        strJoin(this_->field_.u8StringView(), field_separator_sv);
     for (const auto &f : keys) {
         // mapはkeyでソートされているので
         if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
@@ -91,7 +91,7 @@ static void entries(std::vector<V> &ret, const Field *this_, S &store,
     std::size_t prefix_len = 0;
     if (!this_->field_.empty()) {
         prefix_with_sep =
-            strJoin(this_->field_.u8StringView(), field_separator);
+            strJoin(this_->field_.u8StringView(), field_separator_sv);
         prefix_len = prefix_with_sep.size();
     }
     for (auto f : keys) {

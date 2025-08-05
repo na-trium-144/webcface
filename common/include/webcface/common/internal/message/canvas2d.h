@@ -47,7 +47,7 @@ struct Canvas2DComponentData {
 };
 struct Canvas2DData {
     double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<Canvas2DComponentData>> components;
+    std::map<std::string, std::shared_ptr<Canvas2DComponentData>, std::less<>> components;
     std::vector<SharedString> data_ids;
     Canvas2DData() = default;
     Canvas2DData(double width, double height)

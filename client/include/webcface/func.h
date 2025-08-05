@@ -41,8 +41,8 @@ struct FuncReturnTypeCheck<true> {
 };
 template <typename Ret>
 struct FuncReturnTypeTrait
-    : FuncReturnTypeCheck<std::is_same_v<Ret, void> ||
-                          std::is_constructible_v<ValAdaptor, Ret>> {};
+    : FuncReturnTypeCheck<std::disjunction_v<
+          std::is_void<Ret>, std::is_constructible<ValAdaptor, Ret>>> {};
 
 template <typename T>
 struct FuncSignatureTrait {};
@@ -111,7 +111,7 @@ class WEBCFACE_DLL Func : protected Field {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
      * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
-     * 
+     *
      */
     Func child(String field) const {
         return this->Field::child(static_cast<SharedString &>(field));
@@ -127,9 +127,9 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
-     * 
+     *
      * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
-     * 
+     *
      */
     Func operator[](String field) const { return child(std::move(field)); }
     /*!
@@ -138,7 +138,8 @@ class WEBCFACE_DLL Func : protected Field {
      * \deprecated ver2.8〜
      */
     [[deprecated]]
-    Func operator[](int index) const {
+    Func
+    operator[](int index) const {
         return child(std::to_string(index));
     }
     /*!
@@ -300,7 +301,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-    [[deprecated("use set() or setAsync()")]] const Func &
+    [[deprecated("use set() or setAsync()")]]
+    const Func &
     operator=(T func) const {
         this->set(std::move(func));
         return *this;
@@ -495,7 +497,8 @@ class WEBCFACE_DLL Func : protected Field {
      */
     template <typename... Args>
     [[deprecated("use runAsync")]]
-    ValAdaptor operator()(Args... args) const {
+    ValAdaptor
+    operator()(Args... args) const {
         return run(args...);
     }
 

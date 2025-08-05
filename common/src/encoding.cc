@@ -2,26 +2,12 @@
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
-#include <cassert>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>
 #endif
 
 WEBCFACE_NS_BEGIN
-
-template <typename CharT>
-TStringView<CharT>::TStringView(const CharT *data, std::size_t size,
-                                const std::basic_string<CharT> *container)
-    : std::basic_string_view<CharT>(data, size), c_str_(data),
-      container_(container) {
-    assert(data[size] == static_cast<CharT>(0));
-    if (container_) {
-        assert(container->c_str() == data);
-    }
-}
-template class WEBCFACE_DLL_INSTANCE_DEF TStringView<char>;
-template class WEBCFACE_DLL_INSTANCE_DEF TStringView<wchar_t>;
 
 namespace internal {
 
@@ -45,8 +31,7 @@ struct SharedStringData {
     StringView u8sv() const {
         switch (u8s.index()) {
         case 0:
-            return StringView(std::get<0>(u8s).c_str(), std::get<0>(u8s).size(),
-                              &std::get<0>(u8s));
+            return StringView(std::get<0>(u8s).c_str(), std::get<0>(u8s).size());
         default:
             return std::get<1>(u8s);
         }
@@ -54,8 +39,7 @@ struct SharedStringData {
     StringView sv() const {
         switch (s.index()) {
         case 0:
-            return StringView(std::get<0>(s).c_str(), std::get<0>(s).size(),
-                              &std::get<0>(s));
+            return StringView(std::get<0>(s).c_str(), std::get<0>(s).size());
         default:
             return std::get<1>(s);
         }
@@ -63,8 +47,7 @@ struct SharedStringData {
     WStringView wsv() const {
         switch (ws.index()) {
         case 0:
-            return WStringView(std::get<0>(ws).c_str(), std::get<0>(ws).size(),
-                               &std::get<0>(ws));
+            return WStringView(std::get<0>(ws).c_str(), std::get<0>(ws).size());
         default:
             return std::get<1>(ws);
         }
@@ -79,13 +62,13 @@ static bool using_utf8 = true;
 void usingUTF8(bool flag) { using_utf8 = flag; }
 bool usingUTF8() { return using_utf8; }
 
-StringView SharedString::emptyStr() {
+const std::string &SharedString::emptyStr() {
     static std::string empty;
-    return StringView(empty.c_str(), empty.size(), &empty);
+    return empty;
 }
-WStringView SharedString::emptyStrW() {
+const std::wstring &SharedString::emptyStrW() {
     static std::wstring empty;
-    return WStringView(empty.c_str(), empty.size(), &empty);
+    return empty;
 }
 
 SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
@@ -207,7 +190,7 @@ SharedString SharedString::encodeStatic(WStringView name) {
 
 StringView SharedString::u8StringView() const {
     if (!data) {
-        return emptyStr();
+        return emptyStrView();
     } else {
         return data->u8sv();
     }
@@ -257,7 +240,7 @@ std::string toNarrow(std::wstring_view name) {
 
 WStringView SharedString::decodeW() const {
     if (!data || empty()) {
-        return emptyStrW();
+        return emptyStrViewW();
     } else {
         std::lock_guard lock(data->m);
         if (data->wsv().empty()) {
@@ -309,7 +292,7 @@ StringView SharedString::decode() const {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
         if (!data || empty()) {
-            return emptyStr();
+            return emptyStrView();
         } else {
             std::lock_guard lock(data->m);
             if (data->sv().empty()) {

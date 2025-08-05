@@ -152,8 +152,8 @@ std::optional<T> SyncDataStore2<T, ReqT>::getRecv(const SharedString &from,
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
         // emplace_backしているので後ろが最新
-        for(int i = static_cast<int>(data_send.size()) - 1; i >= 0; i--){
-            if(data_send[i].first == name){
+        for (int i = static_cast<int>(data_send.size()) - 1; i >= 0; i--) {
+            if (data_send[i].first == name) {
                 return data_send[i].second;
             }
         }
@@ -207,15 +207,17 @@ SyncDataStore2<T, ReqT>::getReq(unsigned int req_id,
         for (const auto &r2 : r.second) {
             if (r2.second == req_id) {
                 if (!sub_field.empty() &&
-                    sub_field.u8String()[0] != field_separator) {
-                    return std::make_pair(r.first, SharedString::fromU8String(
-                                                       r2.first.u8String() +
-                                                       field_separator +
-                                                       sub_field.u8String()));
+                    sub_field.u8StringView()[0] != field_separator) {
+                    return std::make_pair(
+                        r.first,
+                        SharedString::fromU8String(
+                            strJoin(r2.first.u8StringView(), field_separator_sv,
+                                    sub_field.u8StringView())));
                 } else {
-                    return std::make_pair(r.first, SharedString::fromU8String(
-                                                       r2.first.u8String() +
-                                                       sub_field.u8String()));
+                    return std::make_pair(
+                        r.first, SharedString::fromU8String(
+                                     strJoin(r2.first.u8StringView(),
+                                             sub_field.u8StringView())));
                 }
             }
         }

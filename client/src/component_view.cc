@@ -54,8 +54,8 @@ ViewColor colorFromRGB(double r, double g, double b) {
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string ViewComponent::id() const { return id_.decode(); }
-std::wstring ViewComponent::idW() const { return id_.decodeW(); }
+StringView ViewComponent::id() const { return id_.decode(); }
+WStringView ViewComponent::idW() const { return id_.decodeW(); }
 
 ViewComponent::ViewComponent() = default;
 ViewComponent::ViewComponent(const ViewComponent &other)
@@ -129,9 +129,9 @@ TemporalViewComponent::lockTmp(
     }
     if (msg_data->on_click_func_tmp || msg_data->on_change_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String("..v" + view_name.u8String() +
-                                                 "/" +
-                                                 msg_data->id.u8String())};
+                      SharedString::fromU8String(
+                          strJoin<char>("..v", view_name.u8StringView(), "/",
+                                        msg_data->id.u8StringView()))};
         if (msg_data->on_click_func_tmp && !msg_data->on_change_func_tmp) {
             on_click.set(std::move(*msg_data->on_click_func_tmp));
         } else if (msg_data->on_change_func_tmp &&
@@ -145,9 +145,9 @@ TemporalViewComponent::lockTmp(
     if (msg_data->text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Variant text_ref{Field{data, data->self_member_name},
-                         SharedString::fromU8String("..ir" +
-                                                    view_name.u8String() + "/" +
-                                                    msg_data->id.u8String())};
+                         SharedString::fromU8String(
+                             strJoin<char>("..ir", view_name.u8StringView(),
+                                           "/", msg_data->id.u8StringView()))};
         msg_data->text_ref_tmp->lockTo(text_ref);
         if (msg_data->init_ && !text_ref.tryGet()) {
             text_ref.set(*msg_data->init_);
@@ -215,7 +215,11 @@ CComponent ViewComponent::cDataT() const {
             CVal val;
             val.as_int = msg_data->option_[i];
             val.as_double = msg_data->option_[i];
-            val.as_str = msg_data->option_[i];
+            if constexpr (v_index == 0) {
+                val.as_str = msg_data->option_[i].asStringView().c_str();
+            } else {
+                val.as_str = msg_data->option_[i].asWStringView().c_str();
+            }
             options[i] = val;
         }
         if constexpr (v_index == 0) {
@@ -249,28 +253,20 @@ ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);
 }
-TemporalViewComponent &TemporalViewComponent::id(std::string_view id) {
-    msg_data->id = SharedString::encode(id);
+TemporalViewComponent &TemporalViewComponent::id(String id) {
+    msg_data->id = std::move(id);
     return *this;
 }
-TemporalViewComponent &TemporalViewComponent::id(std::wstring_view id) {
-    msg_data->id = SharedString::encode(id);
-    return *this;
-}
-std::string ViewComponent::text() const {
+StringView ViewComponent::text() const {
     checkData();
     return msg_data->text.decode();
 }
-std::wstring ViewComponent::textW() const {
+WStringView ViewComponent::textW() const {
     checkData();
     return msg_data->text.decodeW();
 }
-TemporalViewComponent &TemporalViewComponent::text(std::string_view text) & {
-    msg_data->text = SharedString::encode(text);
-    return *this;
-}
-TemporalViewComponent &TemporalViewComponent::text(std::wstring_view text) & {
-    msg_data->text = SharedString::encode(text);
+TemporalViewComponent &TemporalViewComponent::text(String text) & {
+    msg_data->text = std::move(text);
     return *this;
 }
 template <typename T, bool>
