@@ -50,7 +50,7 @@ int main() {
             std::cout << "data is null" << std::endl;
         }
 
-        std::optional<std::string> message =
+        std::optional<webcface::StringView> message =
             wcli.member("tutorial-send").text("message").tryGet();
         if (message.has_value()) {
             std::cout << "message = " << *message << std::endl;
