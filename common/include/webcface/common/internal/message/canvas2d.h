@@ -47,7 +47,8 @@ struct Canvas2DComponentData {
 };
 struct Canvas2DData {
     double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<Canvas2DComponentData>, std::less<>> components;
+    std::map<std::string, std::shared_ptr<Canvas2DComponentData>, std::less<>>
+        components;
     std::vector<SharedString> data_ids;
     Canvas2DData() = default;
     Canvas2DData(double width, double height)
@@ -57,13 +58,15 @@ struct Canvas2DData {
 struct Canvas2D : public MessageBase<MessageKind::canvas2d> {
     SharedString field;
     double width, height;
-    std::map<std::string, std::shared_ptr<Canvas2DComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<Canvas2DComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Canvas2D() = default;
-    Canvas2D(
-        const SharedString &field, double width, double height,
-        std::map<std::string, std::shared_ptr<Canvas2DComponentData>> data_diff,
-        std::optional<std::vector<SharedString>> data_ids)
+    Canvas2D(const SharedString &field, double width, double height,
+             std::map<std::string, std::shared_ptr<Canvas2DComponentData>,
+                      std::less<>>
+                 data_diff,
+             std::optional<std::vector<SharedString>> data_ids)
         : field(field), width(width), height(height),
           data_diff(std::move(data_diff)), data_ids(std::move(data_ids)) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("w", width),
@@ -124,13 +127,14 @@ struct Res<Canvas2D>
     unsigned int req_id = 0;
     SharedString sub_field;
     double width = 0, height = 0;
-    std::map<std::string, std::shared_ptr<Canvas2DComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<Canvas2DComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field, double width,
         double height,
-        const std::map<std::string, std::shared_ptr<Canvas2DComponentData>>
-            &data_diff,
+        const std::map<std::string, std::shared_ptr<Canvas2DComponentData>,
+                       std::less<>> &data_diff,
         const std::optional<std::vector<SharedString>> &data_ids)
         : req_id(req_id), sub_field(sub_field), width(width), height(height),
           data_diff(data_diff), data_ids(data_ids) {}

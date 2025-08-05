@@ -201,7 +201,8 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.view_prev.end() ||
@@ -226,7 +227,8 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas3d_data) {
         auto v_prev = data.canvas3d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas3d_prev.end() ||
@@ -251,7 +253,8 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas2d_data) {
         auto v_prev = data.canvas2d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas2d_prev.end() ||

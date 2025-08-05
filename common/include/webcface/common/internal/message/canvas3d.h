@@ -42,19 +42,22 @@ struct Canvas3DComponentData {
                        MSGPACK_NVP("ff", field_field), MSGPACK_NVP("a", angles))
 };
 struct Canvas3DData {
-    std::map<std::string, std::shared_ptr<Canvas3DComponentData>, std::less<>> components;
+    std::map<std::string, std::shared_ptr<Canvas3DComponentData>, std::less<>>
+        components;
     std::vector<SharedString> data_ids;
     Canvas3DData() = default;
 };
 struct Canvas3D : public MessageBase<MessageKind::canvas3d> {
     SharedString field;
-    std::map<std::string, std::shared_ptr<Canvas3DComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<Canvas3DComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Canvas3D() = default;
-    Canvas3D(
-        const SharedString &field,
-        std::map<std::string, std::shared_ptr<Canvas3DComponentData>> data_diff,
-        std::optional<std::vector<SharedString>> data_ids)
+    Canvas3D(const SharedString &field,
+             std::map<std::string, std::shared_ptr<Canvas3DComponentData>,
+                      std::less<>>
+                 data_diff,
+             std::optional<std::vector<SharedString>> data_ids)
         : field(field), data_diff(std::move(data_diff)),
           data_ids(std::move(data_ids)) {}
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("f", field), MSGPACK_NVP("d", data_diff),
@@ -89,12 +92,13 @@ struct Res<Canvas3D>
     : public MessageBase<MessageKind::canvas3d + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::map<std::string, std::shared_ptr<Canvas3DComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<Canvas3DComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::map<std::string, std::shared_ptr<Canvas3DComponentData>>
-            &data_diff,
+        const std::map<std::string, std::shared_ptr<Canvas3DComponentData>,
+                       std::less<>> &data_diff,
         const std::optional<std::vector<SharedString>> &data_ids)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           data_ids(data_ids) {}
