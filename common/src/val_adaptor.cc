@@ -1,5 +1,6 @@
 #include "webcface/common/val_adaptor.h"
 #include <cassert>
+#include <cstdlib>
 
 WEBCFACE_NS_BEGIN
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
@@ -124,11 +125,7 @@ const std::string &ValAdaptor::asU8StringRef() const {
 
 double ValAdaptor::asDouble() const {
     if (type == ValType::string_) {
-        try {
-            return std::stod(asU8StringView().c_str());
-        } catch (...) {
-            return 0;
-        }
+        return std::atof(asU8StringView().c_str());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -140,11 +137,7 @@ double ValAdaptor::asDouble() const {
 }
 int ValAdaptor::asInt() const {
     if (type == ValType::string_) {
-        try {
-            return std::stoi(asU8StringView().c_str());
-        } catch (...) {
-            return 0;
-        }
+        return std::atoi(asU8StringView().c_str());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -156,11 +149,7 @@ int ValAdaptor::asInt() const {
 }
 long long ValAdaptor::asLLong() const {
     if (type == ValType::string_) {
-        try {
-            return std::stoll(asU8StringView().c_str());
-        } catch (...) {
-            return 0;
-        }
+        return std::atoll(asU8StringView().c_str());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
