@@ -124,8 +124,17 @@ class WEBCFACE_DLL ValAdaptor {
      */
     ValAdaptor &operator=(String str);
 
-    explicit ValAdaptor(bool value);
-    ValAdaptor &operator=(bool v);
+    /*!
+     * ver2.10〜: const char*
+     * などのポインタがboolに変換されるのを防ぐためテンプレート化
+     *
+     */
+    template <typename Bool, typename std::enable_if_t<std::is_same_v<Bool, bool>,
+                                                    std::nullptr_t> = nullptr>
+    explicit ValAdaptor(Bool value);
+    template <typename Bool, typename std::enable_if_t<std::is_same_v<Bool, bool>,
+                                                    std::nullptr_t> = nullptr>
+    ValAdaptor &operator=(Bool v);
 
     explicit ValAdaptor(std::int64_t value);
     ValAdaptor &operator=(std::int64_t v);
@@ -133,12 +142,18 @@ class WEBCFACE_DLL ValAdaptor {
     explicit ValAdaptor(double value);
     ValAdaptor &operator=(double v);
 
-    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename T,
+              typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            std::is_integral_v<T>,
+                                        std::nullptr_t> = nullptr,
+              std::nullptr_t = nullptr>
     explicit ValAdaptor(T value)
         : ValAdaptor(static_cast<std::int64_t>(value)) {}
-    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
-                                                    std::nullptr_t> = nullptr>
+    template <typename T,
+              typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                            std::is_integral_v<T>,
+                                        std::nullptr_t> = nullptr,
+              std::nullptr_t = nullptr>
     ValAdaptor &operator=(T v) {
         return *this = static_cast<std::int64_t>(v);
     }
@@ -173,7 +188,9 @@ class WEBCFACE_DLL ValAdaptor {
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
     [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
-    std::string asStringRef() const { return asString(); }
+    std::string asStringRef() const {
+        return asString();
+    }
     /*!
      * \brief null終端の文字列の参照として返す
      * \since ver2.10
@@ -196,7 +213,9 @@ class WEBCFACE_DLL ValAdaptor {
      * を使用すること。
      */
     [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
-    std::wstring asWStringRef() const { return asWString(); }
+    std::wstring asWStringRef() const {
+        return asWString();
+    }
     /*!
      * \brief null終端の文字列の参照として返す (wstring)
      * \since ver2.10
@@ -224,16 +243,34 @@ class WEBCFACE_DLL ValAdaptor {
     std::wstring asWString() const { return std::wstring(asWStringView()); }
 
     /*!
-     * \since ver2.10
+     * <del>ver1.10〜: const参照</del>
+     * ver2.10〜: コピー
      *
-     * 以前の const std::string& を置き換え
+     */
+    operator std::string() const { return asString(); }
+    /*!
+     * \since ver2.0
+     *
+     * ver2.10〜: const参照ではなくコピーに変更
+     *
+     */
+    operator std::wstring() const { return asWString(); }
+    /*!
+     * \since ver2.10
      */
     operator std::string_view() const { return asStringView(); }
     /*!
      * \since ver2.10
      */
     operator std::wstring_view() const { return asWStringView(); }
-
+    /*!
+     * \since ver2.0
+     */
+    operator const char *() const { return asStringView().c_str(); }
+    /*!
+     * \since ver2.0
+     */
+    operator const wchar_t *() const { return asWStringView().c_str(); }
     /*!
      * \brief 実数として返す
      * \since ver2.0
@@ -313,6 +350,10 @@ class WEBCFACE_DLL ValAdaptor {
         return *this != ValAdaptor(other);
     }
 };
+
+extern template ValAdaptor::ValAdaptor(bool value);
+extern template ValAdaptor &ValAdaptor::operator= <bool, nullptr>(bool v);
+
 
 template <typename T,
           typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T> &&

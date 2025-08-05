@@ -386,6 +386,20 @@ class WEBCFACE_DLL CallHandle : Field {
         respond(ValAdaptor(value));
     }
     /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    void respond(const char (&value)[N]) const {
+        respond(ValAdaptor(value));
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    void respond(const wchar_t (&value)[N]) const {
+        respond(ValAdaptor(value));
+    }
+    /*!
      * \brief 空の値を関数の結果として送信する
      *
      * * ver1.11まで: 2回呼ぶと std::future_error を投げ、

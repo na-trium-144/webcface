@@ -110,6 +110,20 @@ class WEBCFACE_DLL Arg {
     Arg &init(const T &init) {
         return this->init(ValAdaptor(init));
     }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Arg &init(const char (&init)[N]) {
+        return this->init(ValAdaptor(init));
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Arg &init(const wchar_t (&init)[N]) {
+        return this->init(ValAdaptor(init));
+    }
     Arg &init(const ValAdaptor &init);
     /*!
      * \brief 最小値を取得する。
