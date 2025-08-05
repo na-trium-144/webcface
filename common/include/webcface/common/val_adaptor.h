@@ -380,6 +380,11 @@ inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
 }
 
 /*!
+ * \since ver2.10
+ */
+using ValAdapter = ValAdaptor;
+
+/*!
  * \brief ValAdaptorのリストから任意の型のタプルに変換する
  *
  */
