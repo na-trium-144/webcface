@@ -5,6 +5,7 @@ webcface_common_src = [
   'src/val_adaptor.cc',
   'src/message.cc',
   'src/unix_path.cc',
+  'src/smr.cc',
 ]
 webcface_common_inc = include_directories('include')
 webcface_common_lib = static_library('webcface-common',
