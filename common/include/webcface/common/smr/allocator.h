@@ -39,11 +39,8 @@ class SharedResourceAllocator : public std::pmr::polymorphic_allocator<T> {
         : std::pmr::polymorphic_allocator<T>(r), sr(std::move(sr)) {}
 
     SharedResourceAllocator(const SharedResourceAllocator &other) = default;
-    SharedResourceAllocator(SharedResourceAllocator &&other) = default;
     SharedResourceAllocator &
-    operator=(const SharedResourceAllocator &other) = default;
-    SharedResourceAllocator &
-    operator=(SharedResourceAllocator &&other) = default;
+    operator=(const SharedResourceAllocator &other) = delete;
     ~SharedResourceAllocator() = default;
 
     /*!
