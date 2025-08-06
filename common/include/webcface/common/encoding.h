@@ -78,42 +78,48 @@ class TStringView : public std::basic_string_view<CharT> {
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator==(const T &other) const {
-        return *this == std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) ==
+               std::basic_string_view<CharT>(other);
     }
     template <typename T,
               std::enable_if_t<
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator!=(const T &other) const {
-        return *this != std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) !=
+               std::basic_string_view<CharT>(other);
     }
     template <typename T,
               std::enable_if_t<
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator<=(const T &other) const {
-        return *this <= std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) <=
+               std::basic_string_view<CharT>(other);
     }
     template <typename T,
               std::enable_if_t<
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator>=(const T &other) const {
-        return *this >= std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) >=
+               std::basic_string_view<CharT>(other);
     }
     template <typename T,
               std::enable_if_t<
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator<(const T &other) const {
-        return *this < std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) <
+               std::basic_string_view<CharT>(other);
     }
     template <typename T,
               std::enable_if_t<
                   std::is_convertible_v<T, std::basic_string_view<CharT>>,
                   std::nullptr_t> = nullptr>
     bool operator>(const T &other) const {
-        return *this > std::basic_string_view<CharT>(other);
+        return static_cast<std::basic_string_view<CharT>>(*this) >
+               std::basic_string_view<CharT>(other);
     }
 };
 
