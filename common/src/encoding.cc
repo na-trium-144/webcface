@@ -1,4 +1,5 @@
 #include "webcface/common/encoding.h"
+#include <unordered_map>
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
@@ -27,17 +28,16 @@ struct SharedStringData {
         assert(*(u8sv.data() + u8sv.size()) == '\0');
     }
     SharedStringData(std::string u8s, std::string s, std::wstring ws)
-        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)),
-          sv(this->s), ws(std::move(ws)),
-          wsv(this->ws) {}
+        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)), sv(this->s),
+          ws(std::move(ws)), wsv(this->ws) {}
     SharedStringData(std::string u8s, std::string_view sv, std::wstring ws)
-        : u8s(std::move(u8s)), u8sv(this->u8s), sv(sv),
-          ws(std::move(ws)), wsv(this->ws) {
+        : u8s(std::move(u8s)), u8sv(this->u8s), sv(sv), ws(std::move(ws)),
+          wsv(this->ws) {
         assert(*(sv.data() + sv.size()) == '\0');
     }
     SharedStringData(std::string u8s, std::string s, std::wstring_view wsv)
-        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)),
-          sv(this->s), wsv(wsv) {
+        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)), sv(this->s),
+          wsv(wsv) {
         assert(*(wsv.data() + wsv.size()) == L'\0');
     }
 };
@@ -59,7 +59,7 @@ const std::wstring &SharedString::emptyStrW() {
     return empty;
 }
 
-SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
+SharedString::SharedString(std::shared_ptr<internal::SharedStringData> data)
     : data(std::move(data)) {}
 
 SharedString SharedString::fromU8String(std::string u8s) {
@@ -67,28 +67,36 @@ SharedString SharedString::fromU8String(std::string u8s) {
         std::make_shared<internal::SharedStringData>(std::move(u8s)));
 }
 SharedString SharedString::fromU8StringStatic(std::string_view u8s) {
-    return SharedString(std::make_shared<internal::SharedStringData>(u8s));
+    // ポインタの場合、shared_ptrを作るよりunordered_mapから探したほうが速い
+    static std::unordered_map<const char *,
+                              std::shared_ptr<internal::SharedStringData>>
+        literal_caches;
+    if (literal_caches.count(u8s.data()) > 0) {
+        return SharedString(literal_caches.at(u8s.data()));
+    }
+    auto data = std::make_shared<internal::SharedStringData>(u8s);
+    literal_caches.emplace(u8s.data(), data);
+    return SharedString(data);
 }
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 /// \private
-std::pair<std::string, std::wstring> encodeImpl(std::string_view name){
+std::pair<std::string, std::wstring> encodeImpl(std::string_view name) {
     auto length = MultiByteToWideChar(
         CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
     std::wstring result_utf16(length, '\0');
-    MultiByteToWideChar(CP_ACP, 0, name.data(),
-                        static_cast<int>(name.size()), result_utf16.data(),
+    MultiByteToWideChar(CP_ACP, 0, name.data(), static_cast<int>(name.size()),
+                        result_utf16.data(),
                         static_cast<int>(result_utf16.length()));
-    auto length_utf8 =
-        WideCharToMultiByte(CP_UTF8, 0, result_utf16.data(),
-                            static_cast<int>(result_utf16.size()), nullptr,
-                            0, nullptr, nullptr);
+    auto length_utf8 = WideCharToMultiByte(
+        CP_UTF8, 0, result_utf16.data(), static_cast<int>(result_utf16.size()),
+        nullptr, 0, nullptr, nullptr);
     std::string result_utf8(length_utf8, '\0');
-    WideCharToMultiByte(
-        CP_UTF8, 0, result_utf16.data(),
-        static_cast<int>(result_utf16.size()), result_utf8.data(),
-        static_cast<int>(result_utf8.size()), nullptr, nullptr);
-    return {result_utf8, result_utf16}
+    WideCharToMultiByte(CP_UTF8, 0, result_utf16.data(),
+                        static_cast<int>(result_utf16.size()),
+                        result_utf8.data(),
+                        static_cast<int>(result_utf8.size()), nullptr, nullptr);
+    return { result_utf8, result_utf16 }
 }
 #endif
 
@@ -97,7 +105,8 @@ SharedString SharedString::encode(std::string name) {
     if (!using_utf8) {
         auto encode_result = encodeImpl(name);
         return SharedString(std::make_shared<internal::SharedStringData>(
-            std::move(encode_result.first), std::move(name), std::move(encode_result.second)));
+            std::move(encode_result.first), std::move(name),
+            std::move(encode_result.second)));
     }
 #endif
     // そのままコピー
@@ -106,9 +115,18 @@ SharedString SharedString::encode(std::string name) {
 SharedString SharedString::encodeStatic(std::string_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
+        static std::unordered_map<const char *,
+                                  std::shared_ptr<internal::SharedStringData>>
+            literal_caches;
+        if (literal_caches.count(name.data()) > 0) {
+            return SharedString(literal_caches.at(name.data()));
+        }
         auto encode_result = encodeImpl(name);
-        return SharedString(std::make_shared<internal::SharedStringData>(
-            std::move(encode_result.first), name, std::move(encode_result.second)));
+        auto data = std::make_shared<internal::SharedStringData>(
+            std::move(encode_result.first), name,
+            std::move(encode_result.second));
+        literal_caches.emplace(name.data(), data);
+        return SharedString(data);
     }
 #endif
     // そのままコピー
@@ -116,7 +134,7 @@ SharedString SharedString::encodeStatic(std::string_view name) {
 }
 
 /// \private
-std::string encodeImplW(std::wstring_view name){
+std::string encodeImplW(std::wstring_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
@@ -141,9 +159,17 @@ SharedString SharedString::encode(std::wstring name) {
         std::move(result_utf8), std::string(), std::move(name)));
 }
 SharedString SharedString::encodeStatic(std::wstring_view name) {
+    static std::unordered_map<const wchar_t *,
+                              std::shared_ptr<internal::SharedStringData>>
+        literal_caches;
+    if (literal_caches.count(name.data()) > 0) {
+        return SharedString(literal_caches.at(name.data()));
+    }
     auto result_utf8 = encodeImplW(name);
-    return SharedString(std::make_shared<internal::SharedStringData>(
-        std::move(result_utf8), std::string(), name));
+    auto data = std::make_shared<internal::SharedStringData>(
+        std::move(result_utf8), std::string(), name);
+    literal_caches.emplace(name.data(), data);
+    return SharedString(data);
 }
 
 
@@ -205,7 +231,7 @@ std::string toNarrow(std::wstring_view name) {
 #endif
 }
 
-void decodeImplW(const std::shared_ptr<internal::SharedStringData> &data){
+void decodeImplW(const std::shared_ptr<internal::SharedStringData> &data) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
@@ -219,8 +245,7 @@ void decodeImplW(const std::shared_ptr<internal::SharedStringData> &data){
     data->ws = std::move(result_utf16);
     data->wsv = data->ws;
 #else
-    static_assert(sizeof(wchar_t) == 4,
-                  "Assuming wchar_t is utf-32 on Unix");
+    static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     std::wstring result_utf32;
     utf8::utf8to32(data->u8sv.begin(), data->u8sv.end(),
                    std::back_inserter(result_utf32));
@@ -271,17 +296,16 @@ std::wstring toWide(std::string_view name_ref) {
 }
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
-void decodeImpl(const std::shared_ptr<internal::SharedStringData> &data){
+void decodeImpl(const std::shared_ptr<internal::SharedStringData> &data) {
     auto result_utf16 = decodeW();
-    auto length_acp =
-        WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
-                            static_cast<int>(result_utf16.size()),
-                            nullptr, 0, nullptr, nullptr);
+    auto length_acp = WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
+                                          static_cast<int>(result_utf16.size()),
+                                          nullptr, 0, nullptr, nullptr);
     std::string result_acp(length_acp, '\0');
-    WideCharToMultiByte(
-        CP_ACP, 0, result_utf16.data(),
-        static_cast<int>(result_utf16.size()), result_acp.data(),
-        static_cast<int>(result_acp.size()), nullptr, nullptr);
+    WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
+                        static_cast<int>(result_utf16.size()),
+                        result_acp.data(), static_cast<int>(result_acp.size()),
+                        nullptr, nullptr);
     data->s std::move(result_acp);
     data->sv = data->s;
 }

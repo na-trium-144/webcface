@@ -162,7 +162,7 @@ class WEBCFACE_DLL SharedString {
   public:
     SharedString() : data() {}
     SharedString(std::nullptr_t) : data() {}
-    explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
+    explicit SharedString(std::shared_ptr<internal::SharedStringData> data);
 
     static SharedString WEBCFACE_CALL fromU8String(std::string u8s);
     static SharedString WEBCFACE_CALL fromU8StringStatic(std::string_view u8s);
