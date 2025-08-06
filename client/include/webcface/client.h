@@ -33,14 +33,14 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 名前を指定しサーバーに接続する
      *
      * * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
-     * * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      * \arg name 名前
      * \arg host サーバーのアドレス
      * \arg port サーバーのポート
      *
      */
-    explicit Client(String name, String host = "127.0.0.1",
+    explicit Client(StringInitializer name, StringInitializer host = "127.0.0.1",
                     int port = WEBCFACE_DEFAULT_PORT)
         : Client(static_cast<SharedString &>(name),
                  static_cast<SharedString &>(host), port) {}
@@ -231,11 +231,11 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 他のmemberにアクセスする
      *
      * * (ver1.7から)nameが空の場合 *this を返す
-     * * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      * \sa members(), onMemberEntry()
      */
-    Member member(String name) const {
+    Member member(StringInitializer name) const {
         return member(static_cast<SharedString &>(name));
     }
     /*!
@@ -284,10 +284,10 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 String 型に変更
+     * * ver2.10〜 StringInitializer 型に変更
      *
      */
-    std::streambuf *loggerStreamBuf(const String &name) const;
+    std::streambuf *loggerStreamBuf(const StringInitializer &name) const;
     /*!
      * \brief webcfaceに出力するostream
      *
@@ -306,10 +306,10 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 String 型に変更
+     * * ver2.10〜 StringInitializer 型に変更
      *
      */
-    std::ostream &loggerOStream(const String &name) const;
+    std::ostream &loggerOStream(const StringInitializer &name) const;
     /*!
      * \brief webcfaceに出力するwstreambuf
      * \since ver2.0
@@ -321,10 +321,10 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 String 型に変更
+     * * ver2.10〜 StringInitializer 型に変更
      *
      */
-    std::wstreambuf *loggerWStreamBuf(const String &name) const;
+    std::wstreambuf *loggerWStreamBuf(const StringInitializer &name) const;
     /*!
      * \brief webcfaceに出力するwostream
      * \since ver2.0
@@ -336,10 +336,10 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 String 型に変更
+     * * ver2.10〜 StringInitializer 型に変更
      *
      */
-    std::wostream &loggerWOStream(const String &name) const;
+    std::wostream &loggerWOStream(const StringInitializer &name) const;
 
     /*!
      * \brief WebCFaceサーバーのバージョン情報

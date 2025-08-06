@@ -334,25 +334,25 @@ class WEBCFACE_DLL TemporalViewComponent {
      * \brief idを設定
      * \since ver2.5
      *
-     * ver2.10〜 String 型で置き換え
+     * ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    TemporalViewComponent &id(String id);
+    TemporalViewComponent &id(StringInitializer id);
     /*!
      * \brief 表示する文字列を設定
      *
      * (ver2.0からstring_viewに変更)
-     * (ver2.10〜 String 型で置き換え)
+     * (ver2.10〜 StringInitializer 型で置き換え)
      *
      */
-    TemporalViewComponent &text(String text) &;
+    TemporalViewComponent &text(StringInitializer text) &;
     /*!
      * \since ver2.5
      *
-     * (ver2.10〜 String 型で置き換え)
+     * (ver2.10〜 StringInitializer 型で置き換え)
      *
      */
-    TemporalViewComponent &&text(String text) && {
+    TemporalViewComponent &&text(StringInitializer text) && {
         this->text(std::move(text));
         return std::move(*this);
     }

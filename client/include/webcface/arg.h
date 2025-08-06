@@ -68,9 +68,9 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief 引数名を設定する。
      *
-     * ver2.0〜wstring対応、ver2.10〜 String 型に変更
+     * ver2.0〜wstring対応、ver2.10〜 StringInitializer 型に変更
      */
-    Arg(String name) : Arg(static_cast<SharedString &>(name)) {}
+    Arg(StringInitializer name) : Arg(static_cast<SharedString &>(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。

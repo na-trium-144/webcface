@@ -418,7 +418,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver2.0〜 wstring対応、ver2.10〜 String型に変更
      *
      */
-    void reject(String message) const {
+    void reject(StringInitializer message) const {
         reject(ValAdaptor(std::move(message)));
     }
 

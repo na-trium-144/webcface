@@ -113,16 +113,16 @@ class WEBCFACE_DLL ValAdaptor {
 
     /*!
      * ver2.10〜: std::string_view, std::wstring_view, const char*, const
-     * wchar_t* を受け取るコンストラクタを String に置き換え
+     * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
      *
      */
-    explicit ValAdaptor(String str);
+    explicit ValAdaptor(StringInitializer str);
     /*!
      * ver2.10〜: std::string_view, std::wstring_view, const char*, const
-     * wchar_t* を受け取るコンストラクタを String に置き換え
+     * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
      *
      */
-    ValAdaptor &operator=(String str);
+    ValAdaptor &operator=(StringInitializer str);
 
     /*!
      * ver2.10〜: const char*

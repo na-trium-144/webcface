@@ -63,7 +63,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \since ver2.4
      */
     template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(String name) const {
+    Log_ log(StringInitializer name) const {
         return this->child(static_cast<SharedString &>(name));
     }
     /*!

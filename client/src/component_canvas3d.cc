@@ -71,7 +71,7 @@ bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
            *msg_data == *other.msg_data;
 }
 
-TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(String id) {
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(StringInitializer id) {
     msg_data->id = std::move(id);
     return *this;
 }

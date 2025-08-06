@@ -186,7 +186,7 @@ class WEBCFACE_DLL Log : protected Field {
      * * ver2.10〜 String型に変更
      *
      */
-    const Log &append(int level, String message) const {
+    const Log &append(int level, StringInitializer message) const {
         return append({level, std::chrono::system_clock::now(),
                        static_cast<SharedString &>(message)});
     }
@@ -199,7 +199,7 @@ class WEBCFACE_DLL Log : protected Field {
      *
      */
     const Log &append(int level, std::chrono::system_clock::time_point time,
-                      String message) const {
+                      StringInitializer message) const {
         return append({level, time, static_cast<SharedString &>(message)});
     }
 

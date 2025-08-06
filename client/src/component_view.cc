@@ -253,7 +253,7 @@ ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);
 }
-TemporalViewComponent &TemporalViewComponent::id(String id) {
+TemporalViewComponent &TemporalViewComponent::id(StringInitializer id) {
     msg_data->id = std::move(id);
     return *this;
 }
@@ -265,7 +265,7 @@ WStringView ViewComponent::textW() const {
     checkData();
     return msg_data->text.decodeW();
 }
-TemporalViewComponent &TemporalViewComponent::text(String text) & {
+TemporalViewComponent &TemporalViewComponent::text(StringInitializer text) & {
     msg_data->text = std::move(text);
     return *this;
 }

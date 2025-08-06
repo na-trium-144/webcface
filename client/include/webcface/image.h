@@ -36,10 +36,10 @@ class WEBCFACE_DLL Image : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    Image child(String field) const {
+    Image child(StringInitializer field) const {
         return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
@@ -54,10 +54,10 @@ class WEBCFACE_DLL Image : protected Field {
      * child()と同じ
      * \since ver1.11
      * 
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    Image operator[](String field) const { return child(std::move(field)); }
+    Image operator[](StringInitializer field) const { return child(std::move(field)); }
     /*!
      * child()と同じ
      * \since ver1.11

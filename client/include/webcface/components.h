@@ -46,9 +46,9 @@ struct TemporalComponent {
      * \brief idを設定
      * \since ver2.5
      * 
-     * ver2.10〜 String 型で置き換え
+     * ver2.10〜 StringInitializer 型で置き換え
      */
-    TemporalComponent &id(const String &id) & {
+    TemporalComponent &id(const StringInitializer &id) & {
         if constexpr (V) {
             component_v.id(id);
         }
@@ -63,7 +63,7 @@ struct TemporalComponent {
     /*!
      * \since ver2.5
      */
-    TemporalComponent &&id(const String &id) && {
+    TemporalComponent &&id(const StringInitializer &id) && {
         this->id(id);
         return std::move(*this);
     }
@@ -205,10 +205,10 @@ struct TemporalComponent {
      * \brief 表示する文字列 (View, Canvas2D)
      * \since ver2.0
      * 
-     * ver2.10〜 String 型で置き換え
+     * ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    TemporalComponent &text(const String &str) & {
+    TemporalComponent &text(const StringInitializer &str) & {
         static_assert(V || C2,
                       "text can be set only for View, Canvas2D components");
         if constexpr (V) {
@@ -222,10 +222,10 @@ struct TemporalComponent {
     /*!
      * \since ver2.5
      * 
-     * ver2.10〜 String 型で置き換え
+     * ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    TemporalComponent &&text(const String &str) && {
+    TemporalComponent &&text(const StringInitializer &str) && {
         this->text(str);
         return std::move(*this);
     }
@@ -601,10 +601,10 @@ namespace Geometries = geometries; // 〜ver1.11
 /*!
  * \brief textコンポーネント
  *
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
-inline TemporalComponent<true, true, false> text(const String &text) {
+inline TemporalComponent<true, true, false> text(const StringInitializer &text) {
     return TemporalComponent<true, true, false>(
                ViewComponentType::text, Canvas2DComponentType::text, nullptr)
         .text(text);
@@ -620,11 +620,11 @@ inline TemporalViewComponent newLine() {
 /*!
  * \brief buttonコンポーネント
  *
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
 template <typename T>
-inline TemporalViewComponent button(const String &text, T &&func) {
+inline TemporalViewComponent button(const StringInitializer &text, T &&func) {
     return TemporalViewComponent(ViewComponentType::button)
         .text(text)
         .onClick(std::forward<T>(func));
@@ -640,31 +640,31 @@ inline TemporalViewComponent button(std::wstring_view text, T &&func) {
         .onClick(std::forward<T>(func));
 }
 
-inline TemporalViewComponent textInput(const String &text = {}) {
+inline TemporalViewComponent textInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::text_input).text(text);
 }
-inline TemporalViewComponent decimalInput(const String &text = {}) {
+inline TemporalViewComponent decimalInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::decimal_input)
         .text(text)
         .init(0);
 }
-inline TemporalViewComponent numberInput(const String &text = {}) {
+inline TemporalViewComponent numberInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::number_input)
         .text(text)
         .init(0);
 }
-inline TemporalViewComponent toggleInput(const String &text = {}) {
+inline TemporalViewComponent toggleInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::toggle_input).text(text);
 }
-inline TemporalViewComponent selectInput(const String &text = {}) {
+inline TemporalViewComponent selectInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::select_input).text(text);
 }
-inline TemporalViewComponent sliderInput(const String &text = {}) {
+inline TemporalViewComponent sliderInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::slider_input)
         .text(text)
         .init(0);
 }
-inline TemporalViewComponent checkInput(const String &text = {}) {
+inline TemporalViewComponent checkInput(const StringInitializer &text = {}) {
     return TemporalViewComponent(ViewComponentType::check_input)
         .text(text)
         .init(false);

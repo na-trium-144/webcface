@@ -330,7 +330,7 @@ getLoggerBuf(const std::shared_ptr<internal::ClientData> &data,
 std::streambuf *Client::loggerStreamBuf() const {
     return getLoggerBuf(data, message::Log::defaultLogName());
 }
-std::streambuf *Client::loggerStreamBuf(const String &name) const {
+std::streambuf *Client::loggerStreamBuf(const StringInitializer &name) const {
     return getLoggerBuf(data, name);
 }
 // \private
@@ -347,7 +347,7 @@ getLoggerBufW(const std::shared_ptr<internal::ClientData> &data,
 std::wstreambuf *Client::loggerWStreamBuf() const {
     return getLoggerBufW(data, message::Log::defaultLogName());
 }
-std::wstreambuf *Client::loggerWStreamBuf(const String &name) const {
+std::wstreambuf *Client::loggerWStreamBuf(const StringInitializer &name) const {
     return getLoggerBufW(data, name);
 }
 // \private
@@ -364,7 +364,7 @@ getLoggerOS(const std::shared_ptr<internal::ClientData> &data,
 std::ostream &Client::loggerOStream() const {
     return getLoggerOS(data, message::Log::defaultLogName());
 }
-std::ostream &Client::loggerOStream(const String &name) const {
+std::ostream &Client::loggerOStream(const StringInitializer &name) const {
     return getLoggerOS(data, name);
 }
 // \private
@@ -381,7 +381,7 @@ getLoggerWOS(const std::shared_ptr<internal::ClientData> &data,
 std::wostream &Client::loggerWOStream() const {
     return getLoggerWOS(data, message::Log::defaultLogName());
 }
-std::wostream &Client::loggerWOStream(const String &name) const {
+std::wostream &Client::loggerWOStream(const StringInitializer &name) const {
     return getLoggerWOS(data, name);
 }
 const std::string &Client::serverVersion() const {

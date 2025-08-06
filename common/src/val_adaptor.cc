@@ -17,10 +17,10 @@ ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
     return *this;
 }
 
-ValAdaptor::ValAdaptor(String str)
+ValAdaptor::ValAdaptor(StringInitializer str)
     : as_str(std::move(static_cast<SharedString &>(str))),
       type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(String str) {
+ValAdaptor &ValAdaptor::operator=(StringInitializer str) {
     as_str = std::move(static_cast<SharedString &>(str));
     type = ValType::string_;
     return *this;

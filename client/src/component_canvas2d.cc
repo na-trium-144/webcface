@@ -81,7 +81,7 @@ bool Canvas2DComponent::operator==(const Canvas2DComponent &other) const {
            *msg_data == *other.msg_data;
 }
 
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(String id) {
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(StringInitializer id) {
     msg_data->id = std::move(id);
     return *this;
 }
@@ -135,7 +135,7 @@ WStringView Canvas2DComponent::textW() const {
     checkData();
     return msg_data->text.decodeW();
 }
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(String text) & {
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(StringInitializer text) & {
     msg_data->text = std::move(text);
     return *this;
 }

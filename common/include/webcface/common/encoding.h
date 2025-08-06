@@ -123,7 +123,7 @@ using WStringView = TStringView<wchar_t>;
 /*!
  * \brief u8stringとstringとwstringをshared_ptrで持ち共有する
  * \since ver2.0
- * \sa String
+ * \sa StringInitializer
  *
  * * 初期状態ではdataがnullptr、またはu8stringのみ値を持ちstringとwstringは空
  * * コピーするとdataのポインタ(shared_ptr)のみをコピーし、
@@ -201,13 +201,13 @@ class WEBCFACE_DLL SharedString {
  * * 生文字列リテラルを渡した場合に限り、コピーせずポインタで保持する。
  *
  */
-class String : public SharedString {
+class StringInitializer : public SharedString {
   public:
-    String() : SharedString() {}
+    StringInitializer() : SharedString() {}
     // move
-    String(std::string &&s)
+    StringInitializer(std::string &&s)
         : SharedString(SharedString::encode(std::move(s))) {}
-    String(std::wstring &&s)
+    StringInitializer(std::wstring &&s)
         : SharedString(SharedString::encode(std::move(s))) {}
     // copy
     template <typename T,
@@ -215,7 +215,8 @@ class String : public SharedString {
                   std::conjunction_v<std::negation<std::is_void<T>>,
                                      std::is_constructible<std::string, T>>,
                   nullptr_t> = nullptr>
-    String(const T &s) : SharedString(SharedString::encode(std::string(s))) {}
+    StringInitializer(const T &s)
+        : SharedString(SharedString::encode(std::string(s))) {}
     template <typename T,
               typename std::enable_if_t<
                   std::conjunction_v<
@@ -223,15 +224,16 @@ class String : public SharedString {
                       std::negation<std::is_constructible<std::string, T>>,
                       std::is_constructible<std::wstring, T>>,
                   nullptr_t> = nullptr>
-    String(const T &s) : SharedString(SharedString::encode(std::wstring(s))) {}
+    StringInitializer(const T &s)
+        : SharedString(SharedString::encode(std::wstring(s))) {}
     // c-string ptr
     template <std::size_t N>
-    String(const char (&static_str)[N])
+    StringInitializer(const char (&static_str)[N])
         : SharedString(
               SharedString::encodeStatic(std::string_view(static_str, N - 1))) {
     }
     template <std::size_t N>
-    String(const wchar_t (&static_str)[N])
+    StringInitializer(const wchar_t (&static_str)[N])
         : SharedString(SharedString::encodeStatic(
               std::wstring_view(static_str, N - 1))) {}
 };
@@ -240,7 +242,7 @@ class String : public SharedString {
  * \brief string_viewやconst char*同士を連結しstringを返す
  * \since ver2.10
  *
- * String, SharedString, TerminatedStringView
+ * StringInitializer, SharedString, TStringView
  * などと同じヘッダーにあるが、それらとはなんの関係もない。
  *
  */

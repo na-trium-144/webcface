@@ -150,10 +150,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Field child(String field) const {
+    Field child(StringInitializer field) const {
         return child(static_cast<SharedString &>(field));
     }
     /*!
@@ -169,10 +169,10 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Field operator[](String field) const {
+    Field operator[](StringInitializer field) const {
         return child(static_cast<SharedString &>(field));
     }
     /*!
@@ -187,46 +187,46 @@ struct WEBCFACE_DLL Field : public FieldBase {
     }
 
     template <WEBCFACE_COMPLETE(Value)>
-    Value_ value(String field = String()) const {
+    Value_ value(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Text)>
-    Text_ text(String field = String()) const {
+    Text_ text(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(RobotModel)>
-    RobotModel_ robotModel(String field = String()) const {
+    RobotModel_ robotModel(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Image)>
-    Image_ image(String field = String()) const {
+    Image_ image(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Func)>
-    Func_ func(String field = String()) const {
+    Func_ func(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(FuncListener)>
-    FuncListener_ funcListener(String field = String()) const {
+    FuncListener_ funcListener(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(View)>
-    View_ view(String field = String()) const {
+    View_ view(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Canvas3D)>
-    Canvas3D_ canvas3D(String field = String()) const {
+    Canvas3D_ canvas3D(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Canvas2D)>
-    Canvas2D_ canvas2D(String field = String()) const {
+    Canvas2D_ canvas2D(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver2.4
      */
     template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(String field = String()) const {
+    Log_ log(StringInitializer field = StringInitializer()) const {
         return child(static_cast<SharedString &>(field));
     }
 

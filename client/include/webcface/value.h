@@ -74,10 +74,10 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Value child(String field) const {
+    Value child(StringInitializer field) const {
         return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
@@ -92,10 +92,10 @@ class WEBCFACE_DLL Value : protected Field {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Value operator[](String field) const { return child(std::move(field)); }
+    Value operator[](StringInitializer field) const { return child(std::move(field)); }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
@@ -111,7 +111,7 @@ class WEBCFACE_DLL Value : protected Field {
      */
     template <std::size_t N>
     Value operator[](const char (&static_str)[N]) {
-        return child(String(static_str));
+        return child(StringInitializer(static_str));
     }
     /*!
      * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
@@ -119,7 +119,7 @@ class WEBCFACE_DLL Value : protected Field {
      */
     template <std::size_t N>
     Value operator[](const wchar_t (&static_str)[N]) {
-        return child(String(static_str));
+        return child(StringInitializer(static_str));
     }
     /*!
      * \brief 1次元配列型データの要素を参照する

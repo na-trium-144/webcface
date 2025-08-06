@@ -217,10 +217,10 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Text child(String field) const {
+    Text child(StringInitializer field) const {
         return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
@@ -235,10 +235,10 @@ class WEBCFACE_DLL Text : protected Variant {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Text operator[](String field) const { return child(std::move(field)); }
+    Text operator[](StringInitializer field) const { return child(std::move(field)); }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
@@ -257,7 +257,7 @@ class WEBCFACE_DLL Text : protected Variant {
      */
     template <std::size_t N>
     Text operator[](const char (&static_str)[N]) {
-        return child(String(static_str));
+        return child(StringInitializer(static_str));
     }
     /*!
      * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
@@ -265,7 +265,7 @@ class WEBCFACE_DLL Text : protected Variant {
      */
     template <std::size_t N>
     Text operator[](const wchar_t (&static_str)[N]) {
-        return child(String(static_str));
+        return child(StringInitializer(static_str));
     }
     /*!
      * child()と同じ
@@ -331,7 +331,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * (ver2.0からstd::stringをstd::string_viewに変更)
      * (ver2.0からstd::wstring対応、ver2.10からString型に変更)
      */
-    const Text &set(String v) const {
+    const Text &set(StringInitializer v) const {
         this->Variant::set(ValAdaptor{std::move(v)});
         return *this;
     }
@@ -339,10 +339,10 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * \brief 文字列をセットする
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    const Text &operator=(String v) const {
+    const Text &operator=(StringInitializer v) const {
         this->set(std::move(v));
         return *this;
     }

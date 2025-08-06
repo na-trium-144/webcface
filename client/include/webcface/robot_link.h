@@ -117,10 +117,10 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  *
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
-inline RobotJoint fixedJoint(const String &parent_name,
+inline RobotJoint fixedJoint(const StringInitializer &parent_name,
                              const Transform &origin) {
     return RobotJoint{nullptr, parent_name,
                       RobotJointType::fixed, origin, 0};
@@ -130,10 +130,10 @@ inline RobotJoint fixedJoint(const String &parent_name,
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  * 
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
-inline RobotJoint fixedJoint(const String &parent_name,
+inline RobotJoint fixedJoint(const StringInitializer &parent_name,
                              const Point &origin) {
     return fixedJoint(parent_name, Transform{origin, {}});
 }
@@ -146,11 +146,11 @@ inline RobotJoint fixedJoint(const String &parent_name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角
  *
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
-inline RobotJoint rotationalJoint(const String &name,
-                                  const String &parent_name,
+inline RobotJoint rotationalJoint(const StringInitializer &name,
+                                  const StringInitializer &parent_name,
                                   const Transform &origin, double angle = 0) {
     return RobotJoint{name,
                       parent_name,
@@ -165,11 +165,11 @@ inline RobotJoint rotationalJoint(const String &name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角(移動距離)
  *
- * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
  * 
  */
-inline RobotJoint prismaticJoint(const String &name,
-                                 const String &parent_name,
+inline RobotJoint prismaticJoint(const StringInitializer &name,
+                                 const StringInitializer &parent_name,
                                  const Transform &origin, double angle = 0) {
     return RobotJoint{name,
                       parent_name,
@@ -212,10 +212,10 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    RobotLink(const String &name, const RobotJoint &joint,
+    RobotLink(const StringInitializer &name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
         : RobotLink(static_cast<const SharedString &>(name), joint, geometry, color) {}
     /*!
@@ -225,10 +225,10 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
-     * ver2.0〜 wstring対応, ver2.10〜 String 型で置き換え
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      * 
      */
-    RobotLink(const String &name, const Geometry &geometry,
+    RobotLink(const StringInitializer &name, const Geometry &geometry,
               ViewColor color = ViewColor::inherit)
         : RobotLink(static_cast<const SharedString &>(name), fixedAbsolute({0, 0, 0}), geometry, color) {}
 
