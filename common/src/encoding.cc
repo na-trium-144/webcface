@@ -3,7 +3,6 @@
 #include <cstring>
 #include <mutex>
 #include <cassert>
-#include <variant>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>
@@ -14,32 +13,32 @@ WEBCFACE_NS_BEGIN
 namespace internal {
 
 struct SharedStringData {
-    std::variant<std::string, std::string_view> u8s;
+    std::string u8s;
     std::string_view u8sv;
-    std::variant<std::string, std::string_view> s;
+    std::string s;
     std::string_view sv;
-    std::variant<std::wstring, std::wstring_view> ws;
+    std::wstring ws;
     std::wstring_view wsv;
     std::recursive_mutex m;
 
     explicit SharedStringData(std::string u8s)
-        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)) {}
-    explicit SharedStringData(std::string_view u8s) : u8s(u8s), u8sv(u8s) {
-        assert(*(u8s.data() + u8s.size()) == '\0');
+        : u8s(std::move(u8s)), u8sv(this->u8s) {}
+    explicit SharedStringData(std::string_view u8sv) : u8sv(u8sv) {
+        assert(*(u8sv.data() + u8sv.size()) == '\0');
     }
     SharedStringData(std::string u8s, std::string s, std::wstring ws)
-        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(std::move(s)),
-          sv(std::get<0>(this->s)), ws(std::move(ws)),
-          wsv(std::get<0>(this->ws)) {}
-    SharedStringData(std::string u8s, std::string_view s, std::wstring ws)
-        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(s), sv(s),
-          ws(std::move(ws)), wsv(std::get<0>(this->ws)) {
-        assert(*(s.data() + s.size()) == '\0');
+        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)),
+          sv(this->s), ws(std::move(ws)),
+          wsv(this->ws) {}
+    SharedStringData(std::string u8s, std::string_view sv, std::wstring ws)
+        : u8s(std::move(u8s)), u8sv(this->u8s), sv(sv),
+          ws(std::move(ws)), wsv(this->ws) {
+        assert(*(sv.data() + sv.size()) == '\0');
     }
-    SharedStringData(std::string u8s, std::string s, std::wstring_view ws)
-        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(std::move(s)),
-          sv(std::get<0>(this->s)), ws(ws), wsv(ws) {
-        assert(*(ws.data() + ws.size()) == L'\0');
+    SharedStringData(std::string u8s, std::string s, std::wstring_view wsv)
+        : u8s(std::move(u8s)), u8sv(this->u8s), s(std::move(s)),
+          sv(this->s), wsv(wsv) {
+        assert(*(wsv.data() + wsv.size()) == L'\0');
     }
 };
 
@@ -244,16 +243,16 @@ WStringView SharedString::decodeW() const {
             MultiByteToWideChar(
                 CP_UTF8, 0, u8s.data(), static_cast<int>(u8s.size()),
                 result_utf16.data(), static_cast<int>(result_utf16.length()));
-            data->ws.emplace<std::wstring>(std::move(result_utf16));
-            data->wsv = std::get<0>(data->ws);
+            data->ws = std::move(result_utf16);
+            data->wsv = data->ws;
 #else
             static_assert(sizeof(wchar_t) == 4,
                           "Assuming wchar_t is utf-32 on Unix");
             std::wstring result_utf32;
             utf8::utf8to32(u8s.begin(), u8s.end(),
                            std::back_inserter(result_utf32));
-            data->ws.emplace<std::wstring>(std::move(result_utf32));
-            data->wsv = std::get<0>(data->ws);
+            data->ws = std::move(result_utf32);
+            data->wsv = data->ws;
 #endif
         }
         return WStringView(data->wsv.data(), data->wsv.size(), data);
@@ -297,8 +296,8 @@ StringView SharedString::decode() const {
                     CP_ACP, 0, result_utf16.data(),
                     static_cast<int>(result_utf16.size()), result_acp.data(),
                     static_cast<int>(result_acp.size()), nullptr, nullptr);
-                data->s.emplace<std::string>(std::move(result_acp));
-                data->sv = std::get<0>(data->s);
+                data->s std::move(result_acp);
+                data->sv = data->s;
             }
             return data->sv;
         }
