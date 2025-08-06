@@ -72,6 +72,49 @@ class TStringView : public std::basic_string_view<CharT> {
     const CharT *c_str() const { return this->data(); }
 
     operator const CharT *() const { return this->data(); }
+
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return *this == std::basic_string_view<CharT>(other);
+    }
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return *this != std::basic_string_view<CharT>(other);
+    }
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator<=(const T &other) const {
+        return *this <= std::basic_string_view<CharT>(other);
+    }
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator>=(const T &other) const {
+        return *this >= std::basic_string_view<CharT>(other);
+    }
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator<(const T &other) const {
+        return *this < std::basic_string_view<CharT>(other);
+    }
+    template <typename T,
+              std::enable_if_t<
+                  std::is_convertible_v<T, std::basic_string_view<CharT>>,
+                  std::nullptr_t> = nullptr>
+    bool operator>(const T &other) const {
+        return *this > std::basic_string_view<CharT>(other);
+    }
 };
 
 using StringView = TStringView<char>;
