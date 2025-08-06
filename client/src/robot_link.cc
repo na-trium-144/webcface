@@ -91,7 +91,7 @@ StringView RobotJoint::name() const {
     } else if (temp_data) {
         return temp_data->name.decode();
     } else {
-        return SharedString::emptyStrView();
+        return StringView{};
     }
 }
 WStringView RobotJoint::nameW() const {
@@ -100,7 +100,7 @@ WStringView RobotJoint::nameW() const {
     } else if (temp_data) {
         return temp_data->name.decodeW();
     } else {
-        return SharedString::emptyStrViewW();
+        return WStringView{};
     }
 }
 std::optional<RobotLink> RobotJoint::parent() const {
@@ -143,14 +143,14 @@ StringView RobotLink::name() const {
     if (msg_data) {
         return msg_data->name.decode();
     } else {
-        return SharedString::emptyStrView();
+        return StringView{};
     }
 }
 WStringView RobotLink::nameW() const {
     if (msg_data) {
         return msg_data->name.decodeW();
     } else {
-        return SharedString::emptyStrViewW();
+        return WStringView{};
     }
 }
 RobotJoint RobotLink::joint() const { return RobotJoint(msg_data); }

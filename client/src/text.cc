@@ -99,7 +99,7 @@ StringView Text::get() const {
     if (v) {
         return v->asStringView();
     } else {
-        return SharedString::emptyStrView();
+        return StringView{};
     }
 }
 std::optional<WStringView> Text::tryGetW() const {
@@ -117,7 +117,7 @@ WStringView Text::getW() const {
     if (v) {
         return v->asWStringView();
     } else {
-        return SharedString::emptyStrViewW();
+        return WStringView{};
     }
 }
 

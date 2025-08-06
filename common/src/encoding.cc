@@ -13,58 +13,33 @@ WEBCFACE_NS_BEGIN
 
 namespace internal {
 
-struct SharedStringData : std::enable_shared_from_this<SharedStringData> {
+struct SharedStringData {
     std::variant<std::string, std::string_view> u8s;
+    std::string_view u8sv;
     std::variant<std::string, std::string_view> s;
+    std::string_view sv;
     std::variant<std::wstring, std::wstring_view> ws;
+    std::wstring_view wsv;
     std::recursive_mutex m;
 
     explicit SharedStringData(std::string u8s)
-        : u8s(std::move(u8s)), s(std::string()), ws(std::wstring()), m() {}
-    explicit SharedStringData(std::string_view u8s)
-        : u8s(u8s), s(std::string()), ws(std::wstring()), m() {
+        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)) {}
+    explicit SharedStringData(std::string_view u8s) : u8s(u8s), u8sv(u8s) {
         assert(*(u8s.data() + u8s.size()) == '\0');
     }
     SharedStringData(std::string u8s, std::string s, std::wstring ws)
-        : u8s(std::move(u8s)), s(std::move(s)), ws(std::move(ws)), m() {}
+        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(std::move(s)),
+          sv(std::get<0>(this->s)), ws(std::move(ws)),
+          wsv(std::get<0>(this->ws)) {}
     SharedStringData(std::string u8s, std::string_view s, std::wstring ws)
-        : u8s(std::move(u8s)), s(s), ws(std::move(ws)), m() {
+        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(s), sv(s),
+          ws(std::move(ws)), wsv(std::get<0>(this->ws)) {
         assert(*(s.data() + s.size()) == '\0');
     }
     SharedStringData(std::string u8s, std::string s, std::wstring_view ws)
-        : u8s(std::move(u8s)), s(std::move(s)), ws(ws), m() {
+        : u8s(std::move(u8s)), u8sv(std::get<0>(this->u8s)), s(std::move(s)),
+          sv(std::get<0>(this->s)), ws(ws), wsv(ws) {
         assert(*(ws.data() + ws.size()) == L'\0');
-    }
-
-    StringView u8sv() const {
-        switch (u8s.index()) {
-        case 0:
-            return StringView(std::get<0>(u8s).c_str(), std::get<0>(u8s).size(),
-                              shared_from_this());
-        default:
-            return StringView(std::get<1>(u8s).data(), std::get<1>(u8s).size(),
-                              shared_from_this());
-        }
-    }
-    StringView sv() const {
-        switch (s.index()) {
-        case 0:
-            return StringView(std::get<0>(s).c_str(), std::get<0>(s).size(),
-                              shared_from_this());
-        default:
-            return StringView(std::get<1>(s).data(), std::get<1>(s).size(),
-                              shared_from_this());
-        }
-    }
-    WStringView wsv() const {
-        switch (ws.index()) {
-        case 0:
-            return WStringView(std::get<0>(ws).c_str(), std::get<0>(ws).size(),
-                               shared_from_this());
-        default:
-            return WStringView(std::get<1>(ws).data(), std::get<1>(ws).size(),
-                               shared_from_this());
-        }
     }
 };
 
@@ -204,9 +179,9 @@ SharedString SharedString::encodeStatic(std::wstring_view name) {
 
 StringView SharedString::u8StringView() const {
     if (!data) {
-        return emptyStrView();
+        return {};
     } else {
-        return data->u8sv();
+        return StringView(data->u8sv.data(), data->u8sv.size(), data);
     }
 }
 bool SharedString::empty() const { return !data || u8StringView().size() == 0; }
@@ -254,10 +229,10 @@ std::string toNarrow(std::wstring_view name) {
 
 WStringView SharedString::decodeW() const {
     if (!data || empty()) {
-        return emptyStrViewW();
+        return {};
     } else {
         std::lock_guard lock(data->m);
-        if (data->wsv().empty()) {
+        if (data->wsv.empty()) {
             auto u8s = u8StringView();
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
             static_assert(sizeof(wchar_t) == 2,
@@ -270,6 +245,7 @@ WStringView SharedString::decodeW() const {
                 CP_UTF8, 0, u8s.data(), static_cast<int>(u8s.size()),
                 result_utf16.data(), static_cast<int>(result_utf16.length()));
             data->ws.emplace<std::wstring>(std::move(result_utf16));
+            data->wsv = std::get<0>(data->ws);
 #else
             static_assert(sizeof(wchar_t) == 4,
                           "Assuming wchar_t is utf-32 on Unix");
@@ -277,9 +253,10 @@ WStringView SharedString::decodeW() const {
             utf8::utf8to32(u8s.begin(), u8s.end(),
                            std::back_inserter(result_utf32));
             data->ws.emplace<std::wstring>(std::move(result_utf32));
+            data->wsv = std::get<0>(data->ws);
 #endif
         }
-        return data->wsv();
+        return WStringView(data->wsv.data(), data->wsv.size(), data);
     }
 }
 
@@ -309,7 +286,7 @@ StringView SharedString::decode() const {
             return emptyStrView();
         } else {
             std::lock_guard lock(data->m);
-            if (data->sv().empty()) {
+            if (data->sv.empty()) {
                 auto result_utf16 = decodeW();
                 auto length_acp =
                     WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
@@ -321,8 +298,9 @@ StringView SharedString::decode() const {
                     static_cast<int>(result_utf16.size()), result_acp.data(),
                     static_cast<int>(result_acp.size()), nullptr, nullptr);
                 data->s.emplace<std::string>(std::move(result_acp));
+                data->sv = std::get<0>(data->s);
             }
-            return data->sv();
+            return data->sv;
         }
     }
 #endif

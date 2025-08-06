@@ -60,7 +60,11 @@ template <typename CharT>
 class TStringView : public std::basic_string_view<CharT> {
     std::shared_ptr<const internal::SharedStringData> s_data;
 
+    static inline CharT empty_buf[1] = {0};
+
   public:
+    TStringView() : std::basic_string_view<CharT>(empty_buf, 0) {}
+
     TStringView(const CharT *data, std::size_t size,
                 std::shared_ptr<const internal::SharedStringData> s_data)
         : std::basic_string_view<CharT>(data, size), s_data(std::move(s_data)) {
@@ -168,13 +172,7 @@ class WEBCFACE_DLL SharedString {
     WStringView decodeW() const;
 
     static const std::string &emptyStr();
-    static inline StringView emptyStrView() {
-        return StringView(emptyStr().c_str(), 0, nullptr);
-    }
     static const std::wstring &emptyStrW();
-    static inline WStringView emptyStrViewW() {
-        return WStringView(emptyStrW().c_str(), 0, nullptr);
-    }
 
     bool empty() const;
     bool startsWith(std::string_view str) const;
