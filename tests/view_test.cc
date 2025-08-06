@@ -191,8 +191,8 @@ TEST_F(ViewTest, viewSet) {
     // EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
     EXPECT_EQ(view_data[9]->option_.size(), 3u);
     func(self_name, *view_data[9]->on_click_field).runAsync("a");
-    EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
-    // EXPECT_EQ(static_cast<std::string>(
+    EXPECT_EQ(static_cast<std::string_view>(ref2.get()), "a");
+    // EXPECT_EQ(static_cast<std::string_view>(
     //               text(self_name, view_data[9].text_ref_->field_).get()),
     //           "a");
 
@@ -206,7 +206,7 @@ TEST_F(ViewTest, viewSet) {
     // EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
     func(self_name, *view_data[10]->on_click_field).runAsync("aaa");
     EXPECT_EQ(called_ref3, 1);
-    // EXPECT_EQ(static_cast<std::string>(
+    // EXPECT_EQ(static_cast<std::string_view>(
     //               text(self_name, view_data[10].text_ref_->field_).get()),
     //           "aaa");
 

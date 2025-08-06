@@ -102,7 +102,7 @@ TEST_F(FuncListenerTest, funcRun) {
     ASSERT_NE(h, std::nullopt);
     EXPECT_EQ(static_cast<int>(h->args()[0]), 123);
     EXPECT_EQ(static_cast<double>(h->args()[1]), 123.45);
-    EXPECT_EQ(static_cast<std::string>(h->args()[2]), "a");
+    EXPECT_EQ(static_cast<std::string_view>(h->args()[2]), "a");
     EXPECT_TRUE(static_cast<bool>(h->args()[3]));
     h->respond(123.45);
     EXPECT_TRUE(ret_a.finished());

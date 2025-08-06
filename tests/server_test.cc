@@ -463,6 +463,6 @@ TEST_F(ServerTest, call) {
         EXPECT_EQ(obj.caller_id, 1u);
         EXPECT_EQ(obj.caller_member_id, 2u);
         EXPECT_EQ(obj.is_error, false);
-        EXPECT_EQ(static_cast<std::string>(obj.result), "aaa");
+        EXPECT_EQ(static_cast<std::string_view>(obj.result), "aaa");
     });
 }

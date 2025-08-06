@@ -313,7 +313,7 @@ TEST_F(CClientTest, funcRun) {
             EXPECT_EQ(obj.args.size(), 3u);
             EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
             EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
-            EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
+            EXPECT_EQ(static_cast<std::string_view>(obj.args.at(2)), "aaa");
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, false});

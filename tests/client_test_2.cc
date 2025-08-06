@@ -501,7 +501,7 @@ TEST_F(ClientTest, funcCall) {
         EXPECT_EQ(obj.args[0].valType(), ValType::int_);
         EXPECT_EQ(static_cast<bool>(obj.args[1]), true);
         EXPECT_EQ(obj.args[1].valType(), ValType::bool_);
-        EXPECT_EQ(static_cast<std::string>(obj.args[2]), "a");
+        EXPECT_EQ(static_cast<std::string_view>(obj.args[2]), "a");
         EXPECT_EQ(obj.args[2].valType(), ValType::string_);
     });
     ASSERT_FALSE(r.reached());
@@ -557,7 +557,7 @@ TEST_F(ClientTest, funcCall) {
     dummy_s->send(message::CallResult{{}, 2, 0, false, ValAdaptor("b")});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     ASSERT_TRUE(r.finished());
-    EXPECT_EQ(static_cast<std::string>(r.response()), "b");
+    EXPECT_EQ(static_cast<std::string_view>(r.response()), "b");
 }
 TEST_F(ClientTest, funcResponse) {
     dummy_s = std::make_shared<DummyServer>(false);
@@ -614,7 +614,7 @@ TEST_F(ClientTest, funcResponse) {
         EXPECT_EQ(obj.caller_member_id, 100u);
         EXPECT_EQ(obj.is_error, true);
         // 関数の中でthrowされた内容
-        EXPECT_EQ(static_cast<std::string>(obj.result), "a==0");
+        EXPECT_EQ(static_cast<std::string_view>(obj.result), "a==0");
     });
     dummy_s->recvClear();
 

@@ -259,7 +259,8 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * <del>ver1.10〜: const参照</del>
      * ver2.10〜: コピーにし、かつexplicitに変更
-     * ただしFuncに登録する関数の引数としてstd::stringを用いる際には暗黙的にstatic_castされる
+     * (暗黙的なstd::stringへの変換は不可)
+     * ただしFuncに登録する関数の引数としてstd::stringを用いる際にはstringに変換される
      *
      */
     explicit operator std::string() const { return asString(); }
@@ -267,7 +268,8 @@ class WEBCFACE_DLL ValAdaptor {
      * \since ver2.0
      *
      * ver2.10〜: const参照ではなくコピーにし、かつexplicitに変更
-     * ただしFuncに登録する関数の引数としてstd::wstringを用いる際には暗黙的にstatic_castされる
+     * (暗黙的なstd::stringへの変換は不可)
+     * ただしFuncに登録する関数の引数としてstd::wstringを用いる際にはstringに変換される
      *
      */
     explicit operator std::wstring() const { return asWString(); }
@@ -302,19 +304,28 @@ class WEBCFACE_DLL ValAdaptor {
      */
     long long asLLong() const;
     /*!
-     * \brief 数値として返す
+     * \brief <del>数値として返す</del> static_castをする
      * \since ver1.10
      *
-     * as<T>(), Tはdoubleなどの実数型、intなどの整数型
-     *
-     * \deprecated ver2.0〜 asDouble(), asInt(), asLLong() を追加
-     * さらにas<T>にはTになにを指定してもdoubleで返るというバグがある
+     * * <del>Tはdoubleなどの実数型、intなどの整数型</del>
+     * * ver2.9までTになにを指定してもdoubleで返るバグがあり、
+     * ver2.0〜2.9までdeprecated指定だった。
+     * * ver2.10〜 stringなどの型も受け付けるように変更。効果はstatic_castと同じ
+     * * ただしMSVCではexplicitな型変換operatorが定義されているときなぜかstatic_castができないので、
+     * as<std::string>() の場合はstringに変換する処理を入れている
      *
      */
     template <typename T>
-    [[deprecated("use asDouble(), asInt() or asLLong() instead")]]
-    double as() const {
-        return static_cast<T>(asDouble());
+    T as() const {
+        static_assert(!std::is_reference_v<T>,
+                      "ValAdaptor::as<T>(): T must not be reference type");
+        if constexpr (std::is_same_v<T, std::string>) {
+            return asString();
+        } else if constexpr (std::is_same_v<T, std::wstring>) {
+            return asWString();
+        } else {
+            return static_cast<T>(*this);
+        }
     }
     /*!
      * \brief 数値型への変換
@@ -403,7 +414,7 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;
-        std::get<n>(tuple) = static_cast<Type>(args[n]);
+        std::get<n>(tuple) = args[n].as<Type>();
         argToTuple<n + 1>(args, tuple);
     }
 }

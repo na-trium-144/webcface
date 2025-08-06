@@ -206,9 +206,8 @@ TEST_F(DataTest, textSet) {
     data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set("c");
-    EXPECT_EQ(
-        static_cast<std::string>(*data_->text_store.getRecv(self_name, "b"_ss)),
-        "c");
+    EXPECT_EQ(data_->text_store.getRecv(self_name, "b"_ss)->asStringView(),
+              "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
 }
@@ -216,9 +215,8 @@ TEST_F(DataTest, textSetW) {
     data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set(L"c");
-    EXPECT_EQ(
-        static_cast<std::string>(*data_->text_store.getRecv(self_name, "b"_ss)),
-        "c");
+    EXPECT_EQ(data_->text_store.getRecv(self_name, "b"_ss)->asStringView(),
+              "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
 }

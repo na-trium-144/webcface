@@ -449,7 +449,7 @@ class WEBCFACE_DLL TemporalViewComponent {
             std::make_shared<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>(
                 [ref, func = std::move(func)](const ValAdaptor &val) {
                     ref.lockedField().set(val);
-                    return func(static_cast<FirstArgType>(val));
+                    return func(val.as<FirstArgType>());
                 }),
             ref);
     }
