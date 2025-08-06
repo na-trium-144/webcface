@@ -132,9 +132,17 @@ class WEBCFACE_DLL ValAdaptor {
     template <typename Bool, typename std::enable_if_t<
                                  std::is_same_v<Bool, bool>, bool> = true>
     explicit ValAdaptor(Bool value);
-    template <typename Bool, typename std::enable_if_t<
-                                 std::is_same_v<Bool, bool>, bool> = true>
-    ValAdaptor &operator=(Bool v);
+    /*!
+     * ver2.10〜: const char*
+     * などのポインタがboolに変換されるのを防ぐためテンプレート化
+     *
+     * テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、
+     * ここでは戻り値をSFINAEにしている
+     *
+     */
+    template <typename Bool>
+    auto operator=(Bool v)
+        -> std::enable_if_t<std::is_same_v<Bool, bool>, ValAdaptor &>;
 
     explicit ValAdaptor(std::int64_t value);
     ValAdaptor &operator=(std::int64_t v);
@@ -359,7 +367,7 @@ class WEBCFACE_DLL ValAdaptor {
 };
 
 extern template ValAdaptor::ValAdaptor(bool value);
-extern template ValAdaptor &ValAdaptor::operator= <bool, true>(bool v);
+extern template ValAdaptor &ValAdaptor::operator= <bool>(bool v);
 
 
 template <typename T,
