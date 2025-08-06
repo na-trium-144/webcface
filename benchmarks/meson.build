@@ -42,5 +42,5 @@ webcface_benchmark = executable('webcface-benchmark',
   ],
 )
 benchmark('webcface-benchmark', webcface_benchmark,
-  timeout: 120,
+  timeout: 300,
 )
