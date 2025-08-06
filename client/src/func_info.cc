@@ -112,7 +112,7 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
             if (j > 0) {
                 os << ", ";
             }
-            os << static_cast<std::string>(arg.option()[j]);
+            os << arg.option()[j].asStringView();
         }
         os << "}";
     }

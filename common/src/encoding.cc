@@ -96,7 +96,7 @@ std::pair<std::string, std::wstring> encodeImpl(std::string_view name) {
                         static_cast<int>(result_utf16.size()),
                         result_utf8.data(),
                         static_cast<int>(result_utf8.size()), nullptr, nullptr);
-    return { result_utf8, result_utf16 }
+    return { result_utf8, result_utf16 };
 }
 #endif
 
@@ -297,16 +297,18 @@ std::wstring toWide(std::string_view name_ref) {
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 void decodeImpl(const std::shared_ptr<internal::SharedStringData> &data) {
-    auto result_utf16 = decodeW();
-    auto length_acp = WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
-                                          static_cast<int>(result_utf16.size()),
+    if (data->wsv.empty()) {
+        decodeImplW(data);
+    }
+    auto length_acp = WideCharToMultiByte(CP_ACP, 0, data->wsv.data(),
+                                          static_cast<int>(data->wsv.size()),
                                           nullptr, 0, nullptr, nullptr);
     std::string result_acp(length_acp, '\0');
-    WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
-                        static_cast<int>(result_utf16.size()),
+    WideCharToMultiByte(CP_ACP, 0, data->wsv.data(),
+                        static_cast<int>(data->wsv.size()),
                         result_acp.data(), static_cast<int>(result_acp.size()),
                         nullptr, nullptr);
-    data->s std::move(result_acp);
+    data->s = std::move(result_acp);
     data->sv = data->s;
 }
 #endif

@@ -386,7 +386,7 @@ bool operator!=(const T &other, const ValAdaptor &val) {
 }
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-    return os << static_cast<std::string>(a);
+    return os << a.asStringView();
 }
 
 /*!
