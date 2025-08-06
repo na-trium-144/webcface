@@ -25,7 +25,7 @@ class CClientTest : public ::testing::Test {
     void SetUp() override {
         dummy_s = std::make_shared<DummyServer>();
         wait();
-        wcli_ = wcfInit(self_name.decode().c_str(), "127.0.0.1", 17530);
+        wcli_ = wcfInit(self_name.decode().data(), "127.0.0.1", 17530);
     }
     void TearDown() override {
         wcfClose(wcli_);

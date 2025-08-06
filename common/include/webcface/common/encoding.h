@@ -150,6 +150,10 @@ using WStringView = TStringView<wchar_t>;
  * * ver2.10〜
  * staticな生文字列ポインタをstring_viewとして保持することを可能にした。
  * その場合string_viewの範囲外だがNULL終端であることが保証される。
+ * * ver2.10〜 u8StringView(), decode(), decodeW()
+ * はただのstring_viewだが、data()がnull終端文字列であることは保証される。
+ * u8StringViewShare(), decodeShare(), decodeShareW()
+ * はshared_ptrのコピーを含みちょっと遅い。
  *
  */
 class WEBCFACE_DLL SharedString {
@@ -167,9 +171,12 @@ class WEBCFACE_DLL SharedString {
     static SharedString WEBCFACE_CALL encode(std::wstring ws);
     static SharedString WEBCFACE_CALL encodeStatic(std::wstring_view ws);
 
-    StringView u8StringView() const;
-    StringView decode() const;
-    WStringView decodeW() const;
+    std::string_view u8StringView() const;
+    StringView u8StringViewShare() const;
+    std::string_view decode() const;
+    StringView decodeShare() const;
+    std::wstring_view decodeW() const;
+    WStringView decodeShareW() const;
 
     static const std::string &emptyStr();
     static const std::wstring &emptyStrW();
@@ -181,9 +188,15 @@ class WEBCFACE_DLL SharedString {
                         std::size_t len = std::string::npos) const;
     std::size_t find(char c, std::size_t pos = 0) const;
 
-    bool operator==(const SharedString &other) const;
-    bool operator<=(const SharedString &other) const;
-    bool operator>=(const SharedString &other) const;
+    bool operator==(const SharedString &other) const {
+        return this->u8StringView() == other.u8StringView();
+    }
+    bool operator<=(const SharedString &other) const {
+        return this->u8StringView() <= other.u8StringView();
+    }
+    bool operator>=(const SharedString &other) const{
+        return this->u8StringView() >= other.u8StringView();
+    }
     bool operator!=(const SharedString &other) const {
         return !(*this == other);
     }

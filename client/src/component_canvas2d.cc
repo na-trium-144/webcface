@@ -8,8 +8,8 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-StringView Canvas2DComponent::id() const { return id_.decode(); }
-WStringView Canvas2DComponent::idW() const { return id_.decodeW(); }
+StringView Canvas2DComponent::id() const { return id_.decodeShare(); }
+WStringView Canvas2DComponent::idW() const { return id_.decodeShareW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
@@ -129,11 +129,11 @@ TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) & {
 }
 StringView Canvas2DComponent::text() const {
     checkData();
-    return msg_data->text.decode();
+    return msg_data->text.decodeShare();
 }
 WStringView Canvas2DComponent::textW() const {
     checkData();
-    return msg_data->text.decodeW();
+    return msg_data->text.decodeShareW();
 }
 TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(StringInitializer text) & {
     msg_data->text = std::move(text);

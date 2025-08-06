@@ -222,7 +222,7 @@ class WEBCFACE_DLL ValAdaptor {
     /*!
      * \since ver2.10
      */
-    StringView asU8StringView() const;
+    std::string_view asU8StringView() const;
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10

@@ -48,10 +48,11 @@ void Arg::mergeConfig(const Arg &other) {
 }
 
 StringView Arg::name() const {
-    return this->msg_data ? this->msg_data->name_.decode() : StringView{};
+    return this->msg_data ? this->msg_data->name_.decodeShare() : StringView{};
 }
 WStringView Arg::nameW() const {
-    return this->msg_data ? this->msg_data->name_.decodeW() : WStringView{};
+    return this->msg_data ? this->msg_data->name_.decodeShareW()
+                          : WStringView{};
 }
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {

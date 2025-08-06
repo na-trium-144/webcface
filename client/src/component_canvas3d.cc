@@ -8,8 +8,8 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas3DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-StringView Canvas3DComponent::id() const { return id_.decode(); }
-WStringView Canvas3DComponent::idW() const { return id_.decodeW(); }
+StringView Canvas3DComponent::id() const { return id_.decodeShare(); }
+WStringView Canvas3DComponent::idW() const { return id_.decodeShareW(); }
 
 Canvas3DComponent::Canvas3DComponent() = default;
 

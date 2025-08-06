@@ -61,18 +61,6 @@ const std::wstring &SharedString::emptyStrW() {
 
 SharedString::SharedString(std::shared_ptr<internal::SharedStringData> &&data)
     : data(std::move(data)) {}
-bool SharedString::operator==(const SharedString &other) const {
-    return this->data == other.data ||
-           this->u8StringView() == other.u8StringView();
-}
-bool SharedString::operator<=(const SharedString &other) const {
-    return this->data == other.data ||
-           this->u8StringView() <= other.u8StringView();
-}
-bool SharedString::operator>=(const SharedString &other) const {
-    return this->data == other.data ||
-           this->u8StringView() >= other.u8StringView();
-}
 
 SharedString SharedString::fromU8String(std::string u8s) {
     return SharedString(
@@ -81,27 +69,35 @@ SharedString SharedString::fromU8String(std::string u8s) {
 SharedString SharedString::fromU8StringStatic(std::string_view u8s) {
     return SharedString(std::make_shared<internal::SharedStringData>(u8s));
 }
+
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
+/// \private
+std::pair<std::string, std::wstring> encodeImpl(std::string_view name){
+    auto length = MultiByteToWideChar(
+        CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
+    std::wstring result_utf16(length, '\0');
+    MultiByteToWideChar(CP_ACP, 0, name.data(),
+                        static_cast<int>(name.size()), result_utf16.data(),
+                        static_cast<int>(result_utf16.length()));
+    auto length_utf8 =
+        WideCharToMultiByte(CP_UTF8, 0, result_utf16.data(),
+                            static_cast<int>(result_utf16.size()), nullptr,
+                            0, nullptr, nullptr);
+    std::string result_utf8(length_utf8, '\0');
+    WideCharToMultiByte(
+        CP_UTF8, 0, result_utf16.data(),
+        static_cast<int>(result_utf16.size()), result_utf8.data(),
+        static_cast<int>(result_utf8.size()), nullptr, nullptr);
+    return {result_utf8, result_utf16}
+}
+#endif
+
 SharedString SharedString::encode(std::string name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
-        auto length = MultiByteToWideChar(
-            CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
-        std::wstring result_utf16(length, '\0');
-        MultiByteToWideChar(CP_ACP, 0, name.data(),
-                            static_cast<int>(name.size()), result_utf16.data(),
-                            static_cast<int>(result_utf16.length()));
-        // return encode(std::move(result_utf16), std::move(name));
-        auto length_utf8 =
-            WideCharToMultiByte(CP_UTF8, 0, result_utf16.data(),
-                                static_cast<int>(result_utf16.size()), nullptr,
-                                0, nullptr, nullptr);
-        std::string result_utf8(length_utf8, '\0');
-        WideCharToMultiByte(
-            CP_UTF8, 0, result_utf16.data(),
-            static_cast<int>(result_utf16.size()), result_utf8.data(),
-            static_cast<int>(result_utf8.size()), nullptr, nullptr);
+        auto encode_result = encodeImpl(name);
         return SharedString(std::make_shared<internal::SharedStringData>(
-            std::move(result_utf8), std::move(name), std::move(result_utf16)));
+            std::move(encode_result.first), std::move(name), std::move(encode_result.second)));
     }
 #endif
     // そのままコピー
@@ -110,29 +106,17 @@ SharedString SharedString::encode(std::string name) {
 SharedString SharedString::encodeStatic(std::string_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
-        auto length = MultiByteToWideChar(
-            CP_ACP, 0, name.data(), static_cast<int>(name.size()), nullptr, 0);
-        std::wstring result_utf16(length, '\0');
-        MultiByteToWideChar(CP_ACP, 0, name.data(),
-                            static_cast<int>(name.size()), result_utf16.data(),
-                            static_cast<int>(result_utf16.length()));
-        auto length_utf8 =
-            WideCharToMultiByte(CP_UTF8, 0, result_utf16.data(),
-                                static_cast<int>(result_utf16.size()), nullptr,
-                                0, nullptr, nullptr);
-        std::string result_utf8(length_utf8, '\0');
-        WideCharToMultiByte(
-            CP_UTF8, 0, result_utf16.data(),
-            static_cast<int>(result_utf16.size()), result_utf8.data(),
-            static_cast<int>(result_utf8.size()), nullptr, nullptr);
+        auto encode_result = encodeImpl(name);
         return SharedString(std::make_shared<internal::SharedStringData>(
-            std::move(result_utf8), name, std::move(result_utf16)));
+            std::move(encode_result.first), name, std::move(encode_result.second)));
     }
 #endif
     // そのままコピー
     return fromU8StringStatic(name);
 }
-SharedString SharedString::encode(std::wstring name) {
+
+/// \private
+std::string encodeImplW(std::wstring_view name){
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");
@@ -143,40 +127,35 @@ SharedString SharedString::encode(std::wstring name) {
     WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
                         result_utf8.data(),
                         static_cast<int>(result_utf8.size()), nullptr, nullptr);
-    return SharedString(std::make_shared<internal::SharedStringData>(
-        std::move(result_utf8), std::string(), std::move(name)));
+    return result_utf8;
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     std::string result_utf8;
     utf8::utf32to8(name.cbegin(), name.cend(), std::back_inserter(result_utf8));
+    return result_utf8;
+#endif
+}
+SharedString SharedString::encode(std::wstring name) {
+    auto result_utf8 = encodeImplW(name);
     return SharedString(std::make_shared<internal::SharedStringData>(
         std::move(result_utf8), std::string(), std::move(name)));
-#endif
 }
 SharedString SharedString::encodeStatic(std::wstring_view name) {
-#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
-    static_assert(sizeof(wchar_t) == 2,
-                  "Assuming wchar_t is utf-16 on Windows");
-    auto length_utf8 = WideCharToMultiByte(CP_UTF8, 0, name.data(),
-                                           static_cast<int>(name.size()),
-                                           nullptr, 0, nullptr, nullptr);
-    std::string result_utf8(length_utf8, '\0');
-    WideCharToMultiByte(CP_UTF8, 0, name.data(), static_cast<int>(name.size()),
-                        result_utf8.data(),
-                        static_cast<int>(result_utf8.size()), nullptr, nullptr);
+    auto result_utf8 = encodeImplW(name);
     return SharedString(std::make_shared<internal::SharedStringData>(
         std::move(result_utf8), std::string(), name));
-#else
-    static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
-    std::string result_utf8;
-    utf8::utf32to8(name.begin(), name.end(), std::back_inserter(result_utf8));
-    return SharedString(std::make_shared<internal::SharedStringData>(
-        std::move(result_utf8), std::string(), name));
-#endif
 }
 
 
-StringView SharedString::u8StringView() const {
+std::string_view SharedString::u8StringView() const {
+    if (!data) {
+        // null終端を保証する必要はある
+        return emptyStr();
+    } else {
+        return data->u8sv;
+    }
+}
+StringView SharedString::u8StringViewShare() const {
     if (!data) {
         return {};
     } else {
@@ -226,34 +205,47 @@ std::string toNarrow(std::wstring_view name) {
 #endif
 }
 
-WStringView SharedString::decodeW() const {
+void decodeImplW(const std::shared_ptr<internal::SharedStringData> &data){
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
+    static_assert(sizeof(wchar_t) == 2,
+                  "Assuming wchar_t is utf-16 on Windows");
+    auto length =
+        MultiByteToWideChar(CP_UTF8, 0, data->u8sv.data(),
+                            static_cast<int>(data->u8sv.size()), nullptr, 0);
+    std::wstring result_utf16(length, '\0');
+    MultiByteToWideChar(
+        CP_UTF8, 0, data->u8sv.data(), static_cast<int>(data->u8sv.size()),
+        result_utf16.data(), static_cast<int>(result_utf16.length()));
+    data->ws = std::move(result_utf16);
+    data->wsv = data->ws;
+#else
+    static_assert(sizeof(wchar_t) == 4,
+                  "Assuming wchar_t is utf-32 on Unix");
+    std::wstring result_utf32;
+    utf8::utf8to32(data->u8sv.begin(), data->u8sv.end(),
+                   std::back_inserter(result_utf32));
+    data->ws = std::move(result_utf32);
+    data->wsv = data->ws;
+#endif
+}
+std::wstring_view SharedString::decodeW() const {
+    if (!data || empty()) {
+        return emptyStrW();
+    } else {
+        std::lock_guard lock(data->m);
+        if (data->wsv.empty()) {
+            decodeImplW(data);
+        }
+        return data->wsv;
+    }
+}
+WStringView SharedString::decodeShareW() const {
     if (!data || empty()) {
         return {};
     } else {
         std::lock_guard lock(data->m);
         if (data->wsv.empty()) {
-            auto u8s = u8StringView();
-#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
-            static_assert(sizeof(wchar_t) == 2,
-                          "Assuming wchar_t is utf-16 on Windows");
-            auto length =
-                MultiByteToWideChar(CP_UTF8, 0, u8s.data(),
-                                    static_cast<int>(u8s.size()), nullptr, 0);
-            std::wstring result_utf16(length, '\0');
-            MultiByteToWideChar(
-                CP_UTF8, 0, u8s.data(), static_cast<int>(u8s.size()),
-                result_utf16.data(), static_cast<int>(result_utf16.length()));
-            data->ws = std::move(result_utf16);
-            data->wsv = data->ws;
-#else
-            static_assert(sizeof(wchar_t) == 4,
-                          "Assuming wchar_t is utf-32 on Unix");
-            std::wstring result_utf32;
-            utf8::utf8to32(u8s.begin(), u8s.end(),
-                           std::back_inserter(result_utf32));
-            data->ws = std::move(result_utf32);
-            data->wsv = data->ws;
-#endif
+            decodeImplW(data);
         }
         return WStringView(data->wsv.data(), data->wsv.size(), data);
     }
@@ -278,26 +270,31 @@ std::wstring toWide(std::string_view name_ref) {
 #endif
 }
 
-StringView SharedString::decode() const {
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
+void decodeImpl(const std::shared_ptr<internal::SharedStringData> &data){
+    auto result_utf16 = decodeW();
+    auto length_acp =
+        WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
+                            static_cast<int>(result_utf16.size()),
+                            nullptr, 0, nullptr, nullptr);
+    std::string result_acp(length_acp, '\0');
+    WideCharToMultiByte(
+        CP_ACP, 0, result_utf16.data(),
+        static_cast<int>(result_utf16.size()), result_acp.data(),
+        static_cast<int>(result_acp.size()), nullptr, nullptr);
+    data->s std::move(result_acp);
+    data->sv = data->s;
+}
+#endif
+std::string_view SharedString::decode() const {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
         if (!data || empty()) {
-            return emptyStrView();
+            return emptyStr();
         } else {
             std::lock_guard lock(data->m);
             if (data->sv.empty()) {
-                auto result_utf16 = decodeW();
-                auto length_acp =
-                    WideCharToMultiByte(CP_ACP, 0, result_utf16.data(),
-                                        static_cast<int>(result_utf16.size()),
-                                        nullptr, 0, nullptr, nullptr);
-                std::string result_acp(length_acp, '\0');
-                WideCharToMultiByte(
-                    CP_ACP, 0, result_utf16.data(),
-                    static_cast<int>(result_utf16.size()), result_acp.data(),
-                    static_cast<int>(result_acp.size()), nullptr, nullptr);
-                data->s std::move(result_acp);
-                data->sv = data->s;
+                decodeImpl(data);
             }
             return data->sv;
         }
@@ -305,6 +302,23 @@ StringView SharedString::decode() const {
 #endif
     // そのままコピー
     return u8StringView();
+}
+StringView SharedString::decodeShare() const {
+#if WEBCFACE_SYSTEM_WCHAR_WINDOWS
+    if (!using_utf8) {
+        if (!data || empty()) {
+            return {};
+        } else {
+            std::lock_guard lock(data->m);
+            if (data->sv.empty()) {
+                decodeImpl(data);
+            }
+            return StringView(data->sv.data(), data->sv.size(), data);
+        }
+    }
+#endif
+    // そのままコピー
+    return u8StringViewShare();
 }
 
 WEBCFACE_NS_END

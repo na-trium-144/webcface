@@ -89,21 +89,21 @@ void ValAdaptor::initWStr() const {
 }
 StringView ValAdaptor::asStringView() const {
     initStr();
-    return as_str.decode();
+    return as_str.decodeShare();
 }
 WStringView ValAdaptor::asWStringView() const {
     initWStr();
-    return as_str.decodeW();
+    return as_str.decodeShareW();
 }
 
-StringView ValAdaptor::asU8StringView() const {
+std::string_view ValAdaptor::asU8StringView() const {
     initStr();
     return as_str.u8StringView();
 }
 
 double ValAdaptor::asDouble() const {
     if (type == ValType::string_) {
-        return std::atof(asU8StringView().c_str());
+        return std::atof(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -115,7 +115,7 @@ double ValAdaptor::asDouble() const {
 }
 int ValAdaptor::asInt() const {
     if (type == ValType::string_) {
-        return std::atoi(asU8StringView().c_str());
+        return std::atoi(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -127,7 +127,7 @@ int ValAdaptor::asInt() const {
 }
 long long ValAdaptor::asLLong() const {
     if (type == ValType::string_) {
-        return std::atoll(asU8StringView().c_str());
+        return std::atoll(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:

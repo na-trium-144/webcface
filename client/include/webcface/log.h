@@ -49,7 +49,7 @@ class LogLine : private LogLineData {
      * * ver2.10〜 StringViewに変更
      *
      */
-    StringView message() const { return message_.decode(); };
+    StringView message() const { return message_.decodeShare(); };
 };
 class LogLineW : private LogLineData {
   public:
@@ -60,7 +60,7 @@ class LogLineW : private LogLineData {
      * * ver2.10〜 WStringViewに変更
      *
      */
-    WStringView message() const { return message_.decodeW(); };
+    WStringView message() const { return message_.decodeShareW(); };
 };
 
 /*!

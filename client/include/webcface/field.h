@@ -113,7 +113,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * ver2.10〜 std::stringの参照から StringView に変更
      *
      */
-    StringView name() const { return field_.decode(); }
+    StringView name() const { return field_.decodeShare(); }
     /*!
      * \brief field名を返す (wstring)
      * \since ver2.0
@@ -121,7 +121,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * ver2.10〜 std::wstringの参照から WStringView に変更
      *
      */
-    WStringView nameW() const { return field_.decodeW(); }
+    WStringView nameW() const { return field_.decodeShareW(); }
 
   protected:
     SharedString lastName8() const;

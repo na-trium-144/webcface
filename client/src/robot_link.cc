@@ -87,18 +87,18 @@ void internal::RobotLinkData::lockJoints(
 
 StringView RobotJoint::name() const {
     if (msg_data) {
-        return msg_data->joint_name.decode();
+        return msg_data->joint_name.decodeShare();
     } else if (temp_data) {
-        return temp_data->name.decode();
+        return temp_data->name.decodeShare();
     } else {
         return StringView{};
     }
 }
 WStringView RobotJoint::nameW() const {
     if (msg_data) {
-        return msg_data->joint_name.decodeW();
+        return msg_data->joint_name.decodeShareW();
     } else if (temp_data) {
-        return temp_data->name.decodeW();
+        return temp_data->name.decodeShareW();
     } else {
         return WStringView{};
     }
@@ -141,14 +141,14 @@ double RobotJoint::angle() const {
 
 StringView RobotLink::name() const {
     if (msg_data) {
-        return msg_data->name.decode();
+        return msg_data->name.decodeShare();
     } else {
         return StringView{};
     }
 }
 WStringView RobotLink::nameW() const {
     if (msg_data) {
-        return msg_data->name.decodeW();
+        return msg_data->name.decodeShareW();
     } else {
         return WStringView{};
     }

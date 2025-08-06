@@ -35,6 +35,12 @@ void SharedStringView(benchmark::State &state){
         benchmark::DoNotOptimize(ss.u8StringView());
     }
 }
+void SharedStringViewShare(benchmark::State &state){
+    webcface::SharedString ss = webcface::SharedString::fromU8StringStatic("hello, world");
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(ss.u8StringViewShare());
+    }
+}
 void stringCompare(benchmark::State &state){
     std::string str1 = "hello, world";
     std::string str2 = "hello, world2";
@@ -56,5 +62,6 @@ BENCHMARK(stringConstructStatic);
 BENCHMARK(SharedStringConstructStatic);
 BENCHMARK(stringView);
 BENCHMARK(SharedStringView);
+BENCHMARK(SharedStringViewShare);
 BENCHMARK(stringCompare);
 BENCHMARK(SharedStringCompare);

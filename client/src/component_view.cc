@@ -54,8 +54,8 @@ ViewColor colorFromRGB(double r, double g, double b) {
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-StringView ViewComponent::id() const { return id_.decode(); }
-WStringView ViewComponent::idW() const { return id_.decodeW(); }
+StringView ViewComponent::id() const { return id_.decodeShare(); }
+WStringView ViewComponent::idW() const { return id_.decodeShareW(); }
 
 ViewComponent::ViewComponent() = default;
 ViewComponent::ViewComponent(const ViewComponent &other)
@@ -166,17 +166,17 @@ CComponent ViewComponent::cDataT() const {
     CComponent vcc;
     vcc.type = static_cast<wcfViewComponentType>(msg_data->type);
     if constexpr (v_index == 0) {
-        vcc.text = msg_data->text.decode().c_str();
+        vcc.text = msg_data->text.decode().data();
     } else {
-        vcc.text = msg_data->text.decodeW().c_str();
+        vcc.text = msg_data->text.decodeW().data();
     }
     if (msg_data->on_click_member && msg_data->on_click_field) {
         if constexpr (v_index == 0) {
-            vcc.on_click_member = msg_data->on_click_member->decode().c_str();
-            vcc.on_click_field = msg_data->on_click_field->decode().c_str();
+            vcc.on_click_member = msg_data->on_click_member->decode().data();
+            vcc.on_click_field = msg_data->on_click_field->decode().data();
         } else {
-            vcc.on_click_member = msg_data->on_click_member->decodeW().c_str();
-            vcc.on_click_field = msg_data->on_click_field->decodeW().c_str();
+            vcc.on_click_member = msg_data->on_click_member->decodeW().data();
+            vcc.on_click_field = msg_data->on_click_field->decodeW().data();
         }
     } else {
         vcc.on_click_member = nullptr;
@@ -184,11 +184,11 @@ CComponent ViewComponent::cDataT() const {
     }
     if (msg_data->text_ref_member && msg_data->text_ref_field) {
         if constexpr (v_index == 0) {
-            vcc.text_ref_member = msg_data->text_ref_member->decode().c_str();
-            vcc.text_ref_field = msg_data->text_ref_field->decode().c_str();
+            vcc.text_ref_member = msg_data->text_ref_member->decode().data();
+            vcc.text_ref_field = msg_data->text_ref_field->decode().data();
         } else {
-            vcc.text_ref_member = msg_data->text_ref_member->decodeW().c_str();
-            vcc.text_ref_field = msg_data->text_ref_field->decodeW().c_str();
+            vcc.text_ref_member = msg_data->text_ref_member->decodeW().data();
+            vcc.text_ref_field = msg_data->text_ref_field->decodeW().data();
         }
     } else {
         vcc.text_ref_member = nullptr;
@@ -259,11 +259,11 @@ TemporalViewComponent &TemporalViewComponent::id(StringInitializer id) {
 }
 StringView ViewComponent::text() const {
     checkData();
-    return msg_data->text.decode();
+    return msg_data->text.decodeShare();
 }
 WStringView ViewComponent::textW() const {
     checkData();
-    return msg_data->text.decodeW();
+    return msg_data->text.decodeShareW();
 }
 TemporalViewComponent &TemporalViewComponent::text(StringInitializer text) & {
     msg_data->text = std::move(text);
