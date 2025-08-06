@@ -3,6 +3,7 @@
 #include <cstring>
 #include <mutex>
 #include <cassert>
+#include <variant>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>

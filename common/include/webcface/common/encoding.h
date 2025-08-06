@@ -220,7 +220,7 @@ class StringInitializer : public SharedString {
               typename std::enable_if_t<
                   std::conjunction_v<std::negation<std::is_void<T>>,
                                      std::is_constructible<std::string, T>>,
-                  nullptr_t> = nullptr>
+                  std::nullptr_t> = nullptr>
     StringInitializer(const T &s)
         : SharedString(SharedString::encode(std::string(s))) {}
     template <typename T,
@@ -229,7 +229,7 @@ class StringInitializer : public SharedString {
                       std::negation<std::is_void<T>>,
                       std::negation<std::is_constructible<std::string, T>>,
                       std::is_constructible<std::wstring, T>>,
-                  nullptr_t> = nullptr>
+                  std::nullptr_t> = nullptr>
     StringInitializer(const T &s)
         : SharedString(SharedString::encode(std::wstring(s))) {}
     // c-string ptr
