@@ -2,7 +2,6 @@
 #include <string>
 #include <string_view>
 #include <memory>
-#include <cassert>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -48,18 +47,23 @@ WEBCFACE_DLL std::wstring WEBCFACE_CALL toWide(std::string_view name_ref);
 WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 
 /*!
- * \brief null終端であることが保証されたstring_view
+ * \brief webcfaceで管理されている文字列を参照するstring_view
  * \since ver2.10
  *
- * std::string_view に c_str() メンバ関数を追加したもの。
+ * * null終端であることが保証されており、
+ * インタフェースとしては std::string_view に c_str() メンバ関数を追加したもの。
+ * * 文字列本体へのshared_ptrを保持しているため、参照が切れることはない。
+ * * std::string_view へキャストした場合、参照はこのStringViewの寿命までは有効
  *
  */
 template <typename CharT>
 class TStringView : public std::basic_string_view<CharT> {
+    std::shared_ptr<const internal::SharedStringData> s_data;
+
   public:
-    TStringView(const CharT *data, std::size_t size)
-        : std::basic_string_view<CharT>(data, size) {
-        assert(this->data()[size] == static_cast<CharT>(0));
+    TStringView(const CharT *data, std::size_t size,
+                std::shared_ptr<const internal::SharedStringData> s_data)
+        : std::basic_string_view<CharT>(data, size), s_data(std::move(s_data)) {
     }
     /*!
      * \brief null終端の文字列ポインタを返す
@@ -104,11 +108,11 @@ class WEBCFACE_DLL SharedString {
     explicit SharedString(std::shared_ptr<internal::SharedStringData> &&data);
 
     static SharedString WEBCFACE_CALL fromU8String(std::string u8s);
-    static SharedString WEBCFACE_CALL fromU8StringStatic(StringView u8s);
+    static SharedString WEBCFACE_CALL fromU8StringStatic(std::string_view u8s);
     static SharedString WEBCFACE_CALL encode(std::string s);
-    static SharedString WEBCFACE_CALL encodeStatic(StringView s);
+    static SharedString WEBCFACE_CALL encodeStatic(std::string_view s);
     static SharedString WEBCFACE_CALL encode(std::wstring ws);
-    static SharedString WEBCFACE_CALL encodeStatic(WStringView ws);
+    static SharedString WEBCFACE_CALL encodeStatic(std::wstring_view ws);
 
     StringView u8StringView() const;
     StringView decode() const;
@@ -116,11 +120,11 @@ class WEBCFACE_DLL SharedString {
 
     static const std::string &emptyStr();
     static inline StringView emptyStrView() {
-        return StringView(emptyStr().c_str(), 0);
+        return StringView(emptyStr().c_str(), 0, nullptr);
     }
     static const std::wstring &emptyStrW();
     static inline WStringView emptyStrViewW() {
-        return WStringView(emptyStrW().c_str(), 0);
+        return WStringView(emptyStrW().c_str(), 0, nullptr);
     }
 
     bool empty() const;
@@ -181,11 +185,12 @@ class String : public SharedString {
     template <std::size_t N>
     String(const char (&static_str)[N])
         : SharedString(
-              SharedString::encodeStatic(StringView(static_str, N - 1))) {}
+              SharedString::encodeStatic(std::string_view(static_str, N - 1))) {
+    }
     template <std::size_t N>
     String(const wchar_t (&static_str)[N])
-        : SharedString(
-              SharedString::encodeStatic(WStringView(static_str, N - 1))) {}
+        : SharedString(SharedString::encodeStatic(
+              std::wstring_view(static_str, N - 1))) {}
 };
 
 /*!

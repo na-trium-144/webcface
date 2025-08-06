@@ -2,6 +2,7 @@
 #include <utf8.h>
 #include <cstring>
 #include <mutex>
+#include <cassert>
 
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
 #include <windows.h>
@@ -11,45 +12,57 @@ WEBCFACE_NS_BEGIN
 
 namespace internal {
 
-struct SharedStringData {
-    std::variant<std::string, StringView> u8s;
-    std::variant<std::string, StringView> s;
-    std::variant<std::wstring, WStringView> ws;
+struct SharedStringData : std::enable_shared_from_this<SharedStringData> {
+    std::variant<std::string, std::string_view> u8s;
+    std::variant<std::string, std::string_view> s;
+    std::variant<std::wstring, std::wstring_view> ws;
     std::recursive_mutex m;
 
     explicit SharedStringData(std::string u8s)
         : u8s(std::move(u8s)), s(std::string()), ws(std::wstring()), m() {}
-    explicit SharedStringData(StringView u8s)
-        : u8s(u8s), s(std::string()), ws(std::wstring()), m() {}
+    explicit SharedStringData(std::string_view u8s)
+        : u8s(u8s), s(std::string()), ws(std::wstring()), m() {
+        assert(*(u8s.data() + u8s.size()) == '\0');
+    }
     SharedStringData(std::string u8s, std::string s, std::wstring ws)
         : u8s(std::move(u8s)), s(std::move(s)), ws(std::move(ws)), m() {}
-    SharedStringData(std::string u8s, StringView s, std::wstring ws)
-        : u8s(std::move(u8s)), s(s), ws(std::move(ws)), m() {}
-    SharedStringData(std::string u8s, std::string s, WStringView ws)
-        : u8s(std::move(u8s)), s(std::move(s)), ws(ws), m() {}
+    SharedStringData(std::string u8s, std::string_view s, std::wstring ws)
+        : u8s(std::move(u8s)), s(s), ws(std::move(ws)), m() {
+        assert(*(s.data() + s.size()) == '\0');
+    }
+    SharedStringData(std::string u8s, std::string s, std::wstring_view ws)
+        : u8s(std::move(u8s)), s(std::move(s)), ws(ws), m() {
+        assert(*(ws.data() + ws.size()) == L'\0');
+    }
 
     StringView u8sv() const {
         switch (u8s.index()) {
         case 0:
-            return StringView(std::get<0>(u8s).c_str(), std::get<0>(u8s).size());
+            return StringView(std::get<0>(u8s).c_str(), std::get<0>(u8s).size(),
+                              shared_from_this());
         default:
-            return std::get<1>(u8s);
+            return StringView(std::get<1>(u8s).data(), std::get<1>(u8s).size(),
+                              shared_from_this());
         }
     }
     StringView sv() const {
         switch (s.index()) {
         case 0:
-            return StringView(std::get<0>(s).c_str(), std::get<0>(s).size());
+            return StringView(std::get<0>(s).c_str(), std::get<0>(s).size(),
+                              shared_from_this());
         default:
-            return std::get<1>(s);
+            return StringView(std::get<1>(s).data(), std::get<1>(s).size(),
+                              shared_from_this());
         }
     }
     WStringView wsv() const {
         switch (ws.index()) {
         case 0:
-            return WStringView(std::get<0>(ws).c_str(), std::get<0>(ws).size());
+            return WStringView(std::get<0>(ws).c_str(), std::get<0>(ws).size(),
+                               shared_from_this());
         default:
-            return std::get<1>(ws);
+            return WStringView(std::get<1>(ws).data(), std::get<1>(ws).size(),
+                               shared_from_this());
         }
     }
 };
@@ -90,7 +103,7 @@ SharedString SharedString::fromU8String(std::string u8s) {
     return SharedString(
         std::make_shared<internal::SharedStringData>(std::move(u8s)));
 }
-SharedString SharedString::fromU8StringStatic(StringView u8s) {
+SharedString SharedString::fromU8StringStatic(std::string_view u8s) {
     return SharedString(std::make_shared<internal::SharedStringData>(u8s));
 }
 SharedString SharedString::encode(std::string name) {
@@ -119,7 +132,7 @@ SharedString SharedString::encode(std::string name) {
     // そのままコピー
     return fromU8String(std::move(name));
 }
-SharedString SharedString::encodeStatic(StringView name) {
+SharedString SharedString::encodeStatic(std::string_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
         auto length = MultiByteToWideChar(
@@ -165,7 +178,7 @@ SharedString SharedString::encode(std::wstring name) {
         std::move(result_utf8), std::string(), std::move(name)));
 #endif
 }
-SharedString SharedString::encodeStatic(WStringView name) {
+SharedString SharedString::encodeStatic(std::wstring_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
                   "Assuming wchar_t is utf-16 on Windows");

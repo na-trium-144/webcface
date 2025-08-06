@@ -129,17 +129,11 @@ class WEBCFACE_DLL Variant : protected Field {
     /*!
      * \brief null終端の文字列の参照として返す
      * \since ver2.10
-     *
-     * 参照は少なくとも次のClient::sync()までは有効
-     *
      */
     StringView asStringView() const { return get().asStringView(); }
     /*!
      * \brief null終端の文字列の参照として返す (wstring)
      * \since ver2.10
-     *
-     * 参照は少なくとも次のClient::sync()までは有効
-     *
      */
     WStringView asWStringView() const { return get().asWStringView(); }
     /*!
@@ -367,8 +361,8 @@ class WEBCFACE_DLL Text : protected Variant {
      *
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
      * * <del>ver2.0〜 stringに戻した</del>
+     * * <del>参照は少なくとも次のClient::sync()までは有効</del>
      * * ver2.10〜 StringViewに変更
-     * * 参照は少なくとも次のClient::sync()までは有効
      *
      */
     std::optional<StringView> tryGet() const;
@@ -376,8 +370,8 @@ class WEBCFACE_DLL Text : protected Variant {
      * \brief 文字列を返す (wstring)
      * \since ver2.0
      *
+     * * <del>参照は少なくとも次のClient::sync()までは有効</del>
      * * ver2.10〜 WStringViewに変更
-     * * 参照は少なくとも次のClient::sync()までは有効
      *
      */
     std::optional<WStringView> tryGetW() const;
@@ -387,7 +381,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
      * * <del>ver2.0〜 stringに戻した</del>
      * * <del>ver2.0〜 const参照に変更</del>
-     * * 参照は少なくとも次のClient::sync()までは有効
+     * * <del>参照は少なくとも次のClient::sync()までは有効</del>
      * * ver2.10〜 StringViewに変更
      *
      */
@@ -396,7 +390,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * \brief 文字列を返す (wstring const参照)
      * \since ver2.0
      *
-     * * 参照は少なくとも次のClient::sync()までは有効
+     * * <del>参照は少なくとも次のClient::sync()までは有効</del>
      * * ver2.10〜 WStringViewに変更
      *
      */
@@ -571,19 +565,13 @@ class WEBCFACE_DLL InputRef {
         return asWString();
     }
     /*!
-     * \brief null終端の文字列の参照として返す
+     * \brief null終端の文字列として返す
      * \since ver2.10
-     *
-     * 参照は少なくとも次のClient::sync()までは有効
-     *
      */
     StringView asStringView() const { return get().asStringView(); }
     /*!
-     * \brief null終端の文字列の参照として返す
+     * \brief null終端の文字列として返す
      * \since ver2.10
-     *
-     * 参照は少なくとも次のClient::sync()までは有効
-     *
      */
     WStringView asWStringView() const { return get().asWStringView(); }
     /*!
