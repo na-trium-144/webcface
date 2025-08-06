@@ -37,9 +37,9 @@ TEST_F(ServerTest, sync) {
     wait();
     dummy_c1->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::SyncInit{{}, "c2"_ss, 0, "a", "1", ""});
-    dummy_c2->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
+    dummy_c2->send(message::Text{{}, "a"_ss, ValAdaptor("")});
     dummy_c1->waitRecv<message::SyncInit>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_name.u8String(), "c2");
+        EXPECT_EQ(obj.member_name.u8StringView(), "c2");
         EXPECT_EQ(obj.member_id, 2u);
         EXPECT_EQ(obj.lib_name, "a");
         EXPECT_EQ(obj.lib_ver, "1");
@@ -72,7 +72,7 @@ TEST_F(ServerTest, sync) {
     dummy_c3->recv<message::Entry<message::Text>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 2u);
-            EXPECT_EQ(obj.field.u8String(), "a");
+            EXPECT_EQ(obj.field.u8StringView(), "a");
         },
         [&] { ADD_FAILURE() << "should have been received entry"; });
 
@@ -128,26 +128,26 @@ TEST_F(ServerTest, entry) {
     dummy_c2 = std::make_shared<DummyClient>();
     wait();
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
-    dummy_c1->send(
-        message::Value{{}, "a"_ss, MutableNumVector(1)});
-    dummy_c1->send(message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("")});
+    dummy_c1->send(message::Value{{}, "a"_ss, MutableNumVector(1)});
+    dummy_c1->send(message::Text{{}, "a"_ss, ValAdaptor("")});
     dummy_c1->send(message::RobotModel{
         "a"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string,
-                 std::shared_ptr<message::Canvas3DComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c1->send(message::Canvas2D{
         "a"_ss,
         0,
         0,
-        std::map<std::string,
-                 std::shared_ptr<message::Canvas2DComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c1->send(message::Image{
         "a"_ss,
@@ -167,47 +167,47 @@ TEST_F(ServerTest, entry) {
     // c2が接続したタイミングでのc1のentryが全部返る
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->waitRecv<message::SyncInit>([&](const auto &obj) {
-        EXPECT_EQ(obj.member_name.u8String(), "c1");
+        EXPECT_EQ(obj.member_name.u8StringView(), "c1");
         EXPECT_EQ(obj.member_id, 1u);
     });
     dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1u);
-            EXPECT_EQ(obj.field.u8String(), "a");
+            EXPECT_EQ(obj.field.u8StringView(), "a");
         });
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
     });
     dummy_c2->waitRecv<message::Entry<message::Log>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "default");
+        EXPECT_EQ(obj.field.u8StringView(), "default");
     });
     dummy_c2->waitRecv<message::LogEntryDefault>(
         [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.return_type, ValType::none_);
         EXPECT_EQ(obj.args.size(), 0u);
         EXPECT_EQ(obj.index, 5);
@@ -215,51 +215,51 @@ TEST_F(ServerTest, entry) {
     dummy_c2->recvClear();
 
     // c1にentryを追加する
-    dummy_c1->send(
-        message::Value{{}, "b"_ss, MutableNumVector(1)});
+    dummy_c1->send(message::Value{{}, "b"_ss, MutableNumVector(1)});
     dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
-    dummy_c1->send(message::Text{{}, "b"_ss, std::make_shared<ValAdaptor>("")});
+    dummy_c1->send(message::Text{{}, "b"_ss, ValAdaptor("")});
     dummy_c2->waitRecv<message::Entry<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     dummy_c1->send(message::RobotModel{
         "b"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
     dummy_c2->waitRecv<message::Entry<message::RobotModel>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.member_id, 1u);
-            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.field.u8StringView(), "b");
         });
     dummy_c1->send(message::View{
         "b"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     dummy_c1->send(message::Canvas3D{
         "b"_ss,
-        std::map<std::string,
-                 std::shared_ptr<message::Canvas3DComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     dummy_c1->send(message::Canvas2D{
         "b"_ss,
         0,
         0,
-        std::map<std::string,
-                 std::shared_ptr<message::Canvas2DComponentData>>(),
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>(),
         {}});
     dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     dummy_c1->send(message::Image{
         "b"_ss,
@@ -269,12 +269,12 @@ TEST_F(ServerTest, entry) {
             .toMessage()});
     dummy_c2->waitRecv<message::Entry<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     dummy_c1->send(message::FuncInfo{0, "b"_ss, ValType::none_, {}, 5});
     dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
         EXPECT_EQ(obj.member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.return_type, ValType::none_);
         EXPECT_EQ(obj.args.size(), 0u);
         EXPECT_EQ(obj.index, 5);
@@ -445,7 +445,7 @@ TEST_F(ServerTest, call) {
         EXPECT_EQ(obj.caller_id, 1u);
         EXPECT_EQ(obj.caller_member_id, 2u);
         EXPECT_EQ(obj.target_member_id, 1u);
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.args.size(), 3u);
     });
     dummy_c2->recvClear();

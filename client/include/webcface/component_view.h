@@ -1,4 +1,5 @@
 #pragma once
+#include "webcface/func_trait.h"
 #include <functional>
 #include <optional>
 #include <unordered_map>
@@ -440,12 +441,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      */
     template <typename T>
     TemporalViewComponent &onChange(T func) & {
+        static_assert(traits::InvokeObjTrait<T>::ArgsSize == 1);
+        using FirstArgType =
+            typename traits::InvokeObjTrait<T>::template ArgsAt<0>;
         InputRef ref;
         return onChange(
             std::make_shared<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>(
-                [ref, func = std::move(func)](ValAdaptor val) {
+                [ref, func = std::move(func)](const ValAdaptor &val) {
                     ref.lockedField().set(val);
-                    return func(val);
+                    return func(static_cast<FirstArgType>(val));
                 }),
             ref);
     }

@@ -15,9 +15,7 @@ TEST_F(ServerTest, value) {
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Value{
-        {},
-        "a"_ss,
-        MutableNumVector(std::vector<double>{3, 4, 5})});
+        {}, "a"_ss, MutableNumVector(std::vector<double>{3, 4, 5})});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "a"_ss, 1});
@@ -25,7 +23,7 @@ TEST_F(ServerTest, value) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data.size(), 3u);
         EXPECT_EQ(obj.data.at(0), 3);
     });
@@ -33,14 +31,12 @@ TEST_F(ServerTest, value) {
 
     // 変化後の値
     dummy_c1->send(message::Sync{});
-    dummy_c1->send(message::Value{{},
-                                  "a"_ss,
-                                  MutableNumVector(
-                                      std::vector<double>{6, 7, 8, 9})});
+    dummy_c1->send(message::Value{
+        {}, "a"_ss, MutableNumVector(std::vector<double>{6, 7, 8, 9})});
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data.size(), 4u);
         EXPECT_EQ(obj.data.at(0), 6);
     });
@@ -50,8 +46,7 @@ TEST_F(ServerTest, text) {
     dummy_c2 = std::make_shared<DummyClient>();
     dummy_c1->send(message::SyncInit{{}, "c1"_ss, 0, "", "", ""});
     dummy_c1->send(message::Sync{});
-    dummy_c1->send(
-        message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("zzz")});
+    dummy_c1->send(message::Text{{}, "a"_ss, ValAdaptor("zzz")});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::Text>{{}, "c1"_ss, "a"_ss, 1});
@@ -59,32 +54,31 @@ TEST_F(ServerTest, text) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
-        EXPECT_EQ(*obj.data, "zzz");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
+        EXPECT_EQ(obj.data, "zzz");
     });
     dummy_c2->recvClear();
 
     // 変化後の値
     dummy_c1->send(message::Sync{});
-    dummy_c1->send(
-        message::Text{{}, "a"_ss, std::make_shared<ValAdaptor>("zzzzz")});
+    dummy_c1->send(message::Text{{}, "a"_ss, ValAdaptor("zzzzz")});
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
-        EXPECT_EQ(*obj.data, "zzzzz");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
+        EXPECT_EQ(obj.data, "zzzzz");
     });
     dummy_c2->recvClear();
 
     for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
         dummy_c1->send(message::Sync{});
-        dummy_c1->send(message::Text{
-            {}, "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        dummy_c1->send(
+            message::Text{{}, "a"_ss, ValAdaptor(std::string(len, 'a'))});
         dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
         dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
-            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            EXPECT_EQ(obj.data.asU8StringView().size(), len);
             for (std::size_t i = 0; i < len; i++) {
-                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+                EXPECT_EQ(obj.data.asU8StringView()[i], 'a');
             }
         });
         dummy_c2->recvClear();
@@ -101,13 +95,13 @@ TEST_F(ServerTest, textWithUnix) {
 
     for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
         dummy_c1->send(message::Sync{});
-        dummy_c1->send(message::Text{
-            {}, "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+        dummy_c1->send(
+            message::Text{{}, "a"_ss, ValAdaptor(std::string(len, 'a'))});
         dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
         dummy_c2->waitRecv<message::Res<message::Text>>([&](const auto &obj) {
-            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            EXPECT_EQ(obj.data.asU8StringView().size(), len);
             for (std::size_t i = 0; i < len; i++) {
-                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+                EXPECT_EQ(obj.data.asU8StringView()[i], 'a');
             }
         });
         dummy_c2->recvClear();
@@ -130,7 +124,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data.size(), 1u);
     });
     dummy_c2->recvClear();
@@ -157,7 +151,7 @@ TEST_F(ServerTest, robotModel) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::RobotModel>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         ASSERT_EQ(obj.data.size(), 3u);
         EXPECT_EQ(obj.data.at(0)->joint_parent, -1);
         EXPECT_EQ(obj.data.at(1)->joint_parent, -1);
@@ -172,7 +166,8 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>{
             {"0", std::static_pointer_cast<message::ViewComponentData>(
                       std::shared_ptr(ViewComponents::text("a")
                                           .component_v.lockTmp(data_, ""_ss)))},
@@ -194,7 +189,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
         EXPECT_EQ(obj.data_diff.at("0")->type,
@@ -206,7 +201,7 @@ TEST_F(ServerTest, view) {
     dummy_c3->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c3->waitRecv<message::Res<message::ViewOld>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_diff.at("0")->type,
                   static_cast<int>(ViewComponentType::text));
@@ -218,7 +213,8 @@ TEST_F(ServerTest, view) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::View{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>{
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>{
             {"0", std::static_pointer_cast<message::ViewComponentData>(
                       std::shared_ptr(ViewComponents::text("b")
                                           .component_v.lockTmp(data_, ""_ss)))},
@@ -227,7 +223,7 @@ TEST_F(ServerTest, view) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_diff.at("0")->type,
                   static_cast<int>(ViewComponentType::text));
@@ -235,7 +231,7 @@ TEST_F(ServerTest, view) {
     dummy_c3->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c3->waitRecv<message::Res<message::ViewOld>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_diff.at("0")->type,
                   static_cast<int>(ViewComponentType::text));
@@ -272,7 +268,7 @@ TEST_F(ServerTest, viewOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
         EXPECT_EQ(obj.data_diff.at("0.0")->type, // id 0.0
@@ -284,7 +280,7 @@ TEST_F(ServerTest, viewOld) {
     dummy_c3->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c3->waitRecv<message::Res<message::ViewOld>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_diff.at("0")->type, // index 0
                   static_cast<int>(ViewComponentType::text));
@@ -305,7 +301,7 @@ TEST_F(ServerTest, viewOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::View>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_diff.at("0.0")->type, // id
                   static_cast<int>(ViewComponentType::text));
@@ -315,7 +311,7 @@ TEST_F(ServerTest, viewOld) {
     dummy_c3->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c3->waitRecv<message::Res<message::ViewOld>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_diff.at("0")->type, // index
                   static_cast<int>(ViewComponentType::text));
@@ -330,8 +326,8 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
-            {"0", {}}, {"1", {}}, {"2", {}}},
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>{{"0", {}}, {"1", {}}, {"2", {}}},
         std::vector<SharedString>{"0"_ss, "1"_ss, "2"_ss}});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -340,7 +336,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
     });
@@ -352,7 +348,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c3->waitRecv<message::Res<message::Canvas3DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 3u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -362,14 +358,15 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas3D{
         "a"_ss,
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>{
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>{
             {"0", {}},
         },
         std::nullopt});
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_ids, std::nullopt);
     });
@@ -377,7 +374,7 @@ TEST_F(ServerTest, canvas3d) {
     dummy_c3->waitRecv<message::Res<message::Canvas3DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 1u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -400,7 +397,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
     });
@@ -412,7 +409,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c3->waitRecv<message::Res<message::Canvas3DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 3u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -429,7 +426,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas3D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_ids->size(),
                   3u); // currently always return full id list
@@ -438,7 +435,7 @@ TEST_F(ServerTest, canvas3dOld) {
     dummy_c3->waitRecv<message::Res<message::Canvas3DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 1u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -451,8 +448,8 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
-            {"0", {}}, {"1", {}}, {"2", {}}},
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>{{"0", {}}, {"1", {}}, {"2", {}}},
         std::vector<SharedString>{"0"_ss, "1"_ss, "2"_ss}});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
@@ -461,7 +458,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
     });
@@ -473,7 +470,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c3->waitRecv<message::Res<message::Canvas2DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 3u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -483,14 +480,15 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Canvas2D{
         "a"_ss, 0, 0,
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>{
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>{
             {"0", {}},
         },
         std::nullopt});
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_ids, std::nullopt);
     });
@@ -498,7 +496,7 @@ TEST_F(ServerTest, canvas2d) {
     dummy_c3->waitRecv<message::Res<message::Canvas2DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 1u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -521,7 +519,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 3u);
         EXPECT_EQ(obj.data_ids->size(), 3u);
     });
@@ -533,7 +531,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c3->waitRecv<message::Res<message::Canvas2DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 3u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -550,7 +548,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Canvas2D>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_ids->size(),
                   3u); // currently always return full id list
@@ -559,7 +557,7 @@ TEST_F(ServerTest, canvas2dOld) {
     dummy_c3->waitRecv<message::Res<message::Canvas2DOld>>(
         [&](const auto &obj) {
             EXPECT_EQ(obj.req_id, 1u);
-            EXPECT_EQ(obj.sub_field.u8String(), "");
+            EXPECT_EQ(obj.sub_field.u8StringView(), "");
             EXPECT_EQ(obj.data_diff.size(), 1u);
             EXPECT_EQ(obj.length, 3u);
         });
@@ -583,7 +581,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
@@ -596,7 +594,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_->size(), 15u * 10u * 3u);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_EQ(obj.width_, 15);
@@ -616,7 +614,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
@@ -627,11 +625,13 @@ TEST_F(ServerTest, image) {
     sendImage();
     wait();
     dummy_c2->recv<message::Res<message::Image>>(
-        [&](const auto &) { ADD_FAILURE() << "should not receive Image Res 3"; },
+        [&](const auto &) {
+            ADD_FAILURE() << "should not receive Image Res 3";
+        },
         [] {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data_->size(), 8u * 5u * 1u);
         EXPECT_EQ(obj.height_, 5);
         EXPECT_EQ(obj.width_, 8);
@@ -647,7 +647,7 @@ TEST_F(ServerTest, image) {
     dummy_c2->waitRecv<message::Sync>([&](const auto &) {});
     dummy_c2->waitRecv<message::Res<message::Image>>([&](const auto &obj) {
         EXPECT_EQ(obj.req_id, 1u);
-        EXPECT_EQ(obj.sub_field.u8String(), "");
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.width_, 15);
         EXPECT_EQ(obj.height_, 10);
         EXPECT_GT(obj.data_->size(), 0u);
@@ -677,7 +677,7 @@ TEST_F(ServerTest, image) {
             dummy_c2->waitRecv<message::Res<message::Image>>(
                 [&](const auto &obj) {
                     EXPECT_EQ(obj.req_id, 1u);
-                    EXPECT_EQ(obj.sub_field.u8String(), "");
+                    EXPECT_EQ(obj.sub_field.u8StringView(), "");
                     EXPECT_EQ(obj.height_, 10);
                     EXPECT_EQ(obj.width_, 15);
                     EXPECT_EQ(obj.color_mode_,

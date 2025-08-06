@@ -3,6 +3,7 @@
 #include "func_result.h"
 #include "arg.h"
 #include "trait.h"
+#include "func_trait.h"
 #include "exception.h"
 
 WEBCFACE_NS_BEGIN
@@ -11,26 +12,6 @@ struct FuncInfo;
 }
 
 namespace traits {
-template <typename T>
-constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
-    return &T::operator();
-}
-template <typename Ret, typename... Args>
-constexpr auto getInvokeSignature(Ret (*p)(Args...)) {
-    return p;
-}
-template <typename T>
-using InvokeSignature =
-    decltype(getInvokeSignature(std::declval<std::decay_t<T>>()));
-
-// ValAdaptorからstringへは暗黙変換できないようにしているが、
-// Funcの引数では例外的にstringを許可する
-template <typename T>
-constexpr bool isArgTypeSupportedByWebCFaceFunc =
-    std::is_convertible_v<ValAdaptor, T> ||
-    std::is_convertible_v<std::string, T> ||
-    std::is_convertible_v<std::wstring, T>;
-
 template <bool>
 struct FuncArgTypeCheck {};
 template <>
@@ -39,7 +20,7 @@ struct FuncArgTypeCheck<true> {
 };
 template <typename... Args>
 struct FuncArgTypesTrait
-    : FuncArgTypeCheck<(isArgTypeSupportedByWebCFaceFunc<Args> && ...)> {};
+    : FuncArgTypeCheck<(ConvertibleFromValAdaptor<Args> && ...)> {};
 
 template <bool>
 struct FuncReturnTypeCheck {};
@@ -52,8 +33,6 @@ struct FuncReturnTypeTrait
     : FuncReturnTypeCheck<std::disjunction_v<
           std::is_void<Ret>, std::is_constructible<ValAdaptor, Ret>>> {};
 
-template <typename T>
-struct FuncSignatureTrait {};
 /*!
  * RetとArgsが条件を満たすときだけ、
  * ReturnTypeTrait::ReturnTypeSupportedByWebCFaceFunc と
@@ -61,19 +40,19 @@ struct FuncSignatureTrait {};
  * (enable_ifを使ってないのはエラーメッセージがわかりにくかったから)
  *
  */
+template <typename T>
+struct FuncSignatureTrait {};
 template <typename Ret, typename... Args>
-struct FuncSignatureTrait<Ret(Args...)> {
+struct FuncSignatureTrait<Ret(Args...)> : InvokeSignatureTrait<Ret(Args...)> {
     using ReturnTypeTrait = FuncReturnTypeTrait<Ret>;
     using ArgTypesTrait = FuncArgTypesTrait<Args...>;
-    static constexpr bool return_void = std::is_same_v<Ret, void>;
+    static constexpr bool return_void = std::is_void_v<Ret>;
     static inline bool assertArgsNum(const CallHandle &handle) {
         return handle.assertArgsNum(sizeof...(Args));
     }
     static inline std::vector<Arg> argsInfo() {
         return std::vector<Arg>{Arg{valTypeOf<Args>()}...};
     }
-    using ReturnType = Ret;
-    using ArgsTuple = std::tuple<std::decay_t<Args>...>;
 };
 template <typename Ret, typename T, typename... Args>
 struct FuncSignatureTrait<Ret (T::*)(Args...)>
@@ -85,15 +64,9 @@ template <typename Ret, typename... Args>
 struct FuncSignatureTrait<Ret (*)(Args...)> : FuncSignatureTrait<Ret(Args...)> {
 };
 
-/*!
- * * Tは関数オブジェクト型、または関数型
- * * InvokeSignature<T> で関数呼び出しの型 ( Ret(*)(Args...) や
- * Ret(T::*)(Args...) ) を取得し、
- * * FuncSignatureTrait<Ret(Args...)> が各種メンバー型や定数を定義する
- *
- */
 template <typename T>
-using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
+using FuncObjTrait = FuncSignatureTrait<decltype(getInvokeSignature(
+    std::declval<std::decay_t<T>>()))>;
 
 } // namespace traits
 
@@ -139,7 +112,9 @@ class WEBCFACE_DLL Func : protected Field {
      * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Func operator[](StringInitializer field) const { return child(std::move(field)); }
+    Func operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
     /*!
      * child()と同じ
      * \since ver1.11

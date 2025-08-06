@@ -13,18 +13,18 @@ TEST_F(ClientTest, valueSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    data_->value_store.setSend(
-        "a"_ss, MutableNumVector(std::vector<double>{5}));
+    data_->value_store.setSend("a"_ss,
+                               MutableNumVector(std::vector<double>{5}));
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.data.size(), 1u);
         EXPECT_EQ(obj.data.at(0), 5);
     });
     dummy_s->recvClear();
 
-    data_->value_store.setSend(
-        "a"_ss, MutableNumVector(std::vector<double>{5}));
+    data_->value_store.setSend("a"_ss,
+                               MutableNumVector(std::vector<double>{5}));
     wcli_->sync();
     wait();
     dummy_s->recv<message::Value>(
@@ -32,11 +32,11 @@ TEST_F(ClientTest, valueSend) {
         [&] {});
     dummy_s->recvClear();
 
-    data_->value_store.setSend("a"_ss, MutableNumVector(
-                                           std::vector<double>{5, 2}));
+    data_->value_store.setSend("a"_ss,
+                               MutableNumVector(std::vector<double>{5, 2}));
     wcli_->sync();
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         ASSERT_EQ(obj.data.size(), 2u);
         EXPECT_EQ(obj.data.at(0), 5);
         EXPECT_EQ(obj.data.at(1), 2);
@@ -50,26 +50,22 @@ TEST_F(ClientTest, valueReq) {
     }
     wcli_->member("a").value("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").value("b").onChange(callback<Value>());
     dummy_s->send(message::Res<message::Value>{
-        1, ""_ss,
-        MutableNumVector(std::vector<double>{1, 2, 3})});
+        1, ""_ss, MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     dummy_s->send(message::Res<message::Value>{
-        1, "c"_ss,
-        MutableNumVector(std::vector<double>{1, 2, 3})});
+        1, "c"_ss, MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b"_ss).value().size(),
-              3u);
+    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b"_ss).value().size(), 3u);
     EXPECT_TRUE(data_->value_store.getRecv("a"_ss, "b.c"_ss).has_value());
-    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b.c"_ss).value().size(),
-              3u);
+    EXPECT_EQ(data_->value_store.getRecv("a"_ss, "b.c"_ss).value().size(), 3u);
 }
 TEST_F(ClientTest, valueReqTiming) {
     wcli_->autoReconnect(false);
@@ -123,10 +119,10 @@ TEST_F(ClientTest, valueReqTiming) {
                 message::MessageKind::req + message::MessageKind::value) {
                 auto &obj = *static_cast<message::Req<message::Value> *>(
                     m.second.get());
-                EXPECT_EQ(obj.member.u8String(), "a");
+                EXPECT_EQ(obj.member.u8StringView(), "a");
                 ASSERT_GE(obj.req_id, 1u);
                 ASSERT_LE(obj.req_id, 6u);
-                EXPECT_EQ(obj.field.u8String(), std::to_string(obj.req_id));
+                EXPECT_EQ(obj.field.u8StringView(), std::to_string(obj.req_id));
                 EXPECT_FALSE(req_found.at(obj.req_id - 1));
                 req_found.at(obj.req_id - 1) = true;
             }
@@ -140,15 +136,15 @@ TEST_F(ClientTest, textSend) {
     while (!dummy_s->connected() || !wcli_->connected()) {
         wait();
     }
-    data_->text_store.setSend("a"_ss, std::make_shared<ValAdaptor>("b"));
+    data_->text_store.setSend("a"_ss, ValAdaptor("b"));
     wcli_->sync();
     dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(*obj.data, "b");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
+        EXPECT_EQ(obj.data, "b");
     });
     dummy_s->recvClear();
 
-    data_->text_store.setSend("a"_ss, std::make_shared<ValAdaptor>("b"));
+    data_->text_store.setSend("a"_ss, ValAdaptor("b"));
     wcli_->sync();
     wait();
     dummy_s->recv<message::Text>(
@@ -157,13 +153,12 @@ TEST_F(ClientTest, textSend) {
     dummy_s->recvClear();
 
     for (std::size_t len = 10; len < 1000000; len *= 10) {
-        data_->text_store.setSend(
-            "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a')));
+        data_->text_store.setSend("a"_ss, ValAdaptor(std::string(len, 'a')));
         wcli_->sync();
         dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            EXPECT_EQ(obj.data.asU8StringView().size(), len);
             for (std::size_t i = 0; i < len; i++) {
-                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+                EXPECT_EQ(obj.data.asU8StringView()[i], 'a');
             }
         });
         dummy_s->recvClear();
@@ -181,13 +176,12 @@ TEST_F(ClientTest, textSendWithUnix) {
     }
 
     for (std::size_t len = 10; len < 1000000; len *= 10) {
-        data_->text_store.setSend(
-            "a"_ss, std::make_shared<ValAdaptor>(std::string(len, 'a')));
+        data_->text_store.setSend("a"_ss, ValAdaptor(std::string(len, 'a')));
         wcli_->sync();
         dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-            EXPECT_EQ(obj.data->asU8StringRef().size(), len);
+            EXPECT_EQ(obj.data.asU8StringView().size(), len);
             for (std::size_t i = 0; i < len; i++) {
-                EXPECT_EQ(obj.data->asU8StringRef()[i], 'a');
+                EXPECT_EQ(obj.data.asU8StringView()[i], 'a');
             }
         });
         dummy_s->recvClear();
@@ -201,30 +195,28 @@ TEST_F(ClientTest, textReq) {
     }
     wcli_->member("a").text("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").text("b").onChange(callback<Text>());
-    dummy_s->send(message::Res<message::Text>{
-        1, ""_ss, std::make_shared<ValAdaptor>("z")});
+    dummy_s->send(message::Res<message::Text>{1, ""_ss, ValAdaptor("z")});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
-    dummy_s->send(message::Res<message::Text>{
-        1, "c"_ss, std::make_shared<ValAdaptor>("z")});
+    dummy_s->send(message::Res<message::Text>{1, "c"_ss, ValAdaptor("z")});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
     EXPECT_TRUE(data_->text_store.getRecv("a"_ss, "b"_ss).has_value());
-    EXPECT_EQ(*data_->text_store.getRecv("a"_ss, "b"_ss).value(), "z");
+    EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss).value(), "z");
     EXPECT_TRUE(data_->text_store.getRecv("a"_ss, "b.c"_ss).has_value());
-    EXPECT_EQ(*data_->text_store.getRecv("a"_ss, "b.c"_ss).value(), "z");
+    EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b.c"_ss).value(), "z");
 
     for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
         dummy_s->send(message::Res<message::Text>{
-            1, ""_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+            1, ""_ss, ValAdaptor(std::string(len, 'a'))});
         while (!data_->text_store.getRecv("a"_ss, "b"_ss).has_value() ||
                data_->text_store.getRecv("a"_ss, "b"_ss)
                        .value()
-                       ->asU8StringRef()
+                       .asU8StringView()
                        .size() != len) {
             wcli_->loopSyncFor(
                 std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
@@ -232,7 +224,7 @@ TEST_F(ClientTest, textReq) {
         for (std::size_t i = 0; i < len; i++) {
             EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss)
                           .value()
-                          ->asU8StringRef()[i],
+                          .asU8StringView()[i],
                       'a');
         }
     }
@@ -249,18 +241,18 @@ TEST_F(ClientTest, textReqWithUnix) {
     }
     wcli_->member("a").text("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
 
     for (std::size_t len = 10; len <= WEBCFACE_TEST_MAXLEN; len *= 10) {
         dummy_s->send(message::Res<message::Text>{
-            1, ""_ss, std::make_shared<ValAdaptor>(std::string(len, 'a'))});
+            1, ""_ss, ValAdaptor(std::string(len, 'a'))});
         while (!data_->text_store.getRecv("a"_ss, "b"_ss).has_value() ||
                data_->text_store.getRecv("a"_ss, "b"_ss)
                        .value()
-                       ->asU8StringRef()
+                       .asU8StringView()
                        .size() != len) {
             wcli_->loopSyncFor(
                 std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
@@ -268,7 +260,7 @@ TEST_F(ClientTest, textReqWithUnix) {
         for (std::size_t i = 0; i < len; i++) {
             EXPECT_EQ(data_->text_store.getRecv("a"_ss, "b"_ss)
                           .value()
-                          ->asU8StringRef()[i],
+                          .asU8StringView()[i],
                       'a');
         }
     }
@@ -298,7 +290,7 @@ TEST_F(ClientTest, viewSend) {
     data_->view_store.setSend("a"_ss, view_data);
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](auto obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_NE(obj.data_ids, std::nullopt);
         EXPECT_EQ(obj.data_ids->size(), 3u);
         EXPECT_EQ(obj.data_diff.size(), 3u);
@@ -338,7 +330,7 @@ TEST_F(ClientTest, viewSend) {
     data_->view_store.setSend("a"_ss, view_data);
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](auto obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.data_ids, std::nullopt);
         EXPECT_EQ(obj.data_diff.size(), 1u);
         EXPECT_EQ(obj.data_diff["a"]->type,
@@ -356,7 +348,7 @@ TEST_F(ClientTest, viewSend) {
     data_->view_store.setSend("a"_ss, view_data);
     wcli_->sync();
     dummy_s->waitRecv<message::View>([&](auto obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_NE(obj.data_ids, std::nullopt);
         EXPECT_EQ(obj.data_ids->size(), 2u);
         EXPECT_EQ(obj.data_diff.size(), 0u);
@@ -370,26 +362,29 @@ TEST_F(ClientTest, viewReq) {
     }
     wcli_->member("a").view("b").tryGet();
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").view("b").onChange(callback<View>());
 
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>> v{
-        {"0", std::static_pointer_cast<message::ViewComponentData>(
-                  std::shared_ptr(ViewComponents::text("a")
-                                      .textColor(ViewColor::yellow)
-                                      .bgColor(ViewColor::green)
-                                      .component_v.lockTmp(data_, ""_ss)))},
-        {"1",
-         std::static_pointer_cast<message::ViewComponentData>(
-             std::shared_ptr(ViewComponents::newLine().lockTmp(data_, ""_ss)))},
-        {"2",
-         std::static_pointer_cast<message::ViewComponentData>(std::shared_ptr(
-             ViewComponents::button("a", Func{Field{data_, "x"_ss, "y"_ss}})
-                 .lockTmp(data_, ""_ss)))},
-    };
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+             std::less<>>
+        v{
+            {"0", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(ViewComponents::text("a")
+                                          .textColor(ViewColor::yellow)
+                                          .bgColor(ViewColor::green)
+                                          .component_v.lockTmp(data_, ""_ss)))},
+            {"1", std::static_pointer_cast<message::ViewComponentData>(
+                      std::shared_ptr(
+                          ViewComponents::newLine().lockTmp(data_, ""_ss)))},
+            {"2",
+             std::static_pointer_cast<message::ViewComponentData>(
+                 std::shared_ptr(ViewComponents::button(
+                                     "a", Func{Field{data_, "x"_ss, "y"_ss}})
+                                     .lockTmp(data_, ""_ss)))},
+        };
     std::vector<SharedString> v_ids = {"0"_ss, "1"_ss, "2"_ss};
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, v_ids});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
@@ -410,7 +405,7 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.at("0")
-                  ->text.u8String(),
+                  ->text.u8StringView(),
               "a");
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
@@ -430,12 +425,13 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_TRUE(data_->view_store.getRecv("a"_ss, "b.c"_ss).has_value());
 
     // 差分だけ送る
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>> v2{
-        {"0", std::static_pointer_cast<message::ViewComponentData>(
-                  std::shared_ptr(ViewComponents::text("b")
-                                      .textColor(ViewColor::red)
-                                      .bgColor(ViewColor::green)
-                                      .component_v.lockTmp(data_, ""_ss)))}};
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+             std::less<>>
+        v2{{"0", std::static_pointer_cast<message::ViewComponentData>(
+                     std::shared_ptr(ViewComponents::text("b")
+                                         .textColor(ViewColor::red)
+                                         .bgColor(ViewColor::green)
+                                         .component_v.lockTmp(data_, ""_ss)))}};
     dummy_s->send(message::Res<message::View>{1, ""_ss, v2, std::nullopt});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 2);
@@ -452,7 +448,7 @@ TEST_F(ClientTest, viewReq) {
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->components.at("0")
-                  ->text.u8String(),
+                  ->text.u8StringView(),
               "b");
     EXPECT_EQ(data_->view_store.getRecv("a"_ss, "b"_ss)
                   .value()
@@ -480,7 +476,7 @@ TEST_F(ClientTest, funcInfo) {
         wcli_->func("a").set([](int) { return 1; }).setArgs({Arg("a").init(3)});
     wcli_->sync();
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
         EXPECT_EQ(obj.args.size(), 1u);
         EXPECT_EQ(obj.args.at(0)->name_, "a"_ss);
@@ -499,7 +495,7 @@ TEST_F(ClientTest, funcCall) {
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 0u);
         EXPECT_EQ(obj.target_member_id, 10u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.args.size(), 3u);
         EXPECT_EQ(static_cast<int>(obj.args[0]), 1);
         EXPECT_EQ(obj.args[0].valType(), ValType::int_);
@@ -525,7 +521,7 @@ TEST_F(ClientTest, funcCall) {
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 1u);
         EXPECT_EQ(obj.target_member_id, 10u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     ASSERT_FALSE(r.reached());
     ASSERT_FALSE(r.finished());
@@ -548,7 +544,7 @@ TEST_F(ClientTest, funcCall) {
     dummy_s->waitRecv<message::Call>([&](const auto &obj) {
         EXPECT_EQ(obj.caller_id, 2u);
         EXPECT_EQ(obj.target_member_id, 10u);
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
     });
     ASSERT_FALSE(r.reached());
     ASSERT_FALSE(r.finished());
