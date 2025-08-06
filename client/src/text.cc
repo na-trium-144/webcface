@@ -49,7 +49,7 @@ const Variant &Variant::request() const {
 
 const Variant &Variant::set(const ValAdaptor &v) const {
     auto data = setCheck();
-    data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
+    data->text_store.setSend(*this, v);
     auto change_event =
         internal::findFromMap2(data->text_change_event.shared_lock().get(),
                                this->member_, this->field_);
@@ -70,7 +70,7 @@ std::optional<ValAdaptor> Variant::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return std::nullopt;
     }
@@ -79,7 +79,7 @@ ValAdaptor Variant::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return ValAdaptor::emptyVal();
     }
@@ -88,7 +88,7 @@ std::optional<StringView> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asStringView();
+        return v->asStringView();
     } else {
         return std::nullopt;
     }
@@ -97,7 +97,7 @@ StringView Text::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asStringView();
+        return v->asStringView();
     } else {
         return SharedString::emptyStrView();
     }
@@ -106,7 +106,7 @@ std::optional<WStringView> Text::tryGetW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWStringView();
+        return v->asWStringView();
     } else {
         return std::nullopt;
     }
@@ -115,7 +115,7 @@ WStringView Text::getW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWStringView();
+        return v->asWStringView();
     } else {
         return SharedString::emptyStrViewW();
     }

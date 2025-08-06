@@ -133,12 +133,12 @@ static std::string fmtValAdaptor(const webcface::ValAdaptor &v) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Text) {
     return fmt::format_to(ctx.out(), "{}-Text('{}', {})", msg_kind,
-                          m.field.decode(), fmtValAdaptor(*m.data));
+                          m.field.decode(), fmtValAdaptor(m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Text>) {
     return fmt::format_to(ctx.out(), "{}-TextRes(req_id={} + '{}', {})",
                           msg_kind, m.req_id, m.sub_field.decode(),
-                          fmtValAdaptor(*m.data));
+                          fmtValAdaptor(m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Text)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Text)

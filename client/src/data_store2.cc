@@ -20,11 +20,9 @@ namespace internal {
  */
 template <typename T>
 static bool shouldSend(const T &prev, const T &current) {
-    if constexpr (std::is_same_v<T, MutableNumVector>) {
-        return prev != current;
-    } else if constexpr (std::is_same_v<T, std::shared_ptr<TextData>>) {
-        return *prev != *current;
-    } else if constexpr (std::is_same_v<T, std::string>) {
+    if constexpr (std::is_same_v<T, MutableNumVector> ||
+                  std::is_same_v<T, ValAdaptor> ||
+                  std::is_same_v<T, std::string>) {
         return prev != current;
     } else if constexpr (std::is_same_v<T, std::shared_ptr<FuncData>>) {
         // Funcは内容が変更されても2回目以降送信しない
@@ -268,7 +266,7 @@ StrMap2<unsigned int> SyncDataStore2<T, ReqT>::transferReq() {
 
 template class SyncDataStore2<std::string, int>; // test用
 template class SyncDataStore2<MutableNumVector, int>;
-template class SyncDataStore2<std::shared_ptr<TextData>, int>;
+template class SyncDataStore2<ValAdaptor, int>;
 template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
 template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
 template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
