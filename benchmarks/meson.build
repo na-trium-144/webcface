@@ -1,5 +1,6 @@
 benchmark_src = [
   'main.cc',
+  'encoding.cc',
   'sync-value.cc',
   'sync-text.cc',
   'latency-value.cc',
