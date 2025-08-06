@@ -129,13 +129,11 @@ class WEBCFACE_DLL ValAdaptor {
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
      *
      */
-    template <typename Bool,
-              typename std::enable_if_t<std::is_same_v<Bool, bool>,
-                                        std::nullptr_t> = nullptr>
+    template <typename Bool, typename std::enable_if_t<
+                                 std::is_same_v<Bool, bool>, bool> = true>
     explicit ValAdaptor(Bool value);
-    template <typename Bool,
-              typename std::enable_if_t<std::is_same_v<Bool, bool>,
-                                        std::nullptr_t> = nullptr>
+    template <typename Bool, typename std::enable_if_t<
+                                 std::is_same_v<Bool, bool>, bool> = true>
     ValAdaptor &operator=(Bool v);
 
     explicit ValAdaptor(std::int64_t value);
@@ -144,18 +142,14 @@ class WEBCFACE_DLL ValAdaptor {
     explicit ValAdaptor(double value);
     ValAdaptor &operator=(double v);
 
-    template <typename T,
-              typename std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            std::is_integral_v<T>,
-                                        std::nullptr_t> = nullptr,
-              std::nullptr_t = nullptr>
+    template <typename T, typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                                        std::is_integral_v<T>,
+                                                    std::nullptr_t> = nullptr>
     explicit ValAdaptor(T value)
         : ValAdaptor(static_cast<std::int64_t>(value)) {}
-    template <typename T,
-              typename std::enable_if_t<!std::is_same_v<T, bool> &&
-                                            std::is_integral_v<T>,
-                                        std::nullptr_t> = nullptr,
-              std::nullptr_t = nullptr>
+    template <typename T, typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                                        std::is_integral_v<T>,
+                                                    std::nullptr_t> = nullptr>
     ValAdaptor &operator=(T v) {
         return *this = static_cast<std::int64_t>(v);
     }
@@ -365,7 +359,7 @@ class WEBCFACE_DLL ValAdaptor {
 };
 
 extern template ValAdaptor::ValAdaptor(bool value);
-extern template ValAdaptor &ValAdaptor::operator= <bool, nullptr>(bool v);
+extern template ValAdaptor &ValAdaptor::operator= <bool, true>(bool v);
 
 
 template <typename T,

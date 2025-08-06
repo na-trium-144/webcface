@@ -27,18 +27,18 @@ ValAdaptor &ValAdaptor::operator=(StringInitializer str) {
 }
 
 template <typename Bool,
-          typename std::enable_if_t<std::is_same_v<Bool, bool>, std::nullptr_t>>
+          typename std::enable_if_t<std::is_same_v<Bool, bool>, bool>>
 ValAdaptor::ValAdaptor(Bool value)
     : as_val(static_cast<std::int64_t>(value)), type(ValType::bool_) {}
 template <typename Bool,
-          typename std::enable_if_t<std::is_same_v<Bool, bool>, std::nullptr_t>>
+          typename std::enable_if_t<std::is_same_v<Bool, bool>, bool>>
 ValAdaptor &ValAdaptor::operator=(Bool v) {
     as_val.emplace<INT64V>(v);
     type = ValType::bool_;
     return *this;
 }
 template WEBCFACE_DLL ValAdaptor::ValAdaptor(bool value);
-template WEBCFACE_DLL ValAdaptor &ValAdaptor::operator= <bool, nullptr>(bool v);
+template WEBCFACE_DLL ValAdaptor &ValAdaptor::operator= <bool, true>(bool v);
 
 ValAdaptor::ValAdaptor(std::int64_t value)
     : as_val(value), type(ValType::int_) {}
