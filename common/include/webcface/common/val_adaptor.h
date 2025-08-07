@@ -267,7 +267,7 @@ class WEBCFACE_DLL ValAdaptor {
      *
      */
     template <typename T, typename std::enable_if_t<
-                              std::is_convertible_v<StringView, T> &&
+                              !std::is_convertible_v<StringView, T> &&
                                   std::is_convertible_v<WStringView, T>,
                               std::nullptr_t> = nullptr>
     operator T() const {
