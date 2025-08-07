@@ -20,7 +20,7 @@ struct FuncArgTypeCheck<true> {
 };
 template <typename... Args>
 struct FuncArgTypesTrait
-    : FuncArgTypeCheck<(ConvertibleFromValAdaptor<Args> && ...)> {};
+    : FuncArgTypeCheck<(std::is_constructible_v<std::decay_t<Args>, ValAdaptor> && ...)> {};
 
 template <bool>
 struct FuncReturnTypeCheck {};

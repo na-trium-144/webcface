@@ -243,50 +243,69 @@ class WEBCFACE_DLL ValAdaptor {
     std::wstring asWString() const { return std::wstring(asWStringView()); }
 
     /*!
+     * \brief string_viewなどへの変換
      * \since ver2.10
      *
-     * 参照はこのValAdaptorが破棄されるまでは有効
+     * * StringViewおよびStringViewから暗黙的に変換可能な型への変換
+     * * std::string_viewなど文字列への参照のみを保持する型にキャストした場合、
+     * その参照はこのValAdaptorが破棄されるまでは有効
      *
      */
-    operator std::string_view() const { return asStringView(); }
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<StringView, T>,
+                                        std::nullptr_t> = nullptr>
+    operator T() const {
+        return asStringView();
+    }
     /*!
+     * \brief wstring_viewなどへの変換
      * \since ver2.10
      *
-     * 参照はこのValAdaptorが破棄されるまでは有効
+     * * WStringViewおよびWStringViewから暗黙的に変換可能な型への変換
+     * * std::wstring_viewなど文字列への参照のみを保持する型にキャストした場合、
+     * その参照はこのValAdaptorが破棄されるまでは有効
      *
      */
-    operator std::wstring_view() const { return asWStringView(); }
+    template <typename T, typename std::enable_if_t<
+                              std::is_convertible_v<StringView, T> &&
+                                  std::is_convertible_v<WStringView, T>,
+                              std::nullptr_t> = nullptr>
+    operator T() const {
+        return asWStringView();
+    }
     /*!
-     * <del>ver1.10〜: const参照</del>
-     * ver2.10〜: コピーにし、かつexplicitに変更
-     * (暗黙的なstd::stringへの変換は不可)
-     * ただしFuncに登録する関数の引数としてstd::stringを用いる際にはstringに変換される
+     * \brief stringなどへのexplicitな変換
+     * \since ver2.10
+     *
+     * * ver1.10〜の const std::string& へのキャストを置き換え
+     * * 以前のバージョンと違い暗黙的な変換はできないようにしている。
      *
      */
-    explicit operator std::string() const { return asString(); }
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<StringView, T> &&
+                                  !std::is_convertible_v<WStringView, T> &&
+                                  std::is_constructible_v<T, StringView>,
+                              std::nullptr_t> = nullptr>
+    explicit operator T() const {
+        return T(asStringView());
+    }
     /*!
-     * \since ver2.0
+     * \brief wstringなどへのexplicitな変換
+     * \since ver2.10
      *
-     * ver2.10〜: const参照ではなくコピーにし、かつexplicitに変更
-     * (暗黙的なstd::stringへの変換は不可)
-     * ただしFuncに登録する関数の引数としてstd::wstringを用いる際にはstringに変換される
-     *
-     */
-    explicit operator std::wstring() const { return asWString(); }
-    /*!
-     * \since ver2.0
-     *
-     * 参照はこのValAdaptorが破棄されるまでは有効
+     * * ver2.0〜の const std::wstring& へのキャストを置き換え
+     * 以前のバージョンと違い暗黙的な変換はできないようにしている。
      *
      */
-    operator const char *() const { return asStringView().c_str(); }
-    /*!
-     * \since ver2.0
-     *
-     * 参照はこのValAdaptorが破棄されるまでは有効
-     *
-     */
-    operator const wchar_t *() const { return asWStringView().c_str(); }
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<StringView, T> &&
+                                  !std::is_convertible_v<WStringView, T> &&
+                                  !std::is_constructible_v<T, StringView> &&
+                                  std::is_constructible_v<T, WStringView>,
+                              std::nullptr_t> = nullptr>
+    explicit operator T() const {
+        return T(asWStringView());
+    }
 
     /*!
      * \brief 実数として返す
@@ -304,28 +323,19 @@ class WEBCFACE_DLL ValAdaptor {
      */
     long long asLLong() const;
     /*!
-     * \brief <del>数値として返す</del> static_castをする
+     * \brief <del>数値として返す</del> 明示的なキャストをする
      * \since ver1.10
      *
      * * <del>Tはdoubleなどの実数型、intなどの整数型</del>
      * * ver2.9までTになにを指定してもdoubleで返るバグがあり、
      * ver2.0〜2.9までdeprecated指定だった。
-     * * ver2.10〜 stringなどの型も受け付けるように変更。効果はstatic_castと同じ
-     * * ただしMSVCではexplicitな型変換operatorが定義されているときなぜかstatic_castができないので、
-     * as<std::string>() の場合はstringに変換する処理を入れている
+     * * ver2.10〜 stringなど任意の型を受け付けるように変更。
+     * string_viewなどだけでなく、explicitにしか変換できないstd::stringなどにも変換可能。
      *
      */
     template <typename T>
     T as() const {
-        static_assert(!std::is_reference_v<T>,
-                      "ValAdaptor::as<T>(): T must not be reference type");
-        if constexpr (std::is_same_v<T, std::string>) {
-            return asString();
-        } else if constexpr (std::is_same_v<T, std::wstring>) {
-            return asWString();
-        } else {
-            return static_cast<T>(*this);
-        }
+        return T(*this);
     }
     /*!
      * \brief 数値型への変換

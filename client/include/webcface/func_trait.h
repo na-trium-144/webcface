@@ -48,13 +48,5 @@ template <typename T>
 using InvokeObjTrait = InvokeSignatureTrait<decltype(getInvokeSignature(
     std::declval<std::decay_t<T>>()))>;
 
-// ValAdaptorからstringへは暗黙変換できないようにしているが、
-// Funcの引数では例外的にstringを許可する
-template <typename T>
-constexpr bool ConvertibleFromValAdaptor =
-    std::is_convertible_v<ValAdaptor, T> ||
-    std::is_convertible_v<std::string, T> ||
-    std::is_convertible_v<std::wstring, T>;
-
 } // namespace traits
 WEBCFACE_NS_END
