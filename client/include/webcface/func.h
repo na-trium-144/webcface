@@ -12,31 +12,48 @@ struct FuncInfo;
 }
 
 namespace traits {
-template <bool>
-struct FuncArgTypeCheck {};
-template <>
-struct FuncArgTypeCheck<true> {
-    using ArgTypesSupportedByWebCFaceFunc = TraitOkType;
+template <typename BadArg>
+struct This_arg_type_is_not_supported_by_WebCFace_Func {};
+template <typename BadArg>
+struct FuncArgTypesIterationFailureTrait {
+    using ArgTypesCheckResult =
+        This_arg_type_is_not_supported_by_WebCFace_Func<BadArg>;
 };
 template <typename... Args>
-struct FuncArgTypesTrait
-    : FuncArgTypeCheck<(std::is_constructible_v<std::decay_t<Args>, ValAdaptor> && ...)> {};
-
-template <bool>
-struct FuncReturnTypeCheck {};
+struct FuncArgTypesIterationTrait;
 template <>
-struct FuncReturnTypeCheck<true> {
-    using ReturnTypeSupportedByWebCFaceFunc = TraitOkType;
+struct FuncArgTypesIterationTrait<> {
+    struct ArgTypesCheckResult {
+        using ArgTypesCheckOk = TraitOkType;
+    };
+};
+template <typename FirstArg, typename... OtherArgs>
+struct FuncArgTypesIterationTrait<FirstArg, OtherArgs...> {
+    using ArgTypesCheckResult = typename std::conditional_t<
+        std::is_constructible_v<std::decay_t<FirstArg>, ValAdaptor>,
+        FuncArgTypesIterationTrait<OtherArgs...>,
+        FuncArgTypesIterationFailureTrait<FirstArg>>::ArgTypesCheckResult;
+};
+template <typename... Args>
+using FuncArgTypesTrait =
+    typename FuncArgTypesIterationTrait<Args...>::ArgTypesCheckResult;
+
+template <typename BadArg>
+struct This_return_type_is_not_supported_by_WebCFace_Func {};
+struct FuncReturnTypeCheckOkTrait {
+    using FuncReturnTypeCheckOk = TraitOkType;
 };
 template <typename Ret>
-struct FuncReturnTypeTrait
-    : FuncReturnTypeCheck<std::disjunction_v<
-          std::is_void<Ret>, std::is_constructible<ValAdaptor, Ret>>> {};
+using FuncReturnTypeTrait = std::conditional_t<
+    std::disjunction_v<std::is_void<Ret>,
+                       std::is_constructible<ValAdaptor, Ret>>,
+    FuncReturnTypeCheckOkTrait,
+    This_return_type_is_not_supported_by_WebCFace_Func<Ret>>;
 
 /*!
  * RetとArgsが条件を満たすときだけ、
- * ReturnTypeTrait::ReturnTypeSupportedByWebCFaceFunc と
- * ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc が定義される
+ * ReturnTypeTrait::FuncReturnTypeCheckOk と
+ * ArgTypesTrait::FuncArgTypesCheckOk が定義される
  * (enable_ifを使ってないのはエラーメッセージがわかりにくかったから)
  *
  */
@@ -121,8 +138,7 @@ class WEBCFACE_DLL Func : protected Field {
      * \deprecated ver2.8〜
      */
     [[deprecated]]
-    Func
-    operator[](int index) const {
+    Func operator[](int index) const {
         return child(std::to_string(index));
     }
     /*!
@@ -198,10 +214,10 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T,
-              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
-              typename traits::FuncObjTrait<T>::ArgTypesTrait::
-                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
+              typename traits::FuncObjTrait<
+                  T>::ReturnTypeTrait::FuncReturnTypeCheckOk = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::ArgTypesCheckOk =
+                  traits::TraitOk>
     const Func &set(T func) const {
         return setImpl(
             valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
@@ -239,10 +255,10 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T,
-              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
-              typename traits::FuncObjTrait<T>::ArgTypesTrait::
-                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
+              typename traits::FuncObjTrait<
+                  T>::ReturnTypeTrait::FuncReturnTypeCheckOk = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::ArgTypesCheckOk =
+                  traits::TraitOk>
     const Func &setAsync(T func) const {
         return setImpl(
             valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
@@ -285,8 +301,7 @@ class WEBCFACE_DLL Func : protected Field {
      */
     template <typename T>
     [[deprecated("use set() or setAsync()")]]
-    const Func &
-    operator=(T func) const {
+    const Func &operator=(T func) const {
         this->set(std::move(func));
         return *this;
     }
@@ -480,8 +495,7 @@ class WEBCFACE_DLL Func : protected Field {
      */
     template <typename... Args>
     [[deprecated("use runAsync")]]
-    ValAdaptor
-    operator()(Args... args) const {
+    ValAdaptor operator()(Args... args) const {
         return run(args...);
     }
 
