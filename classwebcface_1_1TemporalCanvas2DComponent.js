@@ -11,8 +11,7 @@ var classwebcface_1_1TemporalCanvas2DComponent =
     [ "fillColor", "classwebcface_1_1TemporalCanvas2DComponent.html#a18be544b9c129aded4e4a517e273ed16", null ],
     [ "geometry", "classwebcface_1_1TemporalCanvas2DComponent.html#a30190a08fb4a6d2af432c13871ed5830", null ],
     [ "geometry", "classwebcface_1_1TemporalCanvas2DComponent.html#afdcdd922b7c5ae7eff8eb0f99e653235", null ],
-    [ "id", "classwebcface_1_1TemporalCanvas2DComponent.html#ab4af76ca015fd198823d020e813f9f86", null ],
-    [ "id", "classwebcface_1_1TemporalCanvas2DComponent.html#aa4b149946750823aae6567168180f1bc", null ],
+    [ "id", "classwebcface_1_1TemporalCanvas2DComponent.html#a9d47731930a7ac60092b335784040d76", null ],
     [ "lockTmp", "classwebcface_1_1TemporalCanvas2DComponent.html#ac2ebf0d796104fb8481db4d1b7a2b781", null ],
     [ "onClick", "classwebcface_1_1TemporalCanvas2DComponent.html#a02eee5c3ac43629b755d72930448f3e1", null ],
     [ "onClick", "classwebcface_1_1TemporalCanvas2DComponent.html#ae292f43ed39c7dffa3434d44d7621919", null ],
@@ -27,10 +26,8 @@ var classwebcface_1_1TemporalCanvas2DComponent =
     [ "origin", "classwebcface_1_1TemporalCanvas2DComponent.html#a1f00048163feb83c69f6c12a525327cc", null ],
     [ "strokeWidth", "classwebcface_1_1TemporalCanvas2DComponent.html#a434070e3c7c8c018491f14fcb8104031", null ],
     [ "strokeWidth", "classwebcface_1_1TemporalCanvas2DComponent.html#a64a70b1d8384abfd26365c009d5ccd6f", null ],
-    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#a77ddf33b27530f306b17ee2616f8204b", null ],
-    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#a9416cc3f4a4ce9228d3cd5df0cd1e23e", null ],
-    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#a7ab517eb43e8a0a09f114a4e143a08d8", null ],
-    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#aaf24b8c7dc977b78970cae76db959f7c", null ],
+    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#a66dfe6511c3ad1ffbee8e3d91f17f400", null ],
+    [ "text", "classwebcface_1_1TemporalCanvas2DComponent.html#a90d236cd13c9f6c6c40fefe1c888500b", null ],
     [ "textSize", "classwebcface_1_1TemporalCanvas2DComponent.html#aa5912e986f9529155805a6a9b79d2d4f", null ],
     [ "textSize", "classwebcface_1_1TemporalCanvas2DComponent.html#aa4d6bf7e70abeeeddd5f3d8c0e81e83b", null ]
 ];

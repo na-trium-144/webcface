@@ -1,0 +1,15 @@
+<map id="benchmarks/encoding.cc" name="benchmarks/encoding.cc">
+<area shape="rect" id="Node000001" title=" " alt="" coords="119,5,302,31"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,79,189,104"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="194,33,129,74,126,69,191,28"/>
+<area shape="rect" id="Node000003" href="$common_2encoding_8h.html" title=" " alt="" coords="214,79,434,104"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="230,28,296,69,293,74,227,33"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="136,152,195,177"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="300,106,205,149,203,144,297,102"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="219,152,317,177"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="317,106,288,143,283,140,313,103"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="341,152,419,177"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="335,103,365,140,360,143,331,106"/>
+<area shape="rect" id="Node000007" href="$webcface-config_8h.html" title=" " alt="" coords="443,152,583,177"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="355,102,470,144,469,149,353,107"/>
+</map>

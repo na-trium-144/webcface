@@ -1,5 +1,7 @@
 <map id="FuncSignatureTrait&lt; Ret(T::*)(Args...)&gt;" name="FuncSignatureTrait&lt; Ret(T::*)(Args...)&gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,93,159,133"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html" title=" " alt="" coords="11,5,153,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,59,85,93,79,93,79,59"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="6,181,159,221"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html" title=" " alt="" coords="11,93,154,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="85,147,85,181,80,181,80,147"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html" title=" " alt="" coords="5,5,160,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="85,59,85,93,80,93,80,59"/>
 </map>

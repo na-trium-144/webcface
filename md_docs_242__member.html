@@ -332,9 +332,9 @@ ping</h1>
 <li><p class="startli"><b class="tab-title">C++</b> Member::pingStatus() でmemberの通信速度(int型)を取得できます。 デフォルトの状態ではpingの情報は受信しておらずstd::nulloptを返しますが、 pingStatusに1回アクセスすることでpingの情報がリクエストされ、それ以降は値が送られてくるようになります。</p>
 <p class="startli">また、 Member::onPing() でpingの情報が更新された時に実行するコールバックを設定できます。 onPing()を使うことでもリクエストが送られます。</p>
 <p class="startli"><span class="since-c">2.0</span> </p><div class="fragment"><div class="line">wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).onPing([](<a class="code hl_class" href="classwebcface_1_1Member.html">webcface::Member</a> m){</div>
-<div class="line">    std::cout &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a24dcbf29c0d6cd766009a182a6484e3b">name</a>() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">pingStatus</a>() &lt;&lt; <span class="stringliteral">&quot; ms&quot;</span> &lt;&lt; std::endl;</div>
+<div class="line">    std::cout &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a1fd77223543481653d9ace5ce0ba497a">name</a>() &lt;&lt; <span class="stringliteral">&quot;: &quot;</span> &lt;&lt; m.<a class="code hl_function" href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">pingStatus</a>() &lt;&lt; <span class="stringliteral">&quot; ms&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1Member_html_a24dcbf29c0d6cd766009a182a6484e3b"><div class="ttname"><a href="classwebcface_1_1Member.html#a24dcbf29c0d6cd766009a182a6484e3b">webcface::Member::name</a></div><div class="ttdeci">const std::string &amp; name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:37</div></div>
+<div class="ttc" id="aclasswebcface_1_1Member_html_a1fd77223543481653d9ace5ce0ba497a"><div class="ttname"><a href="classwebcface_1_1Member.html#a1fd77223543481653d9ace5ce0ba497a">webcface::Member::name</a></div><div class="ttdeci">StringView name() const</div><div class="ttdoc">Member名</div><div class="ttdef"><b>Definition</b> member.h:39</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html_a4b2f7dcfbdbf338436db24cb765465ed"><div class="ttname"><a href="classwebcface_1_1Member.html#a4b2f7dcfbdbf338436db24cb765465ed">webcface::Member::pingStatus</a></div><div class="ttdeci">std::optional&lt; int &gt; pingStatus() const</div><div class="ttdoc">通信速度を調べる</div><div class="ttdef"><b>Definition</b> member.cc:154</div></div>
 </div><!-- fragment --><ul>
 <li>ver1.11以前では <code>onPing().appendListener(...)</code></li>
@@ -391,7 +391,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

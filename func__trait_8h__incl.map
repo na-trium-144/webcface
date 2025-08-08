@@ -1,0 +1,29 @@
+<map id="client/include/webcface/func_trait.h" name="client/include/webcface/func_trait.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="217,5,392,45"/>
+<area shape="rect" id="Node000002" href="$common_2val__adaptor_8h.html" title=" " alt="" coords="220,93,389,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="307,46,307,79,302,79,302,46"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="5,181,60,207"/>
+<area shape="poly" id="edge14_Node000001_Node000005" title=" " alt="" coords="275,48,64,176,62,172,273,43"/>
+<area shape="rect" id="Node000012" href="$webcface-config_8h.html" title=" " alt="" coords="617,255,757,280"/>
+<area shape="poly" id="edge15_Node000001_Node000012" title=" " alt="" coords="383,43,446,63,516,92,586,130,618,154,648,180,670,209,683,240,678,242,665,212,644,183,615,158,583,135,514,97,444,68,382,48"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="190,255,249,280"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="221,127,194,135,168,147,144,162,126,183,121,192,121,201,132,219,153,235,178,248,176,252,150,239,128,222,116,203,116,191,121,180,141,158,165,142,192,130,219,122"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="136,181,199,207"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="273,136,201,177,198,172,270,131"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="240,136,74,184,73,178,239,131"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="223,181,290,207"/>
+<area shape="poly" id="edge5_Node000002_Node000006" title=" " alt="" coords="295,135,273,171,269,168,291,132"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="315,181,391,207"/>
+<area shape="poly" id="edge6_Node000002_Node000007" title=" " alt="" coords="319,132,341,168,336,171,314,135"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="415,181,483,207"/>
+<area shape="poly" id="edge7_Node000002_Node000008" title=" " alt="" coords="340,131,417,172,414,177,338,136"/>
+<area shape="rect" id="Node000009" href="$common_2encoding_8h.html" title=" " alt="" coords="507,181,601,207"/>
+<area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="365,131,505,175,504,180,364,136"/>
+<area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="390,116,443,123,500,135,559,153,614,179,650,209,675,241,671,245,646,212,611,184,557,158,499,140,442,128,389,121"/>
+<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="508,208,263,260,262,254,507,203"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="393,255,491,280"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="537,209,474,249,471,245,535,204"/>
+<area shape="rect" id="Node000011" title=" " alt="" coords="515,255,593,280"/>
+<area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="557,207,557,241,551,241,551,207"/>
+<area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="577,204,655,246,652,250,574,209"/>
+</map>

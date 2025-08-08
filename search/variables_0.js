@@ -6,9 +6,10 @@ var searchData=
   ['arg_5fsize_3',['arg_size',['../structwcfFuncCallHandle.html#a711a6fa02335f49ddd69d7e64c8e74b5',1,'wcfFuncCallHandle::arg_size'],['../structwcfFuncCallHandleW.html#a711a6fa02335f49ddd69d7e64c8e74b5',1,'wcfFuncCallHandleW::arg_size']]],
   ['args_4',['args',['../structwebcface_1_1message_1_1FuncInfo.html#aec7a8c9d3688c7f3fb75a34fb5261858',1,'webcface::message::FuncInfo::args'],['../structwebcface_1_1message_1_1Call.html#a0a632dba4003495b0fa39d2b205142ee',1,'webcface::message::Call::args'],['../structwebcface_1_1internal_1_1FuncInfo.html#a489fd7a3ff63108cbaf9dcc219fb9fbe',1,'webcface::internal::FuncInfo::args'],['../structwcfFuncCallHandleW.html#aa842ab34f690e891503f1e4d68526db5',1,'wcfFuncCallHandleW::args'],['../structwcfFuncCallHandle.html#a93870285fe1d13d90d64d60599c8ab27',1,'wcfFuncCallHandle::args']]],
   ['args_5f_5',['args_',['../structwebcface_1_1internal_1_1PromiseData.html#a915a1b53db39a451f787dc8a00c370bd',1,'webcface::internal::PromiseData']]],
-  ['as_5fdouble_6',['as_double',['../structwcfMultiVal.html#ab2cd60e83ec44e797cd2063a6b0b0316',1,'wcfMultiVal::as_double'],['../structwcfMultiValW.html#ab2cd60e83ec44e797cd2063a6b0b0316',1,'wcfMultiValW::as_double']]],
-  ['as_5fint_7',['as_int',['../structwcfMultiVal.html#ac3e90c63965e684981a9ca1ec8ab8e29',1,'wcfMultiVal::as_int'],['../structwcfMultiValW.html#ac3e90c63965e684981a9ca1ec8ab8e29',1,'wcfMultiValW::as_int']]],
-  ['as_5fstr_8',['as_str',['../structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218',1,'wcfMultiVal::as_str'],['../structwcfMultiValW.html#ac44e9f1912df5d7bfae50844fe0c8545',1,'wcfMultiValW::as_str']]],
-  ['auto_5freconnect_9',['auto_reconnect',['../structwebcface_1_1internal_1_1ClientData.html#a28fa2543fb357fbd1bd5fa91b65b9025',1,'webcface::internal::ClientData']]],
-  ['axis_10',['axis',['../structwebcface_1_1AxisAngle.html#af7744b0966ffe64f2cc613beaf34c910',1,'webcface::AxisAngle']]]
+  ['argssize_6',['ArgsSize',['../structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html#a352d33fdbbda5cb9690bbdb913164c77',1,'webcface::traits::InvokeSignatureTrait&lt; Ret(Args...)&gt;']]],
+  ['as_5fdouble_7',['as_double',['../structwcfMultiVal.html#ab2cd60e83ec44e797cd2063a6b0b0316',1,'wcfMultiVal::as_double'],['../structwcfMultiValW.html#ab2cd60e83ec44e797cd2063a6b0b0316',1,'wcfMultiValW::as_double']]],
+  ['as_5fint_8',['as_int',['../structwcfMultiVal.html#ac3e90c63965e684981a9ca1ec8ab8e29',1,'wcfMultiVal::as_int'],['../structwcfMultiValW.html#ac3e90c63965e684981a9ca1ec8ab8e29',1,'wcfMultiValW::as_int']]],
+  ['as_5fstr_9',['as_str',['../structwcfMultiVal.html#a4046ea58e0499a381d40ca485df5d218',1,'wcfMultiVal::as_str'],['../structwcfMultiValW.html#ac44e9f1912df5d7bfae50844fe0c8545',1,'wcfMultiValW::as_str']]],
+  ['auto_5freconnect_10',['auto_reconnect',['../structwebcface_1_1internal_1_1ClientData.html#a28fa2543fb357fbd1bd5fa91b65b9025',1,'webcface::internal::ClientData']]],
+  ['axis_11',['axis',['../structwebcface_1_1AxisAngle.html#af7744b0966ffe64f2cc613beaf34c910',1,'webcface::AxisAngle']]]
 ];

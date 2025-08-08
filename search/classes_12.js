@@ -1,13 +1,10 @@
 var searchData=
 [
-  ['valadaptor_0',['ValAdaptor',['../classwebcface_1_1ValAdaptor.html',1,'webcface']]],
-  ['value_1',['Value',['../structwebcface_1_1message_1_1Value.html',1,'Value'],['../classwebcface_1_1Value.html',1,'Value']]],
-  ['valueelementref_2',['ValueElementRef',['../classwebcface_1_1ValueElementRef.html',1,'webcface']]],
-  ['variant_3',['Variant',['../classwebcface_1_1Variant.html',1,'webcface']]],
-  ['view_4',['View',['../structwebcface_1_1message_1_1View.html',1,'View'],['../classwebcface_1_1View.html',1,'View']]],
-  ['viewbuf_5',['ViewBuf',['../classwebcface_1_1internal_1_1ViewBuf.html',1,'webcface::internal']]],
-  ['viewcomponent_6',['ViewComponent',['../classwebcface_1_1ViewComponent.html',1,'webcface']]],
-  ['viewcomponentdata_7',['ViewComponentData',['../structwebcface_1_1message_1_1ViewComponentData.html',1,'webcface::message']]],
-  ['viewdata_8',['ViewData',['../structwebcface_1_1message_1_1ViewData.html',1,'webcface::message']]],
-  ['viewold_9',['ViewOld',['../structwebcface_1_1message_1_1ViewOld.html',1,'webcface::message']]]
+  ['wcffunccallhandle_0',['wcfFuncCallHandle',['../structwcfFuncCallHandle.html',1,'']]],
+  ['wcffunccallhandlew_1',['wcfFuncCallHandleW',['../structwcfFuncCallHandleW.html',1,'']]],
+  ['wcfmultival_2',['wcfMultiVal',['../structwcfMultiVal.html',1,'']]],
+  ['wcfmultivalw_3',['wcfMultiValW',['../structwcfMultiValW.html',1,'']]],
+  ['wcfviewcomponent_4',['wcfViewComponent',['../structwcfViewComponent.html',1,'']]],
+  ['wcfviewcomponentw_5',['wcfViewComponentW',['../structwcfViewComponentW.html',1,'']]],
+  ['wsdata_6',['WsData',['../structwebcface_1_1internal_1_1ClientData_1_1WsData.html',1,'webcface::internal::ClientData']]]
 ];

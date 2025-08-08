@@ -174,28 +174,28 @@ $(document).ready(function(){initNavTree('md_docs_264__robot__model.html',''); i
 <div class="line">m.add({<span class="stringliteral">&quot;base&quot;</span>, box({-0.2, -0.2, 0.04}, {0.2, 0.2, 0.06}),</div>
 <div class="line">       <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">webcface::ViewColor::inherit</a>})</div>
 <div class="line"> .add({<span class="stringliteral">&quot;wheel_lf&quot;</span>,</div>
-<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ac0c9b491ef42c518e3f850aa9ea1cece">rotationalJoint</a>(</div>
+<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ad2f8c29a5ca1595544eaaf705557401d">rotationalJoint</a>(</div>
 <div class="line">           <span class="stringliteral">&quot;joint_lf&quot;</span>, <span class="stringliteral">&quot;base&quot;</span>,</div>
 <div class="line">           {0.2, 0.2, 0.05, -std::numbers::pi / 4, 0, 0}),</div>
 <div class="line">       <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#a9becab844e46d2f91429a606c2d65cc9">cylinder</a>({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),</div>
 <div class="line">       <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">webcface::ViewColor::inherit</a>})</div>
 <div class="line"> .add({<span class="stringliteral">&quot;wheel_rf&quot;</span>,</div>
-<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ac0c9b491ef42c518e3f850aa9ea1cece">rotationalJoint</a>(</div>
+<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ad2f8c29a5ca1595544eaaf705557401d">rotationalJoint</a>(</div>
 <div class="line">           <span class="stringliteral">&quot;joint_rf&quot;</span>, <span class="stringliteral">&quot;base&quot;</span>,</div>
 <div class="line">           {0.2, -0.2, 0.05, std::numbers::pi / 4, 0, 0}),</div>
 <div class="line">       <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#a9becab844e46d2f91429a606c2d65cc9">cylinder</a>({0, 0, 0, std::numbers::pi / 2, 0, 0}, 0.05, 0.01),</div>
 <div class="line">       <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">webcface::ViewColor::inherit</a>})</div>
 <div class="line"> <span class="comment">// ... 省略</span></div>
 <div class="line"> .add({<span class="stringliteral">&quot;line2&quot;</span>,</div>
-<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ac0c9b491ef42c518e3f850aa9ea1cece">rotationalJoint</a>(<span class="stringliteral">&quot;line_rotation&quot;</span>, <span class="stringliteral">&quot;line1&quot;</span>,</div>
+<div class="line">       <a class="code hl_function" href="namespacewebcface_1_1robot__joints.html#ad2f8c29a5ca1595544eaaf705557401d">rotationalJoint</a>(<span class="stringliteral">&quot;line_rotation&quot;</span>, <span class="stringliteral">&quot;line1&quot;</span>,</div>
 <div class="line">                       {0, 0, 0.3, 0, 0, 0}),</div>
 <div class="line">       <a class="code hl_function" href="namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2">line</a>({0, 0, 0}, {0.5, 0, 0}),</div>
 <div class="line">       <a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">webcface::ViewColor::red</a>});</div>
 <div class="line">m.sync();</div>
 <div class="line">wcli.sync();</div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a589bd246994070f5faffe56a90a3b6f2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2">webcface::components::geometries::line</a></div><div class="ttdeci">TemporalGeometry line(const Point &amp;begin, const Point &amp;end)</div><div class="ttdef"><b>Definition</b> components.h:441</div></div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a9becab844e46d2f91429a606c2d65cc9"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a9becab844e46d2f91429a606c2d65cc9">webcface::components::geometries::cylinder</a></div><div class="ttdeci">TemporalGeometry cylinder(const Transform &amp;origin, double radius, double length)</div><div class="ttdef"><b>Definition</b> components.h:604</div></div>
-<div class="ttc" id="anamespacewebcface_1_1robot__joints_html_ac0c9b491ef42c518e3f850aa9ea1cece"><div class="ttname"><a href="namespacewebcface_1_1robot__joints.html#ac0c9b491ef42c518e3f850aa9ea1cece">webcface::robot_joints::rotationalJoint</a></div><div class="ttdeci">RobotJoint rotationalJoint(std::string_view name, std::string_view parent_name, const Transform &amp;origin, double angle=0)</div><div class="ttdoc">回転関節</div><div class="ttdef"><b>Definition</b> robot_link.h:162</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a589bd246994070f5faffe56a90a3b6f2"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a589bd246994070f5faffe56a90a3b6f2">webcface::components::geometries::line</a></div><div class="ttdeci">TemporalGeometry line(const Point &amp;begin, const Point &amp;end)</div><div class="ttdef"><b>Definition</b> components.h:404</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html_a9becab844e46d2f91429a606c2d65cc9"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html#a9becab844e46d2f91429a606c2d65cc9">webcface::components::geometries::cylinder</a></div><div class="ttdeci">TemporalGeometry cylinder(const Transform &amp;origin, double radius, double length)</div><div class="ttdef"><b>Definition</b> components.h:567</div></div>
+<div class="ttc" id="anamespacewebcface_1_1robot__joints_html_ad2f8c29a5ca1595544eaaf705557401d"><div class="ttname"><a href="namespacewebcface_1_1robot__joints.html#ad2f8c29a5ca1595544eaaf705557401d">webcface::robot_joints::rotationalJoint</a></div><div class="ttdeci">RobotJoint rotationalJoint(const StringInitializer &amp;name, const StringInitializer &amp;parent_name, const Transform &amp;origin, double angle=0)</div><div class="ttdoc">回転関節</div><div class="ttdef"><b>Definition</b> robot_link.h:152</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0">webcface::ViewColor::inherit</a></div><div class="ttdeci">@ inherit</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aabda9643ac6601722a28f238714274da4">webcface::ViewColor::red</a></div><div class="ttdeci">@ red</div></div>
 </div><!-- fragment --><p> (この謎のロボット何)</p>
@@ -275,7 +275,7 @@ Canvas3Dに表示する</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

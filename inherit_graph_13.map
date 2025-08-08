@@ -1,3 +1,5 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structwebcface_1_1components_1_1geometries_1_1Box.html" title=" " alt="" coords="5,5,52,31"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,5,144,31"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1TStringView.html" title="webcfaceで管理されている文字列を参照するstring_view" alt="" coords="192,5,360,31"/>
+<area shape="poly" id="edge8_Node000000_Node000001" title=" " alt="" coords="158,15,192,15,192,21,158,21"/>
 </map>

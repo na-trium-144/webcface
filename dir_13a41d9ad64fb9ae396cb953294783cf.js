@@ -1,5 +1,6 @@
 var dir_13a41d9ad64fb9ae396cb953294783cf =
 [
+    [ "encoding.cc", "benchmarks_2encoding_8cc.html", "benchmarks_2encoding_8cc" ],
     [ "latency-text.cc", "latency-text_8cc.html", "latency-text_8cc" ],
     [ "latency-value.cc", "latency-value_8cc.html", "latency-value_8cc" ],
     [ "main.cc", "main_8cc.html", "main_8cc" ],

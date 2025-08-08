@@ -217,18 +217,25 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
-<div class="fragment"><div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="fragment"><div class="line"><span class="comment">// ver2.10〜</span></div>
+<div class="line">std::optional&lt;webcface::StringView&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
+<div class="line"><span class="comment">// それ以前</span></div>
+<div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 </div><!-- fragment --><ul>
+<li><span class="since-c">2.10</span> <a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">webcface::StringView</a> は文字列への参照をshared_ptrで保持しています。そのため文字列のコピーは発生せず、寿命が切れることもありません。<ul>
+<li>std::string_view へキャストできます。</li>
+<li>std::string が必要な場合、またはver2.9以前との互換性を維持したい場合は明示的にstd::stringのコンストラクタに渡せばよいです(コピーが必要になります)</li>
+</ul>
+</li>
 <li>値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。<ul>
 <li>リクエストは <del>次にClient::sync()したときに</del> <span class="since-c">1.2</span>自動的に別スレッドで送信されます。</li>
 <li>そのデータを受信した後(<a class="el" href="md_docs_241__client.html">4-1. Client</a>を参照)、再度tryGet()することで値が得られます。</li>
 </ul>
 </li>
 <li>Text::get() はstd::nulloptの代わりに空文字列を返します。</li>
-<li>また、std::string にキャストすることでも同様に値が得られます。</li>
 </ul>
 <p class="startli"><span class="since-c">1.7</span> Text::request() で明示的にリクエストを送信することもできます。</p>
-<p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。 また、std::wstring にキャストすることでも得られます。</p>
+<p class="startli"><span class="since-c">2.0</span> ワイド文字列は tryGetW(), getW() で得られます。</p>
 <p class="startli">std::ostreamにTextを直接渡して表示することもできます。 </p><div class="fragment"><div class="line">std::cout &lt;&lt; <span class="stringliteral">&quot;hoge = &quot;</span> &lt;&lt; wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>) &lt;&lt; std::endl;</div>
 </div><!-- fragment --><dl class="section warning"><dt>Warning</dt><dd><ul>
 <li><span class="since-c">1.11</span> Textオブジェクト同士を比較するとTextが参照するデータの名前が一致するかどうかで判定されます。 (Valueなど他のデータ型でも同様です。) <br  />
@@ -302,7 +309,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

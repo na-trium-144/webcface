@@ -7,5 +7,6 @@ var searchData=
   ['width_5f_4',['width_',['../structwebcface_1_1message_1_1ImageFrame.html#ad2af7588ca87bfadebd74fb4939e64dc',1,'webcface::message::ImageFrame']]],
   ['ws_5',['ws',['../structwebcface_1_1internal_1_1SharedStringData.html#afa2c658976df6e8b0c6121ef2b318216',1,'webcface::internal::SharedStringData']]],
   ['ws_5fdata_6',['ws_data',['../structwebcface_1_1internal_1_1ClientData.html#a86ae56c3c19f4f482052c637f3037e58',1,'webcface::internal::ClientData']]],
-  ['ws_5fthread_7',['ws_thread',['../structwebcface_1_1internal_1_1ClientData.html#a177dbf20b799483063395f54b12992fd',1,'webcface::internal::ClientData']]]
+  ['ws_5fthread_7',['ws_thread',['../structwebcface_1_1internal_1_1ClientData.html#a177dbf20b799483063395f54b12992fd',1,'webcface::internal::ClientData']]],
+  ['wsv_8',['wsv',['../structwebcface_1_1internal_1_1SharedStringData.html#af2e34128aaa90fdb41aec100b8b06059',1,'webcface::internal::SharedStringData']]]
 ];

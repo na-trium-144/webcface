@@ -10,12 +10,8 @@ var robot__link_8h =
     ] ],
     [ "fixedAbsolute", "robot__link_8h.html#a49aea1f6f84c49764c0abea6b81e0956", null ],
     [ "fixedAbsolute", "robot__link_8h.html#a8363a9d9d1a5bb07f44dcc2b980f41c4", null ],
-    [ "fixedJoint", "robot__link_8h.html#a0d88ace47e49a8860b57b6ff66f2872c", null ],
-    [ "fixedJoint", "robot__link_8h.html#aeeebe21c504e824f60e09e4b53f566b6", null ],
-    [ "fixedJoint", "robot__link_8h.html#a8f6e6eafb8ba92f48471459265214a44", null ],
-    [ "fixedJoint", "robot__link_8h.html#a118136debd7782b39841bfa963d40519", null ],
-    [ "prismaticJoint", "robot__link_8h.html#a7e35f2447d01fb0155c897218fb9edbc", null ],
-    [ "prismaticJoint", "robot__link_8h.html#a416f7fb5b8ea274e07f826cf86b0e0e2", null ],
-    [ "rotationalJoint", "robot__link_8h.html#ac0c9b491ef42c518e3f850aa9ea1cece", null ],
-    [ "rotationalJoint", "robot__link_8h.html#aa991ac571d7714516c94c63ce355523a", null ]
+    [ "fixedJoint", "robot__link_8h.html#a2dd1287563f765db5c18bee8f0cb0485", null ],
+    [ "fixedJoint", "robot__link_8h.html#a9e7935ab613eecba1f0d7a2263a20e2c", null ],
+    [ "prismaticJoint", "robot__link_8h.html#a604f58bbbd92ee34d475a3fdf82254b6", null ],
+    [ "rotationalJoint", "robot__link_8h.html#ad2f8c29a5ca1595544eaaf705557401d", null ]
 ];

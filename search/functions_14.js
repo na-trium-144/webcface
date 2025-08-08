@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['u8string_0',['u8String',['../classwebcface_1_1SharedString.html#a0f47241963fefbf3fa5caa44765990c6',1,'webcface::SharedString']]],
-  ['u8stringview_1',['u8StringView',['../classwebcface_1_1SharedString.html#abd4190403c607dda7622b15684a327fc',1,'webcface::SharedString']]],
+  ['u8stringview_0',['u8StringView',['../classwebcface_1_1SharedString.html#abd4190403c607dda7622b15684a327fc',1,'webcface::SharedString']]],
+  ['u8stringviewshare_1',['u8StringViewShare',['../classwebcface_1_1SharedString.html#a78969aa08c1d37673cfbfbf30d674748',1,'webcface::SharedString']]],
   ['unixsocketpath_2',['unixSocketPath',['../namespacewebcface_1_1internal.html#a128100029ac970e04ef5082c5ceb6b91',1,'webcface::internal']]],
   ['unixsocketpathwslinterop_3',['unixSocketPathWSLInterop',['../namespacewebcface_1_1internal.html#a8afb05983581f6ed761162fb6498dd78',1,'webcface::internal']]],
   ['unpack_4',['unpack',['../namespacewebcface_1_1message.html#a80e74661d4870765688ab1b4ffc0a496',1,'webcface::message']]],

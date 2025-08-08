@@ -3,6 +3,7 @@ var hierarchy =
     [ "AppWrapper", "classwebcface_1_1server_1_1AppWrapper.html", null ],
     [ "Arg", "classwebcface_1_1Arg.html", null ],
     [ "Arg", "structwebcface_1_1message_1_1Arg.html", null ],
+    [ "ArgTypesCheckResult", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4_1_1ArgTypesCheckResult.html", null ],
     [ "ArrayLikeTraitCheck< bool >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck.html", null ],
     [ "ArrayLikeTraitCheck< IsArrayLike< T >::value >", "structwebcface_1_1traits_1_1ArrayLikeTraitCheck.html", [
       [ "ArrayLikeTrait< T >", "structwebcface_1_1traits_1_1ArrayLikeTrait.html", null ]
@@ -26,6 +27,9 @@ var hierarchy =
     [ "AxisAngle", "structwebcface_1_1AxisAngle.html", null ],
     [ "basic_streambuf", null, [
       [ "BasicLoggerBuf< CharT >", "classwebcface_1_1BasicLoggerBuf.html", null ]
+    ] ],
+    [ "basic_string_view", null, [
+      [ "TStringView< CharT >", "classwebcface_1_1TStringView.html", null ]
     ] ],
     [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", null ],
     [ "Box", "structwebcface_1_1components_1_1geometries_1_1Box.html", null ],
@@ -62,6 +66,9 @@ var hierarchy =
     [ "enable_shared_from_this", null, [
       [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", null ],
       [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", null ]
+    ] ],
+    [ "false_type", null, [
+      [ "IsConstructibleArg< Arg, typename >", "structwebcface_1_1traits_1_1IsConstructibleArg.html", null ]
     ] ],
     [ "FieldBase", "structwebcface_1_1FieldBase.html", [
       [ "Field", "structwebcface_1_1Field.html", [
@@ -147,28 +154,15 @@ var hierarchy =
       [ "formatter< webcface::message::View >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1View_01_4.html", null ],
       [ "formatter< webcface::message::ViewOld >", "structfmt_1_1formatter_3_01webcface_1_1message_1_1ViewOld_01_4.html", null ]
     ] ],
-    [ "FuncArgTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncArgTypeCheck.html", null ],
-    [ "FuncArgTypeCheck< true >", "structwebcface_1_1traits_1_1FuncArgTypeCheck_3_01true_01_4.html", null ],
-    [ "FuncArgTypeCheck<(std::is_convertible_v< ValAdaptor, Args > &&...)>", "structwebcface_1_1traits_1_1FuncArgTypeCheck.html", [
-      [ "FuncArgTypesTrait< Args >", "structwebcface_1_1traits_1_1FuncArgTypesTrait.html", null ]
-    ] ],
+    [ "FuncArgTypesIterationFailureTrait< BadArg >", "structwebcface_1_1traits_1_1FuncArgTypesIterationFailureTrait.html", null ],
+    [ "FuncArgTypesIterationTrait< Args >", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait.html", null ],
+    [ "FuncArgTypesIterationTrait< FirstArg, OtherArgs... >", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4.html", null ],
+    [ "FuncArgTypesIterationTrait<>", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4.html", null ],
     [ "FuncResultStore", "classwebcface_1_1internal_1_1FuncResultStore.html", null ],
-    [ "FuncReturnTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck.html", null ],
-    [ "FuncReturnTypeCheck< std::is_same_v< Ret, void >||std::is_constructible_v< ValAdaptor, Ret > >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck.html", [
-      [ "FuncReturnTypeTrait< Ret >", "structwebcface_1_1traits_1_1FuncReturnTypeTrait.html", null ]
-    ] ],
-    [ "FuncReturnTypeCheck< true >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html", null ],
+    [ "FuncReturnTypeCheckOkTrait", "structwebcface_1_1traits_1_1FuncReturnTypeCheckOkTrait.html", null ],
     [ "FuncSignatureTrait< T >", "structwebcface_1_1traits_1_1FuncSignatureTrait.html", null ],
-    [ "FuncSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [
-      [ "FuncSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", null ],
-      [ "FuncSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
-      [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", null ]
-    ] ],
     [ "Geometry", "structwebcface_1_1Geometry.html", [
       [ "TemporalGeometry", "classwebcface_1_1TemporalGeometry.html", null ]
-    ] ],
-    [ "hash", null, [
-      [ "Hash", "structwebcface_1_1SharedString_1_1Hash.html", null ]
     ] ],
     [ "ILogHandler", null, [
       [ "CustomLogger", "classwebcface_1_1server_1_1CustomLogger.html", null ]
@@ -187,6 +181,17 @@ var hierarchy =
       [ "FuncSignatureMismatch", "structwebcface_1_1FuncSignatureMismatch.html", null ],
       [ "Intrusion", "structwebcface_1_1Intrusion.html", null ],
       [ "InvalidArgument", "structwebcface_1_1InvalidArgument.html", null ]
+    ] ],
+    [ "InvokeSignatureTrait< T >", "structwebcface_1_1traits_1_1InvokeSignatureTrait.html", null ],
+    [ "InvokeSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [
+      [ "FuncSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [
+        [ "FuncSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", null ],
+        [ "FuncSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
+        [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", null ]
+      ] ],
+      [ "InvokeSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", null ],
+      [ "InvokeSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", null ],
+      [ "InvokeSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", null ]
     ] ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
     [ "Line", "structwebcface_1_1components_1_1geometries_1_1Line.html", null ],
@@ -385,7 +390,9 @@ var hierarchy =
     [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Value)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
     [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::Variant)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
     [ "SharedMutexProxy< StrMap2< std::shared_ptr< std::function< void(webcface::View)> > > >", "classwebcface_1_1internal_1_1SharedMutexProxy.html", null ],
-    [ "SharedString", "classwebcface_1_1SharedString.html", null ],
+    [ "SharedString", "classwebcface_1_1SharedString.html", [
+      [ "StringInitializer", "classwebcface_1_1StringInitializer.html", null ]
+    ] ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", null ],
     [ "Size", "classwebcface_1_1Size.html", null ],
     [ "SizeOption", "classwebcface_1_1SizeOption.html", null ],
@@ -405,9 +412,9 @@ var hierarchy =
     [ "SyncDataStore2< std::shared_ptr< webcface::message::Canvas2DData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::message::Canvas3DData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< std::shared_ptr< webcface::message::ViewData > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
-    [ "SyncDataStore2< std::shared_ptr< webcface::ValAdaptor > >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::ImageFrame, webcface::message::ImageReq >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "SyncDataStore2< webcface::MutableNumVector >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
+    [ "SyncDataStore2< webcface::ValAdaptor >", "classwebcface_1_1internal_1_1SyncDataStore2.html", null ],
     [ "TemporalCanvas2DComponent", "classwebcface_1_1TemporalCanvas2DComponent.html", null ],
     [ "TemporalCanvas3DComponent", "classwebcface_1_1TemporalCanvas3DComponent.html", null ],
     [ "TemporalComponent< V, C2, C3 >", "structwebcface_1_1TemporalComponent.html", null ],
@@ -416,6 +423,12 @@ var hierarchy =
     ] ],
     [ "TemporalRobotJointData", "structwebcface_1_1internal_1_1TemporalRobotJointData.html", null ],
     [ "TemporalViewComponent", "classwebcface_1_1TemporalViewComponent.html", null ],
+    [ "This_arg_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__arg__type__is__not__supported__by__WebCFace__Func.html", null ],
+    [ "This_return_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__return__type__is__not__supported__by__WebCFace__Func.html", null ],
+    [ "true_type", null, [
+      [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptor >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_cfc8d26a087c85dfa1283b47d756c24e.html", null ],
+      [ "IsConstructibleArg< ValAdaptor, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html", null ]
+    ] ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ],
     [ "ViewComponentData", "structwebcface_1_1message_1_1ViewComponentData.html", [

@@ -1,11 +1,15 @@
 var client_2include_2webcface_2func_8h =
 [
-    [ "FuncArgTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncArgTypeCheck.html", null ],
-    [ "FuncArgTypeCheck< true >", "structwebcface_1_1traits_1_1FuncArgTypeCheck_3_01true_01_4.html", "structwebcface_1_1traits_1_1FuncArgTypeCheck_3_01true_01_4" ],
-    [ "FuncArgTypesTrait< Args >", "structwebcface_1_1traits_1_1FuncArgTypesTrait.html", null ],
-    [ "FuncReturnTypeCheck< bool >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck.html", null ],
-    [ "FuncReturnTypeCheck< true >", "structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4.html", "structwebcface_1_1traits_1_1FuncReturnTypeCheck_3_01true_01_4" ],
-    [ "FuncReturnTypeTrait< Ret >", "structwebcface_1_1traits_1_1FuncReturnTypeTrait.html", null ],
+    [ "This_arg_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__arg__type__is__not__supported__by__WebCFace__Func.html", null ],
+    [ "FuncArgTypesIterationFailureTrait< BadArg >", "structwebcface_1_1traits_1_1FuncArgTypesIterationFailureTrait.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationFailureTrait" ],
+    [ "IsConstructibleArg< Arg, typename >", "structwebcface_1_1traits_1_1IsConstructibleArg.html", null ],
+    [ "IsConstructibleArg< ValAdaptor, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html", null ],
+    [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptor >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_cfc8d26a087c85dfa1283b47d756c24e.html", null ],
+    [ "FuncArgTypesIterationTrait<>", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4" ],
+    [ "ArgTypesCheckResult", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4_1_1ArgTypesCheckResult.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_4_1_1ArgTypesCheckResult" ],
+    [ "FuncArgTypesIterationTrait< FirstArg, OtherArgs... >", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4" ],
+    [ "This_return_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__return__type__is__not__supported__by__WebCFace__Func.html", null ],
+    [ "FuncReturnTypeCheckOkTrait", "structwebcface_1_1traits_1_1FuncReturnTypeCheckOkTrait.html", "structwebcface_1_1traits_1_1FuncReturnTypeCheckOkTrait" ],
     [ "FuncSignatureTrait< T >", "structwebcface_1_1traits_1_1FuncSignatureTrait.html", null ],
     [ "FuncSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07Args_8_8_8_08_4" ],
     [ "FuncSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4" ],
@@ -13,8 +17,7 @@ var client_2include_2webcface_2func_8h =
     [ "FuncSignatureTrait< Ret(*)(Args...)>", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1FuncSignatureTrait_3_01Ret_07_5_08_07Args_8_8_8_08_4" ],
     [ "Func", "classwebcface_1_1Func.html", "classwebcface_1_1Func" ],
     [ "FuncListener", "classwebcface_1_1FuncListener.html", "classwebcface_1_1FuncListener" ],
-    [ "FuncObjTrait", "client_2include_2webcface_2func_8h.html#abd31c9e1babc0d7ab2e39e1d1d0e18aa", null ],
-    [ "InvokeSignature", "client_2include_2webcface_2func_8h.html#a8eacf5f32d380b6510a63af681d1b76d", null ],
-    [ "getInvokeSignature", "client_2include_2webcface_2func_8h.html#ae054534eb6de1d24f4b1cb480841fb58", null ],
-    [ "getInvokeSignature", "client_2include_2webcface_2func_8h.html#ae66ff3a30142e0d1ee56b8e201366f38", null ]
+    [ "FuncArgTypesTrait", "client_2include_2webcface_2func_8h.html#adfe1ddafb0a41af0a62fd8b2d5c09f77", null ],
+    [ "FuncObjTrait", "client_2include_2webcface_2func_8h.html#a49c337c87816c444f5483069a964c7fa", null ],
+    [ "FuncReturnTypeTrait", "client_2include_2webcface_2func_8h.html#a67b8c538bc290c1c1a374a162aceeda0", null ]
 ];

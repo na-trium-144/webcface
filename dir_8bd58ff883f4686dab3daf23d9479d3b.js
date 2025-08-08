@@ -19,6 +19,7 @@ var dir_8bd58ff883f4686dab3daf23d9479d3b =
     [ "func_info.h", "func__info_8h.html", null ],
     [ "func_listener.h", "func__listener_8h.html", null ],
     [ "func_result.h", "func__result_8h.html", "func__result_8h" ],
+    [ "func_trait.h", "func__trait_8h.html", "func__trait_8h" ],
     [ "geometry.h", "geometry_8h.html", "geometry_8h" ],
     [ "image.h", "client_2include_2webcface_2image_8h.html", "client_2include_2webcface_2image_8h" ],
     [ "image_frame.h", "image__frame_8h.html", "image__frame_8h" ],

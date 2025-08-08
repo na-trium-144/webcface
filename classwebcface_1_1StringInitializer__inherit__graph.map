@@ -1,0 +1,5 @@
+<map id="StringInitializer" name="StringInitializer">
+<area shape="rect" id="Node000001" title="SharedString のpublicなコンストラクタインタフェース (入力専用)" alt="" coords="5,79,127,104"/>
+<area shape="rect" id="Node000002" href="$classwebcface_1_1SharedString.html" title="u8stringとstringとwstringをshared_ptrで持ち共有する" alt="" coords="13,5,119,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="69,44,69,79,63,79,63,44"/>
+</map>

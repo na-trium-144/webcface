@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['numvector_0',['NumVector',['../classwebcface_1_1NumVector.html',1,'webcface']]]
+  ['outofrange_0',['OutOfRange',['../structwebcface_1_1OutOfRange.html',1,'webcface']]]
 ];

@@ -75,7 +75,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "sync_time_store", "structwebcface_1_1internal_1_1ClientData.html#aa89dd080f4853bbd8e89ea4815256cce", null ],
     [ "text_change_event", "structwebcface_1_1internal_1_1ClientData.html#a087f203d0892d9d91b2c5600b8642b67", null ],
     [ "text_entry_event", "structwebcface_1_1internal_1_1ClientData.html#a48ba9360cef3f11a62e46655b82a26fc", null ],
-    [ "text_store", "structwebcface_1_1internal_1_1ClientData.html#a282bdd0f1e0e63dd25584d54d3de234a", null ],
+    [ "text_store", "structwebcface_1_1internal_1_1ClientData.html#a330c5a6ad08ddd1a42680e806b32c982", null ],
     [ "value_change_event", "structwebcface_1_1internal_1_1ClientData.html#a43fe14c94037fc52d42a9f047642f90f", null ],
     [ "value_entry_event", "structwebcface_1_1internal_1_1ClientData.html#a9e53c361eb1703d81da1e8dd98d6e3d4", null ],
     [ "value_store", "structwebcface_1_1internal_1_1ClientData.html#a0160702d1af014a367df160f8cdcfd56", null ],

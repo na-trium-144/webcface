@@ -1,7 +1,7 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,31,192,56"/>
-<area shape="rect" id="Node000001" href="$structwebcface_1_1internal_1_1ClientData.html" title=" " alt="" coords="248,5,339,31"/>
-<area shape="poly" id="edge13_Node000000_Node000001" title=" " alt="" coords="205,27,247,21,248,26,206,32"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1internal_1_1PromiseData.html" title="PromiseとCallHandleのデータを保持するクラス" alt="" coords="240,55,347,80"/>
-<area shape="poly" id="edge14_Node000000_Node000002" title=" " alt="" coords="206,54,240,58,239,63,205,59"/>
+<area shape="rect" id="Node000000" href="$classwebcface_1_1internal_1_1DataSetBuffer.html" title=" " alt="" coords="5,5,225,45"/>
+<area shape="rect" id="Node000001" href="$classwebcface_1_1internal_1_1ViewBuf.html" title="Viewの送信用データを保持する" alt="" coords="273,42,349,67"/>
+<area shape="poly" id="edge12_Node000000_Node000001" title=" " alt="" coords="240,41,273,46,273,52,239,47"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="75,70,155,95"/>
+<area shape="poly" id="edge13_Node000002_Node000001" title=" " alt="" coords="169,72,273,57,273,63,170,78"/>
 </map>

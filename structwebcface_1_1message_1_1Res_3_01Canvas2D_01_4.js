@@ -1,8 +1,8 @@
 var structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4 =
 [
     [ "Res", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#aa22bc17c0d20ee3553902e62814df6b4", null ],
-    [ "Res", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a7acdaac445e03560653474007a0fedf0", null ],
-    [ "data_diff", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#abcd38a81d32328da2291500c40893c51", null ],
+    [ "Res", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a28813d7abe68563e81fb3f76540f5c71", null ],
+    [ "data_diff", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#aa8d1ea86338ce423eba8dd0a8d9b5729", null ],
     [ "data_ids", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a201f37b2142b2ec0737b6f96d332198c", null ],
     [ "height", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#a89f6abd564014faeff7cd20c340a9c7d", null ],
     [ "kind", "structwebcface_1_1message_1_1Res_3_01Canvas2D_01_4.html#ad5a4760db27f8fcd5c4028bb15f80ad9", null ],

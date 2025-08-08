@@ -39,7 +39,6 @@ var namespacewebcface_1_1internal =
     [ "StrMap2", "namespacewebcface_1_1internal.html#abd5eab460a31c187724b48a8773dbb40", null ],
     [ "StrSet1", "namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99", null ],
     [ "StrSet2", "namespacewebcface_1_1internal.html#aa211fead709a7546b1b6416379df5449", null ],
-    [ "TextData", "namespacewebcface_1_1internal.html#a9906851c9d11cd85f47588bc9d89d6e8", null ],
     [ "detectWSL1", "namespacewebcface_1_1internal.html#a6e2d4741011d4256173c3fa335809d64", null ],
     [ "detectWSL2", "namespacewebcface_1_1internal.html#a133fac0549803267565a9c07f0f45b68", null ],
     [ "findFromMap1", "namespacewebcface_1_1internal.html#a71d02be9d9d534c8e9442a0fa41c561c", null ],

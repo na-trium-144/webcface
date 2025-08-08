@@ -241,7 +241,7 @@ Point, Transform</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::canvas3d からCanvas3Dオブジェクトを作り、 <a class="el" href="md_docs_254__view.html">View</a>と同様に Canvas3D::add() または operator&lt;&lt; で要素を追加し、 最後にCanvas3D::sync()をしてからClient::sync()をすることで送信されます。</p>
 <dl class="section note"><dt>Note</dt><dd><span class="since-c">1.9</span> add関数の仕様を変更し &lt;&lt; 演算子も実装して、Viewと同じ使い方になりました</dd></dl>
-<p>例 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> world = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aff8443d51fac49563f2f1a8366d41b17">canvas3D</a>(<span class="stringliteral">&quot;omniwheel_world&quot;</span>);</div>
+<p>例 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a> world = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#aac66e35cadfb9a32b6827a0f7aa674fa">canvas3D</a>(<span class="stringliteral">&quot;omniwheel_world&quot;</span>);</div>
 <div class="line"><span class="comment">// world.init(); // ←オブジェクトcanvasを新規に構築せず繰り返し使いまわす場合は必要</span></div>
 <div class="line">world &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">webcface::plane</a>(<a class="code hl_function" href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a>(), 3, 3)</div>
 <div class="line">            .color(<a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a>);</div>
@@ -254,7 +254,7 @@ Point, Transform</h1>
 <div class="line">world &lt;&lt; <a class="code hl_enumvalue" href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6a34be958a921e43d813a2075297d8e862">webcface::box</a>({1.5, -1.5, 0}, {1.5, 1.5, 0.1})</div>
 <div class="line">            .color(<a class="code hl_enumvalue" href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a>);</div>
 <div class="line"><span class="comment">// RobotModel のドキュメントを参照</span></div>
-<div class="line">world &lt;&lt; wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a8ce4a3a7578bb9d99eb7c541d32bc0db">robotModel</a>(<span class="stringliteral">&quot;omniwheel&quot;</span>)</div>
+<div class="line">world &lt;&lt; wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a8d84ae4e598e983aeeb9cc55dc910664">robotModel</a>(<span class="stringliteral">&quot;omniwheel&quot;</span>)</div>
 <div class="line">            .origin(...)</div>
 <div class="line">            .angle(<span class="stringliteral">&quot;line_rotation&quot;</span>, -i);</div>
 <div class="line">world.<a class="code hl_function" href="classwebcface_1_1Canvas3D.html#a81729876c2c62b1af63e5bde198aeace">sync</a>(); <span class="comment">// ここまでにcanvasに追加したものをクライアントに反映</span></div>
@@ -266,8 +266,8 @@ Point, Transform</h1>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a></div><div class="ttdeci">@ gray</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a></div><div class="ttdeci">@ white</div></div>
 <div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:831</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a8ce4a3a7578bb9d99eb7c541d32bc0db"><div class="ttname"><a href="structwebcface_1_1Field.html#a8ce4a3a7578bb9d99eb7c541d32bc0db">webcface::Field::robotModel</a></div><div class="ttdeci">RobotModel_ robotModel(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:202</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_aff8443d51fac49563f2f1a8366d41b17"><div class="ttname"><a href="structwebcface_1_1Field.html#aff8443d51fac49563f2f1a8366d41b17">webcface::Field::canvas3D</a></div><div class="ttdeci">Canvas3D_ canvas3D(std::string_view field=&quot;&quot;) const</div><div class="ttdef"><b>Definition</b> field.h:242</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a8d84ae4e598e983aeeb9cc55dc910664"><div class="ttname"><a href="structwebcface_1_1Field.html#a8d84ae4e598e983aeeb9cc55dc910664">webcface::Field::robotModel</a></div><div class="ttdeci">RobotModel_ robotModel(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:198</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_aac66e35cadfb9a32b6827a0f7aa674fa"><div class="ttname"><a href="structwebcface_1_1Field.html#aac66e35cadfb9a32b6827a0f7aa674fa">webcface::Field::canvas3D</a></div><div class="ttdeci">Canvas3D_ canvas3D(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:218</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png" alt="example_wheel.png" class="inline"/></p>
 <p class="startli">C++ではCanvas3Dのデストラクタでも自動的にCanvas3D::sync()が呼ばれます。</p>
 <dl class="section note"><dt>Note</dt><dd>Canvas3Dオブジェクトをコピーした場合、Canvas3Dオブジェクトの内容はコピーされるのではなく共有され、そのすべてのコピーが破棄されるまでsync()は呼ばれません。</dd></dl>
@@ -288,7 +288,7 @@ Geometry (3次元)</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.9</span></dd></dl>
 <code><a class="el" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></code> 名前空間に定義されています。 <div class="fragment"><div class="line"><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a>;</div>
-<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:421</div></div>
+<div class="ttc" id="anamespacewebcface_1_1components_1_1geometries_html"><div class="ttname"><a href="namespacewebcface_1_1components_1_1geometries.html">webcface::geometries</a></div><div class="ttdef"><b>Definition</b> components.h:384</div></div>
 </div><!-- fragment --> をすると便利かもしれません <dl class="section note"><dt>Note</dt><dd>namespace geometries はinlineなので、 <code>webcface::</code> の名前空間でもアクセス可能です</dd></dl>
 各要素はそれぞれの関数から <a class="el" href="classwebcface_1_1Canvas3DComponent.html" title="Canvas3Dに表示する要素">webcface::Canvas3DComponent</a> または <a class="el" href="structwebcface_1_1TemporalComponent.html" title="Canvas2D, Canvas3D (, View) に要素をaddするときに使うインタフェース">webcface::TemporalComponent</a> のオブジェクトとして得られます。</li>
 <li><b class="tab-title">JavaScript</b> JavaScriptでは <a href="https://na-trium-144.github.io/webcface-js/variables/geometries.html"><code>geometries</code></a> オブジェクト内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line">import { geometries } from &quot;webcface&quot;;</div>
@@ -355,7 +355,7 @@ Sphere</h3>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -19,5 +19,6 @@ var searchData=
   ['wcfviewcomponent_16',['wcfViewComponent',['../def__types_8h.html#a8605c7530fcff7a67cbb1906bb696de4',1,'wcfViewComponent:&#160;def_types.h'],['../component__view_8h.html#a8605c7530fcff7a67cbb1906bb696de4',1,'wcfViewComponent:&#160;component_view.h']]],
   ['wcfviewcomponenttype_17',['wcfViewComponentType',['../def__types_8h.html#a4dd461e3b605474f151147135edc3ada',1,'def_types.h']]],
   ['wcfviewcomponentw_18',['wcfViewComponentW',['../def__types_8h.html#a37d71b5bff6faa035dc11a6398fc0e5c',1,'wcfViewComponentW:&#160;def_types.h'],['../component__view_8h.html#a37d71b5bff6faa035dc11a6398fc0e5c',1,'wcfViewComponentW:&#160;component_view.h']]],
-  ['wsconnptr_19',['wsConnPtr',['../namespacewebcface_1_1server.html#a5ecc25311d903fa549abddc796aee4ee',1,'webcface::server']]]
+  ['wsconnptr_19',['wsConnPtr',['../namespacewebcface_1_1server.html#a5ecc25311d903fa549abddc796aee4ee',1,'webcface::server']]],
+  ['wstringview_20',['WStringView',['../namespacewebcface.html#a7a4da73aaddd4a3745cdfb335e41ae7a',1,'webcface']]]
 ];

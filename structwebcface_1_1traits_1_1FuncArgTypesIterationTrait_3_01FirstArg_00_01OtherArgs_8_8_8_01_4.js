@@ -1,0 +1,4 @@
+var structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4 =
+[
+    [ "ArgTypesCheckResult", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4.html#aac865df6b3bd82917d923f0628221dc4", null ]
+];

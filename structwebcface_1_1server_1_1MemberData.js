@@ -56,7 +56,7 @@ var structwebcface_1_1server_1_1MemberData =
     [ "sink", "structwebcface_1_1server_1_1MemberData.html#a11573073f52fb4b379c28b67a1a9799c", null ],
     [ "store", "structwebcface_1_1server_1_1MemberData.html#addef74eca96772f4826bbe53a38c2a79", null ],
     [ "sync_init", "structwebcface_1_1server_1_1MemberData.html#aabf3a5ce7b508dec8b9c197b0af1d8c8", null ],
-    [ "text", "structwebcface_1_1server_1_1MemberData.html#a76e27e7acd3503504a0c2f0150a7dc61", null ],
+    [ "text", "structwebcface_1_1server_1_1MemberData.html#a062973e938d1a1ba2ddca6c982bb7829", null ],
     [ "text_req", "structwebcface_1_1server_1_1MemberData.html#a088f6c22a14cc5b46f10bc3d8e3f635b", null ],
     [ "value", "structwebcface_1_1server_1_1MemberData.html#a94d6eba7e789927dbadcf038e2db388b", null ],
     [ "value_req", "structwebcface_1_1server_1_1MemberData.html#a9fc89dcc7593719408f569aba545aa48", null ],

@@ -1,0 +1,25 @@
+var benchmarks_2encoding_8cc =
+[
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a194cbb3acac019edb8a9197e78c5f997", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#ad85a0799cedd72302fd5844f7f61b5d7", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#ae49ccf9b7d9c7933eb94d73ca8fa4338", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a87fe9e77b445025f9b30b4c7f25c90cb", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a5fcd311cec3b4e99177b96a5bfc5bc55", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a89e5402d775ab30e0818413131411edd", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a7b6adeecd16426216b5b1a9acfc6b113", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a2cc285061cafd738f88cbe63735cbb12", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#ad1d4c4f1903d3642daa6a7e87f40f493", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a61b890eb619fb944dcd3e94d84fd5bbb", null ],
+    [ "BENCHMARK", "benchmarks_2encoding_8cc.html#a08a8a25b8986c1ea827f3e542868b29d", null ],
+    [ "SharedStringCompare", "benchmarks_2encoding_8cc.html#ae388e92fad840574b17ec77c9869fdd8", null ],
+    [ "SharedStringCompareWide", "benchmarks_2encoding_8cc.html#a5a89f29dc029b58ae0fb5b2e24d3bdac", null ],
+    [ "SharedStringConstruct", "benchmarks_2encoding_8cc.html#a53bfa7844781172d5f971bb2dce863e3", null ],
+    [ "SharedStringConstructStatic", "benchmarks_2encoding_8cc.html#a84f091fd45792366f08f54a41787d345", null ],
+    [ "SharedStringConstructWide", "benchmarks_2encoding_8cc.html#ac53371bbc06ee76d401dbf2d138194d0", null ],
+    [ "SharedStringView", "benchmarks_2encoding_8cc.html#ae4cc571b547f595a08d67f2b919ae46d", null ],
+    [ "SharedStringViewShare", "benchmarks_2encoding_8cc.html#a607a035431a3585c963444410b6e0ede", null ],
+    [ "stringCompare", "benchmarks_2encoding_8cc.html#aeb4ead993115906284e74e7367456bf6", null ],
+    [ "stringConstruct", "benchmarks_2encoding_8cc.html#a99e61ed68c15d2fffa2558f1a3ee93af", null ],
+    [ "stringConstructStatic", "benchmarks_2encoding_8cc.html#a3d730f5c37c08a2f483dc6ce58ecf6cf", null ],
+    [ "stringView", "benchmarks_2encoding_8cc.html#a3e1ef92927a5d64714d96e1432e7a886", null ]
+];

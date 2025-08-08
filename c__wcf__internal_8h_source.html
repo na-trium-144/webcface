@@ -253,17 +253,24 @@ $(document).ready(function(){initNavTree('c__wcf__internal_8h_source.html',''); 
 <div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        <a class="code hl_struct" href="structwebcface_1_1c__wcf_1_1CharType.html">CharType&lt;CharT&gt;::funcValList</a>().at(result);</div>
 <div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    result-&gt;as_int = result_val_ref;</div>
 <div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    result-&gt;as_double = result_val_ref;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    result-&gt;as_str = result_val_ref;</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>}</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>} <span class="comment">// namespace c_wcf</span></div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface.html">webcface</a>;</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_same_v&lt;CharT, char&gt;) {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        result-&gt;as_str = result_val_ref.<a class="code hl_function" href="classwebcface_1_1ValAdaptor.html#a4f2e99a6f827031c8f6c70d0ba92a0b4">asStringView</a>().<a class="code hl_function" href="classwebcface_1_1TStringView.html#ad5c7a3caf068a9f100e94b3552bd0016">c_str</a>();</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        result-&gt;as_str = result_val_ref.<a class="code hl_function" href="classwebcface_1_1ValAdaptor.html#afefb9e756a948626ee1515c0089e6c7a">asWStringView</a>().<a class="code hl_function" href="classwebcface_1_1TStringView.html#ad5c7a3caf068a9f100e94b3552bd0016">c_str</a>();</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    }</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>}</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>} <span class="comment">// namespace c_wcf</span></div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span><span class="keyword">using namespace </span><a class="code hl_namespace" href="namespacewebcface.html">webcface</a>;</div>
 <div class="ttc" id="aclasswebcface_1_1Client_html"><div class="ttname"><a href="classwebcface_1_1Client.html">webcface::Client</a></div><div class="ttdoc">サーバーに接続するクライアント。</div><div class="ttdef"><b>Definition</b> client.h:18</div></div>
-<div class="ttc" id="aclasswebcface_1_1Promise_html"><div class="ttname"><a href="classwebcface_1_1Promise.html">webcface::Promise</a></div><div class="ttdoc">非同期で実行した関数の実行結果を取得するインタフェース。</div><div class="ttdef"><b>Definition</b> func_result.h:37</div></div>
+<div class="ttc" id="aclasswebcface_1_1Promise_html"><div class="ttname"><a href="classwebcface_1_1Promise.html">webcface::Promise</a></div><div class="ttdoc">非同期で実行した関数の実行結果を取得するインタフェース。</div><div class="ttdef"><b>Definition</b> func_result.h:36</div></div>
+<div class="ttc" id="aclasswebcface_1_1TStringView_html_ad5c7a3caf068a9f100e94b3552bd0016"><div class="ttname"><a href="classwebcface_1_1TStringView.html#ad5c7a3caf068a9f100e94b3552bd0016">webcface::TStringView::c_str</a></div><div class="ttdeci">const CharT * c_str() const</div><div class="ttdoc">null終端の文字列ポインタを返す</div><div class="ttdef"><b>Definition</b> encoding.h:76</div></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptor_html"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a></div><div class="ttdoc">数値、文字列などの値を相互変換するクラス</div><div class="ttdef"><b>Definition</b> val_adaptor.h:87</div></div>
+<div class="ttc" id="aclasswebcface_1_1ValAdaptor_html_a4f2e99a6f827031c8f6c70d0ba92a0b4"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html#a4f2e99a6f827031c8f6c70d0ba92a0b4">webcface::ValAdaptor::asStringView</a></div><div class="ttdeci">StringView asStringView() const</div><div class="ttdoc">null終端の文字列を返す</div><div class="ttdef"><b>Definition</b> val_adaptor.cc:90</div></div>
+<div class="ttc" id="aclasswebcface_1_1ValAdaptor_html_afefb9e756a948626ee1515c0089e6c7a"><div class="ttname"><a href="classwebcface_1_1ValAdaptor.html#afefb9e756a948626ee1515c0089e6c7a">webcface::ValAdaptor::asWStringView</a></div><div class="ttdeci">WStringView asWStringView() const</div><div class="ttdoc">null終端の文字列を返す (wstring)</div><div class="ttdef"><b>Definition</b> val_adaptor.cc:94</div></div>
 <div class="ttc" id="aclient_2include_2webcface_2func_8h_html"><div class="ttname"><a href="client_2include_2webcface_2func_8h.html">func.h</a></div></div>
 <div class="ttc" id="aclient_8h_html"><div class="ttname"><a href="client_8h.html">client.h</a></div></div>
 <div class="ttc" id="acommon_2val__adaptor_8h_html"><div class="ttname"><a href="common_2val__adaptor_8h.html">val_adaptor.h</a></div></div>
@@ -319,7 +326,7 @@ $(document).ready(function(){initNavTree('c__wcf__internal_8h_source.html',''); 
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="dir_81dc01503b4758498154e925b296735c.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf__internal_8h.html">c_wcf_internal.h</a></li>
-    <li class="footer">Generated on Mon Aug 4 2025 08:58:58 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
