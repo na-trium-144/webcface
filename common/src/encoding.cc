@@ -79,12 +79,14 @@ void encodeWsToU8s(const std::shared_ptr<internal::SharedStringData> &data) {
 #else
     static_assert(sizeof(wchar_t) == 4, "Assuming wchar_t is utf-32 on Unix");
     assert(data->u8s.empty() && data->u8sv.empty());
-    utf8::utf32to8(name.cbegin(), name.cend(), std::back_inserter(data->u8s));
+    utf8::utf32to8(data->wsv.cbegin(), data->wsv.cend(),
+                   std::back_inserter(data->u8s));
     data->u8sv = data->u8s;
 #endif
 }
 /// \private
-void encodeSToWs(const std::shared_ptr<internal::SharedStringData> &data) {
+void encodeSToWs(
+    [[maybe_unused]] const std::shared_ptr<internal::SharedStringData> &data) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     auto length =
         MultiByteToWideChar(CP_ACP, 0, data->sv.data(),
@@ -167,17 +169,17 @@ SharedString SharedString::encodeStatic(std::wstring_view name) {
 }
 
 bool SharedString::operator==(const SharedString &other) const {
-    if(empty()) {
+    if (empty()) {
         return other.empty();
-    }else if(other.empty()){
+    } else if (other.empty()) {
         return false; // return empty();
-    }else{
+    } else {
         // data != nullptr
-        if(!data->wsv.empty() || !other.data->wsv.empty()){
+        if (!data->wsv.empty() || !other.data->wsv.empty()) {
             return decodeW() == other.decodeW();
-        }else if(!data->u8sv.empty() || !other.data->u8sv.empty()){
+        } else if (!data->u8sv.empty() || !other.data->u8sv.empty()) {
             return u8StringView() == other.u8StringView();
-        }else{
+        } else {
             return decode() == other.decode();
         }
     }
@@ -185,7 +187,7 @@ bool SharedString::operator==(const SharedString &other) const {
 bool SharedString::operator<=(const SharedString &other) const {
     return u8StringView() <= other.u8StringView();
 }
-bool SharedString::operator>=(const SharedString &other) const{
+bool SharedString::operator>=(const SharedString &other) const {
     return u8StringView() >= other.u8StringView();
 }
 
@@ -285,7 +287,8 @@ void decodeU8sToWs(const std::shared_ptr<internal::SharedStringData> &data) {
     data->wsv = data->ws;
 #endif
 }
-void decodeWsToS(const std::shared_ptr<internal::SharedStringData> &data) {
+void decodeWsToS(
+    [[maybe_unused]] const std::shared_ptr<internal::SharedStringData> &data) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     auto length_acp = WideCharToMultiByte(CP_ACP, 0, data->wsv.data(),
                                           static_cast<int>(data->wsv.size()),
