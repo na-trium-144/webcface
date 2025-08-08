@@ -21,6 +21,16 @@ void SharedStringConstruct(benchmark::State &state){
         benchmark::DoNotOptimize(webcface::SharedString::fromU8String(strings[i++ % 10]));
     }
 }
+void SharedStringConstructWide(benchmark::State &state){
+    std::vector<std::wstring> strings;
+    for (int i = 0; i < 10; i++){
+        strings.emplace_back(L"hello, world " + std::to_wstring(i));
+    }
+    int i = 0;
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(webcface::SharedString::encode(strings[i++ % 10]));
+    }
+}
 void stringConstructStatic(benchmark::State &state){
     const char strings[][15] = {
         "hello, world 0", "hello, world 1", "hello, world 2", "hello, world 3",
@@ -76,13 +86,22 @@ void SharedStringCompare(benchmark::State &state){
         benchmark::DoNotOptimize(ss1 == ss2);
     }
 }
+void SharedStringCompareWide(benchmark::State &state){
+    webcface::SharedString ss1 = webcface::SharedString::fromU8StringStatic("hello, world");
+    webcface::SharedString ss2 = webcface::SharedString::encodeStatic(L"hello, world2");
+    for (auto _ : state) {
+        benchmark::DoNotOptimize(ss1 == ss2);
+    }
+}
 
 BENCHMARK(stringConstruct);
 BENCHMARK(SharedStringConstruct);
 BENCHMARK(stringConstructStatic);
 BENCHMARK(SharedStringConstructStatic);
+BENCHMARK(SharedStringConstructWide);
 BENCHMARK(stringView);
 BENCHMARK(SharedStringView);
 BENCHMARK(SharedStringViewShare);
 BENCHMARK(stringCompare);
 BENCHMARK(SharedStringCompare);
+BENCHMARK(SharedStringCompareWide);

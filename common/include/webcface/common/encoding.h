@@ -188,15 +188,9 @@ class WEBCFACE_DLL SharedString {
                         std::size_t len = std::string::npos) const;
     std::size_t find(char c, std::size_t pos = 0) const;
 
-    bool operator==(const SharedString &other) const {
-        return this->u8StringView() == other.u8StringView();
-    }
-    bool operator<=(const SharedString &other) const {
-        return this->u8StringView() <= other.u8StringView();
-    }
-    bool operator>=(const SharedString &other) const{
-        return this->u8StringView() >= other.u8StringView();
-    }
+    bool operator==(const SharedString &other) const;
+    bool operator<=(const SharedString &other) const;
+    bool operator>=(const SharedString &other) const;
     bool operator!=(const SharedString &other) const {
         return !(*this == other);
     }
