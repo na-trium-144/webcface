@@ -19,6 +19,18 @@ struct FuncArgTypesIterationFailureTrait {
     using ArgTypesCheckResult =
         This_arg_type_is_not_supported_by_WebCFace_Func<BadArg>;
 };
+// MSVCでexplicitな変換operatorがあるとき
+// std::is_constructible_t<Arg, ValAdaptor> が正しくtrueを返さないため、
+// decltypeで実装している
+template <typename Arg, typename = void>
+struct IsConstructibleArg : std::false_type {};
+template <>
+struct IsConstructibleArg<ValAdaptor, void> : std::true_type {};
+template <typename Arg>
+struct IsConstructibleArg<Arg,
+                          std::void_t<decltype(std::declval<ValAdaptor>().operator Arg())>>
+    : std::true_type {};
+
 template <typename... Args>
 struct FuncArgTypesIterationTrait;
 template <>
@@ -30,7 +42,7 @@ struct FuncArgTypesIterationTrait<> {
 template <typename FirstArg, typename... OtherArgs>
 struct FuncArgTypesIterationTrait<FirstArg, OtherArgs...> {
     using ArgTypesCheckResult = typename std::conditional_t<
-        std::is_constructible_v<std::decay_t<FirstArg>, ValAdaptor>,
+        IsConstructibleArg<std::decay_t<FirstArg>>::value,
         FuncArgTypesIterationTrait<OtherArgs...>,
         FuncArgTypesIterationFailureTrait<FirstArg>>::ArgTypesCheckResult;
 };

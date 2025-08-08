@@ -335,7 +335,9 @@ class WEBCFACE_DLL ValAdaptor {
      */
     template <typename T>
     T as() const {
-        return T(*this);
+        // ↓ MSVCでなぜかコンパイルできない
+        // return static_cast<T>(*this);
+        return this->operator T();
     }
     /*!
      * \brief 数値型への変換
