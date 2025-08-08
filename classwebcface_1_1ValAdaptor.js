@@ -21,7 +21,6 @@ var classwebcface_1_1ValAdaptor =
     [ "asWStringRef", "classwebcface_1_1ValAdaptor.html#a64dea88701f40404b81d03669fdd7ce9", null ],
     [ "asWStringView", "classwebcface_1_1ValAdaptor.html#afefb9e756a948626ee1515c0089e6c7a", null ],
     [ "empty", "classwebcface_1_1ValAdaptor.html#a644718bb2fb240de962dc3c9a1fdf0dc", null ],
-    [ "emptyVal", "classwebcface_1_1ValAdaptor.html#a9700d4f1c563e5a1fb04dc34979fd851", null ],
     [ "operator bool", "classwebcface_1_1ValAdaptor.html#a67b76affb3b5d35fa419ac234144038b", null ],
     [ "operator T", "classwebcface_1_1ValAdaptor.html#a8b661d00358adea68affef384db73360", null ],
     [ "operator T", "classwebcface_1_1ValAdaptor.html#a8b661d00358adea68affef384db73360", null ],

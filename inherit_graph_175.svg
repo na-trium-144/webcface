@@ -14,7 +14,7 @@
 <g id="a_Node000000"><a xlink:href="classwebcface_1_1internal_1_1SyncDataStore2.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="152,-30 0,-30 0,0 152,0 152,-30"/>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">SyncDataStore2&lt; webcface</text>
-<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::ValAdaptor &gt;</text>
+<text text-anchor="middle" x="76" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::MutableNumVector &gt;</text>
 </a>
 </g>
 </g>

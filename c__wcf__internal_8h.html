@@ -149,6 +149,7 @@ $(document).ready(function(){initNavTree('c__wcf__internal_8h.html',''); initRes
 <div class="contents">
 <div class="textblock"><code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
+<code>#include &quot;<a class="el" href="safe__global_8h_source.html">webcface/common/internal/safe_global.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="wcf_8h_source.html">webcface/wcf.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="client_8h_source.html">webcface/client.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="client_2include_2webcface_2func_8h_source.html">webcface/func.h</a>&quot;</code><br />
@@ -157,7 +158,7 @@ $(document).ready(function(){initNavTree('c__wcf__internal_8h.html',''); initRes
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for c_wcf_internal.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf__internal_8h__incl.svg" width="3206" height="579"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="c__wcf__internal_8h__incl.svg" width="3230" height="594"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -185,9 +186,9 @@ Namespaces</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:aae6e499ff39d5616c9f110b1bef281fd"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
-<tr class="memitem:aae6e499ff39d5616c9f110b1bef281fd"><td class="memTemplItemLeft" align="right" valign="top">std::basic_string&lt; CharT &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#aae6e499ff39d5616c9f110b1bef281fd">strOrEmpty</a> (const CharT *p)</td></tr>
-<tr class="separator:aae6e499ff39d5616c9f110b1bef281fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4640d42c2a651d146b2e600ba12b6ff4"><td class="memTemplParams" colspan="2">template&lt;typename CharT &gt; </td></tr>
+<tr class="memitem:a4640d42c2a651d146b2e600ba12b6ff4"><td class="memTemplItemLeft" align="right" valign="top">std::basic_string_view&lt; CharT &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a4640d42c2a651d146b2e600ba12b6ff4">strOrEmpty</a> (const CharT *p)</td></tr>
+<tr class="separator:a4640d42c2a651d146b2e600ba12b6ff4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa85a685a0f454a26de052129b942f7ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Client.html">Client</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#aa85a685a0f454a26de052129b942f7ae">getWcli</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli)</td></tr>
 <tr class="memdesc:aa85a685a0f454a26de052129b942f7ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">voidポインタからclientオブジェクトを復元  <br /></td></tr>
 <tr class="separator:aa85a685a0f454a26de052129b942f7ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,27 +206,27 @@ Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:ace78d3c61398bd3193ccd4734299a614"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *, <a class="el" href="namespacewebcface.html#aaf3113c437651b9a46ca13e759e1c25c">FuncCallHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#ace78d3c61398bd3193ccd4734299a614">fetched_handles</a></td></tr>
-<tr class="memdesc:ace78d3c61398bd3193ccd4734299a614"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncFetchCallで取得されたwcfFuncCallHandleのリスト  <br /></td></tr>
-<tr class="separator:ace78d3c61398bd3193ccd4734299a614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5631a41514663ff1df2efc189cb18a23"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *, <a class="el" href="namespacewebcface.html#aaf3113c437651b9a46ca13e759e1c25c">FuncCallHandle</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a5631a41514663ff1df2efc189cb18a23">fetched_handles_w</a></td></tr>
-<tr class="separator:a5631a41514663ff1df2efc189cb18a23"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a826769920b3d8c28b4b983ff37a8ef32"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a826769920b3d8c28b4b983ff37a8ef32">func_val_list</a></td></tr>
-<tr class="memdesc:a826769920b3d8c28b4b983ff37a8ef32"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncRun, wcfFuncGetResultで取得されたwcfMultiValとValAdaptorのリスト  <br /></td></tr>
-<tr class="separator:a826769920b3d8c28b4b983ff37a8ef32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad941e8a4d048c20fa2a2f3f2e6ba6f5d"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#ad941e8a4d048c20fa2a2f3f2e6ba6f5d">func_val_list_w</a></td></tr>
-<tr class="separator:ad941e8a4d048c20fa2a2f3f2e6ba6f5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad00c61be6f2c302f30305a8d2c9fea8b"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a> *, const std::vector&lt; <a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#ad00c61be6f2c302f30305a8d2c9fea8b">view_list</a></td></tr>
-<tr class="memdesc:ad00c61be6f2c302f30305a8d2c9fea8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfViewGetで取得されたwcfViewComponentとViewComponentBase  <br /></td></tr>
-<tr class="separator:ad00c61be6f2c302f30305a8d2c9fea8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ea48368e7fb4a6847fa47a84fdd0fdc"><td class="memItemLeft" align="right" valign="top">std::unordered_map&lt; const <a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> *, const std::vector&lt; <a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a1ea48368e7fb4a6847fa47a84fdd0fdc">view_list_w</a></td></tr>
-<tr class="separator:a1ea48368e7fb4a6847fa47a84fdd0fdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06ec85c3a4c532a455f4c6534b658875"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a06ec85c3a4c532a455f4c6534b658875">wcli_list</a></td></tr>
-<tr class="memdesc:a06ec85c3a4c532a455f4c6534b658875"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfInitで作られたクライアントのリスト  <br /></td></tr>
-<tr class="separator:a06ec85c3a4c532a455f4c6534b658875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a290aac2a7151f8acb0481fe71172fae3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; <a class="el" href="classwebcface_1_1Promise.html">Promise</a> * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a290aac2a7151f8acb0481fe71172fae3">func_result_list</a></td></tr>
-<tr class="memdesc:a290aac2a7151f8acb0481fe71172fae3"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncRunAsyncで取得されたwcfPromiseのリスト  <br /></td></tr>
-<tr class="separator:a290aac2a7151f8acb0481fe71172fae3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc622b8adc5503816c25114a9255c531"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfFuncCallHandle.html">wcfFuncCallHandle</a> *, <a class="el" href="namespacewebcface.html#aaf3113c437651b9a46ca13e759e1c25c">FuncCallHandle</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#abc622b8adc5503816c25114a9255c531">fetched_handles</a></td></tr>
+<tr class="memdesc:abc622b8adc5503816c25114a9255c531"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncFetchCallで取得されたwcfFuncCallHandleのリスト  <br /></td></tr>
+<tr class="separator:abc622b8adc5503816c25114a9255c531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3077e8bc5b194931b9449137dd8b92"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfFuncCallHandleW.html">wcfFuncCallHandleW</a> *, <a class="el" href="namespacewebcface.html#aaf3113c437651b9a46ca13e759e1c25c">FuncCallHandle</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a8a3077e8bc5b194931b9449137dd8b92">fetched_handles_w</a></td></tr>
+<tr class="separator:a8a3077e8bc5b194931b9449137dd8b92"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb3b4bc1697eea13c9f9bb4618c643f6"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#afb3b4bc1697eea13c9f9bb4618c643f6">func_val_list</a></td></tr>
+<tr class="memdesc:afb3b4bc1697eea13c9f9bb4618c643f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncRun, wcfFuncGetResultで取得されたwcfMultiValとValAdaptorのリスト  <br /></td></tr>
+<tr class="separator:afb3b4bc1697eea13c9f9bb4618c643f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a721f0e4f800093cfb8696e6f340ddafb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a721f0e4f800093cfb8696e6f340ddafb">func_val_list_w</a></td></tr>
+<tr class="separator:a721f0e4f800093cfb8696e6f340ddafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cda9124b159be51200da38f9c085b43"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfViewComponent.html">wcfViewComponent</a> *, const std::vector&lt; <a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a2cda9124b159be51200da38f9c085b43">view_list</a></td></tr>
+<tr class="memdesc:a2cda9124b159be51200da38f9c085b43"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfViewGetで取得されたwcfViewComponentとViewComponentBase  <br /></td></tr>
+<tr class="separator:a2cda9124b159be51200da38f9c085b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eb69ece69cb05284460541c18c6fca1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::unordered_map&lt; const <a class="el" href="structwcfViewComponentW.html">wcfViewComponentW</a> *, const std::vector&lt; <a class="el" href="classwebcface_1_1ViewComponent.html">ViewComponent</a> &gt; &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a9eb69ece69cb05284460541c18c6fca1">view_list_w</a></td></tr>
+<tr class="separator:a9eb69ece69cb05284460541c18c6fca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e3675cf2a91889ed2f45f9d75e771a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::vector&lt; <a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a9e3675cf2a91889ed2f45f9d75e771a8">wcli_list</a></td></tr>
+<tr class="memdesc:a9e3675cf2a91889ed2f45f9d75e771a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfInitで作られたクライアントのリスト  <br /></td></tr>
+<tr class="separator:a9e3675cf2a91889ed2f45f9d75e771a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3758615d464d49b752f97ade95255927"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1internal_1_1SafeGlobal.html">internal::SafeGlobal</a>&lt; std::vector&lt; <a class="el" href="classwebcface_1_1Promise.html">Promise</a> * &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1c__wcf.html#a3758615d464d49b752f97ade95255927">func_result_list</a></td></tr>
+<tr class="memdesc:a3758615d464d49b752f97ade95255927"><td class="mdescLeft">&#160;</td><td class="mdescRight">wcfFuncRunAsyncで取得されたwcfPromiseのリスト  <br /></td></tr>
+<tr class="separator:a3758615d464d49b752f97ade95255927"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -233,7 +234,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="dir_81dc01503b4758498154e925b296735c.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf__internal_8h.html">c_wcf_internal.h</a></li>
-    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 14:55:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

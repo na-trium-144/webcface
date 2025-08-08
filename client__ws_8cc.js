@@ -8,5 +8,5 @@ var client__ws_8cc =
     [ "recv", "client__ws_8cc.html#ae57c4645b559951f5644623d91ae362c", null ],
     [ "send", "client__ws_8cc.html#af75ac6f28fd6ff155128c8075a6569bd", null ],
     [ "global_init_count", "client__ws_8cc.html#a431a3f39b3e403840350b736d13b38e4", null ],
-    [ "init_m", "client__ws_8cc.html#a60285bf997af98469a95980499815801", null ]
+    [ "init_m", "client__ws_8cc.html#a1f7f19c9761c603117479986f0659348", null ]
 ];

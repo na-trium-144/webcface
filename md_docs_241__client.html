@@ -229,8 +229,8 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 <div class="line"> </div>
 <div class="line"><a class="code hl_typedef" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli = <a class="code hl_function" href="c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a>(<span class="stringliteral">&quot;sample&quot;</span>);</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a>(wcli);</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_a4ea5df14c6f1a58b4590f9269abf82bb"><div class="ttname"><a href="c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a></div><div class="ttdeci">wcfClient * wcfInitDefault(const char *name)</div><div class="ttdoc">クライアントを初期化する (アドレスとポートはデフォルト)</div><div class="ttdef"><b>Definition</b> client.cc:17</div></div>
-<div class="ttc" id="ac__wcf_2client_8h_html_ad84e50d3482bedb7ccfa278bfc00120c"><div class="ttname"><a href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a></div><div class="ttdeci">wcfStatus wcfStart(wcfClient *wcli)</div><div class="ttdoc">サーバーへの接続を別スレッドで開始する。</div><div class="ttdef"><b>Definition</b> client.cc:48</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_a4ea5df14c6f1a58b4590f9269abf82bb"><div class="ttname"><a href="c__wcf_2client_8h.html#a4ea5df14c6f1a58b4590f9269abf82bb">wcfInitDefault</a></div><div class="ttdeci">wcfClient * wcfInitDefault(const char *name)</div><div class="ttdoc">クライアントを初期化する (アドレスとポートはデフォルト)</div><div class="ttdef"><b>Definition</b> client.cc:23</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_ad84e50d3482bedb7ccfa278bfc00120c"><div class="ttname"><a href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c">wcfStart</a></div><div class="ttdeci">wcfStatus wcfStart(wcfClient *wcli)</div><div class="ttdoc">サーバーへの接続を別スレッドで開始する。</div><div class="ttdef"><b>Definition</b> client.cc:57</div></div>
 <div class="ttc" id="adef__types_8h_html_a11e35bfe0822747dfabcce7f5220016a"><div class="ttname"><a href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a></div><div class="ttdeci">void wcfClient</div><div class="ttdef"><b>Definition</b> def_types.h:14</div></div>
 <div class="ttc" id="awcf_8h_html"><div class="ttname"><a href="wcf_8h.html">wcf.h</a></div></div>
 </div><!-- fragment --><p> でclientを生成し、接続します。 <br  />
@@ -345,7 +345,7 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 <li><b class="tab-title">C</b> 接続できているかどうかは <code><a class="el" href="c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57" title="Clientが接続されているかどうかを返す">wcfIsConnected()</a></code> で取得できます。 <div class="fragment"><div class="line"><span class="keywordflow">if</span>(<a class="code hl_function" href="c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57">wcfIsConnected</a>(wcli)){</div>
 <div class="line">    <span class="comment">// 接続中</span></div>
 <div class="line">}</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_a4cc00dcdf452ec749e5e8f0e73158b57"><div class="ttname"><a href="c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57">wcfIsConnected</a></div><div class="ttdeci">int wcfIsConnected(wcfClient *wcli)</div><div class="ttdoc">Clientが接続されているかどうかを返す</div><div class="ttdef"><b>Definition</b> client.cc:30</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_a4cc00dcdf452ec749e5e8f0e73158b57"><div class="ttname"><a href="c__wcf_2client_8h.html#a4cc00dcdf452ec749e5e8f0e73158b57">wcfIsConnected</a></div><div class="ttdeci">int wcfIsConnected(wcfClient *wcli)</div><div class="ttdoc">Clientが接続されているかどうかを返す</div><div class="ttdef"><b>Definition</b> client.cc:36</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> 接続できているかどうかは <code>wcli.connected</code> で取得できます。 <div class="fragment"><div class="line">if(wcli.connected){</div>
 <div class="line">    // 接続中</div>
@@ -410,7 +410,7 @@ Encoding</h1>
 <p><span></span></p>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a>(wcli);</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_ad675449898eb92ab9461d31fe88b4896"><div class="ttname"><a href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a></div><div class="ttdeci">wcfStatus wcfSync(wcfClient *wcli)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する</div><div class="ttdef"><b>Definition</b> client.cc:72</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_ad675449898eb92ab9461d31fe88b4896"><div class="ttname"><a href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896">wcfSync</a></div><div class="ttdeci">wcfStatus wcfSync(wcfClient *wcli)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する</div><div class="ttdef"><b>Definition</b> client.cc:81</div></div>
 </div><!-- fragment --><ul>
 <li><a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a> をすることでこれ以降の章で扱う各種データを送信します。<ul>
 <li><del><a class="el" href="c__wcf_2client_8h.html#ad675449898eb92ab9461d31fe88b4896" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfSync()</a>自体は送信処理はせずキューに入れるだけであり、ノンブロッキングです。</del><ul>
@@ -437,7 +437,7 @@ Encoding</h1>
 <div class="line"> </div>
 <div class="line">    <a class="code hl_function" href="c__wcf_2client_8h.html#ac4e0f854f737a9322a17f3ca2f202172">wcfLoopSyncFor</a>(wcli, 100000); <span class="comment">// 100000μs = 100ms</span></div>
 <div class="line">}</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_ac4e0f854f737a9322a17f3ca2f202172"><div class="ttname"><a href="c__wcf_2client_8h.html#ac4e0f854f737a9322a17f3ca2f202172">wcfLoopSyncFor</a></div><div class="ttdeci">wcfStatus wcfLoopSyncFor(wcfClient *wcli, int timeout)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する</div><div class="ttdef"><b>Definition</b> client.cc:80</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_ac4e0f854f737a9322a17f3ca2f202172"><div class="ttname"><a href="c__wcf_2client_8h.html#ac4e0f854f737a9322a17f3ca2f202172">wcfLoopSyncFor</a></div><div class="ttdeci">wcfStatus wcfLoopSyncFor(wcfClient *wcli, int timeout)</div><div class="ttdoc">送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する</div><div class="ttdef"><b>Definition</b> client.cc:89</div></div>
 </div><!-- fragment --></li>
 </ul>
 </li>
@@ -534,7 +534,7 @@ Encoding</h1>
 <p><span></span></p>
 </li>
 <li><p class="startli"><b class="tab-title">C</b> </p><div class="fragment"><div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab">wcfClose</a>(wcli);</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_a2acd40666e16668cbf282b9aae4dceab"><div class="ttname"><a href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab">wcfClose</a></div><div class="ttdeci">wcfStatus wcfClose(wcfClient *wcli)</div><div class="ttdoc">クライアントを閉じる</div><div class="ttdef"><b>Definition</b> client.cc:38</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_a2acd40666e16668cbf282b9aae4dceab"><div class="ttname"><a href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab">wcfClose</a></div><div class="ttdeci">wcfStatus wcfClose(wcfClient *wcli)</div><div class="ttdoc">クライアントを閉じる</div><div class="ttdef"><b>Definition</b> client.cc:44</div></div>
 </div><!-- fragment --><ul>
 <li><span class="since-c">2.0</span> <a class="el" href="c__wcf_2client_8h.html#abd0cb7925d14b7c8bfa40e3b8c3eeaac" title="送信用にセットしたデータをすべて送信キューに入れ、受信したデータを処理する">wcfLoopSync()</a> はwcfClose()で停止します。 (別スレッドからでも、loopSync内から呼ばれたコールバックの中などでも可)</li>
 </ul>
@@ -637,7 +637,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 14:55:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

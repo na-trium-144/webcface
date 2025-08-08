@@ -360,6 +360,7 @@ var hierarchy =
       [ "Rejection", "structwebcface_1_1Rejection.html", null ],
       [ "SanityError", "structwebcface_1_1SanityError.html", null ]
     ] ],
+    [ "SafeGlobal< T >", "classwebcface_1_1internal_1_1SafeGlobal.html", null ],
     [ "ScopedUnlock< Mtx >", "structwebcface_1_1ScopedUnlock.html", null ],
     [ "Server", "classwebcface_1_1server_1_1Server.html", null ],
     [ "ServerStorage", "classwebcface_1_1server_1_1ServerStorage.html", null ],

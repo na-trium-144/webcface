@@ -105,6 +105,7 @@ var annotated_dup =
         [ "PollingConditionVariable", "classwebcface_1_1internal_1_1PollingConditionVariable.html", "classwebcface_1_1internal_1_1PollingConditionVariable" ],
         [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", "structwebcface_1_1internal_1_1PromiseData" ],
         [ "RobotLinkData", "structwebcface_1_1internal_1_1RobotLinkData.html", "structwebcface_1_1internal_1_1RobotLinkData" ],
+        [ "SafeGlobal", "classwebcface_1_1internal_1_1SafeGlobal.html", "classwebcface_1_1internal_1_1SafeGlobal" ],
         [ "ScopedLock", "classwebcface_1_1internal_1_1ScopedLock.html", "classwebcface_1_1internal_1_1ScopedLock" ],
         [ "SharedMutexProxy", "classwebcface_1_1internal_1_1SharedMutexProxy.html", "classwebcface_1_1internal_1_1SharedMutexProxy" ],
         [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", "structwebcface_1_1internal_1_1SharedStringData" ],

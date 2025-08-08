@@ -9,7 +9,7 @@ var namespacewebcface_1_1internal =
       [ "recv", "namespacewebcface_1_1internal_1_1WebSocket.html#ae57c4645b559951f5644623d91ae362c", null ],
       [ "send", "namespacewebcface_1_1internal_1_1WebSocket.html#af75ac6f28fd6ff155128c8075a6569bd", null ],
       [ "global_init_count", "namespacewebcface_1_1internal_1_1WebSocket.html#a431a3f39b3e403840350b736d13b38e4", null ],
-      [ "init_m", "namespacewebcface_1_1internal_1_1WebSocket.html#a60285bf997af98469a95980499815801", null ]
+      [ "init_m", "namespacewebcface_1_1internal_1_1WebSocket.html#a1f7f19c9761c603117479986f0659348", null ]
     ] ],
     [ "Canvas2DDataBuf", "classwebcface_1_1internal_1_1Canvas2DDataBuf.html", "classwebcface_1_1internal_1_1Canvas2DDataBuf" ],
     [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", "structwebcface_1_1internal_1_1ClientData" ],
@@ -22,6 +22,7 @@ var namespacewebcface_1_1internal =
     [ "PollingConditionVariable", "classwebcface_1_1internal_1_1PollingConditionVariable.html", "classwebcface_1_1internal_1_1PollingConditionVariable" ],
     [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", "structwebcface_1_1internal_1_1PromiseData" ],
     [ "RobotLinkData", "structwebcface_1_1internal_1_1RobotLinkData.html", "structwebcface_1_1internal_1_1RobotLinkData" ],
+    [ "SafeGlobal", "classwebcface_1_1internal_1_1SafeGlobal.html", "classwebcface_1_1internal_1_1SafeGlobal" ],
     [ "ScopedLock", "classwebcface_1_1internal_1_1ScopedLock.html", "classwebcface_1_1internal_1_1ScopedLock" ],
     [ "SharedMutexProxy", "classwebcface_1_1internal_1_1SharedMutexProxy.html", "classwebcface_1_1internal_1_1SharedMutexProxy" ],
     [ "SharedStringData", "structwebcface_1_1internal_1_1SharedStringData.html", "structwebcface_1_1internal_1_1SharedStringData" ],
@@ -44,6 +45,7 @@ var namespacewebcface_1_1internal =
     [ "findFromMap1", "namespacewebcface_1_1internal.html#a71d02be9d9d534c8e9442a0fa41c561c", null ],
     [ "findFromMap2", "namespacewebcface_1_1internal.html#aa7f22accd7c7a6e45592fa3eb5b14a00", null ],
     [ "initUnixSocket", "namespacewebcface_1_1internal.html#a014b3e55940d3fda2e9d2f3c1fde6806", null ],
+    [ "safeGlobal", "namespacewebcface_1_1internal.html#ae10f7eff356b5f5555e55301bcd4d935", null ],
     [ "unixSocketPath", "namespacewebcface_1_1internal.html#a128100029ac970e04ef5082c5ceb6b91", null ],
     [ "unixSocketPathWSLInterop", "namespacewebcface_1_1internal.html#a8afb05983581f6ed761162fb6498dd78", null ],
     [ "updateUnixSocketPerms", "namespacewebcface_1_1internal.html#acf16ef85442812ea0597b9bc2d9df693", null ],

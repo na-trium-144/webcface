@@ -210,7 +210,7 @@ members</h1>
 <div class="line"><span class="keywordtype">int</span> actual_member_num;</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086">wcfMemberList</a>(wcli, member_list, 10, &amp;actual_member_num);</div>
 <div class="line"><span class="comment">// member_list[0] から member_list[actual_member_num - 1] (10以上だった場合はmember_list[9]まで) にメンバー名の文字列が入っている</span></div>
-<div class="ttc" id="ac__wcf_2client_8h_html_ae8a188449215119f8bd85c2c00f82086"><div class="ttname"><a href="c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086">wcfMemberList</a></div><div class="ttdeci">wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size, int *members_num)</div><div class="ttdoc">サーバーに接続されている他のmemberのリストを得る。</div><div class="ttdef"><b>Definition</b> client.cc:201</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_ae8a188449215119f8bd85c2c00f82086"><div class="ttname"><a href="c__wcf_2client_8h.html#ae8a188449215119f8bd85c2c00f82086">wcfMemberList</a></div><div class="ttdeci">wcfStatus wcfMemberList(wcfClient *wcli, const char **list, int size, int *members_num)</div><div class="ttdoc">サーバーに接続されている他のmemberのリストを得る。</div><div class="ttdef"><b>Definition</b> client.cc:210</div></div>
 </div><!-- fragment --> それぞれのメンバー名の文字列は、 <a class="el" href="c__wcf_2client_8h.html#a2acd40666e16668cbf282b9aae4dceab" title="クライアントを閉じる">wcfClose()</a> するまではfreeされません。</li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> Client.members() で取得できます。</p>
 <div class="fragment"><div class="line">for(const m of wcli.members()){</div>
@@ -257,7 +257,7 @@ Event</h1>
 <div class="line">}</div>
 <div class="line"><span class="keyword">struct </span>UserData user_data = {...};</div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#aaad75c221bfdb0db71b2233ae3daf722">wcfMemberEntryEvent</a>(wcli, callback_member_entry, &amp;user_data);</div>
-<div class="ttc" id="ac__wcf_2client_8h_html_aaad75c221bfdb0db71b2233ae3daf722"><div class="ttname"><a href="c__wcf_2client_8h.html#aaad75c221bfdb0db71b2233ae3daf722">wcfMemberEntryEvent</a></div><div class="ttdeci">wcfStatus wcfMemberEntryEvent(wcfClient *wcli, wcfEventCallback1 callback, void *user_data)</div><div class="ttdoc">Memberが追加された時のイベント</div><div class="ttdef"><b>Definition</b> client.cc:209</div></div>
+<div class="ttc" id="ac__wcf_2client_8h_html_aaad75c221bfdb0db71b2233ae3daf722"><div class="ttname"><a href="c__wcf_2client_8h.html#aaad75c221bfdb0db71b2233ae3daf722">wcfMemberEntryEvent</a></div><div class="ttdeci">wcfStatus wcfMemberEntryEvent(wcfClient *wcli, wcfEventCallback1 callback, void *user_data)</div><div class="ttdoc">Memberが追加された時のイベント</div><div class="ttdef"><b>Definition</b> client.cc:218</div></div>
 </div><!-- fragment --><p class="startli"><a class="el" href="c__wcf_2client_8h.html#ae1ecf74ce829348a3f2c41b665572838" title="サーバーへの接続を別スレッドで開始し、成功するまで待機する。">wcfWaitConnection()</a> を使う場合、 クライアントはサーバーに接続し、発見したすべてのメンバーについてMemberEntryEventのコールバックを呼んでからreturnします。</p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 引数にMemberを受け取る関数を Client.onMemberEntry() に設定することができます。 新しく接続したMemberの情報が引数に渡されます。 </p><div class="fragment"><div class="line">import { Member } from &quot;webcface&quot;;</div>
@@ -391,7 +391,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Aug 8 2025 02:38:23 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Aug 8 2025 14:55:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
