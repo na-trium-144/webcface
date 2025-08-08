@@ -27,7 +27,8 @@
     void hoge() {
         std::cout << "hello, world!" << std::endl;
     }
-    double fuga(int a, const std::string &b) {
+    double fuga(int a, std::string_view b) {
+        // ver2.9以前は const std::string & b
         return 3.1415;
     }
     wcli.func("hoge").set(hoge);
@@ -54,6 +55,13 @@
         return "hello";
     });
     ```
+
+    \note
+    * <span class="since-c">2.10</span>
+    WebCFaceが文字列データを管理する際 std::string を用いないようになったため、
+    std::string で文字列を受け取ると(const参照であっても)コピーが発生します。
+    std::string_view または webcface::StringView を用いると効率的です
+        * ただしver2.9以前では std::string_view 引数の関数をsetできないため、互換性を維持する必要があるなら const std::string & にしましょう
 
     <!--
     <span class="since-c">2.0</span>
@@ -499,8 +507,9 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     * その関数がまだ呼び出されていない場合はstd::nulloptが返ります。
     * 関数が呼び出された場合、 CallHandle::args() で呼び出された引数を取得できます。
         * 各引数は ValAdaptor 型で取得でき、
-        `asStringRef()`, `asString()`, `asBool()`, <del>`as<double>()`</del>,
-        <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`
+        <del>`asStringRef()`</del>, `asString()`, `asBool()`, <del>`as<double>()`</del>,
+        <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
+        <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
         で型を指定して取得できます。
         * (std::string, double, bool などの型にキャストすることでも値を得られます。)
         * listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます
@@ -683,7 +692,8 @@ Funcが登録された順番(index)は送信側のクライアントライブラ
         For, Until の場合はタイムアウトを指定します。
     * response(): 関数の戻り値です。
     webcface::ValAdaptor 型で返り、
-    `asStringRef()`, `asString()`, `asWStringRef()`, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()`
+    <del>`asStringRef()`</del>, `asString()`, <del>`asWStringRef()`</del>, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()`,
+    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
     またはstatic_castにより型変換できます。
     * rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。
     またその場合 isError() がtrueになります。
@@ -968,8 +978,10 @@ res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
 
     戻り値は webcface::ValAdaptor 型で返ります。
     整数、実数、bool、stringにキャストできます。  
-    <span class="since-c">1.10</span> また、明示的にキャストするなら `asStringRef()`(const参照), `asString()`, `asBool()`, <del>`as<整数or実数型>()`</del> も使えます。  
-    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。
+    <span class="since-c">1.10</span> また、明示的にキャストするなら <del>`asStringRef()`(const参照)</del>, `asString()`, `asBool()`, <del>`as<整数or実数型>()`</del> も使えます。  
+    <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
+    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
+    も使えます。
 
     \warning
     start()を呼んで通信を開始する前にrun()を呼び出してしまうとデッドロックします。

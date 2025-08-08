@@ -43,7 +43,7 @@ void internal::DataSetBuffer<TemporalCanvas2DComponent>::onSync() {
         std::shared_ptr<internal::TemporalCanvas2DComponentData> msg_data =
             this->components_[i].lockTmp(data, target_.field_, &idx_next);
         cb->components.emplace(
-            msg_data->id.u8String(),
+            std::string(msg_data->id.u8StringView()),
             std::static_pointer_cast<message::Canvas2DComponentData>(msg_data));
         cb->data_ids.push_back(msg_data->id);
     }
@@ -80,8 +80,8 @@ std::optional<std::vector<Canvas2DComponent>> Canvas2D::tryGet() const {
         std::vector<Canvas2DComponent> v;
         v.reserve((*vb)->data_ids.size());
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
+            v.emplace_back((*vb)->components.find(id.u8StringView())->second,
+                           this->data_w, id);
         }
         return v;
     } else {

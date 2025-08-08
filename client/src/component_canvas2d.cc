@@ -8,8 +8,8 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas2DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas2DComponent::id() const { return id_.decode(); }
-std::wstring Canvas2DComponent::idW() const { return id_.decodeW(); }
+StringView Canvas2DComponent::id() const { return id_.decodeShare(); }
+WStringView Canvas2DComponent::idW() const { return id_.decodeShareW(); }
 
 Canvas2DComponent::Canvas2DComponent() = default;
 Canvas2DComponent::Canvas2DComponent(
@@ -66,9 +66,9 @@ TemporalCanvas2DComponent::lockTmp(
     }
     if (msg_data->on_click_func_tmp && *msg_data->on_click_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String("..c2" + view_name.u8String() +
-                                                 "/" +
-                                                 msg_data->id.u8String())};
+                      SharedString::fromU8String(
+                          strJoin<char>("..c2", view_name.u8StringView(), "/",
+                                        msg_data->id.u8StringView()))};
         on_click.set(std::move(*msg_data->on_click_func_tmp));
         this->onClick(on_click);
     }
@@ -81,12 +81,8 @@ bool Canvas2DComponent::operator==(const Canvas2DComponent &other) const {
            *msg_data == *other.msg_data;
 }
 
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::string_view id) {
-    msg_data->id = SharedString::encode(id);
-    return *this;
-}
-TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(std::wstring_view id) {
-    msg_data->id = SharedString::encode(id);
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::id(StringInitializer id) {
+    msg_data->id = std::move(id);
     return *this;
 }
 
@@ -131,22 +127,16 @@ TemporalCanvas2DComponent &TemporalCanvas2DComponent::strokeWidth(double s) & {
     msg_data->stroke_width = s;
     return *this;
 }
-std::string Canvas2DComponent::text() const {
+StringView Canvas2DComponent::text() const {
     checkData();
-    return msg_data->text.decode();
+    return msg_data->text.decodeShare();
 }
-TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::text(std::string_view text) & {
-    msg_data->text = SharedString::encode(text);
-    return *this;
-}
-std::wstring Canvas2DComponent::textW() const {
+WStringView Canvas2DComponent::textW() const {
     checkData();
-    return msg_data->text.decodeW();
+    return msg_data->text.decodeShareW();
 }
-TemporalCanvas2DComponent &
-TemporalCanvas2DComponent::text(std::wstring_view text) & {
-    msg_data->text = SharedString::encode(text);
+TemporalCanvas2DComponent &TemporalCanvas2DComponent::text(StringInitializer text) & {
+    msg_data->text = std::move(text);
     return *this;
 }
 std::optional<Geometry> Canvas2DComponent::geometry() const {

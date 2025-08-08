@@ -68,10 +68,11 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
         }
         switch (attempt) {
         case 2:
-            data->current_curl_path =
-                data->host.decode() + ':' + std::to_string(data->port);
-            curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host.decode() + "/").c_str());
+            data->current_curl_path = strJoin<char>(data->host.decode(), ":",
+                                                    std::to_string(data->port));
+            curl_easy_setopt(
+                handle, CURLOPT_URL,
+                strJoin<char>("ws://", data->host.decode(), "/").c_str());
             break;
         case 1:
             if (data->host.decode() != "127.0.0.1") {
@@ -82,8 +83,9 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
                     internal::unixSocketPathWSLInterop(data->port).string();
                 curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                                  data->current_curl_path.c_str());
-                curl_easy_setopt(handle, CURLOPT_URL,
-                                 ("ws://" + data->host.decode() + "/").c_str());
+                curl_easy_setopt(
+                    handle, CURLOPT_URL,
+                    strJoin<char>("ws://", data->host.decode(), "/").c_str());
                 break;
             }
             if (internal::detectWSL2()) {
@@ -106,8 +108,9 @@ void init(const std::shared_ptr<internal::ClientData> &data) {
                 internal::unixSocketPath(data->port).string();
             curl_easy_setopt(handle, CURLOPT_UNIX_SOCKET_PATH,
                              data->current_curl_path.c_str());
-            curl_easy_setopt(handle, CURLOPT_URL,
-                             ("ws://" + data->host.decode() + "/").c_str());
+            curl_easy_setopt(
+                handle, CURLOPT_URL,
+                strJoin<char>("ws://", data->host.decode(), "/").c_str());
             break;
         }
         data->logger_internal->debug("trying {}...", data->current_curl_path);

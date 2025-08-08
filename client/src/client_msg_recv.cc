@@ -160,7 +160,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vb_prev->components[id.u8String()] = d.second;
+                vb_prev->components[std::string(id.u8StringView())] = d.second;
             }
             auto cl = findFromMap2(this->view_change_event.shared_lock().get(),
                                    member, field);
@@ -191,7 +191,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id.u8String()] = d.second;
+                vv_prev->components[std::string(id.u8StringView())] = d.second;
             }
             auto cl = findFromMap2(
                 this->canvas3d_change_event.shared_lock().get(), member, field);
@@ -224,7 +224,7 @@ void internal::ClientData::onRecv(
             }
             for (const auto &d : r.data_diff) {
                 auto id = SharedString::fromU8String(d.first);
-                vv_prev->components[id.u8String()] = d.second;
+                vv_prev->components[std::string(id.u8StringView())] = d.second;
             }
             auto cl = findFromMap2(
                 this->canvas2d_change_event.shared_lock().get(), member, field);

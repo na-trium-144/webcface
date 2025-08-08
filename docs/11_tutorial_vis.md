@@ -396,7 +396,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     * こんどは引数がある関数を作ってみます。
     ```cpp
-    int fuga(int a, const std::string &b) {
+    int fuga(int a, std::string_view b) {
         logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
         return a;
     }

@@ -25,7 +25,7 @@ class CClientTest : public ::testing::Test {
     void SetUp() override {
         dummy_s = std::make_shared<DummyServer>();
         wait();
-        wcli_ = wcfInit(self_name.decode().c_str(), "127.0.0.1", 17530);
+        wcli_ = wcfInit(self_name.decode().data(), "127.0.0.1", 17530);
     }
     void TearDown() override {
         wcfClose(wcli_);
@@ -139,7 +139,7 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfValueSet(wcli_, "a", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.data.size(), 1u);
         EXPECT_EQ(obj.data.at(0), 5);
     });
@@ -149,7 +149,7 @@ TEST_F(CClientTest, valueSend) {
     EXPECT_EQ(wcfValueSetVecD(wcli_, "b", b, 3), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Value>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.data.size(), 3u);
         EXPECT_EQ(obj.data.at(0), 1);
         EXPECT_EQ(obj.data.at(1), 1.5);
@@ -173,17 +173,15 @@ TEST_F(CClientTest, valueReq) {
     EXPECT_EQ(value1, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Value>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
     dummy_s->send(message::Res<message::Value>{
-        1, ""_ss,
-        MutableNumVector(std::vector<double>{1, 1.5, 2})});
+        1, ""_ss, MutableNumVector(std::vector<double>{1, 1.5, 2})});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     dummy_s->send(message::Res<message::Value>{
-        1, "c"_ss,
-        MutableNumVector(std::vector<double>{1, 1.5, 2})});
+        1, "c"_ss, MutableNumVector(std::vector<double>{1, 1.5, 2})});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfValueGetVecD(wcli_, "a", "b", value, 5, &size), WCF_OK);
     EXPECT_EQ(size, 3);
@@ -209,16 +207,16 @@ TEST_F(CClientTest, textSend) {
     EXPECT_EQ(wcfTextSet(wcli_, "a", "hello"), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
-        EXPECT_EQ(*obj.data, "hello");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
+        EXPECT_EQ(obj.data, "hello");
     });
     dummy_s->recvClear();
 
     EXPECT_EQ(wcfTextSetN(wcli_, "b", "hellohello", 5), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Text>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "b");
-        EXPECT_EQ(*obj.data, "hello");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
+        EXPECT_EQ(obj.data, "hello");
     });
     dummy_s->recvClear();
 }
@@ -231,15 +229,13 @@ TEST_F(CClientTest, textReq) {
     EXPECT_EQ(text[0], 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::Text>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
-    dummy_s->send(message::Res<message::Text>{
-        1, ""_ss, std::make_shared<ValAdaptor>("hello")});
+    dummy_s->send(message::Res<message::Text>{1, ""_ss, ValAdaptor("hello")});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
-    dummy_s->send(message::Res<message::Text>{
-        1, "c"_ss, std::make_shared<ValAdaptor>("hello")});
+    dummy_s->send(message::Res<message::Text>{1, "c"_ss, ValAdaptor("hello")});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
     EXPECT_EQ(wcfTextGet(wcli_, "a", "b", text, 5, &size), WCF_OK);
     EXPECT_EQ(size, 5);
@@ -313,11 +309,11 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
             EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.field.u8StringView(), "b");
             EXPECT_EQ(obj.args.size(), 3u);
             EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
             EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
-            EXPECT_EQ(static_cast<std::string>(obj.args.at(2)), "aaa");
+            EXPECT_EQ(static_cast<std::string_view>(obj.args.at(2)), "aaa");
         });
         dummy_s->recvClear();
         dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
@@ -331,7 +327,7 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
             EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.field.u8StringView(), "b");
             EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
@@ -348,7 +344,7 @@ TEST_F(CClientTest, funcRun) {
         dummy_s->waitRecv<message::Call>([&](const auto &obj) {
             EXPECT_EQ(obj.caller_id, caller_id);
             EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8String(), "b");
+            EXPECT_EQ(obj.field.u8StringView(), "b");
             EXPECT_EQ(obj.args.size(), 3u);
         });
         dummy_s->recvClear();
@@ -371,7 +367,7 @@ TEST_F(CClientTest, funcListen) {
     wcfFuncListen(wcli_, "a", arg_types, 3, WCF_VAL_INT);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
         ASSERT_EQ(obj.args.size(), 3u);
         EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
@@ -444,7 +440,7 @@ TEST_F(CClientTest, funcSet) {
     wcfFuncSet(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
         ASSERT_EQ(obj.args.size(), 3u);
         EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
@@ -495,7 +491,7 @@ TEST_F(CClientTest, funcSetAsync) {
     wcfFuncSetAsync(wcli_, "a", arg_types, 3, WCF_VAL_INT, callbackFunc, &u);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::FuncInfo>([&](const auto &obj) {
-        EXPECT_EQ(obj.field.u8String(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "a");
         EXPECT_EQ(obj.return_type, ValType::int_);
         ASSERT_EQ(obj.args.size(), 3u);
         EXPECT_EQ(obj.args.at(0)->type_, ValType::int_);
@@ -533,32 +529,32 @@ TEST_F(CClientTest, viewSend) {
     EXPECT_EQ(wcfViewSet(wcli_, "b", vc, 4), WCF_OK);
     EXPECT_EQ(wcfSync(wcli_), WCF_OK);
     dummy_s->waitRecv<message::View>([&](auto obj) {
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.data_ids->size(), 6u);
         EXPECT_EQ(obj.data_diff.size(), 6u);
         EXPECT_EQ(obj.data_diff["..0.0"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ(obj.data_diff["..0.0"]->text.u8String(), "abc");
+        EXPECT_EQ(obj.data_diff["..0.0"]->text.u8StringView(), "abc");
         EXPECT_EQ(obj.data_diff["..1.0"]->type,
                   static_cast<int>(ViewComponentType::new_line));
         EXPECT_EQ(obj.data_diff["..0.1"]->type,
                   static_cast<int>(ViewComponentType::text));
-        EXPECT_EQ(obj.data_diff["..0.1"]->text.u8String(), "123");
+        EXPECT_EQ(obj.data_diff["..0.1"]->text.u8StringView(), "123");
 
         EXPECT_EQ(obj.data_diff["..1.1"]->type,
                   static_cast<int>(ViewComponentType::new_line));
 
         EXPECT_EQ(obj.data_diff["..2.0"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ(obj.data_diff["..2.0"]->text.u8String(), "a");
+        EXPECT_EQ(obj.data_diff["..2.0"]->text.u8StringView(), "a");
         EXPECT_EQ(obj.data_diff["..2.0"]->on_click_member, self_name);
-        EXPECT_EQ(obj.data_diff["..2.0"]->on_click_field->u8String(), "c");
+        EXPECT_EQ(obj.data_diff["..2.0"]->on_click_field->u8StringView(), "c");
 
         EXPECT_EQ(obj.data_diff["..2.1"]->type,
                   static_cast<int>(ViewComponentType::button));
-        EXPECT_EQ(obj.data_diff["..2.1"]->text.u8String(), "a");
-        EXPECT_EQ(obj.data_diff["..2.1"]->on_click_member->u8String(), "b");
-        EXPECT_EQ(obj.data_diff["..2.1"]->on_click_field->u8String(), "c");
+        EXPECT_EQ(obj.data_diff["..2.1"]->text.u8StringView(), "a");
+        EXPECT_EQ(obj.data_diff["..2.1"]->on_click_member->u8StringView(), "b");
+        EXPECT_EQ(obj.data_diff["..2.1"]->on_click_field->u8StringView(), "c");
         EXPECT_EQ(obj.data_diff["..2.1"]->text_color,
                   static_cast<int>(ViewColor::red));
         EXPECT_EQ(obj.data_diff["..2.1"]->bg_color,
@@ -574,20 +570,22 @@ TEST_F(CClientTest, viewReq) {
     EXPECT_EQ(size, 0);
     EXPECT_EQ(wcfStart(wcli_), WCF_OK);
     dummy_s->waitRecv<message::Req<message::View>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
 
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>> v{
-        {"0", ViewComponents::text("a")
-                  .textColor(ViewColor::yellow)
-                  .bgColor(ViewColor::green)
-                  .component_v.lockTmp({}, ""_ss)},
-        {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
-        {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
-                  .lockTmp({}, ""_ss)},
-    };
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+             std::less<>>
+        v{
+            {"0", ViewComponents::text("a")
+                      .textColor(ViewColor::yellow)
+                      .bgColor(ViewColor::green)
+                      .component_v.lockTmp({}, ""_ss)},
+            {"1", ViewComponents::newLine().lockTmp({}, ""_ss)},
+            {"2", ViewComponents::button("a", Func{Field{{}, "x"_ss, "y"_ss}})
+                      .lockTmp({}, ""_ss)},
+        };
     std::vector<SharedString> v_ids = {"0"_ss, "1"_ss, "2"_ss};
     dummy_s->send(message::Res<message::View>{1, ""_ss, v, v_ids});
     EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);

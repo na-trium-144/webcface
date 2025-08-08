@@ -30,11 +30,11 @@ TEST_F(LoggerTest, loggerBuf) {
     auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
     ASSERT_EQ((*ls)->data.size(), 3u);
     EXPECT_EQ((*ls)->data[0].level_, 2);
-    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
+    EXPECT_EQ((*ls)->data[0].message_.u8StringView(), "a");
     EXPECT_EQ((*ls)->data[1].level_, 2);
-    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
+    EXPECT_EQ((*ls)->data[1].message_.u8StringView(), "b");
     EXPECT_EQ((*ls)->data[2].level_, 2);
-    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
+    EXPECT_EQ((*ls)->data[2].message_.u8StringView(), "c");
     std::cerr.rdbuf(cerr_buf);
 }
 TEST_F(LoggerTest, loggerBufW) {
@@ -47,10 +47,10 @@ TEST_F(LoggerTest, loggerBufW) {
     auto ls = data_->log_store.getRecv(self_name, "buf"_ss);
     ASSERT_EQ((*ls)->data.size(), 3u);
     EXPECT_EQ((*ls)->data[0].level_, 2);
-    EXPECT_EQ((*ls)->data[0].message_.u8String(), "a");
+    EXPECT_EQ((*ls)->data[0].message_.u8StringView(), "a");
     EXPECT_EQ((*ls)->data[1].level_, 2);
-    EXPECT_EQ((*ls)->data[1].message_.u8String(), "b");
+    EXPECT_EQ((*ls)->data[1].message_.u8StringView(), "b");
     EXPECT_EQ((*ls)->data[2].level_, 2);
-    EXPECT_EQ((*ls)->data[2].message_.u8String(), "c");
+    EXPECT_EQ((*ls)->data[2].message_.u8StringView(), "c");
     std::wcerr.rdbuf(wcerr_buf);
 }

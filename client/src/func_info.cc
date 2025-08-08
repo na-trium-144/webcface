@@ -47,13 +47,12 @@ void Arg::mergeConfig(const Arg &other) {
     }
 }
 
-const std::string &Arg::name() const {
-    return this->msg_data ? this->msg_data->name_.decode()
-                          : SharedString::emptyStr();
+StringView Arg::name() const {
+    return this->msg_data ? this->msg_data->name_.decodeShare() : StringView{};
 }
-const std::wstring &Arg::nameW() const {
-    return this->msg_data ? this->msg_data->name_.decodeW()
-                          : SharedString::emptyStrW();
+WStringView Arg::nameW() const {
+    return this->msg_data ? this->msg_data->name_.decodeShareW()
+                          : WStringView{};
 }
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {
@@ -113,7 +112,7 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
             if (j > 0) {
                 os << ", ";
             }
-            os << static_cast<std::string>(arg.option()[j]);
+            os << arg.option()[j].asStringView();
         }
         os << "}";
     }

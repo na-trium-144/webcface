@@ -15,6 +15,6 @@ inline void wait() {
         std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
 }
 inline SharedString operator""_ss(const char *str, std::size_t len) {
-    return SharedString::fromU8String(std::string_view(str, len));
+    return SharedString::fromU8StringStatic(std::string_view(str, len));
 }
 

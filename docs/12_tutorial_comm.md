@@ -297,7 +297,8 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
             }
 
             // "tutorial-send" が送信している "message" という名前のTextデータをリクエスト & 取得
-            std::optional<std::string> message = wcli.member("tutorial-send").text("message").tryGet();
+            // webcface::StringView は通常のstringやstring_viewやconst char*にキャストすることもできます (ver2.10〜)
+            std::optional<webcface::StringView> message = wcli.member("tutorial-send").text("message").tryGet();
             if (message.has_value()){
                 std::cout << "message = " << *message << std::endl;
             } else {
@@ -613,7 +614,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
 
     * send.cc
     ```cpp
-    int fuga(int a, const std::string &b) {
+    int fuga(int a, std::string_view b) {
         logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
         return a;
     }

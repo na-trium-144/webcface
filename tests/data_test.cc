@@ -19,20 +19,20 @@ class DataTest : public ::testing::Test {
     }
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
-    FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+    FieldBase fieldBase(const SharedString &member, std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member,
+                     SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name = "") const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     Value value(const T1 &member, const T2 &name) {
@@ -49,9 +49,9 @@ class DataTest : public ::testing::Test {
     Log log(const SharedString &member, const SharedString &name) {
         return Log{Field{data_, member, name}};
     }
-    Log log(std::string_view member, std::string_view name) {
-        return Log{Field{data_, SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)}};
+    Log log(std::string member, std::string name) {
+        return Log{Field{data_, SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))}};
     }
     int callback_called;
     template <typename V>
@@ -84,23 +84,27 @@ TEST_F(DataTest, field) {
 }
 TEST_F(DataTest, eventTarget) {
     value("a", "b").onChange(callback<Value>());
-    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(
+        field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
     value("a", "b").onChange(nullptr);
     EXPECT_FALSE(*data_->value_change_event.lock().get()["a"_ss]["b"_ss]);
     value("a", "b").onChange(callbackVoid());
-    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->value_change_event.lock().get()["a"_ss]["b"_ss]->operator()(
+        field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     text("a", "b").onChange(callback<Text>());
-    data_->text_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->text_change_event.lock().get()["a"_ss]["b"_ss]->operator()(
+        field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 
     log("a", "b").onChange(callback<Log>());
-    data_->log_append_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a"));
+    data_->log_append_event.lock().get()["a"_ss]["b"_ss]->operator()(
+        field("a"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
@@ -202,8 +206,7 @@ TEST_F(DataTest, textSet) {
     data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set("c");
-    EXPECT_EQ(static_cast<std::string>(
-                  **data_->text_store.getRecv(self_name, "b"_ss)),
+    EXPECT_EQ(data_->text_store.getRecv(self_name, "b"_ss)->asStringView(),
               "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set("c"), std::invalid_argument);
@@ -212,8 +215,7 @@ TEST_F(DataTest, textSetW) {
     data_->text_change_event.lock().get()[self_name]["b"_ss] =
         std::make_shared<std::function<void(Variant)>>(callback<Variant>());
     text(self_name, "b").set(L"c");
-    EXPECT_EQ(static_cast<std::string>(
-                  **data_->text_store.getRecv(self_name, "b"_ss)),
+    EXPECT_EQ(data_->text_store.getRecv(self_name, "b"_ss)->asStringView(),
               "c");
     EXPECT_EQ(callback_called, 1);
     EXPECT_THROW(text("a", "b").set(L"c"), std::invalid_argument);
@@ -244,15 +246,14 @@ TEST_F(DataTest, valueGet) {
     EXPECT_EQ(data_->value_store.transferReq().at("a"_ss).at("d"_ss), 3u);
 }
 TEST_F(DataTest, textGet) {
-    data_->text_store.setRecv("a"_ss, "b"_ss,
-                              std::make_shared<ValAdaptor>("hoge"));
+    data_->text_store.setRecv("a"_ss, "b"_ss, ValAdaptor("hoge"));
     ASSERT_NE(text("a", "b").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "b").tryGet().value(), "hoge");
     EXPECT_EQ(text("a", "b").tryGetW().value(), L"hoge");
     EXPECT_EQ(variant("a", "b").tryGet().value(), ValAdaptor("hoge"));
     EXPECT_EQ(text("a", "b").get(), "hoge");
     EXPECT_EQ(text("a", "b").getW(), L"hoge");
-    EXPECT_EQ(variant("a", "b").get().asStringRef(), "hoge");
+    EXPECT_EQ(variant("a", "b").get().asStringView(), "hoge");
     EXPECT_EQ(text("a", "c").tryGet(), std::nullopt);
     EXPECT_EQ(text("a", "c").tryGetW(), std::nullopt);
     EXPECT_EQ(variant("a", "c").tryGet(), std::nullopt);

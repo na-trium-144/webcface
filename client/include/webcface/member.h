@@ -33,13 +33,18 @@ class WEBCFACE_DLL Member : protected Field {
     /*!
      * \brief Member名
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     *
      */
-    const std::string &name() const { return member_.decode(); }
+    StringView name() const { return member_.decodeShare(); }
     /*!
      * \brief Member名 (wstring)
      * \since ver2.0
+     *
+     * ver2.10〜 std::wstringの参照から WStringView に変更
+     *
      */
-    const std::wstring &nameW() const { return member_.decodeW(); }
+    WStringView nameW() const { return member_.decodeShareW(); }
 
     using Field::child;
     using Field::operator[];
@@ -58,15 +63,8 @@ class WEBCFACE_DLL Member : protected Field {
      * \since ver2.4
      */
     template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(std::string_view name) const {
-        return this->child(name);
-    }
-    /*!
-     * \since ver2.4
-     */
-    template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(std::wstring_view name) const {
-        return this->child(name);
+    Log_ log(StringInitializer name) const {
+        return this->child(static_cast<SharedString &>(name));
     }
     /*!
      * ver2.4〜: nameを省略した場合 "default" として送信される。
@@ -92,34 +90,40 @@ class WEBCFACE_DLL Member : protected Field {
      * \deprecated 1.6で valueEntries() に変更
      *
      */
-    [[deprecated]] std::vector<Value> values() const;
+    [[deprecated]]
+    std::vector<Value> values() const;
     /*!
      * \brief このmemberが公開しているtextのリストを返す。
      * \deprecated 1.6で textEntries() に変更
      */
-    [[deprecated]] std::vector<Text> texts() const;
+    [[deprecated]]
+    std::vector<Text> texts() const;
     /*!
      * \brief このmemberが公開しているrobotModelのリストを返す。
      * \deprecated 1.6で robotModelEntries() に変更
      *
      */
-    [[deprecated]] std::vector<RobotModel> robotModels() const;
+    [[deprecated]]
+    std::vector<RobotModel> robotModels() const;
     /*!
      * \brief このmemberが公開しているfuncのリストを返す。
      * \deprecated 1.6で funcEntries() に変更
      *
      */
-    [[deprecated]] std::vector<Func> funcs() const;
+    [[deprecated]]
+    std::vector<Func> funcs() const;
     /*!
      * \brief このmemberが公開しているviewのリストを返す。
      * \deprecated 1.6で viewEntries() に変更
      */
-    [[deprecated]] std::vector<View> views() const;
+    [[deprecated]]
+    std::vector<View> views() const;
     /*!
      * \brief このmemberが公開しているimageのリストを返す。
      * \deprecated 1.6で imageEntries() に変更
      */
-    [[deprecated]] std::vector<Image> images() const;
+    [[deprecated]]
+    std::vector<Image> images() const;
 
     /*!
      * \brief Memberのデータが存在するかどうかを返す

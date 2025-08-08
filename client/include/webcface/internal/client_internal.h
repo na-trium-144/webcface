@@ -92,7 +92,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     struct SyncDataSnapshot {
         std::chrono::system_clock::time_point time;
         StrMap1<MutableNumVector> value_data;
-        StrMap1<std::shared_ptr<TextData>> text_data;
+        StrMap1<ValAdaptor> text_data;
         StrMap1<std::shared_ptr<RobotModelData>> robot_model_data;
         StrMap1<std::shared_ptr<message::ViewData>> view_prev, view_data;
         StrMap1<std::shared_ptr<message::Canvas3DData>> canvas3d_prev,
@@ -318,7 +318,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SharedMutexProxy<StrMap1<bool>> member_entry;
 
     SyncDataStore2<MutableNumVector> value_store;
-    SyncDataStore2<std::shared_ptr<TextData>> text_store;
+    SyncDataStore2<ValAdaptor> text_store;
     SyncDataStore2<std::shared_ptr<FuncData>> func_store;
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;

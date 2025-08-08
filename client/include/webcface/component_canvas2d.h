@@ -56,9 +56,10 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) canvas2d作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 StringView型で置き換え
      *
      */
-    std::string id() const;
+    StringView id() const;
     /*!
      * \brief そのcanvas2d内で一意のid (wstring)
      * \since ver2.5
@@ -66,9 +67,10 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * canvas2d作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 WStringView型で置き換え
      *
      */
-    std::wstring idW() const;
+    WStringView idW() const;
 
     /*!
      * \since ver1.11
@@ -115,13 +117,19 @@ class WEBCFACE_DLL Canvas2DComponent {
     /*!
      * \brief 表示する文字列
      * \since ver1.9
+     *
+     * ver2.10〜 StringView型で置き換え
+     *
      */
-    std::string text() const;
+    StringView text() const;
     /*!
      * \brief 表示する文字列 (wstring)
      * \since ver2.0
+     *
+     * ver2.10〜 WStringView型で置き換え
+     *
      */
-    std::wstring textW() const;
+    WStringView textW() const;
     /*!
      * \brief geometryを取得
      *
@@ -134,7 +142,8 @@ class WEBCFACE_DLL Canvas2DComponent {
     template <WEBCFACE_COMPLETE(Func)>
     std::optional<Func_> onClick() const;
 };
-extern template std::optional<Func> Canvas2DComponent::onClick<Func, true>() const;
+extern template std::optional<Func>
+Canvas2DComponent::onClick<Func, true>() const;
 
 class WEBCFACE_DLL TemporalCanvas2DComponent {
     std::unique_ptr<internal::TemporalCanvas2DComponentData> msg_data;
@@ -174,13 +183,11 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
+     *
+     * ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    TemporalCanvas2DComponent &id(std::string_view id);
-    /*!
-     * \brief idを設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas2DComponent &id(std::wstring_view id);
+    TemporalCanvas2DComponent &id(StringInitializer id);
     /*!
      * \brief 要素の移動・回転
      *
@@ -263,27 +270,18 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \since ver1.9
      *
      * (ver2.0からstring_viewに変更)
+     * (ver2.10〜 StringInitializer 型に変更)
      *
      */
-    TemporalCanvas2DComponent &text(std::string_view text) &;
+    TemporalCanvas2DComponent &text(StringInitializer text) &;
     /*!
      * \since ver2.5
+     *
+     * (ver2.10〜 StringInitializer 型に変更)
+     *
      */
-    TemporalCanvas2DComponent &&text(std::string_view text) && {
-        this->text(text);
-        return std::move(*this);
-    }
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.0
-     */
-    TemporalCanvas2DComponent &text(std::wstring_view text) &;
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas2DComponent &&text(std::wstring_view text) && {
-        this->text(text);
+    TemporalCanvas2DComponent &&text(StringInitializer text) && {
+        this->text(std::move(text));
         return std::move(*this);
     }
     /*!

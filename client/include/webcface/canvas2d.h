@@ -44,16 +44,11 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    Canvas2D child(std::string_view field) const {
-        return this->Field::child(field);
-    }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    Canvas2D child(std::wstring_view field) const {
-        return this->Field::child(field);
+    Canvas2D child(StringInitializer field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver1.11
@@ -66,22 +61,11 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
+     * 
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * 
      */
-    Canvas2D operator[](std::string_view field) const { return child(field); }
-    /*!
-     * child()と同じ
-     * \since ver2.0
-     */
-    Canvas2D operator[](std::wstring_view field) const { return child(field); }
-    /*!
-     * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver1.11
-     */
-    Canvas2D operator[](const char *field) const { return child(field); }
-    /*!
-     * \since ver2.0
-     */
-    Canvas2D operator[](const wchar_t *field) const { return child(field); }
+    Canvas2D operator[](StringInitializer field) const { return child(std::move(field)); }
     /*!
      * child()と同じ
      * \since ver1.11
