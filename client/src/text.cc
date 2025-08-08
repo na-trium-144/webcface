@@ -20,7 +20,7 @@ void InputRef::lockTo(const Variant &target) { state->field = target; }
 Variant &InputRef::lockedField() const { return state->field; }
 ValAdaptor InputRef::get() const {
     if (lockedField().expired()) {
-        return ValAdaptor::emptyVal();
+        return ValAdaptor();
     } else {
         return lockedField().get();
     }
@@ -81,7 +81,7 @@ ValAdaptor Variant::get() const {
     if (v) {
         return *v;
     } else {
-        return ValAdaptor::emptyVal();
+        return ValAdaptor();
     }
 }
 std::optional<StringView> Text::tryGet() const {

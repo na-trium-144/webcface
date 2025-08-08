@@ -173,8 +173,6 @@ class WEBCFACE_DLL ValAdaptor {
 
     ValType valType() const { return type; }
 
-    static const ValAdaptor &emptyVal();
-
     /*!
      * \brief 値が空かどうか調べる
      * \since ver1.11
