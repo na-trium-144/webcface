@@ -19,23 +19,23 @@ class ViewTest : public ::testing::Test {
     }
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
-    FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+    FieldBase fieldBase(const SharedString &member, std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
     Field field(const SharedString &member, const SharedString &name) const {
         return Field{data_, member, name};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member,
+                     SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name) const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name) const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     View view(const T1 &member, const T2 &name) {
@@ -65,7 +65,8 @@ TEST_F(ViewTest, field) {
 }
 TEST_F(ViewTest, eventTarget) {
     view("a", "b").onChange(callback<View>());
-    data_->view_change_event.lock().get()["a"_ss]["b"_ss]->operator()(field("a", "b"));
+    data_->view_change_event.lock().get()["a"_ss]["b"_ss]->operator()(
+        field("a", "b"));
     EXPECT_EQ(callback_called, 1);
     callback_called = 0;
 }
@@ -111,49 +112,54 @@ TEST_F(ViewTest, viewSet) {
     std::vector<std::shared_ptr<message::ViewComponentData>> view_data;
     view_data.reserve(view_data_base.components.size());
     for (const auto &id : view_data_base.data_ids) {
-        view_data.push_back(view_data_base.components.at(id.u8String()));
+        view_data.push_back(
+            view_data_base.components.find(id.u8StringView())->second);
     }
-    EXPECT_EQ(view_data_base.data_ids[0].u8String(), "..0.0");
+    EXPECT_EQ(view_data_base.data_ids[0].u8StringView(), "..0.0");
     EXPECT_EQ(view_data[0]->type, static_cast<int>(ViewComponentType::text));
-    EXPECT_EQ(view_data[0]->text.u8String(), "a");
-    EXPECT_EQ(view_data_base.data_ids[1].u8String(), "..1.0");
+    EXPECT_EQ(view_data[0]->text.u8StringView(), "a");
+    EXPECT_EQ(view_data_base.data_ids[1].u8StringView(), "..1.0");
     EXPECT_EQ(view_data[1]->type,
               static_cast<int>(ViewComponentType::new_line));
-    EXPECT_EQ(view_data_base.data_ids[2].u8String(), "..0.1");
+    EXPECT_EQ(view_data_base.data_ids[2].u8StringView(), "..0.1");
     EXPECT_EQ(view_data[2]->type, static_cast<int>(ViewComponentType::text));
-    EXPECT_EQ(view_data[2]->text.u8String(), "1");
+    EXPECT_EQ(view_data[2]->text.u8StringView(), "1");
 
-    EXPECT_EQ(view_data_base.data_ids[3].u8String(), "..0.2");
+    EXPECT_EQ(view_data_base.data_ids[3].u8StringView(), "..0.2");
     EXPECT_EQ(view_data[3]->type, static_cast<int>(ViewComponentType::text));
-    EXPECT_EQ(view_data[3]->text.u8String(), "aaa");
+    EXPECT_EQ(view_data[3]->text.u8StringView(), "aaa");
     EXPECT_EQ(view_data[3]->text_color, static_cast<int>(ViewColor::yellow));
     EXPECT_EQ(view_data[3]->bg_color, static_cast<int>(ViewColor::green));
-    EXPECT_EQ(view_data_base.data_ids[4].u8String(), "..1.1");
+    EXPECT_EQ(view_data_base.data_ids[4].u8StringView(), "..1.1");
     EXPECT_EQ(view_data[4]->type,
               static_cast<int>(ViewComponentType::new_line));
 
-    EXPECT_EQ(view_data_base.data_ids[5].u8String(), "..2.0");
+    EXPECT_EQ(view_data_base.data_ids[5].u8StringView(), "..2.0");
     EXPECT_EQ(view_data[5]->type, static_cast<int>(ViewComponentType::button));
-    EXPECT_EQ(view_data[5]->text.u8String(), "f");
-    EXPECT_EQ(view_data[5]->on_click_member->u8String(), self_name.decode());
-    EXPECT_EQ(view_data[5]->on_click_field->u8String(), "f");
+    EXPECT_EQ(view_data[5]->text.u8StringView(), "f");
+    EXPECT_EQ(view_data[5]->on_click_member->u8StringView(),
+              self_name.decode());
+    EXPECT_EQ(view_data[5]->on_click_field->u8StringView(), "f");
 
-    EXPECT_EQ(view_data_base.data_ids[6].u8String(), "..2.1");
+    EXPECT_EQ(view_data_base.data_ids[6].u8StringView(), "..2.1");
     EXPECT_EQ(view_data[6]->type, static_cast<int>(ViewComponentType::button));
-    EXPECT_EQ(view_data[6]->text.u8String(), "a");
-    EXPECT_EQ(view_data[6]->on_click_member->u8String(), self_name.decode());
+    EXPECT_EQ(view_data[6]->text.u8StringView(), "a");
+    EXPECT_EQ(view_data[6]->on_click_member->u8StringView(),
+              self_name.decode());
     EXPECT_FALSE(view_data[6]->on_click_field->empty());
 
-    EXPECT_EQ(view_data_base.data_ids[7].u8String(), "hoge");
+    EXPECT_EQ(view_data_base.data_ids[7].u8StringView(), "hoge");
     EXPECT_EQ(view_data[7]->type, static_cast<int>(ViewComponentType::button));
-    EXPECT_EQ(view_data[7]->text.u8String(), "a2");
-    EXPECT_EQ(view_data[7]->on_click_member->u8String(), self_name.decode());
+    EXPECT_EQ(view_data[7]->text.u8StringView(), "a2");
+    EXPECT_EQ(view_data[7]->on_click_member->u8StringView(),
+              self_name.decode());
     EXPECT_FALSE(view_data[7]->on_click_field->empty());
 
     EXPECT_EQ(view_data[8]->type,
               static_cast<int>(ViewComponentType::decimal_input));
-    EXPECT_EQ(view_data[8]->text.u8String(), "i");
-    EXPECT_EQ(view_data[8]->on_click_member->u8String(), self_name.decode());
+    EXPECT_EQ(view_data[8]->text.u8StringView(), "i");
+    EXPECT_EQ(view_data[8]->on_click_member->u8StringView(),
+              self_name.decode());
     EXPECT_FALSE(view_data[8]->on_click_field->empty());
     // EXPECT_EQ(view_data[8].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[8].text_ref_->field_.empty());
@@ -177,33 +183,35 @@ TEST_F(ViewTest, viewSet) {
 
     EXPECT_EQ(view_data[9]->type,
               static_cast<int>(ViewComponentType::select_input));
-    EXPECT_EQ(view_data[9]->text.u8String(), "i2");
-    EXPECT_EQ(view_data[9]->on_click_member->u8String(), self_name.decode());
+    EXPECT_EQ(view_data[9]->text.u8StringView(), "i2");
+    EXPECT_EQ(view_data[9]->on_click_member->u8StringView(),
+              self_name.decode());
     EXPECT_FALSE(view_data[9]->on_click_field->empty());
     // EXPECT_EQ(view_data[9].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[9].text_ref_->field_.empty());
     EXPECT_EQ(view_data[9]->option_.size(), 3u);
     func(self_name, *view_data[9]->on_click_field).runAsync("a");
-    EXPECT_EQ(static_cast<std::string>(ref2.get()), "a");
-    // EXPECT_EQ(static_cast<std::string>(
+    EXPECT_EQ(static_cast<std::string_view>(ref2.get()), "a");
+    // EXPECT_EQ(static_cast<std::string_view>(
     //               text(self_name, view_data[9].text_ref_->field_).get()),
     //           "a");
 
     EXPECT_EQ(view_data[10]->type,
               static_cast<int>(ViewComponentType::text_input));
-    EXPECT_EQ(view_data[10]->text.u8String(), "i3");
-    EXPECT_EQ(view_data[10]->on_click_member->u8String(), self_name.decode());
+    EXPECT_EQ(view_data[10]->text.u8StringView(), "i3");
+    EXPECT_EQ(view_data[10]->on_click_member->u8StringView(),
+              self_name.decode());
     EXPECT_FALSE(view_data[10]->on_click_field->empty());
     // EXPECT_EQ(view_data[10].text_ref_->member_, self_name.decode());
     // EXPECT_FALSE(view_data[10].text_ref_->field_.empty());
     func(self_name, *view_data[10]->on_click_field).runAsync("aaa");
     EXPECT_EQ(called_ref3, 1);
-    // EXPECT_EQ(static_cast<std::string>(
+    // EXPECT_EQ(static_cast<std::string_view>(
     //               text(self_name, view_data[10].text_ref_->field_).get()),
     //           "aaa");
 
     EXPECT_EQ(view_data[11]->type, static_cast<int>(ViewComponentType::text));
-    EXPECT_EQ(view_data[11]->text.u8String(), "ins");
+    EXPECT_EQ(view_data[11]->text.u8StringView(), "ins");
 
     v.init();
     v.sync();

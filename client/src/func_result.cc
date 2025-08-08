@@ -99,7 +99,7 @@ void CallHandle::reject(const ValAdaptor &message) const {
             data->is_error = true;
             data->rejection = message;
             data->result_p.set_exception(std::make_exception_ptr(
-                Rejection(data->base, message.asStringRef())));
+                Rejection(data->base, std::string(message.asStringView()))));
             data->callFinishEvent();
             data->cond.notify_all();
         } else {
@@ -115,8 +115,9 @@ bool CallHandle::assertArgsNum(std::size_t expected) const {
         if (args().size() == expected) {
             return true;
         } else {
-            reject(name() + "() requires " + std::to_string(expected) +
-                   " arguments, but received " + std::to_string(args().size()));
+            reject(strJoin(name(), "() requires ", std::to_string(expected),
+                           " arguments, but received ",
+                           std::to_string(args().size())));
             return false;
         }
     } else {
@@ -238,18 +239,18 @@ ValAdaptor Promise::response() const {
         throw invalidPromise();
     }
 }
-const std::string &Promise::rejection() const {
+StringView Promise::rejection() const {
     if (data) {
         std::lock_guard lock(data->m);
-        return data->rejection.asStringRef();
+        return data->rejection.asStringView();
     } else {
         throw invalidPromise();
     }
 }
-const std::wstring &Promise::rejectionW() const {
+WStringView Promise::rejectionW() const {
     if (data) {
         std::lock_guard lock(data->m);
-        return data->rejection.asWStringRef();
+        return data->rejection.asWStringView();
     } else {
         throw invalidPromise();
     }
@@ -296,7 +297,11 @@ std::vector<CVal> &internal::PromiseData::initCArgs() {
             CVal cv;
             cv.as_int = a;
             cv.as_double = a;
-            cv.as_str = a;
+            if constexpr (v_index == 1) {
+                cv.as_str = a.asStringView().c_str();
+            } else {
+                cv.as_str = a.asWStringView().c_str();
+            }
             c_args.push_back(cv);
         }
         this->c_args_.emplace<v_index>(std::move(c_args));

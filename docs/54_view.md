@@ -161,7 +161,7 @@ Viewに追加する各種要素をViewComponentといいます。
     引数にView(コピーまたはconst参照)を取る関数オブジェクトをViewに渡すと、その場でその関数が呼び出されます。
     複数のViewComponentを出力する処理をまとめて使いまわしたい場合に便利です。
     ```cpp
-    auto showNameAndValue(const std::string &name, int value) {
+    auto showNameAndValue(std::string_view name, int value) {
         return [=](const webcface::View &view) {
             view << name << " = " << value;
         };
@@ -441,8 +441,9 @@ viewに入力欄を表示します。
 
     <span class="since-c">1.11</span>
     InputRefの値は
-    `asStringRef()`, `asString()`, `asBool()`, <del>`as<double>()`</del> で型を指定して取得できます。  
-    <span class="since-c">2.0</span> `asWStringRef()`, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。  
+    <del>`asStringRef()`</del>, `asString()`, `asBool()`, <del>`as<double>()`</del> で型を指定して取得できます。  
+    <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。  
+    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()` も使えます。  
     (std::string, double, bool などの型にキャストすることでも値を得られます。)  
     (任意の型に対応したい場合は `get()` で webcface::ValAdaptor 型として取得できます。)
 
@@ -538,7 +539,8 @@ viewに入力欄を表示します。
     onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。
     buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。
     ```cpp
-    v << webcface::textInput("表示する文字列").id("input1").onChange([](std::string val) {
+    v << webcface::textInput("表示する文字列").id("input1").onChange([](std::string_view val) {
+        // ver2.9以前: const std::string & val
         std::cout << "input changed: " << val << std::endl;
     });
     ```

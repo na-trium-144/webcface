@@ -19,19 +19,19 @@ class Canvas3DTest : public ::testing::Test {
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+                        std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member, SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name = "") const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     Canvas3D canvas(const T1 &member, const T2 &name) {
@@ -93,7 +93,7 @@ TEST_F(Canvas3DTest, set) {
     canvas3d_data.reserve(canvas3d_data_base.components.size());
     for (const auto &id : canvas3d_data_base.data_ids) {
         canvas3d_data.push_back(
-            canvas3d_data_base.components.at(id.u8String()));
+            canvas3d_data_base.components.find(id.u8StringView())->second);
     }
     EXPECT_EQ(canvas3d_data[0]->type,
               static_cast<int>(Canvas3DComponentType::geometry));
@@ -128,8 +128,8 @@ TEST_F(Canvas3DTest, set) {
     EXPECT_EQ(canvas3d_data[2]->origin_rot, (std::array<double, 3>{0, 0, 0}));
     EXPECT_EQ(canvas3d_data[2]->color, static_cast<int>(ViewColor::inherit));
     EXPECT_EQ(canvas3d_data[2]->geometry_type, std::nullopt);
-    EXPECT_EQ(canvas3d_data[2]->field_member->u8String(), self_name.decode());
-    EXPECT_EQ(canvas3d_data[2]->field_field->u8String(), "b");
+    EXPECT_EQ(canvas3d_data[2]->field_member->u8StringView(), self_name.decode());
+    EXPECT_EQ(canvas3d_data[2]->field_field->u8StringView(), "b");
     // ASSERT_EQ(canvas3d_data[2].angles_.size(), 1);
     // EXPECT_EQ(canvas3d_data[2].angles_.at(1), 123);
 

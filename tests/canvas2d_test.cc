@@ -19,19 +19,19 @@ class Canvas2DTest : public ::testing::Test {
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+                        std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member, SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name = "") const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     Canvas2D canvas(const T1 &member, const T2 &name) {
@@ -85,7 +85,7 @@ TEST_F(Canvas2DTest, set) {
     canvas2d_data.reserve(canvas2d_data_base.components.size());
     for (const auto &id : canvas2d_data_base.data_ids) {
         canvas2d_data.push_back(
-            canvas2d_data_base.components.at(id.u8String()));
+            canvas2d_data_base.components.find(id.u8StringView())->second);
     }
     EXPECT_EQ(canvas2d_data[0]->type,
               static_cast<int>(Canvas2DComponentType::geometry));
@@ -94,9 +94,9 @@ TEST_F(Canvas2DTest, set) {
               static_cast<int>(GeometryType::line));
     EXPECT_EQ(canvas2d_data[0]->properties,
               (std::vector<double>{0, 0, 0, 3, 3, 0}));
-    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8String(),
+    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8StringView(),
               self_name.decode());
-    EXPECT_EQ(canvas2d_data[0]->on_click_field->u8String(), "f");
+    EXPECT_EQ(canvas2d_data[0]->on_click_field->u8StringView(), "f");
 
     EXPECT_EQ(canvas2d_data[1]->type,
               static_cast<int>(Canvas2DComponentType::geometry));
@@ -105,9 +105,9 @@ TEST_F(Canvas2DTest, set) {
               static_cast<int>(GeometryType::plane));
     EXPECT_EQ(canvas2d_data[1]->properties,
               (std::vector<double>{0, 0, 0, 0, 0, 0, 10, 10}));
-    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8String(),
+    EXPECT_EQ(canvas2d_data[0]->on_click_member->u8StringView(),
               self_name.decode());
-    EXPECT_NE(canvas2d_data[0]->on_click_field->u8String(), "");
+    EXPECT_NE(canvas2d_data[0]->on_click_field->u8StringView(), "");
 
     v.init(1, 1);
     v.sync();

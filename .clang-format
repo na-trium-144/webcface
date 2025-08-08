@@ -4,3 +4,4 @@ UseTab: Never
 MaxEmptyLinesToKeep: 2
 SortIncludes: false
 AlwaysBreakTemplateDeclarations: true
+BreakAfterAttributes: Always

@@ -1,4 +1,5 @@
 #include "webcface/common/val_adaptor.h"
+#include <cstdlib>
 
 WEBCFACE_NS_BEGIN
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
@@ -16,29 +17,28 @@ ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
     return *this;
 }
 
-ValAdaptor::ValAdaptor(std::string_view str)
-    : as_str(SharedString::encode(str)), type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(std::string_view str) {
-    as_str = SharedString::encode(str);
+ValAdaptor::ValAdaptor(StringInitializer str)
+    : as_str(std::move(static_cast<SharedString &>(str))),
+      type(ValType::string_) {}
+ValAdaptor &ValAdaptor::operator=(StringInitializer str) {
+    as_str = std::move(static_cast<SharedString &>(str));
     type = ValType::string_;
     return *this;
 }
 
-ValAdaptor::ValAdaptor(std::wstring_view str)
-    : as_str(SharedString::encode(str)), type(ValType::string_) {}
-ValAdaptor &ValAdaptor::operator=(std::wstring_view str) {
-    as_str = SharedString::encode(str);
-    type = ValType::string_;
-    return *this;
-}
-
-ValAdaptor::ValAdaptor(bool value)
+template <typename Bool,
+          typename std::enable_if_t<std::is_same_v<Bool, bool>, bool>>
+ValAdaptor::ValAdaptor(Bool value)
     : as_val(static_cast<std::int64_t>(value)), type(ValType::bool_) {}
-ValAdaptor &ValAdaptor::operator=(bool v) {
+template <typename Bool>
+auto ValAdaptor::operator=(Bool v)
+    -> std::enable_if_t<std::is_same_v<Bool, bool>, ValAdaptor &> {
     as_val.emplace<INT64V>(v);
     type = ValType::bool_;
     return *this;
 }
+template WEBCFACE_DLL ValAdaptor::ValAdaptor(bool value);
+template WEBCFACE_DLL ValAdaptor &ValAdaptor::operator= <bool>(bool v);
 
 ValAdaptor::ValAdaptor(std::int64_t value)
     : as_val(value), type(ValType::int_) {}
@@ -63,7 +63,7 @@ bool ValAdaptor::empty() const {
     }
 }
 
-const std::string &ValAdaptor::asStringRef() const {
+void ValAdaptor::initStr() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
@@ -74,10 +74,8 @@ const std::string &ValAdaptor::asStringRef() const {
                 SharedString::encode(std::to_string(std::get<INT64V>(as_val)));
         }
     }
-    return as_str.decode();
 }
-
-const std::wstring &ValAdaptor::asWStringRef() const {
+void ValAdaptor::initWStr() const {
     if (as_str.empty() && valType() != ValType::none_ &&
         valType() != ValType::string_) {
         if (as_val.index() == DOUBLEV) {
@@ -88,30 +86,24 @@ const std::wstring &ValAdaptor::asWStringRef() const {
                 SharedString::encode(std::to_wstring(std::get<INT64V>(as_val)));
         }
     }
-    return as_str.decodeW();
+}
+StringView ValAdaptor::asStringView() const {
+    initStr();
+    return as_str.decodeShare();
+}
+WStringView ValAdaptor::asWStringView() const {
+    initWStr();
+    return as_str.decodeShareW();
 }
 
-const std::string &ValAdaptor::asU8StringRef() const {
-    if (as_str.empty() && valType() != ValType::none_ &&
-        valType() != ValType::string_) {
-        if (as_val.index() == DOUBLEV) {
-            as_str = SharedString::fromU8String(
-                std::to_string(std::get<DOUBLEV>(as_val)));
-        } else {
-            as_str = SharedString::fromU8String(
-                std::to_string(std::get<INT64V>(as_val)));
-        }
-    }
-    return as_str.u8String();
+std::string_view ValAdaptor::asU8StringView() const {
+    initStr();
+    return as_str.u8StringView();
 }
 
 double ValAdaptor::asDouble() const {
     if (type == ValType::string_) {
-        try {
-            return std::stod(asStringRef());
-        } catch (...) {
-            return 0;
-        }
+        return std::atof(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -123,11 +115,7 @@ double ValAdaptor::asDouble() const {
 }
 int ValAdaptor::asInt() const {
     if (type == ValType::string_) {
-        try {
-            return std::stoi(asStringRef());
-        } catch (...) {
-            return 0;
-        }
+        return std::atoi(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:
@@ -139,11 +127,7 @@ int ValAdaptor::asInt() const {
 }
 long long ValAdaptor::asLLong() const {
     if (type == ValType::string_) {
-        try {
-            return std::stoll(asStringRef());
-        } catch (...) {
-            return 0;
-        }
+        return std::atoll(asU8StringView().data());
     } else {
         switch (as_val.index()) {
         case DOUBLEV:

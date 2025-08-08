@@ -193,8 +193,7 @@ TEST_F(ClientTest, syncThread) {
     });
     wait();
     dummy_s->send(message::Res<message::Value>{
-        1, ""_ss,
-        MutableNumVector(std::vector<double>{1, 2, 3})});
+        1, ""_ss, MutableNumVector(std::vector<double>{1, 2, 3})});
     wcli_->loopSyncFor(std::chrono::milliseconds(WEBCFACE_TEST_TIMEOUT));
     EXPECT_EQ(callback_called, 1);
 }
@@ -522,8 +521,8 @@ TEST_F(ClientTest, logReq) {
     }
     wcli_->member("a").log("b").tryGet();
     dummy_s->waitRecv<message::Req<message::Log>>([&](const auto &obj) {
-        EXPECT_EQ(obj.member.u8String(), "a");
-        EXPECT_EQ(obj.field.u8String(), "b");
+        EXPECT_EQ(obj.member.u8StringView(), "a");
+        EXPECT_EQ(obj.field.u8StringView(), "b");
         EXPECT_EQ(obj.req_id, 1u);
     });
     wcli_->member("a").log("b").onChange(callback<Log>());
@@ -551,7 +550,7 @@ TEST_F(ClientTest, logReq) {
     EXPECT_EQ(data_->log_store.getRecv("a"_ss, "b"_ss)
                   .value()
                   ->data.at(0)
-                  .message_.u8String()
+                  .message_.u8StringView()
                   .size(),
               100000u);
 

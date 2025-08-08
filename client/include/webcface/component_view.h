@@ -1,4 +1,5 @@
 #pragma once
+#include "webcface/func_trait.h"
 #include <functional>
 #include <optional>
 #include <unordered_map>
@@ -148,9 +149,10 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 StringView型で置き換え
      *
      */
-    std::string id() const;
+    StringView id() const;
     /*!
      * \brief そのview内で一意のid (wstring)
      * \since ver2.5
@@ -158,9 +160,10 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * view作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 WStringView型で置き換え
      *
      */
-    std::wstring idW() const;
+    WStringView idW() const;
 
     /*!
      * \brief 要素の比較
@@ -188,13 +191,18 @@ class WEBCFACE_DLL ViewComponent {
     /*!
      * \brief 表示する文字列を取得
      *
+     * * ver2.10〜 StringView型で置き換え
+     *
      */
-    std::string text() const;
+    StringView text() const;
     /*!
      * \brief 表示する文字列を取得 (wstring)
      * \since ver2.0
+     *
+     * * ver2.10〜 WStringView型で置き換え
+     *
      */
-    std::wstring textW() const;
+    WStringView textW() const;
     /*!
      * \brief クリック時に実行される関数を取得
      *
@@ -271,10 +279,8 @@ class WEBCFACE_DLL ViewComponent {
      */
     int height() const;
 };
-extern template std::optional<Func>
-ViewComponent::onClick<Func, true>() const;
-extern template std::optional<Func>
-ViewComponent::onChange<Func, true>() const;
+extern template std::optional<Func> ViewComponent::onClick<Func, true>() const;
+extern template std::optional<Func> ViewComponent::onChange<Func, true>() const;
 extern template std::optional<Variant>
 ViewComponent::bind<Variant, true>() const;
 
@@ -328,38 +334,27 @@ class WEBCFACE_DLL TemporalViewComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
+     *
+     * ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    TemporalViewComponent &id(std::string_view id);
-    /*!
-     * \brief idを設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalViewComponent &id(std::wstring_view id);
+    TemporalViewComponent &id(StringInitializer id);
     /*!
      * \brief 表示する文字列を設定
      *
      * (ver2.0からstring_viewに変更)
+     * (ver2.10〜 StringInitializer 型で置き換え)
      *
      */
-    TemporalViewComponent &text(std::string_view text) &;
+    TemporalViewComponent &text(StringInitializer text) &;
     /*!
      * \since ver2.5
+     *
+     * (ver2.10〜 StringInitializer 型で置き換え)
+     *
      */
-    TemporalViewComponent &&text(std::string_view text) && {
-        this->text(text);
-        return std::move(*this);
-    }
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.0
-     */
-    TemporalViewComponent &text(std::wstring_view text) &;
-    /*!
-     * \brief 表示する文字列を設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalViewComponent &&text(std::wstring_view text) && {
-        this->text(text);
+    TemporalViewComponent &&text(StringInitializer text) && {
+        this->text(std::move(text));
         return std::move(*this);
     }
     /*!
@@ -446,12 +441,15 @@ class WEBCFACE_DLL TemporalViewComponent {
      */
     template <typename T>
     TemporalViewComponent &onChange(T func) & {
+        static_assert(traits::InvokeObjTrait<T>::ArgsSize == 1);
+        using FirstArgType =
+            typename traits::InvokeObjTrait<T>::template ArgsAt<0>;
         InputRef ref;
         return onChange(
             std::make_shared<std::function<void WEBCFACE_CALL_FP(ValAdaptor)>>(
-                [ref, func = std::move(func)](ValAdaptor val) {
+                [ref, func = std::move(func)](const ValAdaptor &val) {
                     ref.lockedField().set(val);
-                    return func(val);
+                    return func(val.as<FirstArgType>());
                 }),
             ref);
     }
@@ -510,11 +508,41 @@ class WEBCFACE_DLL TemporalViewComponent {
         return this->init(ValAdaptor{init});
     }
     /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    TemporalViewComponent &init(const char (&init)[N]) & {
+        return this->init(ValAdaptor(init));
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    TemporalViewComponent &init(const wchar_t (&init)[N]) & {
+        return this->init(ValAdaptor(init));
+    }
+    /*!
      * \brief デフォルト値を設定する。
      * \since ver2.5
      */
     template <typename T>
     TemporalViewComponent &&init(const T &init) && {
+        this->init(init);
+        return std::move(*this);
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    TemporalViewComponent &&init(const char (&init)[N]) && {
+        this->init(init);
+        return std::move(*this);
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    TemporalViewComponent &&init(const wchar_t (&init)[N]) && {
         this->init(init);
         return std::move(*this);
     }

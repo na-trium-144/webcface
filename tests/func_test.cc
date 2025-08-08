@@ -18,19 +18,19 @@ class FuncTest : public ::testing::Test {
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+                        std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member, SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name = "") const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     Func func(const T1 &member, const T2 &name) {
@@ -45,9 +45,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(0)), false);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(2)), true);
-    EXPECT_EQ(static_cast<std::string>(ValAdaptor(10)), "10");
+    EXPECT_EQ(static_cast<std::string_view>(ValAdaptor(10)), "10");
     EXPECT_STREQ(static_cast<const char *>(ValAdaptor(10)), "10");
-    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(10)), L"10");
+    EXPECT_EQ(static_cast<std::wstring_view>(ValAdaptor(10)), L"10");
     EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(10)), L"10");
 
     EXPECT_FALSE(ValAdaptor(1.5).empty());
@@ -56,9 +56,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor(0.0)), false);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.0)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(1.5)), true);
-    EXPECT_EQ(static_cast<std::string>(ValAdaptor(1.5)), "1.500000");
+    EXPECT_EQ(static_cast<std::string_view>(ValAdaptor(1.5)), "1.500000");
     EXPECT_STREQ(static_cast<const char *>(ValAdaptor(1.5)), "1.500000");
-    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(1.5)), L"1.500000");
+    EXPECT_EQ(static_cast<std::wstring_view>(ValAdaptor(1.5)), L"1.500000");
     EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(1.5)), L"1.500000");
 
     EXPECT_FALSE(ValAdaptor(true).empty());
@@ -68,9 +68,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<double>(ValAdaptor(false)), 0.0);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(true)), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor(false)), false);
-    EXPECT_EQ(static_cast<std::string>(ValAdaptor(true)), "1");
+    EXPECT_EQ(static_cast<std::string_view>(ValAdaptor(true)), "1");
     EXPECT_STREQ(static_cast<const char *>(ValAdaptor(true)), "1");
-    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor(true)), L"1");
+    EXPECT_EQ(static_cast<std::wstring_view>(ValAdaptor(true)), L"1");
     EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor(true)), L"1");
 
     EXPECT_FALSE(ValAdaptor("1.5").empty());
@@ -82,9 +82,9 @@ TEST_F(FuncTest, valAdaptor) {
     EXPECT_EQ(static_cast<bool>(ValAdaptor("1.0")), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor("1.5")), true);
     EXPECT_EQ(static_cast<bool>(ValAdaptor("hoge")), true);
-    EXPECT_EQ(static_cast<std::string>(ValAdaptor("1.5")), "1.5");
+    EXPECT_EQ(static_cast<std::string_view>(ValAdaptor("1.5")), "1.5");
     EXPECT_STREQ(static_cast<const char *>(ValAdaptor("1.5")), "1.5");
-    EXPECT_EQ(static_cast<std::wstring>(ValAdaptor("1.5")), L"1.5");
+    EXPECT_EQ(static_cast<std::wstring_view>(ValAdaptor("1.5")), L"1.5");
     EXPECT_STREQ(static_cast<const wchar_t *>(ValAdaptor("1.5")), L"1.5");
 
     EXPECT_TRUE(ValAdaptor().empty());

@@ -1,5 +1,5 @@
 #pragma once
-#include <unordered_map>
+#include <map>
 #include "webcface/component_view.h"
 #include "webcface/geometry.h"
 #include "webcface/transform.h"
@@ -56,9 +56,10 @@ class WEBCFACE_DLL Canvas3DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) canvas3d作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 StringView型で置き換え
      *
      */
-    std::string id() const;
+    StringView id() const;
     /*!
      * \brief そのcanvas3d内で一意のid (wstring)
      * \since ver2.5
@@ -66,9 +67,10 @@ class WEBCFACE_DLL Canvas3DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * canvas3d作成側でidを指定した場合その値が返る。
+     * * ver2.10〜 WStringView型で置き換え
      *
      */
-    std::wstring idW() const;
+    WStringView idW() const;
 
     /*!
      * \since ver1.11
@@ -154,13 +156,11 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
     /*!
      * \brief idを設定
      * \since ver2.5
+     *
+     * ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    TemporalCanvas3DComponent &id(std::string_view id);
-    /*!
-     * \brief idを設定 (wstring)
-     * \since ver2.5
-     */
-    TemporalCanvas3DComponent &id(std::wstring_view id);
+    TemporalCanvas3DComponent &id(StringInitializer id);
     /*!
      * \brief 要素の移動
      *
@@ -210,14 +210,17 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
+     * * ver2.10〜 `std::unordered_map<std::string, double>` から
+     * `std::map<std::string, double, std::less<>>` に変更
+     *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::string, double> &angles) &;
+    angles(const std::map<std::string, double, std::less<>> &angles) &;
     /*!
      * \since ver2.5
      */
     TemporalCanvas3DComponent &&
-    angles(const std::unordered_map<std::string, double> &angles) && {
+    angles(const std::map<std::string, double, std::less<>> &angles) && {
         this->angles(angles);
         return std::move(*this);
     }
@@ -227,14 +230,17 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \since ver2.0
      * \param angles RobotJointの名前と角度のリスト
      *
+     * * ver2.10〜 `std::unordered_map<std::wstring, double>` から
+     * `std::map<std::wstring, double, std::less<>>` に変更
+     *
      */
     TemporalCanvas3DComponent &
-    angles(const std::unordered_map<std::wstring, double> &angles) &;
+    angles(const std::map<std::wstring, double, std::less<>> &angles) &;
     /*!
      * \since ver2.5
      */
     TemporalCanvas3DComponent &&
-    angles(const std::unordered_map<std::wstring, double> &angles) && {
+    angles(const std::map<std::wstring, double, std::less<>> &angles) && {
         this->angles(angles);
         return std::move(*this);
     }
@@ -244,13 +250,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
+     * * ver2.10〜 std::string_view に変更
+     * 
      */
-    TemporalCanvas3DComponent &angle(const std::string &joint_name,
+    TemporalCanvas3DComponent &angle(std::string_view joint_name,
                                      double angle) &;
     /*!
      * \since ver2.5
      */
-    TemporalCanvas3DComponent &&angle(const std::string &joint_name,
+    TemporalCanvas3DComponent &&angle(std::string_view joint_name,
                                       double angle) && {
         this->angle(joint_name, angle);
         return std::move(*this);
@@ -261,13 +269,15 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
+     * * ver2.10〜 std::wstring_view に変更
+     * 
      */
-    TemporalCanvas3DComponent &angle(const std::wstring &joint_name,
+    TemporalCanvas3DComponent &angle(std::wstring_view joint_name,
                                      double angle) &;
     /*!
      * \since ver2.5
      */
-    TemporalCanvas3DComponent &&angle(const std::wstring &joint_name,
+    TemporalCanvas3DComponent &&angle(std::wstring_view joint_name,
                                       double angle) && {
         this->angle(joint_name, angle);
         return std::move(*this);

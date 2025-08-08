@@ -135,19 +135,19 @@ class ImageTest : public ::testing::Test {
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
     FieldBase fieldBase(const SharedString &member,
-                        std::string_view name) const {
-        return FieldBase{member, SharedString::fromU8String(name)};
+                        std::string name) const {
+        return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
-    FieldBase fieldBase(std::string_view member, std::string_view name) const {
-        return FieldBase{SharedString::fromU8String(member),
-                         SharedString::fromU8String(name)};
+    FieldBase fieldBase(std::string member, std::string name) const {
+        return FieldBase{SharedString::fromU8String(std::move(member)),
+                         SharedString::fromU8String(std::move(name))};
     }
-    Field field(const SharedString &member, std::string_view name = "") const {
-        return Field{data_, member, SharedString::fromU8String(name)};
+    Field field(const SharedString &member, std::string name = "") const {
+        return Field{data_, member, SharedString::fromU8String(std::move(name))};
     }
-    Field field(std::string_view member, std::string_view name = "") const {
-        return Field{data_, SharedString::fromU8String(member),
-                     SharedString::fromU8String(name)};
+    Field field(std::string member, std::string name = "") const {
+        return Field{data_, SharedString::fromU8String(std::move(member)),
+                     SharedString::fromU8String(std::move(name))};
     }
     template <typename T1, typename T2>
     Image image(const T1 &member, const T2 &name) {

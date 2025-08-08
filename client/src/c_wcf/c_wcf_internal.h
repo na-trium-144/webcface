@@ -143,7 +143,11 @@ auto resultToCVal(const ValAdaptor &result_val) {
         CharType<CharT>::funcValList().at(result);
     result->as_int = result_val_ref;
     result->as_double = result_val_ref;
-    result->as_str = result_val_ref;
+    if constexpr (std::is_same_v<CharT, char>) {
+        result->as_str = result_val_ref.asStringView().c_str();
+    } else {
+        result->as_str = result_val_ref.asWStringView().c_str();
+    }
     return result;
 }
 

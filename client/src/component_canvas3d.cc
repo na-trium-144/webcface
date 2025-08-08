@@ -8,8 +8,8 @@ WEBCFACE_NS_BEGIN
 static inline std::string internalCanvas3DId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string Canvas3DComponent::id() const { return id_.decode(); }
-std::wstring Canvas3DComponent::idW() const { return id_.decodeW(); }
+StringView Canvas3DComponent::id() const { return id_.decodeShare(); }
+WStringView Canvas3DComponent::idW() const { return id_.decodeShareW(); }
 
 Canvas3DComponent::Canvas3DComponent() = default;
 
@@ -71,12 +71,8 @@ bool Canvas3DComponent::operator==(const Canvas3DComponent &other) const {
            *msg_data == *other.msg_data;
 }
 
-TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::string_view id) {
-    msg_data->id = SharedString::encode(id);
-    return *this;
-}
-TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(std::wstring_view id) {
-    msg_data->id = SharedString::encode(id);
+TemporalCanvas3DComponent &TemporalCanvas3DComponent::id(StringInitializer id) {
+    msg_data->id = std::move(id);
     return *this;
 }
 
@@ -140,7 +136,7 @@ TemporalCanvas3DComponent::robotModel(const RobotModel &field) & {
 }
 
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::string, double> &angles) & {
+    const std::map<std::string, double, std::less<>> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -150,8 +146,9 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             auto j = model[ji].joint();
-            if (angles.count(j.name())) {
-                msg_data->anglesAt(ji) = angles.at(j.name());
+            auto it = angles.find(j.name());
+            if (it != angles.end()) {
+                msg_data->anglesAt(ji) = it->second;
             }
         }
         return *this;
@@ -161,7 +158,7 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
-    const std::unordered_map<std::wstring, double> &angles) & {
+    const std::map<std::wstring, double, std::less<>> &angles) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -171,8 +168,9 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
         auto model = rm.get();
         for (std::size_t ji = 0; ji < model.size(); ji++) {
             auto j = model[ji].joint();
-            if (angles.count(j.nameW())) {
-                msg_data->anglesAt(ji) = angles.at(j.nameW());
+            auto it = angles.find(j.nameW());
+            if (it != angles.end()) {
+                msg_data->anglesAt(ji) = it->second;
             }
         }
         return *this;
@@ -182,8 +180,7 @@ TemporalCanvas3DComponent &TemporalCanvas3DComponent::angles(
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::string &joint_name,
-                                 double angle) & {
+TemporalCanvas3DComponent::angle(std::string_view joint_name, double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {
@@ -203,8 +200,7 @@ TemporalCanvas3DComponent::angle(const std::string &joint_name,
     }
 }
 TemporalCanvas3DComponent &
-TemporalCanvas3DComponent::angle(const std::wstring &joint_name,
-                                 double angle) & {
+TemporalCanvas3DComponent::angle(std::wstring_view joint_name, double angle) & {
     if (msg_data->field_member && msg_data->field_field &&
         msg_data->type ==
             static_cast<int>(Canvas3DComponentType::robot_model)) {

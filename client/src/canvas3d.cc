@@ -39,7 +39,7 @@ void internal::DataSetBuffer<TemporalCanvas3DComponent>::onSync() {
         std::shared_ptr<internal::TemporalCanvas3DComponentData> msg_data =
             components_[i].lockTmp(data, target_.field_, &idx_next);
         components_p->components.emplace(
-            msg_data->id.u8String(),
+            std::string(msg_data->id.u8StringView()),
             std::static_pointer_cast<message::Canvas3DComponentData>(msg_data));
         components_p->data_ids.push_back(msg_data->id);
     }
@@ -76,8 +76,8 @@ std::optional<std::vector<Canvas3DComponent>> Canvas3D::tryGet() const {
         std::vector<Canvas3DComponent> v;
         v.reserve((*vb)->data_ids.size());
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
+            v.emplace_back((*vb)->components.find(id.u8StringView())->second,
+                           this->data_w, id);
         }
         return v;
     } else {

@@ -201,15 +201,17 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.view_data) {
         auto v_prev = data.view_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::ViewComponentData>>
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.view_prev.end() ||
-                v_prev->second->components.count(id.u8String()) == 0 ||
-                *v_prev->second->components.at(id.u8String()) !=
-                    *p.second->components.at(id.u8String())) {
-                v_diff.emplace(id.u8String(),
-                               p.second->components.at(id.u8String()));
+                v_prev->second->components.count(id.u8StringView()) == 0 ||
+                *(v_prev->second->components.find(id.u8StringView())->second) !=
+                    *(p.second->components.find(id.u8StringView())->second)) {
+                v_diff.emplace(
+                    std::string(id.u8StringView()),
+                    p.second->components.find(id.u8StringView())->second);
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
@@ -225,15 +227,17 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas3d_data) {
         auto v_prev = data.canvas3d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>>
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas3d_prev.end() ||
-                v_prev->second->components.count(id.u8String()) == 0 ||
-                *v_prev->second->components.at(id.u8String()) !=
-                    *p.second->components.at(id.u8String())) {
-                v_diff.emplace(id.u8String(),
-                               p.second->components.at(id.u8String()));
+                v_prev->second->components.count(id.u8StringView()) == 0 ||
+                *(v_prev->second->components.find(id.u8StringView())->second) !=
+                    *(p.second->components.find(id.u8StringView())->second)) {
+                v_diff.emplace(
+                    std::string(id.u8StringView()),
+                    p.second->components.find(id.u8StringView())->second);
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed = std::nullopt;
@@ -249,15 +253,17 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     }
     for (const auto &p : data.canvas2d_data) {
         auto v_prev = data.canvas2d_prev.find(p.first);
-        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>>
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>
             v_diff;
         for (const auto &id : p.second->data_ids) {
             if (v_prev == data.canvas2d_prev.end() ||
-                v_prev->second->components.count(id.u8String()) == 0 ||
-                *v_prev->second->components.at(id.u8String()) !=
-                    *p.second->components.at(id.u8String())) {
-                v_diff.emplace(id.u8String(),
-                               p.second->components.at(id.u8String()));
+                v_prev->second->components.count(id.u8StringView()) == 0 ||
+                *(v_prev->second->components.find(id.u8StringView())->second) !=
+                    *(p.second->components.find(id.u8StringView())->second)) {
+                v_diff.emplace(
+                    std::string(id.u8StringView()),
+                    p.second->components.find(id.u8StringView())->second);
             }
         }
         std::optional<std::vector<SharedString>> v_ids_changed;
@@ -324,8 +330,8 @@ getLoggerBuf(const std::shared_ptr<internal::ClientData> &data,
 std::streambuf *Client::loggerStreamBuf() const {
     return getLoggerBuf(data, message::Log::defaultLogName());
 }
-std::streambuf *Client::loggerStreamBuf(std::string_view name) const {
-    return getLoggerBuf(data, SharedString::encode(name));
+std::streambuf *Client::loggerStreamBuf(const StringInitializer &name) const {
+    return getLoggerBuf(data, name);
 }
 // \private
 static std::wstreambuf *
@@ -341,8 +347,8 @@ getLoggerBufW(const std::shared_ptr<internal::ClientData> &data,
 std::wstreambuf *Client::loggerWStreamBuf() const {
     return getLoggerBufW(data, message::Log::defaultLogName());
 }
-std::wstreambuf *Client::loggerWStreamBuf(std::wstring_view name) const {
-    return getLoggerBufW(data, SharedString::encode(name));
+std::wstreambuf *Client::loggerWStreamBuf(const StringInitializer &name) const {
+    return getLoggerBufW(data, name);
 }
 // \private
 static std::ostream &
@@ -358,8 +364,8 @@ getLoggerOS(const std::shared_ptr<internal::ClientData> &data,
 std::ostream &Client::loggerOStream() const {
     return getLoggerOS(data, message::Log::defaultLogName());
 }
-std::ostream &Client::loggerOStream(std::string_view name) const {
-    return getLoggerOS(data, SharedString::encode(name));
+std::ostream &Client::loggerOStream(const StringInitializer &name) const {
+    return getLoggerOS(data, name);
 }
 // \private
 static std::wostream &
@@ -375,8 +381,8 @@ getLoggerWOS(const std::shared_ptr<internal::ClientData> &data,
 std::wostream &Client::loggerWOStream() const {
     return getLoggerWOS(data, message::Log::defaultLogName());
 }
-std::wostream &Client::loggerWOStream(std::wstring_view name) const {
-    return getLoggerWOS(data, SharedString::encode(name));
+std::wostream &Client::loggerWOStream(const StringInitializer &name) const {
+    return getLoggerWOS(data, name);
 }
 const std::string &Client::serverVersion() const {
     return data->svr_version.shared_lock().get();

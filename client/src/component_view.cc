@@ -54,8 +54,8 @@ ViewColor colorFromRGB(double r, double g, double b) {
 static inline std::string internalViewId(int type, int idx) {
     return ".." + std::to_string(type) + "." + std::to_string(idx);
 }
-std::string ViewComponent::id() const { return id_.decode(); }
-std::wstring ViewComponent::idW() const { return id_.decodeW(); }
+StringView ViewComponent::id() const { return id_.decodeShare(); }
+WStringView ViewComponent::idW() const { return id_.decodeShareW(); }
 
 ViewComponent::ViewComponent() = default;
 ViewComponent::ViewComponent(const ViewComponent &other)
@@ -129,9 +129,9 @@ TemporalViewComponent::lockTmp(
     }
     if (msg_data->on_click_func_tmp || msg_data->on_change_func_tmp) {
         Func on_click{Field{data, data->self_member_name},
-                      SharedString::fromU8String("..v" + view_name.u8String() +
-                                                 "/" +
-                                                 msg_data->id.u8String())};
+                      SharedString::fromU8String(
+                          strJoin<char>("..v", view_name.u8StringView(), "/",
+                                        msg_data->id.u8StringView()))};
         if (msg_data->on_click_func_tmp && !msg_data->on_change_func_tmp) {
             on_click.set(std::move(*msg_data->on_click_func_tmp));
         } else if (msg_data->on_change_func_tmp &&
@@ -145,9 +145,9 @@ TemporalViewComponent::lockTmp(
     if (msg_data->text_ref_tmp) {
         // if (text_ref_tmp->expired()) {
         Variant text_ref{Field{data, data->self_member_name},
-                         SharedString::fromU8String("..ir" +
-                                                    view_name.u8String() + "/" +
-                                                    msg_data->id.u8String())};
+                         SharedString::fromU8String(
+                             strJoin<char>("..ir", view_name.u8StringView(),
+                                           "/", msg_data->id.u8StringView()))};
         msg_data->text_ref_tmp->lockTo(text_ref);
         if (msg_data->init_ && !text_ref.tryGet()) {
             text_ref.set(*msg_data->init_);
@@ -166,17 +166,17 @@ CComponent ViewComponent::cDataT() const {
     CComponent vcc;
     vcc.type = static_cast<wcfViewComponentType>(msg_data->type);
     if constexpr (v_index == 0) {
-        vcc.text = msg_data->text.decode().c_str();
+        vcc.text = msg_data->text.decode().data();
     } else {
-        vcc.text = msg_data->text.decodeW().c_str();
+        vcc.text = msg_data->text.decodeW().data();
     }
     if (msg_data->on_click_member && msg_data->on_click_field) {
         if constexpr (v_index == 0) {
-            vcc.on_click_member = msg_data->on_click_member->decode().c_str();
-            vcc.on_click_field = msg_data->on_click_field->decode().c_str();
+            vcc.on_click_member = msg_data->on_click_member->decode().data();
+            vcc.on_click_field = msg_data->on_click_field->decode().data();
         } else {
-            vcc.on_click_member = msg_data->on_click_member->decodeW().c_str();
-            vcc.on_click_field = msg_data->on_click_field->decodeW().c_str();
+            vcc.on_click_member = msg_data->on_click_member->decodeW().data();
+            vcc.on_click_field = msg_data->on_click_field->decodeW().data();
         }
     } else {
         vcc.on_click_member = nullptr;
@@ -184,11 +184,11 @@ CComponent ViewComponent::cDataT() const {
     }
     if (msg_data->text_ref_member && msg_data->text_ref_field) {
         if constexpr (v_index == 0) {
-            vcc.text_ref_member = msg_data->text_ref_member->decode().c_str();
-            vcc.text_ref_field = msg_data->text_ref_field->decode().c_str();
+            vcc.text_ref_member = msg_data->text_ref_member->decode().data();
+            vcc.text_ref_field = msg_data->text_ref_field->decode().data();
         } else {
-            vcc.text_ref_member = msg_data->text_ref_member->decodeW().c_str();
-            vcc.text_ref_field = msg_data->text_ref_field->decodeW().c_str();
+            vcc.text_ref_member = msg_data->text_ref_member->decodeW().data();
+            vcc.text_ref_field = msg_data->text_ref_field->decodeW().data();
         }
     } else {
         vcc.text_ref_member = nullptr;
@@ -215,7 +215,11 @@ CComponent ViewComponent::cDataT() const {
             CVal val;
             val.as_int = msg_data->option_[i];
             val.as_double = msg_data->option_[i];
-            val.as_str = msg_data->option_[i];
+            if constexpr (v_index == 0) {
+                val.as_str = msg_data->option_[i].asStringView().c_str();
+            } else {
+                val.as_str = msg_data->option_[i].asWStringView().c_str();
+            }
             options[i] = val;
         }
         if constexpr (v_index == 0) {
@@ -249,28 +253,20 @@ ViewComponentType ViewComponent::type() const {
     checkData();
     return static_cast<ViewComponentType>(msg_data->type);
 }
-TemporalViewComponent &TemporalViewComponent::id(std::string_view id) {
-    msg_data->id = SharedString::encode(id);
+TemporalViewComponent &TemporalViewComponent::id(StringInitializer id) {
+    msg_data->id = std::move(id);
     return *this;
 }
-TemporalViewComponent &TemporalViewComponent::id(std::wstring_view id) {
-    msg_data->id = SharedString::encode(id);
-    return *this;
-}
-std::string ViewComponent::text() const {
+StringView ViewComponent::text() const {
     checkData();
-    return msg_data->text.decode();
+    return msg_data->text.decodeShare();
 }
-std::wstring ViewComponent::textW() const {
+WStringView ViewComponent::textW() const {
     checkData();
-    return msg_data->text.decodeW();
+    return msg_data->text.decodeShareW();
 }
-TemporalViewComponent &TemporalViewComponent::text(std::string_view text) & {
-    msg_data->text = SharedString::encode(text);
-    return *this;
-}
-TemporalViewComponent &TemporalViewComponent::text(std::wstring_view text) & {
-    msg_data->text = SharedString::encode(text);
+TemporalViewComponent &TemporalViewComponent::text(StringInitializer text) & {
+    msg_data->text = std::move(text);
     return *this;
 }
 template <typename T, bool>

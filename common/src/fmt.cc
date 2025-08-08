@@ -21,8 +21,8 @@
 
 #define WEBCFACE_MESSAGE_FMT_DEF(Type)                                         \
     auto fmt::formatter<Type>::format([[maybe_unused]] const Type &m,          \
-                                      format_context &ctx)                     \
-        const -> format_context::iterator
+                                      format_context &ctx) const               \
+        -> format_context::iterator
 #define WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Type)                                   \
     WEBCFACE_MESSAGE_FMT_DEF(                                                  \
         webcface::message::Entry<webcface::message::Type>) {                   \
@@ -115,15 +115,16 @@ WEBCFACE_MESSAGE_FMT_DEF_REQ(Value)
 static std::string fmtValAdaptor(const webcface::ValAdaptor &v) {
     switch (v.valType()) {
     case webcface::ValType::string_:
-        if (v.asStringRef().size() <= 10) {
-            return "'" + v.asStringRef() + "'";
+        if (v.asStringView().size() <= 10) {
+            return webcface::strJoin<char>("'", v.asStringView(), "'");
         } else {
-            return "'" + v.asStringRef().substr(0, 10) + "'...";
+            return webcface::strJoin<char>("'", v.asStringView().substr(0, 10),
+                                           "'...");
         }
     case webcface::ValType::int_:
     case webcface::ValType::float_:
     case webcface::ValType::bool_:
-        return v.asStringRef();
+        return v.asString();
     case webcface::ValType::none_:
         return "<none>";
     default:
@@ -132,12 +133,12 @@ static std::string fmtValAdaptor(const webcface::ValAdaptor &v) {
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Text) {
     return fmt::format_to(ctx.out(), "{}-Text('{}', {})", msg_kind,
-                          m.field.decode(), fmtValAdaptor(*m.data));
+                          m.field.decode(), fmtValAdaptor(m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF(webcface::message::Res<webcface::message::Text>) {
     return fmt::format_to(ctx.out(), "{}-TextRes(req_id={} + '{}', {})",
                           msg_kind, m.req_id, m.sub_field.decode(),
-                          fmtValAdaptor(*m.data));
+                          fmtValAdaptor(m.data));
 }
 WEBCFACE_MESSAGE_FMT_DEF_ENTRY(Text)
 WEBCFACE_MESSAGE_FMT_DEF_REQ(Text)

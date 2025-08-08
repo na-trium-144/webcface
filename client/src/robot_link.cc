@@ -85,22 +85,22 @@ void internal::RobotLinkData::lockJoints(
     }
 }
 
-const std::string &RobotJoint::name() const {
+StringView RobotJoint::name() const {
     if (msg_data) {
-        return msg_data->joint_name.decode();
+        return msg_data->joint_name.decodeShare();
     } else if (temp_data) {
-        return temp_data->name.decode();
+        return temp_data->name.decodeShare();
     } else {
-        return SharedString::emptyStr();
+        return StringView{};
     }
 }
-const std::wstring &RobotJoint::nameW() const {
+WStringView RobotJoint::nameW() const {
     if (msg_data) {
-        return msg_data->joint_name.decodeW();
+        return msg_data->joint_name.decodeShareW();
     } else if (temp_data) {
-        return temp_data->name.decodeW();
+        return temp_data->name.decodeShareW();
     } else {
-        return SharedString::emptyStrW();
+        return WStringView{};
     }
 }
 std::optional<RobotLink> RobotJoint::parent() const {
@@ -139,18 +139,18 @@ double RobotJoint::angle() const {
     }
 }
 
-const std::string &RobotLink::name() const {
+StringView RobotLink::name() const {
     if (msg_data) {
-        return msg_data->name.decode();
+        return msg_data->name.decodeShare();
     } else {
-        return SharedString::emptyStr();
+        return StringView{};
     }
 }
-const std::wstring &RobotLink::nameW() const {
+WStringView RobotLink::nameW() const {
     if (msg_data) {
-        return msg_data->name.decodeW();
+        return msg_data->name.decodeShareW();
     } else {
-        return SharedString::emptyStrW();
+        return WStringView{};
     }
 }
 RobotJoint RobotLink::joint() const { return RobotJoint(msg_data); }

@@ -43,7 +43,7 @@ void internal::DataSetBuffer<TemporalViewComponent>::onSync() {
         std::shared_ptr<internal::TemporalViewComponentData> msg_data =
             components_[i].lockTmp(data, target_.field_, &idx_next);
         components_p->components.emplace(
-            msg_data->id.u8String(),
+            std::string(msg_data->id.u8StringView()),
             std::static_pointer_cast<message::ViewComponentData>(msg_data));
         components_p->data_ids.push_back(msg_data->id);
     }
@@ -71,13 +71,12 @@ const View &View::operator<<(TemporalViewComponent vc) const {
 }
 void internal::ViewBuf::addText(std::string_view text,
                                 const TemporalViewComponent *vc) {
-    std::string_view sv = text;
     while (true) {
-        auto p = sv.find('\n');
+        auto p = text.find('\n');
         if (p == std::string::npos) {
             break;
         }
-        std::string_view c1 = sv.substr(0, p);
+        std::string_view c1 = text.substr(0, p);
         if (!c1.empty()) {
             if (vc) {
                 TemporalViewComponent tx = *vc;
@@ -88,21 +87,21 @@ void internal::ViewBuf::addText(std::string_view text,
             }
         }
         add(components::newLine());
-        sv = sv.substr(p + 1);
+        text = text.substr(p + 1);
     }
-    if (!sv.empty()) {
+    if (!text.empty()) {
         if (vc) {
             TemporalViewComponent tx = *vc;
-            tx.text(sv);
+            tx.text(text);
             add(std::move(tx));
         } else {
-            add(std::move(components::text(sv).component_v));
+            add(std::move(components::text(text).component_v));
         }
     }
 }
 void internal::ViewBuf::addVC(TemporalViewComponent &&vc) {
     if (vc.msg_data->type == static_cast<int>(ViewComponentType::text)) {
-        addText(vc.msg_data->text.u8StringView(), &vc);
+        addText(vc.msg_data->text.decode(), &vc);
     } else {
         add(std::move(vc));
     }
@@ -150,8 +149,8 @@ std::optional<std::vector<ViewComponent>> View::tryGet() const {
         std::vector<ViewComponent> v;
         v.reserve((*vb)->data_ids.size());
         for (const auto &id : (*vb)->data_ids) {
-            v.emplace_back((*vb)->components.at(id.u8String()), this->data_w,
-                           id);
+            v.emplace_back((*vb)->components.find(id.u8StringView())->second,
+                           this->data_w, id);
         }
         return v;
     } else {
