@@ -36,8 +36,8 @@ int main() {
     });
 
     // 引数型が非対応の場合:
-    // ↓ error: no type named ArgTypesSupportedByWebCFaceFunc
-    //           in webcface::FuncArgTypesTrait<std::nullptr_t, int>
+    // ↓ error: no type named ArgTypesCheckOk in
+    //           webcface::traits::This_arg_is_not_supported_by_WebCFace_Func<std::nullptr_t>
     // wcli.func("nyan").set([](std::nullptr_t, int) {});
 
     wcli.loopSync();
