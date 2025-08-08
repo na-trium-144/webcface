@@ -85,9 +85,8 @@ Arg &Arg::max(double max) {
     initMsg()->option_.clear();
     return *this;
 }
-const std::vector<ValAdaptor> &Arg::option() const {
-    static std::vector<ValAdaptor> empty;
-    return this->msg_data ? this->msg_data->option_ : empty;
+std::vector<ValAdaptor> Arg::option() const {
+    return this->msg_data ? this->msg_data->option_ : std::vector<ValAdaptor>{};
 }
 Arg &Arg::option(std::vector<ValAdaptor> option) {
     initMsg()->option_ = std::move(option);

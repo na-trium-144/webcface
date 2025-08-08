@@ -1,4 +1,5 @@
 #include "webcface/common/encoding.h"
+#include "webcface/common/internal/safe_global.h"
 #include <unordered_map>
 #include <utf8.h>
 #include <cstring>
@@ -108,14 +109,16 @@ SharedString SharedString::fromU8String(std::string u8s) {
 }
 SharedString SharedString::fromU8StringStatic(std::string_view u8s) {
     // ポインタの場合、shared_ptrを作るよりunordered_mapから探したほうが速い
-    static std::unordered_map<const char *,
-                              std::shared_ptr<internal::SharedStringData>>
+    static internal::SafeGlobal<std::unordered_map<
+        const char *, std::shared_ptr<internal::SharedStringData>>>
         literal_caches;
-    if (literal_caches.count(u8s.data()) > 0) {
-        return SharedString(literal_caches.at(u8s.data()));
+    if (literal_caches && literal_caches->count(u8s.data()) > 0) {
+        return SharedString(literal_caches->at(u8s.data()));
     }
     auto data = std::make_shared<internal::SharedStringData>(u8s);
-    literal_caches.emplace(u8s.data(), data);
+    if (literal_caches) {
+        literal_caches->emplace(u8s.data(), data);
+    }
     return SharedString(data);
 }
 
@@ -133,15 +136,17 @@ SharedString SharedString::encode(std::string name) {
 SharedString SharedString::encodeStatic(std::string_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
-        static std::unordered_map<const char *,
-                                  std::shared_ptr<internal::SharedStringData>>
+        static internal::SafeGlobal<std::unordered_map<
+            const char *, std::shared_ptr<internal::SharedStringData>>>
             literal_caches;
-        if (literal_caches.count(name.data()) > 0) {
-            return SharedString(literal_caches.at(name.data()));
+        if (literal_caches && literal_caches->count(name.data()) > 0) {
+            return SharedString(literal_caches->at(name.data()));
         }
         // auto encode_result = encodeImpl(name);
         auto data = std::make_shared<internal::SharedStringData>(nullptr, name);
-        literal_caches.emplace(name.data(), data);
+        if (literal_caches) {
+            literal_caches->emplace(name.data(), data);
+        }
         return SharedString(data);
     }
 #endif
@@ -155,16 +160,18 @@ SharedString SharedString::encode(std::wstring name) {
         nullptr, nullptr, std::move(name)));
 }
 SharedString SharedString::encodeStatic(std::wstring_view name) {
-    static std::unordered_map<const wchar_t *,
-                              std::shared_ptr<internal::SharedStringData>>
+    static internal::SafeGlobal<std::unordered_map<
+        const wchar_t *, std::shared_ptr<internal::SharedStringData>>>
         literal_caches;
-    if (literal_caches.count(name.data()) > 0) {
-        return SharedString(literal_caches.at(name.data()));
+    if (literal_caches && literal_caches->count(name.data()) > 0) {
+        return SharedString(literal_caches->at(name.data()));
     }
     // auto result_utf8 = encodeImplW(name);
     auto data =
         std::make_shared<internal::SharedStringData>(nullptr, nullptr, name);
-    literal_caches.emplace(name.data(), data);
+    if (literal_caches) {
+        literal_caches->emplace(name.data(), data);
+    }
     return SharedString(data);
 }
 
@@ -194,7 +201,7 @@ bool SharedString::operator>=(const SharedString &other) const {
 std::string_view SharedString::u8StringView() const {
     if (!data) {
         // null終端を保証する必要はある
-        return emptyStr();
+        return StringView{};
     } else {
         std::lock_guard lock(data->m);
         if (data->u8sv.empty() && !data->wsv.empty()) {
@@ -306,7 +313,7 @@ void decodeWsToS(
 
 std::wstring_view SharedString::decodeW() const {
     if (!data) {
-        return emptyStrW();
+        return WStringView{};
     } else {
         std::lock_guard lock(data->m);
         if (data->wsv.empty() && !data->u8sv.empty()) {
@@ -354,7 +361,7 @@ std::string_view SharedString::decode() const {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     if (!using_utf8) {
         if (!data) {
-            return emptyStr();
+            return StringView{};
         } else {
             std::lock_guard lock(data->m);
             if (data->sv.empty() && !data->wsv.empty()) {

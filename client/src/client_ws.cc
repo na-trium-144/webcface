@@ -1,4 +1,5 @@
 #include "webcface/internal/client_ws.h"
+#include "webcface/common/internal/safe_global.h"
 #include "webcface/internal/client_internal.h"
 #include "webcface/client.h"
 #include "webcface/common/internal/unix_path.h"
@@ -32,19 +33,23 @@ getCurlError(const std::shared_ptr<internal::ClientData> &data, CURLcode res) {
     return {};
 }
 
-static std::mutex init_m;
+static internal::SafeGlobal<std::mutex> init_m;
 static int global_init_count = 0;
 void globalInit() {
-    std::lock_guard lock(init_m);
-    if (global_init_count++ == 0) {
-        curl_global_init(CURL_GLOBAL_ALL);
-        curl_global_trace("+ws");
+    if (init_m) {
+        std::lock_guard lock(*init_m);
+        if (global_init_count++ == 0) {
+            curl_global_init(CURL_GLOBAL_ALL);
+            curl_global_trace("+ws");
+        }
     }
 }
 void globalDeinit() {
-    std::lock_guard lock(init_m);
-    if (--global_init_count == 0) {
-        curl_global_cleanup();
+    if (init_m) {
+        std::lock_guard lock(*init_m);
+        if (--global_init_count == 0) {
+            curl_global_cleanup();
+        }
     }
 }
 

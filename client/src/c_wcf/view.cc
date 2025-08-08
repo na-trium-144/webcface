@@ -131,18 +131,22 @@ wcfViewGetT(wcfClient *wcli, const CharT *member, const CharT *field,
     auto vc = wcli_->member(strOrEmpty(member)).view(field).tryGet();
     if (vc) {
         if (!vc->empty()) {
-            auto vcc_p = new typename CharType<CharT>::CComponent[vc->size()];
-            *recv_size = static_cast<int>(vc->size());
-            CharType<CharT>::viewList().emplace(vcc_p, std::move(*vc));
-            auto &vc_ref = CharType<CharT>::viewList().at(vcc_p);
-            for (std::size_t i = 0; i < vc_ref.size(); i++) {
-                if constexpr (std::is_same_v<CharT, char>) {
-                    vcc_p[i] = vc_ref[i].cData();
-                } else {
-                    vcc_p[i] = vc_ref[i].cDataW();
+            auto &list = CharType<CharT>::viewList();
+            if (list) {
+                auto vcc_p =
+                    new typename CharType<CharT>::CComponent[vc->size()];
+                *recv_size = static_cast<int>(vc->size());
+                list->emplace(vcc_p, std::move(*vc));
+                auto &vc_ref = list->at(vcc_p);
+                for (std::size_t i = 0; i < vc_ref.size(); i++) {
+                    if constexpr (std::is_same_v<CharT, char>) {
+                        vcc_p[i] = vc_ref[i].cData();
+                    } else {
+                        vcc_p[i] = vc_ref[i].cDataW();
+                    }
                 }
+                *components = vcc_p;
             }
-            *components = vcc_p;
         }
         return WCF_OK;
     } else {

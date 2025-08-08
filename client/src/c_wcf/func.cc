@@ -3,17 +3,23 @@
 
 /// \private
 template <typename CharT>
-static auto createHandle(const FuncCallHandle &h) {
-    auto whp = new typename CharType<CharT>::CHandle();
-    CharType<CharT>::fetchedHandles().emplace(whp, h);
-    auto &h_ref = CharType<CharT>::fetchedHandles().at(whp);
-    if constexpr (std::is_same_v<CharT, char>) {
-        whp->args = h_ref.cArgs();
+static typename CharType<CharT>::CHandle *
+createHandle(const FuncCallHandle &h) {
+    auto &handles = CharType<CharT>::fetchedHandles();
+    if (handles) {
+        auto whp = new typename CharType<CharT>::CHandle();
+        handles->emplace(whp, h);
+        auto &h_ref = handles->at(whp);
+        if constexpr (std::is_same_v<CharT, char>) {
+            whp->args = h_ref.cArgs();
+        } else {
+            whp->args = h_ref.cWArgs();
+        }
+        whp->arg_size = static_cast<int>(h_ref.args().size());
+        return whp;
     } else {
-        whp->args = h_ref.cWArgs();
+        return nullptr;
     }
-    whp->arg_size = static_cast<int>(h_ref.args().size());
-    return whp;
 }
 
 /// \private
@@ -46,10 +52,10 @@ wcfFuncRunT(wcfClient *wcli, const CharT *member, const CharT *field,
 }
 /// \private
 template <typename CharT>
-static wcfStatus
-wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
-                 const typename CharType<CharT>::CVal *args, int arg_size,
-                 wcfPromise **async_res) {
+static wcfStatus wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member,
+                                  const CharT *field,
+                                  const typename CharType<CharT>::CVal *args,
+                                  int arg_size, wcfPromise **async_res) {
     auto wcli_ = getWcli(wcli);
     if (!wcli_) {
         return WCF_BAD_WCLI;
@@ -59,9 +65,11 @@ wcfFuncRunAsyncT(wcfClient *wcli, const CharT *member, const CharT *field,
     }
     Promise *a_res =
         new Promise(wcli_->member(strOrEmpty(member))
-                                .func(field)
-                                .runAsync(argsFromCVal<CharT>(args, arg_size)));
-    func_result_list.push_back(a_res);
+                        .func(field)
+                        .runAsync(argsFromCVal<CharT>(args, arg_size)));
+    if (func_result_list) {
+        func_result_list->push_back(a_res);
+    }
     *async_res = a_res;
     return WCF_OK;
 }
@@ -89,8 +97,10 @@ static wcfStatus wcfFuncGetResultT(wcfPromise *async_res,
         *result = resultToCVal<CharT>(res->response());
         status = WCF_OK;
     }
-    func_result_list.erase(
-        std::find(func_result_list.begin(), func_result_list.end(), res));
+    if (func_result_list) {
+        func_result_list->erase(
+            std::find(func_result_list->begin(), func_result_list->end(), res));
+    }
     delete res;
     return status;
 }
@@ -98,8 +108,12 @@ static wcfStatus wcfFuncGetResultT(wcfPromise *async_res,
 template <typename CharT>
 wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
                           const typename CharType<CharT>::CVal *value) {
-    auto it = CharType<CharT>::fetchedHandles().find(handle);
-    if (it == CharType<CharT>::fetchedHandles().end()) {
+    auto &handles = CharType<CharT>::fetchedHandles();
+    if (!handles) {
+        return WCF_BAD_HANDLE;
+    }
+    auto it = handles->find(handle);
+    if (it == handles->end()) {
         return WCF_BAD_HANDLE;
     }
     if (value) {
@@ -107,7 +121,7 @@ wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
     } else {
         it->second.respond();
     }
-    CharType<CharT>::fetchedHandles().erase(it);
+    handles->erase(it);
     delete handle;
     return WCF_OK;
 }
@@ -115,12 +129,16 @@ wcfStatus wcfFuncRespondT(const typename CharType<CharT>::CHandle *handle,
 template <typename CharT>
 static wcfStatus wcfFuncRejectT(const typename CharType<CharT>::CHandle *handle,
                                 const CharT *message) {
-    auto it = CharType<CharT>::fetchedHandles().find(handle);
-    if (it == CharType<CharT>::fetchedHandles().end()) {
+    auto &handles = CharType<CharT>::fetchedHandles();
+    if (!handles) {
+        return WCF_BAD_HANDLE;
+    }
+    auto it = handles->find(handle);
+    if (it == handles->end()) {
         return WCF_BAD_HANDLE;
     }
     it->second.reject(strOrEmpty(message));
-    CharType<CharT>::fetchedHandles().erase(it);
+    handles->erase(it);
     delete handle;
     return WCF_OK;
 }
@@ -274,12 +292,10 @@ wcfStatus wcfFuncRunAsyncW(wcfClient *wcli, const wchar_t *member,
     return wcfFuncRunAsyncT(wcli, member, field, args, arg_size, async_res);
 }
 
-wcfStatus wcfFuncGetResult(wcfPromise *async_res,
-                           wcfMultiVal **result) {
+wcfStatus wcfFuncGetResult(wcfPromise *async_res, wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, true);
 }
-wcfStatus wcfFuncWaitResult(wcfPromise *async_res,
-                            wcfMultiVal **result) {
+wcfStatus wcfFuncWaitResult(wcfPromise *async_res, wcfMultiVal **result) {
     return wcfFuncGetResultT<char>(async_res, result, false);
 }
 

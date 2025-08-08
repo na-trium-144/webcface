@@ -4,11 +4,6 @@
 WEBCFACE_NS_BEGIN
 ValAdaptor::ValAdaptor() : type(ValType::none_) {}
 
-const ValAdaptor &ValAdaptor::emptyVal() {
-    static ValAdaptor empty;
-    return empty;
-}
-
 ValAdaptor::ValAdaptor(const SharedString &str)
     : as_str(str), type(ValType::string_) {}
 ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
