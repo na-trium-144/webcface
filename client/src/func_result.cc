@@ -276,16 +276,14 @@ WStringView Promise::rejectionW() const {
 //     return os;
 // }
 
-std::runtime_error &Promise::invalidPromise() {
-    static SanityError invalid_promise("Promise does not have valid "
-                                       "pointer to function call");
-    return invalid_promise;
+SanityError Promise::invalidPromise() {
+    return SanityError("Promise does not have valid "
+                       "pointer to function call");
 }
 
-std::runtime_error &CallHandle::invalidHandle() {
-    static SanityError invalid_handle("CallHandle does not have valid "
-                                      "pointer to function call");
-    return invalid_handle;
+SanityError CallHandle::invalidHandle() {
+    return SanityError("CallHandle does not have valid "
+                       "pointer to function call");
 }
 
 template <std::size_t v_index, typename CVal>

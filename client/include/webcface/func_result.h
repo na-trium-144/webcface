@@ -1,4 +1,5 @@
 #pragma once
+#include "webcface/exception.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -36,7 +37,7 @@ struct ClientData;
 class WEBCFACE_DLL Promise : Field {
     std::shared_ptr<internal::PromiseData> data;
 
-    static std::runtime_error &WEBCFACE_CALL invalidPromise();
+    static SanityError WEBCFACE_CALL invalidPromise();
 
   public:
     Promise(const Field &base,
@@ -317,7 +318,7 @@ using AsyncFuncResult = Promise;
 class WEBCFACE_DLL CallHandle : Field {
     std::shared_ptr<internal::PromiseData> data;
 
-    static std::runtime_error &WEBCFACE_CALL invalidHandle();
+    static SanityError WEBCFACE_CALL invalidHandle();
 
   public:
     CallHandle() = default;
@@ -407,7 +408,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
-    void respond() const { respond(ValAdaptor::emptyVal()); }
+    void respond() const { respond(ValAdaptor()); }
 
     /*!
      * \brief 関数の結果を例外として送信する

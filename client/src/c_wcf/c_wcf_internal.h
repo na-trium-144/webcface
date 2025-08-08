@@ -1,6 +1,7 @@
 #pragma once
 #include <algorithm>
 #include <vector>
+#include "webcface/common/internal/safe_global.h"
 #include "webcface/wcf.h"
 #include "webcface/client.h"
 #include "webcface/func.h"
@@ -10,11 +11,11 @@
 WEBCFACE_NS_BEGIN
 inline namespace c_wcf {
 template <typename CharT>
-inline std::basic_string<CharT> strOrEmpty(const CharT *p) {
+inline std::basic_string_view<CharT> strOrEmpty(const CharT *p) {
     if (p) {
         return p;
     } else {
-        return std::basic_string<CharT>();
+        return std::basic_string_view<CharT>();
     }
 }
 
@@ -24,9 +25,11 @@ inline std::basic_string<CharT> strOrEmpty(const CharT *p) {
  * wcfFuncCallHandleをnewして追加、returnかreject時にdeleteして削除
  *
  */
-inline std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle>
+inline internal::SafeGlobal<
+    std::unordered_map<const wcfFuncCallHandle *, FuncCallHandle>>
     fetched_handles;
-inline std::unordered_map<const wcfFuncCallHandleW *, FuncCallHandle>
+inline internal::SafeGlobal<
+    std::unordered_map<const wcfFuncCallHandleW *, FuncCallHandle>>
     fetched_handles_w;
 
 /*!
@@ -35,17 +38,20 @@ inline std::unordered_map<const wcfFuncCallHandleW *, FuncCallHandle>
  *
  * wcfMultiValをnewし、このリスト内のvalAdapterへのポインタをもつ
  */
-inline std::unordered_map<const wcfMultiVal *, ValAdaptor> func_val_list;
-inline std::unordered_map<const wcfMultiValW *, ValAdaptor> func_val_list_w;
+inline internal::SafeGlobal<std::unordered_map<const wcfMultiVal *, ValAdaptor>>
+    func_val_list;
+inline internal::SafeGlobal<
+    std::unordered_map<const wcfMultiValW *, ValAdaptor>>
+    func_val_list_w;
 
 /*!
  * \brief wcfViewGetで取得されたwcfViewComponentとViewComponentBase
  */
-inline std::unordered_map<const wcfViewComponent *,
-                          const std::vector<ViewComponent>>
+inline internal::SafeGlobal<std::unordered_map<
+    const wcfViewComponent *, const std::vector<ViewComponent>>>
     view_list;
-inline std::unordered_map<const wcfViewComponentW *,
-                          const std::vector<ViewComponent>>
+inline internal::SafeGlobal<std::unordered_map<
+    const wcfViewComponentW *, const std::vector<ViewComponent>>>
     view_list_w;
 
 template <typename CharT>
@@ -81,7 +87,7 @@ struct CharType<wchar_t> {
  * wcfInit時にnewして追加、wcfClose時にdeleteして削除する
  *
  */
-inline std::vector<wcfClient *> wcli_list;
+inline internal::SafeGlobal<std::vector<wcfClient *>> wcli_list;
 
 /*!
  * \brief wcfFuncRunAsyncで取得されたwcfPromiseのリスト
@@ -89,7 +95,7 @@ inline std::vector<wcfClient *> wcli_list;
  * wcfFuncRunAsyncでnewし、GetResultやWaitResultでdelete
  *
  */
-inline std::vector<Promise *> func_result_list;
+inline internal::SafeGlobal<std::vector<Promise *>> func_result_list;
 
 /*!
  * \brief voidポインタからclientオブジェクトを復元
@@ -99,16 +105,22 @@ inline std::vector<Promise *> func_result_list;
  *
  */
 inline Client *getWcli(wcfClient *wcli) {
-    if (std::find(wcli_list.begin(), wcli_list.end(), wcli) ==
-        wcli_list.end()) {
+    if (!wcli_list) {
+        return nullptr;
+    }
+    if (std::find(wcli_list->begin(), wcli_list->end(), wcli) ==
+        wcli_list->end()) {
         return nullptr;
     }
     return static_cast<Client *>(wcli);
 }
 
 inline Promise *getPromise(wcfPromise *res) {
-    if (std::find(func_result_list.begin(), func_result_list.end(), res) ==
-        func_result_list.end()) {
+    if (!func_result_list) {
+        return nullptr;
+    }
+    if (std::find(func_result_list->begin(), func_result_list->end(), res) ==
+        func_result_list->end()) {
         return nullptr;
     }
     return static_cast<Promise *>(res);
@@ -138,15 +150,18 @@ std::vector<ValAdaptor> argsFromCVal(const typename CharType<CharT>::CVal *args,
 template <typename CharT>
 auto resultToCVal(const ValAdaptor &result_val) {
     auto result = new typename CharType<CharT>::CVal();
-    CharType<CharT>::funcValList().emplace(result, result_val);
-    const ValAdaptor &result_val_ref =
-        CharType<CharT>::funcValList().at(result);
-    result->as_int = result_val_ref;
-    result->as_double = result_val_ref;
-    if constexpr (std::is_same_v<CharT, char>) {
-        result->as_str = result_val_ref.asStringView().c_str();
-    } else {
-        result->as_str = result_val_ref.asWStringView().c_str();
+    auto &list = CharType<CharT>::funcValList();
+    if(list){
+        list->emplace(result, result_val);
+        const ValAdaptor &result_val_ref =
+            list->at(result);
+        result->as_int = result_val_ref;
+        result->as_double = result_val_ref;
+        if constexpr (std::is_same_v<CharT, char>) {
+            result->as_str = result_val_ref.asStringView().c_str();
+        } else {
+            result->as_str = result_val_ref.asWStringView().c_str();
+        }
     }
     return result;
 }

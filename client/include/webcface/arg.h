@@ -157,7 +157,7 @@ class WEBCFACE_DLL Arg {
      * \brief 引数の選択肢を取得する。
      *
      */
-    const std::vector<ValAdaptor> &option() const;
+    std::vector<ValAdaptor> option() const;
     Arg &option(std::vector<ValAdaptor> option);
     /*!
      * \brief 引数の選択肢を設定する。

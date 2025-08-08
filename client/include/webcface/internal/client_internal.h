@@ -338,7 +338,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
     SharedMutexProxy<StrMap1<unsigned int>> member_ids;
     SharedMutexProxy<std::unordered_map<unsigned int, std::string>>
         member_lib_name, member_lib_ver, member_addr;
-    const SharedString &getMemberNameFromId(unsigned int id) const {
+    SharedString getMemberNameFromId(unsigned int id) const {
         if (self_member_id && *self_member_id == id) {
             return self_member_name;
         }
@@ -348,8 +348,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
                 return it.first;
             }
         }
-        static SharedString empty;
-        return empty;
+        return SharedString();
     }
     unsigned int getMemberIdFromName(const SharedString &name) const {
         if (name == self_member_name && self_member_id) {

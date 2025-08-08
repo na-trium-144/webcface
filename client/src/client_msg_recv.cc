@@ -8,6 +8,7 @@
 #include "webcface/common/internal/message/canvas3d.h"
 #include "webcface/common/internal/message/canvas2d.h"
 #include "webcface/common/internal/message/image.h"
+#include "webcface/common/internal/safe_global.h"
 #include "webcface/log.h"
 #include "webcface/member.h"
 #include "webcface/view.h"
@@ -48,7 +49,7 @@ static void onRecvEntry(internal::ClientData *this_, const Msg &r, S &store,
 
 void internal::ClientData::onRecv(
     const std::vector<std::pair<int, std::shared_ptr<void>>> &messages) {
-    static std::unordered_map<int, bool> message_kind_warned;
+    static internal::SafeGlobal<std::unordered_map<int, bool>> message_kind_warned;
     namespace MessageKind = webcface::message::MessageKind;
     std::vector<SharedString> sync_members;
     for (const auto &m : messages) {
@@ -467,9 +468,9 @@ void internal::ClientData::onRecv(
         case MessageKind::log + MessageKind::req:
         case MessageKind::log_default:
         case MessageKind::log_req_default:
-            if (!message_kind_warned[kind]) {
+            if (message_kind_warned && !(*message_kind_warned)[kind]) {
                 logger_internal->warn("invalid message kind {}", kind);
-                message_kind_warned[kind] = true;
+                (*message_kind_warned)[kind] = true;
             }
             break;
         case MessageKind::log_entry_default:
@@ -477,9 +478,9 @@ void internal::ClientData::onRecv(
         case MessageKind::unknown:
             break;
         default:
-            if (!message_kind_warned[kind]) {
+            if (message_kind_warned && !(*message_kind_warned)[kind]) {
                 logger_internal->warn("unknown message kind {}", kind);
-                message_kind_warned[kind] = true;
+                (*message_kind_warned)[kind] = true;
             }
             break;
         }
