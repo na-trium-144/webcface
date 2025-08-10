@@ -63,7 +63,8 @@ struct ViewComponentData {
  *
  */
 struct ViewData {
-    std::map<std::string, std::shared_ptr<message::ViewComponentData>>
+    std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+             std::less<>>
         components;
     std::vector<SharedString> data_ids;
 };
@@ -93,11 +94,13 @@ struct ViewOld : public MessageBase<MessageKind::view_old> {
 };
 struct View : public MessageBase<MessageKind::view> {
     SharedString field;
-    std::map<std::string, std::shared_ptr<ViewComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     View() = default;
     View(const SharedString &field,
-         std::map<std::string, std::shared_ptr<ViewComponentData>> data_diff,
+         std::map<std::string, std::shared_ptr<ViewComponentData>, std::less<>>
+             data_diff,
          std::optional<std::vector<SharedString>> data_ids)
         : field(field), data_diff(std::move(data_diff)),
           data_ids(std::move(data_ids)) {}
@@ -126,12 +129,13 @@ template <>
 struct Res<View> : public MessageBase<MessageKind::view + MessageKind::res> {
     unsigned int req_id = 0;
     SharedString sub_field;
-    std::map<std::string, std::shared_ptr<ViewComponentData>> data_diff;
+    std::map<std::string, std::shared_ptr<ViewComponentData>, std::less<>>
+        data_diff;
     std::optional<std::vector<SharedString>> data_ids;
     Res() = default;
     Res(unsigned int req_id, const SharedString &sub_field,
-        const std::map<std::string, std::shared_ptr<ViewComponentData>>
-            &data_diff,
+        const std::map<std::string, std::shared_ptr<ViewComponentData>,
+                       std::less<>> &data_diff,
         const std::optional<std::vector<SharedString>> &data_ids)
         : req_id(req_id), sub_field(sub_field), data_diff(data_diff),
           data_ids(data_ids) {}

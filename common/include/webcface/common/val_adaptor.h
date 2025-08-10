@@ -97,6 +97,9 @@ class WEBCFACE_DLL ValAdaptor {
 
     enum ValVariant { DOUBLEV = 0, INT64V = 1 };
 
+    void initStr() const;
+    void initWStr() const;
+
   public:
     ValAdaptor();
 
@@ -109,35 +112,38 @@ class WEBCFACE_DLL ValAdaptor {
      */
     ValAdaptor &operator=(const SharedString &str);
 
-    explicit ValAdaptor(std::string_view str);
-    ValAdaptor &operator=(std::string_view str);
-    explicit ValAdaptor(const char *str) : ValAdaptor(std::string_view(str)) {}
-    ValAdaptor &operator=(const char *str) {
-        return *this = std::string_view(str);
-    }
+    /*!
+     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
+     *
+     */
+    explicit ValAdaptor(StringInitializer str);
+    /*!
+     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
+     *
+     */
+    ValAdaptor &operator=(StringInitializer str);
 
     /*!
-     * \since ver2.0
+     * ver2.10〜: const char*
+     * などのポインタがboolに変換されるのを防ぐためテンプレート化
+     *
      */
-    explicit ValAdaptor(std::wstring_view str);
+    template <typename Bool, typename std::enable_if_t<
+                                 std::is_same_v<Bool, bool>, bool> = true>
+    explicit ValAdaptor(Bool value);
     /*!
-     * \since ver2.0
+     * ver2.10〜: const char*
+     * などのポインタがboolに変換されるのを防ぐためテンプレート化
+     *
+     * テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、
+     * ここでは戻り値をSFINAEにしている
+     *
      */
-    ValAdaptor &operator=(std::wstring_view str);
-    /*!
-     * \since ver2.0
-     */
-    explicit ValAdaptor(const wchar_t *str)
-        : ValAdaptor(std::wstring_view(str)) {}
-    /*!
-     * \since ver2.0
-     */
-    ValAdaptor &operator=(const wchar_t *str) {
-        return *this = std::wstring_view(str);
-    }
-
-    explicit ValAdaptor(bool value);
-    ValAdaptor &operator=(bool v);
+    template <typename Bool>
+    auto operator=(Bool v)
+        -> std::enable_if_t<std::is_same_v<Bool, bool>, ValAdaptor &>;
 
     explicit ValAdaptor(std::int64_t value);
     ValAdaptor &operator=(std::int64_t v);
@@ -145,11 +151,13 @@ class WEBCFACE_DLL ValAdaptor {
     explicit ValAdaptor(double value);
     ValAdaptor &operator=(double v);
 
-    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
+    template <typename T, typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                                        std::is_integral_v<T>,
                                                     std::nullptr_t> = nullptr>
     explicit ValAdaptor(T value)
         : ValAdaptor(static_cast<std::int64_t>(value)) {}
-    template <typename T, typename std::enable_if_t<std::is_integral_v<T>,
+    template <typename T, typename std::enable_if_t<!std::is_same_v<T, bool> &&
+                                                        std::is_integral_v<T>,
                                                     std::nullptr_t> = nullptr>
     ValAdaptor &operator=(T v) {
         return *this = static_cast<std::int64_t>(v);
@@ -166,8 +174,6 @@ class WEBCFACE_DLL ValAdaptor {
 
     ValType valType() const { return type; }
 
-    static const ValAdaptor &emptyVal();
-
     /*!
      * \brief 値が空かどうか調べる
      * \since ver1.11
@@ -178,52 +184,127 @@ class WEBCFACE_DLL ValAdaptor {
      * \brief 文字列として返す
      * \since ver1.10
      *
-     * std::stringのconst参照を返す。
-     * 参照はこのValAdaptorが破棄されるまで有効
+     * <del>std::stringのconst参照を返す。参照はこのValAdaptorが破棄されるまで有効</del>
+     *
+     * \deprecated ver2.10〜
+     * 互換性のために残しているが、内部の仕様変更によりstringのconst参照ではなく文字列のコピーが返る。
+     * コピーなしで文字列を参照するには asStringView() を使用すること。
+     */
+    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    std::string asStringRef() const {
+        return asString();
+    }
+    /*!
+     * \brief null終端の文字列を返す
+     * \since ver2.10
      *
      * as_strにstringが格納されていた場合はそれをそのまま返す。
      * そうでない場合(u8string, wstring, double, int64が格納されている場合)
      * はそれをstringに変換したうえでその参照を返す。
      *
      */
-    const std::string &asStringRef() const;
+    StringView asStringView() const;
     /*!
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
+     * \deprecated ver2.10〜
+     * 互換性のために残しているが、内部の仕様変更によりwstringのconst参照ではなく文字列のコピーが返る。
+     * コピーなしで文字列を参照するには asWStringView()
+     * を使用すること。
      */
-    const std::wstring &asWStringRef() const;
+    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    std::wstring asWStringRef() const {
+        return asWString();
+    }
     /*!
-     * \since ver2.0
+     * \brief null終端の文字列を返す (wstring)
+     * \since ver2.10
+     *
+     * as_strにwstringが格納されていた場合はそれをそのまま返す。
+     * そうでない場合(u8string, string, double, int64が格納されている場合)
+     * はそれをwstringに変換したうえでその参照を返す。
      */
-    const std::string &asU8StringRef() const;
+    WStringView asWStringView() const;
+    /*!
+     * \since ver2.10
+     */
+    std::string_view asU8StringView() const;
     /*!
      * \brief 文字列として返す(コピー)
      * \since ver1.10
      */
-    std::string asString() const { return asStringRef(); }
+    std::string asString() const { return std::string(asStringView()); }
     /*!
      * \brief 文字列として返す(コピー) (wstring)
      * \since ver2.0
      */
-    std::wstring asWString() const { return asWStringRef(); }
+    std::wstring asWString() const { return std::wstring(asWStringView()); }
 
     /*!
-     * ver1.10〜: const参照
+     * \brief string_viewなどへの変換
+     * \since ver2.10
+     *
+     * * StringViewおよびStringViewから暗黙的に変換可能な型への変換
+     * * std::string_viewなど文字列への参照のみを保持する型にキャストした場合、
+     * その参照はこのValAdaptorが破棄されるまでは有効
+     *
      */
-    operator const std::string &() const { return asStringRef(); }
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<StringView, T>,
+                                        std::nullptr_t> = nullptr>
+    operator T() const {
+        return asStringView();
+    }
     /*!
-     * \since ver2.0
+     * \brief wstring_viewなどへの変換
+     * \since ver2.10
+     *
+     * * WStringViewおよびWStringViewから暗黙的に変換可能な型への変換
+     * * std::wstring_viewなど文字列への参照のみを保持する型にキャストした場合、
+     * その参照はこのValAdaptorが破棄されるまでは有効
+     *
      */
-    operator const std::wstring &() const { return asWStringRef(); }
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<StringView, T> &&
+                                  std::is_convertible_v<WStringView, T>,
+                              std::nullptr_t> = nullptr>
+    operator T() const {
+        return asWStringView();
+    }
     /*!
-     * \since ver2.0
+     * \brief stringなどへのexplicitな変換
+     * \since ver2.10
+     *
+     * * ver1.10〜の const std::string& へのキャストを置き換え
+     * * 以前のバージョンと違い暗黙的な変換はできないようにしている。
+     *
      */
-    operator const char *() const { return asStringRef().c_str(); }
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<StringView, T> &&
+                                  !std::is_convertible_v<WStringView, T> &&
+                                  std::is_constructible_v<T, StringView>,
+                              std::nullptr_t> = nullptr>
+    explicit operator T() const {
+        return T(asStringView());
+    }
     /*!
-     * \since ver2.0
+     * \brief wstringなどへのexplicitな変換
+     * \since ver2.10
+     *
+     * * ver2.0〜の const std::wstring& へのキャストを置き換え
+     * 以前のバージョンと違い暗黙的な変換はできないようにしている。
+     *
      */
-    operator const wchar_t *() const { return asWStringRef().c_str(); }
+    template <typename T, typename std::enable_if_t<
+                              !std::is_convertible_v<StringView, T> &&
+                                  !std::is_convertible_v<WStringView, T> &&
+                                  !std::is_constructible_v<T, StringView> &&
+                                  std::is_constructible_v<T, WStringView>,
+                              std::nullptr_t> = nullptr>
+    explicit operator T() const {
+        return T(asWStringView());
+    }
 
     /*!
      * \brief 実数として返す
@@ -241,19 +322,21 @@ class WEBCFACE_DLL ValAdaptor {
      */
     long long asLLong() const;
     /*!
-     * \brief 数値として返す
+     * \brief <del>数値として返す</del> 明示的なキャストをする
      * \since ver1.10
      *
-     * as<T>(), Tはdoubleなどの実数型、intなどの整数型
-     *
-     * \deprecated ver2.0〜 asDouble(), asInt(), asLLong() を追加
-     * さらにas<T>にはTになにを指定してもdoubleで返るというバグがある
+     * * <del>Tはdoubleなどの実数型、intなどの整数型</del>
+     * * ver2.9までTになにを指定してもdoubleで返るバグがあり、
+     * ver2.0〜2.9までdeprecated指定だった。
+     * * ver2.10〜 stringなど任意の型を受け付けるように変更。
+     * string_viewなどだけでなく、explicitにしか変換できないstd::stringなどにも変換可能。
      *
      */
     template <typename T>
-    [[deprecated("use asDouble(), asInt() or asLLong() instead")]] double
-    as() const {
-        return static_cast<T>(asDouble());
+    T as() const {
+        // ↓ MSVCでなぜかコンパイルできない
+        // return static_cast<T>(*this);
+        return this->operator T();
     }
     /*!
      * \brief 数値型への変換
@@ -305,6 +388,10 @@ class WEBCFACE_DLL ValAdaptor {
     }
 };
 
+extern template ValAdaptor::ValAdaptor(bool value);
+extern template ValAdaptor &ValAdaptor::operator= <bool>(bool v);
+
+
 template <typename T,
           typename std::enable_if_t<std::is_constructible_v<ValAdaptor, T> &&
                                         !std::is_same_v<ValAdaptor, T>,
@@ -321,8 +408,13 @@ bool operator!=(const T &other, const ValAdaptor &val) {
 }
 
 inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
-    return os << static_cast<std::string>(a);
+    return os << a.asStringView();
 }
+
+/*!
+ * \since ver2.10
+ */
+using ValAdapter = ValAdaptor;
 
 /*!
  * \brief ValAdaptorのリストから任意の型のタプルに変換する
@@ -333,7 +425,7 @@ void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
     constexpr int tuple_size = std::tuple_size<T>::value;
     if constexpr (n < tuple_size) {
         using Type = typename std::tuple_element<n, T>::type;
-        std::get<n>(tuple) = static_cast<Type>(args[n]);
+        std::get<n>(tuple) = args[n].as<Type>();
         argToTuple<n + 1>(args, tuple);
     }
 }

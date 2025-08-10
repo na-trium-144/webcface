@@ -56,13 +56,18 @@ class WEBCFACE_DLL RobotJoint {
     /*!
      * \brief jointの名前を取得
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief jointの名前を取得 (wstring)
      * \since ver2.0
+     * 
+     * ver2.10〜 std::wstringの参照から WStringView に変更
+     * 
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief 親リンクを取得
      * \since ver2.0
@@ -112,40 +117,23 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  *
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * 
  */
-inline RobotJoint fixedJoint(std::string_view parent_name,
+inline RobotJoint fixedJoint(const StringInitializer &parent_name,
                              const Transform &origin) {
-    return RobotJoint{nullptr, SharedString::encode(parent_name),
-                      RobotJointType::fixed, origin, 0};
-}
-/*!
- * \brief 固定された関節 (wstring)
- * \since ver2.0
- * \param parent_name 親リンクの名前
- * \param origin 親リンクの座標系で子リンクの原点
- *
- */
-inline RobotJoint fixedJoint(std::wstring_view parent_name,
-                             const Transform &origin) {
-    return RobotJoint{nullptr, SharedString::encode(parent_name),
+    return RobotJoint{nullptr, parent_name,
                       RobotJointType::fixed, origin, 0};
 }
 /*!
  * \brief 固定された関節
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
+ * 
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * 
  */
-inline RobotJoint fixedJoint(std::string_view parent_name,
-                             const Point &origin) {
-    return fixedJoint(parent_name, Transform{origin, {}});
-}
-/*!
- * \brief 固定された関節 (wstring)
- * \since ver2.0
- * \param parent_name 親リンクの名前
- * \param origin 親リンクの座標系で子リンクの原点
- */
-inline RobotJoint fixedJoint(std::wstring_view parent_name,
+inline RobotJoint fixedJoint(const StringInitializer &parent_name,
                              const Point &origin) {
     return fixedJoint(parent_name, Transform{origin, {}});
 }
@@ -158,30 +146,14 @@ inline RobotJoint fixedJoint(std::wstring_view parent_name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角
  *
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * 
  */
-inline RobotJoint rotationalJoint(std::string_view name,
-                                  std::string_view parent_name,
+inline RobotJoint rotationalJoint(const StringInitializer &name,
+                                  const StringInitializer &parent_name,
                                   const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString::encode(name),
-                      SharedString::encode(parent_name),
-                      RobotJointType::rotational, origin, angle};
-}
-/*!
- * \brief 回転関節 (wstring)
- * \since ver2.0
- *
- * originのz軸を中心に回転する関節。
- * \param name 関節の名前
- * \param parent_name 親リンクの名前
- * \param origin 親リンクの座標系で子リンクの原点
- * \param angle 初期状態の回転角
- *
- */
-inline RobotJoint rotationalJoint(std::wstring_view name,
-                                  std::wstring_view parent_name,
-                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString::encode(name),
-                      SharedString::encode(parent_name),
+    return RobotJoint{name,
+                      parent_name,
                       RobotJointType::rotational, origin, angle};
 }
 /*!
@@ -193,30 +165,14 @@ inline RobotJoint rotationalJoint(std::wstring_view name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角(移動距離)
  *
+ * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * 
  */
-inline RobotJoint prismaticJoint(std::string_view name,
-                                 std::string_view parent_name,
+inline RobotJoint prismaticJoint(const StringInitializer &name,
+                                 const StringInitializer &parent_name,
                                  const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString::encode(name),
-                      SharedString::encode(parent_name),
-                      RobotJointType::prismatic, origin, angle};
-}
-/*!
- * \brief 直動関節 (wstring)
- * \since ver2.0
- *
- * originのz軸方向に直線運動する関節。
- * \param name 関節の名前
- * \param parent_name 親リンクの名前
- * \param origin 親リンクの座標系で子リンクの原点
- * \param angle 初期状態の回転角(移動距離)
- *
- */
-inline RobotJoint prismaticJoint(std::wstring_view name,
-                                 std::wstring_view parent_name,
-                                 const Transform &origin, double angle = 0) {
-    return RobotJoint{SharedString::encode(name),
-                      SharedString::encode(parent_name),
+    return RobotJoint{name,
+                      parent_name,
                       RobotJointType::prismatic, origin, angle};
 }
 } // namespace robot_joints
@@ -256,22 +212,12 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * 
      */
-    RobotLink(std::string_view name, const RobotJoint &joint,
+    RobotLink(const StringInitializer &name, const RobotJoint &joint,
               const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(SharedString::encode(name), joint, geometry, color) {}
-
-    /*!
-     * \since ver2.0
-     * \param name リンクの名前
-     * \param joint 親リンクとの接続方法
-     * \param geometry リンクの形状 (表示用)
-     * \param color 色 (表示用)
-     *
-     */
-    RobotLink(std::wstring_view name, const RobotJoint &joint,
-              const Geometry &geometry, ViewColor color = ViewColor::inherit)
-        : RobotLink(SharedString::encode(name), joint, geometry, color) {}
+        : RobotLink(static_cast<const SharedString &>(name), joint, geometry, color) {}
     /*!
      * ベースのリンクではjointを省略可能
      * (fixedAbsolute({0, 0, 0})になる)
@@ -279,33 +225,28 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * 
      */
-    RobotLink(std::string_view name, const Geometry &geometry,
+    RobotLink(const StringInitializer &name, const Geometry &geometry,
               ViewColor color = ViewColor::inherit)
-        : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
-    /*!
-     * ベースのリンクではjointを省略可能
-     * (fixedAbsolute({0, 0, 0})になる)
-     * \since ver2.0
-     * \param name リンクの名前
-     * \param geometry リンクの形状 (表示用)
-     * \param color 色 (表示用)
-     *
-     */
-    RobotLink(std::wstring_view name, const Geometry &geometry,
-              ViewColor color = ViewColor::inherit)
-        : RobotLink(name, fixedAbsolute({0, 0, 0}), geometry, color) {}
+        : RobotLink(static_cast<const SharedString &>(name), fixedAbsolute({0, 0, 0}), geometry, color) {}
 
     /*!
      * \brief 名前を取得
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief 名前を取得 (wstring)
      * \since ver2.0
+     * 
+     * ver2.10〜 std::stringの参照から StringView に変更
+     * 
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief jointを取得
      *

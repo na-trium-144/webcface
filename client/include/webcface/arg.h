@@ -16,7 +16,7 @@ WEBCFACE_NS_BEGIN
 namespace message {
 struct Arg;
 }
-namespace internal{
+namespace internal {
 struct FuncInfo;
 }
 
@@ -68,24 +68,25 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief 引数名を設定する。
      *
+     * ver2.0〜wstring対応、ver2.10〜 StringInitializer 型に変更
      */
-    Arg(std::string_view name) : Arg(SharedString::encode(name)) {}
-    /*!
-     * \brief 引数名を設定する。(wstring)
-     * \since ver2.0
-     */
-    Arg(std::wstring_view name) : Arg(SharedString::encode(name)) {}
+    Arg(StringInitializer name) : Arg(static_cast<SharedString &>(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
      *
+     * ver2.10〜 StringView に変更
+     *
      */
-    const std::string &name() const;
+    StringView name() const;
     /*!
      * \brief 引数の名前を取得する。(wstring)
      * \since ver2.0
+     *
+     * ver2.10〜 WStringView に変更
+     *
      */
-    const std::wstring &nameW() const;
+    WStringView nameW() const;
     /*!
      * \brief 引数の型を取得する。
      *
@@ -107,6 +108,20 @@ class WEBCFACE_DLL Arg {
      */
     template <typename T>
     Arg &init(const T &init) {
+        return this->init(ValAdaptor(init));
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Arg &init(const char (&init)[N]) {
+        return this->init(ValAdaptor(init));
+    }
+    /*!
+     * \since ver2.10
+     */
+    template <std::size_t N>
+    Arg &init(const wchar_t (&init)[N]) {
         return this->init(ValAdaptor(init));
     }
     Arg &init(const ValAdaptor &init);
@@ -142,7 +157,7 @@ class WEBCFACE_DLL Arg {
      * \brief 引数の選択肢を取得する。
      *
      */
-    const std::vector<ValAdaptor> &option() const;
+    std::vector<ValAdaptor> option() const;
     Arg &option(std::vector<ValAdaptor> option);
     /*!
      * \brief 引数の選択肢を設定する。

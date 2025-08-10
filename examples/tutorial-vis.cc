@@ -14,7 +14,7 @@ int hoge() {
     logger << "Function hoge started" << std::endl;
     return 42;
 }
-int fuga(int a, const std::string &b) {
+int fuga(int a, std::string_view b) {
     logger << "Function fuga(" << a << ", " << b << ") started" << std::endl;
     return a;
 }

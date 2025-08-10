@@ -3,6 +3,7 @@
 #include "webcface/internal/client_internal.h"
 #include "webcface/internal/client_ws.h"
 #include "webcface/common/internal/unlock.h"
+#include "webcface/common/internal/safe_global.h"
 
 #ifdef WEBCFACE_COMPILER_IS_GCC
 #pragma GCC diagnostic push
@@ -32,10 +33,14 @@ internal::ClientData::ClientData(const SharedString &name,
       value_store(name), text_store(name), func_store(name), view_store(name),
       image_store(name), robot_model_store(name), canvas3d_store(name),
       canvas2d_store(name), log_store(name), sync_time_store(name) {
-    static auto stderr_sink =
-        std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
+    static auto stderr_sink_static = internal::safeGlobal(
+        std::make_shared<spdlog::sinks::stderr_color_sink_mt>());
+    auto stderr_sink =
+        stderr_sink_static
+            ? *stderr_sink_static
+            : std::make_shared<spdlog::sinks::stderr_color_sink_mt>();
     logger_internal = std::make_shared<spdlog::logger>(
-        "webcface_internal(" + name.decode() + ")", stderr_sink);
+        strJoin<char>("webcface_internal(", name.decode(), ")"), stderr_sink);
     if (std::getenv("WEBCFACE_TRACE") != nullptr) {
         logger_internal->set_level(spdlog::level::trace);
     } else if (std::getenv("WEBCFACE_VERBOSE") != nullptr) {

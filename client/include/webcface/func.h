@@ -3,6 +3,7 @@
 #include "func_result.h"
 #include "arg.h"
 #include "webcface/common/trait.h"
+#include "func_trait.h"
 #include "exception.h"
 
 WEBCFACE_NS_BEGIN
@@ -11,61 +12,76 @@ struct FuncInfo;
 }
 
 namespace traits {
-template <typename T>
-constexpr auto getInvokeSignature(T &&) -> decltype(&T::operator()) {
-    return &T::operator();
-}
-template <typename Ret, typename... Args>
-constexpr auto getInvokeSignature(Ret (*p)(Args...)) {
-    return p;
-}
-template <typename T>
-using InvokeSignature =
-    decltype(getInvokeSignature(std::declval<std::decay_t<T>>()));
-
-template <bool>
-struct FuncArgTypeCheck {};
+template <typename BadArg>
+struct This_arg_type_is_not_supported_by_WebCFace_Func {};
+template <typename BadArg>
+struct FuncArgTypesIterationFailureTrait {
+    using ArgTypesCheckResult =
+        This_arg_type_is_not_supported_by_WebCFace_Func<BadArg>;
+};
+// MSVCでexplicitな変換operatorがあるとき
+// std::is_constructible_t<Arg, ValAdaptor> が正しくtrueを返さないため、
+// decltypeで実装している
+template <typename Arg, typename = void>
+struct IsConstructibleArg : std::false_type {};
 template <>
-struct FuncArgTypeCheck<true> {
-    using ArgTypesSupportedByWebCFaceFunc = TraitOkType;
+struct IsConstructibleArg<ValAdaptor, void> : std::true_type {};
+template <typename Arg>
+struct IsConstructibleArg<Arg,
+                          std::void_t<decltype(std::declval<ValAdaptor>().operator Arg())>>
+    : std::true_type {};
+
+template <typename... Args>
+struct FuncArgTypesIterationTrait;
+template <>
+struct FuncArgTypesIterationTrait<> {
+    struct ArgTypesCheckResult {
+        using ArgTypesCheckOk = TraitOkType;
+    };
+};
+template <typename FirstArg, typename... OtherArgs>
+struct FuncArgTypesIterationTrait<FirstArg, OtherArgs...> {
+    using ArgTypesCheckResult = typename std::conditional_t<
+        IsConstructibleArg<std::decay_t<FirstArg>>::value,
+        FuncArgTypesIterationTrait<OtherArgs...>,
+        FuncArgTypesIterationFailureTrait<FirstArg>>::ArgTypesCheckResult;
 };
 template <typename... Args>
-struct FuncArgTypesTrait
-    : FuncArgTypeCheck<(std::is_convertible_v<ValAdaptor, Args> && ...)> {};
+using FuncArgTypesTrait =
+    typename FuncArgTypesIterationTrait<Args...>::ArgTypesCheckResult;
 
-template <bool>
-struct FuncReturnTypeCheck {};
-template <>
-struct FuncReturnTypeCheck<true> {
-    using ReturnTypeSupportedByWebCFaceFunc = TraitOkType;
+template <typename BadArg>
+struct This_return_type_is_not_supported_by_WebCFace_Func {};
+struct FuncReturnTypeCheckOkTrait {
+    using FuncReturnTypeCheckOk = TraitOkType;
 };
 template <typename Ret>
-struct FuncReturnTypeTrait
-    : FuncReturnTypeCheck<std::is_same_v<Ret, void> ||
-                          std::is_constructible_v<ValAdaptor, Ret>> {};
+using FuncReturnTypeTrait = std::conditional_t<
+    std::disjunction_v<std::is_void<Ret>,
+                       std::is_constructible<ValAdaptor, Ret>>,
+    FuncReturnTypeCheckOkTrait,
+    This_return_type_is_not_supported_by_WebCFace_Func<Ret>>;
 
-template <typename T>
-struct FuncSignatureTrait {};
 /*!
  * RetとArgsが条件を満たすときだけ、
- * ReturnTypeTrait::ReturnTypeSupportedByWebCFaceFunc と
- * ArgTypesTrait::ArgTypesSupportedByWebCFaceFunc が定義される
+ * ReturnTypeTrait::FuncReturnTypeCheckOk と
+ * ArgTypesTrait::FuncArgTypesCheckOk が定義される
  * (enable_ifを使ってないのはエラーメッセージがわかりにくかったから)
  *
  */
+template <typename T>
+struct FuncSignatureTrait {};
 template <typename Ret, typename... Args>
-struct FuncSignatureTrait<Ret(Args...)> {
+struct FuncSignatureTrait<Ret(Args...)> : InvokeSignatureTrait<Ret(Args...)> {
     using ReturnTypeTrait = FuncReturnTypeTrait<Ret>;
     using ArgTypesTrait = FuncArgTypesTrait<Args...>;
-    static constexpr bool return_void = std::is_same_v<Ret, void>;
+    static constexpr bool return_void = std::is_void_v<Ret>;
     static inline bool assertArgsNum(const CallHandle &handle) {
         return handle.assertArgsNum(sizeof...(Args));
     }
     static inline std::vector<Arg> argsInfo() {
         return std::vector<Arg>{Arg{valTypeOf<Args>()}...};
     }
-    using ReturnType = Ret;
-    using ArgsTuple = std::tuple<std::decay_t<Args>...>;
 };
 template <typename Ret, typename T, typename... Args>
 struct FuncSignatureTrait<Ret (T::*)(Args...)>
@@ -77,15 +93,9 @@ template <typename Ret, typename... Args>
 struct FuncSignatureTrait<Ret (*)(Args...)> : FuncSignatureTrait<Ret(Args...)> {
 };
 
-/*!
- * * Tは関数オブジェクト型、または関数型
- * * InvokeSignature<T> で関数呼び出しの型 ( Ret(*)(Args...) や
- * Ret(T::*)(Args...) ) を取得し、
- * * FuncSignatureTrait<Ret(Args...)> が各種メンバー型や定数を定義する
- *
- */
 template <typename T>
-using FuncObjTrait = FuncSignatureTrait<InvokeSignature<T>>;
+using FuncObjTrait = FuncSignatureTrait<decltype(getInvokeSignature(
+    std::declval<std::decay_t<T>>()))>;
 
 } // namespace traits
 
@@ -110,16 +120,11 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    Func child(std::string_view field) const {
-        return this->Field::child(field);
-    }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    Func child(std::wstring_view field) const {
-        return this->Field::child(field);
+    Func child(StringInitializer field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver1.11
@@ -132,22 +137,13 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
+     *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    Func operator[](std::string_view field) const { return child(field); }
-    /*!
-     * child()と同じ
-     * \since ver2.0
-     */
-    Func operator[](std::wstring_view field) const { return child(field); }
-    /*!
-     * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver1.11
-     */
-    Func operator[](const char *field) const { return child(field); }
-    /*!
-     * \since ver2.0
-     */
-    Func operator[](const wchar_t *field) const { return child(field); }
+    Func operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
     /*!
      * child()と同じ
      * \since ver1.11
@@ -230,10 +226,10 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa setAsync()
      */
     template <typename T,
-              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
-              typename traits::FuncObjTrait<T>::ArgTypesTrait::
-                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
+              typename traits::FuncObjTrait<
+                  T>::ReturnTypeTrait::FuncReturnTypeCheckOk = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::ArgTypesCheckOk =
+                  traits::TraitOk>
     const Func &set(T func) const {
         return setImpl(
             valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
@@ -247,7 +243,7 @@ class WEBCFACE_DLL Func : protected Field {
                             if constexpr (traits::FuncObjTrait<
                                               T>::return_void) {
                                 std::apply(func, args_tuple);
-                                return ValAdaptor::emptyVal();
+                                return ValAdaptor();
                             } else {
                                 auto ret = std::apply(func, args_tuple);
                                 return ret;
@@ -271,10 +267,10 @@ class WEBCFACE_DLL Func : protected Field {
      * \sa set()
      */
     template <typename T,
-              typename traits::FuncObjTrait<T>::ReturnTypeTrait::
-                  ReturnTypeSupportedByWebCFaceFunc = traits::TraitOk,
-              typename traits::FuncObjTrait<T>::ArgTypesTrait::
-                  ArgTypesSupportedByWebCFaceFunc = traits::TraitOk>
+              typename traits::FuncObjTrait<
+                  T>::ReturnTypeTrait::FuncReturnTypeCheckOk = traits::TraitOk,
+              typename traits::FuncObjTrait<T>::ArgTypesTrait::ArgTypesCheckOk =
+                  traits::TraitOk>
     const Func &setAsync(T func) const {
         return setImpl(
             valTypeOf<typename traits::FuncObjTrait<T>::ReturnType>(),
@@ -291,7 +287,7 @@ class WEBCFACE_DLL Func : protected Field {
                                     if constexpr (traits::FuncObjTrait<
                                                       T>::return_void) {
                                         std::apply(*func_p, args_tuple);
-                                        return ValAdaptor::emptyVal();
+                                        return ValAdaptor();
                                     } else {
                                         auto ret =
                                             std::apply(*func_p, args_tuple);
@@ -316,8 +312,8 @@ class WEBCFACE_DLL Func : protected Field {
      *
      */
     template <typename T>
-    [[deprecated("use set() or setAsync()")]] const Func &
-    operator=(T func) const {
+    [[deprecated("use set() or setAsync()")]]
+    const Func &operator=(T func) const {
         this->set(std::move(func));
         return *this;
     }
@@ -497,7 +493,7 @@ class WEBCFACE_DLL Func : protected Field {
         p.waitFinish();
         if (p.found()) {
             if (p.isError()) {
-                throw Rejection(*this, p.rejection());
+                throw Rejection(*this, std::string(p.rejection()));
             } else {
                 return p.response();
             }

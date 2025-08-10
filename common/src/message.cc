@@ -147,8 +147,7 @@ unpack(const std::string &message,
 }
 
 SharedString Log::defaultLogName() {
-    static SharedString default_name = SharedString::fromU8String("default");
-    return default_name;
+    return SharedString::fromU8StringStatic("default");
 }
 
 } // namespace message

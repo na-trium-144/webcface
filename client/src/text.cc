@@ -18,9 +18,9 @@ Variant::Variant(const Field &base) : Field(base) {}
 InputRef::InputRef() : state(std::make_shared<internal::InputRefState>()) {}
 void InputRef::lockTo(const Variant &target) { state->field = target; }
 Variant &InputRef::lockedField() const { return state->field; }
-const ValAdaptor &InputRef::get() const {
+ValAdaptor InputRef::get() const {
     if (lockedField().expired()) {
-        return ValAdaptor::emptyVal();
+        return ValAdaptor();
     } else {
         return lockedField().get();
     }
@@ -49,7 +49,7 @@ const Variant &Variant::request() const {
 
 const Variant &Variant::set(const ValAdaptor &v) const {
     auto data = setCheck();
-    data->text_store.setSend(*this, std::make_shared<ValAdaptor>(v));
+    data->text_store.setSend(*this, v);
     auto change_event =
         internal::findFromMap2(data->text_change_event.shared_lock().get(),
                                this->member_, this->field_);
@@ -70,54 +70,54 @@ std::optional<ValAdaptor> Variant::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
         return std::nullopt;
     }
 }
-const ValAdaptor &Variant::get() const {
+ValAdaptor Variant::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return **v;
+        return *v;
     } else {
-        return ValAdaptor::emptyVal();
+        return ValAdaptor();
     }
 }
-std::optional<std::string> Text::tryGet() const {
+std::optional<StringView> Text::tryGet() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asString();
+        return v->asStringView();
     } else {
         return std::nullopt;
     }
 }
-const std::string &Text::get() const {
+StringView Text::get() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asStringRef();
+        return v->asStringView();
     } else {
-        return SharedString::emptyStr();
+        return StringView{};
     }
 }
-std::optional<std::wstring> Text::tryGetW() const {
+std::optional<WStringView> Text::tryGetW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWString();
+        return v->asWStringView();
     } else {
         return std::nullopt;
     }
 }
-const std::wstring &Text::getW() const {
+WStringView Text::getW() const {
     auto v = dataLock()->text_store.getRecv(*this);
     request();
     if (v) {
-        return (*v)->asWStringRef();
+        return v->asWStringView();
     } else {
-        return SharedString::emptyStrW();
+        return WStringView{};
     }
 }
 

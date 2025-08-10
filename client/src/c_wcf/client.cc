@@ -5,13 +5,19 @@ extern "C" {
 void wcfUsingUTF8(int flag) { usingUTF8(flag); }
 
 wcfClient *wcfInit(const char *name, const char *host, int port) {
+    if(!wcli_list){
+        return nullptr;
+    }
     auto wcli = new Client(strOrEmpty(name), host ? host : "127.0.0.1", port);
-    wcli_list.push_back(wcli);
+    wcli_list->push_back(wcli);
     return wcli;
 }
 wcfClient *wcfInitW(const wchar_t *name, const wchar_t *host, int port) {
+    if(!wcli_list){
+        return nullptr;
+    }
     auto wcli = new Client(strOrEmpty(name), host ? host : L"127.0.0.1", port);
-    wcli_list.push_back(wcli);
+    wcli_list->push_back(wcli);
     return wcli;
 }
 wcfClient *wcfInitDefault(const char *name) {
@@ -40,7 +46,10 @@ wcfStatus wcfClose(wcfClient *wcli) {
     if (!wcli_) {
         return WCF_BAD_WCLI;
     }
-    wcli_list.erase(std::find(wcli_list.begin(), wcli_list.end(), wcli));
+    if(!wcli_list){
+        return WCF_BAD_WCLI;
+    }
+    wcli_list->erase(std::find(wcli_list->begin(), wcli_list->end(), wcli));
     delete wcli_;
     return WCF_OK;
 }
@@ -103,48 +112,48 @@ wcfStatus wcfLoopSync(wcfClient *wcli) {
 // }
 
 wcfStatus wcfDestroy(void *ptr) {
-    {
+    if(func_val_list){
         auto f_ptr = static_cast<const wcfMultiVal *>(ptr);
-        auto f_it = func_val_list.find(f_ptr);
-        if (f_it != func_val_list.end()) {
-            func_val_list.erase(f_it);
+        auto f_it = func_val_list->find(f_ptr);
+        if (f_it != func_val_list->end()) {
+            func_val_list->erase(f_it);
             delete f_ptr;
             return WCF_OK;
         }
     }
-    {
+    if(func_val_list_w){
         auto fw_ptr = static_cast<const wcfMultiValW *>(ptr);
-        auto fw_it = func_val_list_w.find(fw_ptr);
-        if (fw_it != func_val_list_w.end()) {
-            func_val_list_w.erase(fw_it);
+        auto fw_it = func_val_list_w->find(fw_ptr);
+        if (fw_it != func_val_list_w->end()) {
+            func_val_list_w->erase(fw_it);
             delete fw_ptr;
             return WCF_OK;
         }
     }
-    {
+    if(view_list){
         auto v_ptr = static_cast<const wcfViewComponent *>(ptr);
-        auto v_it = view_list.find(v_ptr);
-        if (v_it != view_list.end()) {
-            view_list.erase(v_it);
+        auto v_it = view_list->find(v_ptr);
+        if (v_it != view_list->end()) {
+            view_list->erase(v_it);
             delete[] v_ptr;
             return WCF_OK;
         }
     }
-    {
+    if(view_list_w){
         auto vw_ptr = static_cast<const wcfViewComponentW *>(ptr);
-        auto vw_it = view_list_w.find(vw_ptr);
-        if (vw_it != view_list_w.end()) {
-            view_list_w.erase(vw_it);
+        auto vw_it = view_list_w->find(vw_ptr);
+        if (vw_it != view_list_w->end()) {
+            view_list_w->erase(vw_it);
             delete[] vw_ptr;
             return WCF_OK;
         }
     }
-    {
+    if(func_result_list){
         auto res = static_cast<Promise *>(ptr);
         auto res_it =
-            std::find(func_result_list.begin(), func_result_list.end(), res);
-        if (res_it != func_result_list.end()) {
-            func_result_list.erase(res_it);
+            std::find(func_result_list->begin(), func_result_list->end(), res);
+        if (res_it != func_result_list->end()) {
+            func_result_list->erase(res_it);
             delete res;
             return WCF_OK;
         }

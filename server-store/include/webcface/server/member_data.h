@@ -62,7 +62,7 @@ struct MemberData {
      *
      */
     internal::StrMap1<MutableNumVector> value;
-    internal::StrMap1<std::shared_ptr<ValAdaptor>> text;
+    internal::StrMap1<ValAdaptor> text;
     internal::StrMap1<std::shared_ptr<message::FuncInfo>> func;
     internal::StrMap1<message::ViewData> view;
     internal::StrMap1<message::Canvas3DData> canvas3d;

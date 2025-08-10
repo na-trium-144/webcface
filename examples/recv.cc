@@ -50,7 +50,7 @@ int main() {
         auto result = func_m.func("func2").runAsync(9, 7.1, false, "");
         result.onFinish([](const webcface::Promise &result) {
             std::cout << "func2(9, 7.1, false, \"\") = "
-                      << result.response().asStringRef() << std::endl;
+                      << result.response().asStringView() << std::endl;
         });
 
         func_m.func("func_bool").runAsync(true);

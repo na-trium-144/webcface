@@ -1,7 +1,6 @@
 #pragma once
 #include <memory>
 #include <string>
-#include <string_view>
 #include <vector>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
@@ -30,6 +29,7 @@ class Canvas3D;
 class Log;
 
 constexpr char field_separator = '.';
+constexpr std::string_view field_separator_sv = ".";
 
 /*!
  * \brief メンバ名とデータ名を持つクラス
@@ -110,13 +110,18 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief field名を返す
      *
+     * ver2.10〜 std::stringの参照から StringView に変更
+     *
      */
-    const std::string &name() const { return field_.decode(); }
+    StringView name() const { return field_.decodeShare(); }
     /*!
      * \brief field名を返す (wstring)
      * \since ver2.0
+     *
+     * ver2.10〜 std::wstringの参照から WStringView に変更
+     *
      */
-    const std::wstring &nameW() const { return field_.decodeW(); }
+    WStringView nameW() const { return field_.decodeShareW(); }
 
   protected:
     SharedString lastName8() const;
@@ -128,12 +133,14 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す
      * \since ver1.11
      */
-    std::string lastName() const { return lastName8().decode(); }
+    std::string lastName() const { return std::string(lastName8().decode()); }
     /*!
      * \brief nameのうちピリオドで区切られた最後の部分を取り出す (wstring)
      * \since ver2.0
      */
-    std::wstring lastNameW() const { return lastName8().decodeW(); }
+    std::wstring lastNameW() const {
+        return std::wstring(lastName8().decodeW());
+    }
     /*!
      * \brief nameの最後のピリオドの前までを新しい名前とするField
      * \since ver1.11
@@ -142,16 +149,12 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
+     *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    Field child(std::string_view field) const {
-        return child(SharedString::encode(field));
-    }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    Field child(std::wstring_view field) const {
-        return child(SharedString::encode(field));
+    Field child(StringInitializer field) const {
+        return child(static_cast<SharedString &>(field));
     }
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
@@ -165,108 +168,66 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
+     *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     *
      */
-    Field operator[](std::string_view field) const { return child(field); }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    Field operator[](std::wstring_view field) const { return child(field); }
+    Field operator[](StringInitializer field) const {
+        return child(static_cast<SharedString &>(field));
+    }
     /*!
      * \brief 「(thisの名前).(index)」を新しい名前とするField
      * \since ver1.11
      * \deprecated ver2.8〜
      */
     [[deprecated]]
-    Field operator[](int index) const {
+    Field
+    operator[](int index) const {
         return child(std::to_string(index));
     }
 
     template <WEBCFACE_COMPLETE(Value)>
-    Value_ value(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Value)>
-    Value_ value(std::wstring_view field) const {
-        return child(field);
+    Value_ value(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Text)>
-    Text_ text(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Text)>
-    Text_ text(std::wstring_view field) const {
-        return child(field);
+    Text_ text(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(RobotModel)>
-    RobotModel_ robotModel(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(RobotModel)>
-    RobotModel_ robotModel(std::wstring_view field) const {
-        return child(field);
+    RobotModel_ robotModel(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Image)>
-    Image_ image(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Image)>
-    Image_ image(std::wstring_view field) const {
-        return child(field);
+    Image_ image(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Func)>
-    Func_ func(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Func)>
-    Func_ func(std::wstring_view field) const {
-        return child(field);
+    Func_ func(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(FuncListener)>
-    FuncListener_ funcListener(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(FuncListener)>
-    FuncListener_ funcListener(std::wstring_view field) const {
-        return child(field);
+    FuncListener_ funcListener(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(View)>
-    View_ view(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(View)>
-    View_ view(std::wstring_view field) const {
-        return child(field);
+    View_ view(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Canvas3D)>
-    Canvas3D_ canvas3D(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Canvas3D)>
-    Canvas3D_ canvas3D(std::wstring_view field) const {
-        return child(field);
+    Canvas3D_ canvas3D(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     template <WEBCFACE_COMPLETE(Canvas2D)>
-    Canvas2D_ canvas2D(std::string_view field = "") const {
-        return child(field);
-    }
-    template <WEBCFACE_COMPLETE(Canvas2D)>
-    Canvas2D_ canvas2D(std::wstring_view field) const {
-        return child(field);
+    Canvas2D_ canvas2D(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver2.4
      */
     template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(std::string_view field = "") const {
-        return child(field);
-    }
-    /*!
-     * \since ver2.4
-     */
-    template <WEBCFACE_COMPLETE(Log)>
-    Log_ log(std::wstring_view field) const {
-        return child(field);
+    Log_ log(StringInitializer field = StringInitializer()) const {
+        return child(static_cast<SharedString &>(field));
     }
 
 

@@ -57,16 +57,11 @@ class WEBCFACE_DLL View : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * 
      */
-    View child(std::string_view field) const {
-        return this->Field::child(field);
-    }
-    /*!
-     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField (wstring)
-     * \since ver2.0
-     */
-    View child(std::wstring_view field) const {
-        return this->Field::child(field);
+    View child(StringInitializer field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
     }
     /*!
      * \since ver1.11
@@ -79,22 +74,11 @@ class WEBCFACE_DLL View : protected Field {
     /*!
      * child()と同じ
      * \since ver1.11
+     * 
+     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * 
      */
-    View operator[](std::string_view field) const { return child(field); }
-    /*!
-     * child()と同じ
-     * \since ver2.0
-     */
-    View operator[](std::wstring_view field) const { return child(field); }
-    /*!
-     * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver1.11
-     */
-    View operator[](const char *field) const { return child(field); }
-    /*!
-     * \since ver2.0
-     */
-    View operator[](const wchar_t *field) const { return child(field); }
+    View operator[](StringInitializer field) const { return child(std::move(field)); }
     /*!
      * child()と同じ
      * \since ver1.11

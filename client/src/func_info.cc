@@ -47,13 +47,12 @@ void Arg::mergeConfig(const Arg &other) {
     }
 }
 
-const std::string &Arg::name() const {
-    return this->msg_data ? this->msg_data->name_.decode()
-                          : SharedString::emptyStr();
+StringView Arg::name() const {
+    return this->msg_data ? this->msg_data->name_.decodeShare() : StringView{};
 }
-const std::wstring &Arg::nameW() const {
-    return this->msg_data ? this->msg_data->name_.decodeW()
-                          : SharedString::emptyStrW();
+WStringView Arg::nameW() const {
+    return this->msg_data ? this->msg_data->name_.decodeShareW()
+                          : WStringView{};
 }
 ValType Arg::type() const { return this->type_; }
 Arg &Arg::type(ValType type) {
@@ -86,9 +85,8 @@ Arg &Arg::max(double max) {
     initMsg()->option_.clear();
     return *this;
 }
-const std::vector<ValAdaptor> &Arg::option() const {
-    static std::vector<ValAdaptor> empty;
-    return this->msg_data ? this->msg_data->option_ : empty;
+std::vector<ValAdaptor> Arg::option() const {
+    return this->msg_data ? this->msg_data->option_ : std::vector<ValAdaptor>{};
 }
 Arg &Arg::option(std::vector<ValAdaptor> option) {
     initMsg()->option_ = std::move(option);
@@ -113,7 +111,7 @@ std::ostream &operator<<(std::ostream &os, const Arg &arg) {
             if (j > 0) {
                 os << ", ";
             }
-            os << static_cast<std::string>(arg.option()[j]);
+            os << arg.option()[j].asStringView();
         }
         os << "}";
     }
