@@ -3,6 +3,7 @@
 #include <chrono>
 #include <iostream>
 #include <thread>
+#include <array>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
 void hello_array(const std::array<int, 3> &args) {
