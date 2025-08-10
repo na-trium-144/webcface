@@ -92,9 +92,14 @@ class WEBCFACE_DLL ValAdaptorVector {
     template <typename T,
               typename std::enable_if_t<!std::is_convertible_v<ValAdaptor, T>,
                                         std::nullptr_t> = nullptr,
+#ifdef _MSC_VER
+              // gccでなぜか正しく機能しない
+              typename = decltype(std::declval<ValAdaptor>().operator T())>
+#else
+              // msvcでなぜか正しく機能しない
               typename std::enable_if_t<std::is_constructible_v<T, ValAdaptor>,
                                         std::nullptr_t> = nullptr>
-    // typename = decltype(std::declval<ValAdaptor>().operator T())>
+#endif
     explicit operator T() const {
         return get().as<T>();
     }
