@@ -1,6 +1,5 @@
 #pragma once
 #include "val_adaptor.h"
-#include "trait.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -18,24 +17,15 @@ class WEBCFACE_DLL ValAdaptorVector {
     std::vector<ValAdaptor> vec;
 
   public:
-    ValAdaptorVector() = default;
-    ValAdaptorVector(const ValAdaptor &val) : vec({val}) {}
-    ValAdaptorVector &operator=(const ValAdaptor &val) {
-        vec = std::vector<ValAdaptor>{val};
-        return *this;
-    }
-    ValAdaptorVector(std::vector<ValAdaptor> init) : vec(std::move(init)) {}
-    ValAdaptorVector &operator=(std::vector<ValAdaptor> init) {
-        vec = std::move(init);
-        return *this;
-    }
+    ValAdaptorVector();
+    ValAdaptorVector(const ValAdaptor &val);
+    ValAdaptorVector &operator=(const ValAdaptor &val);
+    ValAdaptorVector(std::vector<ValAdaptor> init);
+    ValAdaptorVector &operator=(std::vector<ValAdaptor> init);
 
+    explicit ValAdaptorVector(StringInitializer str);
+    ValAdaptorVector &operator=(StringInitializer str);
 
-    explicit ValAdaptorVector(StringInitializer str)
-        : ValAdaptorVector(ValAdaptor(std::move(str))) {}
-    ValAdaptorVector &operator=(StringInitializer str) {
-        return *this = ValAdaptor(std::move(str));
-    }
     template <typename T,
               typename std::enable_if_t<
                   !std::is_same_v<ValAdaptor, T> &&
@@ -89,17 +79,9 @@ class WEBCFACE_DLL ValAdaptorVector {
                    std::vector<ValAdaptor>(std::begin(range), std::end(range));
     }
 
-    ValAdaptor get() const {
-        if (vec.size() == 0) {
-            return ValAdaptor();
-        } else if (vec.size() == 1) {
-            return at(0);
-        } else {
-            throw std::invalid_argument(
-                "expected single value, but got list of " +
-                std::to_string(vec.size()) + " elements");
-        }
-    }
+    ValAdaptor get() const;
+    ValType valType() const;
+
     explicit operator ValAdaptor() const { return get(); }
     template <typename T,
               typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
@@ -160,7 +142,7 @@ class WEBCFACE_DLL ValAdaptorVector {
     }
 
     const ValAdaptor &operator[](std::size_t index) const { return at(index); }
-    const ValAdaptor &at(std::size_t index) const { return vec.at(index); }
+    const ValAdaptor &at(std::size_t index) const;
 
     const ValAdaptor *data() const { return &at(0); }
     const ValAdaptor *begin() const { return &at(0); }
@@ -168,8 +150,61 @@ class WEBCFACE_DLL ValAdaptorVector {
     const ValAdaptor *cbegin() const { return &at(0); }
     const ValAdaptor *cend() const { return begin() + size(); }
 
-    std::size_t size() const { return vec.size(); }
+    std::size_t size() const;
+
+    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    std::string asStringRef() const {
+        return asString();
+    }
+    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    std::wstring asWStringRef() const {
+        return asWString();
+    }
+    StringView asStringView() const { return get().asStringView(); }
+    WStringView asWStringView() const { return get().asWStringView(); }
+    std::string_view asU8StringView() const { return get().asU8StringView(); }
+    std::string asString() const { return get().asString(); }
+    std::wstring asWString() const { return get().asWString(); }
+    double asDouble() const { return get().asDouble(); }
+    int asInt() const { return get().asInt(); }
+    long long asLLong() const { return get().asLLong(); }
+    bool asBool() const { return get().asBool(); }
+
+    bool operator==(const ValAdaptorVector &other) const;
+    bool operator!=(const ValAdaptorVector &other) const {
+        return !(*this == other);
+    }
+
+    template <typename T, typename std::enable_if_t<
+                              std::is_constructible_v<ValAdaptorVector, T> &&
+                                  !std::is_same_v<ValAdaptorVector, T>,
+                              std::nullptr_t> = nullptr>
+    bool operator==(const T &other) const {
+        return *this == ValAdaptorVector(other);
+    }
+    template <typename T, typename std::enable_if_t<
+                              std::is_constructible_v<ValAdaptorVector, T> &&
+                                  !std::is_same_v<ValAdaptorVector, T>,
+                              std::nullptr_t> = nullptr>
+    bool operator!=(const T &other) const {
+        return *this != ValAdaptorVector(other);
+    }
 };
+
+template <typename T, typename std::enable_if_t<
+                          std::is_constructible_v<ValAdaptorVector, T> &&
+                              !std::is_same_v<ValAdaptorVector, T>,
+                          std::nullptr_t> = nullptr>
+bool operator==(const T &other, const ValAdaptorVector &val) {
+    return val == ValAdaptorVector(other);
+}
+template <typename T, typename std::enable_if_t<
+                          std::is_constructible_v<ValAdaptorVector, T> &&
+                              !std::is_same_v<ValAdaptorVector, T>,
+                          std::nullptr_t> = nullptr>
+bool operator!=(const T &other, const ValAdaptorVector &val) {
+    return val != ValAdaptorVector(other);
+}
 
 /*!
  * \brief ValAdaptorのリストから任意の型のタプルに変換する
