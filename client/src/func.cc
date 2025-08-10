@@ -62,7 +62,7 @@ void internal::FuncInfo::run(webcface::message::Call &&call) {
     });
 }
 
-AsyncFuncResult Func::runAsync(std::vector<ValAdaptor> args_vec) const {
+AsyncFuncResult Func::runAsync(std::vector<ValAdaptorVector> args_vec) const {
     auto data = dataLock();
     if (data->isSelf(*this)) {
         // selfの場合、新しいAsyncFuncResultに実行した結果を入れる

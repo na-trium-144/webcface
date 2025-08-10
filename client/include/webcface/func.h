@@ -1,5 +1,5 @@
 #pragma once
-#include "webcface/common/val_adaptor.h"
+#include "webcface/common/val_adaptor_vec.h"
 #include "func_result.h"
 #include "arg.h"
 #include "webcface/common/trait.h"
@@ -26,9 +26,11 @@ template <typename Arg, typename = void>
 struct IsConstructibleArg : std::false_type {};
 template <>
 struct IsConstructibleArg<ValAdaptor, void> : std::true_type {};
+template <>
+struct IsConstructibleArg<ValAdaptorVector, void> : std::true_type {};
 template <typename Arg>
-struct IsConstructibleArg<Arg,
-                          std::void_t<decltype(std::declval<ValAdaptor>().operator Arg())>>
+struct IsConstructibleArg<
+    Arg, std::void_t<decltype(std::declval<ValAdaptorVector>().operator Arg())>>
     : std::true_type {};
 
 template <typename... Args>
@@ -485,10 +487,10 @@ class WEBCFACE_DLL Func : protected Field {
     template <typename... Args>
     [[deprecated("use runAsync")]]
     ValAdaptor run(Args... args) const {
-        return run({ValAdaptor(args)...});
+        return run({ValAdaptorVector(args)...});
     }
     [[deprecated("use runAsync")]]
-    ValAdaptor run(std::vector<ValAdaptor> &&args_vec) const {
+    ValAdaptor run(std::vector<ValAdaptorVector> &&args_vec) const {
         auto p = runAsync(std::move(args_vec));
         p.waitFinish();
         if (p.found()) {
@@ -526,9 +528,9 @@ class WEBCFACE_DLL Func : protected Field {
      */
     template <typename... Args>
     Promise runAsync(Args... args) const {
-        return runAsync({ValAdaptor(args)...});
+        return runAsync({ValAdaptorVector(args)...});
     }
-    Promise runAsync(std::vector<ValAdaptor> args_vec) const;
+    Promise runAsync(std::vector<ValAdaptorVector> args_vec) const;
 
     /*!
      * \brief 関数の情報が存在すればtrue

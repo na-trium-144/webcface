@@ -25,7 +25,6 @@ enum class ValType {
     int_ = 3,
     float_ = 4,
     double_ = 4,
-    vec_ = 16,
 };
 /*!
  * \brief TのValTypeを得る
@@ -173,6 +172,8 @@ class WEBCFACE_DLL ValAdaptor {
     }
 
     ValType valType() const { return type; }
+
+    static const ValAdaptor &emptyVal();
 
     /*!
      * \brief 値が空かどうか調べる
@@ -334,9 +335,13 @@ class WEBCFACE_DLL ValAdaptor {
      */
     template <typename T>
     T as() const {
-        // ↓ MSVCでなぜかコンパイルできない
-        // return static_cast<T>(*this);
-        return this->operator T();
+        if constexpr (std::is_same_v<T, ValAdaptor>) {
+            return *this;
+        } else {
+            // ↓ MSVCでなぜかコンパイルできない
+            // return static_cast<T>(*this);
+            return this->operator T();
+        }
     }
     /*!
      * \brief 数値型への変換
@@ -416,20 +421,6 @@ inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
  */
 using ValAdapter = ValAdaptor;
 
-/*!
- * \brief ValAdaptorのリストから任意の型のタプルに変換する
- *
- */
-template <int n = 0, typename T>
-void argToTuple(const std::vector<ValAdaptor> &args, T &tuple) {
-    constexpr int tuple_size = std::tuple_size<T>::value;
-    if constexpr (n < tuple_size) {
-        using Type = typename std::tuple_element<n, T>::type;
-        std::get<n>(tuple) = args[n].as<Type>();
-        argToTuple<n + 1>(args, tuple);
-    }
-}
-
 namespace [[deprecated("symbols in webcface::encoding namespace are "
                        "now directly in webcface namespace")]] encoding {
 using ValType = webcface::ValType;
@@ -441,11 +432,6 @@ inline std::string valTypeStr(webcface::ValType a) {
     return webcface::valTypeStr(a);
 }
 using ValAdaptor = webcface::ValAdaptor;
-
-template <int n = 0, typename T>
-void argToTuple(const std::vector<webcface::ValAdaptor> &args, T &tuple) {
-    webcface::argToTuple<n>(args, tuple);
-}
 
 } // namespace encoding
 WEBCFACE_NS_END

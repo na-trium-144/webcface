@@ -5,9 +5,13 @@
 #include <thread>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
-double hello2(int a, double b, bool c, const std::string &d) {
+void hello_array(const std::array<int, 3> &args) {
+    std::cout << args[0] << ", " << args[1] << ", " << args[2] << std::endl;
+}
+double hello2(int a, double b, bool c, const std::string &d,
+              const std::vector<int> &e) {
     std::cout << "hello2 args: a=" << a << ", b=" << b << ", c=" << c
-              << ", d=" << d << std::endl;
+              << ", d=" << d << ", e.size()=" << e.size() << std::endl;
     std::cout << "  return: a + b = " << a + b << std::endl;
     return a + b;
 }
@@ -18,6 +22,10 @@ int main() {
     // 関数を登録
     wcli.func("func1").set(hello);
 
+    wcli.func("hello_array").set(hello_array);
+
+    // std::string s = webcface::ValAdaptorVector().operator std::string();
+
     wcli.func("lambda").set([](const std::string &str) {
         std::cout << "lambda(" << str << ")" << std::endl;
     });
@@ -26,7 +34,7 @@ int main() {
     using Arg = webcface::Arg;
     wcli.func("func2").set(hello2).setArgs(
         {Arg("a").min(0).max(10), Arg("b"), Arg("c"),
-         Arg("d").option({"hoge", "fuga", "piyo"})});
+         Arg("d").option({"hoge", "fuga", "piyo"}), Arg("e")});
 
     wcli.func("func_bool").set([](bool) -> bool { return true; });
     wcli.func("func_int").set([](int) -> int { return 1; });

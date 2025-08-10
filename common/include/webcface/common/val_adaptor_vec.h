@@ -8,75 +8,130 @@
 #endif
 
 WEBCFACE_NS_BEGIN
-namespace traits {
-
-template <bool>
-struct ConvertibleToValAdaptorVectorTraitCheck {};
-template <>
-struct ConvertibleToValAdaptorVectorTraitCheck<true> {
-    using ConvertibleToValAdaptorVector = TraitOkType;
-};
-
-constexpr std::false_type isConvertibleToValAdaptorVector(...) { return {}; }
-template <typename T>
-constexpr auto isConvertibleToValAdaptorVector(T)
-    -> std::bool_constant<
-        std::is_convertible_v<decltype(*std::begin(std::declval<T>())),
-                              ValAdaptor> &&
-        std::is_convertible_v<decltype(*std::end(std::declval<T>())),
-                              ValAdaptor>> {
-    return {};
-}
-template <typename T>
-using IsConvertibleToValAdaptorVector =
-    decltype(isConvertibleToValAdaptorVector(std::declval<T>()));
-
-/*!
- * T にstd::begin, std::endが使用可能で、要素がdoubleに変換可能なときにのみ、
- * ConvertibleToValAdaptorVectorTrait<T>::ConvertibleToValAdaptorVector
- * が定義される
- *
- */
-template <typename T>
-struct ConvertibleToValAdaptorVectorTrait
-    : ConvertibleToValAdaptorVectorTraitCheck<
-          IsConvertibleToValAdaptorVector<T>::value> {};
-/*!
- * 生配列の場合std::declvalを使うとポインタになってしまうので、別で特殊化している
- *
- */
-template <typename T, std::size_t N>
-struct ConvertibleToValAdaptorVectorTrait<T[N]>
-    : ConvertibleToValAdaptorVectorTraitCheck<
-          std::is_convertible_v<T, double>> {};
-template <typename T, std::size_t N>
-struct ConvertibleToValAdaptorVectorTrait<T (&)[N]>
-    : ConvertibleToValAdaptorVectorTrait<T[N]> {};
-
-} // namespace traits
 
 /*!
  * \brief ValAdaptorのVector
  * \since ver2.10
  *
  */
-struct ValAdaptorVector {
+class WEBCFACE_DLL ValAdaptorVector {
     std::vector<ValAdaptor> vec;
 
+  public:
     ValAdaptorVector() = default;
-    ValAdaptorVector(std::initializer_list<ValAdaptor> init) : vec(init) {}
+    ValAdaptorVector(const ValAdaptor &val) : vec({val}) {}
+    ValAdaptorVector &operator=(const ValAdaptor &val) {
+        vec = std::vector<ValAdaptor>{val};
+        return *this;
+    }
+    ValAdaptorVector(std::vector<ValAdaptor> init) : vec(std::move(init)) {}
+    ValAdaptorVector &operator=(std::vector<ValAdaptor> init) {
+        vec = std::move(init);
+        return *this;
+    }
+
+
+    explicit ValAdaptorVector(StringInitializer str)
+        : ValAdaptorVector(ValAdaptor(std::move(str))) {}
+    ValAdaptorVector &operator=(StringInitializer str) {
+        return *this = ValAdaptor(std::move(str));
+    }
+    template <typename T,
+              typename std::enable_if_t<
+                  !std::is_same_v<ValAdaptor, T> &&
+                      !std::is_same_v<ValAdaptorVector, T> &&
+                      !std::is_convertible_v<StringInitializer, T> &&
+                      std::is_constructible_v<ValAdaptor, T>,
+                  std::nullptr_t> = nullptr>
+    explicit ValAdaptorVector(T &&val)
+        : ValAdaptorVector(ValAdaptor(std::forward<T>(val))) {}
+    template <typename T,
+              typename std::enable_if_t<
+                  !std::is_same_v<ValAdaptor, T> &&
+                      !std::is_same_v<ValAdaptorVector, T> &&
+                      !std::is_convertible_v<StringInitializer, T> &&
+                      std::is_constructible_v<ValAdaptor, T>,
+                  std::nullptr_t> = nullptr>
+    ValAdaptorVector &operator=(T &&val) {
+        return *this = ValAdaptor(std::forward<T>(val));
+    }
+
     template <typename R,
-              typename traits::ConvertibleToValAdaptorVectorTrait<
-                  R>::ConvertibleToValAdaptorVector = traits::TraitOk>
+              typename std::enable_if_t<
+                  std::is_convertible_v<
+                      decltype(*std::begin(std::declval<R>())), ValAdaptor> &&
+                      std::is_convertible_v<
+                          decltype(*std::end(std::declval<R>())), ValAdaptor>,
+                  std::nullptr_t> = nullptr>
     ValAdaptorVector(const R &range)
         : vec(std::begin(range), std::end(range)) {}
+    template <typename R,
+              typename std::enable_if_t<
+                  std::is_convertible_v<
+                      decltype(*std::begin(std::declval<R>())), ValAdaptor> &&
+                      std::is_convertible_v<
+                          decltype(*std::end(std::declval<R>())), ValAdaptor>,
+                  std::nullptr_t> = nullptr>
+    ValAdaptorVector &operator=(const R &range) {
+        return *this =
+                   std::vector<ValAdaptor>(std::begin(range), std::end(range));
+    }
+    template <typename T, std::size_t N,
+              typename std::enable_if_t<std::is_convertible_v<T, ValAdaptor>,
+                                        std::nullptr_t> = nullptr>
+    ValAdaptorVector(const T (&range)[N])
+        : vec(std::begin(range), std::end(range)) {}
+    template <typename T, std::size_t N,
+              typename std::enable_if_t<std::is_convertible_v<T, ValAdaptor>,
+                                        std::nullptr_t> = nullptr>
+    ValAdaptorVector &operator=(const T (&range)[N]) {
+        return *this =
+                   std::vector<ValAdaptor>(std::begin(range), std::end(range));
+    }
 
-    template <typename T>
-    operator std::vector<T>() const {
+    ValAdaptor get() const {
+        if (vec.size() == 0) {
+            return ValAdaptor();
+        } else if (vec.size() == 1) {
+            return at(0);
+        } else {
+            throw std::invalid_argument(
+                "expected single value, but got list of " +
+                std::to_string(vec.size()) + " elements");
+        }
+    }
+    explicit operator ValAdaptor() const { return get(); }
+    template <typename T,
+              typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr>
+    operator T() const {
+        return get().as<T>();
+    }
+    template <typename T,
+              typename std::enable_if_t<!std::is_convertible_v<ValAdaptor, T>,
+                                        std::nullptr_t> = nullptr,
+              typename std::enable_if_t<std::is_constructible_v<T, ValAdaptor>,
+                                        std::nullptr_t> = nullptr>
+    // typename = decltype(std::declval<ValAdaptor>().operator T())>
+    explicit operator T() const {
+        return get().as<T>();
+    }
+    template <typename T,
+              typename = std::void_t<
+                  decltype(std::declval<ValAdaptor>().operator T())>>
+    std::vector<T> asVector() const {
         return std::vector<T>(vec.begin(), vec.end());
     }
-    template <typename T, std::size_t N>
-    operator std::array<T, N>() const {
+    template <typename T,
+              typename = std::void_t<
+                  decltype(std::declval<ValAdaptor>().operator T())>>
+    operator std::vector<T>() const {
+        return asVector<T>();
+    }
+    template <typename T, std::size_t N,
+              typename = std::void_t<
+                  decltype(std::declval<ValAdaptor>().operator T())>>
+    std::array<T, N> asArray() const {
         if (N != vec.size()) {
             throw std::invalid_argument(
                 "array size mismatch, expected: " + std::to_string(N) +
@@ -84,10 +139,53 @@ struct ValAdaptorVector {
         }
         std::array<T, N> a;
         for (std::size_t i = 0; i < N; i++) {
-            a[i] = static_cast<T>(vec[i]);
+            a[i] = vec[i].as<T>();
         }
         return a;
     }
+    template <typename T, std::size_t N,
+              typename = std::void_t<
+                  decltype(std::declval<ValAdaptor>().operator T())>>
+    operator std::array<T, N>() const {
+        return asArray<T, N>();
+    }
+
+    template <typename T>
+    T as() const {
+        if constexpr (std::is_same_v<T, ValAdaptorVector>) {
+            return *this;
+        } else {
+            return this->operator T();
+        }
+    }
+
+    const ValAdaptor &operator[](std::size_t index) const { return at(index); }
+    const ValAdaptor &at(std::size_t index) const { return vec.at(index); }
+
+    const ValAdaptor *data() const { return &at(0); }
+    const ValAdaptor *begin() const { return &at(0); }
+    const ValAdaptor *end() const { return begin() + size(); }
+    const ValAdaptor *cbegin() const { return &at(0); }
+    const ValAdaptor *cend() const { return begin() + size(); }
+
+    std::size_t size() const { return vec.size(); }
 };
+
+/*!
+ * \brief ValAdaptorのリストから任意の型のタプルに変換する
+ *
+ * ver2.10〜 ValAdaptorVectorに変更
+ *
+ */
+template <int n = 0, typename T>
+void argToTuple(const std::vector<ValAdaptorVector> &args, T &tuple) {
+    constexpr int tuple_size = std::tuple_size<T>::value;
+    if constexpr (n < tuple_size) {
+        using Type = typename std::tuple_element<n, T>::type;
+        std::get<n>(tuple) = args[n].as<Type>();
+        argToTuple<n + 1>(args, tuple);
+    }
+}
+
 
 WEBCFACE_NS_END
