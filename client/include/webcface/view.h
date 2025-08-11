@@ -9,7 +9,7 @@
 #include "webcface/common/webcface-config.h"
 #endif
 #include "components.h"
-#include "trait.h"
+#include "webcface/common/trait.h"
 
 WEBCFACE_NS_BEGIN
 namespace internal {

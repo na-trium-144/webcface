@@ -4,7 +4,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#include "array_like.h"
+#include "webcface/common/array_like.h"
 #include <array>
 #include <optional>
 #include <cassert>

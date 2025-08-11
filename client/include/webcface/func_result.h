@@ -1,4 +1,5 @@
 #pragma once
+#include "webcface/common/val_adaptor_vec.h"
 #include "webcface/exception.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
@@ -336,8 +337,10 @@ class WEBCFACE_DLL CallHandle : Field {
     /*!
      * \brief 関数の引数を取得する
      *
+     * ver2.10〜 ValAdaptorVectorに変更
+     * 
      */
-    const std::vector<ValAdaptor> &args() const;
+    const std::vector<ValAdaptorVector> &args() const;
     /*!
      * 引数データを表すwcfMultiValの配列を構築 (createHandle() 用)
      * \since ver1.7

@@ -7,7 +7,7 @@
 #include <string>
 #include <cstdint>
 #include <utf8.h>
-#include "webcface/common/val_adaptor.h"
+#include "webcface/common/val_adaptor_vec.h"
 #include "webcface/common/num_vector.h"
 #include "./base.h"
 
@@ -187,6 +187,46 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
     };
 
     template <>
+    struct convert<webcface::ValAdaptorVector> {
+        msgpack::object const &operator()(msgpack::object const &o,
+                                          webcface::ValAdaptorVector &v) const {
+            switch (o.type) {
+            case msgpack::type::ARRAY: {
+                std::vector<webcface::ValAdaptor> vec;
+                vec.reserve(o.via.array.size);
+                for (std::size_t i = 0; i < o.via.array.size; i++) {
+                    vec.push_back(
+                        o.via.array.ptr[i].as<webcface::ValAdaptor>());
+                }
+                v = std::move(vec);
+                break;
+            }
+            default:
+                v = o.as<webcface::ValAdaptor>();
+                break;
+            }
+            return o;
+        }
+    };
+    template <>
+    struct pack<webcface::ValAdaptorVector> {
+        template <typename Stream>
+        msgpack::packer<Stream> &
+        operator()(msgpack::packer<Stream> &o,
+                   const webcface::ValAdaptorVector &v) {
+            if (v.size() == 1) {
+                o.pack(v.at(0));
+            } else {
+                o.pack_array(static_cast<std::uint32_t>(v.size()));
+                for (auto val : v) {
+                    o.pack(val);
+                }
+            }
+            return o;
+        }
+    };
+
+    template <>
     struct convert<webcface::MutableNumVector> {
         msgpack::object const &operator()(msgpack::object const &o,
                                           webcface::MutableNumVector &v) const {
@@ -198,9 +238,10 @@ MSGPACK_API_VERSION_NAMESPACE(MSGPACK_DEFAULT_API_NS) {
             } else if (o.via.array.size == 1) {
                 v.assign(o.via.array.ptr[0].as<double>());
             } else {
-                std::vector<double> vec(o.via.array.size);
+                std::vector<double> vec;
+                vec.reserve(o.via.array.size);
                 for (std::size_t i = 0; i < o.via.array.size; i++) {
-                    vec.at(i) = o.via.array.ptr[i].as<double>();
+                    vec.push_back(o.via.array.ptr[i].as<double>());
                 }
                 v.assign(std::move(vec));
             }
