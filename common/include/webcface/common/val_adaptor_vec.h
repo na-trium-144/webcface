@@ -14,7 +14,7 @@ WEBCFACE_NS_BEGIN
  *
  */
 class WEBCFACE_DLL ValAdaptorVector {
-    std::vector<ValAdaptor> vec;
+    mutable std::vector<ValAdaptor> vec;
 
   public:
     ValAdaptorVector();
@@ -79,10 +79,10 @@ class WEBCFACE_DLL ValAdaptorVector {
                    std::vector<ValAdaptor>(std::begin(range), std::end(range));
     }
 
-    ValAdaptor get() const;
+    const ValAdaptor &get() const;
     ValType valType() const;
 
-    explicit operator ValAdaptor() const { return get(); }
+    explicit operator const ValAdaptor&() const { return get(); }
     template <typename T,
               typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
                                         std::nullptr_t> = nullptr>

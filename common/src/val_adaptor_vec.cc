@@ -21,9 +21,10 @@ ValAdaptorVector &ValAdaptorVector::operator=(StringInitializer str) {
     return *this = ValAdaptor(std::move(str));
 }
 
-ValAdaptor ValAdaptorVector::get() const {
+const ValAdaptor &ValAdaptorVector::get() const {
     if (vec.size() == 0) {
-        return ValAdaptor();
+        vec.resize(1);
+        return at(0);
     } else if (vec.size() == 1) {
         return at(0);
     } else {
