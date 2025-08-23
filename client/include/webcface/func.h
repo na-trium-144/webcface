@@ -238,10 +238,11 @@ class WEBCFACE_DLL Func : protected Field {
             traits::FuncObjTrait<T>::argsInfo(),
             [func = std::move(func)](const CallHandle &handle) {
                 if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
-                    argToTuple(handle.args(), args_tuple);
                     tryRun(
                         [&] {
+                            typename traits::FuncObjTrait<T>::ArgsTuple
+                                args_tuple;
+                            argToTuple(handle.args(), args_tuple);
                             if constexpr (traits::FuncObjTrait<
                                               T>::return_void) {
                                 std::apply(func, args_tuple);
@@ -280,26 +281,23 @@ class WEBCFACE_DLL Func : protected Field {
             [func_p = std::make_shared<T>(std::move(func))](
                 const CallHandle &handle) {
                 if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
-                    argToTuple(handle.args(), args_tuple);
-                    std::thread(
-                        [func_p, handle](auto args_tuple) {
-                            tryRun(
-                                [&] {
-                                    if constexpr (traits::FuncObjTrait<
-                                                      T>::return_void) {
-                                        std::apply(*func_p, args_tuple);
-                                        return ValAdaptor();
-                                    } else {
-                                        auto ret =
-                                            std::apply(*func_p, args_tuple);
-                                        return ret;
-                                    }
-                                },
-                                handle);
-                        },
-                        std::move(args_tuple))
-                        .detach();
+                    std::thread([func_p, handle]() {
+                        tryRun(
+                            [&] {
+                                typename traits::FuncObjTrait<T>::ArgsTuple
+                                    args_tuple;
+                                argToTuple(handle.args(), args_tuple);
+                                if constexpr (traits::FuncObjTrait<
+                                                  T>::return_void) {
+                                    std::apply(*func_p, args_tuple);
+                                    return ValAdaptor();
+                                } else {
+                                    auto ret = std::apply(*func_p, args_tuple);
+                                    return ret;
+                                }
+                            },
+                            handle);
+                    }).detach();
                 }
             });
     }
@@ -553,7 +551,8 @@ class WEBCFACE_DLL Func : protected Field {
      */
     template <typename... Args>
     Promise runAsync(Args... args) const {
-        return runAsync(std::vector<ValAdaptorVector>{ValAdaptorVector(args)...});
+        return runAsync(
+            std::vector<ValAdaptorVector>{ValAdaptorVector(args)...});
     }
     Promise runAsync(std::vector<ValAdaptorVector> args_vec) const;
     Promise runAsync(std::vector<ValAdaptor> args_vec) const {
