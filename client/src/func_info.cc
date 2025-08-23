@@ -62,10 +62,10 @@ Arg &Arg::type(ValType type) {
     }
     return *this;
 }
-std::optional<ValAdaptor> Arg::init() const {
+std::optional<ValAdaptorVector> Arg::init() const {
     return this->msg_data ? this->msg_data->init_ : std::nullopt;
 }
-Arg &Arg::init(const ValAdaptor &init) {
+Arg &Arg::init(const ValAdaptorVector &init) {
     initMsg()->init_ = init;
     return *this;
 }
