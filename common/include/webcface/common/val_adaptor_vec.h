@@ -30,7 +30,7 @@ class WEBCFACE_DLL ValAdaptorVector {
               typename std::enable_if_t<
                   !std::is_same_v<ValAdaptor, T> &&
                       !std::is_same_v<ValAdaptorVector, T> &&
-                      !std::is_convertible_v<StringInitializer, T> &&
+                      !std::is_constructible_v<StringInitializer, T> &&
                       std::is_constructible_v<ValAdaptor, T>,
                   std::nullptr_t> = nullptr>
     explicit ValAdaptorVector(T &&val)
@@ -39,41 +39,55 @@ class WEBCFACE_DLL ValAdaptorVector {
               typename std::enable_if_t<
                   !std::is_same_v<ValAdaptor, T> &&
                       !std::is_same_v<ValAdaptorVector, T> &&
-                      !std::is_convertible_v<StringInitializer, T> &&
+                      !std::is_constructible_v<StringInitializer, T> &&
                       std::is_constructible_v<ValAdaptor, T>,
                   std::nullptr_t> = nullptr>
     ValAdaptorVector &operator=(T &&val) {
         return *this = ValAdaptor(std::forward<T>(val));
     }
 
-    template <typename R,
-              typename std::enable_if_t<
-                  std::is_convertible_v<
-                      decltype(*std::begin(std::declval<R>())), ValAdaptor> &&
-                      std::is_convertible_v<
-                          decltype(*std::end(std::declval<R>())), ValAdaptor>,
-                  std::nullptr_t> = nullptr>
+    template <
+        typename R,
+        typename std::enable_if_t<
+            !std::is_same_v<ValAdaptor, R> &&
+                !std::is_same_v<ValAdaptorVector, R> &&
+                !std::is_constructible_v<StringInitializer, R> &&
+                !std::is_constructible_v<ValAdaptor, R> &&
+                std::is_convertible_v<decltype(*std::begin(std::declval<R>())),
+                                      ValAdaptor> &&
+                std::is_convertible_v<decltype(*std::end(std::declval<R>())),
+                                      ValAdaptor>,
+            std::nullptr_t> = nullptr>
     ValAdaptorVector(const R &range)
         : vec(std::begin(range), std::end(range)) {}
-    template <typename R,
-              typename std::enable_if_t<
-                  std::is_convertible_v<
-                      decltype(*std::begin(std::declval<R>())), ValAdaptor> &&
-                      std::is_convertible_v<
-                          decltype(*std::end(std::declval<R>())), ValAdaptor>,
-                  std::nullptr_t> = nullptr>
+    template <
+        typename R,
+        typename std::enable_if_t<
+            !std::is_same_v<ValAdaptor, R> &&
+                !std::is_same_v<ValAdaptorVector, R> &&
+                !std::is_constructible_v<StringInitializer, R> &&
+                !std::is_constructible_v<ValAdaptor, R> &&
+                std::is_convertible_v<decltype(*std::begin(std::declval<R>())),
+                                      ValAdaptor> &&
+                std::is_convertible_v<decltype(*std::end(std::declval<R>())),
+                                      ValAdaptor>,
+            std::nullptr_t> = nullptr>
     ValAdaptorVector &operator=(const R &range) {
         return *this =
                    std::vector<ValAdaptor>(std::begin(range), std::end(range));
     }
     template <typename T, std::size_t N,
-              typename std::enable_if_t<std::is_convertible_v<T, ValAdaptor>,
-                                        std::nullptr_t> = nullptr>
+              typename std::enable_if_t<
+                  !std::is_same_v<T, char> && !std::is_same_v<T, wchar_t> &&
+                      std::is_convertible_v<T, ValAdaptor>,
+                  std::nullptr_t> = nullptr>
     ValAdaptorVector(const T (&range)[N])
         : vec(std::begin(range), std::end(range)) {}
     template <typename T, std::size_t N,
-              typename std::enable_if_t<std::is_convertible_v<T, ValAdaptor>,
-                                        std::nullptr_t> = nullptr>
+              typename std::enable_if_t<
+                  !std::is_same_v<T, char> && !std::is_same_v<T, wchar_t> &&
+                      std::is_convertible_v<T, ValAdaptor>,
+                  std::nullptr_t> = nullptr>
     ValAdaptorVector &operator=(const T (&range)[N]) {
         return *this =
                    std::vector<ValAdaptor>(std::begin(range), std::end(range));
@@ -82,7 +96,7 @@ class WEBCFACE_DLL ValAdaptorVector {
     const ValAdaptor &get() const;
     ValType valType() const;
 
-    explicit operator const ValAdaptor&() const { return get(); }
+    explicit operator const ValAdaptor &() const { return get(); }
     template <typename T,
               typename std::enable_if_t<std::is_convertible_v<ValAdaptor, T>,
                                         std::nullptr_t> = nullptr>
@@ -227,5 +241,39 @@ void argToTuple(const std::vector<ValAdaptorVector> &args, T &tuple) {
     }
 }
 
+template <typename T>
+[[deprecated("Unknown type T is passed to webcface::valTypeOf(). "
+             "This should not happen. Maybe there's a bug in WebCFace...")]]
+inline void warningOnUnknownType() {}
+
+/*!
+ * \brief TのValTypeを得る
+ *
+ * Funcの登録時に引数型と戻り値型について呼ばれる。
+ *
+ */
+template <typename T>
+ValType valTypeOf() {
+    if constexpr (std::is_void_v<T>) {
+        return ValType::none_;
+    } else if constexpr (!std::is_constructible_v<ValAdaptor, T> &&
+                         !std::is_constructible_v<ValAdaptorVector, T>) {
+        return static_cast<ValType>(
+            static_cast<int>(ValType::vector_) +
+            static_cast<int>(
+                valTypeOf<decltype(*std::declval<T>().begin())>()));
+    } else if constexpr (std::is_same_v<bool, std::decay_t<T>>) {
+        return ValType::bool_;
+    } else if constexpr (std::is_integral_v<std::decay_t<T>>) {
+        return ValType::int_;
+    } else if constexpr (std::is_floating_point_v<std::decay_t<T>>) {
+        return ValType::float_;
+    } else if constexpr (std::is_constructible_v<StringInitializer, T>) {
+        return ValType::string_;
+    } else {
+        warningOnUnknownType<T>();
+        return ValType::none_;
+    }
+}
 
 WEBCFACE_NS_END

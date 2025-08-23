@@ -26,31 +26,24 @@ enum class ValType {
     float_ = 4,
     double_ = 4,
     vector_ = 16,
+    vector_string_ = 17,
+    vector_bool_ = 18,
+    vector_int_ = 19,
+    vector_float_ = 20,
+    vector_double_ = 20,
 };
-/*!
- * \brief TのValTypeを得る
- *
- */
-template <typename T>
-ValType valTypeOf() {
-    if constexpr (std::is_void_v<T>) {
-        return ValType::none_;
-    } else if constexpr (std::is_same_v<bool, T>) {
-        return ValType::bool_;
-    } else if constexpr (std::is_integral_v<T>) {
-        return ValType::int_;
-    } else if constexpr (std::is_floating_point_v<T>) {
-        return ValType::float_;
-    } else {
-        return ValType::string_;
-    }
-}
 
 /*!
  * \brief 型名を文字列で取得
  * \since ver1.9.1
  */
 inline std::string valTypeStr(ValType a) {
+    if (static_cast<int>(a) & static_cast<int>(ValType::vector_)) {
+        return std::string("vector<") +
+               valTypeStr(static_cast<ValType>(
+                   static_cast<int>(a) ^ static_cast<int>(ValType::vector_))) +
+               ">";
+    }
     switch (a) {
     case ValType::none_:
         return "none";
@@ -421,18 +414,4 @@ inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
  * \since ver2.10
  */
 using ValAdapter = ValAdaptor;
-
-namespace [[deprecated("symbols in webcface::encoding namespace are "
-                       "now directly in webcface namespace")]] encoding {
-using ValType = webcface::ValType;
-template <typename T>
-webcface::ValType valTypeOf() {
-    return webcface::valTypeOf<T>();
-}
-inline std::string valTypeStr(webcface::ValType a) {
-    return webcface::valTypeStr(a);
-}
-using ValAdaptor = webcface::ValAdaptor;
-
-} // namespace encoding
 WEBCFACE_NS_END

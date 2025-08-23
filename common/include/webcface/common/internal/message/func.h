@@ -91,12 +91,12 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 struct Arg {
     SharedString name_;
     ValType type_ = ValType::none_;
-    std::optional<ValAdaptor> init_ = std::nullopt;
+    std::optional<ValAdaptorVector> init_ = std::nullopt;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
     std::vector<ValAdaptor> option_;
     Arg() = default;
     Arg(const SharedString &name, ValType type,
-        const std::optional<ValAdaptor> &init,
+        const std::optional<ValAdaptorVector> &init,
         const std::optional<double> &min_, const std::optional<double> &max_,
         const std::vector<ValAdaptor> &option)
         : name_(name), type_(type), init_(init), min_(min_), max_(max_),
