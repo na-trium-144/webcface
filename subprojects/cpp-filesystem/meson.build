@@ -32,7 +32,7 @@ foreach fs_include : ['C++17', 'experimental']
       cpp_filesystem_dep = declare_dependency()
       summary('filesystem', fs_include)
       summary('additional libs', 'skipped due to cross compiling')
-      break
+      subdir_done()
     endif
   else
     fs_ret = cxx.run(filesystem_check_src,
@@ -43,7 +43,7 @@ foreach fs_include : ['C++17', 'experimental']
       cpp_filesystem_dep = declare_dependency()
       summary('filesystem', fs_include)
       summary('additional libs', false, bool_yn: true)
-      break
+      subdir_done()
     endif
     foreach libfs_name : ['stdc++fs', 'c++fs', 'c++experimental']
       libfs = cxx.find_library(libfs_name, required: false)
@@ -57,13 +57,11 @@ foreach fs_include : ['C++17', 'experimental']
           cpp_filesystem_dep = libfs
           summary('filesystem', fs_include)
           summary('additional libs', libfs_name)
-          break
+          subdir_done()
         endif
       endif
     endforeach
   endif
 endforeach
 
-if is_disabler(cpp_filesystem_dep)
-  error('Neither std::filesystem or std::experimental::filesystem available')
-endif
+error('Neither std::filesystem or std::experimental::filesystem available')
