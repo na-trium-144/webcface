@@ -23,5 +23,3 @@ if os.path.exists("dist"):
 with tarfile.open(output_tar, 'r:gz') as tar:
     # Extract all contents to the current directory
     tar.extractall()
-
-print("Downloaded and extracted WebUI.")
