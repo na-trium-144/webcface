@@ -349,99 +349,9 @@ conf_data.set10('WEBCFACE_SYSTEM_WIN32SOCKET', webcface_system_win32socket)
 conf_data.set10('WEBCFACE_SYSTEM_PATH_WINDOWS', webcface_system_path_windows)
 conf_data.set10('WEBCFACE_SYSTEM_ADD_DEBUG', webcface_system_add_debug)
 
-filesystem_dep = disabler()
-webcface_exp_filesystem = false
-filesystem_check_src = '''
-#if defined(CXX17_FILESYSTEM)
-#include <filesystem>
-namespace std_fs = std::filesystem;
-#elif defined(CXX11_EXP_FILESYSTEM)
-#include <experimental/filesystem>
-namespace std_fs = std::experimental::filesystem;
-#endif
-int main(void) {
-    return std_fs::exists(std_fs::path("/")), 0;
-}
-'''
-if not meson.can_run_host_binaries()
-  cxx17_filesystem_compiles = cxx.compiles(filesystem_check_src,
-    args: ['-DCXX17_FILESYSTEM'],
-    name: 'cxx17_filesystem',
-  )
-  if cxx17_filesystem_compiles
-    filesystem_dep = declare_dependency()
-    summary('filesystem', 'C++17')
-    summary('libstdc++fs', 'skipped while cross compiling')
-  endif
-else
-  cxx17_filesystem_ret = cxx.run(filesystem_check_src,
-    args: ['-DCXX17_FILESYSTEM'],
-    name: 'cxx17_filesystem',
-  )
-  if cxx17_filesystem_ret.compiled() and cxx17_filesystem_ret.returncode() == 0
-    filesystem_dep = declare_dependency()
-    summary('filesystem', 'C++17')
-    summary('libstdc++fs', false, bool_yn: true)
-  else
-    libfs = cxx.find_library('stdc++fs', required: false)
-    if libfs.found()
-      cxx17_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-        args: ['-DCXX17_FILESYSTEM'],
-        name: 'cxx17_filesystem_libfs',
-        dependencies: [libfs],
-      )
-      if cxx17_filesystem_libfs_ret.compiled() and cxx17_filesystem_libfs_ret.returncode() == 0
-        filesystem_dep = libfs
-        summary('filesystem', 'C++17')
-        summary('libstdc++fs', true, bool_yn: true)
-      endif
-    endif
-  endif
-endif
-if is_disabler(filesystem_dep)
-  if not meson.can_run_host_binaries()
-    cxx11_exp_filesystem_compiles = cxx.compiles(filesystem_check_src,
-      args: ['-DCXX11_EXP_FILESYSTEM'],
-      name: 'cxx11_exp_filesystem',
-    )
-    if cxx11_exp_filesystem_compiles
-      filesystem_dep = declare_dependency()
-      webcface_exp_filesystem = true
-      summary('filesystem', 'experimental')
-      summary('libstdc++fs', 'skipped while cross compiling')
-    endif
-  else
-    cxx11_exp_filesystem_ret = cxx.run(filesystem_check_src,
-      args: ['-DCXX11_EXP_FILESYSTEM'],
-      name: 'cxx11_exp_filesystem',
-    )
-    if cxx11_exp_filesystem_ret.compiled() and cxx11_exp_filesystem_ret.returncode() == 0
-      filesystem_dep = declare_dependency()
-      webcface_exp_filesystem = true
-      summary('filesystem', 'experimental')
-      summary('libstdc++fs', false, bool_yn: true)
-    else
-      libfs = cxx.find_library('stdc++fs', required: false)
-      if libfs.found()
-        cxx11_exp_filesystem_libfs_ret = cxx.run(filesystem_check_src,
-          args: ['-DCXX11_EXP_FILESYSTEM'],
-          name: 'cxx11_exp_filesystem_libfs',
-          dependencies: [libfs],
-        )
-        if cxx11_exp_filesystem_libfs_ret.compiled() and cxx11_exp_filesystem_libfs_ret.returncode() == 0
-          filesystem_dep = libfs
-          webcface_exp_filesystem = true
-          summary('filesystem', 'experimental')
-          summary('libstdc++fs', true, bool_yn: true)
-        endif
-      endif
-    endif
-  endif
-endif
-if is_disabler(filesystem_dep)
-  error('Neither std::filesystem or std::experimental::filesystem available')
-endif
-conf_data.set10('WEBCFACE_EXP_FILESYSTEM', webcface_exp_filesystem)
+filesystem_proj = subproject('cpp-filesystem')
+filesystem_dep = filesystem_proj.get_variable('cpp_filesystem_dep')
+conf_data.set10('WEBCFACE_EXP_FILESYSTEM', filesystem_proj.get_variable('experimental'))
 
 m_dep = cxx.find_library('m', required: false)
 summary('libm', m_dep.found(), bool_yn: true)
@@ -492,22 +402,17 @@ if get_option('download_webui').allowed()
     meson.current_build_dir(),
     check: get_option('download_webui').enabled(),
   )
+  if download_webui.stderr() != ''
+    warning(download_webui.stderr())
+  endif
+  summary('WebUI',
+    [download_webui.returncode() == 0, webcface_webui_version],
+    bool_yn: true,
+    list_sep: ' ',
+  )
   if download_webui.returncode() == 0
-    message(download_webui.stdout())
-    summary('WebUI',
-      [true, webcface_webui_version, 'Downloaded to ' + (meson.current_build_dir() / 'dist')],
-      bool_yn: true,
-      list_sep: ' ',
-    )
     install_subdir(meson.current_build_dir() / 'dist',
       install_dir: get_option('datadir') / 'webcface',
-    )
-  else
-    warning(download_webui.stderr())
-    summary('WebUI',
-      [false, webcface_webui_version, 'Failed to download'],
-      bool_yn: true,
-      list_sep: ' ',
     )
   endif
 else
