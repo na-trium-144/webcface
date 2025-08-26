@@ -46,6 +46,13 @@ const ValAdaptor &ValAdaptorVector::at(std::size_t index) const {
     return vec.at(index);
 }
 std::size_t ValAdaptorVector::size() const { return vec.size(); }
+const ValAdaptor *ValAdaptorVector::data() const {
+    if (vec.size() > 0) {
+        return vec.data();
+    } else {
+        return nullptr;
+    }
+}
 
 bool ValAdaptorVector::operator==(const ValAdaptorVector &other) const {
     return this->vec == other.vec;

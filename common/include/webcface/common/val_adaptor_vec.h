@@ -163,11 +163,11 @@ class WEBCFACE_DLL ValAdaptorVector {
     const ValAdaptor &operator[](std::size_t index) const { return at(index); }
     const ValAdaptor &at(std::size_t index) const;
 
-    const ValAdaptor *data() const { return &at(0); }
-    const ValAdaptor *begin() const { return &at(0); }
-    const ValAdaptor *end() const { return begin() + size(); }
-    const ValAdaptor *cbegin() const { return &at(0); }
-    const ValAdaptor *cend() const { return begin() + size(); }
+    const ValAdaptor *data() const;
+    const ValAdaptor *begin() const { return data(); }
+    const ValAdaptor *end() const { return data() + size(); }
+    const ValAdaptor *cbegin() const { return data(); }
+    const ValAdaptor *cend() const { return data() + size(); }
 
     std::size_t size() const;
 
