@@ -1,0 +1,78 @@
+name: CMake Test (Linux, Many GCC Versions)
+
+on:
+  push:
+    branches: [ "action/many-gcc" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  test-linux-gcc:
+    strategy:
+      fail-fast: false
+      matrix:
+        gcc_ver: [7, 8, 9, 10, 11, 12, 13, 14]
+        include:
+        - distro: "20.04"
+          gcc_ver: 7
+        - distro: "20.04"
+          gcc_ver: 8
+        - distro: "20.04"
+          gcc_ver: 9
+        - distro: "20.04"
+          gcc_ver: 10
+        - distro: "24.04"
+          gcc_ver: 11
+        - distro: "24.04"
+          gcc_ver: 12
+        - distro: "24.04"
+          gcc_ver: 13
+        - distro: "24.04"
+          gcc_ver: 14
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: ubuntu:${{matrix.distro}}
+          options: >
+            -v ${{ github.workspace }}:/workspace
+            -e SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt
+            -e DEBIAN_FRONTEND=noninteractive
+            -e CC=gcc-${{matrix.gcc_ver}}
+            -e CXX=g++-${{matrix.gcc_ver}}
+          run: |
+            set -e
+            apt-get update -q -y
+            apt-get install -q -y ca-certificates gpg wget lsb-release
+            wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc --no-check-certificate | gpg --dearmor - | tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+            echo "deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/kitware.list >/dev/null
+            apt-get update -q -y
+            apt-get install -q -y build-essential gcc-${{matrix.gcc_ver}} g++-${{matrix.gcc_ver}} cmake python3-pip file git python3-pip ninja-build zip pkg-config
+            pip install meson || pip install meson --break-system-packages
+            cd /workspace
+            meson setup build --buildtype=release -Dwrap_mode=forcefallback --prefix=/workspace/build/install -Dtest_wait=200
+            meson compile -C build || meson compile -C build
+            meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+            meson test --benchmark -C build --verbose --suite webcface
+            ! nm -g --defined-only build/libwebcface.so | c++filt | grep -v webcface | grep -v wcf | grep -v std:: | grep -v St | grep -v gnu_cxx
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep spdlog
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep fmt
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep crow
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep asio
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep -v codecvt_utf8 | grep utf8
+            ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep vips
+            meson install -C build
+            cd /workspace/.github/test
+            cmake -B build -DCMAKE_PREFIX_PATH=/workspace/build/install
+            cmake --build build
+            meson setup buildmc -Dcmake_prefix_path=/workspace/build/install
+            meson compile -Cbuildmc
+            export PKG_CONFIG_PATH=/workspace/build/install/lib/aarch64-linux-gnu/pkgconfig:/workspace/build/install/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH
+            pkg-config --cflags --libs webcface
+            g++ -std=c++17 test.cc $(pkg-config --cflags --libs webcface)
+            gcc -std=c99 test.c $(pkg-config --cflags --libs webcface) -lstdc++
+            meson setup buildm
+            meson compile -Cbuildm

@@ -1,0 +1,57 @@
+name: CMake Test (Linux, Many Clang Versions)
+
+on:
+  push:
+    branches: [ "action/many-clang" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Debug
+
+jobs:
+  test-linux-clang:
+    strategy:
+      fail-fast: false
+      matrix:
+        dep: ["source"]
+        # https://github.com/KyleMayes/install-llvm-action/blob/master/assets.json
+        clang: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        unity: ["off"]
+        os: ["ubuntu-22.04"]
+    runs-on: ${{matrix.os}}
+    steps:
+    - uses: actions/checkout@v4
+    # - run: git submodule update --init
+    #   if: matrix.dep == 'submodule'
+      
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ninja-build
+        sudo apt-get install -y libtinfo5 || true
+        if [[ ${{matrix.dep}} = apt ]]; then sudo apt-get install -y libspdlog-dev libvips-dev libopencv-dev; fi
+        if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-22.04 ]]; then sudo apt-get install -y libcli11-dev; fi
+        if [[ ${{matrix.dep}} = apt ]] && [[ ${{matrix.os}} = ubuntu-24.04 ]]; then sudo apt-get install -y libcli11-dev libmsgpack-cxx-dev; fi
+    - name: Install meson
+      run: pip install meson || pip install --break-system-packages meson
+    - name: Install clang
+      uses: KyleMayes/install-llvm-action@master
+      with:
+        version: "${{matrix.clang}}"
+    - name: Setup Meson
+      env:
+        CC: ${{ env.LLVM_PATH }}/bin/clang
+        CXX: ${{ env.LLVM_PATH }}/bin/clang++
+      run: >
+        meson setup build
+        --buildtype=debug
+        $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
+        -Dtest_wait=200
+        --force-fallback-for=libcurl
+        --unity=${{matrix.unity}}
+    - name: Compile
+      run: meson compile -C build || meson compile -C build
+    - name: Test
+      run: meson test -C build --print-errorlog --no-stdsplit --max-lines=10000 --suite webcface
+    - name: Benchmark
+      run: meson test --benchmark -C build --verbose --suite webcface
