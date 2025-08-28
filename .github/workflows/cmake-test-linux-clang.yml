@@ -58,6 +58,7 @@ jobs:
         -Dtest_wait=200
         --force-fallback-for=libcurl
         --unity=${{matrix.unity}}
+        -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test

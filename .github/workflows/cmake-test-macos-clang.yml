@@ -50,6 +50,7 @@ jobs:
         --prefix=${{github.workspace}}/build/install
         "-Dpkg_config_path=['$(brew --prefix)/opt/curl/lib/pkgconfig','$(brew --prefix)/opt/vips-lite/lib/pkgconfig']"
         --unity=${{matrix.unity}}
+        -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off
       # "-Dcmake_prefix_path=['$(brew --prefix)/opt/crow-unix-socket']"
       # "-DCMAKE_OSX_ARCHITECTURES=$([[ ${{matrix.dep}} = framework ]] && echo 'arm64;x86_64')"
       # "-DWEBCFACE_FRAMEWORK=$([[ ${{matrix.dep}} != framework ]]; echo $?)"
