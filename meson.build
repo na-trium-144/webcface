@@ -783,6 +783,7 @@ foreach h: headers
     subdir: h_dir,
   )
 endforeach
+install_subdir('client/include/webcface/modules', install_dir: 'include/webcface')
 
 if host_machine.system() == 'linux'
   conf_data = configuration_data({
