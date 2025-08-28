@@ -12,6 +12,7 @@ version.rc
 /subprojects/*
 !/subprojects/packagefiles/
 !/subprojects/*.wrap
+!/subprojects/cpp-filesystem/
 # from glib:
 /subprojects/gvdb.wrap
 /subprojects/libffi.wrap
