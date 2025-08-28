@@ -18,7 +18,7 @@ find_library(WEBCFACE_RELEASE_LIB @webcface_lib_release@ PATHS "${PACKAGE_PREFIX
 # Create imported target webcface::webcface
 # target_link_libraries とか使ってかんたんに書くこともできるが、
 # Mesonのパーサーが認識できるようにするためにCMakeが生成するwebcface-targets.cmakeを真似てプロパティを書いている
-foreach(target webcface wcf)
+foreach(target webcface wcf webcface_modules)
   add_library(webcface::${target} SHARED IMPORTED)
   set_target_properties(webcface::${target} PROPERTIES
     INTERFACE_INCLUDE_DIRECTORIES "${PACKAGE_PREFIX_DIR}/@includedir@"
@@ -56,3 +56,17 @@ set_target_properties(webcface::webcface PROPERTIES
 set_target_properties(webcface::wcf PROPERTIES
   INTERFACE_COMPILE_FEATURES "c_std_99"
 )
+
+if(NOT CMAKE_VERSION VERSION_LESS 3.28)
+  target_sources(webcface::webcface_modules
+    INTERFACE
+      FILE_SET "webcface_modules"
+      TYPE "CXX_MODULES"
+      BASE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules"
+      FILES "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules/webcface.ccm"
+  )
+  set_target_properties(webcface::webcface_modules PROPERTIES
+    INTERFACE_COMPILE_FEATURES "cxx_std_20"
+    INTERFACE_LINK_LIBRARIES "webcface::webcface"
+  )
+endif()
