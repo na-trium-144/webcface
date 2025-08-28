@@ -85,6 +85,7 @@ jobs:
         -Dwrap_mode=default
         --cross-file scripts/cross/msvc_${{matrix.arch}}
         --unity=${{matrix.unity}}
+        -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
