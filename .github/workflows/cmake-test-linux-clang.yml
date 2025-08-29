@@ -71,3 +71,14 @@ jobs:
     # - name: clang-format-check
     #   if: matrix.clang == '17' && matrix.dep == 'apt'
     #   run: ninja clang-format-check -Cbuild
+
+    - name: install
+      run: meson install -C build
+    - name: Test CMake with installed package
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        CC: ${{ env.LLVM_PATH }}/bin/clang
+        CXX: ${{ env.LLVM_PATH }}/bin/clang++
+      run: |
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -GNinja
+        cmake --build build
