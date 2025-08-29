@@ -56,6 +56,7 @@ jobs:
         --buildtype=debug
         $([[ ${{matrix.dep}} != apt ]] && echo "-Dwrap_mode=forcefallback")
         -Dtest_wait=200
+        --prefix=${{github.workspace}}/build/install
         --force-fallback-for=libcurl
         --unity=${{matrix.unity}}
         -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off

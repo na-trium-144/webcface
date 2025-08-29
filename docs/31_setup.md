@@ -144,12 +144,13 @@ WebCFaceでは以下の3つのファイルをインストールするので、�
     webcface_dep = dependency('webcface', version: '>=3.0.0')
 
     cxx = meson.get_compiler('cpp')
-    if cxx.get_id() == 'gcc'
-      webcface_miu = webcface_dep.get_variable('includedir') / 'webcface/modules/webcface.cc'
+    if cxx.get_id() == 'gcc' and cxx.version().version_compare('>=11')
+      # see https://github.com/mesonbuild/meson/issues/6660
+      webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.cc'
       # https://github.com/ninja-build/ninja/issues/1962
       modules_args = ['-fmodules-ts', '-fdeps-format=p1689r5']
     elif cxx.get_argument_syntax() == 'msvc'
-      webcface_miu = webcface_dep.get_variable('includedir') / 'webcface/modules/webcface.ixx'
+      webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.ixx'
       modules_args = []
     else
       error('現在のMesonはclangでのmodulesには非対応')

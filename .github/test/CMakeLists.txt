@@ -14,8 +14,11 @@ target_link_libraries(test-c PRIVATE webcface::wcf)
 
 if(
     (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
-        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 11) OR
-    (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14) OR
+    (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16) OR
+    (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.34)
 )
     add_executable(test-module-cpp test_module.cc)
     target_link_libraries(test-module-cpp PRIVATE webcface::webcface_modules)

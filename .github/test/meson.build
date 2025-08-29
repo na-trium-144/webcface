@@ -14,14 +14,15 @@ executable('test-c', 'test.c',
 
 cxx = meson.get_compiler('cpp')
 if cxx.get_id() == 'gcc' and cxx.version().version_compare('>=11')
-  webcface_miu = webcface_dep.get_variable('includedir') / 'webcface/modules/webcface.cc'
+  # https://github.com/mesonbuild/meson/issues/6660
+  webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.cc'
   executable('test-module-cpp', 'test_module.cc', webcface_miu,
     dependencies: [webcface_dep],
     # https://github.com/ninja-build/ninja/issues/1962
     cpp_args: ['-fmodules-ts', '-fdeps-format=p1689r5']
   )
 elif cxx.get_argument_syntax() == 'msvc'
-  webcface_miu = webcface_dep.get_variable('includedir') / 'webcface/modules/webcface.ixx'
+  webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.ixx'
   executable('test-module-cpp', 'test_module.cc', webcface_miu,
     dependencies: [webcface_dep],
   )
