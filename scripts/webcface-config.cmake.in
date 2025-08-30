@@ -15,6 +15,11 @@ message(STATUS "WebCFace @webcface_version_str@: ${PACKAGE_PREFIX_DIR}")
 find_library(WEBCFACE_DEBUG_LIB @webcface_lib_debug@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
 find_library(WEBCFACE_RELEASE_LIB @webcface_lib_release@ PATHS "${PACKAGE_PREFIX_DIR}/@libdir@")
 
+set(webcface_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@")
+set(WEBCFACE_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@")
+set(webcface_LIBRARIES "${WEBCFACE_RELEASE_LIB}")
+set(WEBCFACE_LIBRARIES "${WEBCFACE_RELEASE_LIB}")
+
 # Create imported target webcface::webcface
 # target_link_libraries とか使ってかんたんに書くこともできるが、
 # Mesonのパーサーが認識できるようにするためにCMakeが生成するwebcface-targets.cmakeを真似てプロパティを書いている
