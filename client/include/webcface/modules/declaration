@@ -1,0 +1,201 @@
+#pragma once
+
+namespace ns_abi = webcface::WEBCFACE_NS_ABI(WEBCFACE_ABI_MAJOR);
+
+// export namespace webcface { にするとgcc-11〜16でエラー、バグ？
+// (failed to read compiled module: Bad file data)
+
+export WEBCFACE_NS_BEGIN; // semicolon for clang-format
+
+// いろいろなheaderにある
+using ns_abi::operator<<;
+using ns_abi::operator==;
+using ns_abi::operator!=;
+
+// common/encoding.h
+using ns_abi::usingUTF8;
+using ns_abi::StringView;
+using ns_abi::WStringView;
+using ns_abi::SharedString;
+using ns_abi::StringInitializer;
+using ns_abi::strJoin;
+
+// common/num_vector.h
+using ns_abi::NumVector;
+using ns_abi::MutableNumVector;
+
+// common/val_adaptor.h
+using ns_abi::ValType;
+using ns_abi::valTypeOf;
+using ns_abi::valTypeStr;
+using ns_abi::ValAdaptor;
+using ns_abi::ValAdapter;
+using ns_abi::argToTuple;
+
+// arg.h
+using ns_abi::Arg;
+
+// canvas2d.h
+using ns_abi::Canvas2D;
+
+// canavs3d.h
+using ns_abi::Canvas3D;
+
+// client.h
+using ns_abi::Client;
+
+// component_canvas2d.h
+using ns_abi::Canvas2DComponent;
+using ns_abi::Canvas2DComponentType;
+using ns_abi::TemporalCanvas2DComponent;
+
+// component_canvas3d.h
+using ns_abi::Canvas3DComponent;
+using ns_abi::Canvas3DComponentType;
+using ns_abi::TemporalCanvas3DComponent;
+
+// component_view.h
+using ns_abi::colorFromRGB;
+using ns_abi::TemporalViewComponent;
+using ns_abi::ViewColor;
+using ns_abi::ViewComponent;
+using ns_abi::ViewComponentType;
+
+// components.h
+using ns_abi::TemporalComponent;
+using ns_abi::TemporalGeometry;
+inline namespace components {
+inline namespace geometries {
+using ns_abi::Box;
+using ns_abi::box;
+using ns_abi::Circle;
+using ns_abi::circle;
+using ns_abi::Cylinder;
+using ns_abi::cylinder;
+using ns_abi::Line;
+using ns_abi::line;
+using ns_abi::Plane;
+using ns_abi::plane;
+using ns_abi::Polygon;
+using ns_abi::polygon;
+using ns_abi::Rect;
+using ns_abi::rect;
+using ns_abi::Sphere;
+using ns_abi::sphere;
+} // namespace geometries
+using ns_abi::button;
+using ns_abi::checkInput;
+using ns_abi::decimalInput;
+using ns_abi::newLine;
+using ns_abi::numberInput;
+using ns_abi::selectInput;
+using ns_abi::sliderInput;
+using ns_abi::text;
+using ns_abi::textInput;
+using ns_abi::toggleInput;
+} // namespace components
+
+// exception.h
+using ns_abi::FuncNotFound;
+using ns_abi::FuncSignatureMismatch;
+using ns_abi::Intrusion;
+using ns_abi::InvalidArgument;
+using ns_abi::OutOfRange;
+using ns_abi::PromiseError;
+using ns_abi::Rejection;
+using ns_abi::SanityError;
+
+// field.h
+using ns_abi::Field;
+using ns_abi::FieldBase;
+
+// func.h
+using ns_abi::Func;
+using ns_abi::FuncListener;
+
+// func_result.h
+using ns_abi::CallHandle;
+using ns_abi::FuncCallHandle;
+using ns_abi::Promise;
+
+// geometry.h
+using ns_abi::Geometry;
+using ns_abi::GeometryType;
+
+// image.h
+using ns_abi::Image;
+
+// image_frame.h
+using ns_abi::ImageColorMode;
+using ns_abi::ImageCompressMode;
+using ns_abi::ImageFrame;
+using ns_abi::Size;
+using ns_abi::sizeHW;
+using ns_abi::SizeOption;
+using ns_abi::sizeWH;
+
+// log.h
+namespace level {
+using ns_abi::level::LogLevelEnum;
+}
+using ns_abi::Log;
+using ns_abi::LogLine;
+using ns_abi::LogLineW;
+
+// member.h
+using ns_abi::Member;
+
+// robot_link.h
+using ns_abi::RobotJoint;
+using ns_abi::RobotJointType;
+inline namespace robot_joints {
+using ns_abi::fixedAbsolute;
+using ns_abi::fixedJoint;
+using ns_abi::prismaticJoint;
+using ns_abi::rotationalJoint;
+} // namespace robot_joints
+using ns_abi::RobotLink;
+
+// robot_model.h
+using ns_abi::RobotModel;
+
+// text.h
+using ns_abi::InputRef;
+using ns_abi::Text;
+using ns_abi::Variant;
+
+// trait.h
+namespace traits {
+using ns_abi::traits::TraitOk;
+}
+
+// transform.h
+using ns_abi::AxisAngle;
+using ns_abi::AxisSequence;
+using ns_abi::get;
+using ns_abi::identity;
+using ns_abi::Point;
+using ns_abi::rot2D;
+using ns_abi::Rotation;
+using ns_abi::rotFromAxisAngle;
+using ns_abi::rotFromEuler;
+using ns_abi::rotFromMatrix;
+using ns_abi::rotFromQuat;
+using ns_abi::rotX;
+using ns_abi::rotY;
+using ns_abi::rotZ;
+using ns_abi::Transform;
+using ns_abi::translation;
+
+// value.h
+using ns_abi::Value;
+using ns_abi::ValueElementRef;
+
+// version.h
+using ns_abi::version;
+using ns_abi::version_s;
+
+// view.h
+using ns_abi::View;
+
+WEBCFACE_NS_END

@@ -107,11 +107,6 @@ calling convention
 #define WEBCFACE_CALL_FP
 #endif
 
-// gccかどうかのチェック: webcfaceを使う側でも必要なので、コンパイル時にチェックする
-#if defined(__GNUC__) && !defined(__clang__)
-#define WEBCFACE_COMPILER_IS_GCC
-#endif
-
 // doxygenを生成するときは namespace webcface だけにする
 #ifdef WEBCFACE_DOXYGEN
 #define WEBCFACE_NS_BEGIN namespace webcface {

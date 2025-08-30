@@ -56,7 +56,7 @@ jobs:
             ! nm -g --defined-only build/libwebcface.so | grep -v webcface | grep -v wcf | grep vips
             meson install -C build
             cd /workspace/.github/test
-            cmake -B build -DCMAKE_PREFIX_PATH=/workspace/build/install
+            cmake -B build -DCMAKE_PREFIX_PATH=/workspace/build/install -GNinja
             cmake --build build
             meson setup buildmc -Dcmake_prefix_path=/workspace/build/install
             meson compile -Cbuildmc

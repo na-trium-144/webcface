@@ -503,10 +503,14 @@ class Rotation {
      *
      */
     WEBCFACE_DLL bool operator==(const Rotation &other) const;
-    bool operator!=(const Rotation &other) const { return !(*this == other); }
+    bool operator!=(const Rotation &other) const {
+        return !this->operator==(other);
+    }
 
     WEBCFACE_DLL bool operator==(const Transform &other) const;
-    bool operator!=(const Transform &other) const { return !(*this == other); }
+    bool operator!=(const Transform &other) const {
+        return !this->operator==(other);
+    }
 };
 
 /*!

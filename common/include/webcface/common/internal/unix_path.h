@@ -4,12 +4,12 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wabi"
 #endif
 #include <spdlog/logger.h>
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 

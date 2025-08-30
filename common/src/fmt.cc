@@ -9,13 +9,13 @@
 #include "webcface/common/internal/message/robot_model.h"
 #include "webcface/common/internal/message/sync.h"
 
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wabi"
 #endif
 #include <fmt/std.h>
 #include <fmt/chrono.h>
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 

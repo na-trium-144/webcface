@@ -5,12 +5,12 @@
 #include "webcface/common/internal/unlock.h"
 #include "webcface/common/internal/safe_global.h"
 
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wabi"
 #endif
 #include <spdlog/sinks/stdout_color_sinks.h>
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
 #include <string>
@@ -173,7 +173,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
             {
                 // sendの前にrecvを行う
                 ScopedUnlock un(lock_ws);
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wabi"
 #endif
@@ -188,7 +188,7 @@ void internal::wsThreadMain(const std::shared_ptr<ClientData> &data) {
                         lock_ws.cond().notify_all();
                     })) {
                 }
-#ifdef WEBCFACE_COMPILER_IS_GCC
+#if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic pop
 #endif
             }
