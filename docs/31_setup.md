@@ -144,7 +144,7 @@ WebCFaceでは以下の3つのファイルをインストールするので、�
     webcface_dep = dependency('webcface', version: '>=3.0.0')
 
     cxx = meson.get_compiler('cpp')
-    if cxx.get_id() == 'gcc' and cxx.version().version_compare('>=11')
+    if cxx.get_id() == 'gcc' and cxx.version().version_compare('>=14')
       # see https://github.com/mesonbuild/meson/issues/6660
       webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.cc'
       # https://github.com/ninja-build/ninja/issues/1962
