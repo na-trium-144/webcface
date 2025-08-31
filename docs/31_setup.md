@@ -128,7 +128,7 @@ import webcface;
 include/webcface/modules/webcface.ccm として module interface unit のソースファイルがインストールされるので、それをプロジェクトのソースに追加してコンパイルすることで利用できます。
 ビルド済みのBMIはインストールしないので、コンパイラのバージョンの互換性を気にする必要はありません。
 
-\caution
+\warning
 通常CMakeを使えばどのコンパイラでも `.ccm` をモジュールのファイルとして受け付けますが、本来の module interface unit のファイル拡張子はコンパイラごとに異なります。(参考: https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules )
 WebCFaceでは以下の3つのファイルをインストールするので、使用できる拡張子に制限がある場合はいずれかを利用してください。内容はどれでも同じです。
 * GCC用: include/webcface/modules/webcface.cc
@@ -174,7 +174,7 @@ WebCFaceでは以下の3つのファイルをインストールするので、�
     \note
     webcface::webcface_modules ターゲットには cpp_std_20 の指定が含まれています。
     
-    \caution
+    \warning
     プロジェクトのcmake_minimum_requiredが3.28未満(CMP0155がOLD)の場合、modules関連のコンパイルオプションがCMakeによって正しく適用されない可能性があります。
 
 </div>
