@@ -13,6 +13,9 @@
 	* ValAdaptorからstring_viewへの暗黙変換を可能に、ValAdaptorからstringへの変換はexplicitに
 	* Variant::get() InputRef::get() をValAdaptorの参照からコピーに変更
 * `using ValAdapter = ValAdaptor;` を追加 (#526)
+* C++20 modules 対応 (#532)
+	* `include/webcface/modules/webcface{.cc,.ccm,.ixx}`
+	* webcfaceConfig.cmake 内で `webcface::webcface_modules` ターゲット(CMake用)、`webcface_INCLUDE_DIR` の定義(Meson用) を追加
 
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
@@ -26,6 +29,8 @@
 * クライアントの投げる例外の型をすべて独自のクラスに変更、メッセージを改善 (#518)
 * msgpackでシリアライズ時にdoubleをintやfloatに変換可能なら変換してからpackするようにした (#516)
 * Funcのtraitチェックのエラーメッセージを改善し、問題の引数がどれかわかるようにした (#526)
+* `webcface::level::LogLevelEnum` を C-style enum から enum class に変更し、 `webcface::LogLevel`, `webcface::level` に移動 (#532)
+	* `LogLine::level()` の戻り値型変更
 
 ## [2.9.0] - 2025-02-09
 ### Added
