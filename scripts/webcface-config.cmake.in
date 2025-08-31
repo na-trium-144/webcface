@@ -64,16 +64,30 @@ set_target_properties(webcface::wcf PROPERTIES
 )
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.28)
-  add_library(webcface_modules STATIC EXCLUDE_FROM_ALL)
-  add_library(webcface::webcface_modules ALIAS webcface_modules)
-  target_compile_features(webcface_modules PUBLIC cxx_std_20)
-  target_include_directories(webcface_modules PUBLIC "${PACKAGE_PREFIX_DIR}/@includedir@")
-  target_link_libraries(webcface_modules PUBLIC webcface::webcface)
-  target_sources(webcface_modules
-    PUBLIC
-      FILE_SET "webcface_modules"
-      TYPE "CXX_MODULES"
-      BASE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules"
-      FILES "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules/webcface.ccm"
+  if(
+    (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14) OR
+    (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16) OR
+    (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
+        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.34)
   )
+    message(STATUS "webcface::webcface_modules target is available.")
+    add_library(webcface_modules STATIC EXCLUDE_FROM_ALL)
+    add_library(webcface::webcface_modules ALIAS webcface_modules)
+    target_compile_features(webcface_modules PUBLIC cxx_std_20)
+    target_include_directories(webcface_modules PUBLIC "${PACKAGE_PREFIX_DIR}/@includedir@")
+    target_link_libraries(webcface_modules PUBLIC webcface::webcface)
+    target_sources(webcface_modules
+      PUBLIC
+        FILE_SET "webcface_modules"
+        TYPE "CXX_MODULES"
+        BASE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules"
+        FILES "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules/webcface.ccm"
+    )
+  else()
+    message(STATUS "webcface::webcface_modules target is not available, because this compiler is old.")
+  endif()
+else()
+  message(STATUS "webcface::webcface_modules target is not available, because this cmake is old.")
 endif()
