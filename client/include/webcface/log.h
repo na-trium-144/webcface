@@ -3,6 +3,8 @@
 #include <optional>
 #include <vector>
 #include <chrono>
+#include <ostream>
+#include <string>
 #include "field.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
@@ -15,8 +17,16 @@ namespace message {
 struct LogLine;
 }
 
-namespace level {
-enum LogLevelEnum {
+/*!
+ * \brief ログレベルを表すenum
+ * \since ver3.0
+ *
+ * * ver2.9までは namespace level 内の enum LogLevelEnum だった。
+ * 後方互換性のために webcface::level としてエイリアスを貼っている
+ * (他のクラスの名前規則と合っていないが)
+ *
+ */
+enum class LogLevel : int {
     trace = 0,
     debug = 1,
     info = 2,
@@ -25,6 +35,28 @@ enum LogLevelEnum {
     error = 4,
     critical = 5,
 };
+using level = LogLevel;
+
+/*!
+ * \since ver3.0
+ */
+inline std::ostream &operator<<(std::ostream &os, LogLevel level) {
+    switch (level) {
+    case LogLevel::trace:
+        return os << "trace";
+    case LogLevel::debug:
+        return os << "debug";
+    case LogLevel::info:
+        return os << "info";
+    case LogLevel::warn:
+        return os << "warn";
+    case LogLevel::error:
+        return os << "error";
+    case LogLevel::critical:
+        return os << "critical";
+    default:
+        return os << std::to_string(static_cast<int>(level));
+    }
 }
 
 struct WEBCFACE_DLL LogLineData {
@@ -43,7 +75,7 @@ struct WEBCFACE_DLL LogLineData {
 class LogLine : private LogLineData {
   public:
     LogLine(const LogLineData &ll) : LogLineData(ll) {}
-    int level() const { return level_; }
+    LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
      * * ver2.10〜 StringViewに変更
@@ -54,7 +86,7 @@ class LogLine : private LogLineData {
 class LogLineW : private LogLineData {
   public:
     LogLineW(const LogLineData &ll) : LogLineData(ll) {}
-    int level() const { return level_; }
+    LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
      * * ver2.10〜 WStringViewに変更
@@ -184,8 +216,14 @@ class WEBCFACE_DLL Log : protected Field {
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
      * * ver2.10〜 String型に変更
+     * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */
+    const Log &append(LogLevel level, StringInitializer message) const {
+        return append({static_cast<int>(level),
+                       std::chrono::system_clock::now(),
+                       static_cast<SharedString &>(message)});
+    }
     const Log &append(int level, StringInitializer message) const {
         return append({level, std::chrono::system_clock::now(),
                        static_cast<SharedString &>(message)});
@@ -196,8 +234,15 @@ class WEBCFACE_DLL Log : protected Field {
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
      * * ver2.10〜 String型に変更
+     * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */
+    const Log &append(LogLevel level,
+                      std::chrono::system_clock::time_point time,
+                      StringInitializer message) const {
+        return append({static_cast<int>(level), time,
+                       static_cast<SharedString &>(message)});
+    }
     const Log &append(int level, std::chrono::system_clock::time_point time,
                       StringInitializer message) const {
         return append({level, time, static_cast<SharedString &>(message)});

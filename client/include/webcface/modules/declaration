@@ -135,9 +135,8 @@ using ns_abi::SizeOption;
 using ns_abi::sizeWH;
 
 // log.h
-namespace level {
-using ns_abi::level::LogLevelEnum;
-}
+using ns_abi::LogLevel;
+using ns_abi::level;
 using ns_abi::Log;
 using ns_abi::LogLine;
 using ns_abi::LogLineW;
