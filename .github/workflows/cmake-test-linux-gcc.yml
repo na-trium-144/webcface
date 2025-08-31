@@ -91,7 +91,7 @@ jobs:
         CC: gcc-${{matrix.gcc_ver}}
         CXX: g++-${{matrix.gcc_ver}}
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -GNinja
         cmake --build build
 
     - name: Test building with pkg-config

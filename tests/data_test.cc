@@ -280,8 +280,8 @@ TEST_F(DataTest, logGet) {
     EXPECT_EQ(log("a", "b").tryGetW().value().size(), 3u);
     ASSERT_EQ(log("a", "b").get().size(), 3u);
     ASSERT_EQ(log("a", "b").getW().size(), 3u);
-    EXPECT_EQ(log("a", "b").get()[2].level(), 3);
-    EXPECT_EQ(log("a", "b").getW()[2].level(), 3);
+    EXPECT_EQ(static_cast<int>(log("a", "b").get()[2].level()), 3);
+    EXPECT_EQ(static_cast<int>(log("a", "b").getW()[2].level()), 3);
     EXPECT_EQ(log("a", "b").get()[2].message(), "c");
     EXPECT_EQ(log("a", "b").getW()[2].message(), L"c");
     EXPECT_EQ(log("a", "c").tryGet(), std::nullopt);

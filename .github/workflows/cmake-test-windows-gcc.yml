@@ -80,7 +80,7 @@ jobs:
       if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install
+        cmake -B build -DCMAKE_PREFIX_PATH=../../build/install -GNinja
         cmake --build build --config Debug
 
     - name: Test building with pkg-config

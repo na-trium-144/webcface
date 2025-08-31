@@ -9,6 +9,6 @@
 WEBCFACE_NS_BEGIN
 namespace traits {
 using TraitOkType = std::nullptr_t;
-constexpr std::nullptr_t TraitOk = nullptr;
+inline constexpr std::nullptr_t TraitOk = nullptr;
 } // namespace traits
 WEBCFACE_NS_END
