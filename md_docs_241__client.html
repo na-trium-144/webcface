@@ -143,22 +143,22 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md50">接続</a><ul><li class="level2"><a href="#autotoc_md51">接続後</a></li>
+<ul><li class="level1"><a href="#autotoc_md51">接続</a><ul><li class="level2"><a href="#autotoc_md52">接続後</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md52">接続状態の確認</a></li>
-<li class="level1"><a href="#autotoc_md53">Encoding</a></li>
-<li class="level1"><a href="#autotoc_md54">送受信</a></li>
-<li class="level1"><a href="#autotoc_md55">切断する</a></li>
-<li class="level1"><a href="#autotoc_md56">バージョン情報</a></li>
-<li class="level1"><a href="#autotoc_md57">サーバーの情報</a><ul><li class="level2"><a href="#autotoc_md58">serverVersion, serverName</a></li>
-<li class="level2"><a href="#autotoc_md59">serverHostName</a></li>
+<li class="level1"><a href="#autotoc_md53">接続状態の確認</a></li>
+<li class="level1"><a href="#autotoc_md54">Encoding</a></li>
+<li class="level1"><a href="#autotoc_md55">送受信</a></li>
+<li class="level1"><a href="#autotoc_md56">切断する</a></li>
+<li class="level1"><a href="#autotoc_md57">バージョン情報</a></li>
+<li class="level1"><a href="#autotoc_md58">サーバーの情報</a><ul><li class="level2"><a href="#autotoc_md59">serverVersion, serverName</a></li>
+<li class="level2"><a href="#autotoc_md60">serverHostName</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md60">ログ出力</a></li>
+<li class="level1"><a href="#autotoc_md61">ログ出力</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md49"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md50"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface::Client</a> (<code><a class="el" href="client_8h.html">webcface/client.h</a></code>)</li>
 <li>C Reference: <a class="el" href="c__wcf_2client_8h.html">c_wcf/client.h</a></li>
@@ -167,7 +167,7 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 </ul>
 </dd></dl>
 <p>WebCFaceのメインとなるクラスです。</p>
-<h1><a class="anchor" id="autotoc_md50"></a>
+<h1><a class="anchor" id="autotoc_md51"></a>
 接続</h1>
 <p><strike>Client オブジェクトを作るとサーバーへの接続を開始します。</strike> <br  />
  <span class="since-c">1.2</span> <span class="since-js">1.1</span> <span class="since-py"></span> Client オブジェクトを作り、start() を呼ぶことでサーバーへの接続を開始します。</p>
@@ -326,12 +326,12 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md51"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md52"></a>
 接続後</h2>
 <p>クライアントが正常に接続できると、サーバーのログに </p><div class="fragment"><div class="line">[info] Successfully connected and initialized.</div>
 </div><!-- fragment --><p> などと表示されます。 (クライアントの名前を指定しなかった場合は表示されません)</p>
 <p>プログラムを起動できたら、WebUIを開いてみましょう。 そして右上のメニューを開き、Clientの初期化時に指定した名前がそこに表示されていれば正しく通信できています。</p>
-<h1><a class="anchor" id="autotoc_md52"></a>
+<h1><a class="anchor" id="autotoc_md53"></a>
 接続状態の確認</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 接続できているかどうかは <code>Client::connected()</code> で取得できます。 </p><div class="fragment"><div class="line"><span class="keywordflow">if</span>(wcli.connected()){</div>
@@ -355,14 +355,14 @@ $(document).ready(function(){initNavTree('md_docs_241__client.html',''); initRes
 <div class="line">    <span class="comment"># 接続中</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md53"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md54"></a>
 Encoding</h1>
 <p><span class="since-c">2.0</span></p>
 <p>webcfaceのAPIではほぼすべての関数でマルチバイト文字列(<code>std::string</code>, <code>char *</code>)の代わりにワイド文字列(<code>std::wstring</code>, <code>wchar_t *</code>)が使用可能です。</p>
 <p>マルチバイト文字列はデフォルトではWindows,Linux,MacOSともにUTF-8エンコーディングとして扱われます。 ただしWindowsでのみClientの初期化前に最初に <code>webcface::usingUTF8(false)</code> (Cでは <code>wcfUsingUTF8(0)</code>) をすることでANSIエンコーディング(日本語環境ではShiftJIS)として扱われるようにすることもできます。 (その場合webcface内部でUTF-8との変換が行われます) デフォルトでは <code>webcface::usingUTF8(true)</code> (Cでは <code>wcfUsingUTF8(1)</code>) が設定されています。</p>
 <p>ワイド文字列はWindowsではUTF-16、Linux/MacOSではUTF-32でエンコードされていることを想定しています。 usingUTF8 の設定はワイド文字列の扱いには影響しませんが、 windowsで Client::loggerWStreamBuf(), loggerWOStream() を使用する場合は出力するコンソールのコードページに合わせてください。 (内部でstringに変換してコンソールへ出力されるため)</p>
 <p>C++で文字列を返すAPI、およびCのAPI全般ではワイド文字列を使用する関数やstruct名には末尾に<code>W</code>が付きます。</p>
-<h1><a class="anchor" id="autotoc_md54"></a>
+<h1><a class="anchor" id="autotoc_md55"></a>
 送受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.sync();</div>
@@ -514,7 +514,7 @@ Encoding</h1>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md55"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md56"></a>
 切断する</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.close();</div>
@@ -570,7 +570,7 @@ Encoding</h1>
 </div><div class="tabbed"></div><p>切断するとサーバーのログに </p><div class="fragment"><div class="line">[info] connection closed</div>
 </div><!-- fragment --><p> などと表示されます。</p>
 <dl class="section warning"><dt>Warning</dt><dd>closeしたあと再度start()を呼んで再接続することはできません。</dd></dl>
-<h1><a class="anchor" id="autotoc_md56"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 バージョン情報</h1>
 <p>いま使用しているWebCFaceライブラリのバージョンを確認できます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -590,9 +590,9 @@ Encoding</h1>
 <li><b class="tab-title">Python</b> <dl class="section since"><dt>Since</dt><dd><span class="since-py">1.0.2</span></dd></dl>
 <code>webcface.__version__</code> で文字列として(例: <code>"1.0.2"</code>)取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md57"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md58"></a>
 サーバーの情報</h1>
-<h2><a class="anchor" id="autotoc_md58"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 serverVersion, serverName</h2>
 <ul>
 <li>serverVersion でサーバーのバージョンを取得できます。</li>
@@ -605,7 +605,7 @@ serverVersion, serverName</h2>
 <li><b class="tab-title">JavaScript</b> <code>wcli.serverVersion</code>, <code>wcli.serverName</code> で取得できます。</li>
 <li><b class="tab-title">Python</b> <code>wcli.server_version</code>, <code>wcli.server_name</code> で取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md59"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md60"></a>
 serverHostName</h2>
 <p>サーバーを起動しているPCのホスト名を取得できます。 WebUI ver1.7 以降ではWebUIのページタイトルにも表示されています。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -619,7 +619,7 @@ serverHostName</h2>
 <code>wcli.server_hostname</code> で取得できます。</li>
 </ul>
 </div><div class="tabbed"></div><dl class="section warning"><dt>Warning</dt><dd>Clientの接続が完了し受信するまでは取得できません(空文字列になります)。 受信するのは waitConnection() の待機完了よりも後です。</dd></dl>
-<h1><a class="anchor" id="autotoc_md60"></a>
+<h1><a class="anchor" id="autotoc_md61"></a>
 ログ出力</h1>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.1.7</span> <span class="since-js">1.1</span> <span class="since-py"></span></dd></dl>
 <p><code>WEBCFACE_VERBOSE</code> 環境変数が存在する場合、WebCFaceの通信に関するログ(接続、切断、メッセージのエラーなど)が出力されます。 また <code>WEBCFACE_TRACE</code> 環境変数が存在すると内部で使用しているlibcurlの出力も表示します。</p>
@@ -637,7 +637,7 @@ serverHostName</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

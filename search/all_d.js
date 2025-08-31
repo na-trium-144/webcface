@@ -12,7 +12,7 @@ var searchData=
   ['end_9',['end',['../structwebcface_1_1components_1_1geometries_1_1Line.html#a131cc23b57022a9d4384d9205eadf18b',1,'webcface::components::geometries::Line::end()'],['../classwebcface_1_1NumVector.html#aa3170aa181d9ff728d0a4c1b02097616',1,'webcface::NumVector::end()'],['../classwebcface_1_1MutableNumVector.html#a39ea9716de3a651f162c15c419808728',1,'webcface::MutableNumVector::end()'],['../classwebcface_1_1MutableNumVector.html#aa3170aa181d9ff728d0a4c1b02097616',1,'webcface::MutableNumVector::end() const']]],
   ['entry_10',['entry',['../namespacewebcface_1_1message_1_1MessageKind.html#a1432d06fc2e2d1f6da93d1c04dec4484aea7013f3ac85e6433e2758c1e7052ae5',1,'webcface::message::MessageKind']]],
   ['entry_11',['Entry',['../structwebcface_1_1message_1_1Entry.html',1,'webcface::message']]],
-  ['error_12',['error',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66ad606e435413ea0944dd00d49e901e4ed',1,'webcface::level']]],
+  ['error_12',['error',['../namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94acb5e100e5a9a3e7f6d1fd97512215282',1,'webcface']]],
   ['eulertomatrix_13',['eulerToMatrix',['../classwebcface_1_1Rotation.html#a3bd9a513eb538ad7e37712842a7b4b83',1,'webcface::Rotation']]],
   ['exception_14',['exception',['../classwebcface_1_1server_1_1AppWrapper.html#a8e12b6ef4dd56c394e5900af538dd989',1,'webcface::server::AppWrapper']]],
   ['exception_2ecc_15',['exception.cc',['../exception_8cc.html',1,'']]],

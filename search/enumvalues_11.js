@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['warn_0',['warn',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a030352c93c772334261abda73e03885f',1,'webcface::level']]],
-  ['warning_1',['warning',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a8de9aef05fc85e519a0cfce33573f492',1,'webcface::level']]],
+  ['warn_0',['warn',['../namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a1ea4c3ab05ee0c6d4de30740443769cb',1,'webcface']]],
+  ['warning_1',['warning',['../namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a7b83d3f08fa392b79e3f553b585971cd',1,'webcface']]],
   ['wcf_5fbad_5fhandle_2',['WCF_BAD_HANDLE',['../def__types_8h.html#a17252b935b26f94752dff94f4c5942e5a46c358afc09b9d9fbad82b8bb4b02d81',1,'def_types.h']]],
   ['wcf_5fbad_5fwcli_3',['WCF_BAD_WCLI',['../def__types_8h.html#a17252b935b26f94752dff94f4c5942e5a9a82673d8e8e99c6c0877a9b07ece628',1,'def_types.h']]],
   ['wcf_5fcolor_5fblack_4',['WCF_COLOR_BLACK',['../def__types_8h.html#ad8149f97b37c9ddd8216f78fc722dfd7ad2739d1b161bf08945f1a186ac763a54',1,'def_types.h']]],

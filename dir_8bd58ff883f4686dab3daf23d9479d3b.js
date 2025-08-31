@@ -2,6 +2,7 @@ var dir_8bd58ff883f4686dab3daf23d9479d3b =
 [
     [ "c_wcf", "dir_3c7d6bd2c75fa3e3c4a968df4078832c.html", "dir_3c7d6bd2c75fa3e3c4a968df4078832c" ],
     [ "internal", "dir_96b6547db6ac3cc6aa0de0b99fd274ad.html", "dir_96b6547db6ac3cc6aa0de0b99fd274ad" ],
+    [ "modules", "dir_a8ae695cb872dfb615e1f9dd640e96fe.html", "dir_a8ae695cb872dfb615e1f9dd640e96fe" ],
     [ "arg.h", "arg_8h.html", "arg_8h" ],
     [ "array_like.h", "array__like_8h.html", "array__like_8h" ],
     [ "c_wcf.h", "c__wcf_8h.html", null ],

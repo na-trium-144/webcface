@@ -144,10 +144,11 @@ $(document).ready(function(){initNavTree('md_docs_231__setup.html',''); initResi
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md38">C/C++</a><ul><li class="level2"><a href="#autotoc_md39">API</a></li>
+<li class="level2"><a href="#autotoc_md40">C++20 modules</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md40">Python</a></li>
-<li class="level1"><a href="#autotoc_md41">JavaScript/TypeScript</a></li>
+<li class="level1"><a href="#autotoc_md41">Python</a></li>
+<li class="level1"><a href="#autotoc_md42">JavaScript/TypeScript</a></li>
 </ul>
 </div>
 <div class="textblock"><p><a class="anchor" id="autotoc_md37"></a></p>
@@ -232,14 +233,55 @@ API</h2>
 <p><strike>&lt;<a class="el" href="c__wcf_8h.html">webcface/c_wcf.h</a>&gt; をincludeすることで使えます。</strike> <br  />
  <span class="since-c">1.7</span> &lt;<a class="el" href="wcf_8h.html">webcface/wcf.h</a>&gt; をincludeすることで使えます。(c_wcf.hも一応使えます) <br  />
  ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c">2.0</span> enum wcfStatus 型で、 成功した場合 0 (= WCF_OK)、例外が発生した場合正の値を返します。</p>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
+C++20 modules</h2>
+<dl class="section since"><dt>Since</dt><dd><span class="since-c">3.0</span></dd></dl>
+<p>C++20のmodulesとしてWebCFaceをimportすることもできます。 </p><div class="fragment"><div class="line"><span class="keyword">import</span> <a class="code hl_namespace" href="namespacewebcface.html">webcface</a>;</div>
+<div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> arg.h:14</div></div>
+</div><!-- fragment --><p> <code>#include &lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code> と同様 <code>webcface::</code> 以下のすべての機能が使えるようになります。</p>
+<p>include/webcface/modules/webcface.ccm として module interface unit のソースファイルがインストールされるので、それをプロジェクトのソースに追加してコンパイルすることで利用できます。 ビルド済みのBMIはインストールしないので、コンパイラのバージョンの互換性を気にする必要はありません。</p>
+<p>\caution 通常CMakeを使えばどのコンパイラでも <code>.ccm</code> をモジュールのファイルとして受け付けますが、本来の module interface unit のファイル拡張子はコンパイラごとに異なります。(参考: <a href="https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules">https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules</a> ) WebCFaceでは以下の3つのファイルをインストールするので、使用できる拡張子に制限がある場合はいずれかを利用してください。内容はどれでも同じです。</p><ul>
+<li>GCC用: <a class="el" href="webcface_8cc.html">include/webcface/modules/webcface.cc</a></li>
+<li>Clang用: include/webcface/modules/webcface.ccm</li>
+<li>MSVC用: <a class="el" href="webcface_8ixx.html">include/webcface/modules/webcface.ixx</a></li>
+</ul>
+<div class="tabbed"></div><div class="tabbed"><ul>
+<li><b class="tab-title">Meson</b> Meson側でのmodulesサポート機能は完全ではないので、以下のようにソースファイルの指定などを手動で行う必要があります。 (詳細は <a href="https://github.com/mesonbuild/meson/issues/5024">https://github.com/mesonbuild/meson/issues/5024</a> ) <div class="fragment"><div class="line">webcface_dep = dependency(&#39;webcface&#39;, version: &#39;&gt;=3.0.0&#39;)</div>
+<div class="line"> </div>
+<div class="line">cxx = meson.get_compiler(&#39;cpp&#39;)</div>
+<div class="line">if cxx.get_id() == &#39;gcc&#39; and cxx.version().version_compare(&#39;&gt;=14&#39;)</div>
+<div class="line">  # see https://github.com/mesonbuild/meson/issues/6660</div>
+<div class="line">  webcface_miu = webcface_dep.get_variable(pkgconfig: &#39;includedir&#39;, cmake: &#39;PACKAGE_INCLUDE_DIRS&#39;) / &#39;webcface/modules/webcface.cc&#39;</div>
+<div class="line">  # https://github.com/ninja-build/ninja/issues/1962</div>
+<div class="line">  modules_args = [&#39;-fmodules-ts&#39;, &#39;-fdeps-format=p1689r5&#39;]</div>
+<div class="line">elif cxx.get_argument_syntax() == &#39;msvc&#39;</div>
+<div class="line">  webcface_miu = webcface_dep.get_variable(pkgconfig: &#39;includedir&#39;, cmake: &#39;PACKAGE_INCLUDE_DIRS&#39;) / &#39;webcface/modules/webcface.ixx&#39;</div>
+<div class="line">  modules_args = []</div>
+<div class="line">else</div>
+<div class="line">  error(&#39;現在のMesonはclangでのmodulesには非対応&#39;)</div>
+<div class="line">fi</div>
+<div class="line"> </div>
+<div class="line"># webcface_depに加えて、webcface_miuと追加のフラグ(gccのみ)をプロジェクトに追加</div>
+<div class="line">executable(&#39;main&#39;, &#39;main.cc&#39;, webcface_miu,</div>
+<div class="line">  dependencies: [webcface_dep],</div>
+<div class="line">  cpp_args: modules_args,</div>
+<div class="line">)</div>
+</div><!-- fragment --></li>
+<li><p class="startli"><b class="tab-title">CMake</b> CMakeのバージョンが3.28以上の場合、<code>webcface::webcface</code> の代わりに <code>webcface::webcface_modules</code> をリンクすることで、 module interface unit が自動的にターゲットのソースに追加されます。 </p><div class="fragment"><div class="line">find_package(webcface 3.0 CONFIG REQUIRED)</div>
+<div class="line"> </div>
+<div class="line">target_link_libraries(your-target PRIVATE webcface::webcface_modules)</div>
+</div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>webcface::webcface_modules ターゲットには cpp_std_20 の指定が含まれています。</dd></dl>
+<p>\caution プロジェクトのcmake_minimum_requiredが3.28未満(CMP0155がOLD)の場合、modules関連のコンパイルオプションがCMakeによって正しく適用されない可能性があります。</p>
+</li>
+</ul>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md41"></a>
 Python</h1>
 <p>Pythonで利用したい場合は <code>pip install webcface</code> でライブラリをインストールしてください。 Python3.6以上で動作します。</p>
 <p>importは </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
 </div><!-- fragment --><p> で <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> のように使うか、 </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
 </div><!-- fragment --><p> のように使います。</p>
 <p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a> も参照してください</p>
-<h1><a class="anchor" id="autotoc_md41"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 JavaScript/TypeScript</h1>
 <p><code>npm install webcface</code> でライブラリをインストールできます。 Node.jsでもブラウザー(webpackなど)でも動きます。</p>
 <p>Node.jsの場合、ESMで </p><div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
@@ -259,7 +301,7 @@ JavaScript/TypeScript</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

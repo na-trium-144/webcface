@@ -161,12 +161,12 @@ $(document).ready(function(){initNavTree('client__internal_8h_source.html',''); 
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="data__store2_8h.html">data_store2.h</a>&quot;</span></div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="func__internal_8h.html">func_internal.h</a>&quot;</span></div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="preprocessor">#include &quot;<a class="code" href="image__frame_8h.html">webcface/image_frame.h</a>&quot;</span></div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#if defined(__GNUC__) &amp;&amp; !defined(__clang__)</span></div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="preprocessor">#pragma GCC diagnostic push</span></div>
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#pragma GCC diagnostic ignored &quot;-Wabi&quot;</span></div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#include &lt;spdlog/logger.h&gt;</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#ifdef WEBCFACE_COMPILER_IS_GCC</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span><span class="preprocessor">#if defined(__GNUC__) &amp;&amp; !defined(__clang__)</span></div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="preprocessor">#pragma GCC diagnostic pop</span></div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="preprocessor">#endif</span></div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
@@ -425,7 +425,7 @@ $(document).ready(function(){initNavTree('client__internal_8h_source.html',''); 
 <div class="ttc" id="aclasswebcface_1_1Canvas3D_html"><div class="ttname"><a href="classwebcface_1_1Canvas3D.html">webcface::Canvas3D</a></div><div class="ttdoc">Canvas3Dの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> canvas3d.h:28</div></div>
 <div class="ttc" id="aclasswebcface_1_1Func_html"><div class="ttname"><a href="classwebcface_1_1Func.html">webcface::Func</a></div><div class="ttdoc">関数1つを表すクラス</div><div class="ttdef"><b>Definition</b> func.h:106</div></div>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:20</div></div>
-<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:73</div></div>
+<div class="ttc" id="aclasswebcface_1_1Log_html"><div class="ttname"><a href="classwebcface_1_1Log.html">webcface::Log</a></div><div class="ttdoc">ログの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> log.h:105</div></div>
 <div class="ttc" id="aclasswebcface_1_1Member_html"><div class="ttname"><a href="classwebcface_1_1Member.html">webcface::Member</a></div><div class="ttdoc">Memberを指すクラス</div><div class="ttdef"><b>Definition</b> member.h:23</div></div>
 <div class="ttc" id="aclasswebcface_1_1RobotModel_html"><div class="ttname"><a href="classwebcface_1_1RobotModel.html">webcface::RobotModel</a></div><div class="ttdoc">RobotModelの送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> robot_model.h:26</div></div>
 <div class="ttc" id="aclasswebcface_1_1SharedString_html"><div class="ttname"><a href="classwebcface_1_1SharedString.html">webcface::SharedString</a></div><div class="ttdoc">u8stringとstringとwstringをshared_ptrで持ち共有する</div><div class="ttdef"><b>Definition</b> encoding.h:159</div></div>
@@ -523,15 +523,15 @@ $(document).ready(function(){initNavTree('client__internal_8h_source.html',''); 
 <div class="ttc" id="astructwebcface_1_1internal_1_1ClientData_html_af1c83dbbc88e7d110b2d654891874672"><div class="ttname"><a href="structwebcface_1_1internal_1_1ClientData.html#af1c83dbbc88e7d110b2d654891874672">webcface::internal::ClientData::member_entry</a></div><div class="ttdeci">SharedMutexProxy&lt; StrMap1&lt; bool &gt; &gt; member_entry</div><div class="ttdef"><b>Definition</b> client_internal.h:318</div></div>
 <div class="ttc" id="astructwebcface_1_1internal_1_1ClientData_html_af6db4cbbb6a0079dffbd4bd0a8e1c803"><div class="ttname"><a href="structwebcface_1_1internal_1_1ClientData.html#af6db4cbbb6a0079dffbd4bd0a8e1c803">webcface::internal::ClientData::log_append_event</a></div><div class="ttdeci">SharedMutexProxy&lt; StrMap2&lt; std::shared_ptr&lt; std::function&lt; void(Log)&gt; &gt; &gt; &gt; log_append_event</div><div class="ttdef"><b>Definition</b> client_internal.h:395</div></div>
 <div class="ttc" id="astructwebcface_1_1internal_1_1ClientData_html_afcbc15d6010c5254d6ab528b2db3cebc"><div class="ttname"><a href="structwebcface_1_1internal_1_1ClientData.html#afcbc15d6010c5254d6ab528b2db3cebc">webcface::internal::ClientData::messagePushAlways</a></div><div class="ttdeci">void messagePushAlways(SyncDataSnapshot &amp;&amp;msg)</div><div class="ttdef"><b>Definition</b> client_internal.h:272</div></div>
-<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:118</div></div>
-<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:117</div></div>
+<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:113</div></div>
+<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:112</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="dir_96b6547db6ac3cc6aa0de0b99fd274ad.html">internal</a></li><li class="navelem"><a class="el" href="client__internal_8h.html">client_internal.h</a></li>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

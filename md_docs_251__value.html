@@ -143,15 +143,15 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md84">コマンドライン</a></li>
-<li class="level1"><a href="#autotoc_md85">送信</a><ul><li class="level2"><a href="#autotoc_md86">複数の値をまとめて送る</a></li>
+<ul><li class="level1"><a href="#autotoc_md85">コマンドライン</a></li>
+<li class="level1"><a href="#autotoc_md86">送信</a><ul><li class="level2"><a href="#autotoc_md87">複数の値をまとめて送る</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md87">受信</a></li>
-<li class="level1"><a href="#autotoc_md88">Entry, イベントについて</a></li>
+<li class="level1"><a href="#autotoc_md88">受信</a></li>
+<li class="level1"><a href="#autotoc_md89">Entry, イベントについて</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md83"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md84"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Value.html" title="実数値またはその配列の送受信データを表すクラス">webcface::Value</a> (<code><a class="el" href="client_2include_2webcface_2value_8h.html">webcface/value.h</a></code>)</li>
@@ -161,12 +161,12 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </ul>
 </dd></dl>
 <p>数値データ、または数値の配列データを送受信する型です。 double型またはそのリストとして送受信されます。</p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 コマンドライン</h1>
 <div class="fragment"><div class="line">webcface-send </div>
 </div><!-- fragment --><p> を実行し、数字を入力すると送信されます。(1つ入力するごとに改行してください)</p>
 <p>オプションでclientやデータの名前を変更できます。 詳細は <a class="el" href="md_docs_272__send.html">webcface-send</a> のページを参照</p>
-<h1><a class="anchor" id="autotoc_md85"></a>
+<h1><a class="anchor" id="autotoc_md86"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Value::set() でデータを代入し、Client::sync()することで送信されます。</p>
@@ -201,7 +201,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </div><!-- fragment --><p class="startli"><span class="since-py">2.0</span> 数値型はfloatに変換可能なもの(SupportsFloat型)であればなんでもokです。(例えばnumpyの数値型なども使用可能です。)</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md86"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md87"></a>
 複数の値をまとめて送る</h2>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000005">Todo:</a></b></dt><dd>Pythonの辞書型への対応は未実装</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -254,7 +254,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <div class="line"><span class="comment">*/</span></div>
 </div><!-- fragment --><p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md87"></a>
+<h1><a class="anchor" id="autotoc_md88"></a>
 受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Value::tryGet(), Value::tryGetVec() などで値のリクエストをするとともに受信した値を取得できます。</p>
@@ -340,7 +340,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 <p class="startli">Value.request()で明示的にリクエストを送信することもできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md88"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md89"></a>
 Entry, イベントについて</h1>
 <p><a class="el" href="md_docs_243__field.html">4-3. Field</a> に移動しました。そちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
@@ -355,7 +355,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

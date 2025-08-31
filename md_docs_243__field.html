@@ -143,23 +143,23 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md69">名前の指定</a><ul><li class="level2"><a href="#autotoc_md70">データ型</a></li>
-<li class="level2"><a href="#autotoc_md71">グループ化</a></li>
-<li class="level2"><a href="#autotoc_md72">名前などの操作</a></li>
+<ul><li class="level1"><a href="#autotoc_md70">名前の指定</a><ul><li class="level2"><a href="#autotoc_md71">データ型</a></li>
+<li class="level2"><a href="#autotoc_md72">グループ化</a></li>
+<li class="level2"><a href="#autotoc_md73">名前などの操作</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md73">基本的な通信の仕様</a><ul><li class="level2"><a href="#autotoc_md74">送信</a></li>
-<li class="level2"><a href="#autotoc_md75">受信</a></li>
-<li class="level2"><a href="#autotoc_md76">時刻</a></li>
-<li class="level2"><a href="#autotoc_md77">Entry</a><ul><li class="level3"><a href="#autotoc_md81">Entry イベント</a></li>
-<li class="level3"><a href="#autotoc_md82">Change イベント, Sync イベント</a></li>
+<li class="level1"><a href="#autotoc_md74">基本的な通信の仕様</a><ul><li class="level2"><a href="#autotoc_md75">送信</a></li>
+<li class="level2"><a href="#autotoc_md76">受信</a></li>
+<li class="level2"><a href="#autotoc_md77">時刻</a></li>
+<li class="level2"><a href="#autotoc_md78">Entry</a><ul><li class="level3"><a href="#autotoc_md82">Entry イベント</a></li>
+<li class="level3"><a href="#autotoc_md83">Change イベント, Sync イベント</a></li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md68"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md69"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.11</span> <span class="since-js">1.10</span> <span class="since-py">3.1</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> (<code><a class="el" href="field_8h.html">webcface/field.h</a></code>)</li>
@@ -169,7 +169,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </dd></dl>
 <p>WebCFaceで送受信されるそれぞれのデータを Field と呼びます。 データ型としては <a class="el" href="md_docs_251__value.html">Value</a>, <a class="el" href="md_docs_252__text.html">Text</a>, <a class="el" href="md_docs_253__func.html">Func</a>, <a class="el" href="md_docs_254__view.html">View</a>, <a class="el" href="md_docs_255__log.html">Log</a>, <a class="el" href="md_docs_261__canvas2d.html">Canvas2D</a>, <a class="el" href="md_docs_262__image.html">Image</a>, <a class="el" href="md_docs_263__canvas3d.html">Canvas3D</a>, <a class="el" href="md_docs_264__robot__model.html">RobotModel</a> が用意されており、詳細はそれぞれのページで説明しています。</p>
 <p>このページには各データ型に共通の情報を載せています。</p>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<h1><a class="anchor" id="autotoc_md70"></a>
 名前の指定</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::child() または Member::child() に名前を指定することで Field オブジェクトを取得できます。</p>
@@ -191,7 +191,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <div class="line">fuga = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).child(<span class="stringliteral">&quot;fuga&quot;</span>) <span class="comment"># foo というメンバーの fuga というデータ</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md70"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md71"></a>
 データ型</h2>
 <p>Field型のままではデータの送信や受信はできません。 各種データ型のメソッドを使う必要があります。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -219,7 +219,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <div class="line">fuga = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;fuga&quot;</span>)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md71"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md72"></a>
 グループ化</h2>
 <p>Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
@@ -264,7 +264,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <div class="line"><span class="comment"># Value型の pos.x データになる</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md72"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md73"></a>
 名前などの操作</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Field::member() でそのFieldが所属するMemberを取得できます。 </p><div class="fragment"><div class="line">assert(wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>).member().name() == wcli.name());</div>
@@ -282,23 +282,23 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </div><!-- fragment --><p class="startli">Field.name で名前を取得できます。 </p><div class="fragment"><div class="line"><span class="keyword">assert</span> wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>).name == <span class="stringliteral">&quot;pos.x&quot;</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md73"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md74"></a>
 基本的な通信の仕様</h1>
 <p>クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。 (Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
 <p>サーバー→クライアント間では、初期状態ではデータは送信されず、 クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。</p>
 <p>基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。 (通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)</p>
-<h2><a class="anchor" id="autotoc_md74"></a>
+<h2><a class="anchor" id="autotoc_md75"></a>
 送信</h2>
 <p>各種データ型のメソッド (Value.set() や View.sync() など) を使って送信するデータをセットし、 その後 Client::sync() をすることで実際にデータが送信されます。</p>
 <p>Client::sync() については <a class="el" href="md_docs_241__client.html">4-1. Client</a> の送受信の章を参照してください。</p>
 <p><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> クライアント→サーバー間では、同じデータを繰り返し送信した場合は2回目以降はデータを送信しないことで通信量を削減しています。</p>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 受信</h2>
 <p>各種データ型のrequestメソッド (Value.request() や View.request() など) を使ってデータをリクエストできます。 (リクエストの送信は Client::sync() とは非同期に行われます。)</p>
 <p>データが一度リクエストされた状態であればそれ以降 Client::sync() 時にデータが受信され、 各種データ型のメソッド (Value.tryGet(), get() など) でデータを取得できます。</p>
 <p>また、データを一度もリクエストしていない状態で teyGet(), get() などの関数を呼んでデータを取得しようとした際にも自動的にリクエストが送られます。</p>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 時刻</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <del>Value::time()</del> でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。 <br  />
@@ -309,7 +309,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
  <span class="since-js">1.6</span> Member.syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</li>
 <li><b class="tab-title">Python</b> Member.sync_time() でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。 (Textなど他のデータの送信時刻と共通です)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md77"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md78"></a>
 Entry</h2>
 <p>データが送信された際、 Entry としてそのデータの存在が全クライアントに通知されます。 受信したEntryはリクエスト状態とは関係なく取得可能です。</p>
 <dl class="section note"><dt>Note</dt><dd>(serverが<span class="since-c">1.10</span>以降の場合) データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
@@ -352,10 +352,10 @@ Entry</h2>
 <p class="startli"><span class="since-py">2.0</span> Value.exists() でそのデータが送信されているかどうかを確認できます。 try_get() と違い、データそのものを受信するリクエストは送られません。 他のデータ型に関しても同様に <code>Text.exists()</code>, <code>Func.exists()</code>, <code>View.exists()</code> などが使えます。</p>
 <p class="startli"><span class="since-py">3.1</span> Field.value_entries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).value_entries()</div>
 <div class="line"><span class="comment"># pos.x, pos.y などのvalueが得られる</span></div>
-</div><!-- fragment --><p class="startli"><span class="since-py">3.1</span> Field.children(recurse=True) ですべてのデータ型についてそのfield以下に存在するentryを確認できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=True) @section autotoc_md78 pos.x, pos.y などのデータ(型に関係なく)のリストが得られる </code> また、Field.children(recurse=False) では次のピリオドで区切られているグループを取得できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=False); @section autotoc_md79 例えば、 pos.x, pos.y, pos.vel.x, pos.vel.y が存在した場合、 @section autotoc_md80 pos.x, pos.y, pos.vel が得られる </code> Field.has_children() でそのfield以下にデータが存在するかを確認できます。</p>
+</div><!-- fragment --><p class="startli"><span class="since-py">3.1</span> Field.children(recurse=True) ですべてのデータ型についてそのfield以下に存在するentryを確認できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=True) @section autotoc_md79 pos.x, pos.y などのデータ(型に関係なく)のリストが得られる </code> また、Field.children(recurse=False) では次のピリオドで区切られているグループを取得できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=False); @section autotoc_md80 例えば、 pos.x, pos.y, pos.vel.x, pos.vel.y が存在した場合、 @section autotoc_md81 pos.x, pos.y, pos.vel が得られる </code> Field.has_children() でそのfield以下にデータが存在するかを確認できます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md81"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md82"></a>
 Entry イベント</h3>
 <p>他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。 ValueEntry, TextEntry など各データ型にそれぞれあります。</p>
 <p>イベントの詳細な使い方はMemberEntryと同様です(<a class="el" href="md_docs_242__member.html">Member</a> のページを参照してください)。 このクライアントが接続する前から存在したデータについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
@@ -427,7 +427,7 @@ Entry イベント</h3>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md82"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md83"></a>
 Change イベント, Sync イベント</h3>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 Change イベントにコールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Sync イベントが使えます。</p>
@@ -526,7 +526,7 @@ Python 〜ver1.1の仕様</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

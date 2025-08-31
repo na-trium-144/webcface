@@ -142,7 +142,9 @@ $(document).ready(function(){initNavTree('client_2include_2webcface_2log_8h.html
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">log.h File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -150,17 +152,19 @@ $(document).ready(function(){initNavTree('client_2include_2webcface_2log_8h.html
 <code>#include &lt;optional&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;ostream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 <code>#include &quot;<a class="el" href="field_8h_source.html">field.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="webcface-config_8h_source.html">webcface-config.h</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for log.h:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="client_2include_2webcface_2log_8h__incl.svg" width="800" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="client_2include_2webcface_2log_8h__incl.svg" width="1162" height="271"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="client_2include_2webcface_2log_8h__dep__incl.svg" width="3208" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="client_2include_2webcface_2log_8h__dep__incl.svg" width="3407" height="388"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="client_2include_2webcface_2log_8h_source.html">Go to the source code of this file.</a></p>
@@ -183,23 +187,32 @@ Namespaces</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:namespacewebcface_1_1message"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1message.html">webcface::message</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1level"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1level.html">webcface::level</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a39d6cc63c8ebcefbf2eae23a07a25449"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a39d6cc63c8ebcefbf2eae23a07a25449">level</a> = <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">LogLevel</a></td></tr>
+<tr class="separator:a39d6cc63c8ebcefbf2eae23a07a25449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:ac2fe55c989a2c0b34cf68f392982fd66"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66">LogLevelEnum</a> { <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a36a3b17acbfb35380a47b3d88c9b8942">trace</a> = 0
-, <a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5be0fd270d9cbf6a0b7445db855089da">debug</a> = 1
-, <a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66aa4abb266e72efba828327b605b2ab0f4">info</a> = 2
-, <a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a030352c93c772334261abda73e03885f">warn</a> = 3
+<tr class="memitem:a9cf4d2a890c8688e0fe1bc38fa88de94"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">LogLevel</a> : int { <br />
+&#160;&#160;<a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a04a75036e9d520bb983c5ed03b8d0182">trace</a> = 0
+, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94aad42f6697b035b7580e4fef93be20b4d">debug</a> = 1
+, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94acaf9b6b99962bf5c2264824231d7a40c">info</a> = 2
+, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a1ea4c3ab05ee0c6d4de30740443769cb">warn</a> = 3
 , <br />
-&#160;&#160;<a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a8de9aef05fc85e519a0cfce33573f492">warning</a> = 3
-, <a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66ad606e435413ea0944dd00d49e901e4ed">error</a> = 4
-, <a class="el" href="namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5fe0ea375791d13455a34f3d40dc9c7d">critical</a> = 5
+&#160;&#160;<a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a7b83d3f08fa392b79e3f553b585971cd">warning</a> = 3
+, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94acb5e100e5a9a3e7f6d1fd97512215282">error</a> = 4
+, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a7e85bcb66fb9a809d5ab4f62a8b8bea8">critical</a> = 5
 <br />
  }</td></tr>
-<tr class="separator:ac2fe55c989a2c0b34cf68f392982fd66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a9cf4d2a890c8688e0fe1bc38fa88de94"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログレベルを表すenum  <a href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">More...</a><br /></td></tr>
+<tr class="separator:a9cf4d2a890c8688e0fe1bc38fa88de94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a01848129c135abaf0c48e6606593ccc4"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a01848129c135abaf0c48e6606593ccc4">operator&lt;&lt;</a> (std::ostream &amp;os, <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">LogLevel</a> <a class="el" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">level</a>)</td></tr>
+<tr class="separator:a01848129c135abaf0c48e6606593ccc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -207,7 +220,7 @@ Enumerations</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_5c23080e296bbe846f4ed2d01d7b595d.html">include</a></li><li class="navelem"><a class="el" href="dir_8bd58ff883f4686dab3daf23d9479d3b.html">webcface</a></li><li class="navelem"><a class="el" href="client_2include_2webcface_2log_8h.html">log.h</a></li>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

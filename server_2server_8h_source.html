@@ -185,7 +185,7 @@ $(document).ready(function(){initNavTree('server_2server_8h_source.html',''); in
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    std::thread ping_thread; <span class="comment">// storeよりも後ろ</span></div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_class" href="classwebcface_1_1server_1_1Server.html">Server</a>(std::uint16_t port, <span class="keywordtype">int</span> level, <span class="keywordtype">int</span> keep_log = 1000,</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <a class="code hl_class" href="classwebcface_1_1server_1_1Server.html">Server</a>(std::uint16_t port, <span class="keywordtype">int</span> <a class="code hl_enumeration" href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">level</a>, <span class="keywordtype">int</span> keep_log = 1000,</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>           spdlog::sink_ptr sink = <span class="keyword">nullptr</span>,</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>           std::shared_ptr&lt;spdlog::logger&gt; logger = <span class="keyword">nullptr</span>);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <a class="code hl_class" href="classwebcface_1_1server_1_1Server.html">~Server</a>();</div>
@@ -210,16 +210,17 @@ $(document).ready(function(){initNavTree('server_2server_8h_source.html',''); in
 <div class="ttc" id="anamespaceBM__LatencyLongText_html_a58f7dd81b5e77f4600523e9af0a5007f"><div class="ttname"><a href="namespaceBM__LatencyLongText.html#a58f7dd81b5e77f4600523e9af0a5007f">BM_LatencyLongText::server</a></div><div class="ttdeci">std::unique_ptr&lt; webcface::server::Server &gt; server</div><div class="ttdef"><b>Definition</b> latency-text.cc:10</div></div>
 <div class="ttc" id="anamespacewebcface_1_1server_html_a5ecc25311d903fa549abddc796aee4ee"><div class="ttname"><a href="namespacewebcface_1_1server.html#a5ecc25311d903fa549abddc796aee4ee">webcface::server::wsConnPtr</a></div><div class="ttdeci">void * wsConnPtr</div><div class="ttdef"><b>Definition</b> server.h:21</div></div>
 <div class="ttc" id="anamespacewebcface_1_1server_html_ab5a299fd43c4dfb534c71d1789b904e0"><div class="ttname"><a href="namespacewebcface_1_1server.html#ab5a299fd43c4dfb534c71d1789b904e0">webcface::server::initVips</a></div><div class="ttdeci">void initVips()</div><div class="ttdef"><b>Definition</b> image_conversion.cc:15</div></div>
+<div class="ttc" id="anamespacewebcface_html_a9cf4d2a890c8688e0fe1bc38fa88de94"><div class="ttname"><a href="namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94">webcface::LogLevel</a></div><div class="ttdeci">LogLevel</div><div class="ttdoc">ログレベルを表すenum</div><div class="ttdef"><b>Definition</b> log.h:29</div></div>
 <div class="ttc" id="awebcface-config_8h_html"><div class="ttname"><a href="webcface-config_8h.html">webcface-config.h</a></div></div>
-<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:118</div></div>
-<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:117</div></div>
+<div class="ttc" id="awebcface-config_8h_html_ab3f2570d5b8231ddbe0e57fc8ab629eb"><div class="ttname"><a href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div><div class="ttdeci">#define WEBCFACE_NS_END</div><div class="ttdef"><b>Definition</b> webcface-config.h:113</div></div>
+<div class="ttc" id="awebcface-config_8h_html_abe991b8f291782627a31118c688e123a"><div class="ttname"><a href="webcface-config_8h.html#abe991b8f291782627a31118c688e123a">WEBCFACE_NS_BEGIN</a></div><div class="ttdeci">#define WEBCFACE_NS_BEGIN</div><div class="ttdef"><b>Definition</b> webcface-config.h:112</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_9cb285999b179f8aca5679ee400b878d.html">server-store</a></li><li class="navelem"><a class="el" href="dir_f53cacbf47894fb03ba5cf8a6c70dd7c.html">include</a></li><li class="navelem"><a class="el" href="dir_e7501623f8dfbed316d8be1d8d984954.html">webcface</a></li><li class="navelem"><a class="el" href="dir_769fa1d8bedebba544fb426db8e707df.html">server</a></li><li class="navelem"><a class="el" href="server_2server_8h.html">server.h</a></li>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

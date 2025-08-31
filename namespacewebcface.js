@@ -16,17 +16,6 @@ var namespacewebcface =
     ] ],
     [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", "namespacewebcface_1_1components_1_1geometries" ],
     [ "internal", "namespacewebcface_1_1internal.html", "namespacewebcface_1_1internal" ],
-    [ "level", "namespacewebcface_1_1level.html", [
-      [ "LogLevelEnum", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66", [
-        [ "trace", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a36a3b17acbfb35380a47b3d88c9b8942", null ],
-        [ "debug", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5be0fd270d9cbf6a0b7445db855089da", null ],
-        [ "info", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66aa4abb266e72efba828327b605b2ab0f4", null ],
-        [ "warn", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a030352c93c772334261abda73e03885f", null ],
-        [ "warning", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a8de9aef05fc85e519a0cfce33573f492", null ],
-        [ "error", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66ad606e435413ea0944dd00d49e901e4ed", null ],
-        [ "critical", "namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66a5fe0ea375791d13455a34f3d40dc9c7d", null ]
-      ] ]
-    ] ],
     [ "message", "namespacewebcface_1_1message.html", "namespacewebcface_1_1message" ],
     [ "robot_joints", "namespacewebcface_1_1robot__joints.html", [
       [ "fixedAbsolute", "namespacewebcface_1_1robot__joints.html#a49aea1f6f84c49764c0abea6b81e0956", null ],
@@ -109,6 +98,7 @@ var namespacewebcface =
     [ "AsyncFuncResult", "namespacewebcface.html#a6f5942a3079ae6efe81ef8679c1f7450", null ],
     [ "FuncCallHandle", "namespacewebcface.html#aaf3113c437651b9a46ca13e759e1c25c", null ],
     [ "ImageBase", "namespacewebcface.html#ab04304b2017cf40223df2bfb82dd175e", null ],
+    [ "level", "namespacewebcface.html#a39d6cc63c8ebcefbf2eae23a07a25449", null ],
     [ "LoggerBuf", "namespacewebcface.html#a5d0220b13276ff62ae5c0c6793aae628", null ],
     [ "LoggerBufW", "namespacewebcface.html#ad129abf240c40c4cab70ab8fae7973f9", null ],
     [ "Rect", "namespacewebcface_1_1components_1_1geometries.html#ad5b21590cf3bc82830bee21b3a459bc4", null ],
@@ -160,6 +150,15 @@ var namespacewebcface =
       [ "jpeg", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedaab4f3ccba74857c5f2ba0d5b7dbf65e1", null ],
       [ "webp", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84deda6a294358579240936bf4d66151e6e720", null ],
       [ "png", "namespacewebcface.html#ab72e620a597e5f750b2c9b3391e84dedabff139fa05ac583f685a523ab3d110a0", null ]
+    ] ],
+    [ "LogLevel", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94", [
+      [ "trace", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a04a75036e9d520bb983c5ed03b8d0182", null ],
+      [ "debug", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94aad42f6697b035b7580e4fef93be20b4d", null ],
+      [ "info", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94acaf9b6b99962bf5c2264824231d7a40c", null ],
+      [ "warn", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a1ea4c3ab05ee0c6d4de30740443769cb", null ],
+      [ "warning", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a7b83d3f08fa392b79e3f553b585971cd", null ],
+      [ "error", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94acb5e100e5a9a3e7f6d1fd97512215282", null ],
+      [ "critical", "namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94a7e85bcb66fb9a809d5ab4f62a8b8bea8", null ]
     ] ],
     [ "RobotJointType", "namespacewebcface.html#af888dd203afb5bdf79dc950d618bcad9", [
       [ "fixed_absolute", "namespacewebcface.html#af888dd203afb5bdf79dc950d618bcad9ac225ecbe8e23dc2daa03b4028ac5c961", null ],
@@ -244,6 +243,7 @@ var namespacewebcface =
     [ "operator<<", "namespacewebcface.html#a7528ca9b8be7cf3baf4a1371085a5d87", null ],
     [ "operator<<", "namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46", null ],
     [ "operator<<", "namespacewebcface.html#adee3d68a70be59fb6cfc97480b935199", null ],
+    [ "operator<<", "namespacewebcface.html#a01848129c135abaf0c48e6606593ccc4", null ],
     [ "operator<<", "namespacewebcface.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "operator==", "namespacewebcface.html#a4d810c78099d1c67779adcf796b50e1d", null ],
     [ "operator==", "namespacewebcface.html#a13773c27bf327fd21ee7d4c605e94e20", null ],

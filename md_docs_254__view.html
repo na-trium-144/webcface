@@ -143,26 +143,26 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md106">送信</a></li>
-<li class="level1"><a href="#autotoc_md107">ViewComponent</a><ul><li class="level2"><a href="#autotoc_md108">text</a></li>
-<li class="level2"><a href="#autotoc_md109">newLine</a></li>
-<li class="level2"><a href="#autotoc_md110">button</a></li>
-<li class="level2"><a href="#autotoc_md111">input</a><ul><li class="level3"><a href="#autotoc_md112">InputRef</a></li>
-<li class="level3"><a href="#autotoc_md113">onChange</a></li>
+<ul><li class="level1"><a href="#autotoc_md107">送信</a></li>
+<li class="level1"><a href="#autotoc_md108">ViewComponent</a><ul><li class="level2"><a href="#autotoc_md109">text</a></li>
+<li class="level2"><a href="#autotoc_md110">newLine</a></li>
+<li class="level2"><a href="#autotoc_md111">button</a></li>
+<li class="level2"><a href="#autotoc_md112">input</a><ul><li class="level3"><a href="#autotoc_md113">InputRef</a></li>
+<li class="level3"><a href="#autotoc_md114">onChange</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md114">オプション</a></li>
+<li class="level2"><a href="#autotoc_md115">オプション</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md115">受信</a><ul><li class="level2"><a href="#autotoc_md116">onClick</a></li>
-<li class="level2"><a href="#autotoc_md117">onChangeとbind</a></li>
-<li class="level2"><a href="#autotoc_md118">id</a></li>
+<li class="level1"><a href="#autotoc_md116">受信</a><ul><li class="level2"><a href="#autotoc_md117">onClick</a></li>
+<li class="level2"><a href="#autotoc_md118">onChangeとbind</a></li>
+<li class="level2"><a href="#autotoc_md119">id</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md119">Entry, イベントについて</a></li>
+<li class="level1"><a href="#autotoc_md120">Entry, イベントについて</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md105"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md106"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1View.html" title="Viewの送受信データを表すクラス">webcface::View</a> (<code><a class="el" href="client_2include_2webcface_2view_8h.html">webcface/view.h</a></code>)</li>
@@ -172,7 +172,7 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 </ul>
 </dd></dl>
 <p>テキストやボタンなどの配置を送受信します。</p>
-<h1><a class="anchor" id="autotoc_md106"></a>
+<h1><a class="anchor" id="autotoc_md107"></a>
 送信</h1>
 <dl class="section note"><dt>Note</dt><dd>Viewの2回目以降の送信時にはWebCFace内部では前回からの差分のみが送信されるので、通信量が削減されます</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -248,7 +248,7 @@ $(document).ready(function(){initNavTree('md_docs_254__view.html',''); initResiz
 <div class="line">    <span class="comment"># v.sync() (自動で呼ばれる)</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md107"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md108"></a>
 ViewComponent</h1>
 <p>Viewに追加する各種要素をViewComponentといいます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -280,7 +280,7 @@ ViewComponent</h1>
 <li><b class="tab-title">Python</b> Pythonでは <del><code>webcface.view_components</code></del> <span class="since-c">3.0</span> <a href="https://na-trium-144.github.io/webcface-python/webcface.components.html"><code>webcface.components</code></a> モジュール内にそれぞれの要素を表す関数があります <div class="fragment"><div class="line"><span class="keyword">from</span> <a class="code hl_namespace" href="namespacewebcface_1_1components.html">webcface.components</a> <span class="keyword">import</span> *</div>
 </div><!-- fragment --> とすることもできます</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md108"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md109"></a>
 text</h2>
 <p>文字列です。そのまま表示します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -309,7 +309,7 @@ text</h2>
 </div><!-- fragment --><p class="startli"><span class="since-c">3.0</span> オプションはadd()の引数としても渡すことができます。 </p><div class="fragment"><div class="line">v.add(<span class="stringliteral">&quot;hello&quot;</span>, text_color=webcface.ViewColor.RED)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md109"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md110"></a>
 newLine</h2>
 <p>改行します。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -336,7 +336,7 @@ newLine</h2>
 <div class="line">v.add(text(<span class="stringliteral">&quot;hello&quot;</span>)).add(new_line()).add(text(<span class="stringliteral">&quot;hello&quot;</span>));</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md110"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md111"></a>
 button</h2>
 <p>ボタンを表示します。</p>
 <p>クリック時の動作は、関数を登録済みの<a class="el" href="md_docs_253__func.html">Funcオブジェクト</a>かFuncListenerオブジェクトを指定するか、または関数を直接設定できます。</p>
@@ -372,7 +372,7 @@ button</h2>
 <div class="line">v.add(components.button(<span class="stringliteral">&quot;表示する文字列&quot;</span>, hoge, id=<span class="stringliteral">&quot;button1&quot;</span>));</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md111"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md112"></a>
 input</h2>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.10</span><span class="since-js">1.6</span><span class="since-py">2.0</span></dd></dl>
 <p>viewに入力欄を表示します。</p>
@@ -388,7 +388,7 @@ input</h2>
 <li>sliderInput: 数値を指定するスライダー</li>
 <li>checkInput: チェックボックス</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md112"></a>
+<h3><a class="anchor" id="autotoc_md113"></a>
 InputRef</h3>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 入力された値にアクセスするため <a class="el" href="classwebcface_1_1InputRef.html" title="名前を指定しないText">webcface::InputRef</a> オブジェクトを作成し、inputにbindします。 そのInputRefオブジェクトをコピーまたは参照で別の関数などに渡すと、あとから値を取得することができます。 </p><div class="fragment"><div class="line"><span class="keyword">static</span> <a class="code hl_class" href="classwebcface_1_1InputRef.html">webcface::InputRef</a> input_val;</div>
@@ -467,7 +467,7 @@ InputRef</h3>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md113"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md114"></a>
 onChange</h3>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> onChange() で値が入力されたときに実行する関数を設定でき、こちらでも値が取得できます。 buttonに渡す関数と同様、関数オブジェクト、Funcオブジェクト、FuncListenerオブジェクトが使用できます。 </p><div class="fragment"><div class="line">v &lt;&lt; <a class="code hl_function" href="namespacewebcface_1_1components.html#aeec738a8f338d929f0caba1ea0dbb6d4">webcface::textInput</a>(<span class="stringliteral">&quot;表示する文字列&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#ae910c9733a9154e389a02d466697ab60">id</a>(<span class="stringliteral">&quot;input1&quot;</span>).<a class="code hl_function" href="classwebcface_1_1TemporalViewComponent.html#a7003ea06e11e7b952d2e8be1f5a874a6">onChange</a>([](std::string_view val) {</div>
@@ -489,7 +489,7 @@ onChange</h3>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md114"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md115"></a>
 オプション</h2>
 <p>各ViewComponentには以下のオプションを指定することができます。 (要素の種類によっては効果がないものもあります)</p>
 <ul>
@@ -536,7 +536,7 @@ onChange</h3>
 <p class="startli"><span class="since-c">3.0</span> add() の引数にキーワード引数を追加しても同様に要素にオプションが追加されます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md115"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md116"></a>
 受信</h1>
 <p>ViewデータはWebUIに表示するだけでなく、ValueやTextと同様プログラムから受信することもできます。 (これを使うのはViewを表示するアプリを作る場合などですかね)</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -586,19 +586,19 @@ onChange</h3>
 <p class="startli">View.request()で明示的にリクエストを送信することもできます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md116"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md117"></a>
 onClick</h2>
 <p>ViewComponent::onClick() でボタン要素のクリック時に実行するべき関数が<a class="el" href="md_docs_253__func.html">Func</a>オブジェクトとして取得できます。 したがって、ボタンを表示し、クリックされたときに<code>onClick().runAsync()</code>などとすることでそのボタンを動作させられます。</p>
-<h2><a class="anchor" id="autotoc_md117"></a>
+<h2><a class="anchor" id="autotoc_md118"></a>
 onChangeとbind</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span> <span class="since-py">2.0</span></p>
 <p>各種Input要素の現在の値は ViewComponent::bind() で <del><a class="el" href="md_docs_252__text.html">Text</a>オブジェクトとして</del> <span class="since-c">2.0</span> <span class="since-py">2.0</span> Variant オブジェクトとして取得できます。 したがって<code>bind()</code>の値をInputの初期値として使用すればよいです。</p>
 <p>Inputの値を変更する際は、(view送信側がbindを設定したかonChangeを設定したかに関わらず) ViewComponent::onChange() を使います。 引数に変化後の値を渡して<code>onChange().runAsync("変化後の値")</code>などとすることで onChangeに設定された関数を実行すると同時にbindの値も変更されます。</p>
-<h2><a class="anchor" id="autotoc_md118"></a>
+<h2><a class="anchor" id="autotoc_md119"></a>
 id</h2>
 <p><span class="since-c">1.10</span> <span class="since-js">1.6</span> <span class="since-py">3.0</span></p>
 <p>ViewComponent::id() で各要素に割り振られたid(文字列)を取得できます。 このidはそのview内で一意で、(buttonやInputの総数や順序が変わらなければ) 同じbutton、同じinputには常に同じidが振られます。</p>
-<h1><a class="anchor" id="autotoc_md119"></a>
+<h1><a class="anchor" id="autotoc_md120"></a>
 Entry, イベントについて</h1>
 <p><a class="el" href="md_docs_243__field.html">4-3. Field</a> に移動しました。そちらを参照してください</p>
 <div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
@@ -613,7 +613,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

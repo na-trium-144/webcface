@@ -143,15 +143,15 @@ $(document).ready(function(){initNavTree('md_docs_242__member.html',''); initRes
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md62">Field系クラスの扱いについて</a></li>
-<li class="level1"><a href="#autotoc_md63">members</a></li>
-<li class="level1"><a href="#autotoc_md64">Entry</a></li>
-<li class="level1"><a href="#autotoc_md65">Event</a></li>
-<li class="level1"><a href="#autotoc_md66">クライアントの情報</a></li>
-<li class="level1"><a href="#autotoc_md67">ping</a></li>
+<ul><li class="level1"><a href="#autotoc_md63">Field系クラスの扱いについて</a></li>
+<li class="level1"><a href="#autotoc_md64">members</a></li>
+<li class="level1"><a href="#autotoc_md65">Entry</a></li>
+<li class="level1"><a href="#autotoc_md66">Event</a></li>
+<li class="level1"><a href="#autotoc_md67">クライアントの情報</a></li>
+<li class="level1"><a href="#autotoc_md68">ping</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md61"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md62"></a></p>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">webcface::Member</a> (<code><a class="el" href="member_8h.html">webcface/member.h</a></code>)</li>
 <li>JavaScript <a href="https://na-trium-144.github.io/webcface-js/classes/Member.html">Member</a></li>
@@ -188,7 +188,7 @@ $(document).ready(function(){initNavTree('md_docs_242__member.html',''); initRes
 </ul>
 </div><div class="tabbed"></div><p>Memberクラスから実際にそれぞれのデータにアクセスする方法は次ページ以降で説明します。</p>
 <p>このクライアント自身もMemberの1つですが、Client自体がMemberを継承したクラスになっているので、直接Clientのオブジェクト(wcli)に対して操作すればよいです。</p>
-<h1><a class="anchor" id="autotoc_md62"></a>
+<h1><a class="anchor" id="autotoc_md63"></a>
 Field系クラスの扱いについて</h1>
 <p>Memberクラスおよびこれ以降説明する各種データ型のクラス (いずれも <a class="el" href="structwebcface_1_1Field.html" title="ClientDataの参照とメンバ名とデータ名を持つクラス">webcface::Field</a> を継承している) について、</p>
 <ul>
@@ -196,7 +196,7 @@ Field系クラスの扱いについて</h1>
 <li>構築元のClientの寿命が切れた後に操作しようとすると同様にstd::runtime_errorを投げます。</li>
 <li>オブジェクトのコピー、ムーブは可能です。</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md63"></a>
+<h1><a class="anchor" id="autotoc_md64"></a>
 members</h1>
 <p>現在サーバーに接続されているメンバーのリストが得られます (無名のものと、自分自身を除く)</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -222,7 +222,7 @@ members</h1>
 <div class="line">    <span class="comment"># ...</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md64"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md65"></a>
 Entry</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><dl class="section since"><dt>Since</dt><dd><span class="since-c">2.9</span></dd></dl>
@@ -236,7 +236,7 @@ Entry</h1>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md65"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md66"></a>
 Event</h1>
 <p>新しいメンバーが接続されたときに呼び出されるコールバックを設定できます</p>
 <p>このクライアントが接続する前から存在したメンバーについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
@@ -306,7 +306,7 @@ Python 〜ver1.1の仕様</summary>
  <code>connect(関数)</code> でコールバックを設定できます。</p>
 <p></p>
 </details>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md67"></a>
 クライアントの情報</h1>
 <p>以下のようなクライアントの情報を取得できます。 (WebUI の Connection Info に表示されているのと同じ情報が取得できます)</p>
 <ul>
@@ -324,7 +324,7 @@ Python 〜ver1.1の仕様</summary>
 <li><b class="tab-title">JavaScript</b> <code>member.libVersion</code>, <code>member.libName</code>, <code>member.remoteAddr</code> で取得できます。</li>
 <li><b class="tab-title">Python</b> <code>member.lib_version</code>, <code>member.lib_name</code>, <code>member.remote_addr</code> で取得できます。</li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md67"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md68"></a>
 ping</h1>
 <p>クライアントの通信速度を取得できます。(単位はms) ここでは通信速度とはサーバーとクライアントの間で1往復データを送受信するのにかかる遅延です。</p>
 <p>通信速度の情報は5秒に1回更新され、更新されたときにonPingイベントが発生します</p>
@@ -391,7 +391,7 @@ ping</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

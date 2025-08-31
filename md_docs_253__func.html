@@ -143,22 +143,22 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md95">関数の登録</a><ul><li class="level2"><a href="#autotoc_md96">CallHandle</a></li>
-<li class="level2"><a href="#autotoc_md97">引数と戻り値型</a><ul><li class="level3"><a href="#autotoc_md98">型変換</a></li>
+<ul><li class="level1"><a href="#autotoc_md96">関数の登録</a><ul><li class="level2"><a href="#autotoc_md97">CallHandle</a></li>
+<li class="level2"><a href="#autotoc_md98">引数と戻り値型</a><ul><li class="level3"><a href="#autotoc_md99">型変換</a></li>
 </ul>
 </li>
-<li class="level2"><a href="#autotoc_md99">関数をWebUIから隠す</a></li>
-<li class="level2"><a href="#autotoc_md100">FuncListener</a></li>
-<li class="level2"><a href="#autotoc_md101">Funcの表示順 (index)</a></li>
+<li class="level2"><a href="#autotoc_md100">関数をWebUIから隠す</a></li>
+<li class="level2"><a href="#autotoc_md101">FuncListener</a></li>
+<li class="level2"><a href="#autotoc_md102">Funcの表示順 (index)</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md102">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md103">Entry</a></li>
+<li class="level1"><a href="#autotoc_md103">関数の情報の取得</a><ul><li class="level2"><a href="#autotoc_md104">Entry</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md104">関数の実行</a></li>
+<li class="level1"><a href="#autotoc_md105">関数の実行</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md94"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md95"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c"></span> <span class="since-js"></span> <span class="since-py"></span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Func.html" title="関数1つを表すクラス">webcface::Func</a> (<code><a class="el" href="client_2include_2webcface_2func_8h.html">webcface/func.h</a></code>)</li>
@@ -168,7 +168,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </ul>
 </dd></dl>
 <p>他Memberから呼び出せる関数の登録、 また他Memberの関数の呼び出しができます。</p>
-<h1><a class="anchor" id="autotoc_md95"></a>
+<h1><a class="anchor" id="autotoc_md96"></a>
 関数の登録</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
@@ -299,7 +299,7 @@ setした関数にWebCFace側で排他制御をかける機能(〜ver1.11まで)
 </div><!-- fragment --><p> で条件を何も課さないようにできます。</p>
 <p></p>
 </details>
-<h2><a class="anchor" id="autotoc_md96"></a>
+<h2><a class="anchor" id="autotoc_md97"></a>
 CallHandle</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.4</span></dd></dl>
@@ -433,7 +433,7 @@ CallHandle</h2>
 </ul>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md97"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md98"></a>
 引数と戻り値型</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 引数型や戻り値型は関数の型から自動で取得されますが、 引数名などの情報や引数に設定する条件などを Func::setArgs() でセットすることができます。 設定可能な情報の一覧は <a class="el" href="classwebcface_1_1Arg.html" title="引数の情報を表す。">webcface::Arg</a> を参照</p>
@@ -479,7 +479,7 @@ CallHandle</h2>
 </div><!-- fragment --><p class="startli"><span class="since-py">2.2</span> 実際の関数の引数とargsで指定した個数が一致していなければAssertionErrorになります。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md98"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md99"></a>
 型変換</h3>
 <ul>
 <li>関数登録時に指定した型と呼び出したときに渡した引数の型が違う場合、呼び出された側のライブラリが自動的に変換してから関数に渡します。</li>
@@ -506,7 +506,7 @@ CallHandle</h2>
 <li>(JavaScript) set時に引数の型の情報を指定しなかった場合、型変換を行わず送られてきた値をそのまま関数に渡します。</li>
 <li>(Python) <span class="since-py">3.0</span> 関数登録時に指定した型が int,float,bool,str のいずれでもないもしくは未指定の場合、 型変換を行わず送られてきた値をそのまま関数に渡します。</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md99"></a>
+<h2><a class="anchor" id="autotoc_md100"></a>
 関数をWebUIから隠す</h2>
 <p>(serverが<span class="since-c">1.10</span>以降の場合)</p>
 <p>関数の名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、 他のMemberやWebUIから関数の存在を隠すことができます。 (Valueなど他のデータ型についても同様です。)</p>
@@ -525,7 +525,7 @@ CallHandle</h2>
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div> </details>
-<h2><a class="anchor" id="autotoc_md100"></a>
+<h2><a class="anchor" id="autotoc_md101"></a>
 FuncListener</h2>
 <p>呼び出されたとき実行する関数を登録する代わりに、呼び出されたかどうかを監視し任意のタイミングで値を返すということもできます。 特にCのFFIで関数ポインタが利用できない場合に代わりに使えます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -588,7 +588,7 @@ FuncListener</h2>
 <p class="startli">詳細は <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.CallHandle">webcface.CallHandle</a></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md101"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md102"></a>
 Funcの表示順 (index)</h2>
 <p>WebUI(ver1.13〜)でFunc一覧を表示する際、名前順の表示とFuncが登録された順の表示を切り替えることができます。</p>
 <p>Funcが登録された順番(index)は送信側のクライアントライブラリで自動的に管理されますが、 手動で上書きして表示順を指定することも可能です。</p>
@@ -607,7 +607,7 @@ set関数の4番目の引数で指定できます。 <div class="fragment"><div 
 <div class="line">);</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md102"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md103"></a>
 関数の情報の取得</h1>
 <p>関数の引数や戻り値、 (<span class="since-c">2.8</span><span class="since-js">1.11</span>関数が登録された順番) の情報を取得できます。 他のデータ型と違ってデータをリクエストする機能はなく、 関数の情報はクライアントが関数を登録してsync()した時点で送られてきます。</p>
 <div class="tabbed"></div><div class="tabbed"><ul>
@@ -626,10 +626,10 @@ set関数の4番目の引数で指定できます。 <div class="fragment"><div 
 <div class="line">return_type = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).return_type</div>
 </div><!-- fragment --> 引数の情報については <a href="https://na-trium-144.github.io/webcface-python/webcface.func_info.html#webcface.func_info.Arg">webcface.Arg</a> を参照</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md103"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md104"></a>
 Entry</h2>
 <p>他のデータ型と同様、関数が存在するかどうかを取得することができます。 詳細は <a class="el" href="md_docs_243__field.html">4-3. Field</a> を参照してください</p>
-<h1><a class="anchor" id="autotoc_md104"></a>
+<h1><a class="anchor" id="autotoc_md105"></a>
 関数の実行</h1>
 <p>他クライアントに登録された関数を呼び出すことができます。 (自分でsetした関数を自分で実行することも一応可能です)</p>
 <p>引数を渡したり、戻り値またはエラーメッセージを取得することができます。</p>
@@ -905,7 +905,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 28 2025 17:19:59 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

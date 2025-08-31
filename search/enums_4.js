@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loglevelenum_0',['LogLevelEnum',['../namespacewebcface_1_1level.html#ac2fe55c989a2c0b34cf68f392982fd66',1,'webcface::level']]]
+  ['loglevel_0',['LogLevel',['../namespacewebcface.html#a9cf4d2a890c8688e0fe1bc38fa88de94',1,'webcface']]]
 ];
