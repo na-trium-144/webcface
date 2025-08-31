@@ -240,11 +240,12 @@ C++20 modules</h2>
 <div class="ttc" id="anamespacewebcface_html"><div class="ttname"><a href="namespacewebcface.html">webcface</a></div><div class="ttdef"><b>Definition</b> arg.h:14</div></div>
 </div><!-- fragment --><p> <code>#include &lt;<a class="el" href="webcface_8h.html">webcface/webcface.h</a>&gt;</code> と同様 <code>webcface::</code> 以下のすべての機能が使えるようになります。</p>
 <p>include/webcface/modules/webcface.ccm として module interface unit のソースファイルがインストールされるので、それをプロジェクトのソースに追加してコンパイルすることで利用できます。 ビルド済みのBMIはインストールしないので、コンパイラのバージョンの互換性を気にする必要はありません。</p>
-<p>\caution 通常CMakeを使えばどのコンパイラでも <code>.ccm</code> をモジュールのファイルとして受け付けますが、本来の module interface unit のファイル拡張子はコンパイラごとに異なります。(参考: <a href="https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules">https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules</a> ) WebCFaceでは以下の3つのファイルをインストールするので、使用できる拡張子に制限がある場合はいずれかを利用してください。内容はどれでも同じです。</p><ul>
+<dl class="section warning"><dt>Warning</dt><dd>通常CMakeを使えばどのコンパイラでも <code>.ccm</code> をモジュールのファイルとして受け付けますが、本来の module interface unit のファイル拡張子はコンパイラごとに異なります。(参考: <a href="https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules">https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules</a> ) WebCFaceでは以下の3つのファイルをインストールするので、使用できる拡張子に制限がある場合はいずれかを利用してください。内容はどれでも同じです。<ul>
 <li>GCC用: <a class="el" href="webcface_8cc.html">include/webcface/modules/webcface.cc</a></li>
 <li>Clang用: include/webcface/modules/webcface.ccm</li>
 <li>MSVC用: <a class="el" href="webcface_8ixx.html">include/webcface/modules/webcface.ixx</a></li>
 </ul>
+</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">Meson</b> Meson側でのmodulesサポート機能は完全ではないので、以下のようにソースファイルの指定などを手動で行う必要があります。 (詳細は <a href="https://github.com/mesonbuild/meson/issues/5024">https://github.com/mesonbuild/meson/issues/5024</a> ) <div class="fragment"><div class="line">webcface_dep = dependency(&#39;webcface&#39;, version: &#39;&gt;=3.0.0&#39;)</div>
 <div class="line"> </div>
@@ -271,37 +272,30 @@ C++20 modules</h2>
 <div class="line"> </div>
 <div class="line">target_link_libraries(your-target PRIVATE webcface::webcface_modules)</div>
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd>webcface::webcface_modules ターゲットには cpp_std_20 の指定が含まれています。</dd></dl>
-<p>\caution プロジェクトのcmake_minimum_requiredが3.28未満(CMP0155がOLD)の場合、modules関連のコンパイルオプションがCMakeによって正しく適用されない可能性があります。</p>
+<dl class="section warning"><dt>Warning</dt><dd>プロジェクトのcmake_minimum_requiredが3.28未満(CMP0155がOLD)の場合、modules関連のコンパイルオプションがCMakeによって正しく適用されない可能性があります。</dd></dl>
 </li>
 </ul>
 </div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md41"></a>
 Python</h1>
-<p>Pythonで利用したい場合は <code>pip install webcface</code> でライブラリをインストールしてください。 Python3.6以上で動作します。</p>
-<p>importは </p><div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
-</div><!-- fragment --><p> で <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> のように使うか、 </p><div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
-</div><!-- fragment --><p> のように使います。</p>
-<p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a> も参照してください</p>
-<h1><a class="anchor" id="autotoc_md42"></a>
+<div class="tabbed"></div><div class="tabbed">Pythonで利用したい場合は <code>pip install webcface</code> でライブラリをインストールしてください。 Python3.6以上で動作します。</div><div class="tabbed">importは <div class="fragment"><div class="line"><span class="keyword">import</span> webcface</div>
+</div><!-- fragment --> で <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> のように使うか、 <div class="fragment"><div class="line"><span class="keyword">from</span> webcface <span class="keyword">import</span> Client</div>
+</div><!-- fragment --> のように使います。</div><div class="tabbed">使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-python/">webcface-python APIリファレンス</a> も参照してください</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md42"></a>
 JavaScript/TypeScript</h1>
-<p><code>npm install webcface</code> でライブラリをインストールできます。 Node.jsでもブラウザー(webpackなど)でも動きます。</p>
-<p>Node.jsの場合、ESMで </p><div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
-</div><!-- fragment --><p> のようにして使うことができます。 CommonJSで<code>requires("webcface")</code>のように使うこともできると思います。</p>
-<p><span class="since-js">1.7</span> ブラウザー上で使う場合はCDNも利用できます。 </p><div class="fragment"><div class="line">&lt;script src=&quot;https://cdn.jsdelivr.net/npm/webcface@1.11.0/dist/webcface.bundle.js&quot;&gt;&lt;/script&gt;</div>
-</div><!-- fragment --><p> で読み込むとグローバルに <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> などが使用できるようになります。</p>
-<p>使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a> も参照してください。</p>
-<div class="section_buttons"></div><div class="section_buttons"><table class="markdownTable">
+<div class="tabbed"></div><div class="tabbed"><code>npm install webcface</code> でライブラリをインストールできます。 Node.jsでもブラウザー(webpackなど)でも動きます。</div><div class="tabbed">Node.jsの場合、ESMで <div class="fragment"><div class="line">import { Client } from &quot;webcface&quot;;</div>
+</div><!-- fragment --> のようにして使うことができます。 CommonJSで<code>requires("webcface")</code>のように使うこともできると思います。</div><div class="tabbed"><span class="since-js">1.7</span> ブラウザー上で使う場合はCDNも利用できます。 <div class="fragment"><div class="line">&lt;script src=&quot;https://cdn.jsdelivr.net/npm/webcface@1.11.0/dist/webcface.bundle.js&quot;&gt;&lt;/script&gt;</div>
+</div><!-- fragment --> で読み込むとグローバルに <code><a class="el" href="classwebcface_1_1Client.html" title="サーバーに接続するクライアント。">webcface.Client</a></code> などが使用できるようになります。</div><div class="tabbed">使い方はC++のライブラリとだいたい同じです。 次ページ以降のドキュメントとともに <a href="https://na-trium-144.github.io/webcface-js/">webcface-js APIリファレンス</a> も参照してください。</div><div class="tabbed"><div class="section_buttons"></div></div><div class="tabbed"><div class="section_buttons"><table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadLeft">Previous   </th><th class="markdownTableHeadRight">Next    </th></tr>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><a class="el" href="md_docs_222__webui.html">2-2. WebUI</a>   </td><td class="markdownTableBodyRight"><a class="el" href="md_docs_232__building.html">3-2. Building from Source</a>   </td></tr>
 </table>
-</div><div class="section_buttons"></div> </div></div><!-- contents -->
+</div></div><div class="tabbed"><div class="section_buttons"></div> </div></div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Aug 31 2025 12:11:47 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Aug 31 2025 12:24:07 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
