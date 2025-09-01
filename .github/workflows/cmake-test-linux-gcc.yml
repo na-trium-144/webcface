@@ -62,6 +62,7 @@ jobs:
         --prefix=${{github.workspace}}/build/install
         --force-fallback-for=libcurl
         --unity=${{matrix.unity}}
+        -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off
     - name: Compile
       run: meson compile -C build || meson compile -C build
     - name: Test
@@ -90,7 +91,7 @@ jobs:
         CC: gcc-${{matrix.gcc_ver}}
         CXX: g++-${{matrix.gcc_ver}}
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -GNinja
         cmake --build build
 
     - name: Test building with pkg-config

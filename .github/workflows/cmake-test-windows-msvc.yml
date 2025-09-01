@@ -85,6 +85,7 @@ jobs:
         -Dwrap_mode=default
         --cross-file scripts/cross/msvc_${{matrix.arch}}
         --unity=${{matrix.unity}}
+        -Dlibvips:unity=off -Dlibjpeg-turbo:unity=off -Dzlib:unity=off -Dlibwebp:unity=off -Dglib:unity=off -Dlibffi:unity=off
     # ${{ steps.vcpkg.outputs.vcpkg-cmake-config }}
 
     - name: Compile
@@ -111,11 +112,11 @@ jobs:
       if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
-        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -DCMAKE_GENERATOR_PLATFORM=WIN32
+        cmake -B build -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -GNinja
         cmake --build build --config Debug
     - name: Test building with Meson using CMake
       if: matrix.arch == 'x86'
       working-directory: ${{github.workspace}}/.github/test
       run: |
-        meson setup buildmc --buildtype=debug -Dcmake_prefix_path=${{github.workspace}}/build/install
+        meson setup buildmc --buildtype=debug -Dcmake_prefix_path=${{github.workspace}}/build/install --backend=vs
         meson compile -Cbuildmc

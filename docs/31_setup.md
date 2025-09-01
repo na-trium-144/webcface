@@ -115,6 +115,73 @@ C++ではなくCからアクセスできるAPIとして、wcf〜 で始まる名
 ほとんどの関数は戻り値が <del>int 型</del> <span class="since-c">2.0</span> enum wcfStatus 型で、
 成功した場合 0 (= WCF_OK)、例外が発生した場合正の値を返します。
 
+### C++20 modules
+
+\since <span class="since-c">3.0</span>
+
+C++20のmodulesとしてWebCFaceをimportすることもできます。
+```cpp
+import webcface;
+```
+`#include <webcface/webcface.h>` と同様 `webcface::` 以下のすべての機能が使えるようになります。
+
+include/webcface/modules/webcface.ccm として module interface unit のソースファイルがインストールされるので、それをプロジェクトのソースに追加してコンパイルすることで利用できます。
+ビルド済みのBMIはインストールしないので、コンパイラのバージョンの互換性を気にする必要はありません。
+
+\warning
+通常CMakeを使えばどのコンパイラでも `.ccm` をモジュールのファイルとして受け付けますが、本来の module interface unit のファイル拡張子はコンパイラごとに異なります。(参考: https://stackoverflow.com/questions/75733706/what-is-the-file-extension-naming-convention-for-c20-modules )
+WebCFaceでは以下の3つのファイルをインストールするので、使用できる拡張子に制限がある場合はいずれかを利用してください。内容はどれでも同じです。
+* GCC用: include/webcface/modules/webcface.cc
+* Clang用: include/webcface/modules/webcface.ccm
+* MSVC用: include/webcface/modules/webcface.ixx
+
+<div class="tabbed">
+
+- <b class="tab-title">Meson</b>
+    Meson側でのmodulesサポート機能は完全ではないので、以下のようにソースファイルの指定などを手動で行う必要があります。
+    (詳細は https://github.com/mesonbuild/meson/issues/5024 )
+    ```meson
+    webcface_dep = dependency('webcface', version: '>=3.0.0')
+
+    cxx = meson.get_compiler('cpp')
+    if cxx.get_id() == 'gcc' and cxx.version().version_compare('>=14')
+      # see https://github.com/mesonbuild/meson/issues/6660
+      webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.cc'
+      # https://github.com/ninja-build/ninja/issues/1962
+      modules_args = ['-fmodules-ts', '-fdeps-format=p1689r5']
+    elif cxx.get_argument_syntax() == 'msvc'
+      webcface_miu = webcface_dep.get_variable(pkgconfig: 'includedir', cmake: 'PACKAGE_INCLUDE_DIRS') / 'webcface/modules/webcface.ixx'
+      modules_args = []
+    else
+      error('現在のMesonはclangでのmodulesには非対応')
+    fi
+    
+    # webcface_depに加えて、webcface_miuと追加のフラグ(gccのみ)をプロジェクトに追加
+    executable('main', 'main.cc', webcface_miu,
+      dependencies: [webcface_dep],
+      cpp_args: modules_args,
+    )
+    ```
+
+- <b class="tab-title">CMake</b>
+    CMakeのバージョンが3.28以上の場合、`webcface::webcface` の代わりに `webcface::webcface_modules` をリンクすることで、 module interface unit が自動的にターゲットのソースに追加されます。
+    ```cmake
+    find_package(webcface 3.0 CONFIG REQUIRED)
+
+    target_link_libraries(your-target PRIVATE webcface::webcface_modules)
+    ```
+
+    \note
+    webcface::webcface_modules ターゲットには cpp_std_20 の指定が含まれています。
+    
+    \warning
+    プロジェクトのcmake_minimum_requiredが3.28未満(CMP0155がOLD)の場合、modules関連のコンパイルオプションがCMakeによって正しく適用されない可能性があります。
+
+    <span></span>
+    
+</div>
+
+
 ## Python
 
 Pythonで利用したい場合は `pip install webcface` でライブラリをインストールしてください。
