@@ -8,6 +8,7 @@ ValAdaptor::ValAdaptor(const SharedString &str)
     : as_str(str), type(ValType::string_) {}
 ValAdaptor &ValAdaptor::operator=(const SharedString &str) {
     as_str = str;
+    as_val.emplace<double>(0);
     type = ValType::string_;
     return *this;
 }
@@ -17,6 +18,7 @@ ValAdaptor::ValAdaptor(StringInitializer str)
       type(ValType::string_) {}
 ValAdaptor &ValAdaptor::operator=(StringInitializer str) {
     as_str = std::move(static_cast<SharedString &>(str));
+    as_val.emplace<double>(0);
     type = ValType::string_;
     return *this;
 }
@@ -28,6 +30,7 @@ ValAdaptor::ValAdaptor(Bool value)
 template <typename Bool>
 auto ValAdaptor::operator=(Bool v)
     -> std::enable_if_t<std::is_same_v<Bool, bool>, ValAdaptor &> {
+    as_str = SharedString();
     as_val.emplace<INT64V>(v);
     type = ValType::bool_;
     return *this;
@@ -38,6 +41,7 @@ template WEBCFACE_DLL ValAdaptor &ValAdaptor::operator= <bool>(bool v);
 ValAdaptor::ValAdaptor(std::int64_t value)
     : as_val(value), type(ValType::int_) {}
 ValAdaptor &ValAdaptor::operator=(std::int64_t v) {
+    as_str = SharedString();
     as_val.emplace<INT64V>(v);
     type = ValType::int_;
     return *this;
@@ -45,6 +49,7 @@ ValAdaptor &ValAdaptor::operator=(std::int64_t v) {
 
 ValAdaptor::ValAdaptor(double value) : as_val(value), type(ValType::float_) {}
 ValAdaptor &ValAdaptor::operator=(double v) {
+    as_str = SharedString();
     as_val.emplace<DOUBLEV>(v);
     type = ValType::float_;
     return *this;

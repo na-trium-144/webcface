@@ -5,7 +5,6 @@
 #include <type_traits>
 #include <string>
 #include "trait.h"
-#include "webcface/exception.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -30,9 +29,11 @@ struct ArraySizeTraitCheck<true> {
 
 constexpr std::false_type isArrayLike(...) { return {}; }
 template <typename T>
-constexpr auto isArrayLike(T) -> std::bool_constant<
-    std::is_convertible_v<decltype(*std::begin(std::declval<T>())), double> &&
-    std::is_convertible_v<decltype(*std::end(std::declval<T>())), double>> {
+constexpr auto isArrayLike(T)
+    -> std::bool_constant<
+        std::is_convertible_v<decltype(*std::begin(std::declval<T>())),
+                              double> &&
+        std::is_convertible_v<decltype(*std::end(std::declval<T>())), double>> {
     return {};
 }
 template <typename T>
@@ -97,7 +98,7 @@ std::array<double, Num> arrayLikeToArray(const T &array) {
     if (n == Num && it == std::end(array)) {
         return ret;
     } else {
-        throw InvalidArgument(
+        throw std::invalid_argument(
             "array size mismatch, expected: " + std::to_string(Num) +
             ", got: " + std::to_string(n));
     }

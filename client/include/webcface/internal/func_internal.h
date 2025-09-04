@@ -42,7 +42,7 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
 
     Field base;
     std::size_t caller_id;
-    const std::vector<ValAdaptor> args_;
+    const std::vector<ValAdaptorVector> args_;
     std::variant<int, std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
         c_args_;
 
@@ -58,7 +58,7 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
     /*!
      * startedとresultを空の状態で初期化
      */
-    explicit PromiseData(const Field &base, std::vector<ValAdaptor> &&args,
+    explicit PromiseData(const Field &base, std::vector<ValAdaptorVector> &&args,
                          std::size_t caller_id = 0)
         : reach_event(), finish_event(), started_p(), result_p(),
           started_f(started_p.get_future().share()),
@@ -99,7 +99,7 @@ class FuncResultStore {
         std::lock_guard lock(mtx);
         std::size_t caller_id = next_caller_id++;
         auto state = std::make_shared<PromiseData>(
-            base, std::vector<ValAdaptor>{}, caller_id);
+            base, std::vector<ValAdaptorVector>{}, caller_id);
         promises.emplace(caller_id, state);
         return state;
     }

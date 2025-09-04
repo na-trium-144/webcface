@@ -1,7 +1,7 @@
 #pragma once
 #include "./base.h"
 #include "webcface/common/encoding.h"
-#include "webcface/common/val_adaptor.h"
+#include "webcface/common/val_adaptor_vec.h"
 #include <optional>
 #include <vector>
 
@@ -28,11 +28,11 @@ struct Call : public MessageBase<MessageKind::call> {
     MemberId caller_member_id = 0;
     MemberId target_member_id = 0;
     SharedString field;
-    std::vector<webcface::ValAdaptor> args;
+    std::vector<webcface::ValAdaptorVector> args;
     Call() = default;
     Call(CallerId caller_id, MemberId caller_member_id,
          MemberId target_member_id, const SharedString &field,
-         const std::vector<ValAdaptor> &args)
+         const std::vector<ValAdaptorVector> &args)
         : message::MessageBase<MessageKind::call>(), caller_id(caller_id),
           caller_member_id(caller_member_id),
           target_member_id(target_member_id), field(field), args(args) {}
@@ -91,12 +91,12 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
 struct Arg {
     SharedString name_;
     ValType type_ = ValType::none_;
-    std::optional<ValAdaptor> init_ = std::nullopt;
+    std::optional<ValAdaptorVector> init_ = std::nullopt;
     std::optional<double> min_ = std::nullopt, max_ = std::nullopt;
     std::vector<ValAdaptor> option_;
     Arg() = default;
     Arg(const SharedString &name, ValType type,
-        const std::optional<ValAdaptor> &init,
+        const std::optional<ValAdaptorVector> &init,
         const std::optional<double> &min_, const std::optional<double> &max_,
         const std::vector<ValAdaptor> &option)
         : name_(name), type_(type), init_(init), min_(min_), max_(max_),

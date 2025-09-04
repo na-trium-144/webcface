@@ -293,12 +293,12 @@ std::vector<CVal> &internal::PromiseData::initCArgs() {
         c_args.reserve(this->args_.size());
         for (const auto &a : this->args_) {
             CVal cv;
-            cv.as_int = a;
-            cv.as_double = a;
+            cv.as_int = a.as<int>();
+            cv.as_double = a.as<double>();
             if constexpr (v_index == 1) {
-                cv.as_str = a.asStringView().c_str();
+                cv.as_str = static_cast<std::string_view>(a).data();
             } else {
-                cv.as_str = a.asWStringView().c_str();
+                cv.as_str = static_cast<std::wstring_view>(a).data();
             }
             c_args.push_back(cv);
         }
@@ -322,7 +322,7 @@ const wcfMultiValW *CallHandle::cWArgs() const {
         throw invalidHandle();
     }
 }
-const std::vector<ValAdaptor> &CallHandle::args() const {
+const std::vector<ValAdaptorVector> &CallHandle::args() const {
     if (data) {
         return data->args_;
     } else {

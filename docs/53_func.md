@@ -22,7 +22,8 @@
     Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます
 
     関数は関数オブジェクト(ラムダ式など)でもokです。
-    引数、戻り値は整数、実数、bool、文字列型であれば自由に指定できます。
+    引数、戻り値は整数、実数、bool、文字列型であれば自由に指定できます。  
+    <span class="since-c">3.0</span> 1次元のリスト (std::vector, std::array) も引数に使用可能です。
     ```cpp
     void hoge() {
         std::cout << "hello, world!" << std::endl;
@@ -105,7 +106,8 @@
 - <b class="tab-title">JavaScript</b>
     Client.func からFuncオブジェクトを作り、 Func.set() で関数を登録し、Client.sync()することで送信されます
 
-    引数、戻り値はnumber, bool, string型であればいくつでも自由に指定できます。
+    引数、戻り値はnumber, bool, string型であればいくつでも自由に指定できます。  
+    <span class="since-js">1.12</span> 1次元の配列も引数に使用可能です。
     ```ts
     wcli.func("hoge").set(() => {/* ... */});
     wcli.func("hoge").set((a: number, b: string) => 3.1415);
@@ -424,7 +426,9 @@ wcli.func("fuga").setRunCondNone();
     <span class="since-c">1.9.1</span> 空文字列でないときtrue
     * Python: 空文字列でないときTrue
     * JavaScript: 空文字列でないときtrue
-* (C++) 引数を webcface::ValAdaptor 型にすると型変換を行わずに値を受け取ることができます。
+* <span class="since-c">3.0</span> <span class="since-js">1.12</span>
+1次元の配列も使用可能です。型が一致していない場合配列でない単一の値は要素数1の配列と相互変換されます。
+* (C++) 引数を webcface::ValAdaptor, <span class="since-c">3.0</span> webcface::ValAdaptorVector 型にすると型変換を行わずに値を受け取ることができます。
 * (C) set時に指定した引数の型によらず、callHandleからは常にint,double,文字列のいずれでも値を受け取ることができます。
 * (JavaScript) set時に引数の型の情報を指定しなかった場合、型変換を行わず送られてきた値をそのまま関数に渡します。
 * (Python) <span class="since-py">3.0</span>
@@ -506,10 +510,10 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
     とすることで関数が呼び出されたかどうかを調べることができます。
     * その関数がまだ呼び出されていない場合はstd::nulloptが返ります。
     * 関数が呼び出された場合、 CallHandle::args() で呼び出された引数を取得できます。
-        * 各引数は ValAdaptor 型で取得でき、
+        * 各引数は <del>ValAdaptor</del> <span class="since-c">3.0</span> ValAdaptorVector 型で取得でき、
         <del>`asStringRef()`</del>, `asString()`, `asBool()`, <del>`as<double>()`</del>,
         <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
-        <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
+        <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
         で型を指定して取得できます。
         * (std::string, double, bool などの型にキャストすることでも値を得られます。)
         * listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます

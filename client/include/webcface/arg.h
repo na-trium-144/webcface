@@ -2,6 +2,7 @@
 #include <vector>
 #include <optional>
 #include "webcface/common/val_adaptor.h"
+#include "webcface/common/val_adaptor_vec.h"
 
 #ifdef min
 // clang-format off
@@ -100,31 +101,25 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief デフォルト値を取得する。
      *
+     * ver2.10〜 ValAdaptorVector に変更
+     *
      */
-    std::optional<ValAdaptor> init() const;
+    std::optional<ValAdaptorVector> init() const;
     /*!
      * \brief デフォルト値を設定する。
      *
      */
     template <typename T>
     Arg &init(const T &init) {
-        return this->init(ValAdaptor(init));
+        return this->init(ValAdaptorVector(init));
     }
     /*!
      * \since ver2.10
      */
-    template <std::size_t N>
-    Arg &init(const char (&init)[N]) {
-        return this->init(ValAdaptor(init));
+    Arg &init(StringInitializer init) {
+        return this->init(ValAdaptorVector(std::move(init)));
     }
-    /*!
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    Arg &init(const wchar_t (&init)[N]) {
-        return this->init(ValAdaptor(init));
-    }
-    Arg &init(const ValAdaptor &init);
+    Arg &init(const ValAdaptorVector &init);
     /*!
      * \brief 最小値を取得する。
      *
