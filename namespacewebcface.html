@@ -340,6 +340,9 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">数値、文字列などの値を相互変換するクラス  <a href="classwebcface_1_1ValAdaptor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">ValAdaptorのVector.  <a href="classwebcface_1_1ValAdaptorVector.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html">Value</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">実数値またはその配列の送受信データを表すクラス  <a href="classwebcface_1_1Value.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -504,6 +507,13 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">float_</a> = 4
 , <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9">double_</a> = 4
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a55efcc2c1a55d0c9b7c5801600e364e4">vector_</a> = 16
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a70a384806b033754b82990b1790de6b3">vector_string_</a> = 17
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a75e1faa487c5514b7d91bd8a12362509">vector_bool_</a> = 18
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a5647e427b7a7d91fc2ff29744255fe30">vector_int_</a> = 19
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a39c17e5c428dd1970aa2783d00297e5c">vector_float_</a> = 20
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a78fc539fbe053507a814b37f279233db">vector_double_</a> = 20
 <br />
  }</td></tr>
 <tr class="memdesc:acd1dd9e2d5f885ad3f73197cfa6b0185"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数や戻り値の型を表すenum  <a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">More...</a><br /></td></tr>
@@ -718,10 +728,6 @@ Functions</h2></td></tr>
 <tr class="memitem:a30405cc279980892099da21a5d7e9cc8"><td class="memTemplItemLeft" align="right" valign="top">std::basic_string&lt; CharT &gt;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a30405cc279980892099da21a5d7e9cc8">strJoin</a> (std::basic_string_view&lt; CharT &gt; first_str, Args &amp;&amp;...args)</td></tr>
 <tr class="memdesc:a30405cc279980892099da21a5d7e9cc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">string_viewやconst char*同士を連結しstringを返す  <br /></td></tr>
 <tr class="separator:a30405cc279980892099da21a5d7e9cc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ae0e0d190aa5fc5710b43f55098ad9ecd">valTypeOf</a> ()</td></tr>
-<tr class="memdesc:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TのValTypeを得る  <br /></td></tr>
-<tr class="separator:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a818466a6a9b6abe8c25c93ac959ec0cb">valTypeStr</a> (<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> a)</td></tr>
 <tr class="memdesc:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">型名を文字列で取得  <br /></td></tr>
 <tr class="separator:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -736,10 +742,23 @@ Functions</h2></td></tr>
 <tr class="separator:ae8355d2de1659a12edc34e22f77694ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7772b6098dac5df4d543a786d2415f46"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;a)</td></tr>
 <tr class="separator:a7772b6098dac5df4d543a786d2415f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplParams" colspan="2">template&lt;int n = 0, typename T &gt; </td></tr>
-<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">argToTuple</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args, T &amp;tuple)</td></tr>
-<tr class="memdesc:a5aeb2e4cecdcd6261d71162f7f918434"><td class="mdescLeft">&#160;</td><td class="mdescRight">ValAdaptorのリストから任意の型のタプルに変換する  <br /></td></tr>
-<tr class="separator:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac155295087ba04ee131f718232ae64ea"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V , typename std::enable_if_t&lt; std::is_same_v&lt; V, <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;&amp;std::is_constructible_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt; &amp;&amp;!std::is_same_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:ac155295087ba04ee131f718232ae64ea"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ac155295087ba04ee131f718232ae64ea">operator==</a> (const T &amp;other, const V &amp;val)</td></tr>
+<tr class="separator:ac155295087ba04ee131f718232ae64ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82c3e3a8c4f7247b163a12a0b4aaff20"><td class="memTemplParams" colspan="2">template&lt;typename T , typename V , typename std::enable_if_t&lt; std::is_same_v&lt; V, <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;&amp;std::is_constructible_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt; &amp;&amp;!std::is_same_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a82c3e3a8c4f7247b163a12a0b4aaff20"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a82c3e3a8c4f7247b163a12a0b4aaff20">operator!=</a> (const T &amp;other, const V &amp;val)</td></tr>
+<tr class="separator:a82c3e3a8c4f7247b163a12a0b4aaff20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a98c4bcc8ef0730807999a3c52193f838"><td class="memTemplParams" colspan="2">template&lt;int n = 0, typename T &gt; </td></tr>
+<tr class="memitem:a98c4bcc8ef0730807999a3c52193f838"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a98c4bcc8ef0730807999a3c52193f838">argToTuple</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;args, T &amp;tuple)</td></tr>
+<tr class="memdesc:a98c4bcc8ef0730807999a3c52193f838"><td class="mdescLeft">&#160;</td><td class="mdescRight">ValAdaptorのリストから任意の型のタプルに変換する  <br /></td></tr>
+<tr class="separator:a98c4bcc8ef0730807999a3c52193f838"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab63d7e2acceae5c2bdc873a0b84be93a"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ab63d7e2acceae5c2bdc873a0b84be93a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ab63d7e2acceae5c2bdc873a0b84be93a">warningOnUnknownType</a> ()</td></tr>
+<tr class="separator:ab63d7e2acceae5c2bdc873a0b84be93a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
+<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ae0e0d190aa5fc5710b43f55098ad9ecd">valTypeOf</a> ()</td></tr>
+<tr class="memdesc:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TのValTypeを得る  <br /></td></tr>
+<tr class="separator:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bec2add31f172121f92bd5b7ff60226"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a0bec2add31f172121f92bd5b7ff60226">decodeU8sToWs</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">internal::SharedStringData</a> &gt; &amp;data)</td></tr>
 <tr class="separator:a0bec2add31f172121f92bd5b7ff60226"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5d95b0fe9dcfd907aedab63f30a020b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a5d95b0fe9dcfd907aedab63f30a020b3">decodeWsToS</a> (const std::shared_ptr&lt; <a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">internal::SharedStringData</a> &gt; &amp;data)</td></tr>
@@ -1191,6 +1210,12 @@ Variables</h2></td></tr>
 <tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53" name="acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53"></a>int_&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1" name="acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1"></a>float_&#160;</td><td class="fielddoc"></td></tr>
 <tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9" name="acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9"></a>double_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a55efcc2c1a55d0c9b7c5801600e364e4" name="acd1dd9e2d5f885ad3f73197cfa6b0185a55efcc2c1a55d0c9b7c5801600e364e4"></a>vector_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a70a384806b033754b82990b1790de6b3" name="acd1dd9e2d5f885ad3f73197cfa6b0185a70a384806b033754b82990b1790de6b3"></a>vector_string_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a75e1faa487c5514b7d91bd8a12362509" name="acd1dd9e2d5f885ad3f73197cfa6b0185a75e1faa487c5514b7d91bd8a12362509"></a>vector_bool_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a5647e427b7a7d91fc2ff29744255fe30" name="acd1dd9e2d5f885ad3f73197cfa6b0185a5647e427b7a7d91fc2ff29744255fe30"></a>vector_int_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a39c17e5c428dd1970aa2783d00297e5c" name="acd1dd9e2d5f885ad3f73197cfa6b0185a39c17e5c428dd1970aa2783d00297e5c"></a>vector_float_&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="acd1dd9e2d5f885ad3f73197cfa6b0185a78fc539fbe053507a814b37f279233db" name="acd1dd9e2d5f885ad3f73197cfa6b0185a78fc539fbe053507a814b37f279233db"></a>vector_double_&#160;</td><td class="fielddoc"></td></tr>
 </table>
 
 </div>
@@ -1268,8 +1293,8 @@ Variables</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a5aeb2e4cecdcd6261d71162f7f918434" name="a5aeb2e4cecdcd6261d71162f7f918434"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5aeb2e4cecdcd6261d71162f7f918434">&#9670;&#160;</a></span>argToTuple()</h2>
+<a id="a98c4bcc8ef0730807999a3c52193f838" name="a98c4bcc8ef0730807999a3c52193f838"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98c4bcc8ef0730807999a3c52193f838">&#9670;&#160;</a></span>argToTuple()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1279,7 +1304,7 @@ template&lt;int n = 0, typename T &gt; </div>
         <tr>
           <td class="memname">void argToTuple </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>args</em>, </td>
         </tr>
         <tr>
@@ -1297,6 +1322,7 @@ template&lt;int n = 0, typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>ValAdaptorのリストから任意の型のタプルに変換する </p>
+<p>ver2.10〜 ValAdaptorVectorに変更 </p>
 
 </div>
 </div>
@@ -1740,7 +1766,7 @@ template&lt;std::size_t I&gt; </div>
 </div>
 </div>
 <a id="aeefc8afb9035b64b8b3f5147bfd349b0" name="aeefc8afb9035b64b8b3f5147bfd349b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeefc8afb9035b64b8b3f5147bfd349b0">&#9670;&#160;</a></span>operator!=() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeefc8afb9035b64b8b3f5147bfd349b0">&#9670;&#160;</a></span>operator!=() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1769,8 +1795,38 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 
 </div>
 </div>
+<a id="a82c3e3a8c4f7247b163a12a0b4aaff20" name="a82c3e3a8c4f7247b163a12a0b4aaff20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a82c3e3a8c4f7247b163a12a0b4aaff20">&#9670;&#160;</a></span>operator!=() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename V , typename std::enable_if_t&lt; std::is_same_v&lt; V, <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;&amp;std::is_constructible_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt; &amp;&amp;!std::is_same_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="ae8355d2de1659a12edc34e22f77694ae" name="ae8355d2de1659a12edc34e22f77694ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8355d2de1659a12edc34e22f77694ae">&#9670;&#160;</a></span>operator!=() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8355d2de1659a12edc34e22f77694ae">&#9670;&#160;</a></span>operator!=() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2036,7 +2092,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 </div>
 </div>
 <a id="a4d810c78099d1c67779adcf796b50e1d" name="a4d810c78099d1c67779adcf796b50e1d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d810c78099d1c67779adcf796b50e1d">&#9670;&#160;</a></span>operator==() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d810c78099d1c67779adcf796b50e1d">&#9670;&#160;</a></span>operator==() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2065,8 +2121,38 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 
 </div>
 </div>
+<a id="ac155295087ba04ee131f718232ae64ea" name="ac155295087ba04ee131f718232ae64ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac155295087ba04ee131f718232ae64ea">&#9670;&#160;</a></span>operator==() <span class="overload">[2/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T , typename V , typename std::enable_if_t&lt; std::is_same_v&lt; V, <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &gt; &amp;&amp;std::is_constructible_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt; &amp;&amp;!std::is_same_v&lt; <a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a>, T &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">bool operator== </td>
+          <td>(</td>
+          <td class="paramtype">const T &amp;&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const V &amp;&#160;</td>
+          <td class="paramname"><em>val</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a13773c27bf327fd21ee7d4c605e94e20" name="a13773c27bf327fd21ee7d4c605e94e20"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13773c27bf327fd21ee7d4c605e94e20">&#9670;&#160;</a></span>operator==() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a13773c27bf327fd21ee7d4c605e94e20">&#9670;&#160;</a></span>operator==() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3021,6 +3107,7 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>TのValTypeを得る </p>
+<p>Funcの登録時に引数型と戻り値型について呼ばれる。 </p>
 
 </div>
 </div>
@@ -3050,6 +3137,33 @@ template&lt;typename T &gt; </div>
 
 <p>型名を文字列で取得 </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.9.1 </dd></dl>
+
+</div>
+</div>
+<a id="ab63d7e2acceae5c2bdc873a0b84be93a" name="ab63d7e2acceae5c2bdc873a0b84be93a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab63d7e2acceae5c2bdc873a0b84be93a">&#9670;&#160;</a></span>warningOnUnknownType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void warningOnUnknownType </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>
@@ -3165,7 +3279,7 @@ template&lt;typename T &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li>
-    <li class="footer">Generated on Sun Aug 31 2025 12:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Sep 4 2025 15:07:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

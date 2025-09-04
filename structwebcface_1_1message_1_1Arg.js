@@ -1,8 +1,8 @@
 var structwebcface_1_1message_1_1Arg =
 [
     [ "Arg", "structwebcface_1_1message_1_1Arg.html#a47941a62fe684793eb3b109cc48dad6d", null ],
-    [ "Arg", "structwebcface_1_1message_1_1Arg.html#a06385f7ca3e49c6e8ea9ac7185dea3da", null ],
-    [ "init_", "structwebcface_1_1message_1_1Arg.html#ad96e625f32b799716f14170bc855e1fc", null ],
+    [ "Arg", "structwebcface_1_1message_1_1Arg.html#a067845c5e3dfa266bedb3d8c5d04f318", null ],
+    [ "init_", "structwebcface_1_1message_1_1Arg.html#a1fb77fe6c3682c638c25e97101a5d87c", null ],
     [ "max_", "structwebcface_1_1message_1_1Arg.html#ae0b025581d8618b3f4a7524cde2c74ae", null ],
     [ "min_", "structwebcface_1_1message_1_1Arg.html#a45fb6de0b5002feb0203ac9f32f536c2", null ],
     [ "name_", "structwebcface_1_1message_1_1Arg.html#a52e65d978962e4294a67d5206345af28", null ],

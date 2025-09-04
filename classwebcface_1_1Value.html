@@ -183,9 +183,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:adac7f98287a96eb23b1df767ab63a177"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea05ce7b017ce3eb55989bf6fa8c52df"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aea05ce7b017ce3eb55989bf6fa8c52df">operator[]</a> (const wchar_t *field) const</td></tr>
 <tr class="separator:aea05ce7b017ce3eb55989bf6fa8c52df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c8c5290932bf7731f9f369e65dffcf9"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
-<tr class="memitem:a3c8c5290932bf7731f9f369e65dffcf9"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a3c8c5290932bf7731f9f369e65dffcf9">operator[]</a> (const char(&amp;static_str)[N])</td></tr>
-<tr class="separator:a3c8c5290932bf7731f9f369e65dffcf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef93aad65dec2044c3ca28398a279ffa"><td class="memTemplParams" colspan="2">template&lt;typename CharT , std::size_t N, typename std::enable_if_t&lt; std::is_same_v&lt; CharT, char &gt;||std::is_same_v&lt; CharT, wchar_t &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:aef93aad65dec2044c3ca28398a279ffa"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aef93aad65dec2044c3ca28398a279ffa">operator[]</a> (const CharT(&amp;static_str)[N])</td></tr>
+<tr class="separator:aef93aad65dec2044c3ca28398a279ffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab948ae63e6656c76b66477f5748c6492"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
 <tr class="memitem:ab948ae63e6656c76b66477f5748c6492"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Value.html">Value</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#ab948ae63e6656c76b66477f5748c6492">operator[]</a> (const wchar_t(&amp;static_str)[N])</td></tr>
 <tr class="separator:ab948ae63e6656c76b66477f5748c6492"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2412,13 +2412,13 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 
 </div>
 </div>
-<a id="a3c8c5290932bf7731f9f369e65dffcf9" name="a3c8c5290932bf7731f9f369e65dffcf9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3c8c5290932bf7731f9f369e65dffcf9">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/7]</span></h2>
+<a id="aef93aad65dec2044c3ca28398a279ffa" name="aef93aad65dec2044c3ca28398a279ffa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aef93aad65dec2044c3ca28398a279ffa">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t N&gt; </div>
+template&lt;typename CharT , std::size_t N, typename std::enable_if_t&lt; std::is_same_v&lt; CharT, char &gt;||std::is_same_v&lt; CharT, wchar_t &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2426,7 +2426,7 @@ template&lt;std::size_t N&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1Value.html">Value</a> operator[] </td>
           <td>(</td>
-          <td class="paramtype">const char(&amp;)&#160;</td>
+          <td class="paramtype">const CharT(&amp;)&#160;</td>
           <td class="paramname"><em>static_str</em>[N]</td><td>)</td>
           <td></td>
         </tr>
@@ -3376,7 +3376,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Value.html">Value</a></li>
-    <li class="footer">Generated on Sun Aug 31 2025 12:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Sep 4 2025 15:07:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

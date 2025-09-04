@@ -176,12 +176,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a840a285ca041961e320719509e7af76c"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if_t&lt; std::conjunction_v&lt; std::negation&lt; std::is_void&lt; T &gt; &gt;, std::negation&lt; std::is_constructible&lt; std::string, T &gt; &gt;, std::is_constructible&lt; std::wstring, T &gt; &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a840a285ca041961e320719509e7af76c"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1StringInitializer.html#a840a285ca041961e320719509e7af76c">StringInitializer</a> (const T &amp;s)</td></tr>
 <tr class="separator:a840a285ca041961e320719509e7af76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20b523711f0ed6f4704cd8c829c8c4c6"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
-<tr class="memitem:a20b523711f0ed6f4704cd8c829c8c4c6"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1StringInitializer.html#a20b523711f0ed6f4704cd8c829c8c4c6">StringInitializer</a> (const char(&amp;static_str)[N])</td></tr>
-<tr class="separator:a20b523711f0ed6f4704cd8c829c8c4c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b9bc9499b445c760c763083aed64402"><td class="memTemplParams" colspan="2">template&lt;std::size_t N&gt; </td></tr>
-<tr class="memitem:a1b9bc9499b445c760c763083aed64402"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1StringInitializer.html#a1b9bc9499b445c760c763083aed64402">StringInitializer</a> (const wchar_t(&amp;static_str)[N])</td></tr>
-<tr class="separator:a1b9bc9499b445c760c763083aed64402"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd764491b9e401ec62cf332a8355cad"><td class="memTemplParams" colspan="2">template&lt;typename CharT , std::size_t N, typename std::enable_if_t&lt; std::is_same_v&lt; CharT, char &gt;||std::is_same_v&lt; CharT, wchar_t &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
+<tr class="memitem:a6fd764491b9e401ec62cf332a8355cad"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1StringInitializer.html#a6fd764491b9e401ec62cf332a8355cad">StringInitializer</a> (const CharT(&amp;static_str)[N])</td></tr>
+<tr class="separator:a6fd764491b9e401ec62cf332a8355cad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd4190403c607dda7622b15684a327fc"><td class="memItemLeft" align="right" valign="top">std::string_view&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#abd4190403c607dda7622b15684a327fc">u8StringView</a> () const</td></tr>
 <tr class="separator:abd4190403c607dda7622b15684a327fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78969aa08c1d37673cfbfbf30d674748"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">StringView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#a78969aa08c1d37673cfbfbf30d674748">u8StringViewShare</a> () const</td></tr>
@@ -246,7 +243,7 @@ Static Public Member Functions</h2></td></tr>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ad8bbe7bd4465c0bbc5b187df009047f5" name="ad8bbe7bd4465c0bbc5b187df009047f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8bbe7bd4465c0bbc5b187df009047f5">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[1/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8bbe7bd4465c0bbc5b187df009047f5">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[1/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,7 +268,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ae18499d92ddcc327e7da8f8967f003a8" name="ae18499d92ddcc327e7da8f8967f003a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae18499d92ddcc327e7da8f8967f003a8">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[2/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ae18499d92ddcc327e7da8f8967f003a8">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[2/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -297,7 +294,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="aa87a284bddad33a46cee42eeefb47a3f" name="aa87a284bddad33a46cee42eeefb47a3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa87a284bddad33a46cee42eeefb47a3f">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[3/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa87a284bddad33a46cee42eeefb47a3f">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[3/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -323,7 +320,7 @@ Static Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a840a285ca041961e320719509e7af76c" name="a840a285ca041961e320719509e7af76c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a840a285ca041961e320719509e7af76c">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[4/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a840a285ca041961e320719509e7af76c">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[4/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -351,7 +348,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::conjunction_v&lt; st
 </div>
 </div>
 <a id="a840a285ca041961e320719509e7af76c" name="a840a285ca041961e320719509e7af76c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a840a285ca041961e320719509e7af76c">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[5/7]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a840a285ca041961e320719509e7af76c">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[5/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -378,13 +375,13 @@ template&lt;typename T , typename std::enable_if_t&lt; std::conjunction_v&lt; st
 
 </div>
 </div>
-<a id="a20b523711f0ed6f4704cd8c829c8c4c6" name="a20b523711f0ed6f4704cd8c829c8c4c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20b523711f0ed6f4704cd8c829c8c4c6">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[6/7]</span></h2>
+<a id="a6fd764491b9e401ec62cf332a8355cad" name="a6fd764491b9e401ec62cf332a8355cad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fd764491b9e401ec62cf332a8355cad">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[6/6]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;std::size_t N&gt; </div>
+template&lt;typename CharT , std::size_t N, typename std::enable_if_t&lt; std::is_same_v&lt; CharT, char &gt;||std::is_same_v&lt; CharT, wchar_t &gt;, std::nullptr_t &gt;  = nullptr&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -392,35 +389,7 @@ template&lt;std::size_t N&gt; </div>
         <tr>
           <td class="memname"><a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> </td>
           <td>(</td>
-          <td class="paramtype">const char(&amp;)&#160;</td>
-          <td class="paramname"><em>static_str</em>[N]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a1b9bc9499b445c760c763083aed64402" name="a1b9bc9499b445c760c763083aed64402"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1b9bc9499b445c760c763083aed64402">&#9670;&#160;</a></span>StringInitializer() <span class="overload">[7/7]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;std::size_t N&gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> </td>
-          <td>(</td>
-          <td class="paramtype">const wchar_t(&amp;)&#160;</td>
+          <td class="paramtype">const CharT(&amp;)&#160;</td>
           <td class="paramname"><em>static_str</em>[N]</td><td>)</td>
           <td></td>
         </tr>
@@ -1105,7 +1074,7 @@ template&lt;std::size_t N&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a></li>
-    <li class="footer">Generated on Sun Aug 31 2025 12:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Sep 4 2025 15:07:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

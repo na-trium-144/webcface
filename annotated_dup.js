@@ -205,8 +205,9 @@ var annotated_dup =
         [ "InvokeSignatureTrait< Ret(T::*)(Args...) const >", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4.html", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_01const_01_4" ],
         [ "InvokeSignatureTrait< Ret(T::*)(Args...)>", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4.html", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07T_1_1_5_08_07Args_8_8_8_08_4" ],
         [ "IsConstructibleArg", "structwebcface_1_1traits_1_1IsConstructibleArg.html", null ],
-        [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptor >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_cfc8d26a087c85dfa1283b47d756c24e.html", null ],
+        [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptorVector >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_b5f038a811c8543117d4c7a95e57d460.html", null ],
         [ "IsConstructibleArg< ValAdaptor, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html", null ],
+        [ "IsConstructibleArg< ValAdaptorVector, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptorVector_00_01void_01_4.html", null ],
         [ "This_arg_type_is_not_supported_by_WebCFace_Func", "structwebcface_1_1traits_1_1This__arg__type__is__not__supported__by__WebCFace__Func.html", null ],
         [ "This_return_type_is_not_supported_by_WebCFace_Func", "structwebcface_1_1traits_1_1This__return__type__is__not__supported__by__WebCFace__Func.html", null ]
       ] ],
@@ -273,6 +274,7 @@ var annotated_dup =
       [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
       [ "TStringView", "classwebcface_1_1TStringView.html", "classwebcface_1_1TStringView" ],
       [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
+      [ "ValAdaptorVector", "classwebcface_1_1ValAdaptorVector.html", "classwebcface_1_1ValAdaptorVector" ],
       [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
       [ "ValueElementRef", "classwebcface_1_1ValueElementRef.html", "classwebcface_1_1ValueElementRef" ],
       [ "Variant", "classwebcface_1_1Variant.html", "classwebcface_1_1Variant" ],

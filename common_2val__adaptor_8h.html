@@ -164,7 +164,7 @@ Include dependency graph for val_adaptor.h:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="common_2val__adaptor_8h__dep__incl.svg" width="4139" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="common_2val__adaptor_8h__dep__incl.svg" width="4598" height="623"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="common_2val__adaptor_8h_source.html">Go to the source code of this file.</a></p>
@@ -179,17 +179,11 @@ Classes</h2></td></tr>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespacewebcface"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html">webcface</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:namespacewebcface_1_1encoding"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html">webcface::encoding</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
 <tr class="memitem:ac7008fb79f085e05e62d3f710002db6e"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ac7008fb79f085e05e62d3f710002db6e">ValAdapter</a> = <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a></td></tr>
 <tr class="separator:ac7008fb79f085e05e62d3f710002db6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a56edf887ceae8de891981698e7868696"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a56edf887ceae8de891981698e7868696">ValType</a> = <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a></td></tr>
-<tr class="separator:a56edf887ceae8de891981698e7868696"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a550473881c99b6af91d111e8dbabc2b7"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7">ValAdaptor</a> = <a class="el" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a></td></tr>
-<tr class="separator:a550473881c99b6af91d111e8dbabc2b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
@@ -201,6 +195,13 @@ Enumerations</h2></td></tr>
 , <br />
 &#160;&#160;<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1">float_</a> = 4
 , <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9">double_</a> = 4
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a55efcc2c1a55d0c9b7c5801600e364e4">vector_</a> = 16
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a70a384806b033754b82990b1790de6b3">vector_string_</a> = 17
+, <br />
+&#160;&#160;<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a75e1faa487c5514b7d91bd8a12362509">vector_bool_</a> = 18
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a5647e427b7a7d91fc2ff29744255fe30">vector_int_</a> = 19
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a39c17e5c428dd1970aa2783d00297e5c">vector_float_</a> = 20
+, <a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a78fc539fbe053507a814b37f279233db">vector_double_</a> = 20
 <br />
  }</td></tr>
 <tr class="memdesc:acd1dd9e2d5f885ad3f73197cfa6b0185"><td class="mdescLeft">&#160;</td><td class="mdescRight">引数や戻り値の型を表すenum  <a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">More...</a><br /></td></tr>
@@ -208,10 +209,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#ae0e0d190aa5fc5710b43f55098ad9ecd">valTypeOf</a> ()</td></tr>
-<tr class="memdesc:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="mdescLeft">&#160;</td><td class="mdescRight">TのValTypeを得る  <br /></td></tr>
-<tr class="separator:ae0e0d190aa5fc5710b43f55098ad9ecd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a818466a6a9b6abe8c25c93ac959ec0cb">valTypeStr</a> (<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a> a)</td></tr>
 <tr class="memdesc:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">型名を文字列で取得  <br /></td></tr>
 <tr class="separator:a818466a6a9b6abe8c25c93ac959ec0cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,18 +223,6 @@ Functions</h2></td></tr>
 <tr class="separator:ae8355d2de1659a12edc34e22f77694ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7772b6098dac5df4d543a786d2415f46"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a7772b6098dac5df4d543a786d2415f46">operator&lt;&lt;</a> (std::ostream &amp;os, const <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;a)</td></tr>
 <tr class="separator:a7772b6098dac5df4d543a786d2415f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplParams" colspan="2">template&lt;int n = 0, typename T &gt; </td></tr>
-<tr class="memitem:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434">argToTuple</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &gt; &amp;args, T &amp;tuple)</td></tr>
-<tr class="memdesc:a5aeb2e4cecdcd6261d71162f7f918434"><td class="mdescLeft">&#160;</td><td class="mdescRight">ValAdaptorのリストから任意の型のタプルに変換する  <br /></td></tr>
-<tr class="separator:a5aeb2e4cecdcd6261d71162f7f918434"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f620a7e8b0a12ca48d7e68f32430cb2"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:a3f620a7e8b0a12ca48d7e68f32430cb2"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a>&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a3f620a7e8b0a12ca48d7e68f32430cb2">valTypeOf</a> ()</td></tr>
-<tr class="separator:a3f620a7e8b0a12ca48d7e68f32430cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0474af6634ba9d8075e5a084124c7b4"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#ad0474af6634ba9d8075e5a084124c7b4">valTypeStr</a> (<a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">webcface::ValType</a> a)</td></tr>
-<tr class="separator:ad0474af6634ba9d8075e5a084124c7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dce36907abe060456a9c44877032b19"><td class="memTemplParams" colspan="2">template&lt;int n = 0, typename T &gt; </td></tr>
-<tr class="memitem:a9dce36907abe060456a9c44877032b19"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacewebcface_1_1encoding.html#a9dce36907abe060456a9c44877032b19">argToTuple</a> (const std::vector&lt; <a class="el" href="classwebcface_1_1ValAdaptor.html">webcface::ValAdaptor</a> &gt; &amp;args, T &amp;tuple)</td></tr>
-<tr class="separator:a9dce36907abe060456a9c44877032b19"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -245,7 +230,7 @@ Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html">common</a></li><li class="navelem"><a class="el" href="dir_11fbc4217d50ab21044e5ad6614aede5.html">include</a></li><li class="navelem"><a class="el" href="dir_691cd2f0393d009848f7dbc991939c45.html">webcface</a></li><li class="navelem"><a class="el" href="dir_c6f8b713f490183ef4573a582b3d24eb.html">common</a></li><li class="navelem"><a class="el" href="common_2val__adaptor_8h.html">val_adaptor.h</a></li>
-    <li class="footer">Generated on Sun Aug 31 2025 12:32:45 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Sep 4 2025 15:07:00 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

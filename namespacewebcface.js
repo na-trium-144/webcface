@@ -4,15 +4,10 @@ var namespacewebcface =
     [ "components", "namespacewebcface_1_1components.html", "namespacewebcface_1_1components" ],
     [ "encoding", "namespacewebcface_1_1encoding.html", [
       [ "SharedString", "namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130", null ],
-      [ "ValAdaptor", "namespacewebcface_1_1encoding.html#a550473881c99b6af91d111e8dbabc2b7", null ],
-      [ "ValType", "namespacewebcface_1_1encoding.html#a56edf887ceae8de891981698e7868696", null ],
-      [ "argToTuple", "namespacewebcface_1_1encoding.html#a9dce36907abe060456a9c44877032b19", null ],
       [ "toNarrow", "namespacewebcface_1_1encoding.html#a56e48dd9e8f42e659967f25a5f1af66b", null ],
       [ "toWide", "namespacewebcface_1_1encoding.html#a54e0d3d7c5de948abb1cacf599743264", null ],
       [ "usingUTF8", "namespacewebcface_1_1encoding.html#ae57423f1244b067999069f20f73eb166", null ],
-      [ "usingUTF8", "namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b", null ],
-      [ "valTypeOf", "namespacewebcface_1_1encoding.html#a3f620a7e8b0a12ca48d7e68f32430cb2", null ],
-      [ "valTypeStr", "namespacewebcface_1_1encoding.html#ad0474af6634ba9d8075e5a084124c7b4", null ]
+      [ "usingUTF8", "namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b", null ]
     ] ],
     [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", "namespacewebcface_1_1components_1_1geometries" ],
     [ "internal", "namespacewebcface_1_1internal.html", "namespacewebcface_1_1internal" ],
@@ -90,6 +85,7 @@ var namespacewebcface =
     [ "Transform", "classwebcface_1_1Transform.html", "classwebcface_1_1Transform" ],
     [ "TStringView", "classwebcface_1_1TStringView.html", "classwebcface_1_1TStringView" ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
+    [ "ValAdaptorVector", "classwebcface_1_1ValAdaptorVector.html", "classwebcface_1_1ValAdaptorVector" ],
     [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
     [ "ValueElementRef", "classwebcface_1_1ValueElementRef.html", "classwebcface_1_1ValueElementRef" ],
     [ "Variant", "classwebcface_1_1Variant.html", "classwebcface_1_1Variant" ],
@@ -172,7 +168,13 @@ var namespacewebcface =
       [ "bool_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a467afb5838aa377d55cce81f84c5512b", null ],
       [ "int_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185ad7488204e92ed01986284bef5650eb53", null ],
       [ "float_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185aefe6d5085c67bc38cd3746f2dc8013e1", null ],
-      [ "double_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9", null ]
+      [ "double_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9", null ],
+      [ "vector_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a55efcc2c1a55d0c9b7c5801600e364e4", null ],
+      [ "vector_string_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a70a384806b033754b82990b1790de6b3", null ],
+      [ "vector_bool_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a75e1faa487c5514b7d91bd8a12362509", null ],
+      [ "vector_int_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a5647e427b7a7d91fc2ff29744255fe30", null ],
+      [ "vector_float_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a39c17e5c428dd1970aa2783d00297e5c", null ],
+      [ "vector_double_", "namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a78fc539fbe053507a814b37f279233db", null ]
     ] ],
     [ "ViewColor", "namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124a", [
       [ "inherit", "namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aa6995c373523132a1006975baf4079aa0", null ],
@@ -203,7 +205,7 @@ var namespacewebcface =
       [ "check_input", "namespacewebcface.html#a11040d82967b60182816ddc035d07c28a89abf6ccb8784d1648947d65ca7cde77", null ]
     ] ],
     [ "argsFromCVal", "namespacewebcface_1_1c__wcf.html#a7355a5ac516fd8fd01fcfeb23d1bf3b9", null ],
-    [ "argToTuple", "namespacewebcface.html#a5aeb2e4cecdcd6261d71162f7f918434", null ],
+    [ "argToTuple", "namespacewebcface.html#a98c4bcc8ef0730807999a3c52193f838", null ],
     [ "box", "namespacewebcface_1_1components_1_1geometries.html#ada151384f0a570450346f47818dcbf3d", null ],
     [ "button", "namespacewebcface_1_1components.html#a1b44bb03f44024b8fb5967aebeca3366", null ],
     [ "button", "namespacewebcface_1_1components.html#ac7fd11f375404f3e0c4c13ff02444670", null ],
@@ -237,6 +239,7 @@ var namespacewebcface =
     [ "newLine", "namespacewebcface_1_1components.html#a817906c33da38b85572a194e424b8612", null ],
     [ "numberInput", "namespacewebcface_1_1components.html#a4bcc10df061d8c85c5fd3b87991a421d", null ],
     [ "operator!=", "namespacewebcface.html#aeefc8afb9035b64b8b3f5147bfd349b0", null ],
+    [ "operator!=", "namespacewebcface.html#a82c3e3a8c4f7247b163a12a0b4aaff20", null ],
     [ "operator!=", "namespacewebcface.html#ae8355d2de1659a12edc34e22f77694ae", null ],
     [ "operator<<", "namespacewebcface.html#a247771d30c740ef13dbff87e21baf225", null ],
     [ "operator<<", "namespacewebcface.html#a855f77f959f713e660e3ff08b6b9b43f", null ],
@@ -246,6 +249,7 @@ var namespacewebcface =
     [ "operator<<", "namespacewebcface.html#a01848129c135abaf0c48e6606593ccc4", null ],
     [ "operator<<", "namespacewebcface.html#acc572ea980d434e6af0ac9f2e80a31cd", null ],
     [ "operator==", "namespacewebcface.html#a4d810c78099d1c67779adcf796b50e1d", null ],
+    [ "operator==", "namespacewebcface.html#ac155295087ba04ee131f718232ae64ea", null ],
     [ "operator==", "namespacewebcface.html#a13773c27bf327fd21ee7d4c605e94e20", null ],
     [ "plane", "namespacewebcface_1_1components_1_1geometries.html#aa25707cc05d2efb06fc117f36986ecb6", null ],
     [ "polygon", "namespacewebcface_1_1components_1_1geometries.html#ab71462a4b3c7f94d111654688068b64f", null ],
@@ -288,6 +292,7 @@ var namespacewebcface =
     [ "usingUTF8", "namespacewebcface.html#a478748a436d45cac26bdb4c4af55f54b", null ],
     [ "valTypeOf", "namespacewebcface.html#ae0e0d190aa5fc5710b43f55098ad9ecd", null ],
     [ "valTypeStr", "namespacewebcface.html#a818466a6a9b6abe8c25c93ac959ec0cb", null ],
+    [ "warningOnUnknownType", "namespacewebcface.html#ab63d7e2acceae5c2bdc873a0b84be93a", null ],
     [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#abc622b8adc5503816c25114a9255c531", null ],
     [ "fetched_handles_w", "namespacewebcface_1_1c__wcf.html#a8a3077e8bc5b194931b9449137dd8b92", null ],
     [ "field_separator", "namespacewebcface.html#abc51f58b171b3f4a8d47a017d22c1c93", null ],

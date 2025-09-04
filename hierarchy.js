@@ -427,10 +427,12 @@ var hierarchy =
     [ "This_arg_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__arg__type__is__not__supported__by__WebCFace__Func.html", null ],
     [ "This_return_type_is_not_supported_by_WebCFace_Func< BadArg >", "structwebcface_1_1traits_1_1This__return__type__is__not__supported__by__WebCFace__Func.html", null ],
     [ "true_type", null, [
-      [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptor >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_cfc8d26a087c85dfa1283b47d756c24e.html", null ],
-      [ "IsConstructibleArg< ValAdaptor, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html", null ]
+      [ "IsConstructibleArg< Arg, std::void_t< decltype(std::declval< ValAdaptorVector >().operator Arg())> >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_b5f038a811c8543117d4c7a95e57d460.html", null ],
+      [ "IsConstructibleArg< ValAdaptor, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html", null ],
+      [ "IsConstructibleArg< ValAdaptorVector, void >", "structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptorVector_00_01void_01_4.html", null ]
     ] ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", null ],
+    [ "ValAdaptorVector", "classwebcface_1_1ValAdaptorVector.html", null ],
     [ "ViewComponent", "classwebcface_1_1ViewComponent.html", null ],
     [ "ViewComponentData", "structwebcface_1_1message_1_1ViewComponentData.html", [
       [ "TemporalViewComponentData", "structwebcface_1_1internal_1_1TemporalViewComponentData.html", null ]

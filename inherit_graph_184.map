@@ -1,7 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" title=" " alt="" coords="5,79,89,104"/>
-<area shape="rect" id="Node000001" href="$structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_cfc8d26a087c85dfa1283b47d756c24e.html" title=" " alt="" coords="137,5,329,89"/>
-<area shape="poly" id="edge161_Node000000_Node000001" title=" " alt="" coords="102,76,136,68,138,73,103,81"/>
-<area shape="rect" id="Node000002" href="$structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html" title=" " alt="" coords="154,114,313,154"/>
-<area shape="poly" id="edge162_Node000000_Node000002" title=" " alt="" coords="103,101,154,113,153,118,102,106"/>
+<area shape="rect" id="Node000000" title=" " alt="" coords="5,121,89,147"/>
+<area shape="rect" id="Node000001" href="$structwebcface_1_1traits_1_1IsConstructibleArg_3_01Arg_00_01std_1_1void__t_3_01decltype_07std_1_b5f038a811c8543117d4c7a95e57d460.html" title=" " alt="" coords="137,5,371,89"/>
+<area shape="poly" id="edge161_Node000000_Node000001" title=" " alt="" coords="90,113,153,87,155,92,92,118"/>
+<area shape="rect" id="Node000002" href="$structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptor_00_01void_01_4.html" title=" " alt="" coords="175,114,333,154"/>
+<area shape="poly" id="edge162_Node000000_Node000002" title=" " alt="" coords="103,131,174,131,174,137,103,137"/>
+<area shape="rect" id="Node000003" href="$structwebcface_1_1traits_1_1IsConstructibleArg_3_01ValAdaptorVector_00_01void_01_4.html" title=" " alt="" coords="177,179,331,233"/>
+<area shape="poly" id="edge163_Node000000_Node000003" title=" " alt="" coords="97,149,138,163,178,177,176,182,136,169,95,154"/>
 </map>
