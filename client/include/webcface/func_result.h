@@ -338,7 +338,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * \brief 関数の引数を取得する
      *
      * ver2.10〜 ValAdaptorVectorに変更
-     * 
+     *
      */
     const std::vector<ValAdaptorVector> &args() const;
     /*!
@@ -392,16 +392,8 @@ class WEBCFACE_DLL CallHandle : Field {
     /*!
      * \since ver2.10
      */
-    template <std::size_t N>
-    void respond(const char (&value)[N]) const {
-        respond(ValAdaptor(value));
-    }
-    /*!
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    void respond(const wchar_t (&value)[N]) const {
-        respond(ValAdaptor(value));
+    void respond(StringInitializer value) const {
+        respond(ValAdaptor(std::move(value)));
     }
     /*!
      * \brief 空の値を関数の結果として送信する

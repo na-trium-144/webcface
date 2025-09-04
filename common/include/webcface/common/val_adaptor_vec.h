@@ -53,10 +53,10 @@ class WEBCFACE_DLL ValAdaptorVector {
                 !std::is_same_v<ValAdaptorVector, R> &&
                 !std::is_constructible_v<StringInitializer, R> &&
                 !std::is_constructible_v<ValAdaptor, R> &&
-                std::is_convertible_v<decltype(*std::begin(std::declval<R>())),
-                                      ValAdaptor> &&
-                std::is_convertible_v<decltype(*std::end(std::declval<R>())),
-                                      ValAdaptor>,
+                std::is_constructible_v<
+                    ValAdaptor, decltype(*std::begin(std::declval<R>()))> &&
+                std::is_constructible_v<ValAdaptor,
+                                        decltype(*std::end(std::declval<R>()))>,
             std::nullptr_t> = nullptr>
     ValAdaptorVector(const R &range)
         : vec(std::begin(range), std::end(range)) {}
@@ -67,10 +67,10 @@ class WEBCFACE_DLL ValAdaptorVector {
                 !std::is_same_v<ValAdaptorVector, R> &&
                 !std::is_constructible_v<StringInitializer, R> &&
                 !std::is_constructible_v<ValAdaptor, R> &&
-                std::is_convertible_v<decltype(*std::begin(std::declval<R>())),
-                                      ValAdaptor> &&
-                std::is_convertible_v<decltype(*std::end(std::declval<R>())),
-                                      ValAdaptor>,
+                std::is_constructible_v<
+                    ValAdaptor, decltype(*std::begin(std::declval<R>()))> &&
+                std::is_constructible_v<ValAdaptor,
+                                        decltype(*std::end(std::declval<R>()))>,
             std::nullptr_t> = nullptr>
     ValAdaptorVector &operator=(const R &range) {
         return *this =
@@ -210,18 +210,22 @@ class WEBCFACE_DLL ValAdaptorVector {
     }
 };
 
-template <typename T, typename std::enable_if_t<
-                          std::is_constructible_v<ValAdaptorVector, T> &&
-                              !std::is_same_v<ValAdaptorVector, T>,
-                          std::nullptr_t> = nullptr>
-bool operator==(const T &other, const ValAdaptorVector &val) {
+template <typename T, typename V,
+          typename std::enable_if_t<
+              std::is_same_v<V, ValAdaptorVector> &&
+                  std::is_constructible_v<ValAdaptorVector, T> &&
+                  !std::is_same_v<ValAdaptorVector, T>,
+              std::nullptr_t> = nullptr>
+bool operator==(const T &other, const V &val) {
     return val == ValAdaptorVector(other);
 }
-template <typename T, typename std::enable_if_t<
-                          std::is_constructible_v<ValAdaptorVector, T> &&
-                              !std::is_same_v<ValAdaptorVector, T>,
-                          std::nullptr_t> = nullptr>
-bool operator!=(const T &other, const ValAdaptorVector &val) {
+template <typename T, typename V,
+          typename std::enable_if_t<
+              std::is_same_v<V, ValAdaptorVector> &&
+                  std::is_constructible_v<ValAdaptorVector, T> &&
+                  !std::is_same_v<ValAdaptorVector, T>,
+              std::nullptr_t> = nullptr>
+bool operator!=(const T &other, const V &val) {
     return val != ValAdaptorVector(other);
 }
 
@@ -257,7 +261,7 @@ ValType valTypeOf() {
     if constexpr (std::is_void_v<T>) {
         return ValType::none_;
     } else if constexpr (!std::is_constructible_v<ValAdaptor, T> &&
-                         !std::is_constructible_v<ValAdaptorVector, T>) {
+                         std::is_constructible_v<ValAdaptorVector, T>) {
         return static_cast<ValType>(
             static_cast<int>(ValType::vector_) +
             static_cast<int>(

@@ -510,16 +510,8 @@ class WEBCFACE_DLL TemporalViewComponent {
     /*!
      * \since ver2.10
      */
-    template <std::size_t N>
-    TemporalViewComponent &init(const char (&init)[N]) & {
-        return this->init(ValAdaptor(init));
-    }
-    /*!
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    TemporalViewComponent &init(const wchar_t (&init)[N]) & {
-        return this->init(ValAdaptor(init));
+    TemporalViewComponent &init(StringInitializer init) & {
+        return this->init(ValAdaptor(std::move(init)));
     }
     /*!
      * \brief デフォルト値を設定する。
@@ -533,17 +525,8 @@ class WEBCFACE_DLL TemporalViewComponent {
     /*!
      * \since ver2.10
      */
-    template <std::size_t N>
-    TemporalViewComponent &&init(const char (&init)[N]) && {
-        this->init(init);
-        return std::move(*this);
-    }
-    /*!
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    TemporalViewComponent &&init(const wchar_t (&init)[N]) && {
-        this->init(init);
+    TemporalViewComponent &&init(StringInitializer init) && {
+        this->init(std::move(init));
         return std::move(*this);
     }
 

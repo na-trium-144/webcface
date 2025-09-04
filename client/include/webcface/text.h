@@ -238,7 +238,9 @@ class WEBCFACE_DLL Text : protected Variant {
      * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
      *
      */
-    Text operator[](StringInitializer field) const { return child(std::move(field)); }
+    Text operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
@@ -255,16 +257,11 @@ class WEBCFACE_DLL Text : protected Variant {
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver2.10
      */
-    template <std::size_t N>
-    Text operator[](const char (&static_str)[N]) {
-        return child(StringInitializer(static_str));
-    }
-    /*!
-     * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    Text operator[](const wchar_t (&static_str)[N]) {
+    template <typename CharT, std::size_t N,
+              typename std::enable_if_t<std::is_same_v<CharT, char> ||
+                                            std::is_same_v<CharT, wchar_t>,
+                                        std::nullptr_t> = nullptr>
+    Text operator[](const CharT (&static_str)[N]) {
         return child(StringInitializer(static_str));
     }
     /*!

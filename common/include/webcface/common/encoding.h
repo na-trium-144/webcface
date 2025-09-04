@@ -238,15 +238,13 @@ class StringInitializer : public SharedString {
     StringInitializer(const T &s)
         : SharedString(SharedString::encode(std::wstring(s))) {}
     // c-string ptr
-    template <std::size_t N>
-    StringInitializer(const char (&static_str)[N])
-        : SharedString(
-              SharedString::encodeStatic(std::string_view(static_str, N - 1))) {
-    }
-    template <std::size_t N>
-    StringInitializer(const wchar_t (&static_str)[N])
+    template <typename CharT, std::size_t N,
+              typename std::enable_if_t<std::is_same_v<CharT, char> ||
+                                            std::is_same_v<CharT, wchar_t>,
+                                        std::nullptr_t> = nullptr>
+    StringInitializer(const CharT (&static_str)[N])
         : SharedString(SharedString::encodeStatic(
-              std::wstring_view(static_str, N - 1))) {}
+              std::basic_string_view<CharT>(static_str, N - 1))) {}
 };
 
 /*!
