@@ -10,6 +10,7 @@
 #include <future>
 #include <memory>
 #include <stdexcept>
+#include <functional>
 #include "field.h"
 #include "webcface/common/val_adaptor.h"
 #include "webcface/c_wcf/def_types.h"
