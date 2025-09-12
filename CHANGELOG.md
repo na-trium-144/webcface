@@ -16,7 +16,7 @@
 * C++20 modules 対応 (#532)
 	* `include/webcface/modules/webcface{.cc,.ccm,.ixx}`
 	* webcfaceConfig.cmake 内で `webcface::webcface_modules` ターゲット(CMake用)、`webcface_INCLUDE_DIR` の定義(Meson用) を追加
-
+* ValAdaptorVectorクラス追加、Funcの引数にvectorとarrayを使用可能にする (#527)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed
@@ -31,6 +31,7 @@
 * Funcのtraitチェックのエラーメッセージを改善し、問題の引数がどれかわかるようにした (#526)
 * `webcface::level::LogLevelEnum` を C-style enum から enum class に変更し、 `webcface::LogLevel`, `webcface::level` に移動 (#532)
 	* `LogLine::level()` の戻り値型変更
+* trait系のヘッダーをcommonへ移動 (#527)
 
 ## [2.9.0] - 2025-02-09
 ### Added
