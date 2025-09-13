@@ -172,8 +172,9 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行が完了した場合その戻り値を返す
      * \since ver2.0
      *
+     * ver3.0〜 ValAdptorVectorに変更
      */
-    ValAdaptor response() const;
+    ValAdaptorVector response() const;
     /*!
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す
      * \since ver2.0
@@ -354,9 +355,9 @@ class WEBCFACE_DLL CallHandle : Field {
     const wcfMultiValW *cWArgs() const;
 
     /*!
-     * \since ver2.0
+     * \since ver3.0
      */
-    void respond(const ValAdaptor &value) const;
+    void respond(const ValAdaptorVector &value) const;
     /*!
      * \since ver2.0
      */
@@ -388,13 +389,13 @@ class WEBCFACE_DLL CallHandle : Field {
      */
     template <typename T>
     void respond(const T &value) const {
-        respond(ValAdaptor(value));
+        respond(ValAdaptorVector(value));
     }
     /*!
      * \since ver2.10
      */
     void respond(StringInitializer value) const {
-        respond(ValAdaptor(std::move(value)));
+        respond(ValAdaptorVector(std::move(value)));
     }
     /*!
      * \brief 空の値を関数の結果として送信する

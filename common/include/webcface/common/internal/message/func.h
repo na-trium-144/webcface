@@ -76,7 +76,7 @@ struct CallResult : public MessageBase<MessageKind::call_result> {
     std::size_t caller_id;
     unsigned int caller_member_id;
     bool is_error;
-    ValAdaptor result;
+    ValAdaptorVector result;
     MSGPACK_DEFINE_MAP(MSGPACK_NVP("i", caller_id),
                        MSGPACK_NVP("c", caller_member_id),
                        MSGPACK_NVP("e", is_error), MSGPACK_NVP("r", result))

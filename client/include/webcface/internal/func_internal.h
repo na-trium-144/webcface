@@ -32,7 +32,7 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
     bool found = false;
     bool finished = false;
     bool is_error = false;
-    ValAdaptor response;
+    ValAdaptorVector response;
     ValAdaptor rejection;
 
     std::promise<bool> started_p;

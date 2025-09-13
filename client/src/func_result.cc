@@ -73,7 +73,7 @@ bool CallHandle::respondable() const {
         return false;
     }
 }
-void CallHandle::respond(const ValAdaptor &value) const {
+void CallHandle::respond(const ValAdaptorVector &value) const {
     if (data) {
         if (respondable()) {
             std::lock_guard lock(data->m);
@@ -231,7 +231,7 @@ bool Promise::isError() const {
         throw invalidPromise();
     }
 }
-ValAdaptor Promise::response() const {
+ValAdaptorVector Promise::response() const {
     if (data) {
         std::lock_guard lock(data->m);
         return data->response;

@@ -41,6 +41,15 @@ ValType ValAdaptorVector::valType() const {
         return ValType::vector_;
     }
 }
+bool ValAdaptorVector::empty() const {
+    if (vec.size() == 0) {
+        return true;
+    } else if (vec.size() == 1) {
+        return vec[0].empty();
+    } else {
+        return false;
+    }
+}
 
 const ValAdaptor &ValAdaptorVector::at(std::size_t index) const {
     return vec.at(index);

@@ -6,8 +6,9 @@
 #include <array>
 
 void hello() { std::cout << "hello, world!" << std::endl; }
-void hello_array(const std::array<int, 3> &args) {
+std::vector<int> hello_array(const std::array<int, 3> &args) {
     std::cout << args[0] << ", " << args[1] << ", " << args[2] << std::endl;
+    return {args[0], args[1], args[2]};
 }
 double hello2(int a, double b, bool c, const std::string &d,
               const std::vector<int> &e) {

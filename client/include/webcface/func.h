@@ -60,7 +60,7 @@ struct FuncReturnTypeCheckOkTrait {
 template <typename Ret>
 using FuncReturnTypeTrait = std::conditional_t<
     std::disjunction_v<std::is_void<Ret>,
-                       std::is_constructible<ValAdaptor, Ret>>,
+                       std::is_constructible<ValAdaptorVector, Ret>>,
     FuncReturnTypeCheckOkTrait,
     This_return_type_is_not_supported_by_WebCFace_Func<Ret>>;
 
@@ -246,10 +246,10 @@ class WEBCFACE_DLL Func : protected Field {
                             if constexpr (traits::FuncObjTrait<
                                               T>::return_void) {
                                 std::apply(func, args_tuple);
-                                return ValAdaptor();
+                                return ValAdaptorVector();
                             } else {
                                 auto ret = std::apply(func, args_tuple);
-                                return ret;
+                                return ValAdaptorVector(ret);
                             }
                         },
                         handle);
@@ -290,10 +290,10 @@ class WEBCFACE_DLL Func : protected Field {
                                 if constexpr (traits::FuncObjTrait<
                                                   T>::return_void) {
                                     std::apply(*func_p, args_tuple);
-                                    return ValAdaptor();
+                                    return ValAdaptorVector();
                                 } else {
                                     auto ret = std::apply(*func_p, args_tuple);
-                                    return ret;
+                                    return ValAdaptorVector(ret);
                                 }
                             },
                             handle);

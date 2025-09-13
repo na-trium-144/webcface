@@ -93,7 +93,24 @@ class WEBCFACE_DLL ValAdaptorVector {
                    std::vector<ValAdaptor>(std::begin(range), std::end(range));
     }
 
+    /*!
+     * \brief 単一の要素をValAdaptor型で返す
+     * 
+     * * 要素数0の場合、空のValAdaptorを返す
+     * * 要素数1以上の場合、at(0) と同じ
+     *
+     */
     const ValAdaptor &get() const;
+    /*!
+     * \brief 値が空かどうか調べる
+     *
+     * * 要素数0の場合true
+     * * 要素数1の場合、 at(0).empty() を返す
+     * * 要素数2以上の場合、false
+     *
+     */
+    bool empty() const;
+
     ValType valType() const;
 
     explicit operator const ValAdaptor &() const { return get(); }
