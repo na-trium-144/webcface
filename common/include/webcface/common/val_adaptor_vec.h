@@ -1,5 +1,6 @@
 #pragma once
 #include "val_adaptor.h"
+#include "webcface/common/exception.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -95,7 +96,7 @@ class WEBCFACE_DLL ValAdaptorVector {
 
     /*!
      * \brief 単一の要素をValAdaptor型で返す
-     * 
+     *
      * * 要素数0の場合、空のValAdaptorを返す
      * * 要素数1以上の場合、at(0) と同じ
      *
@@ -151,9 +152,9 @@ class WEBCFACE_DLL ValAdaptorVector {
                   decltype(std::declval<ValAdaptor>().operator T())>>
     std::array<T, N> asArray() const {
         if (N != vec.size()) {
-            throw std::invalid_argument(
-                "array size mismatch, expected: " + std::to_string(N) +
-                ", got: " + std::to_string(vec.size()));
+            throw ValTypeMismatch(
+                "array of size " + std::to_string(vec.size()) +
+                " cannot be converted to array<" + std::to_string(N) + ">");
         }
         std::array<T, N> a;
         for (std::size_t i = 0; i < N; i++) {

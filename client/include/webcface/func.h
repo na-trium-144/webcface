@@ -5,6 +5,7 @@
 #include "webcface/common/trait.h"
 #include "func_trait.h"
 #include "exception.h"
+#include <thread>
 
 WEBCFACE_NS_BEGIN
 namespace internal {

@@ -1,15 +1,14 @@
 #pragma once
 #include "webcface/common/val_adaptor_vec.h"
 #include "webcface/exception.h"
+#include <chrono>
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
 #include "webcface/common/webcface-config.h"
 #endif
 #include <optional>
-#include <future>
 #include <memory>
-#include <stdexcept>
 #include <functional>
 #include "field.h"
 #include "webcface/common/val_adaptor.h"
@@ -21,14 +20,6 @@ struct PromiseData;
 struct FuncInfo;
 struct ClientData;
 } // namespace internal
-
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4996)
-#else
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
 
 /*!
  * \brief 非同期で実行した関数の実行結果を取得するインタフェース。
@@ -43,42 +34,11 @@ class WEBCFACE_DLL Promise : Field {
 
   public:
     Promise(const Field &base,
-            const std::shared_ptr<internal::PromiseData> &data,
-            const std::shared_future<bool> &started,
-            const std::shared_future<ValAdaptor> &result);
+            const std::shared_ptr<internal::PromiseData> &data);
 
     using Field::member;
     using Field::name;
     using Field::nameW;
-
-    /*!
-     * \brief リモートに呼び出しメッセージが到達したときに値が入る
-     *
-     * * 実行開始したらtrue, 呼び出しに失敗したらfalseが返る。
-     * falseの場合resultにFuncNotFound例外が入る
-     *
-     * \deprecated ver2.0〜 reached(), found(), waitReach() を推奨。
-     * started.get(), started.wait() 使用時の注意はwaitReach()を参照。
-     *
-     */
-    [[deprecated(
-        "use reached(), found() or waitReach()")]] std::shared_future<bool>
-        started;
-    /*!
-     * \brief 関数の実行が完了した時戻り値が入る
-     *
-     * * 例外が発生した場合例外が入る
-     * * ver2.0〜: 例外はresultにexceptionとして格納されるが、
-     * そのエラーメッセージにはutf-8ではないstringが使われる
-     *
-     * \deprecated ver2.0〜 finished(), response(), rejection(), waitFinish()
-     * を推奨。 result.get(), result.wait() 使用時の注意はwaitFinish()を参照。
-     *
-     */
-    [[deprecated(
-        "use finished(), response(), rejection(), or waitFinish()")]] std::
-        shared_future<ValAdaptor>
-            result;
 
   private:
     void waitReachImpl(std::optional<std::chrono::microseconds> timeout) const;
@@ -303,12 +263,6 @@ class WEBCFACE_DLL Promise : Field {
     }
 };
 
-#ifdef _MSC_VER
-#pragma warning(pop)
-#else
-#pragma GCC diagnostic pop
-#endif
-
 using AsyncFuncResult = Promise;
 
 /*!
@@ -405,7 +359,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
      *
      */
-    void respond() const { respond(ValAdaptor()); }
+    void respond() const { respond(ValAdaptorVector()); }
 
     /*!
      * \brief 関数の結果を例外として送信する

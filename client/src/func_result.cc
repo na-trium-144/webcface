@@ -7,7 +7,7 @@ WEBCFACE_NS_BEGIN
 
 Promise internal::PromiseData::getter() {
     std::lock_guard lock(m);
-    return Promise(base, shared_from_this(), started_f, result_f);
+    return Promise(base, shared_from_this());
 }
 
 #ifdef _MSC_VER
@@ -19,10 +19,8 @@ Promise internal::PromiseData::getter() {
 #endif
 
 Promise::Promise(const Field &base,
-                 const std::shared_ptr<internal::PromiseData> &data,
-                 const std::shared_future<bool> &started,
-                 const std::shared_future<ValAdaptor> &result)
-    : Field(base), data(data), started(started), result(result) {}
+                 const std::shared_ptr<internal::PromiseData> &data)
+    : Field(base), data(data) {}
 
 #ifdef _MSC_VER
 #pragma warning(pop)
@@ -45,15 +43,15 @@ void CallHandle::reach(bool found) const {
         if (!data->reached) {
             data->reached = true;
             data->found = found;
-            data->started_p.set_value(found);
+            // data->started_p.set_value(found);
             data->callReachEvent();
             if (!found) {
                 data->finished = true;
                 data->is_error = true;
                 data->rejection =
                     SharedString::encode(FuncNotFound(*this).what());
-                data->result_p.set_exception(
-                    std::make_exception_ptr(FuncNotFound(*this)));
+                // data->result_p.set_exception(
+                //     std::make_exception_ptr(FuncNotFound(*this)));
                 data->callFinishEvent();
             }
             data->cond.notify_all();
@@ -80,7 +78,7 @@ void CallHandle::respond(const ValAdaptorVector &value) const {
             data->finished = true;
             data->is_error = false;
             data->response = value;
-            data->result_p.set_value(value);
+            // data->result_p.set_value(value);
             data->callFinishEvent();
             data->cond.notify_all();
         } else {
@@ -98,8 +96,8 @@ void CallHandle::reject(const ValAdaptor &message) const {
             data->finished = true;
             data->is_error = true;
             data->rejection = message;
-            data->result_p.set_exception(std::make_exception_ptr(
-                Rejection(data->base, std::string(message.asStringView()))));
+            // data->result_p.set_exception(std::make_exception_ptr(
+            //     Rejection(data->base, std::string(message.asStringView()))));
             data->callFinishEvent();
             data->cond.notify_all();
         } else {

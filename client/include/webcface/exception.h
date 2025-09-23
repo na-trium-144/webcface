@@ -4,6 +4,7 @@
 #else
 #include "webcface/common/webcface-config.h"
 #endif
+#include "webcface/common/exception.h"
 #include <stdexcept>
 
 WEBCFACE_NS_BEGIN
@@ -79,25 +80,6 @@ struct WEBCFACE_DLL PromiseError : public std::runtime_error {
 struct WEBCFACE_DLL FuncSignatureMismatch : public std::invalid_argument {
     explicit FuncSignatureMismatch(const char *message);
     explicit FuncSignatureMismatch(const std::string &message);
-};
-
-/*!
- * \brief その他のパラメーターエラー
- * \since ver2.10
- * 
- */
-struct WEBCFACE_DLL InvalidArgument : public std::invalid_argument {
-    explicit InvalidArgument(const char *message);
-    explicit InvalidArgument(const std::string &message);
-};
-/*!
- * \brief その他のパラメーターエラー
- * \since ver2.10
- * 
- */
-struct WEBCFACE_DLL OutOfRange : public std::out_of_range {
-    explicit OutOfRange(const char *message);
-    explicit OutOfRange(const std::string &message);
 };
 
 WEBCFACE_NS_END
