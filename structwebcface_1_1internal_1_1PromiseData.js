@@ -22,9 +22,5 @@ var structwebcface_1_1internal_1_1PromiseData =
     [ "reach_event_done", "structwebcface_1_1internal_1_1PromiseData.html#a325da057def02dc497dac7227e354d2d", null ],
     [ "reached", "structwebcface_1_1internal_1_1PromiseData.html#a08f982de6905916ce462be89bb3eafe8", null ],
     [ "rejection", "structwebcface_1_1internal_1_1PromiseData.html#a4a2d1f2e45da3f4c385ff3e084af6802", null ],
-    [ "response", "structwebcface_1_1internal_1_1PromiseData.html#a367ad564a80137ec4f2b40e770a8a3a4", null ],
-    [ "result_f", "structwebcface_1_1internal_1_1PromiseData.html#a711806feade01f150856c329e8aefcec", null ],
-    [ "result_p", "structwebcface_1_1internal_1_1PromiseData.html#ab07b199cb1224a6964d1806c33536cdc", null ],
-    [ "started_f", "structwebcface_1_1internal_1_1PromiseData.html#a3eb74ca941cd5ea68f24804dc9d4c838", null ],
-    [ "started_p", "structwebcface_1_1internal_1_1PromiseData.html#aca522f48217de3787aa156cf372599e3", null ]
+    [ "response", "structwebcface_1_1internal_1_1PromiseData.html#a6fca7303fdafedf75436c6de698e9054", null ]
 ];

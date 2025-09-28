@@ -180,7 +180,9 @@ var hierarchy =
     [ "invalid_argument", null, [
       [ "FuncSignatureMismatch", "structwebcface_1_1FuncSignatureMismatch.html", null ],
       [ "Intrusion", "structwebcface_1_1Intrusion.html", null ],
-      [ "InvalidArgument", "structwebcface_1_1InvalidArgument.html", null ]
+      [ "InvalidArgument", "structwebcface_1_1InvalidArgument.html", [
+        [ "ValTypeMismatch", "structwebcface_1_1ValTypeMismatch.html", null ]
+      ] ]
     ] ],
     [ "InvokeSignatureTrait< T >", "structwebcface_1_1traits_1_1InvokeSignatureTrait.html", null ],
     [ "InvokeSignatureTrait< Ret(Args...)>", "structwebcface_1_1traits_1_1InvokeSignatureTrait_3_01Ret_07Args_8_8_8_08_4.html", [

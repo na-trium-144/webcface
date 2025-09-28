@@ -1,9 +1,11 @@
 <map id="common/include/webcface/common/val_adaptor_vec.h" name="common/include/webcface/common/val_adaptor_vec.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="386,5,592,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="554,5,760,45"/>
 <area shape="rect" id="Node000002" href="$common_2val__adaptor_8h.html" title=" " alt="" coords="266,93,376,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="450,48,359,90,357,85,448,43"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="577,48,384,93,383,88,576,43"/>
 <area shape="rect" id="Node000012" href="$webcface-config_8h.html" title=" " alt="" coords="586,240,726,265"/>
-<area shape="poly" id="edge14_Node000001_Node000012" title=" " alt="" coords="511,44,562,96,617,165,648,226,644,229,612,168,558,100,507,47"/>
+<area shape="poly" id="edge17_Node000001_Node000012" title=" " alt="" coords="660,45,658,226,653,226,654,45"/>
+<area shape="rect" id="Node000013" href="$common_2include_2webcface_2common_2exception_8h.html" title=" " alt="" coords="694,93,919,119"/>
+<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="694,43,773,84,771,89,692,48"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="118,240,177,265"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="265,113,197,118,121,128,55,145,31,156,15,168,9,180,10,191,17,201,30,211,66,227,105,239,104,245,64,232,27,216,14,205,5,193,4,179,11,165,28,151,54,140,120,123,196,113,265,107"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="26,167,88,192"/>
@@ -19,10 +21,13 @@
 <area shape="rect" id="Node000009" href="$common_2encoding_8h.html" title=" " alt="" coords="476,167,569,192"/>
 <area shape="poly" id="edge8_Node000002_Node000009" title=" " alt="" coords="354,116,478,159,476,165,352,121"/>
 <area shape="poly" id="edge13_Node000002_Node000012" title=" " alt="" coords="377,107,423,113,476,123,531,140,582,164,618,194,644,227,639,230,614,198,580,169,529,145,475,129,422,118,376,113"/>
-<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="476,192,464,195,191,246,190,241,463,189,475,187"/>
+<area shape="poly" id="edge9_Node000009_Node000003" title=" " alt="" coords="476,192,463,195,191,246,190,241,462,189,475,187"/>
 <area shape="rect" id="Node000010" title=" " alt="" coords="362,240,459,265"/>
 <area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="506,194,442,235,439,230,503,190"/>
 <area shape="rect" id="Node000011" title=" " alt="" coords="484,240,561,265"/>
 <area shape="poly" id="edge11_Node000009_Node000011" title=" " alt="" coords="525,192,525,226,520,226,520,192"/>
 <area shape="poly" id="edge12_Node000009_Node000012" title=" " alt="" coords="545,190,623,231,621,236,543,194"/>
+<area shape="poly" id="edge15_Node000013_Node000012" title=" " alt="" coords="796,121,679,232,676,229,792,117"/>
+<area shape="rect" id="Node000014" title=" " alt="" coords="763,167,850,192"/>
+<area shape="poly" id="edge16_Node000013_Node000014" title=" " alt="" coords="809,119,809,153,804,153,804,119"/>
 </map>

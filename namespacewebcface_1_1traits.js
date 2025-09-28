@@ -36,7 +36,7 @@ var namespacewebcface_1_1traits =
     [ "EnableIfViewInvocable", "namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909", null ],
     [ "FuncArgTypesTrait", "namespacewebcface_1_1traits.html#adfe1ddafb0a41af0a62fd8b2d5c09f77", null ],
     [ "FuncObjTrait", "namespacewebcface_1_1traits.html#a49c337c87816c444f5483069a964c7fa", null ],
-    [ "FuncReturnTypeTrait", "namespacewebcface_1_1traits.html#a67b8c538bc290c1c1a374a162aceeda0", null ],
+    [ "FuncReturnTypeTrait", "namespacewebcface_1_1traits.html#aa8a9ae98379aabc4bb28b58abeb517e8", null ],
     [ "InvokeObjTrait", "namespacewebcface_1_1traits.html#a9bc76ed113af3e055aa259b88c57fb76", null ],
     [ "IsArrayLike", "namespacewebcface_1_1traits.html#a1de8b86dba8dc4ae5d4a8b6950aadc43", null ],
     [ "TraitOkType", "namespacewebcface_1_1traits.html#a072c2ad5bb2650ff7928823d6e34764e", null ],

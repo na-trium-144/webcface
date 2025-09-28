@@ -1,5 +1,6 @@
 var NAVTREEINDEX20 =
 {
+"globals_d.html":[34,1,0,3],
 "globals_defs.html":[34,1,6],
 "globals_enum.html":[34,1,4],
 "globals_eval.html":[34,1,5],
@@ -248,6 +249,5 @@ var NAVTREEINDEX20 =
 "md_docs_262__image.html#autotoc_md142":[16,1],
 "md_docs_263__canvas3d.html":[17],
 "md_docs_263__canvas3d.html#autotoc_md144":[17,0],
-"md_docs_263__canvas3d.html#autotoc_md145":[17,1],
-"md_docs_263__canvas3d.html#autotoc_md146":[17,1,0]
+"md_docs_263__canvas3d.html#autotoc_md145":[17,1]
 };

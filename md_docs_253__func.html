@@ -173,7 +173,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Client::func からFuncオブジェクトを作り、 Func::set() で関数を登録し、Client::sync()することで送信されます</p>
 <p class="startli">関数は関数オブジェクト(ラムダ式など)でもokです。 引数、戻り値は整数、実数、bool、文字列型であれば自由に指定できます。 <br  />
- <span class="since-c">3.0</span> 1次元のリスト (std::vector, std::array) も引数に使用可能です。 </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> hoge() {</div>
+ <span class="since-c">3.0</span> 1次元のリスト (std::vector, std::array) も引数と戻り値に使用可能です。 </p><div class="fragment"><div class="line"><span class="keywordtype">void</span> hoge() {</div>
 <div class="line">    std::cout &lt;&lt; <span class="stringliteral">&quot;hello, world!&quot;</span> &lt;&lt; std::endl;</div>
 <div class="line">}</div>
 <div class="line"><span class="keywordtype">double</span> fuga(<span class="keywordtype">int</span> a, std::string_view b) {</div>
@@ -307,15 +307,15 @@ CallHandle</h2>
 <li><b class="tab-title">C++</b> <dl class="section since"><dt>Since</dt><dd><span class="since-c">2.4</span></dd></dl>
 引数に <a class="el" href="classwebcface_1_1CallHandle.html" title="呼び出された関数の引数の取得と戻り値のセットをするインタフェース">webcface::CallHandle</a> をとる関数をセットすることもできます。 <div class="fragment"><div class="line">wcli.func(<span class="stringliteral">&quot;hoge&quot;</span>).set([](<a class="code hl_class" href="classwebcface_1_1CallHandle.html">webcface::CallHandle</a> handle){</div>
 <div class="line">    <span class="keywordtype">double</span> arg = handle.<a class="code hl_function" href="classwebcface_1_1CallHandle.html#aba8c8357bfd6934377cf8f1c74061808">args</a>().at(0).asDouble();</div>
-<div class="line">    handle.<a class="code hl_function" href="classwebcface_1_1CallHandle.html#a06610dc4e62e60646868638ca6f4b109">respond</a>(123); <span class="comment">// return value</span></div>
+<div class="line">    handle.<a class="code hl_function" href="classwebcface_1_1CallHandle.html#ab32419f1630aa98952e8ac32293aa943">respond</a>(123); <span class="comment">// return value</span></div>
 <div class="line">}).setArgs({</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#a21eb97b014d270b80f9423022f86d322">type</a>(<a class="code hl_enumvalue" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9">webcface::ValType::double_</a>),</div>
 <div class="line">});</div>
 <div class="ttc" id="aclasswebcface_1_1Arg_html"><div class="ttname"><a href="classwebcface_1_1Arg.html">webcface::Arg</a></div><div class="ttdoc">引数の情報を表す。</div><div class="ttdef"><b>Definition</b> arg.h:31</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_a21eb97b014d270b80f9423022f86d322"><div class="ttname"><a href="classwebcface_1_1Arg.html#a21eb97b014d270b80f9423022f86d322">webcface::Arg::type</a></div><div class="ttdeci">ValType type() const</div><div class="ttdoc">引数の型を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:57</div></div>
-<div class="ttc" id="aclasswebcface_1_1CallHandle_html"><div class="ttname"><a href="classwebcface_1_1CallHandle.html">webcface::CallHandle</a></div><div class="ttdoc">呼び出された関数の引数の取得と戻り値のセットをするインタフェース</div><div class="ttdef"><b>Definition</b> func_result.h:320</div></div>
-<div class="ttc" id="aclasswebcface_1_1CallHandle_html_a06610dc4e62e60646868638ca6f4b109"><div class="ttname"><a href="classwebcface_1_1CallHandle.html#a06610dc4e62e60646868638ca6f4b109">webcface::CallHandle::respond</a></div><div class="ttdeci">void respond(const ValAdaptor &amp;value) const</div><div class="ttdef"><b>Definition</b> func_result.cc:76</div></div>
-<div class="ttc" id="aclasswebcface_1_1CallHandle_html_aba8c8357bfd6934377cf8f1c74061808"><div class="ttname"><a href="classwebcface_1_1CallHandle.html#aba8c8357bfd6934377cf8f1c74061808">webcface::CallHandle::args</a></div><div class="ttdeci">const std::vector&lt; ValAdaptorVector &gt; &amp; args() const</div><div class="ttdoc">関数の引数を取得する</div><div class="ttdef"><b>Definition</b> func_result.cc:325</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_a21eb97b014d270b80f9423022f86d322"><div class="ttname"><a href="classwebcface_1_1Arg.html#a21eb97b014d270b80f9423022f86d322">webcface::Arg::type</a></div><div class="ttdeci">ValType type() const</div><div class="ttdoc">引数の型を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:58</div></div>
+<div class="ttc" id="aclasswebcface_1_1CallHandle_html"><div class="ttname"><a href="classwebcface_1_1CallHandle.html">webcface::CallHandle</a></div><div class="ttdoc">呼び出された関数の引数の取得と戻り値のセットをするインタフェース</div><div class="ttdef"><b>Definition</b> func_result.h:275</div></div>
+<div class="ttc" id="aclasswebcface_1_1CallHandle_html_ab32419f1630aa98952e8ac32293aa943"><div class="ttname"><a href="classwebcface_1_1CallHandle.html#ab32419f1630aa98952e8ac32293aa943">webcface::CallHandle::respond</a></div><div class="ttdeci">void respond(const ValAdaptorVector &amp;value) const</div><div class="ttdef"><b>Definition</b> func_result.cc:74</div></div>
+<div class="ttc" id="aclasswebcface_1_1CallHandle_html_aba8c8357bfd6934377cf8f1c74061808"><div class="ttname"><a href="classwebcface_1_1CallHandle.html#aba8c8357bfd6934377cf8f1c74061808">webcface::CallHandle::args</a></div><div class="ttdeci">const std::vector&lt; ValAdaptorVector &gt; &amp; args() const</div><div class="ttdoc">関数の引数を取得する</div><div class="ttdef"><b>Definition</b> func_result.cc:323</div></div>
 <div class="ttc" id="anamespacewebcface_html_acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9"><div class="ttname"><a href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185a9ff848d203d671e297c98886f9fc0bd9">webcface::ValType::double_</a></div><div class="ttdeci">@ double_</div></div>
 </div><!-- fragment --><ul>
 <li>通常の関数のset()の場合と同様、関数を非同期(別スレッド)で実行したい場合は setAsync() を使用してください。</li>
@@ -443,8 +443,8 @@ CallHandle</h2>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;a&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#aa069dd26cfbd6e9b470d6da6b827c02f">init</a>(100),</div>
 <div class="line">    <a class="code hl_class" href="classwebcface_1_1Arg.html">webcface::Arg</a>(<span class="stringliteral">&quot;b&quot;</span>).<a class="code hl_function" href="classwebcface_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">option</a>({<span class="stringliteral">&quot;aaa&quot;</span>, <span class="stringliteral">&quot;bbb&quot;</span>, <span class="stringliteral">&quot;ccc&quot;</span>}),</div>
 <div class="line">});</div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_aa069dd26cfbd6e9b470d6da6b827c02f"><div class="ttname"><a href="classwebcface_1_1Arg.html#aa069dd26cfbd6e9b470d6da6b827c02f">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptorVector &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:65</div></div>
-<div class="ttc" id="aclasswebcface_1_1Arg_html_af705bc9b6f2e309a2ecbabf78abdc919"><div class="ttname"><a href="classwebcface_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">webcface::Arg::option</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:88</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_aa069dd26cfbd6e9b470d6da6b827c02f"><div class="ttname"><a href="classwebcface_1_1Arg.html#aa069dd26cfbd6e9b470d6da6b827c02f">webcface::Arg::init</a></div><div class="ttdeci">std::optional&lt; ValAdaptorVector &gt; init() const</div><div class="ttdoc">デフォルト値を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:66</div></div>
+<div class="ttc" id="aclasswebcface_1_1Arg_html_af705bc9b6f2e309a2ecbabf78abdc919"><div class="ttname"><a href="classwebcface_1_1Arg.html#af705bc9b6f2e309a2ecbabf78abdc919">webcface::Arg::option</a></div><div class="ttdeci">std::vector&lt; ValAdaptor &gt; option() const</div><div class="ttdoc">引数の選択肢を取得する。</div><div class="ttdef"><b>Definition</b> func_info.cc:89</div></div>
 </div><!-- fragment --></li>
 <li><b class="tab-title">JavaScript</b> 引数名、引数や戻り値の型、その他の引数に関する情報をset関数の引数で指定します。 引数のオプションに関しては <a href="https://na-trium-144.github.io/webcface-js/interfaces/Arg.html">Arg</a> を参照 <div class="fragment"><div class="line">wcli.func(&quot;hoge&quot;).set(</div>
 <div class="line">    () =&gt; { /*...*/ }, // 関数</div>
@@ -652,7 +652,7 @@ Entry</h2>
 <li>waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。 For, Until の場合はタイムアウトを指定します。</li>
 </ul>
 </li>
-<li>response(): 関数の戻り値です。 <a class="el" href="classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型で返り、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code> またはstatic_castにより型変換できます。</li>
+<li>response(): 関数の戻り値です。 <a class="el" href="classwebcface_1_1ValAdaptorVector.html" title="ValAdaptorのVector.">webcface::ValAdaptorVector</a> 型で返り、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> またはstatic_castにより型変換できます。</li>
 <li>rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。 またその場合 isError() がtrueになります。</li>
 </ul>
 <div class="fragment"><div class="line">Promise res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
@@ -871,9 +871,9 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <p class="startli">対象のクライアントと通信できない場合、また指定した関数が存在しない場合は webcface::FuncNotFoundError を投げます。</p>
 <div class="fragment"><div class="line"><span class="keywordtype">double</span> ans = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).run(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
 </div><!-- fragment --><p> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::operator()</code>)</p>
-<p class="startli">戻り値は <a class="el" href="classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型で返ります。 整数、実数、bool、stringにキャストできます。 <br  />
+<p class="startli">戻り値は <a class="el" href="classwebcface_1_1ValAdaptorVector.html" title="ValAdaptorのVector.">webcface::ValAdaptorVector</a> 型で返ります。 整数、実数、bool、stringにキャストできます。 <br  />
  <span class="since-c">1.10</span> また、明示的にキャストするなら <del><code>asStringRef()</code>(const参照)</del>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;整数or実数型&gt;()</code></del> も使えます。 <br  />
- <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code> も使えます。</p>
+ <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> も使えます。</p>
 <dl class="section warning"><dt>Warning</dt><dd>start()を呼んで通信を開始する前にrun()を呼び出してしまうとデッドロックします。</dd></dl>
 <p><span></span></p>
 </li>
@@ -908,7 +908,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Sep 12 2025 03:31:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 10:20:27 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

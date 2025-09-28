@@ -86,6 +86,7 @@ var namespacewebcface =
     [ "TStringView", "classwebcface_1_1TStringView.html", "classwebcface_1_1TStringView" ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
     [ "ValAdaptorVector", "classwebcface_1_1ValAdaptorVector.html", "classwebcface_1_1ValAdaptorVector" ],
+    [ "ValTypeMismatch", "structwebcface_1_1ValTypeMismatch.html", "structwebcface_1_1ValTypeMismatch" ],
     [ "Value", "classwebcface_1_1Value.html", "classwebcface_1_1Value" ],
     [ "ValueElementRef", "classwebcface_1_1ValueElementRef.html", "classwebcface_1_1ValueElementRef" ],
     [ "Variant", "classwebcface_1_1Variant.html", "classwebcface_1_1Variant" ],

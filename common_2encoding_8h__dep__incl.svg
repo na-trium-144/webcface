@@ -782,7 +782,7 @@
 <!-- Node69 -->
 <g id="Node000069" class="node">
 <title>Node69</title>
-<g id="a_Node000069"><a xlink:href="exception_8cc.html" target="_top" xlink:title=" ">
+<g id="a_Node000069"><a xlink:href="client_2src_2exception_8cc.html" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="654,-310.5 529,-310.5 529,-291.5 654,-291.5 654,-310.5"/>
 <text text-anchor="middle" x="591.5" y="-298.5" font-family="Helvetica,sans-Serif" font-size="10.00">client/src/exception.cc</text>
 </a>

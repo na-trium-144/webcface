@@ -186,7 +186,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a48e33efb4676378d5de58f8e81dfbf9c"><td class="memTemplItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html#a48e33efb4676378d5de58f8e81dfbf9c">operator=</a> (const T(&amp;range)[N])</td></tr>
 <tr class="separator:a48e33efb4676378d5de58f8e81dfbf9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab07c60d30e8d101fd5d7969760fb69e1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html#ab07c60d30e8d101fd5d7969760fb69e1">get</a> () const</td></tr>
+<tr class="memdesc:ab07c60d30e8d101fd5d7969760fb69e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">単一の要素をValAdaptor型で返す  <br /></td></tr>
 <tr class="separator:ab07c60d30e8d101fd5d7969760fb69e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html#a644718bb2fb240de962dc3c9a1fdf0dc">empty</a> () const</td></tr>
+<tr class="memdesc:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が空かどうか調べる  <br /></td></tr>
+<tr class="separator:a644718bb2fb240de962dc3c9a1fdf0dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#acd1dd9e2d5f885ad3f73197cfa6b0185">ValType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html#abbfeeae645abbaf39aeb6fb0c8b00007">valType</a> () const</td></tr>
 <tr class="separator:abbfeeae645abbaf39aeb6fb0c8b00007"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30e7823447ef5b450ba689ed90d345d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptorVector.html#a30e7823447ef5b450ba689ed90d345d5">operator const ValAdaptor &amp;</a> () const</td></tr>
@@ -903,6 +907,30 @@ template&lt;typename T , typename  = std::void_t&lt;                  decltype(s
 
 </div>
 </div>
+<a id="a644718bb2fb240de962dc3c9a1fdf0dc" name="a644718bb2fb240de962dc3c9a1fdf0dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a644718bb2fb240de962dc3c9a1fdf0dc">&#9670;&#160;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>値が空かどうか調べる </p>
+<ul>
+<li>要素数0の場合true</li>
+<li>要素数1の場合、 at(0).<a class="el" href="classwebcface_1_1ValAdaptorVector.html#a644718bb2fb240de962dc3c9a1fdf0dc" title="値が空かどうか調べる">empty()</a> を返す</li>
+<li>要素数2以上の場合、false </li>
+</ul>
+
+</div>
+</div>
 <a id="ab58ed65292d56cb7462ddf0ae45f7838" name="ab58ed65292d56cb7462ddf0ae45f7838"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab58ed65292d56cb7462ddf0ae45f7838">&#9670;&#160;</a></span>end()</h2>
 
@@ -942,6 +970,12 @@ template&lt;typename T , typename  = std::void_t&lt;                  decltype(s
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>単一の要素をValAdaptor型で返す </p>
+<ul>
+<li>要素数0の場合、空のValAdaptorを返す</li>
+<li>要素数1以上の場合、at(0) と同じ </li>
+</ul>
 
 </div>
 </div>
@@ -1386,7 +1420,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ValAdaptorVector.html">ValAdaptorVector</a></li>
-    <li class="footer">Generated on Fri Sep 12 2025 03:31:11 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 10:20:28 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -26,6 +26,7 @@ var classwebcface_1_1ValAdaptorVector =
     [ "cbegin", "classwebcface_1_1ValAdaptorVector.html#a69d325974c1105123d8fe1e7343da7a4", null ],
     [ "cend", "classwebcface_1_1ValAdaptorVector.html#acb3947524273b6fbc37eb07485bc4d26", null ],
     [ "data", "classwebcface_1_1ValAdaptorVector.html#abfa4c3deb7a919fbafb1a21da5effe27", null ],
+    [ "empty", "classwebcface_1_1ValAdaptorVector.html#a644718bb2fb240de962dc3c9a1fdf0dc", null ],
     [ "end", "classwebcface_1_1ValAdaptorVector.html#ab58ed65292d56cb7462ddf0ae45f7838", null ],
     [ "get", "classwebcface_1_1ValAdaptorVector.html#ab07c60d30e8d101fd5d7969760fb69e1", null ],
     [ "operator const ValAdaptor &", "classwebcface_1_1ValAdaptorVector.html#a30e7823447ef5b450ba689ed90d345d5", null ],

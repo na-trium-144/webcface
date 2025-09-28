@@ -20,5 +20,5 @@ var client_2include_2webcface_2func_8h =
     [ "FuncListener", "classwebcface_1_1FuncListener.html", "classwebcface_1_1FuncListener" ],
     [ "FuncArgTypesTrait", "client_2include_2webcface_2func_8h.html#adfe1ddafb0a41af0a62fd8b2d5c09f77", null ],
     [ "FuncObjTrait", "client_2include_2webcface_2func_8h.html#a49c337c87816c444f5483069a964c7fa", null ],
-    [ "FuncReturnTypeTrait", "client_2include_2webcface_2func_8h.html#a67b8c538bc290c1c1a374a162aceeda0", null ]
+    [ "FuncReturnTypeTrait", "client_2include_2webcface_2func_8h.html#aa8a9ae98379aabc4bb28b58abeb517e8", null ]
 ];

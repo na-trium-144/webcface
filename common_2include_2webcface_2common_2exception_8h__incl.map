@@ -1,5 +1,5 @@
-<map id="client/include/webcface/exception.h" name="client/include/webcface/exception.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="56,5,231,45"/>
+<map id="common/include/webcface/common/exception.h" name="common/include/webcface/common/exception.h">
+<area shape="rect" id="Node000001" title=" " alt="" coords="45,5,241,45"/>
 <area shape="rect" id="Node000002" href="$webcface-config_8h.html" title=" " alt="" coords="5,93,145,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,47,96,84,92,81,125,44"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="169,93,256,119"/>
