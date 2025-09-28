@@ -7,7 +7,6 @@ var classwebcface_1_1Log =
     [ "append", "classwebcface_1_1Log.html#a85853ea29a5011b66abdc48158ef2c33", null ],
     [ "append", "classwebcface_1_1Log.html#a8683e7a888b23d20e86411797cea501b", null ],
     [ "append", "classwebcface_1_1Log.html#a0ced31a311c04b2fb0a3411550d818f5", null ],
-    [ "appendListener", "classwebcface_1_1Log.html#aa30c2b2fa223cf32c0f2612b55941de3", null ],
     [ "canvas2D", "classwebcface_1_1Log.html#abfd5d7622f14c7cc9e409839efd19c90", null ],
     [ "canvas2DEntries", "classwebcface_1_1Log.html#af64f0121c51589922b7ed04cf31563c7", null ],
     [ "canvas2DEntries", "classwebcface_1_1Log.html#af64f0121c51589922b7ed04cf31563c7", null ],

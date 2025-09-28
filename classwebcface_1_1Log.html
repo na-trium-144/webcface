@@ -179,9 +179,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af64e946163dc6bc8ee009a3ed8221c27"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#af64e946163dc6bc8ee009a3ed8221c27">onChange</a> (F callback) const</td></tr>
 <tr class="memdesc:af64e946163dc6bc8ee009a3ed8221c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が変化したときに呼び出されるコールバックを設定  <br /></td></tr>
 <tr class="separator:af64e946163dc6bc8ee009a3ed8221c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#aa30c2b2fa223cf32c0f2612b55941de3">appendListener</a> (T &amp;&amp;callback) const</td></tr>
-<tr class="separator:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aef024145892f5e3c463188810de46994"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#aef024145892f5e3c463188810de46994">request</a> () const</td></tr>
 <tr class="memdesc:aef024145892f5e3c463188810de46994"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログをリクエストする  <br /></td></tr>
 <tr class="separator:aef024145892f5e3c463188810de46994"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -658,35 +655,6 @@ Protected Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa30c2b2fa223cf32c0f2612b55941de3" name="aa30c2b2fa223cf32c0f2612b55941de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa30c2b2fa223cf32c0f2612b55941de3">&#9670;&#160;</a></span>appendListener()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void appendListener </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000027">Deprecated:</a></b></dt><dd>ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ</dd></dl>
-
-</div>
-</div>
 <a id="abfd5d7622f14c7cc9e409839efd19c90" name="abfd5d7622f14c7cc9e409839efd19c90"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abfd5d7622f14c7cc9e409839efd19c90">&#9670;&#160;</a></span>canvas2D()</h2>
 
@@ -911,7 +879,7 @@ template&lt;typename T , bool &gt; </div>
 
 <p>「(thisの名前).(index)」を新しい名前とするField </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -1959,7 +1927,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 
 <p>「(thisの名前).(index)」を新しい名前とするField </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2536,7 +2504,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

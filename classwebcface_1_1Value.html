@@ -206,9 +206,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2520d5a34f74f1ccde9c1d662e9a8874"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a2520d5a34f74f1ccde9c1d662e9a8874">onChange</a> (F callback) const</td></tr>
 <tr class="memdesc:a2520d5a34f74f1ccde9c1d662e9a8874"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が変化したときに呼び出されるコールバックを設定  <br /></td></tr>
 <tr class="separator:a2520d5a34f74f1ccde9c1d662e9a8874"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aa30c2b2fa223cf32c0f2612b55941de3">appendListener</a> (T &amp;&amp;callback) const</td></tr>
-<tr class="separator:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fd8efe390cff8a994cd6c165b4a85a1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a7fd8efe390cff8a994cd6c165b4a85a1">set</a> (double v) const</td></tr>
 <tr class="memdesc:a7fd8efe390cff8a994cd6c165b4a85a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をセットする  <br /></td></tr>
 <tr class="separator:a7fd8efe390cff8a994cd6c165b4a85a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -259,9 +256,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#aa7d8623150e6d43ab4bf7493aa8cbc1a">exists</a> () const</td></tr>
 <tr class="memdesc:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">このフィールドにデータが存在すればtrue  <br /></td></tr>
 <tr class="separator:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3799c65797b21f35329dc284df16a65d"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#a3799c65797b21f35329dc284df16a65d">time</a> () const</td></tr>
-<tr class="memdesc:a3799c65797b21f35329dc284df16a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻を返す  <br /></td></tr>
-<tr class="separator:a3799c65797b21f35329dc284df16a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0990076a2d9bef64213ee3f0d7fe001"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Value.html">Value</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Value.html#ac0990076a2d9bef64213ee3f0d7fe001">free</a> () const</td></tr>
 <tr class="memdesc:ac0990076a2d9bef64213ee3f0d7fe001"><td class="mdescLeft">&#160;</td><td class="mdescRight">値やリクエスト状態をクリア  <br /></td></tr>
 <tr class="separator:ac0990076a2d9bef64213ee3f0d7fe001"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -479,7 +473,7 @@ Friends</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>実数値またはその配列の送受信データを表すクラス </p>
-<p>コンストラクタではなく <a class="el" href="classwebcface_1_1Member.html#af84a6995e5a733cff43904773e956f6a">Member::value()</a>, <a class="el" href="classwebcface_1_1Member.html#a79db1efde6ce9c6db23757da84f030a2" title="このmemberが公開しているvalueのリストを返す。">Member::values()</a>, <a class="el" href="classwebcface_1_1Member.html#a915ef0684abee06830c9117847b22495" title="valueが追加された時のイベント">Member::onValueEntry()</a> を使って取得してください </p>
+<p>コンストラクタではなく <a class="el" href="classwebcface_1_1Member.html#af84a6995e5a733cff43904773e956f6a">Member::value()</a>, Member::values(), <a class="el" href="classwebcface_1_1Member.html#a915ef0684abee06830c9117847b22495" title="valueが追加された時のイベント">Member::onValueEntry()</a> を使って取得してください </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab590115ca55308ab44e85e59b049626f" name="ab590115ca55308ab44e85e59b049626f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab590115ca55308ab44e85e59b049626f">&#9670;&#160;</a></span>Value() <span class="overload">[1/3]</span></h2>
@@ -561,35 +555,6 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa30c2b2fa223cf32c0f2612b55941de3" name="aa30c2b2fa223cf32c0f2612b55941de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa30c2b2fa223cf32c0f2612b55941de3">&#9670;&#160;</a></span>appendListener()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void appendListener </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000056">Deprecated:</a></b></dt><dd>ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ</dd></dl>
-
-</div>
-</div>
 <a id="ad6e9eb746a66e146cdd9491f77989746" name="ad6e9eb746a66e146cdd9491f77989746"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6e9eb746a66e146cdd9491f77989746">&#9670;&#160;</a></span>at()</h2>
 
@@ -841,7 +806,7 @@ template&lt;typename T , bool &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000055">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000028">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2523,7 +2488,7 @@ template&lt;std::size_t N&gt; </div>
 
 <p>「(thisの名前).(index)」を新しい名前とするField </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -3036,26 +3001,6 @@ template&lt;typename T , bool &gt; </div>
 
 </div>
 </div>
-<a id="a3799c65797b21f35329dc284df16a65d" name="a3799c65797b21f35329dc284df16a65d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3799c65797b21f35329dc284df16a65d">&#9670;&#160;</a></span>time()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::chrono::system_clock::time_point time </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>syncの時刻を返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000057">Deprecated:</a></b></dt><dd>1.7で <a class="el" href="classwebcface_1_1Member.html#aaace8ffd82d2eb79c72f3411d3311b9b" title="最後のsync()の時刻を返す">Member::syncTime()</a> に変更 </dd></dl>
-
-</div>
-</div>
 <a id="ae5bef3971255d46007752bd07c18803f" name="ae5bef3971255d46007752bd07c18803f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae5bef3971255d46007752bd07c18803f">&#9670;&#160;</a></span>tryGet()</h2>
 
@@ -3376,7 +3321,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Value.html">Value</a></li>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -883,11 +883,11 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <div class="line">    <a class="code hl_function" href="client_2include_2webcface_2c__wcf_2func_8h.html#aef51e8d5db05da0a19a3c4f58a4c5193">wcfValS</a>(<span class="stringliteral">&quot;aaa&quot;</span>), <span class="comment">// string</span></div>
 <div class="line">};</div>
 <div class="line"><a class="code hl_struct" href="structwcfMultiVal.html">wcfMultiVal</a> *ans;</div>
-<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="client_2include_2webcface_2c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a>(wcli_, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;b&quot;</span>, args, 3, &amp;ans);</div>
+<div class="line"><span class="keywordtype">int</span> ret = <a class="code hl_function" href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a>(wcli_, <span class="stringliteral">&quot;a&quot;</span>, <span class="stringliteral">&quot;b&quot;</span>, args, 3, &amp;ans);</div>
 <div class="line"><span class="comment">// ex.) ret = WCF_OK, ans-&gt;as_double = 123.45</span></div>
 <div class="line"> </div>
 <div class="line"><a class="code hl_function" href="c__wcf_2client_8h.html#aa60652bec1f489814b4731df92e51cce">wcfDestroy</a>(ans);</div>
-<div class="ttc" id="aclient_2include_2webcface_2c__wcf_2func_8h_html_a66bdb804a3f7e0b7ef620180fbab9dfe"><div class="ttname"><a href="client_2include_2webcface_2c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a></div><div class="ttdeci">wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfMultiVal **result)</div><div class="ttdoc">関数を呼び出す</div><div class="ttdef"><b>Definition</b> func.cc:274</div></div>
+<div class="ttc" id="ac__wcf_2func_8cc_html_a66bdb804a3f7e0b7ef620180fbab9dfe"><div class="ttname"><a href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a></div><div class="ttdeci">wcfStatus wcfFuncRun(wcfClient *wcli, const char *member, const char *field, const wcfMultiVal *args, int arg_size, wcfMultiVal **result)</div><div class="ttdef"><b>Definition</b> func.cc:274</div></div>
 </div><!-- fragment --><p> 関数が存在しない場合<code>WCF_NOT_FOUND</code>を返します。 関数が例外を投げた場合<code>WCF_EXCEPTION</code>を返し、ret-&gt;as_strにエラーメッセージが入ります。</p>
 <p class="startli"><span class="since-c">1.7</span> 結果が格納されているポインタは、不要になったら wcfDestroy(ans); で破棄してください。</p>
 <dl class="section warning"><dt>Warning</dt><dd><a class="el" href="c__wcf_2client_8h.html#ad84e50d3482bedb7ccfa278bfc00120c" title="サーバーへの接続を別スレッドで開始する。">wcfStart()</a>を呼んで通信を開始する前にwcfFuncRun()を呼び出してしまうとデッドロックします。</dd></dl>
@@ -908,7 +908,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

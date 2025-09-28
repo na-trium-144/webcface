@@ -179,9 +179,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab28ad6b49d74c6e82d5cdd6aed9a0f10"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Variant.html#ab28ad6b49d74c6e82d5cdd6aed9a0f10">onChange</a> (F callback) const</td></tr>
 <tr class="memdesc:ab28ad6b49d74c6e82d5cdd6aed9a0f10"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が変化したときに呼び出されるコールバックを設定  <br /></td></tr>
 <tr class="separator:ab28ad6b49d74c6e82d5cdd6aed9a0f10"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Variant.html#aa30c2b2fa223cf32c0f2612b55941de3">appendListener</a> (T &amp;&amp;callback) const</td></tr>
-<tr class="separator:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a318c7cf86d1ad0b2bb82aaade021e0d1"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Variant.html">Variant</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Variant.html#a318c7cf86d1ad0b2bb82aaade021e0d1">request</a> () const</td></tr>
 <tr class="memdesc:a318c7cf86d1ad0b2bb82aaade021e0d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">値をリクエストする  <br /></td></tr>
 <tr class="separator:a318c7cf86d1ad0b2bb82aaade021e0d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,35 +516,6 @@ Friends</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa30c2b2fa223cf32c0f2612b55941de3" name="aa30c2b2fa223cf32c0f2612b55941de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa30c2b2fa223cf32c0f2612b55941de3">&#9670;&#160;</a></span>appendListener()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void appendListener </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000038">Deprecated:</a></b></dt><dd>ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ</dd></dl>
-
-</div>
-</div>
 <a id="aa89e0884952cab63a940c6626ed9a5d6" name="aa89e0884952cab63a940c6626ed9a5d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa89e0884952cab63a940c6626ed9a5d6">&#9670;&#160;</a></span>asBool()</h2>
 
@@ -708,7 +676,7 @@ template&lt;typename T &gt; </div>
 
 <p>文字列として返す </p>
 <p><del>std::stringのconst参照を返す。参照は少なくとも次のClient::sync()までは有効</del></p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000039">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
 
 </div>
 </div>
@@ -792,7 +760,7 @@ template&lt;typename T &gt; </div>
 
 <p>文字列として返す (wstring) </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Variant.html#a3a51db4f2cb6221e9ddf0b250fb899c8" title="文字列として返す">asStringRef()</a> </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000040">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
 
 </div>
 </div>
@@ -1048,7 +1016,7 @@ template&lt;typename T , bool &gt; </div>
 
 <p>「(thisの名前).(index)」を新しい名前とするField </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000011">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000005">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2194,7 +2162,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 
 <p>「(thisの名前).(index)」を新しい名前とするField </p>
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000012">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000006">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2846,7 +2814,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Variant.html">Variant</a></li>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

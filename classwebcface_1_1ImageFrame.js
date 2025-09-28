@@ -5,7 +5,6 @@ var classwebcface_1_1ImageFrame =
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#aa22d5ec78bb0f58c3384a31a5d0ff2a0", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#ab2f28a0f6b3fc5b4d25c90ad9ecc4f5e", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#aef0f6c2362999d67ec9f3d7b60248918", null ],
-    [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a32a0ee55778ae1e6f2034f955edc098a", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a4b499c3e97fe13d3bdbf45df2dc5377d", null ],
     [ "ImageFrame", "classwebcface_1_1ImageFrame.html#a3f47f8fd1300bcaf70285ba224a0254b", null ],
     [ "at", "classwebcface_1_1ImageFrame.html#a19370724be760dc6557ed348f522c0f5", null ],

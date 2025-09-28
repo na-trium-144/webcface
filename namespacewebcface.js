@@ -2,13 +2,6 @@ var namespacewebcface =
 [
     [ "c_wcf", "namespacewebcface_1_1c__wcf.html", "namespacewebcface_1_1c__wcf" ],
     [ "components", "namespacewebcface_1_1components.html", "namespacewebcface_1_1components" ],
-    [ "encoding", "namespacewebcface_1_1encoding.html", [
-      [ "SharedString", "namespacewebcface_1_1encoding.html#af8fad778eb294331af6e13c219f77130", null ],
-      [ "toNarrow", "namespacewebcface_1_1encoding.html#a56e48dd9e8f42e659967f25a5f1af66b", null ],
-      [ "toWide", "namespacewebcface_1_1encoding.html#a54e0d3d7c5de948abb1cacf599743264", null ],
-      [ "usingUTF8", "namespacewebcface_1_1encoding.html#ae57423f1244b067999069f20f73eb166", null ],
-      [ "usingUTF8", "namespacewebcface_1_1encoding.html#a478748a436d45cac26bdb4c4af55f54b", null ]
-    ] ],
     [ "geometries", "namespacewebcface_1_1components_1_1geometries.html", "namespacewebcface_1_1components_1_1geometries" ],
     [ "internal", "namespacewebcface_1_1internal.html", "namespacewebcface_1_1internal" ],
     [ "message", "namespacewebcface_1_1message.html", "namespacewebcface_1_1message" ],

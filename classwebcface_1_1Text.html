@@ -198,9 +198,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa6aa50819dc8edd13316f34918100d05"><td class="memTemplItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#aa6aa50819dc8edd13316f34918100d05">onChange</a> (F callback) const</td></tr>
 <tr class="memdesc:aa6aa50819dc8edd13316f34918100d05"><td class="mdescLeft">&#160;</td><td class="mdescRight">値が変化したときに呼び出されるコールバックを設定  <br /></td></tr>
 <tr class="separator:aa6aa50819dc8edd13316f34918100d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
-<tr class="memitem:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#aa30c2b2fa223cf32c0f2612b55941de3">appendListener</a> (T &amp;&amp;callback) const</td></tr>
-<tr class="separator:aa30c2b2fa223cf32c0f2612b55941de3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade870f414b8bf184f4a7aa283f332945"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#ade870f414b8bf184f4a7aa283f332945">set</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> v) const</td></tr>
 <tr class="memdesc:ade870f414b8bf184f4a7aa283f332945"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列をセットする  <br /></td></tr>
 <tr class="separator:ade870f414b8bf184f4a7aa283f332945"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -229,9 +226,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#aa7d8623150e6d43ab4bf7493aa8cbc1a">exists</a> () const</td></tr>
 <tr class="memdesc:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="mdescLeft">&#160;</td><td class="mdescRight">このフィールドにデータが存在すればtrue  <br /></td></tr>
 <tr class="separator:aa7d8623150e6d43ab4bf7493aa8cbc1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3799c65797b21f35329dc284df16a65d"><td class="memItemLeft" align="right" valign="top">std::chrono::system_clock::time_point&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a3799c65797b21f35329dc284df16a65d">time</a> () const</td></tr>
-<tr class="memdesc:a3799c65797b21f35329dc284df16a65d"><td class="mdescLeft">&#160;</td><td class="mdescRight">syncの時刻を返す  <br /></td></tr>
-<tr class="separator:a3799c65797b21f35329dc284df16a65d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9f277c29f5b9b10a4887d78f1af60b02"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Text.html">Text</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Text.html#a9f277c29f5b9b10a4887d78f1af60b02">free</a> () const</td></tr>
 <tr class="memdesc:a9f277c29f5b9b10a4887d78f1af60b02"><td class="mdescLeft">&#160;</td><td class="mdescRight">値やリクエスト状態をクリア  <br /></td></tr>
 <tr class="separator:a9f277c29f5b9b10a4887d78f1af60b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -557,35 +551,6 @@ Protected Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa30c2b2fa223cf32c0f2612b55941de3" name="aa30c2b2fa223cf32c0f2612b55941de3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa30c2b2fa223cf32c0f2612b55941de3">&#9670;&#160;</a></span>appendListener()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename T &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void appendListener </td>
-          <td>(</td>
-          <td class="paramtype">T &amp;&amp;&#160;</td>
-          <td class="paramname"><em>callback</em></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000043">Deprecated:</a></b></dt><dd>ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、 ver2.0からコールバックは1個のみになった。 互換性のため残しているがonChange()と同じ</dd></dl>
-
-</div>
-</div>
 <a id="aa89e0884952cab63a940c6626ed9a5d6" name="aa89e0884952cab63a940c6626ed9a5d6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa89e0884952cab63a940c6626ed9a5d6">&#9670;&#160;</a></span>asBool()</h2>
 
@@ -746,7 +711,7 @@ template&lt;typename T &gt; </div>
 
 <p>文字列として返す </p>
 <p><del>std::stringのconst参照を返す。参照は少なくとも次のClient::sync()までは有効</del></p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000039">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000014">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
 
 </div>
 </div>
@@ -830,7 +795,7 @@ template&lt;typename T &gt; </div>
 
 <p>文字列として返す (wstring) </p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="classwebcface_1_1Variant.html#a3a51db4f2cb6221e9ddf0b250fb899c8" title="文字列として返す">asStringRef()</a> </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000040">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000015">Deprecated:</a></b></dt><dd>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。 </dd></dl>
 
 </div>
 </div>
@@ -1084,7 +1049,7 @@ template&lt;typename T , bool &gt; </div>
 </table>
 </div><div class="memdoc">
 <dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000041">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000016">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -2666,7 +2631,7 @@ template&lt;typename CharT , std::size_t N, typename std::enable_if_t&lt; std::i
 </table>
 </div><div class="memdoc">
 <p><a class="el" href="classwebcface_1_1Text.html#a35241ed05f545cc9272193e1cf03151e" title="「(thisの名前).(追加の名前)」を新しい名前とするField">child()</a>と同じ </p><dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000042">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
+<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000017">Deprecated:</a></b></dt><dd>ver2.8〜 </dd></dl>
 
 </div>
 </div>
@@ -3011,26 +2976,6 @@ template&lt;typename T , bool &gt; </div>
 
 </div>
 </div>
-<a id="a3799c65797b21f35329dc284df16a65d" name="a3799c65797b21f35329dc284df16a65d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3799c65797b21f35329dc284df16a65d">&#9670;&#160;</a></span>time()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::chrono::system_clock::time_point time </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> const</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>syncの時刻を返す </p>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000044">Deprecated:</a></b></dt><dd>1.7でMember::syncTime()に変更 </dd></dl>
-
-</div>
-</div>
 <a id="ab07870a85b3d9babb0aa51637cf662d3" name="ab07870a85b3d9babb0aa51637cf662d3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab07870a85b3d9babb0aa51637cf662d3">&#9670;&#160;</a></span>tryGet()</h2>
 
@@ -3337,7 +3282,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Text.html">Text</a></li>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

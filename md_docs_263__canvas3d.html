@@ -177,8 +177,8 @@ Point, Transform</h1>
 <div class="line">Transform r{{1, 2, 3}, <a class="code hl_function" href="namespacewebcface.html#a6ae55214b268ed22b9dbee7b9b99e91d">rotFromEuler</a>(std::numbers::pi / 2, 0, 0)};</div>
 <div class="line">std::cout &lt;&lt; r.pos(0) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; r.pos(1) &lt;&lt; <span class="stringliteral">&quot;, &quot;</span> &lt;&lt; r.pos(2); <span class="comment">// 1, 2, 3 (x, y, z 座標)</span></div>
 <div class="line">std::cout &lt;&lt; r.<a class="code hl_function" href="classwebcface_1_1Rotation.html#af1fceb7b1ad8ae634dc1f57609cbf104">rotEuler</a>()[0]; <span class="comment">// pi / 2 (z軸回り)</span></div>
-<div class="ttc" id="aclasswebcface_1_1Rotation_html_af1fceb7b1ad8ae634dc1f57609cbf104"><div class="ttname"><a href="classwebcface_1_1Rotation.html#af1fceb7b1ad8ae634dc1f57609cbf104">webcface::Rotation::rotEuler</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; rotEuler(AxisSequence axis=AxisSequence::ZYX) const</div><div class="ttdoc">3次元の回転をオイラー角として取得</div><div class="ttdef"><b>Definition</b> transform.h:384</div></div>
-<div class="ttc" id="anamespacewebcface_html_a6ae55214b268ed22b9dbee7b9b99e91d"><div class="ttname"><a href="namespacewebcface.html#a6ae55214b268ed22b9dbee7b9b99e91d">webcface::rotFromEuler</a></div><div class="ttdeci">Rotation rotFromEuler(const std::array&lt; double, 3 &gt; &amp;rot, AxisSequence axis=AxisSequence::ZYX)</div><div class="ttdoc">回転をオイラー角から初期化</div><div class="ttdef"><b>Definition</b> transform.h:523</div></div>
+<div class="ttc" id="aclasswebcface_1_1Rotation_html_af1fceb7b1ad8ae634dc1f57609cbf104"><div class="ttname"><a href="classwebcface_1_1Rotation.html#af1fceb7b1ad8ae634dc1f57609cbf104">webcface::Rotation::rotEuler</a></div><div class="ttdeci">std::array&lt; double, 3 &gt; rotEuler(AxisSequence axis=AxisSequence::ZYX) const</div><div class="ttdoc">3次元の回転をオイラー角として取得</div><div class="ttdef"><b>Definition</b> transform.h:380</div></div>
+<div class="ttc" id="anamespacewebcface_html_a6ae55214b268ed22b9dbee7b9b99e91d"><div class="ttname"><a href="namespacewebcface.html#a6ae55214b268ed22b9dbee7b9b99e91d">webcface::rotFromEuler</a></div><div class="ttdeci">Rotation rotFromEuler(const std::array&lt; double, 3 &gt; &amp;rot, AxisSequence axis=AxisSequence::ZYX)</div><div class="ttdoc">回転をオイラー角から初期化</div><div class="ttdef"><b>Definition</b> transform.h:519</div></div>
 </div><!-- fragment --><ul>
 <li>Transform のコンストラクタには、3次元の平行移動(x, y, zの値)と、 3次元の回転を指定します。<ul>
 <li><span class="since-c">2.5</span> 3次元の回転は <a class="el" href="namespacewebcface.html#a2b1e6106372a8b8ec3c3023572f06b35" title="X軸周りの回転">webcface::rotX()</a>, rotY(), rotZ(), rotFromEuler(), rotFromMatrix(), rotFromQuat(), rotFromAxisAngle() を使って指定します。</li>
@@ -212,7 +212,7 @@ Point, Transform</h1>
 <div class="line">print(p.pos) <span class="comment"># (1, 2, 3) (x, y, z 座標)</span></div>
 <div class="line">print(r.rot_euler()[0]) <span class="comment"># pi / 2 (z軸回り)</span></div>
 <div class="ttc" id="aclasswebcface_1_1Point_html"><div class="ttname"><a href="classwebcface_1_1Point.html">webcface::Point</a></div><div class="ttdoc">3次元 or 2次元の座標を表すクラス。</div><div class="ttdef"><b>Definition</b> transform.h:23</div></div>
-<div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の平行移動と回転</div><div class="ttdef"><b>Definition</b> transform.h:656</div></div>
+<div class="ttc" id="aclasswebcface_1_1Transform_html"><div class="ttname"><a href="classwebcface_1_1Transform.html">webcface::Transform</a></div><div class="ttdoc">3次元の平行移動と回転</div><div class="ttdef"><b>Definition</b> transform.h:652</div></div>
 </div><!-- fragment --><ul>
 <li>Transform のコンストラクタには、3次元の平行移動(x, y, zの値)と、 3次元の回転を指定します。<ul>
 <li><span class="since-py">3.0</span> 3次元の回転は webcface.rot_x(), rot_y(), rot_z(), rot_from_euler(), rot_from_matrix(), rot_from_quat(), rot_from_axis_angle() を使って指定します。</li>
@@ -265,7 +265,7 @@ Point, Transform</h1>
 <div class="ttc" id="anamespacewebcface_html_a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb"><div class="ttname"><a href="namespacewebcface.html#a1b753fd9c2659910ca1a042a05b56be6abb302c9b5204d593ba3657055842a5fb">webcface::GeometryType::plane</a></div><div class="ttdeci">@ plane</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aacda7a650c5856cf2f6738072447d7825">webcface::ViewColor::gray</a></div><div class="ttdeci">@ gray</div></div>
 <div class="ttc" id="anamespacewebcface_html_a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c"><div class="ttname"><a href="namespacewebcface.html#a5dcc1f15d6a60ca34207565aeb74124aad508fe45cecaf653904a0e774084bb5c">webcface::ViewColor::white</a></div><div class="ttdeci">@ white</div></div>
-<div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:835</div></div>
+<div class="ttc" id="anamespacewebcface_html_a9cc7119f63c09d929d8218008d2bb386"><div class="ttname"><a href="namespacewebcface.html#a9cc7119f63c09d929d8218008d2bb386">webcface::identity</a></div><div class="ttdeci">Transform identity()</div><div class="ttdoc">移動なし、回転なしのTransform</div><div class="ttdef"><b>Definition</b> transform.h:831</div></div>
 <div class="ttc" id="astructwebcface_1_1Field_html_a8d84ae4e598e983aeeb9cc55dc910664"><div class="ttname"><a href="structwebcface_1_1Field.html#a8d84ae4e598e983aeeb9cc55dc910664">webcface::Field::robotModel</a></div><div class="ttdeci">RobotModel_ robotModel(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:198</div></div>
 <div class="ttc" id="astructwebcface_1_1Field_html_aac66e35cadfb9a32b6827a0f7aa674fa"><div class="ttname"><a href="structwebcface_1_1Field.html#aac66e35cadfb9a32b6827a0f7aa674fa">webcface::Field::canvas3D</a></div><div class="ttdeci">Canvas3D_ canvas3D(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:218</div></div>
 </div><!-- fragment --><p> <img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/example_wheel.png" alt="example_wheel.png" class="inline"/></p>
@@ -355,7 +355,7 @@ Sphere</h3>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:35 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

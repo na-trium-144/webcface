@@ -176,10 +176,8 @@ Functions</h2></td></tr>
 <tr class="memdesc:a35e31693b733089f66ea7567bb73029a"><td class="mdescLeft">&#160;</td><td class="mdescRight">文字列型のwcfMultiValWを構築 (wstring)  <br /></td></tr>
 <tr class="separator:a35e31693b733089f66ea7567bb73029a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a66bdb804a3f7e0b7ef620180fbab9dfe">wcfFuncRun</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const char *member, const char *field, const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *args, int arg_size, <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> **result)</td></tr>
-<tr class="memdesc:a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を呼び出す  <br /></td></tr>
 <tr class="separator:a66bdb804a3f7e0b7ef620180fbab9dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f3e54495fa9d7ee3faf4eb303833b79"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a8f3e54495fa9d7ee3faf4eb303833b79">wcfFuncRunW</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const wchar_t *member, const wchar_t *field, const <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> *args, int arg_size, <a class="el" href="structwcfMultiValW.html">wcfMultiValW</a> **result)</td></tr>
-<tr class="memdesc:a8f3e54495fa9d7ee3faf4eb303833b79"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を呼び出す (wstring)  <br /></td></tr>
 <tr class="separator:a8f3e54495fa9d7ee3faf4eb303833b79"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59cdc2f8704281f326fa90f81cd05163"><td class="memItemLeft" align="right" valign="top"><a class="el" href="def__types_8h.html#a17252b935b26f94752dff94f4c5942e5">wcfStatus</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="c__wcf_2func_8cc.html#a59cdc2f8704281f326fa90f81cd05163">wcfFuncRunAsync</a> (<a class="el" href="def__types_8h.html#a11e35bfe0822747dfabcce7f5220016a">wcfClient</a> *wcli, const char *member, const char *field, const <a class="el" href="structwcfMultiVal.html">wcfMultiVal</a> *args, int arg_size, <a class="el" href="def__types_8h.html#ace05597cb0a2b2c4eb847ea1d7c4fe13">wcfPromise</a> **async_res)</td></tr>
 <tr class="memdesc:a59cdc2f8704281f326fa90f81cd05163"><td class="mdescLeft">&#160;</td><td class="mdescRight">関数を非同期で呼び出す  <br /></td></tr>
@@ -688,22 +686,6 @@ template&lt;typename CharT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>関数を呼び出す </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.5 </dd></dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">wcli</td><td>Clientポインタ </td></tr>
-    <tr><td class="paramname">member</td><td>memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す) </td></tr>
-    <tr><td class="paramname">field</td><td>funcの名前 </td></tr>
-    <tr><td class="paramname">args</td><td>引数の配列 </td></tr>
-    <tr><td class="paramname">arg_size</td><td>引数の個数 </td></tr>
-    <tr><td class="paramname">result</td><td>結果を格納する変数(wcfMultiVal*)へのポインタ (破棄するときには <a class="el" href="c__wcf_2client_8h.html#aa60652bec1f489814b4731df92e51cce" title="wcfの関数から取得したポインタのデータを破棄">wcfDestroy()</a> を使ってください) </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>wcliが無効ならWCF_BAD_WCLI, 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND, 関数で例外が発生した場合 WCF_EXCEPTION </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000001">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a59cdc2f8704281f326fa90f81cd05163" title="関数を非同期で呼び出す">wcfFuncRunAsync()</a>を推奨。 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a1a29429472d65e1d80e3d2c119d80bc3" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得">wcfFuncWaitResult()</a> で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。</dd></dl>
-
 </div>
 </div>
 <a id="a59cdc2f8704281f326fa90f81cd05163" name="a59cdc2f8704281f326fa90f81cd05163"></a>
@@ -883,11 +865,6 @@ template&lt;typename CharT &gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-
-<p>関数を呼び出す (wstring) </p>
-<dl class="section since"><dt>Since</dt><dd>ver2.0 </dd></dl>
-<dl class="deprecated"><dt><b><a class="el" href="deprecated.html#_deprecated000002">Deprecated:</a></b></dt><dd>ver2.0〜 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#ad91ac58855dbb8746fa10f5c2287e9e4" title="関数を非同期で呼び出す (wstring)">wcfFuncRunAsyncW()</a>を推奨。 <a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#aa7f1f1c6e06f4ab20dfbb5ffc2d6357e" title="非同期で呼び出した関数の実行完了まで待機し、結果を取得 (wstring)">wcfFuncWaitResultW()</a> で同等のことができるが、 使い方によってはデッドロックを起こす可能性がある。 </dd></dl>
-<dl class="section see"><dt>See also</dt><dd><a class="el" href="client_2include_2webcface_2c__wcf_2func_8h.html#a66bdb804a3f7e0b7ef620180fbab9dfe" title="関数を呼び出す">wcfFuncRun</a> </dd></dl>
 
 </div>
 </div>
@@ -1334,7 +1311,7 @@ template&lt;typename CharT &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_db3a54907829b36871118d03417739cd.html">client</a></li><li class="navelem"><a class="el" href="dir_b565d458ba0ce2faccd0ea2cd60c04eb.html">src</a></li><li class="navelem"><a class="el" href="dir_81dc01503b4758498154e925b296735c.html">c_wcf</a></li><li class="navelem"><a class="el" href="c__wcf_2func_8cc.html">func.cc</a></li>
-    <li class="footer">Generated on Sun Sep 28 2025 10:51:34 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sun Sep 28 2025 13:05:53 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
