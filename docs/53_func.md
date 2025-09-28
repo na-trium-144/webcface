@@ -23,7 +23,7 @@
 
     関数は関数オブジェクト(ラムダ式など)でもokです。
     引数、戻り値は整数、実数、bool、文字列型であれば自由に指定できます。  
-    <span class="since-c">3.0</span> 1次元のリスト (std::vector, std::array) も引数に使用可能です。
+    <span class="since-c">3.0</span> 1次元のリスト (std::vector, std::array) も引数と戻り値に使用可能です。
     ```cpp
     void hoge() {
         std::cout << "hello, world!" << std::endl;
@@ -695,9 +695,9 @@ Funcが登録された順番(index)は送信側のクライアントライブラ
         * waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。
         For, Until の場合はタイムアウトを指定します。
     * response(): 関数の戻り値です。
-    webcface::ValAdaptor 型で返り、
+    webcface::ValAdaptorVector 型で返り、
     <del>`asStringRef()`</del>, `asString()`, <del>`asWStringRef()`</del>, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()`,
-    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
+    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
     またはstatic_castにより型変換できます。
     * rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。
     またその場合 isError() がtrueになります。
@@ -980,11 +980,11 @@ res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
     Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。
     (`Func::operator()`)
 
-    戻り値は webcface::ValAdaptor 型で返ります。
+    戻り値は webcface::ValAdaptorVector 型で返ります。
     整数、実数、bool、stringにキャストできます。  
     <span class="since-c">1.10</span> また、明示的にキャストするなら <del>`asStringRef()`(const参照)</del>, `asString()`, `asBool()`, <del>`as<整数or実数型>()`</del> も使えます。  
     <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
-    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`
+    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
     も使えます。
 
     \warning
