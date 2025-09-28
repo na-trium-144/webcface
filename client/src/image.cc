@@ -63,9 +63,6 @@ std::optional<ImageFrame> Image::tryGet() const {
     return dataLock()->image_store.getRecv(*this);
 }
 
-std::chrono::system_clock::time_point Image::time() const {
-    return member().syncTime();
-}
 const Image &Image::clear() const {
     dataLock()->image_store.clearRecv(*this);
     return *this;

@@ -89,9 +89,6 @@ std::optional<std::vector<RobotLink>> RobotModel::tryGet() const {
         return std::nullopt;
     }
 }
-std::chrono::system_clock::time_point RobotModel::time() const {
-    return member().syncTime();
-}
 const RobotModel &RobotModel::free() const {
     auto req = dataLock()->robot_model_store.unsetRecv(*this);
     if (req) {

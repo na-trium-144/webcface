@@ -85,45 +85,6 @@ class WEBCFACE_DLL Member : protected Field {
     using Field::textEntries;
     using Field::valueEntries;
     using Field::viewEntries;
-    /*!
-     * \brief このmemberが公開しているvalueのリストを返す。
-     * \deprecated 1.6で valueEntries() に変更
-     *
-     */
-    [[deprecated]]
-    std::vector<Value> values() const;
-    /*!
-     * \brief このmemberが公開しているtextのリストを返す。
-     * \deprecated 1.6で textEntries() に変更
-     */
-    [[deprecated]]
-    std::vector<Text> texts() const;
-    /*!
-     * \brief このmemberが公開しているrobotModelのリストを返す。
-     * \deprecated 1.6で robotModelEntries() に変更
-     *
-     */
-    [[deprecated]]
-    std::vector<RobotModel> robotModels() const;
-    /*!
-     * \brief このmemberが公開しているfuncのリストを返す。
-     * \deprecated 1.6で funcEntries() に変更
-     *
-     */
-    [[deprecated]]
-    std::vector<Func> funcs() const;
-    /*!
-     * \brief このmemberが公開しているviewのリストを返す。
-     * \deprecated 1.6で viewEntries() に変更
-     */
-    [[deprecated]]
-    std::vector<View> views() const;
-    /*!
-     * \brief このmemberが公開しているimageのリストを返す。
-     * \deprecated 1.6で imageEntries() に変更
-     */
-    [[deprecated]]
-    std::vector<Image> images() const;
 
     /*!
      * \brief Memberのデータが存在するかどうかを返す

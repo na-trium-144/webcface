@@ -104,15 +104,6 @@ const Member &Member::onSync(std::function<void(Member)> callback) const {
     return *this;
 }
 
-std::vector<Value> Member::values() const { return valueEntries(); }
-std::vector<Text> Member::texts() const { return textEntries(); }
-std::vector<Func> Member::funcs() const { return funcEntries(); }
-std::vector<View> Member::views() const { return viewEntries(); }
-std::vector<Image> Member::images() const { return imageEntries(); }
-std::vector<RobotModel> Member::robotModels() const {
-    return robotModelEntries();
-}
-
 
 std::chrono::system_clock::time_point Member::syncTime() const {
     return dataLock()

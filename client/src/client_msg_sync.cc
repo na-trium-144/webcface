@@ -298,9 +298,6 @@ std::string internal::ClientData::packSyncData(std::stringstream &buffer,
     return message::packDone(buffer, len);
 }
 
-std::vector<Member> Client::members() {
-    return static_cast<const Client *>(this)->members();
-}
 std::vector<Member> Client::members() const {
     auto lock_entry = data->member_entry.shared_lock();
     std::vector<Member> ret;

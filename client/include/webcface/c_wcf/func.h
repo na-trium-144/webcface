@@ -36,40 +36,6 @@ WEBCFACE_DLL wcfMultiVal WEBCFACE_CALL wcfValS(const char *value);
 WEBCFACE_DLL wcfMultiValW WEBCFACE_CALL wcfValWS(const wchar_t *value);
 
 /*!
- * \brief 関数を呼び出す
- * \since ver1.5
- * \param wcli Clientポインタ
- * \param member memberの名前 (ver1.7〜:NULLまたは空文字列で自分自身を指す)
- * \param field funcの名前
- * \param args 引数の配列
- * \param arg_size 引数の個数
- * \param result 結果を格納する変数(wcfMultiVal*)へのポインタ
- * (破棄するときには wcfDestroy() を使ってください)
- * \return wcliが無効ならWCF_BAD_WCLI,
- * 対象のmemberやfieldが存在しない場合 WCF_NOT_FOUND,
- * 関数で例外が発生した場合 WCF_EXCEPTION
- * \deprecated ver2.0〜 wcfFuncRunAsync()を推奨。
- * wcfFuncWaitResult() で同等のことができるが、
- * 使い方によってはデッドロックを起こす可能性がある。
- *
- */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncRun(wcfClient *wcli, const char *member, const char *field,
-           const wcfMultiVal *args, int arg_size, wcfMultiVal **result);
-/*!
- * \brief 関数を呼び出す (wstring)
- * \since ver2.0
- * \deprecated ver2.0〜 wcfFuncRunAsyncW()を推奨。
- * wcfFuncWaitResultW() で同等のことができるが、
- * 使い方によってはデッドロックを起こす可能性がある。
- * \sa wcfFuncRun
- *
- */
-WEBCFACE_DLL wcfStatus WEBCFACE_CALL
-wcfFuncRunW(wcfClient *wcli, const wchar_t *member, const wchar_t *field,
-            const wcfMultiValW *args, int arg_size, wcfMultiValW **result);
-
-/*!
  * \brief 関数を非同期で呼び出す
  * \since ver1.5
  *
