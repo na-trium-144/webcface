@@ -266,19 +266,4 @@ std::basic_string<CharT> strJoin(std::basic_string_view<CharT> first_str,
     return str;
 }
 
-namespace [[deprecated("symbols in webcface::encoding namespace are "
-                       "now directly in webcface namespace")]] encoding {
-inline bool usingUTF8() { return webcface::usingUTF8(); }
-inline void usingUTF8(bool flag) { webcface::usingUTF8(flag); }
-inline std::wstring toWide(std::string_view name_ref) {
-    return webcface::toWide(name_ref);
-}
-inline std::string toNarrow(std::wstring_view name) {
-    return webcface::toNarrow(name);
-}
-
-using SharedString = webcface::SharedString;
-
-} // namespace encoding
-
 WEBCFACE_NS_END

@@ -145,18 +145,6 @@ class WEBCFACE_DLL Log : protected Field {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]]
-    void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
-    }
 
     /*!
      * \brief ログをリクエストする

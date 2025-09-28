@@ -453,85 +453,10 @@ class WEBCFACE_DLL Func : protected Field {
     }
 
     /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     * \deprecated
-     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
-     * hiddenの指定は無効 (この関数は効果がない)
-     *
-     */
-    [[deprecated("Func::hidden() does nothing since ver1.10")]]
-    const Func &hidden(bool) const {
-        return *this;
-    }
-
-    /*!
      * \brief 関数の設定を削除
      *
      */
     const Func &free() const;
-
-    /*!
-     * \brief 関数を実行する (同期)
-     *
-     * * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
-     * をthrowする
-     * * ver2.10〜: 引数をValAdaptorVector型に変更
-     *   * vectorやarrayを渡すとまとめて1つの引数として扱われるが、
-     * std::vector<ValAdaptor>
-     * 型1つを渡した場合には以前のバージョンとの互換性のため配列でない引数のリストとして扱われる
-     *
-     * \deprecated ver2.0〜 runAsync()を推奨。
-     * Promise::waitFinish() と response(), rejection() で同等のことができるが、
-     * 使い方によってはデッドロックを起こす可能性がある。
-     * 詳細は waitFinish() のドキュメントを参照
-     *
-     */
-    template <typename... Args>
-    [[deprecated("use runAsync")]]
-    ValAdaptor run(Args... args) const {
-        return run(std::vector<ValAdaptorVector>{ValAdaptorVector(args)...});
-    }
-    [[deprecated("use runAsync")]]
-    ValAdaptor run(std::vector<ValAdaptorVector> &&args_vec) const {
-        auto p = runAsync(std::move(args_vec));
-        p.waitFinish();
-        if (p.found()) {
-            if (p.isError()) {
-                throw Rejection(*this, std::string(p.rejection()));
-            } else {
-                return p.response();
-            }
-        } else {
-            throw FuncNotFound(*this);
-        }
-    }
-    [[deprecated("use runAsync")]]
-    ValAdaptor run(std::vector<ValAdaptor> &&args_vec) const {
-#ifdef _MSC_VER
-#pragma warning(push)
-#pragma warning(disable : 4996)
-#else
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#endif
-        return run(
-            std::vector<ValAdaptorVector>(args_vec.begin(), args_vec.end()));
-#ifdef _MSC_VER
-#pragma warning(pop)
-#else
-#pragma GCC diagnostic pop
-#endif
-    }
-    /*!
-     * \brief run()と同じ
-     * \deprecated ver2.0〜
-     */
-    template <typename... Args>
-    [[deprecated("use runAsync")]]
-    ValAdaptor operator()(Args... args) const {
-        return run(args...);
-    }
 
     /*!
      * \brief 関数を実行する (非同期)
@@ -699,18 +624,6 @@ class WEBCFACE_DLL FuncListener : protected Func {
         return *this;
     }
 
-    /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     * \deprecated
-     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
-     * hiddenの指定は無効 (この関数は効果がない)
-     *
-     */
-    [[deprecated("FuncListener::hidden() does nothing since ver1.10")]]
-    FuncListener &hidden(bool) {
-        return *this;
-    }
     /*!
      * \brief 関数が呼び出されたかどうかを確認
      *

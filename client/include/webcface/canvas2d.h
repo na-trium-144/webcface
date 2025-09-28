@@ -101,17 +101,6 @@ class WEBCFACE_DLL Canvas2D : protected Field {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]] void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
-    }
 
     /*!
      * \brief Canvasの内容をリクエストする
@@ -140,12 +129,6 @@ class WEBCFACE_DLL Canvas2D : protected Field {
      *
      */
     bool exists() const;
-
-    /*!
-     * \brief syncの時刻を返す
-     * \deprecated 1.7でMember::syncTime()に変更
-     */
-    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

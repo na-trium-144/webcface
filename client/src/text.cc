@@ -127,9 +127,6 @@ WStringView Text::getW() const {
 //         *this,
 //         [this](const std::string &subfield) { child(subfield).request(); });
 // }
-std::chrono::system_clock::time_point Text::time() const {
-    return member().syncTime();
-}
 const Text &Text::free() const {
     auto req = dataLock()->text_store.unsetRecv(*this);
     if (req) {

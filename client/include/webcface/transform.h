@@ -214,6 +214,7 @@ enum class AxisSequence {
  *   * または、ADLでget()関数を使う:
  * `auto axis = get<0>(rotAxisAngle());`,
  * `auto angle = get<1>(rotAxisAngle());`
+ * * ver2.9までstd::pairへキャストできたが、ver3.0で削除
  *
  */
 struct AxisAngle {
@@ -221,11 +222,6 @@ struct AxisAngle {
     double angle;
     AxisAngle(const std::array<double, 3> &axis, double angle) noexcept
         : axis(axis), angle(angle) {}
-
-    [[deprecated]]
-    operator std::pair<std::array<double, 3>, double>() const noexcept {
-        return {axis, angle};
-    }
 };
 template <std::size_t I>
 const auto &get(const AxisAngle &aa) {

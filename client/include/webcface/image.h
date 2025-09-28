@@ -93,17 +93,6 @@ class WEBCFACE_DLL Image : protected Field {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]] void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
-    }
 
     /*!
      * \brief 画像をセットする
@@ -125,27 +114,6 @@ class WEBCFACE_DLL Image : protected Field {
   public:
     /*!
      * \brief 画像を生画像のフォーマットでリクエストする
-     * \param rows 画像の高さ
-     * \param cols 画像の幅
-     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
-     * \param color_mode 画像の色フォーマット
-     * (nulloptの場合元画像のフォーマット)
-     * \param frame_rate 画像を受信する頻度
-     * (指定しない場合元画像が更新されるたびに受信する)
-     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
-     * を使ってサイズ指定
-     *
-     */
-    [[deprecated("Ambiguous image size")]]
-    const Image &
-    request(std::optional<int> rows, std::optional<int> cols = std::nullopt,
-            std::optional<ImageColorMode> color_mode = std::nullopt,
-            std::optional<double> frame_rate = std::nullopt) const {
-        return request(rows, cols, ImageCompressMode::raw, 0, color_mode,
-                       frame_rate);
-    }
-    /*!
-     * \brief 画像を生画像のフォーマットでリクエストする
      * \since ver2.0
      * \param sizeOption 画像のサイズ (sizeWH() または sizeHW(), std::nullopt可)
      * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
@@ -162,29 +130,6 @@ class WEBCFACE_DLL Image : protected Field {
         return request(size.value_or(SizeOption{}).rows(),
                        size.value_or(SizeOption{}).cols(),
                        ImageCompressMode::raw, 0, color_mode, frame_rate);
-    }
-    /*!
-     * \brief 画像を圧縮されたフォーマットでリクエストする
-     * \param rows 画像の高さ
-     * \param cols 画像の幅
-     * rows,colsのどちらかのみがnulloptの場合縦横比を保ってリサイズ
-     * \param cmp_mode 圧縮モード
-     * \param quality 圧縮のパラメータ
-     * * jpeg → 0〜100 (大きいほうが高品質)
-     * * png → 0〜9 (大きいほうが圧縮後のサイズが小さい)
-     * * webp → 1〜100 (大きいほうが高品質)
-     * \param frame_rate 画像を受信する頻度
-     * (指定しない場合元画像が更新されるたびに受信する)
-     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
-     * を使ってサイズ指定
-     *
-     */
-    [[deprecated("Ambiguous image size")]]
-    const Image &
-    request(std::optional<int> rows, std::optional<int> cols,
-            ImageCompressMode cmp_mode, int quality,
-            std::optional<double> frame_rate = std::nullopt) const {
-        return request(rows, cols, cmp_mode, quality, std::nullopt, frame_rate);
     }
     /*!
      * \brief 画像を圧縮されたフォーマットでリクエストする
@@ -234,13 +179,6 @@ class WEBCFACE_DLL Image : protected Field {
      *
      */
     bool exists() const;
-
-    /*!
-     * \brief syncの時刻を返す
-     * \deprecated 1.7でMember::syncTime()に変更
-     *
-     */
-    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     //! 値やリクエスト状態をクリア
     const Image &free() const;

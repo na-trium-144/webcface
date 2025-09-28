@@ -20,6 +20,17 @@
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed
+* deprecatedなAPIの削除 (#534, #537)
+	* webcface::encoding
+	* 各種Field::appendListener(), time()
+	* Func::hidden(), run(), operator()()
+	* FuncListener::hidden()
+	* Image,ImageFrameでrows,colsを別々で受け取るコンストラクター
+	* Member::values(), texts(), robotModels(), funcs(), views(), images()
+	* constでない Client::members()
+	* AxisAngleからstd::pairへのキャスト演算子
+	* wcfFuncRun(), wcfFuncRunW()
+	* FuncPromise::started, result
 * windows-2019サポート終了のため、Windows用にリリースするバイナリをビルドする環境をwindows-2022に変更 (#524)
 * 依存ライブラリの更新 (#509)
 	* crowの更新でコードが変わっています (ver2.9以前が使用していたコミットのcrowではビルドできない)
@@ -32,7 +43,6 @@
 * `webcface::level::LogLevelEnum` を C-style enum から enum class に変更し、 `webcface::LogLevel`, `webcface::level` に移動 (#532)
 	* `LogLine::level()` の戻り値型変更
 * trait系のヘッダーをcommonへ移動 (#527)
-* FuncPromise::started, result 削除 (#534)
 
 ## [2.9.0] - 2025-02-09
 ### Added
