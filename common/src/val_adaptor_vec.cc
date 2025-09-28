@@ -28,8 +28,8 @@ const ValAdaptor &ValAdaptorVector::get() const {
     } else if (vec.size() == 1) {
         return at(0);
     } else {
-        throw std::invalid_argument("expected single value, but got list of " +
-                                    std::to_string(vec.size()) + " elements");
+        throw ValTypeMismatch("array of size " + std::to_string(vec.size()) +
+                              " cannot be converted to single value");
     }
 }
 ValType ValAdaptorVector::valType() const {
@@ -39,6 +39,15 @@ ValType ValAdaptorVector::valType() const {
         return ValType::none_;
     } else {
         return ValType::vector_;
+    }
+}
+bool ValAdaptorVector::empty() const {
+    if (vec.size() == 0) {
+        return true;
+    } else if (vec.size() == 1) {
+        return vec[0].empty();
+    } else {
+        return false;
     }
 }
 

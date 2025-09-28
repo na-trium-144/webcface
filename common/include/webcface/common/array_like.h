@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <string>
 #include "trait.h"
+#include "webcface/common/exception.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -98,7 +99,7 @@ std::array<double, Num> arrayLikeToArray(const T &array) {
     if (n == Num && it == std::end(array)) {
         return ret;
     } else {
-        throw std::invalid_argument(
+        throw InvalidArgument(
             "array size mismatch, expected: " + std::to_string(Num) +
             ", got: " + std::to_string(n));
     }

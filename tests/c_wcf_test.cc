@@ -16,6 +16,7 @@
 #include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>
+#include <future>
 #include "dummy_server.h"
 
 using namespace webcface;

@@ -171,6 +171,13 @@ TEST_F(FuncTest, funcSet) {
 
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
 
+    // 戻り値vector
+    f = func(self_name, "fv");
+    f.set([]() { return std::array<int, 3>{1, 2, 3}; });
+    EXPECT_EQ(f.index(), 3);
+    EXPECT_EQ(func(self_name, "fv").index(), 3);
+    EXPECT_EQ(f.returnType(), ValType::vector_int_);
+
     // 未設定の関数呼び出しでエラー
     EXPECT_THROW(func(self_name, "c").setIndex(1), std::invalid_argument);
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
@@ -303,6 +310,14 @@ TEST_F(FuncTest, funcRun) {
                               std::vector<double>{2, 3, 5, 7, 11})
                     .found());
 
+    // 戻り値vector
+    func(self_name, "av").set([&]() { return std::array<int, 3>{1, 2, 3}; });
+    ret_a = func(self_name, "av").runAsync();
+    ret_a.waitFinish();
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.isError());
+    EXPECT_EQ(ret_a.response().asVector<int>(), (std::vector<int>{1, 2, 3}));
+
     // 未設定関数の呼び出し
     EXPECT_FALSE(func(self_name, "b").runAsync().found());
     EXPECT_FALSE(func(self_name, "b").runAsync().rejection().empty());
@@ -390,6 +405,16 @@ TEST_F(FuncTest, funcAsyncRun) {
                     .runAsync(123, 123.45, "a", true,
                               std::vector<double>{2, 3, 5, 7, 11})
                     .found());
+
+    // 戻り値vector
+    func(self_name, "av").setAsync([&]() {
+        return std::array<int, 3>{1, 2, 3};
+    });
+    ret_a = func(self_name, "av").runAsync();
+    ret_a.waitFinish();
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.isError());
+    EXPECT_EQ(ret_a.response().asVector<int>(), (std::vector<int>{1, 2, 3}));
 }
 TEST_F(FuncTest, funcHandleRun) {
     // 引数と戻り値

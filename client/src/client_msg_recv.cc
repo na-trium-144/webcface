@@ -317,7 +317,7 @@ void internal::ClientData::onRecv(
                 if (r.is_error) {
                     this->func_result_store.getResult(r.caller_id)
                         ->setter()
-                        .reject(r.result);
+                        .reject(r.result.get());
                 } else {
                     this->func_result_store.getResult(r.caller_id)
                         ->setter()

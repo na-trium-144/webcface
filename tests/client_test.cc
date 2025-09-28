@@ -9,6 +9,7 @@
 #include "webcface/common/internal/message/text.h"
 #include "webcface/common/internal/message/value.h"
 #include "webcface/common/internal/message/view.h"
+#include <future>
 
 TEST_F(ClientTest, unixSocketConnection) {
     auto dummy_tcp_s = std::make_shared<DummyServer>(false);
