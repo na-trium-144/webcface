@@ -10,7 +10,7 @@ WEBCFACE_NS_BEGIN
 
 /*!
  * \brief その他のパラメーターエラー
- * \since ver2.10
+ * \since ver3.0
  * 
  */
 struct WEBCFACE_DLL InvalidArgument : public std::invalid_argument {
@@ -19,7 +19,7 @@ struct WEBCFACE_DLL InvalidArgument : public std::invalid_argument {
 };
 /*!
  * \brief その他のパラメーターエラー
- * \since ver2.10
+ * \since ver3.0
  * 
  */
 struct WEBCFACE_DLL OutOfRange : public std::out_of_range {
@@ -29,7 +29,7 @@ struct WEBCFACE_DLL OutOfRange : public std::out_of_range {
 
 /*!
  * \brief ValAdaptorの変換エラー
- * \since ver2.10
+ * \since ver3.0
  * 
  */
 struct WEBCFACE_DLL ValTypeMismatch : public InvalidArgument {

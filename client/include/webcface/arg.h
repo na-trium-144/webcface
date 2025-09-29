@@ -69,14 +69,14 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief 引数名を設定する。
      *
-     * ver2.0〜wstring対応、ver2.10〜 StringInitializer 型に変更
+     * ver2.0〜wstring対応、ver3.0〜 StringInitializer 型に変更
      */
     Arg(StringInitializer name) : Arg(static_cast<SharedString &>(name)) {}
 
     /*!
      * \brief 引数の名前を取得する。
      *
-     * ver2.10〜 StringView に変更
+     * ver3.0〜 StringView に変更
      *
      */
     StringView name() const;
@@ -84,7 +84,7 @@ class WEBCFACE_DLL Arg {
      * \brief 引数の名前を取得する。(wstring)
      * \since ver2.0
      *
-     * ver2.10〜 WStringView に変更
+     * ver3.0〜 WStringView に変更
      *
      */
     WStringView nameW() const;
@@ -101,7 +101,7 @@ class WEBCFACE_DLL Arg {
     /*!
      * \brief デフォルト値を取得する。
      *
-     * ver2.10〜 ValAdaptorVector に変更
+     * ver3.0〜 ValAdaptorVector に変更
      *
      */
     std::optional<ValAdaptorVector> init() const;
@@ -114,7 +114,7 @@ class WEBCFACE_DLL Arg {
         return this->init(ValAdaptorVector(init));
     }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     Arg &init(StringInitializer init) {
         return this->init(ValAdaptorVector(std::move(init)));

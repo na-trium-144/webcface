@@ -56,7 +56,7 @@ class WEBCFACE_DLL RobotJoint {
     /*!
      * \brief jointの名前を取得
      *
-     * ver2.10〜 std::stringの参照から StringView に変更
+     * ver3.0〜 std::stringの参照から StringView に変更
      * 
      */
     StringView name() const;
@@ -64,7 +64,7 @@ class WEBCFACE_DLL RobotJoint {
      * \brief jointの名前を取得 (wstring)
      * \since ver2.0
      * 
-     * ver2.10〜 std::wstringの参照から WStringView に変更
+     * ver3.0〜 std::wstringの参照から WStringView に変更
      * 
      */
     WStringView nameW() const;
@@ -117,7 +117,7 @@ inline RobotJoint fixedAbsolute(const Point &origin) {
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  *
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 inline RobotJoint fixedJoint(const StringInitializer &parent_name,
@@ -130,7 +130,7 @@ inline RobotJoint fixedJoint(const StringInitializer &parent_name,
  * \param parent_name 親リンクの名前
  * \param origin 親リンクの座標系で子リンクの原点
  * 
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 inline RobotJoint fixedJoint(const StringInitializer &parent_name,
@@ -146,7 +146,7 @@ inline RobotJoint fixedJoint(const StringInitializer &parent_name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角
  *
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 inline RobotJoint rotationalJoint(const StringInitializer &name,
@@ -165,7 +165,7 @@ inline RobotJoint rotationalJoint(const StringInitializer &name,
  * \param origin 親リンクの座標系で子リンクの原点
  * \param angle 初期状態の回転角(移動距離)
  *
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 inline RobotJoint prismaticJoint(const StringInitializer &name,
@@ -212,7 +212,7 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotLink(const StringInitializer &name, const RobotJoint &joint,
@@ -225,7 +225,7 @@ class WEBCFACE_DLL RobotLink {
      * \param geometry リンクの形状 (表示用)
      * \param color 色 (表示用)
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotLink(const StringInitializer &name, const Geometry &geometry,
@@ -235,7 +235,7 @@ class WEBCFACE_DLL RobotLink {
     /*!
      * \brief 名前を取得
      *
-     * ver2.10〜 std::stringの参照から StringView に変更
+     * ver3.0〜 std::stringの参照から StringView に変更
      * 
      */
     StringView name() const;
@@ -243,7 +243,7 @@ class WEBCFACE_DLL RobotLink {
      * \brief 名前を取得 (wstring)
      * \since ver2.0
      * 
-     * ver2.10〜 std::stringの参照から StringView に変更
+     * ver3.0〜 std::stringの参照から StringView に変更
      * 
      */
     WStringView nameW() const;

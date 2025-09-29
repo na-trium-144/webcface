@@ -44,7 +44,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      * 
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotModel child(StringInitializer field) const {
@@ -62,7 +62,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * child()と同じ
      * \since ver1.11
      * 
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotModel operator[](StringInitializer field) const { return child(std::move(field)); }

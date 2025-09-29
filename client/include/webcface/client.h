@@ -33,7 +33,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 名前を指定しサーバーに接続する
      *
      * * サーバーのホストとポートを省略した場合 127.0.0.1:7530 になる
-     * * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      * \arg name 名前
      * \arg host サーバーのアドレス
@@ -231,7 +231,7 @@ class WEBCFACE_DLL Client : public Member {
      * \brief 他のmemberにアクセスする
      *
      * * (ver1.7から)nameが空の場合 *this を返す
-     * * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      * \sa members(), onMemberEntry()
      */
@@ -276,7 +276,7 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 StringInitializer 型に変更
+     * * ver3.0〜 StringInitializer 型に変更
      *
      */
     std::streambuf *loggerStreamBuf(const StringInitializer &name) const;
@@ -298,7 +298,7 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 StringInitializer 型に変更
+     * * ver3.0〜 StringInitializer 型に変更
      *
      */
     std::ostream &loggerOStream(const StringInitializer &name) const;
@@ -313,7 +313,7 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 StringInitializer 型に変更
+     * * ver3.0〜 StringInitializer 型に変更
      *
      */
     std::wstreambuf *loggerWStreamBuf(const StringInitializer &name) const;
@@ -328,7 +328,7 @@ class WEBCFACE_DLL Client : public Member {
      * \since ver2.4
      *
      * * nameを省略した場合 "default" になる。
-     * * ver2.10〜 StringInitializer 型に変更
+     * * ver3.0〜 StringInitializer 型に変更
      *
      */
     std::wostream &loggerWOStream(const StringInitializer &name) const;

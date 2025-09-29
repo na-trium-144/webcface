@@ -47,7 +47,7 @@ webcface-send
     * <span class="since-c">1.7</span>
     配列データは`std::vector<double>`だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。
     要素の型はdoubleに変換可能ならなんでもokです。
-    * <span class="since-c">2.10</span>
+    * <span class="since-c">3.0</span>
     要素数0の配列を渡した場合、要素数1で値が0になります。
 
     <span class="since-c">1.11</span>
@@ -79,7 +79,7 @@ webcface-send
 
     \note
     * webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。
-    * <span class="since-c">2.10</span>
+    * <span class="since-c">3.0</span>
     要素数0の配列を渡した場合、要素数1で値が0になります。
 
 - <b class="tab-title">JavaScript</b>
@@ -184,7 +184,7 @@ wcli.value("a").set(a_instance); // Dictにキャストされる
         <span class="since-c">1.2</span>自動的に別スレッドで送信されます。
         * そのデータを受信した後([4-1. Client](./41_client.md)を参照)、再度tryGet()することで値が得られます。
     * Value::get(), Value::getVec() はstd::nulloptの代わりに0を返します。
-    * <span class="since-c">2.10</span> tryGetVec(), getVec() は webcface::NumVector 型で配列データを返します。 (以前は std::vector\<double\> を返していた)
+    * <span class="since-c">3.0</span> tryGetVec(), getVec() は webcface::NumVector 型で配列データを返します。 (以前は std::vector\<double\> を返していた)
         * NumVectorはshared_ptrで配列データの参照を保持しており、コピー時にコストがかかりません。
         * std::vector\<double\>にキャストすることも可能です。
     * また、Valueを直接 double や NumVector, std::vector\<double\> などの型にキャストすることでも同様に値が得られます。

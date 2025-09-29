@@ -74,7 +74,7 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Value child(StringInitializer field) const {
@@ -92,7 +92,7 @@ class WEBCFACE_DLL Value : protected Field {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Value operator[](StringInitializer field) const {
@@ -109,7 +109,7 @@ class WEBCFACE_DLL Value : protected Field {
     Value operator[](const wchar_t *field) const { return child(field); }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver2.10
+     * \since ver3.0
      */
     template <typename CharT, std::size_t N,
               typename std::enable_if_t<std::is_same_v<CharT, char> ||
@@ -120,7 +120,7 @@ class WEBCFACE_DLL Value : protected Field {
     }
     /*!
      * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
-     * \since ver2.10
+     * \since ver3.0
      */
     template <std::size_t N>
     Value operator[](const wchar_t (&static_str)[N]) {
@@ -263,7 +263,7 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 値をvectorで返す
      *
-     * ver2.10〜 `std::vector<double>` から webcface::NumVector 型に変更
+     * ver3.0〜 `std::vector<double>` から webcface::NumVector 型に変更
      * (NumVectorはvectorのconst参照にキャスト可能)
      *
      */
@@ -276,7 +276,7 @@ class WEBCFACE_DLL Value : protected Field {
     /*!
      * \brief 値をvectorで返す
      *
-     * ver2.10〜 `std::vector<double>` から webcface::NumVector 型に変更
+     * ver3.0〜 `std::vector<double>` から webcface::NumVector 型に変更
      * (NumVectorはvectorのconst参照にキャスト可能)
      *
      */
@@ -286,7 +286,7 @@ class WEBCFACE_DLL Value : protected Field {
     operator double() const { return get(); }
     operator std::vector<double>() const { return getVec(); }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     operator NumVector() const { return getVec(); }
 

@@ -123,7 +123,7 @@ class WEBCFACE_DLL Func : protected Field {
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Func child(StringInitializer field) const {
@@ -141,7 +141,7 @@ class WEBCFACE_DLL Func : protected Field {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Func operator[](StringInitializer field) const {
@@ -469,7 +469,7 @@ class WEBCFACE_DLL Func : protected Field {
      * * ver2.0～: runAsyncを呼んだ時点でclientがサーバーに接続していない場合、
      * 関数呼び出しメッセージは送信されず呼び出しは失敗する
      * (Promise::found() が false になる)
-     * * ver2.10〜: 引数をValAdaptorVector型に変更
+     * * ver3.0〜: 引数をValAdaptorVector型に変更
      *   * vectorやarrayを渡すとまとめて1つの引数として扱われるが、
      * std::vector<ValAdaptor>
      * 型1つを渡した場合には以前のバージョンとの互換性のため配列でない引数のリストとして扱われる

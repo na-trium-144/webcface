@@ -46,7 +46,7 @@ struct TemporalComponent {
      * \brief idを設定
      * \since ver2.5
      * 
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      */
     TemporalComponent &id(const StringInitializer &id) & {
         if constexpr (V) {
@@ -205,7 +205,7 @@ struct TemporalComponent {
      * \brief 表示する文字列 (View, Canvas2D)
      * \since ver2.0
      * 
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     TemporalComponent &text(const StringInitializer &str) & {
@@ -222,7 +222,7 @@ struct TemporalComponent {
     /*!
      * \since ver2.5
      * 
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     TemporalComponent &&text(const StringInitializer &str) && {
@@ -601,7 +601,7 @@ namespace Geometries = geometries; // 〜ver1.11
 /*!
  * \brief textコンポーネント
  *
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 inline TemporalComponent<true, true, false> text(const StringInitializer &text) {
@@ -620,7 +620,7 @@ inline TemporalViewComponent newLine() {
 /*!
  * \brief buttonコンポーネント
  *
- * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+ * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
  * 
  */
 template <typename T>

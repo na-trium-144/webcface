@@ -33,7 +33,7 @@ class WEBCFACE_DLL Member : protected Field {
     /*!
      * \brief Member名
      *
-     * ver2.10〜 std::stringの参照から StringView に変更
+     * ver3.0〜 std::stringの参照から StringView に変更
      *
      */
     StringView name() const { return member_.decodeShare(); }
@@ -41,7 +41,7 @@ class WEBCFACE_DLL Member : protected Field {
      * \brief Member名 (wstring)
      * \since ver2.0
      *
-     * ver2.10〜 std::wstringの参照から WStringView に変更
+     * ver3.0〜 std::wstringの参照から WStringView に変更
      *
      */
     WStringView nameW() const { return member_.decodeShareW(); }

@@ -443,7 +443,7 @@ viewに入力欄を表示します。
     InputRefの値は
     <del>`asStringRef()`</del>, `asString()`, `asBool()`, <del>`as<double>()`</del> で型を指定して取得できます。  
     <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()` も使えます。  
-    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()` も使えます。  
+    <span class="since-c">3.0</span> `asStringView()`, `asWStringView()` も使えます。  
     (std::string, double, bool などの型にキャストすることでも値を得られます。)  
     (任意の型に対応したい場合は `get()` で webcface::ValAdaptor 型として取得できます。)
 
