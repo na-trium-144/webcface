@@ -56,7 +56,7 @@ class WEBCFACE_DLL Canvas3DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) canvas3d作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 StringView型で置き換え
+     * * ver3.0〜 StringView型で置き換え
      *
      */
     StringView id() const;
@@ -67,7 +67,7 @@ class WEBCFACE_DLL Canvas3DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * canvas3d作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 WStringView型で置き換え
+     * * ver3.0〜 WStringView型で置き換え
      *
      */
     WStringView idW() const;
@@ -157,7 +157,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \brief idを設定
      * \since ver2.5
      *
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      *
      */
     TemporalCanvas3DComponent &id(StringInitializer id);
@@ -210,7 +210,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \brief RobotModelの関節をまとめて設定
      * \param angles RobotJointの名前と角度のリスト
      *
-     * * ver2.10〜 `std::unordered_map<std::string, double>` から
+     * * ver3.0〜 `std::unordered_map<std::string, double>` から
      * `std::map<std::string, double, std::less<>>` に変更
      *
      */
@@ -230,7 +230,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \since ver2.0
      * \param angles RobotJointの名前と角度のリスト
      *
-     * * ver2.10〜 `std::unordered_map<std::wstring, double>` から
+     * * ver3.0〜 `std::unordered_map<std::wstring, double>` から
      * `std::map<std::wstring, double, std::less<>>` に変更
      *
      */
@@ -250,7 +250,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
-     * * ver2.10〜 std::string_view に変更
+     * * ver3.0〜 std::string_view に変更
      * 
      */
     TemporalCanvas3DComponent &angle(std::string_view joint_name,
@@ -269,7 +269,7 @@ class WEBCFACE_DLL TemporalCanvas3DComponent {
      * \param joint_name RobotJointの名前
      * \param angle 角度
      *
-     * * ver2.10〜 std::wstring_view に変更
+     * * ver3.0〜 std::wstring_view に変更
      * 
      */
     TemporalCanvas3DComponent &angle(std::wstring_view joint_name,

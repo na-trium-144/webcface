@@ -27,7 +27,7 @@ struct WEBCFACE_DLL FuncNotFound : public std::runtime_error {
 };
 /*!
  * \brief Funcがrejectした(例外を投げた)場合の例外
- * \since ver2.10
+ * \since ver3.0
  * 
  * ver2.9までは std::runtime_error を投げていた
  * 
@@ -38,7 +38,7 @@ struct WEBCFACE_DLL Rejection : public std::runtime_error {
 
 /*!
  * \brief 未初期化の変数にアクセスした場合に発生する例外
- * \since ver2.10
+ * \since ver3.0
  * 
  * * Clientが破棄されたあとにフィールドにアクセスした場合など
  * * ver2.9までは std::runtime_error を投げていた
@@ -49,7 +49,7 @@ struct WEBCFACE_DLL SanityError : public std::runtime_error {
 };
 /*!
  * \brief 自分以外のmemberのフィールドに値を設定しようとしたときに発生する例外
- * \since ver2.10
+ * \since ver3.0
  * 
  * ver2.9までは std::invalid_argument を投げていた
  * 
@@ -60,7 +60,7 @@ struct WEBCFACE_DLL Intrusion : public std::invalid_argument {
 
 /*!
  * \brief Funcの実行結果の処理中に発生した例外
- * \since ver2.10
+ * \since ver3.0
  * 
  * * ver2.9までは std::runtime_error を投げていた
  * * 実行結果として返されるエラーそのものはPromiseErrorではなくRejection
@@ -74,7 +74,7 @@ struct WEBCFACE_DLL PromiseError : public std::runtime_error {
 
 /*!
  * \brief Funcにセットしようとしたパラメーターが実際の関数と一致しない場合の例外
- * \since ver2.10
+ * \since ver3.0
  * 
  */
 struct WEBCFACE_DLL FuncSignatureMismatch : public std::invalid_argument {

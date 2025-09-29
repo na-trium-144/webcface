@@ -11,7 +11,7 @@ WEBCFACE_NS_BEGIN
 
 /*!
  * \brief ValAdaptorのVector
- * \since ver2.10
+ * \since ver3.0
  *
  */
 class WEBCFACE_DLL ValAdaptorVector {
@@ -189,11 +189,11 @@ class WEBCFACE_DLL ValAdaptorVector {
 
     std::size_t size() const;
 
-    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    [[deprecated("(ver3.0〜) use asStringView() or asString() instead")]]
     std::string asStringRef() const {
         return asString();
     }
-    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    [[deprecated("(ver3.0〜) use asWStringView() or asWString() instead")]]
     std::wstring asWStringRef() const {
         return asWString();
     }
@@ -250,7 +250,7 @@ bool operator!=(const T &other, const V &val) {
 /*!
  * \brief ValAdaptorのリストから任意の型のタプルに変換する
  *
- * ver2.10〜 ValAdaptorVectorに変更
+ * ver3.0〜 ValAdaptorVectorに変更
  *
  */
 template <int n = 0, typename T>

@@ -106,20 +106,20 @@ class WEBCFACE_DLL ValAdaptor {
     ValAdaptor &operator=(const SharedString &str);
 
     /*!
-     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * ver3.0〜: std::string_view, std::wstring_view, const char*, const
      * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
      *
      */
     explicit ValAdaptor(StringInitializer str);
     /*!
-     * ver2.10〜: std::string_view, std::wstring_view, const char*, const
+     * ver3.0〜: std::string_view, std::wstring_view, const char*, const
      * wchar_t* を受け取るコンストラクタを StringInitializer に置き換え
      *
      */
     ValAdaptor &operator=(StringInitializer str);
 
     /*!
-     * ver2.10〜: const char*
+     * ver3.0〜: const char*
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
      *
      */
@@ -127,7 +127,7 @@ class WEBCFACE_DLL ValAdaptor {
                                  std::is_same_v<Bool, bool>, bool> = true>
     explicit ValAdaptor(Bool value);
     /*!
-     * ver2.10〜: const char*
+     * ver3.0〜: const char*
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
      *
      * テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、
@@ -181,17 +181,17 @@ class WEBCFACE_DLL ValAdaptor {
      *
      * <del>std::stringのconst参照を返す。参照はこのValAdaptorが破棄されるまで有効</del>
      *
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 互換性のために残しているが、内部の仕様変更によりstringのconst参照ではなく文字列のコピーが返る。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    [[deprecated("(ver3.0〜) use asStringView() or asString() instead")]]
     std::string asStringRef() const {
         return asString();
     }
     /*!
      * \brief null終端の文字列を返す
-     * \since ver2.10
+     * \since ver3.0
      *
      * as_strにstringが格納されていた場合はそれをそのまま返す。
      * そうでない場合(u8string, wstring, double, int64が格納されている場合)
@@ -203,18 +203,18 @@ class WEBCFACE_DLL ValAdaptor {
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 互換性のために残しているが、内部の仕様変更によりwstringのconst参照ではなく文字列のコピーが返る。
      * コピーなしで文字列を参照するには asWStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    [[deprecated("(ver3.0〜) use asWStringView() or asWString() instead")]]
     std::wstring asWStringRef() const {
         return asWString();
     }
     /*!
      * \brief null終端の文字列を返す (wstring)
-     * \since ver2.10
+     * \since ver3.0
      *
      * as_strにwstringが格納されていた場合はそれをそのまま返す。
      * そうでない場合(u8string, string, double, int64が格納されている場合)
@@ -222,7 +222,7 @@ class WEBCFACE_DLL ValAdaptor {
      */
     WStringView asWStringView() const;
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     std::string_view asU8StringView() const;
     /*!
@@ -238,7 +238,7 @@ class WEBCFACE_DLL ValAdaptor {
 
     /*!
      * \brief string_viewなどへの変換
-     * \since ver2.10
+     * \since ver3.0
      *
      * * StringViewおよびStringViewから暗黙的に変換可能な型への変換
      * * std::string_viewなど文字列への参照のみを保持する型にキャストした場合、
@@ -253,7 +253,7 @@ class WEBCFACE_DLL ValAdaptor {
     }
     /*!
      * \brief wstring_viewなどへの変換
-     * \since ver2.10
+     * \since ver3.0
      *
      * * WStringViewおよびWStringViewから暗黙的に変換可能な型への変換
      * * std::wstring_viewなど文字列への参照のみを保持する型にキャストした場合、
@@ -269,7 +269,7 @@ class WEBCFACE_DLL ValAdaptor {
     }
     /*!
      * \brief stringなどへのexplicitな変換
-     * \since ver2.10
+     * \since ver3.0
      *
      * * ver1.10〜の const std::string& へのキャストを置き換え
      * * 以前のバージョンと違い暗黙的な変換はできないようにしている。
@@ -285,7 +285,7 @@ class WEBCFACE_DLL ValAdaptor {
     }
     /*!
      * \brief wstringなどへのexplicitな変換
-     * \since ver2.10
+     * \since ver3.0
      *
      * * ver2.0〜の const std::wstring& へのキャストを置き換え
      * 以前のバージョンと違い暗黙的な変換はできないようにしている。
@@ -323,7 +323,7 @@ class WEBCFACE_DLL ValAdaptor {
      * * <del>Tはdoubleなどの実数型、intなどの整数型</del>
      * * ver2.9までTになにを指定してもdoubleで返るバグがあり、
      * ver2.0〜2.9までdeprecated指定だった。
-     * * ver2.10〜 stringなど任意の型を受け付けるように変更。
+     * * ver3.0〜 stringなど任意の型を受け付けるように変更。
      * string_viewなどだけでなく、explicitにしか変換できないstd::stringなどにも変換可能。
      *
      */
@@ -411,7 +411,7 @@ inline std::ostream &operator<<(std::ostream &os, const ValAdaptor &a) {
 }
 
 /*!
- * \since ver2.10
+ * \since ver3.0
  */
 using ValAdapter = ValAdaptor;
 WEBCFACE_NS_END

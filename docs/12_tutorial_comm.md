@@ -297,7 +297,7 @@ C++でMesonやCMakeを使わない場合、pkg-configを使ったり手動でコ
             }
 
             // "tutorial-send" が送信している "message" という名前のTextデータをリクエスト & 取得
-            // webcface::StringView は通常のstringやstring_viewやconst char*にキャストすることもできます (ver2.10〜)
+            // webcface::StringView は通常のstringやstring_viewやconst char*にキャストすることもできます (ver3.0〜)
             std::optional<webcface::StringView> message = wcli.member("tutorial-send").text("message").tryGet();
             if (message.has_value()){
                 std::cout << "message = " << *message << std::endl;

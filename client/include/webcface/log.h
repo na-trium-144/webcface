@@ -78,7 +78,7 @@ class LogLine : private LogLineData {
     LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
-     * * ver2.10〜 StringViewに変更
+     * * ver3.0〜 StringViewに変更
      *
      */
     StringView message() const { return message_.decodeShare(); };
@@ -89,7 +89,7 @@ class LogLineW : private LogLineData {
     LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
-     * * ver2.10〜 WStringViewに変更
+     * * ver3.0〜 WStringViewに変更
      *
      */
     WStringView message() const { return message_.decodeShareW(); };
@@ -203,7 +203,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver2.0
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     * * ver2.10〜 String型に変更
+     * * ver3.0〜 String型に変更
      * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */
@@ -221,7 +221,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver2.0
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     * * ver2.10〜 String型に変更
+     * * ver3.0〜 String型に変更
      * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */

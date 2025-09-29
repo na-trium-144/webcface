@@ -149,7 +149,7 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) view作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 StringView型で置き換え
+     * * ver3.0〜 StringView型で置き換え
      *
      */
     StringView id() const;
@@ -160,7 +160,7 @@ class WEBCFACE_DLL ViewComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * view作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 WStringView型で置き換え
+     * * ver3.0〜 WStringView型で置き換え
      *
      */
     WStringView idW() const;
@@ -191,7 +191,7 @@ class WEBCFACE_DLL ViewComponent {
     /*!
      * \brief 表示する文字列を取得
      *
-     * * ver2.10〜 StringView型で置き換え
+     * * ver3.0〜 StringView型で置き換え
      *
      */
     StringView text() const;
@@ -199,7 +199,7 @@ class WEBCFACE_DLL ViewComponent {
      * \brief 表示する文字列を取得 (wstring)
      * \since ver2.0
      *
-     * * ver2.10〜 WStringView型で置き換え
+     * * ver3.0〜 WStringView型で置き換え
      *
      */
     WStringView textW() const;
@@ -335,7 +335,7 @@ class WEBCFACE_DLL TemporalViewComponent {
      * \brief idを設定
      * \since ver2.5
      *
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      *
      */
     TemporalViewComponent &id(StringInitializer id);
@@ -343,14 +343,14 @@ class WEBCFACE_DLL TemporalViewComponent {
      * \brief 表示する文字列を設定
      *
      * (ver2.0からstring_viewに変更)
-     * (ver2.10〜 StringInitializer 型で置き換え)
+     * (ver3.0〜 StringInitializer 型で置き換え)
      *
      */
     TemporalViewComponent &text(StringInitializer text) &;
     /*!
      * \since ver2.5
      *
-     * (ver2.10〜 StringInitializer 型で置き換え)
+     * (ver3.0〜 StringInitializer 型で置き換え)
      *
      */
     TemporalViewComponent &&text(StringInitializer text) && {
@@ -508,7 +508,7 @@ class WEBCFACE_DLL TemporalViewComponent {
         return this->init(ValAdaptor{init});
     }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     TemporalViewComponent &init(StringInitializer init) & {
         return this->init(ValAdaptor(std::move(init)));
@@ -523,7 +523,7 @@ class WEBCFACE_DLL TemporalViewComponent {
         return std::move(*this);
     }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     TemporalViewComponent &&init(StringInitializer init) && {
         this->init(std::move(init));
