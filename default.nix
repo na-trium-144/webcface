@@ -30,7 +30,7 @@ let
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "webcface";
-  version = "2.9.0";
+  version = "3.0.0";
 
   srcs = [
     (builtins.path {
