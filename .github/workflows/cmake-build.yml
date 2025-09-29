@@ -321,14 +321,17 @@ jobs:
         with:
           name: msvc-x64-release
           path: ${{github.workspace}}
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: msvc-arm64
-      #     path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: msvc-arm64-debug
+          path: ${{github.workspace}}
+      - uses: actions/download-artifact@v4
+        with:
+          name: msvc-arm64-release
+          path: ${{github.workspace}}
       - name: zip debug and release
-        # in x86 x64 arm64
         run: |
-          for arch in x86 x64; do
+          for arch in x86 x64 arm64; do
             cd ${{github.workspace}}
             unzip libwebcface-windows-${arch}-debug.zip -d ${arch}
             unzip -o libwebcface-windows-${arch}-release.zip -d ${arch}
