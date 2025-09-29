@@ -206,7 +206,7 @@ jobs:
   build-msvc:
     strategy:
       matrix:
-        arch: ["x86", "x64"] # , "arm64"
+        arch: ["x86", "x64", "arm64"]
         buildtype: ["debug", "release"]
         include:
         - arch: x86
