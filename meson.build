@@ -711,7 +711,7 @@ if get_option('default_library') == 'shared'
   cmake.write_basic_package_version_file(
     name: 'webcface',
     version: meson.project_version(),
-    compatibility: 'SameMajorVersion',
+    compatibility: 'AnyNewerVersion',
     arch_independent: false,
     install_dir: get_option('libdir') / 'cmake' / 'webcface' + meson.project_version().split('.')[0],
   )
