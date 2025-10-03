@@ -253,6 +253,65 @@ std::size_t SharedString::find(char c, std::size_t pos) const {
     }
 }
 
+SharedString &SharedString::normalizeSeparator() {
+    if (!data) {
+        return *this;
+    }
+    std::lock_guard lock(data->m);
+    if (!data->u8sv.empty()) {
+        if (data->u8sv.find(field_separator_alt) != std::string::npos) {
+            if (data->u8s.empty()) {
+                data->u8s = data->u8sv;
+            }
+            // 先頭のスラッシュは.にせず消す
+            while (!data->u8s.empty() && data->u8s[0] == field_separator_alt) {
+                data->u8s.erase(0, 1);
+            }
+            for (char &c : data->u8s) {
+                if (c == field_separator_alt) {
+                    c = field_separator;
+                }
+            }
+            data->u8sv = data->u8s;
+        }
+    }
+    if (!data->s.empty()) {
+        if (data->sv.find(field_separator_alt) != std::string::npos) {
+            if (data->s.empty()) {
+                data->s = data->sv;
+            }
+            // 先頭のスラッシュは.にせず消す
+            while (!data->s.empty() && data->s[0] == field_separator_alt) {
+                data->s.erase(0, 1);
+            }
+            for (char &c : data->s) {
+                if (c == field_separator_alt) {
+                    c = field_separator;
+                }
+            }
+            data->sv = data->s;
+        }
+    }
+    if (!data->wsv.empty()) {
+        if (data->wsv.find(field_separator_alt) != std::string::npos) {
+            if (data->ws.empty()) {
+                data->ws = data->wsv;
+            }
+            // 先頭のスラッシュは.にせず消す
+            while (!data->ws.empty() && data->ws[0] == field_separator_alt) {
+                data->ws.erase(0, 1);
+            }
+            for (wchar_t &c : data->ws) {
+                if (c == field_separator_alt) {
+                    c = field_separator;
+                }
+            }
+            data->wsv = data->ws;
+        }
+    }
+    return *this;
+}
+
 std::string toNarrow(std::wstring_view name) {
 #if WEBCFACE_SYSTEM_WCHAR_WINDOWS
     static_assert(sizeof(wchar_t) == 2,
