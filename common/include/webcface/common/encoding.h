@@ -46,6 +46,13 @@ WEBCFACE_DLL std::wstring WEBCFACE_CALL toWide(std::string_view name_ref);
  */
 WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 
+inline constexpr char field_separator = '.';
+inline constexpr std::string_view field_separator_sv = ".";
+/*!
+ * \since ver3.1
+ */
+inline constexpr char field_separator_alt = '/';
+
 /*!
  * \brief webcfaceで管理されている文字列を参照するstring_view
  * \since ver2.10
@@ -187,6 +194,11 @@ class WEBCFACE_DLL SharedString {
     SharedString substr(std::size_t pos,
                         std::size_t len = std::string::npos) const;
     std::size_t find(char c, std::size_t pos = 0) const;
+
+    /*!
+     * \since ver3.0
+     */
+    SharedString &normalizeSeparator();
 
     bool operator==(const SharedString &other) const;
     bool operator<=(const SharedString &other) const;
