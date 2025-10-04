@@ -44,6 +44,7 @@ jobs:
     - name: Setup Meson
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: >
+        CC=gcc CXX=g++
         meson setup build
         --buildtype=debug
         -Dwrap_mode=forcefallback
@@ -96,12 +97,12 @@ jobs:
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: |
         export PKG_CONFIG_PATH=$(cygpath -u '${{github.workspace}}\build\install\lib\pkgconfig')
-        meson setup buildm
+        CC=gcc CXX=g++ meson setup buildm
         meson compile -Cbuildm
     - name: Test building with Meson using CMake
       if: matrix.dep != 'static'
       working-directory: ${{github.workspace}}/.github/test
       shell: C:\cygwin\bin\bash.exe '{0}'
       run: |
-        meson setup buildmc -Dcmake_prefix_path=$(cygpath -u '${{github.workspace}}\build\install')
+        CC=gcc CXX=g++ meson setup buildmc -Dcmake_prefix_path=$(cygpath -u '${{github.workspace}}\build\install')
         meson compile -Cbuildmc
