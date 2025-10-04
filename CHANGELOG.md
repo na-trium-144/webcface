@@ -19,6 +19,7 @@
 * ValAdaptorVectorクラス追加、Funcの引数と戻り値にvectorとarrayを使用可能にする (#527, #534)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
+* AppleClangではC++20 modulesを使えない (#540)
 ### Changed
 * deprecatedなAPIの削除 (#534, #537)
 	* webcface::encoding
