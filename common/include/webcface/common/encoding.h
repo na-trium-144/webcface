@@ -52,6 +52,10 @@ inline constexpr std::string_view field_separator_sv = ".";
  * \since ver3.1
  */
 inline constexpr char field_separator_alt = '/';
+/*!
+ * \since ver3.1
+ */
+inline constexpr std::string_view field_separator_alt_sv = "/";
 
 /*!
  * \brief webcfaceで管理されている文字列を参照するstring_view
