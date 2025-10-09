@@ -319,7 +319,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::call: {
             auto &v = *static_cast<webcface::message::Call *>(obj.get());
             logger->debug("received {}", v);
-            v.field.normalizeSeparator();
+            // v.field.normalizeSeparator();
+            // Funcだけは正規化せず、クライアント側で処理
             v.caller_member_id = this->member_id;
             // そのままターゲットのクライアントに送る
             store->findConnectedAndDo(

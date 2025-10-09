@@ -21,12 +21,17 @@ namespace internal {
  *
  * T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)
  *
+ * ver3.1〜 normalizeNameがtrueの場合(Funcのみ)、field名を常に正規化
+ * (Func以外はサーバー側で正規化しており、
+ * サーバーからクライアントに名前指定を含むメッセージが送られてくることはないので、
+ * 正規化の必要がない)
+ *
  */
-template <typename T, typename ReqT = int>
+template <typename T, typename ReqT = int, bool normalizeName = false>
 class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
-     * 
+     *
      * ver2.10〜 mapをvectorに変えたので重複がありえる。
      *
      */
@@ -82,7 +87,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const SharedString &member, const SharedString &field);
+    unsigned int addReq(const SharedString &member, SharedString field);
     /*!
      * \brief リクエストを追加
      *
@@ -94,7 +99,7 @@ class SyncDataStore2 {
      * selfの場合 0を返す
      *
      */
-    unsigned int addReq(const SharedString &member, const SharedString &field,
+    unsigned int addReq(const SharedString &member, SharedString field,
                         const ReqT &req_info);
 
     /*!
@@ -104,29 +109,27 @@ class SyncDataStore2 {
      * has_sendをtrueにする
      *
      */
-    void setSend(const SharedString &name, const T &data);
+    void setSend(SharedString name, const T &data);
     void setSend(const FieldBase &base, const T &data);
 
     /*!
      * \brief 受信したデータをdata_recvにセット
      *
      */
-    void setRecv(const SharedString &from, const SharedString &name,
-                 const T &data);
+    void setRecv(const SharedString &from, SharedString name, const T &data);
     void setRecv(const FieldBase &base, const T &data);
     /*!
      * \brief 受信したデータを削除
      *
      */
-    void clearRecv(const SharedString &from, const SharedString &name);
+    void clearRecv(const SharedString &from, SharedString name);
     void clearRecv(const FieldBase &base);
 
     /*!
      * \brief data_recvからデータを返す
      *
      */
-    std::optional<T> getRecv(const SharedString &from,
-                             const SharedString &name);
+    std::optional<T> getRecv(const SharedString &from, SharedString name);
     std::optional<T> getRecv(const FieldBase &base);
     /*!
      * \brief data_recvからデータを削除, reqを消す
@@ -134,7 +137,7 @@ class SyncDataStore2 {
      * \return reqを削除したらtrue, reqがすでに削除されてればfalse
      *
      */
-    bool unsetRecv(const SharedString &from, const SharedString &name);
+    bool unsetRecv(const SharedString &from, SharedString name);
     bool unsetRecv(const FieldBase &base);
 
     /*!
@@ -147,7 +150,7 @@ class SyncDataStore2 {
      * \brief 受信したentryを追加
      *
      */
-    void setEntry(const SharedString &from, const SharedString &e);
+    void setEntry(const SharedString &from, SharedString e);
 
     /*!
      * \brief entryを取得
@@ -161,7 +164,7 @@ class SyncDataStore2 {
      *
      */
     std::pair<SharedString, SharedString> getReq(unsigned int req_id,
-                                                 const SharedString &sub_field);
+                                                 SharedString sub_field);
     /*!
      * \brief member名とフィールド名に対応するreq_infoを返す
      *
@@ -218,18 +221,20 @@ struct LogData {
 };
 
 #if WEBCFACE_SYSTEM_DLLEXPORT
-extern template class SyncDataStore2<std::string, int>; // test用
-extern template class SyncDataStore2<MutableNumVector, int>;
-extern template class SyncDataStore2<ValAdaptor, int>;
-extern template class SyncDataStore2<std::shared_ptr<FuncData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int>;
-extern template class SyncDataStore2<std::shared_ptr<RobotModelData>, int>;
+extern template class SyncDataStore2<std::string, int, false>; // test用
+extern template class SyncDataStore2<MutableNumVector, int, false>;
+extern template class SyncDataStore2<ValAdaptor, int, false>;
+extern template class SyncDataStore2<std::shared_ptr<FuncData>, int, true>;
+extern template class SyncDataStore2<std::shared_ptr<message::ViewData>, int,
+                                     false>;
+extern template class SyncDataStore2<std::shared_ptr<RobotModelData>, int,
+                                     false>;
 extern template class SyncDataStore2<std::shared_ptr<message::Canvas3DData>,
-                                     int>;
+                                     int, false>;
 extern template class SyncDataStore2<std::shared_ptr<message::Canvas2DData>,
-                                     int>;
-extern template class SyncDataStore2<ImageData, message::ImageReq>;
-extern template class SyncDataStore2<std::shared_ptr<LogData>, int>;
+                                     int, false>;
+extern template class SyncDataStore2<ImageData, message::ImageReq, false>;
+extern template class SyncDataStore2<std::shared_ptr<LogData>, int, false>;
 #endif
 
 } // namespace internal
