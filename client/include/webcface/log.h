@@ -100,7 +100,8 @@ class LogLineW : private LogLineData {
  *
  * * <del>fieldを継承しているがfield名は使用していない</del>
  * * ver2.4〜 他のデータ型と同じようにフィールド名を指定できるようになった
- *
+ * * ver3.1〜
+ * 他のデータ型と同じようにname(),child(),parent()などのメンバ関数を追加
  */
 class WEBCFACE_DLL Log : protected Field {
   public:
@@ -112,7 +113,31 @@ class WEBCFACE_DLL Log : protected Field {
     Log(const Field &base, const SharedString &field)
         : Log(Field{base, field}) {}
 
+    using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
+    using Field::name;
+    using Field::nameW;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     * \since ver3.1
+     */
+    Log child(StringInitializer field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
+    }
+    /*!
+     * child()と同じ
+     * \since ver3.1
+     */
+    Log operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver3.1
+     */
+    Log parent() const { return this->Field::parent(); }
+
 
     /*!
      * \brief Clientが保持するログの行数を設定する。
