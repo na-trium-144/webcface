@@ -14,6 +14,12 @@ WEBCFACE_NS_BEGIN
 
 namespace internal {
 
+/*!
+ * \since ver3.0
+ *
+ * string_viewは常に同一インスタンスのstringまたは外部のstaticな文字列を指し、
+ * 常時null終端である状態にする
+ */
 struct SharedStringData {
     std::string u8s;
     std::string s;
@@ -40,6 +46,30 @@ struct SharedStringData {
     SharedStringData(std::nullptr_t, std::nullptr_t, std::wstring_view wsv)
         : u8sv(this->u8s), sv(this->s), wsv(wsv) {
         assert(*(wsv.data() + wsv.size()) == L'\0');
+    }
+
+    /*!
+     * \since ver3.1
+     */
+    SharedStringData(const SharedStringData &other) {
+        if (other.u8sv.data() == other.u8s.data()) {
+            this->u8s = other.u8s;
+            this->u8sv = this->u8s;
+        } else {
+            this->u8sv = other.u8sv;
+        }
+        if (other.sv.data() == other.s.data()) {
+            this->s = other.s;
+            this->sv = this->s;
+        } else {
+            this->sv = other.sv;
+        }
+        if (other.wsv.data() == other.ws.data()) {
+            this->ws = other.ws;
+            this->wsv = this->ws;
+        } else {
+            this->wsv = other.wsv;
+        }
     }
 };
 
@@ -258,9 +288,12 @@ SharedString &SharedString::normalizeSeparator() {
         return *this;
     }
     std::lock_guard lock(data->m);
-    if (!data->u8sv.empty()) {
+    if (data->u8sv.find(field_separator_alt) != std::string::npos ||
+        data->sv.find(field_separator_alt) != std::string::npos ||
+        data->wsv.find(field_separator_alt) != std::string::npos) {
+        data = std::make_shared<internal::SharedStringData>(*data);
         if (data->u8sv.find(field_separator_alt) != std::string::npos) {
-            if (data->u8s.empty()) {
+            if (data->u8s.data() != data->u8sv.data()) {
                 data->u8s = data->u8sv;
             }
             // 先頭のスラッシュは.にせず消す
@@ -274,10 +307,8 @@ SharedString &SharedString::normalizeSeparator() {
             }
             data->u8sv = data->u8s;
         }
-    }
-    if (!data->s.empty()) {
         if (data->sv.find(field_separator_alt) != std::string::npos) {
-            if (data->s.empty()) {
+            if (data->s.data() != data->sv.data()) {
                 data->s = data->sv;
             }
             // 先頭のスラッシュは.にせず消す
@@ -291,10 +322,8 @@ SharedString &SharedString::normalizeSeparator() {
             }
             data->sv = data->s;
         }
-    }
-    if (!data->wsv.empty()) {
         if (data->wsv.find(field_separator_alt) != std::string::npos) {
-            if (data->ws.empty()) {
+            if (data->ws.data() != data->wsv.data()) {
                 data->ws = data->wsv;
             }
             // 先頭のスラッシュは.にせず消す

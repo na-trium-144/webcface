@@ -200,7 +200,11 @@ class WEBCFACE_DLL SharedString {
     std::size_t find(char c, std::size_t pos = 0) const;
 
     /*!
-     * \since ver3.0
+     * \since ver3.1
+     * 
+     * スラッシュをピリオドに置き換え、thisを返す
+     * thisのdataが指す先が新しいshared_ptrになり、
+     * もとのSharedStringが指している先のdata自体は書き換わらない
      */
     SharedString &normalizeSeparator();
 
