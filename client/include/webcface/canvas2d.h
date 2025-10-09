@@ -38,6 +38,7 @@ class WEBCFACE_DLL Canvas2D : protected Field {
     friend internal::DataSetBuffer<Canvas2DComponent>;
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;
