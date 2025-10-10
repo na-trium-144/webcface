@@ -59,7 +59,7 @@ inline constexpr std::string_view field_separator_alt_sv = "/";
 
 /*!
  * \brief webcfaceで管理されている文字列を参照するstring_view
- * \since ver2.10
+ * \since ver3.0
  *
  * * null終端であることが保証されており、
  * インタフェースとしては std::string_view に c_str() メンバ関数を追加したもの。
@@ -158,10 +158,10 @@ using WStringView = TStringView<wchar_t>;
  * usingUTF8(true)の場合なにもせずそのままコピーする。
  * * utf-8→string: windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
- * * ver2.10〜
+ * * ver3.0〜
  * staticな生文字列ポインタをstring_viewとして保持することを可能にした。
  * その場合string_viewの範囲外だがNULL終端であることが保証される。
- * * ver2.10〜 u8StringView(), decode(), decodeW()
+ * * ver3.0〜 u8StringView(), decode(), decodeW()
  * はただのstring_viewだが、data()がnull終端文字列であることは保証される。
  * u8StringViewShare(), decodeShare(), decodeShareW()
  * はshared_ptrのコピーを含みちょっと遅い。
@@ -224,7 +224,7 @@ class WEBCFACE_DLL SharedString {
 
 /*!
  * \brief SharedString のpublicなコンストラクタインタフェース (入力専用)
- * \since ver2.10
+ * \since ver3.0
  *
  * * stringまたはwstringを受け取り、保持する
  * * windowsではusingUTF8(false)の場合毎回ANSIからutf8へエンコーディングの変換を行うが、
@@ -269,7 +269,7 @@ class StringInitializer : public SharedString {
 
 /*!
  * \brief string_viewやconst char*同士を連結しstringを返す
- * \since ver2.10
+ * \since ver3.0
  *
  * StringInitializer, SharedString, TStringView
  * などと同じヘッダーにあるが、それらとはなんの関係もない。

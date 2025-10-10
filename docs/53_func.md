@@ -58,7 +58,7 @@
     ```
 
     \note
-    * <span class="since-c">2.10</span>
+    * <span class="since-c">3.0</span>
     WebCFaceが文字列データを管理する際 std::string を用いないようになったため、
     std::string で文字列を受け取ると(const参照であっても)コピーが発生します。
     std::string_view または webcface::StringView を用いると効率的です
@@ -510,7 +510,7 @@ Client::funcEntries()でその関数の存在を確認したりFunc::args()な�
         * 各引数は <del>ValAdaptor</del> <span class="since-c">3.0</span> ValAdaptorVector 型で取得でき、
         <del>`asStringRef()`</del>, `asString()`, `asBool()`, <del>`as<double>()`</del>,
         <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
-        <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
+        <span class="since-c">3.0</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
         で型を指定して取得できます。
         * (std::string, double, bool などの型にキャストすることでも値を得られます。)
         * listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます
@@ -694,7 +694,7 @@ Funcが登録された順番(index)は送信側のクライアントライブラ
     * response(): 関数の戻り値です。
     webcface::ValAdaptorVector 型で返り、
     <del>`asStringRef()`</del>, `asString()`, <del>`asWStringRef()`</del>, `asWString()`, `asBool()`, `asDouble()`, `asInt()`, `asLLong()`,
-    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
+    <span class="since-c">3.0</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
     またはstatic_castにより型変換できます。
     * rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。
     またその場合 isError() がtrueになります。
@@ -981,7 +981,7 @@ res.onResult().append([](std::shared_future<webcface::ValAdaptor> result){
     整数、実数、bool、stringにキャストできます。  
     <span class="since-c">1.10</span> また、明示的にキャストするなら <del>`asStringRef()`(const参照)</del>, `asString()`, `asBool()`, <del>`as<整数or実数型>()`</del> も使えます。  
     <span class="since-c">2.0</span> <del>`asWStringRef()`</del>, `asWString()`, `asDouble()`, `asInt()`, `asLLong()`,
-    <span class="since-c">2.10</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
+    <span class="since-c">3.0</span> `asStringView()`, `asWStringView()`, `asVector<T>()`, `asArray<T, N>()`
     も使えます。
 
     \warning

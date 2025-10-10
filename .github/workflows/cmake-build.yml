@@ -106,8 +106,8 @@ jobs:
 
           libdir=lib/$(basename $prefix/lib/*-linux-*)
           mkdir -p .debpkg/usr/$libdir/cmake
-          echo $absprefix/$libdir/cmake/webcface2
-          ln -s $absprefix/$libdir/cmake/webcface2 .debpkg/usr/$libdir/cmake/
+          echo $absprefix/$libdir/cmake/webcface3
+          ln -s $absprefix/$libdir/cmake/webcface3 .debpkg/usr/$libdir/cmake/
           mkdir -p .debpkg/usr/$libdir/pkgconfig
           echo $absprefix/$libdir/pkgconfig/webcface.pc
           ln -s $absprefix/$libdir/pkgconfig/webcface.pc .debpkg/usr/$libdir/pkgconfig/webcface.pc
@@ -206,7 +206,7 @@ jobs:
   build-msvc:
     strategy:
       matrix:
-        arch: ["x86", "x64"] # , "arm64"
+        arch: ["x86", "x64", "arm64"]
         buildtype: ["debug", "release"]
         include:
         - arch: x86
@@ -321,14 +321,17 @@ jobs:
         with:
           name: msvc-x64-release
           path: ${{github.workspace}}
-      # - uses: actions/download-artifact@v4
-      #   with:
-      #     name: msvc-arm64
-      #     path: ${{github.workspace}}/artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: msvc-arm64-debug
+          path: ${{github.workspace}}
+      - uses: actions/download-artifact@v4
+        with:
+          name: msvc-arm64-release
+          path: ${{github.workspace}}
       - name: zip debug and release
-        # in x86 x64 arm64
         run: |
-          for arch in x86 x64; do
+          for arch in x86 x64 arm64; do
             cd ${{github.workspace}}
             unzip libwebcface-windows-${arch}-debug.zip -d ${arch}
             unzip -o libwebcface-windows-${arch}-release.zip -d ${arch}

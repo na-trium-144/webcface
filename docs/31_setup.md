@@ -32,7 +32,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```
     [wrap-git]
     url = https://github.com/na-trium-144/webcface.git
-    revision = v2.9.0
+    revision = v3.1.1
     depth = 1
     [provide]
     dependency_names = webcface
@@ -56,9 +56,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```
     * find_packageでwebcfaceが見つからない場合は環境変数`PATH`に (webcfaceのパス)/bin を追加するか、
     webcfaceのインストール場所を`CMAKE_PREFIX_PATH`か`webcface_ROOT`, `webcface_DIR`などに設定してください。
-    * バージョン指定は同じメジャーバージョンで指定したマイナーバージョン以上のものが選ばれます
-    (例えば2.0と書いて2.1が選ばれることはあるが、1.0と書いて2.0や2.1が選ばれることはない)
-
+    
     \note
     webcface::webcface ターゲットには cpp_std_17 が、 webcface::wcf ターゲットには c_std_99 の指定がそれぞれ含まれています。
 
@@ -66,7 +64,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```cmake
     FetchContent_Declare(webcface
       GIT_REPOSITORY https://github.com/na-trium-144/webcface.git
-      GIT_TAG        v2.9.0
+      GIT_TAG        v3.1.1
     )
     FetchContent_MakeAvailable(webcface)
     ```

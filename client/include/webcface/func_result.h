@@ -139,7 +139,7 @@ class WEBCFACE_DLL Promise : Field {
      * \brief 関数の実行がエラーになった場合そのエラーメッセージを返す
      * \since ver2.0
      *
-     * ver2.10〜 StringView型に変更
+     * ver3.0〜 StringView型に変更
      *
      */
     StringView rejection() const;
@@ -148,7 +148,7 @@ class WEBCFACE_DLL Promise : Field {
      * \since ver2.0
      * \sa rejection()
      *
-     * ver2.10〜 WStringView型に変更
+     * ver3.0〜 WStringView型に変更
      *
      */
     WStringView rejectionW() const;
@@ -293,7 +293,7 @@ class WEBCFACE_DLL CallHandle : Field {
     /*!
      * \brief 関数の引数を取得する
      *
-     * ver2.10〜 ValAdaptorVectorに変更
+     * ver3.0〜 ValAdaptorVectorに変更
      *
      */
     const std::vector<ValAdaptorVector> &args() const;
@@ -346,7 +346,7 @@ class WEBCFACE_DLL CallHandle : Field {
         respond(ValAdaptorVector(value));
     }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      */
     void respond(StringInitializer value) const {
         respond(ValAdaptorVector(std::move(value)));
@@ -367,7 +367,7 @@ class WEBCFACE_DLL CallHandle : Field {
      * * ver1.11まで: 2回呼ぶと std::future_error を投げ、
      * このHandleがデフォルト構築されていた場合 std::runtime_error を投げる
      * * ver2.0から: respondable() がfalseの場合 std::runtime_error を投げる
-     * * ver2.0〜 wstring対応、ver2.10〜 String型に変更
+     * * ver2.0〜 wstring対応、ver3.0〜 String型に変更
      *
      */
     void reject(StringInitializer message) const {

@@ -31,8 +31,8 @@ template <typename T, typename ReqT = int, bool normalizeName = false>
 class SyncDataStore2 {
     /*!
      * \brief 次のsend時に送信するデータ。
-     *
-     * ver2.10〜 mapをvectorに変えたので重複がありえる。
+     * 
+     * ver3.0〜 mapをvectorに変えたので重複がありえる。
      *
      */
     std::vector<std::pair<SharedString, T>> data_send;
