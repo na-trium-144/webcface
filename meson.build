@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '3.1.0',
+  version: '3.1.1',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
