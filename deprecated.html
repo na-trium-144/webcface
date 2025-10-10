@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -171,9 +171,9 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1InputRef.html#a6c8717854f176b75328439d1defc7a17">InputRef::as</a>  () const</dt>
 <dd><a class="anchor" id="_deprecated000020"></a>ver2.0〜 <a class="el" href="classwebcface_1_1InputRef.html#ac483232c52e23cedd51e35d4015fe627" title="実数として返す">asDouble()</a>, <a class="el" href="classwebcface_1_1InputRef.html#aafa1a9ae7a20989284486d6edd7f6c12" title="int型の整数として返す">asInt()</a>, <a class="el" href="classwebcface_1_1InputRef.html#a728dd54787a857085d71c0579eaf62e1" title="long long型の整数として返す">asLLong()</a> を追加 さらにas&lt;T&gt;にはTになにを指定してもdoubleで返るというバグがある </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1InputRef.html#a3a51db4f2cb6221e9ddf0b250fb899c8">InputRef::asStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000018"></a>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1InputRef.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列として返す">asStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000018"></a>ver3.0〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1InputRef.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列として返す">asStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1InputRef.html#a64dea88701f40404b81d03669fdd7ce9">InputRef::asWStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000019"></a>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1InputRef.html#afefb9e756a948626ee1515c0089e6c7a" title="null終端の文字列として返す">asWStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000019"></a>ver3.0〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1InputRef.html#afefb9e756a948626ee1515c0089e6c7a" title="null終端の文字列として返す">asWStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a34d5185371dc3a2d0f522aa9cfe80e2c">RobotModel::child</a>  (int index) const</dt>
 <dd><a class="anchor" id="_deprecated000012"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1RobotModel.html#a593423f55e0dca3d31e565736e98bb07">RobotModel::operator[]</a>  (int index) const</dt>
@@ -197,15 +197,15 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Transform.html#a1c5ac1e39a1e665a0c60e3bed5d75b85">Transform::Transform</a>  (double x, double y)</dt>
 <dd><a class="anchor" id="_deprecated000027"></a>ver2.5〜 translate(x, y)  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ValAdaptor.html#a3a51db4f2cb6221e9ddf0b250fb899c8">ValAdaptor::asStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000031"></a>ver2.10〜 互換性のために残しているが、内部の仕様変更によりstringのconst参照ではなく文字列のコピーが返る。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1ValAdaptor.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列を返す">asStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000031"></a>ver3.0〜 互換性のために残しているが、内部の仕様変更によりstringのconst参照ではなく文字列のコピーが返る。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1ValAdaptor.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列を返す">asStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1ValAdaptor.html#a64dea88701f40404b81d03669fdd7ce9">ValAdaptor::asWStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000032"></a>ver2.10〜 互換性のために残しているが、内部の仕様変更によりwstringのconst参照ではなく文字列のコピーが返る。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1ValAdaptor.html#afefb9e756a948626ee1515c0089e6c7a" title="null終端の文字列を返す (wstring)">asWStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000032"></a>ver3.0〜 互換性のために残しているが、内部の仕様変更によりwstringのconst参照ではなく文字列のコピーが返る。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1ValAdaptor.html#afefb9e756a948626ee1515c0089e6c7a" title="null終端の文字列を返す (wstring)">asWStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Value.html#a8fbab20cd4f5c797f2a5e9bc8ab71aa2">Value::child</a>  (int index) const</dt>
 <dd><a class="anchor" id="_deprecated000028"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Variant.html#a3a51db4f2cb6221e9ddf0b250fb899c8">Variant::asStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000014"></a>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000014"></a>ver3.0〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1Variant.html#a64dea88701f40404b81d03669fdd7ce9">Variant::asWStringRef</a>  () const</dt>
-<dd><a class="anchor" id="_deprecated000015"></a>ver2.10〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。  </dd>
+<dd><a class="anchor" id="_deprecated000015"></a>ver3.0〜 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。 コピーなしで文字列を参照するには <a class="el" href="classwebcface_1_1Variant.html#a4f2e99a6f827031c8f6c70d0ba92a0b4" title="null終端の文字列の参照として返す">asStringView()</a> を使用すること。  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#ad06ba5b01b583249243b5317d3379392">View::child</a>  (int index) const</dt>
 <dd><a class="anchor" id="_deprecated000029"></a>ver2.8〜  </dd>
 <dt><a class="el" href="classwebcface_1_1Member.html" title="Memberを指すクラス">Member</a> <a class="el" href="classwebcface_1_1View.html#a272532a94252d75939f8a13126d1ca72">View::operator[]</a>  (int index) const</dt>
@@ -217,7 +217,7 @@ $(document).ready(function(){initNavTree('deprecated.html',''); initResizable();
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

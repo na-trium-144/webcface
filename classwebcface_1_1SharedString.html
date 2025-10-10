@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -232,8 +232,8 @@ Static Public Member Functions</h2></td></tr>
 <li>decodeやdecodeWが呼ばれたときdata内部に変換後の文字列を保存する。 一度保存したstringやwstringを別の値に書き換えることはない (のでc_strなどの参照は保持される)</li>
 <li>string→utf8: windowsではusingUTF8(false)の場合ANSIからutf8へエンコーディングの変換を行うが、 usingUTF8(true)の場合なにもせずそのままコピーする。</li>
 <li>utf-8→string: windowsでusingUTF8(false)の場合はANSIに、 それ以外の場合なにもせずそのままコピーする。</li>
-<li>ver2.10〜 staticな生文字列ポインタをstring_viewとして保持することを可能にした。 その場合string_viewの範囲外だがNULL終端であることが保証される。</li>
-<li>ver2.10〜 <a class="el" href="classwebcface_1_1SharedString.html#abd4190403c607dda7622b15684a327fc">u8StringView()</a>, <a class="el" href="classwebcface_1_1SharedString.html#a8662489b6b71dc2affdedc0fa586b5e0">decode()</a>, <a class="el" href="classwebcface_1_1SharedString.html#aba370786ba7430d17e028b3ac65a9e60">decodeW()</a> はただのstring_viewだが、data()がnull終端文字列であることは保証される。 <a class="el" href="classwebcface_1_1SharedString.html#a78969aa08c1d37673cfbfbf30d674748">u8StringViewShare()</a>, <a class="el" href="classwebcface_1_1SharedString.html#aae494f5f946fed52ae423a3c7fee3437">decodeShare()</a>, <a class="el" href="classwebcface_1_1SharedString.html#a5e64a6e2561f47cdf6344c1d3273b640">decodeShareW()</a> はshared_ptrのコピーを含みちょっと遅い。 </li>
+<li>ver3.0〜 staticな生文字列ポインタをstring_viewとして保持することを可能にした。 その場合string_viewの範囲外だがNULL終端であることが保証される。</li>
+<li>ver3.0〜 <a class="el" href="classwebcface_1_1SharedString.html#abd4190403c607dda7622b15684a327fc">u8StringView()</a>, <a class="el" href="classwebcface_1_1SharedString.html#a8662489b6b71dc2affdedc0fa586b5e0">decode()</a>, <a class="el" href="classwebcface_1_1SharedString.html#aba370786ba7430d17e028b3ac65a9e60">decodeW()</a> はただのstring_viewだが、data()がnull終端文字列であることは保証される。 <a class="el" href="classwebcface_1_1SharedString.html#a78969aa08c1d37673cfbfbf30d674748">u8StringViewShare()</a>, <a class="el" href="classwebcface_1_1SharedString.html#aae494f5f946fed52ae423a3c7fee3437">decodeShare()</a>, <a class="el" href="classwebcface_1_1SharedString.html#a5e64a6e2561f47cdf6344c1d3273b640">decodeShareW()</a> はshared_ptrのコピーを含みちょっと遅い。 </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4f7694bed8232dbe6186a0b404c4c0da" name="a4f7694bed8232dbe6186a0b404c4c0da"></a>
@@ -892,7 +892,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a></li>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:22 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

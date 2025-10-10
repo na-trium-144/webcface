@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -176,7 +176,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </div><!-- fragment --><dl class="section note"><dt>Note</dt><dd><ul>
 <li>webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。</li>
 <li><span class="since-c">1.7</span> 配列データは<code>std::vector&lt;double&gt;</code>だけでなく、std::arrayや生配列などstd::ranges::rangeに合うものならなんでも使えます。 要素の型はdoubleに変換可能ならなんでもokです。</li>
-<li><span class="since-c">2.10</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
+<li><span class="since-c">3.0</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
 </ul>
 </dd></dl>
 <p><span class="since-c">1.11</span> valueに直接<code>[]</code> <del>(または<code>child()</code>)</del> (<span class="since-c">2.8</span> または <code>at()</code>) で配列の要素アクセスが可能です。 また、resize() で配列を初期化し push_back() で追加する使い方もできます。 ただしValueにセットしたデータはsync等で自動的にリセットされることはないので、push_backとsyncを繰り返す場合は resize(0) や set({}) などで初期化してください。 <code>cpp wcli.value("fuga").resize(5); for(int i = 0; i &lt; 5; i++){ wcli.value("fuga")[i] = i; // wcli.value("fuga").at(i) も同じ } wcli.value("fuga").push_back(100); </code> <span class="since-c">2.8</span> <code>[]</code>や<code>at()</code>は ValueElementRef 型を返すようになりました。使い方は今までと変わりません。</p>
@@ -189,7 +189,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </div><!-- fragment --><p> で送信できます。</p>
 <dl class="section note"><dt>Note</dt><dd><ul>
 <li>webcfaceのvalueはset(),get()関数のインタフェースとしてはdouble型のみが用意されていますが、値が整数だった場合自動的に整数型に変換して送受信するため、整数値やbool値を送りたい場合でも通信量を気にする必要はありません。</li>
-<li><span class="since-c">2.10</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
+<li><span class="since-c">3.0</span> 要素数0の配列を渡した場合、要素数1で値が0になります。</li>
 </ul>
 </dd></dl>
 </li>
@@ -268,7 +268,7 @@ $(document).ready(function(){initNavTree('md_docs_251__value.html',''); initResi
 </ul>
 </li>
 <li>Value::get(), Value::getVec() はstd::nulloptの代わりに0を返します。</li>
-<li><span class="since-c">2.10</span> tryGetVec(), getVec() は <a class="el" href="classwebcface_1_1NumVector.html" title="shared_ptrで管理されているdoubleのvector">webcface::NumVector</a> 型で配列データを返します。 (以前は std::vector&lt;double&gt; を返していた)<ul>
+<li><span class="since-c">3.0</span> tryGetVec(), getVec() は <a class="el" href="classwebcface_1_1NumVector.html" title="shared_ptrで管理されているdoubleのvector">webcface::NumVector</a> 型で配列データを返します。 (以前は std::vector&lt;double&gt; を返していた)<ul>
 <li>NumVectorはshared_ptrで配列データの参照を保持しており、コピー時にコストがかかりません。</li>
 <li>std::vector&lt;double&gt;にキャストすることも可能です。</li>
 </ul>
@@ -355,7 +355,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

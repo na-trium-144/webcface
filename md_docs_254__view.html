@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -416,7 +416,7 @@ InputRef</h3>
 </div><!-- fragment --> この場合はv.sync()の時に前周期のinput_valの内容が復元されるという挙動になります。 (したがってv.sync()より前では値が未初期化になります)</dd></dl>
 <p><span class="since-c">1.11</span> InputRefの値は <del><code>asStringRef()</code></del>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;double&gt;()</code></del> で型を指定して取得できます。 <br  />
  <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code> も使えます。 <br  />
- <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code> も使えます。 <br  />
+ <span class="since-c">3.0</span> <code>asStringView()</code>, <code>asWStringView()</code> も使えます。 <br  />
  (std::string, double, bool などの型にキャストすることでも値を得られます。) <br  />
  (任意の型に対応したい場合は <code>get()</code> で <a class="el" href="classwebcface_1_1ValAdaptor.html" title="数値、文字列などの値を相互変換するクラス">webcface::ValAdaptor</a> 型として取得できます。)</p>
 <dl class="section note"><dt>Note</dt><dd>内部の実装では入力値を受け取りInputRefに値をセットする関数をonChangeにセットしています。 また、InputRefの値は<a class="el" href="md_docs_252__text.html">Text</a>型のデータとしてviewを表示しているクライアントに送信されます。</dd></dl>
@@ -613,7 +613,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -204,7 +204,7 @@ $(document).ready(function(){initNavTree('md_docs_253__func.html',''); initResiz
 </li>
 </ul>
 <dl class="section note"><dt>Note</dt><dd><ul>
-<li><span class="since-c">2.10</span> WebCFaceが文字列データを管理する際 std::string を用いないようになったため、 std::string で文字列を受け取ると(const参照であっても)コピーが発生します。 std::string_view または <a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">webcface::StringView</a> を用いると効率的です<ul>
+<li><span class="since-c">3.0</span> WebCFaceが文字列データを管理する際 std::string を用いないようになったため、 std::string で文字列を受け取ると(const参照であっても)コピーが発生します。 std::string_view または <a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">webcface::StringView</a> を用いると効率的です<ul>
 <li>ただしver2.9以前では std::string_view 引数の関数をsetできないため、互換性を維持する必要があるなら const std::string &amp; にしましょう</li>
 </ul>
 </li>
@@ -541,7 +541,7 @@ FuncListener</h2>
 </div><!-- fragment --><p> とすることで関数が呼び出されたかどうかを調べることができます。</p><ul>
 <li>その関数がまだ呼び出されていない場合はstd::nulloptが返ります。</li>
 <li>関数が呼び出された場合、 CallHandle::args() で呼び出された引数を取得できます。<ul>
-<li>各引数は <del>ValAdaptor</del> <span class="since-c">3.0</span> ValAdaptorVector 型で取得でき、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;double&gt;()</code></del>, <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> で型を指定して取得できます。</li>
+<li>各引数は <del>ValAdaptor</del> <span class="since-c">3.0</span> ValAdaptorVector 型で取得でき、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;double&gt;()</code></del>, <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">3.0</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> で型を指定して取得できます。</li>
 <li>(std::string, double, bool などの型にキャストすることでも値を得られます。)</li>
 <li>listen時に指定した引数の個数と呼び出し時の個数が一致しない場合、fetchCallで取得する前に呼び出し元に例外が投げられます (そのため引数の個数チェックをする必要はないです)</li>
 </ul>
@@ -651,7 +651,7 @@ Entry</h2>
 <li>waitFinish(), waitFinishFor(), waitFinishUntil(): finished()がtrueになるまで待機します。 For, Until の場合はタイムアウトを指定します。</li>
 </ul>
 </li>
-<li>response(): 関数の戻り値です。 <a class="el" href="classwebcface_1_1ValAdaptorVector.html" title="ValAdaptorのVector.">webcface::ValAdaptorVector</a> 型で返り、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> またはstatic_castにより型変換できます。</li>
+<li>response(): 関数の戻り値です。 <a class="el" href="classwebcface_1_1ValAdaptorVector.html" title="ValAdaptorのVector.">webcface::ValAdaptorVector</a> 型で返り、 <del><code>asStringRef()</code></del>, <code>asString()</code>, <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asBool()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">3.0</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> またはstatic_castにより型変換できます。</li>
 <li>rejection(), rejectionW(): 関数が例外を返した場合そのエラーメッセージを表す文字列です。 またその場合 isError() がtrueになります。</li>
 </ul>
 <div class="fragment"><div class="line">Promise res = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).func(<span class="stringliteral">&quot;hoge&quot;</span>).runAsync(1, <span class="stringliteral">&quot;aa&quot;</span>);</div>
@@ -872,7 +872,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 </div><!-- fragment --><p> Funcオブジェクトに()と引数をつけて直接呼び出すことでも同様に実行できます。 (<code>Func::operator()</code>)</p>
 <p class="startli">戻り値は <a class="el" href="classwebcface_1_1ValAdaptorVector.html" title="ValAdaptorのVector.">webcface::ValAdaptorVector</a> 型で返ります。 整数、実数、bool、stringにキャストできます。 <br  />
  <span class="since-c">1.10</span> また、明示的にキャストするなら <del><code>asStringRef()</code>(const参照)</del>, <code>asString()</code>, <code>asBool()</code>, <del><code>as&lt;整数or実数型&gt;()</code></del> も使えます。 <br  />
- <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">2.10</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> も使えます。</p>
+ <span class="since-c">2.0</span> <del><code>asWStringRef()</code></del>, <code>asWString()</code>, <code>asDouble()</code>, <code>asInt()</code>, <code>asLLong()</code>, <span class="since-c">3.0</span> <code>asStringView()</code>, <code>asWStringView()</code>, <code>asVector&lt;T&gt;()</code>, <code>asArray&lt;T, N&gt;()</code> も使えます。</p>
 <dl class="section warning"><dt>Warning</dt><dd>start()を呼んで通信を開始する前にrun()を呼び出してしまうとデッドロックします。</dd></dl>
 <p><span></span></p>
 </li>
@@ -907,7 +907,7 @@ C++の Func::run(), Cの wcfFuncRun() (ver2.0からdeprecated)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

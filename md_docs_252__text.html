@@ -74,7 +74,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="icon.svg"/></td>
   <td id="projectalign">
-   <div id="projectname">WebCFace<span id="projectnumber">&#160;2.9.0</span>
+   <div id="projectname">WebCFace<span id="projectnumber">&#160;3.1.1</span>
    </div>
    <div id="projectbrief">Web-based Communication Framework &amp; Dashboard-like UI</div>
   </td>
@@ -217,12 +217,12 @@ null終端の文字列は wcfTextSet, (<span class="since-c">2.0</span> wcfTextS
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Member::text() でTextクラスのオブジェクトが得られ、 Text::tryGet() で値のリクエストをするとともに受信した値を取得できます。</p>
 <p class="startli">例えば<code>foo</code>というクライアントの<code>hoge</code>という名前のデータを取得したい場合は次のようにします。</p>
-<div class="fragment"><div class="line"><span class="comment">// ver2.10〜</span></div>
+<div class="fragment"><div class="line"><span class="comment">// ver3.0〜</span></div>
 <div class="line">std::optional&lt;webcface::StringView&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 <div class="line"><span class="comment">// それ以前</span></div>
 <div class="line">std::optional&lt;std::string&gt; hoge = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).text(<span class="stringliteral">&quot;hoge&quot;</span>).tryGet();</div>
 </div><!-- fragment --><ul>
-<li><span class="since-c">2.10</span> <a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">webcface::StringView</a> は文字列への参照をshared_ptrで保持しています。そのため文字列のコピーは発生せず、寿命が切れることもありません。<ul>
+<li><span class="since-c">3.0</span> <a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">webcface::StringView</a> は文字列への参照をshared_ptrで保持しています。そのため文字列のコピーは発生せず、寿命が切れることもありません。<ul>
 <li>std::string_view へキャストできます。</li>
 <li>std::string が必要な場合、またはver2.9以前との互換性を維持したい場合は明示的にstd::stringのコンストラクタに渡せばよいです(コピーが必要になります)</li>
 </ul>
@@ -309,7 +309,7 @@ Entry, イベントについて</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 13:36:21 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

@@ -42,7 +42,7 @@ var NAVTREE =
           [ "macOS", "index.html#autotoc_md293", null ]
         ] ],
         [ "Homebrew (MacOS, Linux)", "index.html#autotoc_md294", null ],
-        [ "Windows MSVC (x86, x64)", "index.html#autotoc_md295", null ],
+        [ "Windows MSVC (x86, x64, arm64)", "index.html#autotoc_md295", null ],
         [ "Docker (x86_64, arm64, armhf)", "index.html#autotoc_md296", [
           [ "webcface-server", "index.html#autotoc_md297", null ],
           [ "webcface-tools", "index.html#autotoc_md298", null ]
