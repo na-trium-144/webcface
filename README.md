@@ -39,7 +39,7 @@ Web-based Communication Framework &amp; Dashboard-like UI
          * [Unzip manually (Linux)](#unzip-manually-linux)
          * [macOS](#macos)
       * [Homebrew (MacOS, Linux)](#homebrew-macos-linux)
-      * [Windows MSVC (x86, x64)](#windows-msvc-x86-x64)
+      * [Windows MSVC (x86, x64, arm64)](#windows-msvc-x86-x64-arm64)
       * [Docker (x86_64, arm64, armhf)](#docker-x86_64-arm64-armhf)
          * [webcface-server](#webcface-server)
          * [webcface-tools](#webcface-tools-1)
