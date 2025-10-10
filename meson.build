@@ -188,7 +188,7 @@ py = find_program('python3')
 
 webcface_abi_major = '30' # ABIの破壊的変更で1増やす
 webcface_abi_minor = '1' # ABIの追加で1増やす
-webcface_webui_version = '1.14.0'
+webcface_webui_version = '1.15.0'
 
 webcface_description = 'Web-based Communication Framework'
 webcface_contact = 'na-trium-144@users.noreply.github.com'

@@ -1,7 +1,7 @@
 {
   pkgs ? import <nixpkgs> {},
   doCheck ? false,
-  webui_version ? "1.14.0",
+  webui_version ? "1.15.0",
 }:
 let
   doCheckArg = doCheck;

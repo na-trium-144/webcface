@@ -315,9 +315,9 @@ In addition to the contents distributed as zip archives, it includes the WebCFac
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -327,9 +327,9 @@ rm ./webcface*.deb
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_arm64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -339,9 +339,9 @@ rm ./webcface*.deb
 
 ```sh
 curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_armv7l.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_armv7l.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
