@@ -455,13 +455,12 @@ brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
 
-### Windows MSVC (x86, x64)
+### Windows MSVC (x86, x64, arm64)
 
 You can download the exe or zip file for Windows from the [webcface-package repository](https://github.com/na-trium-144/webcface-package/releases).
 
-* x86 and x64 versions are available.
+* x86, x64 and arm64 versions are available.
     * However, the installer and WebCFace Desktop app are always 32-bit.
-    * The arm64 binary is not distributed, but it should be possible to build from source even on arm64.
 * When you run the exe file, the installer will start.
     * Since it is not signed, it may be blocked by Windows Defender.
     In that case, click "More info" → "Run" to run it.
@@ -480,9 +479,8 @@ MinGW binaries are not distributed at this time (please build from source)
 > [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
 > windows用のexeファイルまたはzipファイルをダウンロードできます。
 > 
-> * x86バージョンとx64バージョンがあります。
+> * x86, x64, arm64バージョンがあります。
 >     * ただしインストーラーと WebCFace Desktop アプリは32bitになっています
->     * arm64のバイナリは配布していませんが、arm64でもソースからビルドすることはできるはずです。
 > * exeファイルは実行するとインストーラーが起動します。
 >     * 署名していないため Windows Defender にブロックされるかもしれません。
 >     その場合は「詳細情報」→「実行」をクリックして実行してください。

@@ -11,12 +11,15 @@
 ### Added
 * 各種FieldのlastNameW() (#539)
 * Logに他のデータ型と同様name(),child(),parent()などを追加 (#539)
+### Fixed
+* AppleClangではC++20 modulesを使えない (#540)
 ### Changed
 * フィールド名の半角スラッシュを半角ピリオドと同等に扱う (#539)
 
 ## [3.0.0] - 2025-09-29
 ### Added
 * default.nix (#513)
+* Windows arm64ビルドをリリースに追加 (#524)
 * benchmark (#515)
 * NumVectorクラス (#516)
 	* Value::getVec() の返す型をstd::vectorからNumVectorに変更
@@ -31,7 +34,6 @@
 * ValAdaptorVectorクラス追加、Funcの引数と戻り値にvectorとarrayを使用可能にする (#527, #534)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
-* AppleClangではC++20 modulesを使えない (#540)
 ### Changed
 * deprecatedなAPIの削除 (#534, #537)
 	* webcface::encoding
