@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(webcface VERSION 3.0.0)
+project(webcface VERSION 3.1.0)
 
 if(CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR)
     set(IS_MAIN on)

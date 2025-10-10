@@ -3,6 +3,16 @@
 <!-- * ドキュメントやREADMEの修正等は記述しない -->
 
 ## main
+
+
+## [3.1.0] - 2025-10-10
+### Added
+* 各種FieldのlastNameW() (#539)
+* Logに他のデータ型と同様name(),child(),parent()などを追加 (#539)
+### Changed
+* フィールド名の半角スラッシュを半角ピリオドと同等に扱う (#539)
+
+## [3.0.0] - 2025-09-29
 ### Added
 * default.nix (#513)
 * benchmark (#515)
@@ -17,8 +27,6 @@
 	* `include/webcface/modules/webcface{.cc,.ccm,.ixx}`
 	* webcfaceConfig.cmake 内で `webcface::webcface_modules` ターゲット(CMake用)、`webcface_INCLUDE_DIR` の定義(Meson用) を追加
 * ValAdaptorVectorクラス追加、Funcの引数と戻り値にvectorとarrayを使用可能にする (#527, #534)
-* 各種FieldのlastNameW() (#539)
-* Logに他のデータ型と同様name(),child(),parent()などを追加 (#539)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 * AppleClangではC++20 modulesを使えない (#540)
@@ -46,8 +54,6 @@
 * `webcface::level::LogLevelEnum` を C-style enum から enum class に変更し、 `webcface::LogLevel`, `webcface::level` に移動 (#532)
 	* `LogLine::level()` の戻り値型変更
 * trait系のヘッダーをcommonへ移動 (#527)
-* フィールド名の半角スラッシュを半角ピリオドと同等に扱う (#539)
-
 
 ## [2.9.0] - 2025-02-09
 ### Added

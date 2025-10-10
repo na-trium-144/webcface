@@ -26,6 +26,7 @@ C/C++のWebCFaceライブラリと、JavaScript、PythonのWebCFaceライブラ�
 | 2.8 | | 1.11 | 1.13〜1.14 | Funcのindexプロパティ |
 | 2.9 | | | | Closed (kind=93) |
 | 3.0 | | 1.12 | 1.15 | Call, FuncResult に配列データ |
+| 3.1 | | | | 半角スラッシュをピリオドに置き換える |
 
 ## ABI Compatibility
 
@@ -64,6 +65,7 @@ ABIのマイナーバージョンはMacで `otool` などを使った場合に�
 | 2.8 | 23.1 | |
 | 2.9 | 23.2 | |
 | 3.0 | 30.0 | |
+| 3.1 | 30.1 | |
 
 <div class="section_buttons">
 
