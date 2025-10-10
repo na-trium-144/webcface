@@ -1,9 +1,9 @@
 [wrap-git]
 url = https://github.com/fmtlib/fmt.git
-revision = 11.2.0
+revision = 12.0.0
 depth = 1
 patch_directory = fmt
-# meson.build copied from wrapdb 11.2.0-1 and modified (for visibility etc.)
+# meson.build copied from wrapdb 12.0.0-1 and modified (for visibility etc.)
 
 [provide]
 fmt = fmt_dep
