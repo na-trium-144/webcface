@@ -71,7 +71,9 @@ void SyncDataStore2<T, ReqT, normalizeName>::setRecv(const SharedString &from,
                                                      SharedString name,
                                                      const T &data) {
     if constexpr (normalizeName) {
-        name.normalizeSeparator();
+        if (isSelf(from)) {
+            name.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     data_recv[from][name] = data;
@@ -104,7 +106,9 @@ template <typename T, typename ReqT, bool normalizeName>
 void SyncDataStore2<T, ReqT, normalizeName>::setEntry(const SharedString &from,
                                                       SharedString e) {
     if constexpr (normalizeName) {
-        e.normalizeSeparator();
+        if (isSelf(from)) {
+            e.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     entry[from].emplace(e);
@@ -115,7 +119,9 @@ unsigned int
 SyncDataStore2<T, ReqT, normalizeName>::addReq(const SharedString &member,
                                                SharedString field) {
     if constexpr (normalizeName) {
-        field.normalizeSeparator();
+        if (isSelf(member)) {
+            field.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     if (!isSelf(member) && req[member][field] == 0) {
@@ -136,7 +142,9 @@ template <typename T, typename ReqT, bool normalizeName>
 unsigned int SyncDataStore2<T, ReqT, normalizeName>::addReq(
     const SharedString &member, SharedString field, const ReqT &info) {
     if constexpr (normalizeName) {
-        field.normalizeSeparator();
+        if (isSelf(member)) {
+            field.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     if (!isSelf(member) &&
@@ -174,7 +182,9 @@ std::optional<T>
 SyncDataStore2<T, ReqT, normalizeName>::getRecv(const SharedString &from,
                                                 SharedString name) {
     if constexpr (normalizeName) {
-        name.normalizeSeparator();
+        if (isSelf(from)) {
+            name.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     if (from == self_member_name) {
@@ -203,7 +213,9 @@ template <typename T, typename ReqT, bool normalizeName>
 bool SyncDataStore2<T, ReqT, normalizeName>::unsetRecv(const SharedString &from,
                                                        SharedString name) {
     if constexpr (normalizeName) {
-        name.normalizeSeparator();
+        if (isSelf(from)) {
+            name.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
@@ -223,7 +235,9 @@ template <typename T, typename ReqT, bool normalizeName>
 void SyncDataStore2<T, ReqT, normalizeName>::clearRecv(const SharedString &from,
                                                        SharedString name) {
     if constexpr (normalizeName) {
-        name.normalizeSeparator();
+        if (isSelf(from)) {
+            name.normalizeSeparator();
+        }
     }
     std::lock_guard lock(mtx);
     if (data_recv.count(from) && data_recv.at(from).count(name)) {
@@ -235,9 +249,9 @@ template <typename T, typename ReqT, bool normalizeName>
 std::pair<SharedString, SharedString>
 SyncDataStore2<T, ReqT, normalizeName>::getReq(unsigned int req_id,
                                                SharedString sub_field) {
-    if constexpr (normalizeName) {
-        sub_field.normalizeSeparator();
-    }
+    // if constexpr (normalizeName) {
+    //     sub_field.normalizeSeparator();
+    // }
     std::lock_guard lock(mtx);
     for (const auto &r : req) {
         for (const auto &r2 : r.second) {
