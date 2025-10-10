@@ -30,6 +30,7 @@ class WEBCFACE_DLL Image : protected Field {
         : Image(Field{base, field}) {}
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;

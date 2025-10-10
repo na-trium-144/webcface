@@ -20,14 +20,20 @@
 
 WEBCFACE_NS_BEGIN
 SharedString Field::lastName8() const {
-    auto i = this->field_.u8StringView().rfind(field_separator);
-    if (i != std::string::npos && i != 0 &&
-        !(i == 1 && this->field_.u8StringView()[0] == field_separator)) {
-        return SharedString::fromU8String(
-            std::string(this->field_.u8StringView().substr(i + 1)));
-    } else {
-        return this->field_;
+    auto u8sv = this->field_.u8StringView();
+    for (auto it = u8sv.end() - 1; it >= u8sv.begin(); it--) {
+        if (*it == field_separator || *it == field_separator_alt) {
+            for (auto it2 = it - 1; it2 >= u8sv.begin(); it2--) {
+                if (*it2 != field_separator && *it2 != field_separator_alt) {
+                    return SharedString::fromU8String(
+                        std::string(u8sv.substr((it + 1) - u8sv.begin())));
+                }
+            }
+            // 文字列の最初からfield_separatorが続く場合
+            return this->field_;
+        }
     }
+    return this->field_;
 }
 
 Field Field::parent() const {
@@ -55,13 +61,18 @@ Field Field::child(const SharedString &field) const {
 template <typename S>
 static bool hasChildrenT(const Field *this_, S &store) {
     auto keys = store.getEntry(*this_);
-    auto prefix_with_sep =
-        strJoin(this_->field_.u8StringView(), field_separator_sv);
+    auto u8sv = this_->field_.u8StringView();
+    auto prefix_with_sep = strJoin(u8sv, field_separator_sv);
+    auto prefix_with_sep_alt = strJoin(u8sv, field_separator_alt_sv);
     for (const auto &f : keys) {
         // mapはkeyでソートされているので
-        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+        if (u8sv.empty() || f.startsWith(prefix_with_sep) ||
+            f.startsWith(prefix_with_sep_alt)) {
             return true;
-        } else if (f.u8StringView() < prefix_with_sep) {
+        } else if (/*f.u8StringView() < prefix_with_sep || */
+                   f.u8StringView() < prefix_with_sep_alt) {
+            static_assert(field_separator < field_separator_alt,
+                          "so comparing with prefix_with_sep is unnecessary");
             continue;
         } else {
             break;
@@ -87,23 +98,33 @@ template <typename V, typename S>
 static void entries(std::vector<V> &ret, const Field *this_, S &store,
                     bool recurse = true) {
     auto keys = store.getEntry(*this_);
-    std::string prefix_with_sep;
+    std::string prefix_with_sep, prefix_with_sep_alt;
     std::size_t prefix_len = 0;
+    auto u8sv = this_->field_.u8StringView();
     if (!this_->field_.empty()) {
-        prefix_with_sep =
-            strJoin(this_->field_.u8StringView(), field_separator_sv);
+        prefix_with_sep = strJoin(u8sv, field_separator_sv);
+        prefix_with_sep_alt = strJoin(u8sv, field_separator_alt_sv);
         prefix_len = prefix_with_sep.size();
     }
     for (auto f : keys) {
         // mapはkeyでソートされているので
-        if (this_->field_.empty() || f.startsWith(prefix_with_sep)) {
+        if (u8sv.empty() || f.startsWith(prefix_with_sep) ||
+            f.startsWith(prefix_with_sep_alt)) {
             if (!recurse) {
-                f = f.substr(0, f.find(field_separator, prefix_len));
+                auto ind = f.find(field_separator, prefix_len);
+                auto ind_alt = f.find(field_separator_alt, prefix_len);
+                if (ind_alt != std::string::npos &&
+                    (ind == std::string::npos || ind_alt < ind)) {
+                    ind = ind_alt;
+                }
+                f = f.substr(0, ind);
             }
             if (std::find(ret.begin(), ret.end(), V(*this_, f)) == ret.end()) {
                 ret.emplace_back(*this_, f);
             }
-        } else if (f.u8StringView() < prefix_with_sep) {
+        } else if (f.u8StringView() < prefix_with_sep_alt) {
+            static_assert(field_separator < field_separator_alt,
+                          "so comparing with prefix_with_sep is unnecessary");
             continue;
         } else {
             break;

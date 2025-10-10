@@ -16,6 +16,9 @@ TEST_F(ServerTest, value) {
     dummy_c1->send(message::Sync{});
     dummy_c1->send(message::Value{
         {}, "a"_ss, MutableNumVector(std::vector<double>{3, 4, 5})});
+    // 他データ型もすべて同様だが面倒なのでテスト更新していない
+    dummy_c1->send(message::Value{
+        {}, "//a/b.c"_ss, MutableNumVector(std::vector<double>{6, 7})});
     wait();
     dummy_c2->send(message::SyncInit{{}, ""_ss, 0, "", "", ""});
     dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "a"_ss, 1});
@@ -26,6 +29,22 @@ TEST_F(ServerTest, value) {
         EXPECT_EQ(obj.sub_field.u8StringView(), "");
         EXPECT_EQ(obj.data.size(), 3u);
         EXPECT_EQ(obj.data.at(0), 3);
+    });
+    dummy_c2->recvClear();
+    dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "a.b.c"_ss, 2});
+    dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 2u);
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
+        EXPECT_EQ(obj.data.size(), 2u);
+        EXPECT_EQ(obj.data.at(0), 6);
+    });
+    dummy_c2->recvClear();
+    dummy_c2->send(message::Req<message::Value>{{}, "c1"_ss, "/a/b/c"_ss, 3});
+    dummy_c2->waitRecv<message::Res<message::Value>>([&](const auto &obj) {
+        EXPECT_EQ(obj.req_id, 3u);
+        EXPECT_EQ(obj.sub_field.u8StringView(), "");
+        EXPECT_EQ(obj.data.size(), 2u);
+        EXPECT_EQ(obj.data.at(0), 6);
     });
     dummy_c2->recvClear();
 
