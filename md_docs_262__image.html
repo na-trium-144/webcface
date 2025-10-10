@@ -143,13 +143,13 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md140">送信</a><ul><li class="level2"><a href="#autotoc_md141">外部ライブラリの利用</a></li>
+<ul><li class="level1"><a href="#autotoc_md141">送信</a><ul><li class="level2"><a href="#autotoc_md142">外部ライブラリの利用</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md142">受信</a></li>
+<li class="level1"><a href="#autotoc_md143">受信</a></li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md138"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md139"></a></p>
 <dl class="section since"><dt>Since</dt><dd><span class="since-c">1.3</span> <span class="since-js">1.2</span> <span class="since-py">2.4</span> </dd></dl>
 <dl class="section see"><dt>See also</dt><dd><ul>
 <li>C++ <a class="el" href="classwebcface_1_1Image.html" title="(ver1.3から追加) 画像の送受信データを表すクラス">webcface::Image</a> (<code><a class="el" href="client_2include_2webcface_2image_8h.html">webcface/image.h</a></code>)</li>
@@ -158,7 +158,7 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 </ul>
 </dd></dl>
 <p>画像データを送受信します。 画像のリサイズ、圧縮などの処理をサーバー側で行う機能があります。</p>
-<h1><a class="anchor" id="autotoc_md140"></a>
+<h1><a class="anchor" id="autotoc_md141"></a>
 送信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> 画像データを表す型として <a class="el" href="classwebcface_1_1ImageFrame.html" title="(ver1.3から追加) 画像データ">webcface::ImageFrame</a> があります。 生の画像データがあればImageFrameのコンストラクタに渡すことができます。 </p><div class="fragment"><div class="line"><span class="keywordtype">unsigned</span> <span class="keywordtype">char</span> data[640 * 480 * 3]; <span class="comment">/* = {...}; */</span></div>
@@ -195,7 +195,7 @@ $(document).ready(function(){initNavTree('md_docs_262__image.html',''); initResi
 <p class="startli">Client.image からImageオブジェクトを作り、 Image.set() でImageFrame型の画像データを代入し、Client.sync()することで送信されます。 </p><div class="fragment"><div class="line">wcli.image(<span class="stringliteral">&quot;hoge&quot;</span>).set(frame)</div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md141"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md142"></a>
 外部ライブラリの利用</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">OpenCV (C++)</b> ImageFrame → cv::Mat <div class="fragment"><div class="line">cv::Mat img_mat(img_frame.rows(), img_frame.cols(), CV_8UC3, img_frame.data().data());</div>
@@ -245,7 +245,7 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <div class="ttc" id="aclasswebcface_1_1Image_html"><div class="ttname"><a href="classwebcface_1_1Image.html">webcface::Image</a></div><div class="ttdoc">(ver1.3から追加) 画像の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> image.h:20</div></div>
 </div><!-- fragment --> <dl class="section note"><dt>Note</dt><dd>圧縮された画像が入ったImageFrameをcv::Matに変換すると画像をデコードして返します。</dd></dl>
 </details>
-<h1><a class="anchor" id="autotoc_md142"></a>
+<h1><a class="anchor" id="autotoc_md143"></a>
 受信</h1>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Member::image() でImageクラスのオブジェクトが得られ、 Image::request() で画像のリクエストをした後 Image::tryGet() で受信した画像を取得できます。</p>
@@ -385,7 +385,7 @@ C++ OpenCVと相互変換できるImageFrame (〜ver1.11まで)</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

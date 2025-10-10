@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.7"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>WebCFace: SyncDataStore2&lt; T, ReqT &gt; Class Template Reference</title>
+<title>WebCFace: SyncDataStore2&lt; T, ReqT, normalizeName &gt; Class Template Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('classwebcface_1_1internal_1_1SyncDataS
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classwebcface_1_1internal_1_1SyncDataStore2-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">SyncDataStore2&lt; T, ReqT &gt; Class Template Reference</div></div>
+  <div class="headertitle"><div class="title">SyncDataStore2&lt; T, ReqT, normalizeName &gt; Class Template Reference</div></div>
 </div><!--header-->
 <div class="contents">
 
@@ -152,9 +152,9 @@ $(document).ready(function(){initNavTree('classwebcface_1_1internal_1_1SyncDataS
 
 <p><code>#include &lt;<a class="el" href="data__store2_8h_source.html">webcface/internal/data_store2.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for SyncDataStore2&lt; T, ReqT &gt;:</div>
+Inheritance diagram for SyncDataStore2&lt; T, ReqT, normalizeName &gt;:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1internal_1_1SyncDataStore2__inherit__graph.svg" width="695" height="668"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classwebcface_1_1internal_1_1SyncDataStore2__inherit__graph.svg" width="728" height="692"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 <center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
@@ -163,51 +163,51 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a4a9cb78edff6a2ca423f8e07ea3dd569"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a8685f3c356d0fa0049d7536784f928"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a5a8685f3c356d0fa0049d7536784f928">isSelf</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member) const</td></tr>
 <tr class="separator:a5a8685f3c356d0fa0049d7536784f928"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac4cddd15c62fe19847cf2af142a3c738"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ac4cddd15c62fe19847cf2af142a3c738">addReq</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field)</td></tr>
-<tr class="memdesc:ac4cddd15c62fe19847cf2af142a3c738"><td class="mdescLeft">&#160;</td><td class="mdescRight">リクエストを追加  <br /></td></tr>
-<tr class="separator:ac4cddd15c62fe19847cf2af142a3c738"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a83aa483512a9346b72c8d2d5c555cf08"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a83aa483512a9346b72c8d2d5c555cf08">addReq</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field, const ReqT &amp;req_info)</td></tr>
-<tr class="memdesc:a83aa483512a9346b72c8d2d5c555cf08"><td class="mdescLeft">&#160;</td><td class="mdescRight">リクエストを追加  <br /></td></tr>
-<tr class="separator:a83aa483512a9346b72c8d2d5c555cf08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e08abd8842b5fc5c37d5e21ca7fa6b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a5e08abd8842b5fc5c37d5e21ca7fa6b0">setSend</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name, const T &amp;data)</td></tr>
-<tr class="memdesc:a5e08abd8842b5fc5c37d5e21ca7fa6b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信するデータをセット  <br /></td></tr>
-<tr class="separator:a5e08abd8842b5fc5c37d5e21ca7fa6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac9b9a319f11b356486ec8612df15208"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#aac9b9a319f11b356486ec8612df15208">addReq</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> field)</td></tr>
+<tr class="memdesc:aac9b9a319f11b356486ec8612df15208"><td class="mdescLeft">&#160;</td><td class="mdescRight">リクエストを追加  <br /></td></tr>
+<tr class="separator:aac9b9a319f11b356486ec8612df15208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46bd59cde6766caa1698fcdec5ae332f"><td class="memItemLeft" align="right" valign="top">unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a46bd59cde6766caa1698fcdec5ae332f">addReq</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> field, const ReqT &amp;req_info)</td></tr>
+<tr class="memdesc:a46bd59cde6766caa1698fcdec5ae332f"><td class="mdescLeft">&#160;</td><td class="mdescRight">リクエストを追加  <br /></td></tr>
+<tr class="separator:a46bd59cde6766caa1698fcdec5ae332f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9d0b849f89403e6b05c49704a07647ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a9d0b849f89403e6b05c49704a07647ea">setSend</a> (<a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> name, const T &amp;data)</td></tr>
+<tr class="memdesc:a9d0b849f89403e6b05c49704a07647ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">送信するデータをセット  <br /></td></tr>
+<tr class="separator:a9d0b849f89403e6b05c49704a07647ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a433ff2544b8c1e0108416c2f6bacf914"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a433ff2544b8c1e0108416c2f6bacf914">setSend</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base, const T &amp;data)</td></tr>
 <tr class="separator:a433ff2544b8c1e0108416c2f6bacf914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac090505fc17ac9fee76e7f9ee5e4ee2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ac090505fc17ac9fee76e7f9ee5e4ee2a">setRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name, const T &amp;data)</td></tr>
-<tr class="memdesc:ac090505fc17ac9fee76e7f9ee5e4ee2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したデータをdata_recvにセット  <br /></td></tr>
-<tr class="separator:ac090505fc17ac9fee76e7f9ee5e4ee2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac83a7bb549183a27d6eaa0bfa2ec29f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ac83a7bb549183a27d6eaa0bfa2ec29f7">setRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> name, const T &amp;data)</td></tr>
+<tr class="memdesc:ac83a7bb549183a27d6eaa0bfa2ec29f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したデータをdata_recvにセット  <br /></td></tr>
+<tr class="separator:ac83a7bb549183a27d6eaa0bfa2ec29f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33490e03031fc9d68b57b0a3b39a8f75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a33490e03031fc9d68b57b0a3b39a8f75">setRecv</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base, const T &amp;data)</td></tr>
 <tr class="separator:a33490e03031fc9d68b57b0a3b39a8f75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6f92f0505cde8c8402947505a594f79e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a6f92f0505cde8c8402947505a594f79e">clearRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name)</td></tr>
-<tr class="memdesc:a6f92f0505cde8c8402947505a594f79e"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したデータを削除  <br /></td></tr>
-<tr class="separator:a6f92f0505cde8c8402947505a594f79e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a373f419dcb6b2963db76a94f9078560e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a373f419dcb6b2963db76a94f9078560e">clearRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> name)</td></tr>
+<tr class="memdesc:a373f419dcb6b2963db76a94f9078560e"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したデータを削除  <br /></td></tr>
+<tr class="separator:a373f419dcb6b2963db76a94f9078560e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab20bd31a39c1a6b8e25b0ef88661b05b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ab20bd31a39c1a6b8e25b0ef88661b05b">clearRecv</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:ab20bd31a39c1a6b8e25b0ef88661b05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a711aae3961fb601f63c45c491f459a00"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a711aae3961fb601f63c45c491f459a00">getRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name)</td></tr>
-<tr class="memdesc:a711aae3961fb601f63c45c491f459a00"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_recvからデータを返す  <br /></td></tr>
-<tr class="separator:a711aae3961fb601f63c45c491f459a00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad34751277a4533d55415704692812646"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ad34751277a4533d55415704692812646">getRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> name)</td></tr>
+<tr class="memdesc:ad34751277a4533d55415704692812646"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_recvからデータを返す  <br /></td></tr>
+<tr class="separator:ad34751277a4533d55415704692812646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae51d9be4ce6f45e5babfef6858a47a55"><td class="memItemLeft" align="right" valign="top">std::optional&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#ae51d9be4ce6f45e5babfef6858a47a55">getRecv</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:ae51d9be4ce6f45e5babfef6858a47a55"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d592fe1ce0fe80c99623dffd9463ad6"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a2d592fe1ce0fe80c99623dffd9463ad6">unsetRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;name)</td></tr>
-<tr class="memdesc:a2d592fe1ce0fe80c99623dffd9463ad6"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_recvからデータを削除, reqを消す  <br /></td></tr>
-<tr class="separator:a2d592fe1ce0fe80c99623dffd9463ad6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aeb90e7ebffc0eedab9e7561b1b7739"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a5aeb90e7ebffc0eedab9e7561b1b7739">unsetRecv</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> name)</td></tr>
+<tr class="memdesc:a5aeb90e7ebffc0eedab9e7561b1b7739"><td class="mdescLeft">&#160;</td><td class="mdescRight">data_recvからデータを削除, reqを消す  <br /></td></tr>
+<tr class="separator:a5aeb90e7ebffc0eedab9e7561b1b7739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a5fb25a7dd4f1d58c9e17d2e1c49abfa0">unsetRecv</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:a5fb25a7dd4f1d58c9e17d2e1c49abfa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a59dcc32b58cee54859e0cb30e9ec86bd">initMember</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
 <tr class="memdesc:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">memberのentryとデータをクリア  <br /></td></tr>
 <tr class="separator:a59dcc32b58cee54859e0cb30e9ec86bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abe416b3d8ccf9684ccae4f695160d175"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#abe416b3d8ccf9684ccae4f695160d175">setEntry</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;e)</td></tr>
-<tr class="memdesc:abe416b3d8ccf9684ccae4f695160d175"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
-<tr class="separator:abe416b3d8ccf9684ccae4f695160d175"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b9931fa89831899af7f8050951033c5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a7b9931fa89831899af7f8050951033c5">setEntry</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> e)</td></tr>
+<tr class="memdesc:a7b9931fa89831899af7f8050951033c5"><td class="mdescLeft">&#160;</td><td class="mdescRight">受信したentryを追加  <br /></td></tr>
+<tr class="separator:a7b9931fa89831899af7f8050951033c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabd1f50cbedf4dc34468983e0a4c17b1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#aabd1f50cbedf4dc34468983e0a4c17b1">getEntry</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;from)</td></tr>
 <tr class="memdesc:aabd1f50cbedf4dc34468983e0a4c17b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">entryを取得  <br /></td></tr>
 <tr class="separator:aabd1f50cbedf4dc34468983e0a4c17b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab18bc9650eb34410fb035748f7b55ef"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#aab18bc9650eb34410fb035748f7b55ef">getEntry</a> (const <a class="el" href="structwebcface_1_1FieldBase.html">FieldBase</a> &amp;base)</td></tr>
 <tr class="separator:aab18bc9650eb34410fb035748f7b55ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a566698e78c5cba33ee63a0426628cf02"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a566698e78c5cba33ee63a0426628cf02">getReq</a> (unsigned int req_id, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;sub_field)</td></tr>
-<tr class="memdesc:a566698e78c5cba33ee63a0426628cf02"><td class="mdescLeft">&#160;</td><td class="mdescRight">req_idに対応するmember名とフィールド名を返す  <br /></td></tr>
-<tr class="separator:a566698e78c5cba33ee63a0426628cf02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36d94ae6b3fe0b92c6b1c60f276400e2"><td class="memItemLeft" align="right" valign="top">std::pair&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#a36d94ae6b3fe0b92c6b1c60f276400e2">getReq</a> (unsigned int req_id, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> sub_field)</td></tr>
+<tr class="memdesc:a36d94ae6b3fe0b92c6b1c60f276400e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">req_idに対応するmember名とフィールド名を返す  <br /></td></tr>
+<tr class="separator:a36d94ae6b3fe0b92c6b1c60f276400e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc80c2e19c4dae616ace52295f8b9c31"><td class="memItemLeft" align="right" valign="top">const ReqT &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html#afc80c2e19c4dae616ace52295f8b9c31">getReqInfo</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;member, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field)</td></tr>
 <tr class="memdesc:afc80c2e19c4dae616ace52295f8b9c31"><td class="mdescLeft">&#160;</td><td class="mdescRight">member名とフィールド名に対応するreq_infoを返す  <br /></td></tr>
 <tr class="separator:afc80c2e19c4dae616ace52295f8b9c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -226,10 +226,11 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8e3a00b8e2de7776167cc2c41c29294c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename ReqT = int&gt;<br />
-class webcface::internal::SyncDataStore2&lt; T, ReqT &gt;</div><p>送受信するデータを保持するクラス </p>
+<div class="textblock"><div class="compoundTemplParams">template&lt;typename T, typename ReqT = int, bool normalizeName = false&gt;<br />
+class webcface::internal::SyncDataStore2&lt; T, ReqT, normalizeName &gt;</div><p>送受信するデータを保持するクラス </p>
 <p>memberごとにフィールドを持つデータに使う。 member, fieldの2次元mapとなる</p>
-<p>T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる) </p>
+<p>T=FuncInfoの時、entryとreqは使用しない(常にすべての関数の情報が送られてくる)</p>
+<p>ver3.1〜 normalizeNameがtrueの場合(Funcのみ)、field名を常に正規化 (Func以外はサーバー側で正規化しており、 サーバーからクライアントに名前指定を含むメッセージが送られてくることはないので、 正規化の必要がない) </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4a9cb78edff6a2ca423f8e07ea3dd569" name="a4a9cb78edff6a2ca423f8e07ea3dd569"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4a9cb78edff6a2ca423f8e07ea3dd569">&#9670;&#160;</a></span>SyncDataStore2()</h2>
@@ -237,7 +238,7 @@ class webcface::internal::SyncDataStore2&lt; T, ReqT &gt;</div><p>送受信す�
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -260,13 +261,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac4cddd15c62fe19847cf2af142a3c738" name="ac4cddd15c62fe19847cf2af142a3c738"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac4cddd15c62fe19847cf2af142a3c738">&#9670;&#160;</a></span>addReq() <span class="overload">[1/2]</span></h2>
+<a id="aac9b9a319f11b356486ec8612df15208" name="aac9b9a319f11b356486ec8612df15208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac9b9a319f11b356486ec8612df15208">&#9670;&#160;</a></span>addReq() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int addReq </td>
@@ -277,7 +278,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>field</em>&#160;</td>
         </tr>
         <tr>
@@ -294,13 +295,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a83aa483512a9346b72c8d2d5c555cf08" name="a83aa483512a9346b72c8d2d5c555cf08"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a83aa483512a9346b72c8d2d5c555cf08">&#9670;&#160;</a></span>addReq() <span class="overload">[2/2]</span></h2>
+<a id="a46bd59cde6766caa1698fcdec5ae332f" name="a46bd59cde6766caa1698fcdec5ae332f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46bd59cde6766caa1698fcdec5ae332f">&#9670;&#160;</a></span>addReq() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">unsigned int addReq </td>
@@ -311,7 +312,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>field</em>, </td>
         </tr>
         <tr>
@@ -341,7 +342,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void clearRecv </td>
@@ -355,13 +356,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a6f92f0505cde8c8402947505a594f79e" name="a6f92f0505cde8c8402947505a594f79e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f92f0505cde8c8402947505a594f79e">&#9670;&#160;</a></span>clearRecv() <span class="overload">[2/2]</span></h2>
+<a id="a373f419dcb6b2963db76a94f9078560e" name="a373f419dcb6b2963db76a94f9078560e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a373f419dcb6b2963db76a94f9078560e">&#9670;&#160;</a></span>clearRecv() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void clearRecv </td>
@@ -372,7 +373,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>name</em>&#160;</td>
         </tr>
         <tr>
@@ -393,7 +394,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a> getEntry </td>
@@ -413,7 +414,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacewebcface_1_1internal.html#ac6b473f4adca237a3e8cc413871a4e99">StrSet1</a> getEntry </td>
@@ -435,7 +436,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::optional&lt; T &gt; getRecv </td>
@@ -449,13 +450,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a711aae3961fb601f63c45c491f459a00" name="a711aae3961fb601f63c45c491f459a00"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a711aae3961fb601f63c45c491f459a00">&#9670;&#160;</a></span>getRecv() <span class="overload">[2/2]</span></h2>
+<a id="ad34751277a4533d55415704692812646" name="ad34751277a4533d55415704692812646"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad34751277a4533d55415704692812646">&#9670;&#160;</a></span>getRecv() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::optional&lt; T &gt; getRecv </td>
@@ -466,7 +467,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>name</em>&#160;</td>
         </tr>
         <tr>
@@ -481,13 +482,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a566698e78c5cba33ee63a0426628cf02" name="a566698e78c5cba33ee63a0426628cf02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a566698e78c5cba33ee63a0426628cf02">&#9670;&#160;</a></span>getReq()</h2>
+<a id="a36d94ae6b3fe0b92c6b1c60f276400e2" name="a36d94ae6b3fe0b92c6b1c60f276400e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36d94ae6b3fe0b92c6b1c60f276400e2">&#9670;&#160;</a></span>getReq()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::pair&lt; <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>, <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &gt; getReq </td>
@@ -498,7 +499,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>sub_field</em>&#160;</td>
         </tr>
         <tr>
@@ -519,7 +520,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">const ReqT &amp; getReqInfo </td>
@@ -551,7 +552,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; T &gt; getSendPrev </td>
@@ -571,7 +572,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void initMember </td>
@@ -594,7 +595,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool isSelf </td>
@@ -608,13 +609,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="abe416b3d8ccf9684ccae4f695160d175" name="abe416b3d8ccf9684ccae4f695160d175"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abe416b3d8ccf9684ccae4f695160d175">&#9670;&#160;</a></span>setEntry()</h2>
+<a id="a7b9931fa89831899af7f8050951033c5" name="a7b9931fa89831899af7f8050951033c5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b9931fa89831899af7f8050951033c5">&#9670;&#160;</a></span>setEntry()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void setEntry </td>
@@ -625,7 +626,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>e</em>&#160;</td>
         </tr>
         <tr>
@@ -646,7 +647,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void setRecv </td>
@@ -670,13 +671,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="ac090505fc17ac9fee76e7f9ee5e4ee2a" name="ac090505fc17ac9fee76e7f9ee5e4ee2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac090505fc17ac9fee76e7f9ee5e4ee2a">&#9670;&#160;</a></span>setRecv() <span class="overload">[2/2]</span></h2>
+<a id="ac83a7bb549183a27d6eaa0bfa2ec29f7" name="ac83a7bb549183a27d6eaa0bfa2ec29f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac83a7bb549183a27d6eaa0bfa2ec29f7">&#9670;&#160;</a></span>setRecv() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void setRecv </td>
@@ -687,7 +688,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
@@ -714,7 +715,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void setSend </td>
@@ -738,18 +739,18 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a5e08abd8842b5fc5c37d5e21ca7fa6b0" name="a5e08abd8842b5fc5c37d5e21ca7fa6b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5e08abd8842b5fc5c37d5e21ca7fa6b0">&#9670;&#160;</a></span>setSend() <span class="overload">[2/2]</span></h2>
+<a id="a9d0b849f89403e6b05c49704a07647ea" name="a9d0b849f89403e6b05c49704a07647ea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9d0b849f89403e6b05c49704a07647ea">&#9670;&#160;</a></span>setSend() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void setSend </td>
           <td>(</td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>name</em>, </td>
         </tr>
         <tr>
@@ -777,7 +778,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacewebcface_1_1internal.html#abd5eab460a31c187724b48a8773dbb40">StrMap2</a>&lt; unsigned int &gt; transferReq</td>
@@ -795,7 +796,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname"><a class="el" href="namespacewebcface_1_1internal.html#a7a0d36dc9b88af5a365f951294574095">StrMap1</a>&lt; T &gt; transferSend </td>
@@ -817,7 +818,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool unsetRecv </td>
@@ -831,13 +832,13 @@ template&lt;typename T , typename ReqT &gt; </div>
 
 </div>
 </div>
-<a id="a2d592fe1ce0fe80c99623dffd9463ad6" name="a2d592fe1ce0fe80c99623dffd9463ad6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d592fe1ce0fe80c99623dffd9463ad6">&#9670;&#160;</a></span>unsetRecv() <span class="overload">[2/2]</span></h2>
+<a id="a5aeb90e7ebffc0eedab9e7561b1b7739" name="a5aeb90e7ebffc0eedab9e7561b1b7739"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5aeb90e7ebffc0eedab9e7561b1b7739">&#9670;&#160;</a></span>unsetRecv() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT &gt; </div>
+template&lt;typename T , typename ReqT , bool normalizeName&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool unsetRecv </td>
@@ -848,7 +849,7 @@ template&lt;typename T , typename ReqT &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td>
           <td class="paramname"><em>name</em>&#160;</td>
         </tr>
         <tr>
@@ -871,7 +872,7 @@ template&lt;typename T , typename ReqT &gt; </div>
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T , typename ReqT  = int&gt; </div>
+template&lt;typename T , typename ReqT  = int, bool normalizeName = false&gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">std::recursive_mutex mtx</td>
@@ -891,7 +892,7 @@ template&lt;typename T , typename ReqT  = int&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="classwebcface_1_1internal_1_1SyncDataStore2.html">SyncDataStore2</a></li>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

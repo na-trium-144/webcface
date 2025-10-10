@@ -1,5 +1,10 @@
 var NAVTREEINDEX23 =
 {
+"namespacewebcface_1_1traits.html#a3922df3e3a34177fa04ca35271e00909":[32,0,4,7,33],
+"namespacewebcface_1_1traits.html#a3957fdc90acc4d3999437777dca51a62":[32,0,4,7,40],
+"namespacewebcface_1_1traits.html#a3d93729e7764e4d7fb6a2e418db68976":[32,0,4,7,61],
+"namespacewebcface_1_1traits.html#a48990fb8e0f9b346003a3c1fa4efa361":[32,0,4,7,52],
+"namespacewebcface_1_1traits.html#a49c337c87816c444f5483069a964c7fa":[32,0,4,7,35],
 "namespacewebcface_1_1traits.html#a574cdebe53cab88dcd4790e9ef7feef2":[32,0,4,7,45],
 "namespacewebcface_1_1traits.html#a5b779b8d74aca099156f25d9aab3910e":[32,0,4,7,49],
 "namespacewebcface_1_1traits.html#a5c61415ee3e526408c92bfb2327a54c1":[32,0,4,7,32],
@@ -244,10 +249,5 @@ var NAVTREEINDEX23 =
 "structfmt_1_1formatter_3_01webcface_1_1message_1_1ViewOld_01_4.html":[33,0,0,57],
 "structfmt_1_1formatter_3_01webcface_1_1message_1_1ViewOld_01_4.html#a2feda2b9392db2e4767dea22df467d5e":[33,0,0,57,1],
 "structfmt_1_1formatter_3_01webcface_1_1message_1_1ViewOld_01_4.html#aa6c3b721515fc1283c8e14b2c7a9fc47":[33,0,0,57,0],
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1View_01_4.html":[33,0,0,56],
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1View_01_4.html#a253f46fec89f9da75c0b7b1766d2a22c":[33,0,0,56,0],
-"structfmt_1_1formatter_3_01webcface_1_1message_1_1View_01_4.html#a2feda2b9392db2e4767dea22df467d5e":[33,0,0,56,1],
-"structwcfFuncCallHandle.html":[33,0,2],
-"structwcfFuncCallHandle.html#a711a6fa02335f49ddd69d7e64c8e74b5":[33,0,2,0],
-"structwcfFuncCallHandle.html#a93870285fe1d13d90d64d60599c8ab27":[33,0,2,1]
+"structfmt_1_1formatter_3_01webcface_1_1message_1_1View_01_4.html":[33,0,0,56]
 };

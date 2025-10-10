@@ -9,5 +9,9 @@ var common_2encoding_8h =
     [ "toNarrow", "common_2encoding_8h.html#a14b83a27bbb7c55bc9725de209613066", null ],
     [ "toWide", "common_2encoding_8h.html#a54e0d3d7c5de948abb1cacf599743264", null ],
     [ "usingUTF8", "common_2encoding_8h.html#ae57423f1244b067999069f20f73eb166", null ],
-    [ "usingUTF8", "common_2encoding_8h.html#a478748a436d45cac26bdb4c4af55f54b", null ]
+    [ "usingUTF8", "common_2encoding_8h.html#a478748a436d45cac26bdb4c4af55f54b", null ],
+    [ "field_separator", "common_2encoding_8h.html#abc51f58b171b3f4a8d47a017d22c1c93", null ],
+    [ "field_separator_alt", "common_2encoding_8h.html#ae4bc42d71c213c7e5f87681a975defb1", null ],
+    [ "field_separator_alt_sv", "common_2encoding_8h.html#a08d445737029e6405aba19d4b6446a47", null ],
+    [ "field_separator_sv", "common_2encoding_8h.html#afdac63b476e4351362c7dc25390f0acc", null ]
 ];

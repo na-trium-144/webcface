@@ -290,6 +290,8 @@ var namespacewebcface =
     [ "fetched_handles", "namespacewebcface_1_1c__wcf.html#abc622b8adc5503816c25114a9255c531", null ],
     [ "fetched_handles_w", "namespacewebcface_1_1c__wcf.html#a8a3077e8bc5b194931b9449137dd8b92", null ],
     [ "field_separator", "namespacewebcface.html#abc51f58b171b3f4a8d47a017d22c1c93", null ],
+    [ "field_separator_alt", "namespacewebcface.html#ae4bc42d71c213c7e5f87681a975defb1", null ],
+    [ "field_separator_alt_sv", "namespacewebcface.html#a08d445737029e6405aba19d4b6446a47", null ],
     [ "field_separator_sv", "namespacewebcface.html#afdac63b476e4351362c7dc25390f0acc", null ],
     [ "func_index_prev", "namespacewebcface.html#a3b17bb5ba11cb1c0ae84a7c1f4818346", null ],
     [ "func_result_list", "namespacewebcface_1_1c__wcf.html#a3758615d464d49b752f97ade95255927", null ],

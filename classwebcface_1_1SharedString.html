@@ -187,6 +187,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a102632bc4c960e8728dfe97845902d80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1c46983326f0b46c6f47cd11febec00"><td class="memItemLeft" align="right" valign="top">std::size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ac1c46983326f0b46c6f47cd11febec00">find</a> (char c, std::size_t pos=0) const</td></tr>
 <tr class="separator:ac1c46983326f0b46c6f47cd11febec00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad040ee903f52c8b6e2f237bfbb58c278"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ad040ee903f52c8b6e2f237bfbb58c278">normalizeSeparator</a> ()</td></tr>
+<tr class="separator:ad040ee903f52c8b6e2f237bfbb58c278"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a58e45c7c2e8fd7d88592ccddb39e87"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#a5a58e45c7c2e8fd7d88592ccddb39e87">operator==</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;other) const</td></tr>
 <tr class="separator:a5a58e45c7c2e8fd7d88592ccddb39e87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2746d731d6132fd444f40a73136d34a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1SharedString.html#ad2746d731d6132fd444f40a73136d34a">operator&lt;=</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;other) const</td></tr>
@@ -631,6 +633,25 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad040ee903f52c8b6e2f237bfbb58c278" name="ad040ee903f52c8b6e2f237bfbb58c278"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad040ee903f52c8b6e2f237bfbb58c278">&#9670;&#160;</a></span>normalizeSeparator()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp; normalizeSeparator </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver3.1</dd></dl>
+<p>スラッシュをピリオドに置き換え、thisを返す thisのdataが指す先が新しいshared_ptrになり、 もとのSharedStringが指している先のdata自体は書き換わらない </p>
+
+</div>
+</div>
 <a id="a203d8c1d83254c8671b2aa851c6f0848" name="a203d8c1d83254c8671b2aa851c6f0848"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a203d8c1d83254c8671b2aa851c6f0848">&#9670;&#160;</a></span>operator!=()</h2>
 
@@ -871,7 +892,7 @@ Static Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a></li>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

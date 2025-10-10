@@ -37,7 +37,7 @@ var structwebcface_1_1internal_1_1ClientData =
     [ "func_entry_event", "structwebcface_1_1internal_1_1ClientData.html#aa3313011d309372abe9dbe9289af23fb", null ],
     [ "func_listener_handlers", "structwebcface_1_1internal_1_1ClientData.html#a2efc09fbcadcda2977d3ebc59feb79c4", null ],
     [ "func_result_store", "structwebcface_1_1internal_1_1ClientData.html#a00f818e1a82882952d07c59cb3557b2d", null ],
-    [ "func_store", "structwebcface_1_1internal_1_1ClientData.html#ab38b749c819e1616f5854c147563bdd6", null ],
+    [ "func_store", "structwebcface_1_1internal_1_1ClientData.html#a61cb4a60c538b49ae42c0aa050c50e52", null ],
     [ "host", "structwebcface_1_1internal_1_1ClientData.html#a799f0bdf95425c9fc511fedb68bbd37b", null ],
     [ "image_change_event", "structwebcface_1_1internal_1_1ClientData.html#a975ec37bfde8eec3eea563ada7a0085e", null ],
     [ "image_entry_event", "structwebcface_1_1internal_1_1ClientData.html#abe79471352bcb7b0b7a5415b07c1a770", null ],

@@ -143,7 +143,7 @@ $(document).ready(function(){initNavTree('index.html',''); initResizable(); });
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a> <sub><img src="https://raw.githubusercontent.com/na-trium-144/webcface-webui/main/public/icon.svg" alt="" style="pointer-events: none;" height="40" class="inline"/></sub> </p>
-<h1><a class="anchor" id="autotoc_md277"></a>
+<h1><a class="anchor" id="autotoc_md278"></a>
 WebCFace</h1>
 <p><a href="https://github.com/na-trium-144/webcface"><img src="https://img.shields.io/badge/C%2B%2B-17-blue?logo=C%2B%2B" alt="C++17" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/releases"><img src="https://img.shields.io/github/v/release/na-trium-144/webcface" alt="release" class="inline"/></a> <a href="https://github.com/na-trium-144/webcface/actions/workflows/cmake-coverage.yml"><img src="https://raw.githubusercontent.com/na-trium-144/webcface/badge/coverage.svg" alt="coverage" style="pointer-events: none;" class="inline"/></a> <br  />
  <a href="https://github.com/na-trium-144/webcface-python"><img src="https://img.shields.io/pypi/pyversions/webcface?logo=Python&amp;logoColor=white" alt="PyPI - Python Version" class="inline"/></a> <a href="https://pypi.org/project/webcface/"><img src="https://img.shields.io/pypi/v/webcface" alt="PyPI - Version" class="inline"/></a> <br  />
@@ -161,7 +161,7 @@ WebCFace</h1>
 <li>Linux, MacOS, Windows(MSVC, MinGW, MSYS2, Cygwin) で動作します。 </li>
 </ul>
 </blockquote>
-<h2><a class="anchor" id="autotoc_md278"></a>
+<h2><a class="anchor" id="autotoc_md279"></a>
 Table of contents</h2>
 <ul>
 <li>Table of contents</li>
@@ -192,9 +192,9 @@ Table of contents</h2>
 </li>
 <li>License</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md279"></a>
+<h2><a class="anchor" id="autotoc_md280"></a>
 Features</h2>
-<h3><a class="anchor" id="autotoc_md280"></a>
+<h3><a class="anchor" id="autotoc_md281"></a>
 Easy to Setup</h3>
 <p>WebCFace consists of a server-side program <code>webcface-server</code> and client libraries. To use it, simply start the server and run a program using the client library. Unlike ROS, it does not have workspace management features, making it easy to integrate into any framework project.</p>
 <p>For C / C++, if you are using CMake, you can use <code>find_package(webcface)</code>, or if you are using pkg-config, you can use <code>pkg-config --cflags --libs webcface</code>.</p>
@@ -219,7 +219,7 @@ Easy to Setup</h3>
 <p>Python, JavaScript には PyPI / npm に <code>webcface</code> パッケージを用意しているのでそれをインストールするだけで使えます。 </p>
 </blockquote>
 <p>通信にWebSocketを使用しているため、Webブラウザ上でもそのまま動作します。</p>
-<h3><a class="anchor" id="autotoc_md281"></a>
+<h3><a class="anchor" id="autotoc_md282"></a>
 Inter-Process Communication</h3>
 <p>WebCFace uses WebSocket and MessagePack for communication. This allows communication not only between processes but also with web browsers. Additionally, if available, it uses Unix domain sockets instead of TCP for communication on the same machine or via Docker, WSL, etc.</p>
 <p>The data types that can be sent and received with WebCFace include:</p>
@@ -249,7 +249,7 @@ Inter-Process Communication</h3>
 <p>Image型データは送受信の過程で画像を縮小したりJPEGやPNGに圧縮したりといった操作をサーバー側で行うことができます。 表示目的など、圧縮した画像で十分な場合には簡単に通信量を削減できます。</p>
 <p>WebCFaceの通信データ形式はOSやライブラリの言語によらず共通で、またバージョン間で後方互換性があります。 つまり、サーバーがクライアントより新しいバージョンでさえあれば、異なるバージョンのクライアント同士でも、異なるバージョンのOSでも問題なく通信が可能です。 詳細は <a href="https://na-trium-144.github.io/webcface/md_docs_284__versioning.html">8-4. Versioning</a> を参照してください。 </p>
 </blockquote>
-<h3><a class="anchor" id="autotoc_md282"></a>
+<h3><a class="anchor" id="autotoc_md283"></a>
 WebUI</h3>
 <p>WebCFace provides not only an API for sending and receiving data between programs but also a UI (WebUI) that allows visualizing data and calling functions communicated via WebCFace from a web browser.</p>
 <p>Furthermore, you can define the arrangement of buttons and input fields on the side of programs using WebCFace in C++, Python, etc., and display them in the WebUI. This allows you to create simple UIs without knowledge of HTML or CSS. For code examples, refer to the documentation <a href="https://na-trium-144.github.io/webcface/md_docs_211__tutorial__vis.html">1-1. Tutorial (Visualizing)</a>.</p>
@@ -260,7 +260,7 @@ WebUI</h3>
 <p>また、同様に2D、3Dの図形もWebCFaceを使ったプログラム側の記述のみでWebUIに描画させることができます。 </p>
 </blockquote>
 <p><img src="https://raw.githubusercontent.com/na-trium-144/webcface/main/docs/images/webcface-webui.png" alt="webcface-webui" class="inline"/></p>
-<h3><a class="anchor" id="autotoc_md283"></a>
+<h3><a class="anchor" id="autotoc_md284"></a>
 WebCFace-Tools</h3>
 <p>Several commands are provided to access WebCFace data from the command line.</p>
 <p><a href="https://na-trium-144.github.io/webcface/md_docs_271__launcher.html">webcface-launcher</a> is a feature that allows you to start and stop pre-registered commands from the WebCFace View. You can keep only the server and launcher running at all times and remotely control programs using the WebUI.</p>
@@ -272,7 +272,7 @@ WebCFace-Tools</h3>
 </blockquote>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_value.gif" alt="tui_value" class="inline"/></p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/tui_view.png" alt="tui_view" class="inline"/></p>
-<h2><a class="anchor" id="autotoc_md286"></a>
+<h2><a class="anchor" id="autotoc_md287"></a>
 Documentation</h2>
 <p>Currently available in Japanese only.</p>
 <ul>
@@ -284,7 +284,7 @@ Documentation</h2>
 <li><a href="https://na-trium-144.github.io/webcface-python/">webcface-python API Reference</a></li>
 <li><a href="https://na-trium-144.github.io/webcface-js/">webcface-js API Reference</a></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md287"></a>
+<h2><a class="anchor" id="autotoc_md288"></a>
 Links</h2>
 <ul>
 <li><a href="https://github.com/na-trium-144/webcface">webcface</a>: Server &amp; C/C++ client library (this repository)</li>
@@ -295,7 +295,7 @@ Links</h2>
 <li><a href="https://github.com/na-trium-144/webcface-package">webcface-package</a>: Repository for releasing built server, libraries, WebUI, and tools</li>
 <li><a href="https://github.com/na-trium-144/homebrew-webcface">homebrew-webcface</a>: Manages Homebrew tap</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md288"></a>
+<h2><a class="anchor" id="autotoc_md289"></a>
 Installation</h2>
 <p>For WebCFace ver1, refer to the <a href="https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation">v1 branch</a> (documentation is Japanese only).</p>
 <p>For ver2, you can download built archives for Linux, MacOS and Windows as follows, or run it with Docker. If you want to build from source, refer to <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a>.</p>
@@ -303,7 +303,7 @@ Installation</h2>
 <p>&zwj;WebCFace ver1については <a href="https://github.com/na-trium-144/webcface/tree/v1?tab=readme-ov-file#installation">v1ブランチ</a> を参照してください。</p>
 <p>ver2は以下のようにLinux,Windows,MacOS用にビルドしたアーカイブをダウンロードするか、Dockerで動かすことができます。 自分でソースからビルドする場合は <a href="https://na-trium-144.github.io/webcface/md_docs_232__building.html">3-2. Building from Source</a> を参照してください。 </p>
 </blockquote>
-<h3><a class="anchor" id="autotoc_md289"></a>
+<h3><a class="anchor" id="autotoc_md290"></a>
 Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)</h3>
 <p>You can use the following <a href="installer.sh">installation script</a>. By default, it will install WebCFace using apt-get (on Debian-based systems) or extract the archive manually to /opt/webcface (both on Linux and macOS) and /Applications (on macOS). If it found WebCFace already installed using apt or extracted at /opt/webcface manually, it will install over that. (Installation does not occur immediately upon execution, and one or two confirmation prompts will be displayed.)</p>
 <p>After installation, you may need to add PATH settings to files such as .bashrc or .zshrc. Follow the instructions displayed after running the installer.</p>
@@ -333,7 +333,7 @@ Details</summary>
 <p></p>
 <p></p>
 </details>
-<h4><a class="anchor" id="autotoc_md290"></a>
+<h4><a class="anchor" id="autotoc_md291"></a>
 Deb Package</h4>
 <p>You can download and install the Deb package from <a href="https://github.com/na-trium-144/webcface/releases">WebCFace Releases</a>, <a href="https://github.com/na-trium-144/webcface-webui/releases">webui Releases</a>, and <a href="https://github.com/na-trium-144/webcface-tools/releases">tools Releases</a>. In addition to the contents distributed as zip archives, it includes the WebCFace Desktop application launcher.</p>
 <blockquote class="doxtable">
@@ -372,7 +372,7 @@ armhf</summary>
 <div class="line">sudo apt install ./webcface*.deb</div>
 <div class="line">rm ./webcface*.deb</div>
 </div><!-- fragment --> </details>
-<h4><a class="anchor" id="autotoc_md291"></a>
+<h4><a class="anchor" id="autotoc_md292"></a>
 Unzip manually (Linux)</h4>
 <p>Instead of using apt, you can download the zip file for Linux from the <a href="https://github.com/na-trium-144/webcface-package/releases">webcface-package repository</a> and extract it to a location of your choice.</p>
 <ul>
@@ -418,7 +418,7 @@ armhf</summary>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/</div>
 </div><!-- fragment --> </details>
-<h4><a class="anchor" id="autotoc_md292"></a>
+<h4><a class="anchor" id="autotoc_md293"></a>
 macOS</h4>
 <p><a href="https://github.com/na-trium-144/webcface-package/releases">From the webcface-package repository</a> You can download a zip file for macOS, but since it is not signed or notarized, it will be blocked by Gatekeeper when downloaded from a browser. (A screen will appear saying "Cannot open because the developer cannot be verified.")</p>
 <p>Instead, you can avoid Gatekeeper by downloading and extracting it from the command line as follows. (The following command extracts webcface_universal to /opt/webcface and webcface-desktop_app to /Applications, and writes the environment variables to zshrc. Please read appropriately if you are using a different environment.)</p>
@@ -442,7 +442,7 @@ macOS</h4>
 <div class="line">rm webcface-desktop_2.9.0-1_macos_app.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md293"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md294"></a>
 Homebrew (MacOS, Linux)</h3>
 <p>You can install from <a href="https://github.com/na-trium-144/homebrew-webcface">na-trium-144/webcface tap</a> using brew, but it is not recommended because the webcface built with brew requires many dependent libraries as shared libraries.</p>
 <p>Also, if you install with brew, the WebCFace Desktop app is not included.</p>
@@ -452,7 +452,7 @@ Homebrew (MacOS, Linux)</h3>
 </blockquote>
 <div class="fragment"><div class="line">brew tap na-trium-144/webcface</div>
 <div class="line">brew install webcface webcface-webui webcface-tools</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md294"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md295"></a>
 Windows MSVC (x86, x64)</h3>
 <p>You can download the exe or zip file for Windows from the <a href="https://github.com/na-trium-144/webcface-package/releases">webcface-package repository</a>.</p>
 <ul>
@@ -502,13 +502,13 @@ Windows MSVC (x86, x64)</h3>
 </ul>
 <p>MinGW用バイナリは今のところ配布していません(ソースからビルドしてください) </p>
 </blockquote>
-<h3><a class="anchor" id="autotoc_md295"></a>
+<h3><a class="anchor" id="autotoc_md296"></a>
 Docker (x86_64, arm64, armhf)</h3>
 <p>You can also pull and run <code>webcface-server</code> and tools using Docker. The image is released as <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a>. For arm64 or armhf, replace <code>amd64</code> in the image name.</p>
 <blockquote class="doxtable">
 <p>&zwj;Dockerを使って <code>webcface-server</code> とコマンドラインツールを実行することもできます。 Dockerイメージは <a href="https://ghcr.io/na-trium-144/webcface-package/webcface-amd64">ghcr.io/na-trium-144/webcface-package/webcface-amd64</a> としてリリースしています。 arm64やarmhfの場合はイメージ名の <code>amd64</code> の部分を変更してください。 </p>
 </blockquote>
-<h4><a class="anchor" id="autotoc_md296"></a>
+<h4><a class="anchor" id="autotoc_md297"></a>
 webcface-server</h4>
 <ul>
 <li>Example (TCP and Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
@@ -517,7 +517,7 @@ webcface-server</h4>
 <div class="line">    ghcr.io/na-trium-144/webcface-package/webcface-amd64:latest</div>
 </div><!-- fragment --></li>
 </ul>
-<h4><a class="anchor" id="autotoc_md297"></a>
+<h4><a class="anchor" id="autotoc_md298"></a>
 webcface-tools</h4>
 <ul>
 <li>Example (Unix Socket) <div class="fragment"><div class="line">docker run --rm \</div>
@@ -531,7 +531,7 @@ webcface-tools</h4>
 <div class="line">    webcface-ls -a host.docker.internal</div>
 </div><!-- fragment --></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md298"></a>
+<h2><a class="anchor" id="autotoc_md299"></a>
 License</h2>
 <p>WebCFace and related programs are all released under the MIT license. For details, see <a href="https://github.com/na-trium-144/webcface/blob/main/LICENSE">LICENSE</a>.</p>
 <p>Third-party libraries used by WebCFace itself and tools are licensed as follows:</p>
@@ -559,7 +559,7 @@ License</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

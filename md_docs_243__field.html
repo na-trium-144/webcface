@@ -145,14 +145,15 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <div class="toc"><h3>Table of Contents</h3>
 <ul><li class="level1"><a href="#autotoc_md70">名前の指定</a><ul><li class="level2"><a href="#autotoc_md71">データ型</a></li>
 <li class="level2"><a href="#autotoc_md72">グループ化</a></li>
-<li class="level2"><a href="#autotoc_md73">名前などの操作</a></li>
+<li class="level2"><a href="#autotoc_md73">隠しフィールド</a></li>
+<li class="level2"><a href="#autotoc_md74">名前などの操作</a></li>
 </ul>
 </li>
-<li class="level1"><a href="#autotoc_md74">基本的な通信の仕様</a><ul><li class="level2"><a href="#autotoc_md75">送信</a></li>
-<li class="level2"><a href="#autotoc_md76">受信</a></li>
-<li class="level2"><a href="#autotoc_md77">時刻</a></li>
-<li class="level2"><a href="#autotoc_md78">Entry</a><ul><li class="level3"><a href="#autotoc_md82">Entry イベント</a></li>
-<li class="level3"><a href="#autotoc_md83">Change イベント, Sync イベント</a></li>
+<li class="level1"><a href="#autotoc_md75">基本的な通信の仕様</a><ul><li class="level2"><a href="#autotoc_md76">送信</a></li>
+<li class="level2"><a href="#autotoc_md77">受信</a></li>
+<li class="level2"><a href="#autotoc_md78">時刻</a></li>
+<li class="level2"><a href="#autotoc_md79">Entry</a><ul><li class="level3"><a href="#autotoc_md83">Entry イベント</a></li>
+<li class="level3"><a href="#autotoc_md84">Change イベント, Sync イベント</a></li>
 </ul>
 </li>
 </ul>
@@ -175,9 +176,9 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <li><p class="startli"><b class="tab-title">C++</b> Client::child() または Member::child() に名前を指定することで Field オブジェクトを取得できます。</p>
 <div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> hoge = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;hoge&quot;</span>); <span class="comment">// 自分の hoge という名前のデータ</span></div>
 <div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> fuga = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).child(<span class="stringliteral">&quot;fuga&quot;</span>); <span class="comment">// foo というメンバーの fuga というデータ</span></div>
-<div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:71</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_a46b5785dc80e4d37f469ca9a2c1dcdbd"><div class="ttname"><a href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">webcface::Field::member</a></div><div class="ttdeci">Member_ member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.h:107</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_ac495d25f6992031499cac9742d799703"><div class="ttname"><a href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">webcface::Field::child</a></div><div class="ttdeci">Field child(const SharedString &amp;field) const</div><div class="ttdef"><b>Definition</b> field.cc:42</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html"><div class="ttname"><a href="structwebcface_1_1Field.html">webcface::Field</a></div><div class="ttdoc">ClientDataの参照とメンバ名とデータ名を持つクラス</div><div class="ttdef"><b>Definition</b> field.h:68</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_a46b5785dc80e4d37f469ca9a2c1dcdbd"><div class="ttname"><a href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">webcface::Field::member</a></div><div class="ttdeci">Member_ member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.h:104</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_ac495d25f6992031499cac9742d799703"><div class="ttname"><a href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">webcface::Field::child</a></div><div class="ttdeci">Field child(const SharedString &amp;field) const</div><div class="ttdef"><b>Definition</b> field.cc:48</div></div>
 </div><!-- fragment --><p class="startli">または <code>["名前"]</code> でも同様に取得できます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> hoge = wcli[<span class="stringliteral">&quot;hoge&quot;</span>];</div>
 <div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> fuga = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;foo&quot;</span>)[<span class="stringliteral">&quot;fuga&quot;</span>];</div>
 <div class="line"><span class="comment">// ↑ wcli[&quot;foo&quot;][&quot;fuga&quot;] は別の意味になるので注意</span></div>
@@ -199,12 +200,12 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 <div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> hoge = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#af84a6995e5a733cff43904773e956f6a">value</a>(<span class="stringliteral">&quot;hoge&quot;</span>); <span class="comment">// 自分の hoge という名前のValue型データ</span></div>
 <div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> fuga = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).value(<span class="stringliteral">&quot;fuga&quot;</span>); <span class="comment">// foo というメンバーの fuga というValue型データ</span></div>
 <div class="ttc" id="aclasswebcface_1_1Value_html"><div class="ttname"><a href="classwebcface_1_1Value.html">webcface::Value</a></div><div class="ttdoc">実数値またはその配列の送受信データを表すクラス</div><div class="ttdef"><b>Definition</b> value.h:61</div></div>
-<div class="ttc" id="astructwebcface_1_1Field_html_af84a6995e5a733cff43904773e956f6a"><div class="ttname"><a href="structwebcface_1_1Field.html#af84a6995e5a733cff43904773e956f6a">webcface::Field::value</a></div><div class="ttdeci">Value_ value(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:190</div></div>
+<div class="ttc" id="astructwebcface_1_1Field_html_af84a6995e5a733cff43904773e956f6a"><div class="ttname"><a href="structwebcface_1_1Field.html#af84a6995e5a733cff43904773e956f6a">webcface::Field::value</a></div><div class="ttdeci">Value_ value(StringInitializer field=StringInitializer()) const</div><div class="ttdef"><b>Definition</b> field.h:187</div></div>
 </div><!-- fragment --><p class="startli">または、Fieldに対して <code>.value()</code> でもValue型に変換できます。 </p><div class="fragment"><div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> hoge = wcli.field(<span class="stringliteral">&quot;hoge&quot;</span>).<a class="code hl_function" href="structwebcface_1_1Field.html#af84a6995e5a733cff43904773e956f6a">value</a>();</div>
 <div class="line"><span class="comment">// webcface::Value hoge = wcli[&quot;hoge&quot;].value(); でも同じ</span></div>
 <div class="line"><a class="code hl_class" href="classwebcface_1_1Value.html">webcface::Value</a> fuga = wcli.<a class="code hl_function" href="classwebcface_1_1Value.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a>(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;fuga&quot;</span>);</div>
 <div class="line"><span class="comment">// webcface::Value fuga = wcli.member(&quot;foo&quot;)[&quot;fuga&quot;].value(); でも同じ</span></div>
-<div class="ttc" id="aclasswebcface_1_1Value_html_a46b5785dc80e4d37f469ca9a2c1dcdbd"><div class="ttname"><a href="classwebcface_1_1Value.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">webcface::Value::member</a></div><div class="ttdeci">Member_ member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.h:107</div></div>
+<div class="ttc" id="aclasswebcface_1_1Value_html_a46b5785dc80e4d37f469ca9a2c1dcdbd"><div class="ttname"><a href="classwebcface_1_1Value.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">webcface::Value::member</a></div><div class="ttdeci">Member_ member() const</div><div class="ttdoc">Memberを返す</div><div class="ttdef"><b>Definition</b> field.h:104</div></div>
 </div><!-- fragment --></li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> 例えば child() の代わりに value() でアクセスすると Value 型が返ります。 他の型についても同様です。</p>
 <div class="fragment"><div class="line">const hoge = wcli.value(&quot;hoge&quot;); // 自分の hoge という名前のValue型データ</div>
@@ -221,13 +222,14 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md72"></a>
 グループ化</h2>
-<p>Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
+<p>Fieldの名前を半角ピリオド (<span class="since-c">3.1</span> または半角スラッシュ) で区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png" alt="value_child" class="inline"/></p>
 <dl class="section note"><dt>Note</dt><dd>ROSのTopicではPointやTransformなど目的に応じてさまざまな型が用意されていますが、 WebCFaceではそういう場合はValueを複数用意して送信することを想定しています。</dd></dl>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> </p><div class="fragment"><div class="line">wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>);</div>
 <div class="line">wcli.child(<span class="stringliteral">&quot;pos.y&quot;</span>);</div>
 <div class="line">wcli.child(<span class="stringliteral">&quot;pos.z&quot;</span>);</div>
+<div class="line"><span class="comment">// wcli.child(&quot;pos/x&quot;) も同様 (ver3.1〜)</span></div>
 </div><!-- fragment --><p> のように名前を指定する代わりに、 Field::child() または 各種データ型::child() でもグループ内のデータを指定できます。 </p><div class="fragment"><div class="line"><a class="code hl_struct" href="structwebcface_1_1Field.html">webcface::Field</a> pos = wcli.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;pos&quot;</span>);</div>
 <div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;x&quot;</span>); <span class="comment">// =&gt; &quot;pos.x&quot;</span></div>
 <div class="line">pos.<a class="code hl_function" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a>(<span class="stringliteral">&quot;y&quot;</span>); <span class="comment">// =&gt; &quot;pos.y&quot;</span></div>
@@ -265,13 +267,21 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </div><!-- fragment --></li>
 </ul>
 </div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md73"></a>
+隠しフィールド</h2>
+<dl class="section since"><dt>Since</dt><dd>サーバーが <span class="since-c">1.10</span> の場合</dd></dl>
+<p>フィールドの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、他のMemberやWebUIからそのデータの存在を隠すことができます。</p>
+<dl class="section warning"><dt>Warning</dt><dd>半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。</dd></dl>
+<dl class="section since"><dt>Since</dt><dd>サーバーが <span class="since-c">3.1</span> の場合</dd></dl>
+<p>フィールドの名前がスラッシュで始まる場合、先頭のスラッシュは削除されます。</p>
+<p>したがって、<code>foo.bar</code> と <code>foo/bar</code> と <code>/foo/bar</code> は同一です (<code>.foo.bar</code> は異なり、隠しフィールドとなります)</p>
+<h2><a class="anchor" id="autotoc_md74"></a>
 名前などの操作</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><p class="startli"><b class="tab-title">C++</b> Field::member() でそのFieldが所属するMemberを取得できます。 </p><div class="fragment"><div class="line">assert(wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>).member().name() == wcli.name());</div>
 <div class="line">assert(wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).child(<span class="stringliteral">&quot;pos.x&quot;</span>).member().name() == <span class="stringliteral">&quot;foo&quot;</span>);</div>
 </div><!-- fragment --><p class="startli">Field::name(), (<span class="since-c">2.0</span> nameW()) で名前を取得できます。 </p><div class="fragment"><div class="line">assert(wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>).name() == <span class="stringliteral">&quot;pos.x&quot;</span>);</div>
-</div><!-- fragment --><p class="startli">child() とは逆に、Field::parent() でグループのField (nameの最後のピリオドの前までのField) を取得できます。 <code>cpp assert(wcli.child("pos.x").parent().name() == "pos"); </code></p>
-<p class="startli">Field::lastName() (<span class="since-c">2.0</span> lastNameW()) でピリオドで区切られた最後の部分を取り出すことができます。 <code>cpp assert(wcli.child("pos.x").lastName() == "x"); </code></p>
+</div><!-- fragment --><p class="startli">child() とは逆に、Field::parent() でグループのField (nameの最後のピリオド (<span class="since-c">3.1</span> またはスラッシュ) の前までのField) を取得できます。 <code>cpp assert(wcli.child("pos.x").parent().name() == "pos"); </code></p>
+<p class="startli">Field::lastName() (<span class="since-c">2.0</span> lastNameW()) でピリオド (<span class="since-c">3.1</span> またはスラッシュ) で区切られた最後の部分を取り出すことができます。 <code>cpp assert(wcli.child("pos.x").lastName() == "x"); </code></p>
 </li>
 <li><p class="startli"><b class="tab-title">JavaScript</b> Field.member でそのFieldが所属するMemberを取得できます。 </p><div class="fragment"><div class="line">assert(wcli.child(&quot;pos.x&quot;).member.name == wcli.name);</div>
 <div class="line">assert(wcli.member(&quot;foo&quot;).child(&quot;pos.x&quot;).member.name == &quot;foo&quot;);</div>
@@ -282,23 +292,23 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
 </div><!-- fragment --><p class="startli">Field.name で名前を取得できます。 </p><div class="fragment"><div class="line"><span class="keyword">assert</span> wcli.child(<span class="stringliteral">&quot;pos.x&quot;</span>).name == <span class="stringliteral">&quot;pos.x&quot;</span></div>
 </div><!-- fragment --></li>
 </ul>
-</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md74"></a>
+</div><div class="tabbed"></div><h1><a class="anchor" id="autotoc_md75"></a>
 基本的な通信の仕様</h1>
 <p>クライアントが送信したデータは、サーバーを経由して別のクライアントに送られます。 (Valueに限らず、これ以降説明する他のデータ型のfieldについても同様です。)</p>
 <p><img src="https://github.com/na-trium-144/webcface/raw/main/docs/images/pub-sub.png" alt="pub-sub" class="inline"/></p>
 <p>サーバー→クライアント間では、初期状態ではデータは送信されず、 クライアントがリクエストを送って初めてサーバーからデータが順次送られてくるようになります。</p>
 <p>基本的にクライアント→サーバーの方向にはすべてのデータが送信されるのに対し、サーバー→クライアントの方向には必要なデータのみを送信する設計になっていますが、これは前者はlocalhost(サーバーとクライアントが同じPC)のみで、後者はWi-FiやLANでも通信することを想定したものです。 (通信量は増えますがクライアント→サーバーのデータ送信をWi-FiやLAN経由で行うことも可能です)</p>
-<h2><a class="anchor" id="autotoc_md75"></a>
+<h2><a class="anchor" id="autotoc_md76"></a>
 送信</h2>
 <p>各種データ型のメソッド (Value.set() や View.sync() など) を使って送信するデータをセットし、 その後 Client::sync() をすることで実際にデータが送信されます。</p>
 <p>Client::sync() については <a class="el" href="md_docs_241__client.html">4-1. Client</a> の送受信の章を参照してください。</p>
 <p><span class="since-c">1.8</span> <span class="since-js">1.4.1</span> <span class="since-py">1.1.2</span> クライアント→サーバー間では、同じデータを繰り返し送信した場合は2回目以降はデータを送信しないことで通信量を削減しています。</p>
-<h2><a class="anchor" id="autotoc_md76"></a>
+<h2><a class="anchor" id="autotoc_md77"></a>
 受信</h2>
 <p>各種データ型のrequestメソッド (Value.request() や View.request() など) を使ってデータをリクエストできます。 (リクエストの送信は Client::sync() とは非同期に行われます。)</p>
 <p>データが一度リクエストされた状態であればそれ以降 Client::sync() 時にデータが受信され、 各種データ型のメソッド (Value.tryGet(), get() など) でデータを取得できます。</p>
 <p>また、データを一度もリクエストしていない状態で teyGet(), get() などの関数を呼んでデータを取得しようとした際にも自動的にリクエストが送られます。</p>
-<h2><a class="anchor" id="autotoc_md77"></a>
+<h2><a class="anchor" id="autotoc_md78"></a>
 時刻</h2>
 <div class="tabbed"></div><div class="tabbed"><ul>
 <li><b class="tab-title">C++</b> <del>Value::time()</del> でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。 <br  />
@@ -309,7 +319,7 @@ $(document).ready(function(){initNavTree('md_docs_243__field.html',''); initResi
  <span class="since-js">1.6</span> Member.syncTime() に変更 (Textなど他のデータの送信時刻と共通です)</li>
 <li><b class="tab-title">Python</b> Member.sync_time() でその値が送信されたとき(そのMemberがsync()で送信したとき)の時刻が得られます。 (Textなど他のデータの送信時刻と共通です)</li>
 </ul>
-</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md78"></a>
+</div><div class="tabbed"></div><h2><a class="anchor" id="autotoc_md79"></a>
 Entry</h2>
 <p>データが送信された際、 Entry としてそのデータの存在が全クライアントに通知されます。 受信したEntryはリクエスト状態とは関係なく取得可能です。</p>
 <dl class="section note"><dt>Note</dt><dd>(serverが<span class="since-c">1.10</span>以降の場合) データの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなります。 (WebUI上に表示することなくデータを送ることができます) <br  />
@@ -352,10 +362,10 @@ Entry</h2>
 <p class="startli"><span class="since-py">2.0</span> Value.exists() でそのデータが送信されているかどうかを確認できます。 try_get() と違い、データそのものを受信するリクエストは送られません。 他のデータ型に関しても同様に <code>Text.exists()</code>, <code>Func.exists()</code>, <code>View.exists()</code> などが使えます。</p>
 <p class="startli"><span class="since-py">3.1</span> Field.value_entries() でそのfield以下のvalueのみが得られます (Textなど他の型についても同様) </p><div class="fragment"><div class="line">values = wcli.member(<span class="stringliteral">&quot;foo&quot;</span>).field(<span class="stringliteral">&quot;pos&quot;</span>).value_entries()</div>
 <div class="line"><span class="comment"># pos.x, pos.y などのvalueが得られる</span></div>
-</div><!-- fragment --><p class="startli"><span class="since-py">3.1</span> Field.children(recurse=True) ですべてのデータ型についてそのfield以下に存在するentryを確認できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=True) @section autotoc_md79 pos.x, pos.y などのデータ(型に関係なく)のリストが得られる </code> また、Field.children(recurse=False) では次のピリオドで区切られているグループを取得できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=False); @section autotoc_md80 例えば、 pos.x, pos.y, pos.vel.x, pos.vel.y が存在した場合、 @section autotoc_md81 pos.x, pos.y, pos.vel が得られる </code> Field.has_children() でそのfield以下にデータが存在するかを確認できます。</p>
+</div><!-- fragment --><p class="startli"><span class="since-py">3.1</span> Field.children(recurse=True) ですべてのデータ型についてそのfield以下に存在するentryを確認できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=True) @section autotoc_md80 pos.x, pos.y などのデータ(型に関係なく)のリストが得られる </code> また、Field.children(recurse=False) では次のピリオドで区切られているグループを取得できます。 <code>python values = wcli.member("foo").field("pos").children(recurse=False); @section autotoc_md81 例えば、 pos.x, pos.y, pos.vel.x, pos.vel.y が存在した場合、 @section autotoc_md82 pos.x, pos.y, pos.vel が得られる </code> Field.has_children() でそのfield以下にデータが存在するかを確認できます。</p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md82"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md83"></a>
 Entry イベント</h3>
 <p>他のメンバーが新しくデータを追加したときに呼び出されるコールバックを設定できます。 ValueEntry, TextEntry など各データ型にそれぞれあります。</p>
 <p>イベントの詳細な使い方はMemberEntryと同様です(<a class="el" href="md_docs_242__member.html">Member</a> のページを参照してください)。 このクライアントが接続する前から存在したデータについては start(), waitConnection() 時に一度に送られるので、 コールバックの設定はstart()より前に行うと良いです。</p>
@@ -427,7 +437,7 @@ Entry イベント</h3>
 <p><span></span></p>
 </li>
 </ul>
-</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md83"></a>
+</div><div class="tabbed"></div><h3><a class="anchor" id="autotoc_md84"></a>
 Change イベント, Sync イベント</h3>
 <p>受信したデータが変化したときにコールバックを呼び出すことができます。 Change イベントにコールバックを設定するとget()やrequest()を呼ばなくても自動的にその値がリクエストされます。</p>
 <p>また、データが変化したどうかに関わらずそのMemberがsync()したときにコールバックを呼び出したい場合は Sync イベントが使えます。</p>
@@ -526,7 +536,7 @@ Python 〜ver1.1の仕様</summary>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

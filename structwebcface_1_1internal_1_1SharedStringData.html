@@ -161,6 +161,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a9fcb5cc0dbcdc1fd53b65a52706f89cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c74e0aaabe998eab69c2928b3e0c15f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html#a9c74e0aaabe998eab69c2928b3e0c15f">SharedStringData</a> (std::nullptr_t, std::nullptr_t, std::wstring_view <a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html#af2e34128aaa90fdb41aec100b8b06059">wsv</a>)</td></tr>
 <tr class="separator:a9c74e0aaabe998eab69c2928b3e0c15f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa338d56e5e78cfef9a02554fea217640"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html#aa338d56e5e78cfef9a02554fea217640">SharedStringData</a> (const <a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">SharedStringData</a> &amp;other)</td></tr>
+<tr class="separator:aa338d56e5e78cfef9a02554fea217640"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -179,9 +181,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af4ae797667b9e7be9596297c4300037e"><td class="memItemLeft" align="right" valign="top">std::recursive_mutex&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html#af4ae797667b9e7be9596297c4300037e">m</a></td></tr>
 <tr class="separator:af4ae797667b9e7be9596297c4300037e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><dl class="section since"><dt>Since</dt><dd>ver3.0</dd></dl>
+<p>string_viewは常に同一インスタンスのstringまたは外部のstaticな文字列を指し、 常時null終端である状態にする </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6c47e2903509af112d50cb96f04890aa" name="a6c47e2903509af112d50cb96f04890aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c47e2903509af112d50cb96f04890aa">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[1/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c47e2903509af112d50cb96f04890aa">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -207,7 +212,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a9e29df2163c04029323f61ea97fbd552" name="a9e29df2163c04029323f61ea97fbd552"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e29df2163c04029323f61ea97fbd552">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e29df2163c04029323f61ea97fbd552">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[2/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -233,7 +238,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a041d205f6eb34816adc50d0c4f476197" name="a041d205f6eb34816adc50d0c4f476197"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a041d205f6eb34816adc50d0c4f476197">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a041d205f6eb34816adc50d0c4f476197">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[3/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -269,7 +274,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a6da4f49ba186ea11de717928e720b341" name="a6da4f49ba186ea11de717928e720b341"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6da4f49ba186ea11de717928e720b341">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da4f49ba186ea11de717928e720b341">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[4/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -305,7 +310,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a9fcb5cc0dbcdc1fd53b65a52706f89cb" name="a9fcb5cc0dbcdc1fd53b65a52706f89cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fcb5cc0dbcdc1fd53b65a52706f89cb">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9fcb5cc0dbcdc1fd53b65a52706f89cb">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[5/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -347,7 +352,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a9c74e0aaabe998eab69c2928b3e0c15f" name="a9c74e0aaabe998eab69c2928b3e0c15f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c74e0aaabe998eab69c2928b3e0c15f">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c74e0aaabe998eab69c2928b3e0c15f">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[6/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -385,6 +390,33 @@ Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa338d56e5e78cfef9a02554fea217640" name="aa338d56e5e78cfef9a02554fea217640"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa338d56e5e78cfef9a02554fea217640">&#9670;&#160;</a></span>SharedStringData() <span class="overload">[7/7]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">SharedStringData</a> </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">SharedStringData</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<dl class="section since"><dt>Since</dt><dd>ver3.1 </dd></dl>
 
 </div>
 </div>
@@ -496,7 +528,7 @@ Public Attributes</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="namespacewebcface_1_1internal.html">internal</a></li><li class="navelem"><a class="el" href="structwebcface_1_1internal_1_1SharedStringData.html">SharedStringData</a></li>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:06 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

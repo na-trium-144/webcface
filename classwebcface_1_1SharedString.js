@@ -17,6 +17,7 @@ var classwebcface_1_1SharedString =
     [ "find", "classwebcface_1_1SharedString.html#ac1c46983326f0b46c6f47cd11febec00", null ],
     [ "fromU8String", "classwebcface_1_1SharedString.html#a63ffedb938079379fae61271b3f2220e", null ],
     [ "fromU8StringStatic", "classwebcface_1_1SharedString.html#a48e73c6dbea49772e7e7da8991e6dd42", null ],
+    [ "normalizeSeparator", "classwebcface_1_1SharedString.html#ad040ee903f52c8b6e2f237bfbb58c278", null ],
     [ "operator!=", "classwebcface_1_1SharedString.html#a203d8c1d83254c8671b2aa851c6f0848", null ],
     [ "operator<", "classwebcface_1_1SharedString.html#a46800b3ef3f32a5151c7fe146c4aa594", null ],
     [ "operator<=", "classwebcface_1_1SharedString.html#ad2746d731d6132fd444f40a73136d34a", null ],

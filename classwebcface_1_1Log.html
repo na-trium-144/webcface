@@ -172,6 +172,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a578f408f0bba515f23b17da20c3babff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1afa438e7e40bbe5b3b94c6ec3f2d16b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a1afa438e7e40bbe5b3b94c6ec3f2d16b">Log</a> (const <a class="el" href="structwebcface_1_1Field.html">Field</a> &amp;base, const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field)</td></tr>
 <tr class="separator:a1afa438e7e40bbe5b3b94c6ec3f2d16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e09689a959cfde76a16215caedf0fae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a6e09689a959cfde76a16215caedf0fae">child</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> field) const</td></tr>
+<tr class="memdesc:a6e09689a959cfde76a16215caedf0fae"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField  <br /></td></tr>
+<tr class="separator:a6e09689a959cfde76a16215caedf0fae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fe6bba7fe40908bdd1c94a12ca50f38"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a0fe6bba7fe40908bdd1c94a12ca50f38">operator[]</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> field) const</td></tr>
+<tr class="separator:a0fe6bba7fe40908bdd1c94a12ca50f38"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a686ac4a2fc9a0ea8f1783e0e87189450"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1Log.html">Log</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a686ac4a2fc9a0ea8f1783e0e87189450">parent</a> () const</td></tr>
+<tr class="memdesc:a686ac4a2fc9a0ea8f1783e0e87189450"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameの最後のピリオドの前までを新しい名前とするField  <br /></td></tr>
+<tr class="separator:a686ac4a2fc9a0ea8f1783e0e87189450"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa14ab89bc3970388bc12d24da6cf373f"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="classwebcface_1_1Log.html">Log</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#aa14ab89bc3970388bc12d24da6cf373f">onChange</a> (std::function&lt; void(<a class="el" href="classwebcface_1_1Log.html">Log</a>)&gt; callback) const</td></tr>
 <tr class="memdesc:aa14ab89bc3970388bc12d24da6cf373f"><td class="mdescLeft">&#160;</td><td class="mdescRight">ログが追加されたときに呼び出されるコールバックを設定  <br /></td></tr>
 <tr class="separator:aa14ab89bc3970388bc12d24da6cf373f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,10 +225,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9022a5966eca1f27119c6464e08bafce"><td class="memTemplParams" colspan="2">template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a class="el" href="classwebcface_1_1Log.html">Log</a> &gt;, std::nullptr_t &gt;  = nullptr&gt; </td></tr>
 <tr class="memitem:a9022a5966eca1f27119c6464e08bafce"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a9022a5966eca1f27119c6464e08bafce">operator!=</a> (const T &amp;other) const</td></tr>
 <tr class="separator:a9022a5966eca1f27119c6464e08bafce"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab53487c64d4c15b7a2f16a968197003c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#ab53487c64d4c15b7a2f16a968197003c">lastName</a> () const</td></tr>
+<tr class="memdesc:ab53487c64d4c15b7a2f16a968197003c"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す  <br /></td></tr>
+<tr class="separator:ab53487c64d4c15b7a2f16a968197003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#af4e3ae9c11a8760127d92e61cdd9e03f">lastNameW</a> () const</td></tr>
+<tr class="memdesc:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す (wstring)  <br /></td></tr>
+<tr class="separator:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memTemplParams" colspan="2">template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertCompleteMember &lt;   std::enable_if_t&lt;std::is_same_v&lt; Member_,  Member &gt;,  Member_&gt;&gt;()&gt; </td></tr>
 <tr class="memitem:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memTemplItemLeft" align="right" valign="top">Member_&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a46b5785dc80e4d37f469ca9a2c1dcdbd">member</a> () const</td></tr>
 <tr class="memdesc:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Memberを返す  <br /></td></tr>
 <tr class="separator:a46b5785dc80e4d37f469ca9a2c1dcdbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fd77223543481653d9ace5ce0ba497a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">StringView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#a1fd77223543481653d9ace5ce0ba497a">name</a> () const</td></tr>
+<tr class="memdesc:a1fd77223543481653d9ace5ce0ba497a"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す  <br /></td></tr>
+<tr class="separator:a1fd77223543481653d9ace5ce0ba497a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af759cb1c99067a1c1b8dc5c63653d42a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#a7a4da73aaddd4a3745cdfb335e41ae7a">WStringView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1Log.html#af759cb1c99067a1c1b8dc5c63653d42a">nameW</a> () const</td></tr>
+<tr class="memdesc:af759cb1c99067a1c1b8dc5c63653d42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す (wstring)  <br /></td></tr>
+<tr class="separator:af759cb1c99067a1c1b8dc5c63653d42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -238,34 +258,13 @@ Protected Member Functions</h2></td></tr>
 <tr class="separator:a6aae196570f9dc73d6768aaaeb146220"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#aab9d1bda10b0c1b79c4f48f3ebcf1d29">expired</a> () const</td></tr>
 <tr class="separator:aab9d1bda10b0c1b79c4f48f3ebcf1d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1fd77223543481653d9ace5ce0ba497a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#af9da001bd38eabd925e4082068541eda">StringView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a1fd77223543481653d9ace5ce0ba497a">name</a> () const</td></tr>
-<tr class="memdesc:a1fd77223543481653d9ace5ce0ba497a"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す  <br /></td></tr>
-<tr class="separator:a1fd77223543481653d9ace5ce0ba497a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af759cb1c99067a1c1b8dc5c63653d42a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="namespacewebcface.html#a7a4da73aaddd4a3745cdfb335e41ae7a">WStringView</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af759cb1c99067a1c1b8dc5c63653d42a">nameW</a> () const</td></tr>
-<tr class="memdesc:af759cb1c99067a1c1b8dc5c63653d42a"><td class="mdescLeft">&#160;</td><td class="mdescRight">field名を返す (wstring)  <br /></td></tr>
-<tr class="separator:af759cb1c99067a1c1b8dc5c63653d42a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c06b66607b91e9ae36f0688b3d108f7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1SharedString.html">SharedString</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6c06b66607b91e9ae36f0688b3d108f7">lastName8</a> () const</td></tr>
 <tr class="separator:a6c06b66607b91e9ae36f0688b3d108f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac495d25f6992031499cac9742d799703"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ac495d25f6992031499cac9742d799703">child</a> (const <a class="el" href="classwebcface_1_1SharedString.html">SharedString</a> &amp;field) const</td></tr>
 <tr class="separator:ac495d25f6992031499cac9742d799703"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e17a64680cde135b5e718e1799d8a49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a9e17a64680cde135b5e718e1799d8a49">child</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> field) const</td></tr>
-<tr class="memdesc:a9e17a64680cde135b5e718e1799d8a49"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField  <br /></td></tr>
-<tr class="separator:a9e17a64680cde135b5e718e1799d8a49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a3f4c5cd0eab27717d89875ffdd67a62f">child</a> (int index) const</td></tr>
 <tr class="memdesc:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(index)」を新しい名前とするField  <br /></td></tr>
 <tr class="separator:a3f4c5cd0eab27717d89875ffdd67a62f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab53487c64d4c15b7a2f16a968197003c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#ab53487c64d4c15b7a2f16a968197003c">lastName</a> () const</td></tr>
-<tr class="memdesc:ab53487c64d4c15b7a2f16a968197003c"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す  <br /></td></tr>
-<tr class="separator:ab53487c64d4c15b7a2f16a968197003c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memItemLeft" align="right" valign="top">std::wstring&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#af4e3ae9c11a8760127d92e61cdd9e03f">lastNameW</a> () const</td></tr>
-<tr class="memdesc:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameのうちピリオドで区切られた最後の部分を取り出す (wstring)  <br /></td></tr>
-<tr class="separator:af4e3ae9c11a8760127d92e61cdd9e03f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2559fb35084a35286079239c54cf7698"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a2559fb35084a35286079239c54cf7698">parent</a> () const</td></tr>
-<tr class="memdesc:a2559fb35084a35286079239c54cf7698"><td class="mdescLeft">&#160;</td><td class="mdescRight">nameの最後のピリオドの前までを新しい名前とするField  <br /></td></tr>
-<tr class="separator:a2559fb35084a35286079239c54cf7698"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acda017a0d91e5552da2d2316a2a1d888"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#acda017a0d91e5552da2d2316a2a1d888">operator[]</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> field) const</td></tr>
-<tr class="memdesc:acda017a0d91e5552da2d2316a2a1d888"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(追加の名前)」を新しい名前とするField  <br /></td></tr>
-<tr class="separator:acda017a0d91e5552da2d2316a2a1d888"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structwebcface_1_1Field.html">Field</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structwebcface_1_1Field.html#a6f8a5749c0af85b6117dd2bbf61e66c3">operator[]</a> (int index) const</td></tr>
 <tr class="memdesc:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">「(thisの名前).(index)」を新しい名前とするField  <br /></td></tr>
 <tr class="separator:a6f8a5749c0af85b6117dd2bbf61e66c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -399,7 +398,8 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><p>ログの送受信データを表すクラス </p>
 <ul>
 <li><del>fieldを継承しているがfield名は使用していない</del></li>
-<li>ver2.4〜 他のデータ型と同じようにフィールド名を指定できるようになった </li>
+<li>ver2.4〜 他のデータ型と同じようにフィールド名を指定できるようになった</li>
+<li>ver3.1〜 他のデータ型と同じようにname(),<a class="el" href="classwebcface_1_1Log.html#a6e09689a959cfde76a16215caedf0fae" title="「(thisの名前).(追加の名前)」を新しい名前とするField">child()</a>,<a class="el" href="classwebcface_1_1Log.html#a686ac4a2fc9a0ea8f1783e0e87189450" title="nameの最後のピリオドの前までを新しい名前とするField">parent()</a>などのメンバ関数を追加 </li>
 </ul>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a907ca32e5dd84f5166dd5cd8e59984e6" name="a907ca32e5dd84f5166dd5cd8e59984e6"></a>
@@ -883,8 +883,8 @@ template&lt;typename T , bool &gt; </div>
 
 </div>
 </div>
-<a id="a9e17a64680cde135b5e718e1799d8a49" name="a9e17a64680cde135b5e718e1799d8a49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e17a64680cde135b5e718e1799d8a49">&#9670;&#160;</a></span>child() <span class="overload">[3/3]</span></h2>
+<a id="a6e09689a959cfde76a16215caedf0fae" name="a6e09689a959cfde76a16215caedf0fae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e09689a959cfde76a16215caedf0fae">&#9670;&#160;</a></span>child() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -893,7 +893,7 @@ template&lt;typename T , bool &gt; </div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> child </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> child </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a>&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -902,14 +902,13 @@ template&lt;typename T , bool &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>「(thisの名前).(追加の名前)」を新しい名前とするField </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.11</dd></dl>
-<p>ver2.0〜 wstring対応, ver2.10〜 <a class="el" href="classwebcface_1_1StringInitializer.html" title="SharedString のpublicなコンストラクタインタフェース (入力専用)">StringInitializer</a> 型で置き換え </p>
+<dl class="section since"><dt>Since</dt><dd>ver3.1 </dd></dl>
 
 </div>
 </div>
@@ -1438,7 +1437,7 @@ template&lt;typename T , bool &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1491,7 +1490,7 @@ template&lt;typename T , bool &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1635,7 +1634,7 @@ template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertComple
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1663,7 +1662,7 @@ template&lt;typename Member_  = Member, bool  = ::webcface::traits::assertComple
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1931,8 +1930,8 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
 
 </div>
 </div>
-<a id="acda017a0d91e5552da2d2316a2a1d888" name="acda017a0d91e5552da2d2316a2a1d888"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acda017a0d91e5552da2d2316a2a1d888">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
+<a id="a0fe6bba7fe40908bdd1c94a12ca50f38" name="a0fe6bba7fe40908bdd1c94a12ca50f38"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fe6bba7fe40908bdd1c94a12ca50f38">&#9670;&#160;</a></span>operator[]() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1941,7 +1940,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> operator[] </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> operator[] </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a>&#160;</td>
           <td class="paramname"><em>field</em></td><td>)</td>
@@ -1950,19 +1949,16 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>「(thisの名前).(追加の名前)」を新しい名前とするField </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.11</dd></dl>
-<p>ver2.0〜 wstring対応, ver2.10〜 <a class="el" href="classwebcface_1_1StringInitializer.html" title="SharedString のpublicなコンストラクタインタフェース (入力専用)">StringInitializer</a> 型で置き換え </p>
+<p><a class="el" href="classwebcface_1_1Log.html#a6e09689a959cfde76a16215caedf0fae" title="「(thisの名前).(追加の名前)」を新しい名前とするField">child()</a>と同じ </p><dl class="section since"><dt>Since</dt><dd>ver3.1 </dd></dl>
 
 </div>
 </div>
-<a id="a2559fb35084a35286079239c54cf7698" name="a2559fb35084a35286079239c54cf7698"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2559fb35084a35286079239c54cf7698">&#9670;&#160;</a></span>parent()</h2>
+<a id="a686ac4a2fc9a0ea8f1783e0e87189450" name="a686ac4a2fc9a0ea8f1783e0e87189450"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a686ac4a2fc9a0ea8f1783e0e87189450">&#9670;&#160;</a></span>parent()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1971,7 +1967,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="structwebcface_1_1Field.html">Field</a> parent </td>
+          <td class="memname"><a class="el" href="classwebcface_1_1Log.html">Log</a> parent </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -1979,13 +1975,13 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_same_v&lt; T, <a 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inherited</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
 <p>nameの最後のピリオドの前までを新しい名前とするField </p>
-<dl class="section since"><dt>Since</dt><dd>ver1.11 </dd></dl>
+<dl class="section since"><dt>Since</dt><dd>ver3.1 </dd></dl>
 
 </div>
 </div>
@@ -2504,7 +2500,7 @@ template&lt;typename T , bool &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1Log.html">Log</a></li>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

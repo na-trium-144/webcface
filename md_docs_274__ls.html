@@ -143,16 +143,16 @@ $(document).ready(function(){initNavTree('md_docs_274__ls.html',''); initResizab
 </div><!--header-->
 <div class="contents">
 <div class="toc"><h3>Table of Contents</h3>
-<ul><li class="level1"><a href="#autotoc_md179">コマンドライン引数</a><ul><li class="level2"><a href="#autotoc_md180">フィールド名などを指定しない場合</a></li>
-<li class="level2"><a href="#autotoc_md181">メンバー名:フィールド名を指定する場合</a></li>
+<ul><li class="level1"><a href="#autotoc_md180">コマンドライン引数</a><ul><li class="level2"><a href="#autotoc_md181">フィールド名などを指定しない場合</a></li>
+<li class="level2"><a href="#autotoc_md182">メンバー名:フィールド名を指定する場合</a></li>
 </ul>
 </li>
 </ul>
 </div>
-<div class="textblock"><p><a class="anchor" id="autotoc_md178"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md179"></a></p>
 <dl class="section since"><dt>Since</dt><dd>tools ver2.0</dd></dl>
 <p>WebCFaceに接続されているメンバーの一覧やデータの一覧を表示します。 WebUIで「Connection Status」画面を見る代わりとして使えます。</p>
-<h1><a class="anchor" id="autotoc_md179"></a>
+<h1><a class="anchor" id="autotoc_md180"></a>
 コマンドライン引数</h1>
 <div class="fragment"><div class="line">Usage: webcface-ls [OPTIONS] [field...]</div>
 </div><!-- fragment --><ul>
@@ -160,14 +160,14 @@ $(document).ready(function(){initNavTree('md_docs_274__ls.html',''); initResizab
 <li><code>-a address</code>: 接続するサーバーのアドレスです。省略時は127.0.0.1になります。</li>
 <li><code>-p port</code>: 接続するサーバーのポートです。省略時は7530になります。</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md180"></a>
+<h2><a class="anchor" id="autotoc_md181"></a>
 フィールド名などを指定しない場合</h2>
 <p>引数を何も指定しない場合、現在接続しているメンバー名が表示されます。 </p><div class="fragment"><div class="line">$ webcface-ls</div>
 <div class="line">example_value example_func</div>
 </div><!-- fragment --><p><code>-l</code> オプションでそれぞれのメンバーのクライアントバージョンとping値(<a class="el" href="md_docs_242__member.html">4-2. Member</a>を参照)を確認できます。 </p><div class="fragment"><div class="line">$ webcface-ls -l</div>
 <div class="line">example_value: cpp 2.0.4 [0 ms]</div>
 <div class="line">example_func: cpp 2.0.4 [0 ms]</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md181"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md182"></a>
 メンバー名:フィールド名を指定する場合</h2>
 <p>メンバー名を指定するとそのメンバーの送信しているデータ(フィールド名)の一覧が表示されます。 <br  />
  (ここに載せている表示例には色をつけていませんが、) 実際にはデータの種類によって色が変わります。 </p><div class="fragment"><div class="line">$ webcface-ls example_value</div>
@@ -222,7 +222,7 @@ $(document).ready(function(){initNavTree('md_docs_274__ls.html',''); initResizab
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Sat Oct 4 2025 06:33:05 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Fri Oct 10 2025 08:40:36 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
