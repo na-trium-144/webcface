@@ -36,6 +36,7 @@ class WEBCFACE_DLL Canvas3D : protected Field {
 
     friend internal::DataSetBuffer<Canvas3DComponent>;
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;

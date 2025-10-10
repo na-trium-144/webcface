@@ -37,6 +37,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
     friend internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;

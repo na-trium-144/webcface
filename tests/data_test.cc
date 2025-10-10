@@ -68,15 +68,34 @@ TEST_F(DataTest, field) {
     EXPECT_EQ(value("a", "b").member().nameW(), L"a");
     EXPECT_EQ(value("a", "b").name(), "b");
     EXPECT_EQ(value("a", "b").nameW(), L"b");
+    EXPECT_EQ(value("a", "b").lastName(), "b");
+    EXPECT_EQ(value("a", "b").lastNameW(), L"b");
     EXPECT_EQ(value("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(value("a", "b").child(L"c").name(), "b.c");
+    EXPECT_EQ(value("a", "b").child("c").lastName(), "c");
+    EXPECT_EQ(value("a", "b").child(L"c").lastNameW(), L"c");
     EXPECT_EQ(value("a", "b.c").parent().name(), "b");
     EXPECT_EQ(text("a", "b").member().name(), "a");
     EXPECT_EQ(text("a", "b").name(), "b");
     EXPECT_EQ(text("a", "b").nameW(), L"b");
+    EXPECT_EQ(text("a", "b").lastName(), "b");
+    EXPECT_EQ(text("a", "b").lastNameW(), L"b");
     EXPECT_EQ(text("a", "b").child("c").name(), "b.c");
     EXPECT_EQ(text("a", "b").child(L"c").name(), "b.c");
+    EXPECT_EQ(text("a", "b").child("c").lastName(), "c");
+    EXPECT_EQ(text("a", "b").child(L"c").lastNameW(), L"c");
     EXPECT_EQ(log("a", "b").member().name(), "a");
+
+
+    EXPECT_EQ(value("a", "//a").name(), "//a");
+    EXPECT_EQ(value("a", "//a").lastName(), "//a");
+    EXPECT_EQ(value("a", "//a").parent().name(), "");
+    EXPECT_EQ(value("a", "//a/b").name(), "//a/b");
+    EXPECT_EQ(value("a", "//a/b").lastName(), "b");
+    EXPECT_EQ(value("a", "//a/b").parent().name(), "//a");
+    EXPECT_EQ(value("a", "//a/b.c").name(), "//a/b.c");
+    EXPECT_EQ(value("a", "//a/b.c").lastName(), "c");
+    EXPECT_EQ(value("a", "//a/b.c").parent().name(), "//a/b");
 
     EXPECT_THROW(Value().tryGet(), std::runtime_error);
     EXPECT_THROW(Text().tryGet(), std::runtime_error);

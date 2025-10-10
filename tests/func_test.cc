@@ -178,6 +178,19 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(func(self_name, "fv").index(), 3);
     EXPECT_EQ(f.returnType(), ValType::vector_int_);
 
+    // funcだけは他のデータ型と異なりsetの時点で名前が正規化される
+    f = func(self_name, "//a/b.c");
+    f.set([]() {});
+    EXPECT_EQ(f.index(), 4);
+    EXPECT_EQ(func(self_name, "//a/b.c").index(), 4);
+    EXPECT_EQ(func(self_name, "a.b.c").index(), 4);
+    EXPECT_EQ(func(self_name, "a.b/c").index(), 4);
+    // TODO: exists() は仕様上正規化済みの名前のsetを
+    // Func側に返してからfindしているので、正規化してない引数に対応できない
+    // EXPECT_TRUE(func(self_name, "//a/b.c").exists());
+    // EXPECT_TRUE(func(self_name, "a.b.c").exists());
+    // EXPECT_TRUE(func(self_name, "a.b/c").exists());
+
     // 未設定の関数呼び出しでエラー
     EXPECT_THROW(func(self_name, "c").setIndex(1), std::invalid_argument);
     EXPECT_THROW(func(self_name, "c").setArgs({}), std::invalid_argument);
