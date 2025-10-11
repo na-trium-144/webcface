@@ -16,6 +16,7 @@ let
     postPatch = ''
       echo "# dummy CPM.cmake to avoid SSL error" > cmake/CPM.cmake
     '';
+    patches = [];
     cmakeFlags = [
       (pkgs.lib.cmakeBool "CROW_BUILD_EXAMPLES" false)
       (pkgs.lib.cmakeBool "CROW_BUILD_TESTS" false)
