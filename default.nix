@@ -10,8 +10,8 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "na-trium-144";
       repo = "crow";
-      rev = "6ba7d7f167223a0ec3b8aa3aeef252ffc8ccd02d";
-      sha256 = "sha256-1QuRp2yn5IM+iGBSILb/dLdslo+ncAdnogLo2JSg9NM=";
+      rev = "efb9d8c2c6260cc74a04e7be75a167d7863479b5";
+      sha256 = "sha256-2foLrHG0PqamYp2/j3DbcaKdorS2p/SQALBZNYC42/M=";
     };
     postPatch = ''
       echo "# dummy CPM.cmake to avoid SSL error" > cmake/CPM.cmake
