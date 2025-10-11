@@ -10,12 +10,16 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "na-trium-144";
       repo = "crow";
-      rev = "11bf7a0dfacc1df9f2fbfa5838828817ff58661b";
-      sha256 = "sha256-RylTWJoOLBCuOQWpuIO14ssUd6AstEV6AbwF/7OdIe0=";
+      rev = "6ba7d7f167223a0ec3b8aa3aeef252ffc8ccd02d";
+      sha256 = "sha256-1QuRp2yn5IM+iGBSILb/dLdslo+ncAdnogLo2JSg9NM=";
     };
+    postPatch = ''
+      echo "# dummy CPM.cmake to avoid SSL error" > cmake/CPM.cmake
+    '';
     cmakeFlags = [
       (pkgs.lib.cmakeBool "CROW_BUILD_EXAMPLES" false)
       (pkgs.lib.cmakeBool "CROW_BUILD_TESTS" false)
+      (pkgs.lib.cmakeBool "CROW_GENERATE_SBOM" false)
     ];
   });
   curl = pkgs.curl.overrideAttrs (oldAttrs: {
@@ -39,7 +43,7 @@ pkgs.stdenv.mkDerivation rec {
     })
     (builtins.fetchTarball {
       url = "https://github.com/na-trium-144/webcface-webui/releases/download/v${webui_version}/webcface-webui_${webui_version}.tar.gz";
-      sha256 = "sha256:0kvh3jszzp1jan3xxgxk81yyvqw8vgv10zrycq0ikyhmmzrsr2pq";
+      sha256 = "sha256:1k38dw8147ppxrsmmx65cm71rqwfksmjj3j7faw9s8726iiw8f3y";
       name = "webcface-webui";
     })
   ];
