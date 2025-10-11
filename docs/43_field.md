@@ -120,7 +120,7 @@ Field型のままではデータの送信や受信はできません。
 
 ### グループ化
 
-Fieldの名前を半角ピリオドで区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
+Fieldの名前を半角ピリオド (<span class="since-c">3.1</span> または半角スラッシュ) で区切ると、WebUI上ではフォルダアイコンで表示されグループ化されて表示されます。
 
 ![value_child](https://github.com/na-trium-144/webcface/raw/main/docs/images/value_child.png)
 
@@ -135,6 +135,7 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
     wcli.child("pos.x");
     wcli.child("pos.y");
     wcli.child("pos.z");
+    // wcli.child("pos/x") も同様 (ver3.1〜)
     ```
     のように名前を指定する代わりに、 Field::child() または 各種データ型::child() でもグループ内のデータを指定できます。
     ```cpp
@@ -199,6 +200,22 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
 
 </div>
 
+### 隠しフィールド
+
+\since サーバーが <span class="since-c">1.10</span> の場合
+
+フィールドの名前を半角ピリオドから始めると、Entryが他クライアントに送信されなくなり、他のMemberやWebUIからそのデータの存在を隠すことができます。
+
+\warning
+半角ピリオド2つから始まる名前はwebcface内部の処理で利用する場合があるので使用しないでください。
+
+\since サーバーが <span class="since-c">3.1</span> の場合
+
+フィールドの名前がスラッシュで始まる場合、先頭のスラッシュは削除されます。
+
+したがって、`foo.bar` と `foo/bar` と `/foo/bar` は同一です
+(`.foo.bar` は異なり、隠しフィールドとなります)
+
 ### 名前などの操作
 
 <div class="tabbed">
@@ -216,12 +233,12 @@ WebCFaceではそういう場合はValueを複数用意して送信すること�
     ```
 
     child() とは逆に、Field::parent() でグループのField
-    (nameの最後のピリオドの前までのField) を取得できます。
+    (nameの最後のピリオド (<span class="since-c">3.1</span> またはスラッシュ) の前までのField) を取得できます。
     ```cpp
     assert(wcli.child("pos.x").parent().name() == "pos");
     ```
 
-    Field::lastName() (<span class="since-c">2.0</span> lastNameW()) でピリオドで区切られた最後の部分を取り出すことができます。
+    Field::lastName() (<span class="since-c">2.0</span> lastNameW()) でピリオド (<span class="since-c">3.1</span> またはスラッシュ) で区切られた最後の部分を取り出すことができます。
     ```cpp
     assert(wcli.child("pos.x").lastName() == "x");
     ```

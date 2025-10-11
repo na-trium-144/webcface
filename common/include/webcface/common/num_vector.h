@@ -10,7 +10,7 @@
 WEBCFACE_NS_BEGIN
 /**
  * \brief shared_ptrで管理されているdoubleのvector
- * \since ver2.10
+ * \since ver3.0
  *
  * * 基本的にはvectorと同じだが、shared_ptrで管理されているため、コピーしたら要素は共有される。
  * * 要素数が最初から1の場合メモリの動的確保をしない。
@@ -50,7 +50,7 @@ class WEBCFACE_DLL NumVector {
 
 /**
  * \brief shared_ptrで管理されているdoubleのvector
- * \since ver2.10
+ * \since ver3.0
  *
  */
 class WEBCFACE_DLL MutableNumVector : public NumVector {

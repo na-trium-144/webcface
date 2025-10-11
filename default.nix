@@ -1,7 +1,7 @@
 {
   pkgs ? import <nixpkgs> {},
   doCheck ? false,
-  webui_version ? "1.14.0",
+  webui_version ? "1.15.0",
 }:
 let
   doCheckArg = doCheck;
@@ -34,7 +34,7 @@ let
 in
 pkgs.stdenv.mkDerivation rec {
   pname = "webcface";
-  version = "2.9.0";
+  version = "3.1.1";
 
   srcs = [
     (builtins.path {

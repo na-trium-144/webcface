@@ -319,7 +319,7 @@ struct ClientData : std::enable_shared_from_this<ClientData> {
 
     SyncDataStore2<MutableNumVector> value_store;
     SyncDataStore2<ValAdaptor> text_store;
-    SyncDataStore2<std::shared_ptr<FuncData>> func_store;
+    SyncDataStore2<std::shared_ptr<FuncData>, int, true> func_store;
     SyncDataStore2<std::shared_ptr<message::ViewData>> view_store;
     SyncDataStore2<ImageData, message::ImageReq> image_store;
     SyncDataStore2<std::shared_ptr<RobotModelData>> robot_model_store;

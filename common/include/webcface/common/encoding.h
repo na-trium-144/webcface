@@ -46,9 +46,20 @@ WEBCFACE_DLL std::wstring WEBCFACE_CALL toWide(std::string_view name_ref);
  */
 WEBCFACE_DLL std::string WEBCFACE_CALL toNarrow(std::wstring_view name_ref);
 
+inline constexpr char field_separator = '.';
+inline constexpr std::string_view field_separator_sv = ".";
+/*!
+ * \since ver3.1
+ */
+inline constexpr char field_separator_alt = '/';
+/*!
+ * \since ver3.1
+ */
+inline constexpr std::string_view field_separator_alt_sv = "/";
+
 /*!
  * \brief webcfaceで管理されている文字列を参照するstring_view
- * \since ver2.10
+ * \since ver3.0
  *
  * * null終端であることが保証されており、
  * インタフェースとしては std::string_view に c_str() メンバ関数を追加したもの。
@@ -147,10 +158,10 @@ using WStringView = TStringView<wchar_t>;
  * usingUTF8(true)の場合なにもせずそのままコピーする。
  * * utf-8→string: windowsでusingUTF8(false)の場合はANSIに、
  * それ以外の場合なにもせずそのままコピーする。
- * * ver2.10〜
+ * * ver3.0〜
  * staticな生文字列ポインタをstring_viewとして保持することを可能にした。
  * その場合string_viewの範囲外だがNULL終端であることが保証される。
- * * ver2.10〜 u8StringView(), decode(), decodeW()
+ * * ver3.0〜 u8StringView(), decode(), decodeW()
  * はただのstring_viewだが、data()がnull終端文字列であることは保証される。
  * u8StringViewShare(), decodeShare(), decodeShareW()
  * はshared_ptrのコピーを含みちょっと遅い。
@@ -188,6 +199,15 @@ class WEBCFACE_DLL SharedString {
                         std::size_t len = std::string::npos) const;
     std::size_t find(char c, std::size_t pos = 0) const;
 
+    /*!
+     * \since ver3.1
+     * 
+     * スラッシュをピリオドに置き換え、thisを返す
+     * thisのdataが指す先が新しいshared_ptrになり、
+     * もとのSharedStringが指している先のdata自体は書き換わらない
+     */
+    SharedString &normalizeSeparator();
+
     bool operator==(const SharedString &other) const;
     bool operator<=(const SharedString &other) const;
     bool operator>=(const SharedString &other) const;
@@ -204,7 +224,7 @@ class WEBCFACE_DLL SharedString {
 
 /*!
  * \brief SharedString のpublicなコンストラクタインタフェース (入力専用)
- * \since ver2.10
+ * \since ver3.0
  *
  * * stringまたはwstringを受け取り、保持する
  * * windowsではusingUTF8(false)の場合毎回ANSIからutf8へエンコーディングの変換を行うが、
@@ -238,20 +258,18 @@ class StringInitializer : public SharedString {
     StringInitializer(const T &s)
         : SharedString(SharedString::encode(std::wstring(s))) {}
     // c-string ptr
-    template <std::size_t N>
-    StringInitializer(const char (&static_str)[N])
-        : SharedString(
-              SharedString::encodeStatic(std::string_view(static_str, N - 1))) {
-    }
-    template <std::size_t N>
-    StringInitializer(const wchar_t (&static_str)[N])
+    template <typename CharT, std::size_t N,
+              typename std::enable_if_t<std::is_same_v<CharT, char> ||
+                                            std::is_same_v<CharT, wchar_t>,
+                                        std::nullptr_t> = nullptr>
+    StringInitializer(const CharT (&static_str)[N])
         : SharedString(SharedString::encodeStatic(
-              std::wstring_view(static_str, N - 1))) {}
+              std::basic_string_view<CharT>(static_str, N - 1))) {}
 };
 
 /*!
  * \brief string_viewやconst char*同士を連結しstringを返す
- * \since ver2.10
+ * \since ver3.0
  *
  * StringInitializer, SharedString, TStringView
  * などと同じヘッダーにあるが、それらとはなんの関係もない。
@@ -267,20 +285,5 @@ std::basic_string<CharT> strJoin(std::basic_string_view<CharT> first_str,
     (str.append(std::basic_string_view<CharT>(args)), ...);
     return str;
 }
-
-namespace [[deprecated("symbols in webcface::encoding namespace are "
-                       "now directly in webcface namespace")]] encoding {
-inline bool usingUTF8() { return webcface::usingUTF8(); }
-inline void usingUTF8(bool flag) { webcface::usingUTF8(flag); }
-inline std::wstring toWide(std::string_view name_ref) {
-    return webcface::toWide(name_ref);
-}
-inline std::string toNarrow(std::wstring_view name) {
-    return webcface::toNarrow(name);
-}
-
-using SharedString = webcface::SharedString;
-
-} // namespace encoding
 
 WEBCFACE_NS_END

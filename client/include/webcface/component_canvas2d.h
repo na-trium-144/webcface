@@ -56,7 +56,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * (ver2.5〜) canvas2d作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 StringView型で置き換え
+     * * ver3.0〜 StringView型で置き換え
      *
      */
     StringView id() const;
@@ -67,7 +67,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * * 要素が増減したり順序が変わったりしなければ、
      * 同じ要素には常に同じidが振られる。
      * * canvas2d作成側でidを指定した場合その値が返る。
-     * * ver2.10〜 WStringView型で置き換え
+     * * ver3.0〜 WStringView型で置き換え
      *
      */
     WStringView idW() const;
@@ -118,7 +118,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * \brief 表示する文字列
      * \since ver1.9
      *
-     * ver2.10〜 StringView型で置き換え
+     * ver3.0〜 StringView型で置き換え
      *
      */
     StringView text() const;
@@ -126,7 +126,7 @@ class WEBCFACE_DLL Canvas2DComponent {
      * \brief 表示する文字列 (wstring)
      * \since ver2.0
      *
-     * ver2.10〜 WStringView型で置き換え
+     * ver3.0〜 WStringView型で置き換え
      *
      */
     WStringView textW() const;
@@ -184,7 +184,7 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \brief idを設定
      * \since ver2.5
      *
-     * ver2.10〜 StringInitializer 型で置き換え
+     * ver3.0〜 StringInitializer 型で置き換え
      *
      */
     TemporalCanvas2DComponent &id(StringInitializer id);
@@ -270,14 +270,14 @@ class WEBCFACE_DLL TemporalCanvas2DComponent {
      * \since ver1.9
      *
      * (ver2.0からstring_viewに変更)
-     * (ver2.10〜 StringInitializer 型に変更)
+     * (ver3.0〜 StringInitializer 型に変更)
      *
      */
     TemporalCanvas2DComponent &text(StringInitializer text) &;
     /*!
      * \since ver2.5
      *
-     * (ver2.10〜 StringInitializer 型に変更)
+     * (ver3.0〜 StringInitializer 型に変更)
      *
      */
     TemporalCanvas2DComponent &&text(StringInitializer text) && {

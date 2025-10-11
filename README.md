@@ -39,7 +39,7 @@ Web-based Communication Framework &amp; Dashboard-like UI
          * [Unzip manually (Linux)](#unzip-manually-linux)
          * [macOS](#macos)
       * [Homebrew (MacOS, Linux)](#homebrew-macos-linux)
-      * [Windows MSVC (x86, x64)](#windows-msvc-x86-x64)
+      * [Windows MSVC (x86, x64, arm64)](#windows-msvc-x86-x64-arm64)
       * [Docker (x86_64, arm64, armhf)](#docker-x86_64-arm64-armhf)
          * [webcface-server](#webcface-server)
          * [webcface-tools](#webcface-tools-1)
@@ -297,8 +297,8 @@ Usage: installer.sh [-a|-x] [-y] [-d DIR] [-u] [VERSION]
   -d DIR: Extract archive to DIR (default: /opt/webcface)
   -u: Extract webcface-desktop.app to $HOME/Applications, instead of the default /Applications (only for macOS)
   -y: Assume yes for all prompts
-  VERSION: Version to install, without 'v' prefix (default: 2.9.0-1)
-           Available versions: 2.9.0-1 2.9.0 2.8.0 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4
+  VERSION: Version to install, without 'v' prefix (default: 3.1.1)
+           Available versions: 3.1.1 2.9.0-1 2.9.0 2.8.0 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4
 ```
 
 <details>
@@ -314,10 +314,10 @@ In addition to the contents distributed as zip archives, it includes the WebCFac
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.9.0/webcface_2.9.0_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_amd64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_amd64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_amd64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -326,10 +326,10 @@ rm ./webcface*.deb
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.9.0/webcface_2.9.0_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_arm64.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_arm64.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_arm64.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -338,10 +338,10 @@ rm ./webcface*.deb
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface/releases/download/v2.9.0/webcface_2.9.0_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v2.3.1/webcface-tools_2.3.1_armhf.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-webui_1.14.0_all.deb
-curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.14.0/webcface-desktop_1.14.0_linux_armv7l.deb
+curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_armhf.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb
+curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_armv7l.deb
 sudo apt install ./webcface*.deb
 rm ./webcface*.deb
 ```
@@ -367,9 +367,9 @@ Instead of using apt, you can download the zip file for Linux from the [webcface
 <details open><summary>x86_64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.9.0-1/webcface_2.9.0-1_linux_amd64.zip
-sudo unzip webcface_2.9.0-1_linux_amd64.zip -d /opt/webcface
-rm webcface_2.9.0-1_linux_amd64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_amd64.zip
+sudo unzip webcface_3.1.1_linux_amd64.zip -d /opt/webcface
+rm webcface_3.1.1_linux_amd64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -379,9 +379,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>arm64</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.9.0-1/webcface_2.9.0-1_linux_arm64.zip
-sudo unzip webcface_2.9.0-1_linux_arm64.zip -d /opt/webcface
-rm webcface_2.9.0-1_linux_arm64.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_arm64.zip
+sudo unzip webcface_3.1.1_linux_arm64.zip -d /opt/webcface
+rm webcface_3.1.1_linux_arm64.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -391,9 +391,9 @@ sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
 <details><summary>armhf</summary>
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.9.0-1/webcface_2.9.0-1_linux_armhf.zip
-sudo unzip webcface_2.9.0-1_linux_armhf.zip -d /opt/webcface
-rm webcface_2.9.0-1_linux_armhf.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_armhf.zip
+sudo unzip webcface_3.1.1_linux_armhf.zip -d /opt/webcface
+rm webcface_3.1.1_linux_armhf.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.bashrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.bashrc
 sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/
@@ -427,12 +427,12 @@ Instead, you can avoid Gatekeeper by downloading and extracting it from the comm
 > も必要になるかもしれません。
 
 ```sh
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.9.0-1/webcface_2.9.0-1_macos_universal.zip
-curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v2.9.0-1/webcface-desktop_2.9.0-1_macos_app.zip
-sudo unzip webcface_2.9.0-1_macos_universal.zip -d /opt/webcface
-sudo unzip webcface-desktop_2.9.0-1_macos_app.zip -d /Applications
-rm webcface_2.9.0-1_macos_universal.zip
-rm webcface-desktop_2.9.0-1_macos_app.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_macos_universal.zip
+curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface-desktop_3.1.1_macos_app.zip
+sudo unzip webcface_3.1.1_macos_universal.zip -d /opt/webcface
+sudo unzip webcface-desktop_3.1.1_macos_app.zip -d /Applications
+rm webcface_3.1.1_macos_universal.zip
+rm webcface-desktop_3.1.1_macos_app.zip
 echo 'export PATH="/opt/webcface/bin:$PATH"' >> ~/.zshrc
 echo 'export PKG_CONFIG_PATH="/opt/webcface/lib/pkgconfig:$PKG_CONFIG_PATH"' >> ~/.zshrc
 ```
@@ -455,13 +455,12 @@ brew tap na-trium-144/webcface
 brew install webcface webcface-webui webcface-tools
 ```
 
-### Windows MSVC (x86, x64)
+### Windows MSVC (x86, x64, arm64)
 
 You can download the exe or zip file for Windows from the [webcface-package repository](https://github.com/na-trium-144/webcface-package/releases).
 
-* x86 and x64 versions are available.
+* x86, x64 and arm64 versions are available.
     * However, the installer and WebCFace Desktop app are always 32-bit.
-    * The arm64 binary is not distributed, but it should be possible to build from source even on arm64.
 * When you run the exe file, the installer will start.
     * Since it is not signed, it may be blocked by Windows Defender.
     In that case, click "More info" → "Run" to run it.
@@ -480,9 +479,8 @@ MinGW binaries are not distributed at this time (please build from source)
 > [webcface-package リポジトリから](https://github.com/na-trium-144/webcface-package/releases)
 > windows用のexeファイルまたはzipファイルをダウンロードできます。
 > 
-> * x86バージョンとx64バージョンがあります。
+> * x86, x64, arm64バージョンがあります。
 >     * ただしインストーラーと WebCFace Desktop アプリは32bitになっています
->     * arm64のバイナリは配布していませんが、arm64でもソースからビルドすることはできるはずです。
 > * exeファイルは実行するとインストーラーが起動します。
 >     * 署名していないため Windows Defender にブロックされるかもしれません。
 >     その場合は「詳細情報」→「実行」をクリックして実行してください。

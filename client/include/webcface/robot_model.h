@@ -37,6 +37,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
     friend internal::DataSetBuffer<RobotLink>;
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;
@@ -44,7 +45,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      * 
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotModel child(StringInitializer field) const {
@@ -62,7 +63,7 @@ class WEBCFACE_DLL RobotModel : protected Field {
      * child()と同じ
      * \since ver1.11
      * 
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      * 
      */
     RobotModel operator[](StringInitializer field) const { return child(std::move(field)); }
@@ -100,17 +101,6 @@ class WEBCFACE_DLL RobotModel : protected Field {
     const RobotModel &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
-    }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]] void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
     }
 
     /*!
@@ -179,11 +169,6 @@ class WEBCFACE_DLL RobotModel : protected Field {
      *
      */
     bool exists() const;
-    /*!
-     * \brief syncの時刻を返す
-     * \deprecated 1.7でMember::syncTime() に変更
-     */
-    [[deprecated]] std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア

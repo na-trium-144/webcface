@@ -125,12 +125,12 @@ wcli.text("a").set(a_instance); // Dictにキャストされる
     例えば`foo`というクライアントの`hoge`という名前のデータを取得したい場合は次のようにします。
 
     ```cpp
-    // ver2.10〜
+    // ver3.0〜
     std::optional<webcface::StringView> hoge = wcli.member("foo").text("hoge").tryGet();
     // それ以前
     std::optional<std::string> hoge = wcli.member("foo").text("hoge").tryGet();
     ```
-    * <span class="since-c">2.10</span> webcface::StringView は文字列への参照をshared_ptrで保持しています。そのため文字列のコピーは発生せず、寿命が切れることもありません。
+    * <span class="since-c">3.0</span> webcface::StringView は文字列への参照をshared_ptrで保持しています。そのため文字列のコピーは発生せず、寿命が切れることもありません。
         * std::string_view へキャストできます。
         * std::string が必要な場合、またはver2.9以前との互換性を維持したい場合は明示的にstd::stringのコンストラクタに渡せばよいです(コピーが必要になります)
     * 値をまだ受信していない場合 tryGet() はstd::nulloptを返し、そのデータのリクエストをサーバーに送ります。

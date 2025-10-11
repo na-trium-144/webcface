@@ -78,7 +78,7 @@ class LogLine : private LogLineData {
     LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
-     * * ver2.10〜 StringViewに変更
+     * * ver3.0〜 StringViewに変更
      *
      */
     StringView message() const { return message_.decodeShare(); };
@@ -89,7 +89,7 @@ class LogLineW : private LogLineData {
     LogLevel level() const { return static_cast<LogLevel>(level_); }
     std::chrono::system_clock::time_point time() const { return time_; }
     /*!
-     * * ver2.10〜 WStringViewに変更
+     * * ver3.0〜 WStringViewに変更
      *
      */
     WStringView message() const { return message_.decodeShareW(); };
@@ -100,7 +100,8 @@ class LogLineW : private LogLineData {
  *
  * * <del>fieldを継承しているがfield名は使用していない</del>
  * * ver2.4〜 他のデータ型と同じようにフィールド名を指定できるようになった
- *
+ * * ver3.1〜
+ * 他のデータ型と同じようにname(),child(),parent()などのメンバ関数を追加
  */
 class WEBCFACE_DLL Log : protected Field {
   public:
@@ -112,7 +113,31 @@ class WEBCFACE_DLL Log : protected Field {
     Log(const Field &base, const SharedString &field)
         : Log(Field{base, field}) {}
 
+    using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
+    using Field::name;
+    using Field::nameW;
+    /*!
+     * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
+     * \since ver3.1
+     */
+    Log child(StringInitializer field) const {
+        return this->Field::child(static_cast<SharedString &>(field));
+    }
+    /*!
+     * child()と同じ
+     * \since ver3.1
+     */
+    Log operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
+    /*!
+     * \brief nameの最後のピリオドの前までを新しい名前とするField
+     * \since ver3.1
+     */
+    Log parent() const { return this->Field::parent(); }
+
 
     /*!
      * \brief Clientが保持するログの行数を設定する。
@@ -144,18 +169,6 @@ class WEBCFACE_DLL Log : protected Field {
     const Log &onChange(F callback) const {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
-    }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]]
-    void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
     }
 
     /*!
@@ -215,7 +228,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver2.0
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     * * ver2.10〜 String型に変更
+     * * ver3.0〜 String型に変更
      * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */
@@ -233,7 +246,7 @@ class WEBCFACE_DLL Log : protected Field {
      * \since ver2.0
      *
      * * sync()時にサーバーに送られる。コンソールへの出力などはされない
-     * * ver2.10〜 String型に変更
+     * * ver3.0〜 String型に変更
      * * ver3.0〜 level引数を LogLevel とintの両方で受け付けるようにした
      *
      */

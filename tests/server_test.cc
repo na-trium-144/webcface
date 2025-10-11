@@ -280,6 +280,73 @@ TEST_F(ServerTest, entry) {
         EXPECT_EQ(obj.index, 5);
     });
 
+    // スラッシュはピリオドに置き換えられる
+    dummy_c2->recvClear();
+    dummy_c1->send(message::Value{{}, "//a/b.c"_ss, MutableNumVector(1)});
+    dummy_c2->waitRecv<message::Entry<message::Value>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::Text{{}, "//a/b.c"_ss, ValAdaptor("")});
+    dummy_c2->waitRecv<message::Entry<message::Text>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::RobotModel{
+        "//a/b.c"_ss, std::vector<std::shared_ptr<message::RobotLink>>()});
+    dummy_c2->waitRecv<message::Entry<message::RobotModel>>(
+        [&](const auto &obj) {
+            EXPECT_EQ(obj.member_id, 1u);
+            EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+        });
+    dummy_c1->send(message::View{
+        "//a/b.c"_ss,
+        std::map<std::string, std::shared_ptr<message::ViewComponentData>,
+                 std::less<>>(),
+        {}});
+    dummy_c2->waitRecv<message::Entry<message::View>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::Canvas3D{
+        "//a/b.c"_ss,
+        std::map<std::string, std::shared_ptr<message::Canvas3DComponentData>,
+                 std::less<>>(),
+        {}});
+    dummy_c2->waitRecv<message::Entry<message::Canvas3D>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::Canvas2D{
+        "//a/b.c"_ss,
+        0,
+        0,
+        std::map<std::string, std::shared_ptr<message::Canvas2DComponentData>,
+                 std::less<>>(),
+        {}});
+    dummy_c2->waitRecv<message::Entry<message::Canvas2D>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::Image{
+        "//a/b.c"_ss,
+        ImageFrame{sizeWH(50, 50),
+                   std::make_shared<std::vector<unsigned char>>(50 * 50 * 3),
+                   ImageColorMode::bgr}
+            .toMessage()});
+    dummy_c2->waitRecv<message::Entry<message::Image>>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+    });
+    dummy_c1->send(message::FuncInfo{0, "//a/b.c"_ss, ValType::none_, {}, 5});
+    dummy_c2->waitRecv<message::FuncInfo>([&](const auto &obj) {
+        EXPECT_EQ(obj.member_id, 1u);
+        EXPECT_EQ(obj.field.u8StringView(), "a.b.c");
+        EXPECT_EQ(obj.return_type, ValType::none_);
+        EXPECT_EQ(obj.args.size(), 0u);
+        EXPECT_EQ(obj.index, 5);
+    });
+
     dummy_c1.reset();
     dummy_c2->waitRecv<message::Closed>(
         [&](const auto &obj) { EXPECT_EQ(obj.member_id, 1u); });

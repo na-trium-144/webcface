@@ -151,9 +151,6 @@ std::optional<double> ValueElementRef::tryGet() const {
     }
 }
 
-std::chrono::system_clock::time_point Value::time() const {
-    return member().syncTime();
-}
 const Value &Value::free() const {
     auto req = dataLock()->value_store.unsetRecv(*this);
     if (req) {

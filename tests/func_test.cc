@@ -17,8 +17,7 @@ class FuncTest : public ::testing::Test {
     }
     SharedString self_name = "test"_ss;
     std::shared_ptr<internal::ClientData> data_;
-    FieldBase fieldBase(const SharedString &member,
-                        std::string name) const {
+    FieldBase fieldBase(const SharedString &member, std::string name) const {
         return FieldBase{member, SharedString::fromU8String(std::move(name))};
     }
     FieldBase fieldBase(std::string member, std::string name) const {
@@ -26,7 +25,8 @@ class FuncTest : public ::testing::Test {
                          SharedString::fromU8String(std::move(name))};
     }
     Field field(const SharedString &member, std::string name = "") const {
-        return Field{data_, member, SharedString::fromU8String(std::move(name))};
+        return Field{data_, member,
+                     SharedString::fromU8String(std::move(name))};
     }
     Field field(std::string member, std::string name = "") const {
         return Field{data_, SharedString::fromU8String(std::move(member)),
@@ -124,15 +124,18 @@ TEST_F(FuncTest, funcSet) {
 
     // 引数と戻り値をもつ関数
     f = func(self_name, "b");
-    f.set([](int, double, bool, const std::string &) { return 0; });
+    f.set([](int, double, bool, const std::string &, const std::vector<int> &) {
+        return 0;
+    });
     EXPECT_EQ(f.index(), 2);
     EXPECT_EQ(func(self_name, "b").index(), 2);
     EXPECT_EQ(f.returnType(), ValType::int_);
-    EXPECT_EQ(f.args().size(), 4u);
+    EXPECT_EQ(f.args().size(), 5u);
     EXPECT_EQ(f.args(0).type(), ValType::int_);
     EXPECT_EQ(f.args(1).type(), ValType::double_);
     EXPECT_EQ(f.args(2).type(), ValType::bool_);
     EXPECT_EQ(f.args(3).type(), ValType::string_);
+    EXPECT_EQ(f.args(4).type(), ValType::vector_int_);
 
     // index
     f.setIndex(100);
@@ -140,9 +143,13 @@ TEST_F(FuncTest, funcSet) {
     EXPECT_EQ(func(self_name, "b").index(), 100);
 
     // 関数のパラメーター設定
-    f.setArgs({Arg("0").init(1).min(0).max(2), Arg(L"1"),
-               Arg("2").option({L"a", L"b", L"c"}),
-               Arg("3").option({"a", "b", "c"})});
+    f.setArgs({
+        Arg("0").init(1).min(0).max(2),
+        Arg(L"1"),
+        Arg("2").option({L"a", L"b", L"c"}),
+        Arg("3").option({"a", "b", "c"}),
+        Arg("4").init(std::vector<int>{2, 3, 5, 7}),
+    });
     EXPECT_EQ(f.args(0).name(), "0");
     EXPECT_EQ(f.args(0).nameW(), L"0");
     EXPECT_EQ(f.args(0).type(), ValType::int_);
@@ -160,8 +167,29 @@ TEST_F(FuncTest, funcSet) {
     ASSERT_EQ(f.args(3).option().size(), 3u);
     EXPECT_EQ(f.args(3).option()[2], "c");
     EXPECT_EQ(f.args(3).option()[2], L"c");
+    EXPECT_EQ(f.args(4).init().value().asVector<int>().size(), 4u);
 
     EXPECT_THROW(f.setArgs({}), std::invalid_argument);
+
+    // 戻り値vector
+    f = func(self_name, "fv");
+    f.set([]() { return std::array<int, 3>{1, 2, 3}; });
+    EXPECT_EQ(f.index(), 3);
+    EXPECT_EQ(func(self_name, "fv").index(), 3);
+    EXPECT_EQ(f.returnType(), ValType::vector_int_);
+
+    // funcだけは他のデータ型と異なりsetの時点で名前が正規化される
+    f = func(self_name, "//a/b.c");
+    f.set([]() {});
+    EXPECT_EQ(f.index(), 4);
+    EXPECT_EQ(func(self_name, "//a/b.c").index(), 4);
+    EXPECT_EQ(func(self_name, "a.b.c").index(), 4);
+    EXPECT_EQ(func(self_name, "a.b/c").index(), 4);
+    // TODO: exists() は仕様上正規化済みの名前のsetを
+    // Func側に返してからfindしているので、正規化してない引数に対応できない
+    // EXPECT_TRUE(func(self_name, "//a/b.c").exists());
+    // EXPECT_TRUE(func(self_name, "a.b.c").exists());
+    // EXPECT_TRUE(func(self_name, "a.b/c").exists());
 
     // 未設定の関数呼び出しでエラー
     EXPECT_THROW(func(self_name, "c").setIndex(1), std::invalid_argument);
@@ -221,20 +249,26 @@ TEST_F(FuncTest, funcRun) {
     int called = 0;
     auto main_id = std::this_thread::get_id();
     func(self_name, "a")
-        .set([&](int a, double b, const std::string &c, bool d) {
+        .set([&](int a, double b, const std::string &c, bool d,
+                 const std::array<double, 4> &e, const std::vector<double> &f) {
             if (a == 0) {
                 throw std::invalid_argument("a == 0");
             }
             EXPECT_EQ(a, 123);
             EXPECT_EQ(b, 123.45);
             EXPECT_EQ(c, "a");
+            EXPECT_EQ(e, (std::array<double, 4>{2, 3, 5, 7}));
+            EXPECT_EQ(f, (std::vector<double>{2, 3, 5, 7}));
             EXPECT_TRUE(d);
             ++called;
             // setしてるのでrunAsyncしてもmainスレッドで実行される
             EXPECT_EQ(std::this_thread::get_id(), main_id);
             return 123.45;
         });
-    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    auto ret_a =
+        func(self_name, "a")
+            .runAsync(0, 123.45, "a", true, std::vector<double>{2, 3, 5, 7},
+                      std::array<double, 4>{2, 3, 5, 7});
     EXPECT_TRUE(ret_a.isError());
     EXPECT_TRUE(ret_a.response().empty());
     EXPECT_EQ(ret_a.rejection(), "a == 0");
@@ -252,7 +286,10 @@ TEST_F(FuncTest, funcRun) {
     });
     EXPECT_EQ(called, 2);
     called = 0;
-    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true);
+    ret_a =
+        func(self_name, "a")
+            .runAsync(123, 123.45, "a", true, std::vector<double>{2, 3, 5, 7},
+                      std::array<double, 4>{2, 3, 5, 7});
     EXPECT_TRUE(ret_a.found());
     EXPECT_FALSE(ret_a.isError());
     EXPECT_EQ(static_cast<double>(ret_a.response()), 123.45);
@@ -275,6 +312,25 @@ TEST_F(FuncTest, funcRun) {
     // 引数の間違い
     EXPECT_FALSE(func(self_name, "a").runAsync().rejection().empty());
     EXPECT_TRUE(func(self_name, "a").runAsync().found());
+
+    EXPECT_FALSE(func(self_name, "a")
+                     .runAsync(123, 123.45, "a", true,
+                               std::vector<double>{2, 3, 5, 7, 11})
+                     .rejection()
+                     .empty());
+    EXPECT_TRUE(func(self_name, "a")
+                    .runAsync(123, 123.45, "a", true,
+                              std::vector<double>{2, 3, 5, 7, 11})
+                    .found());
+
+    // 戻り値vector
+    func(self_name, "av").set([&]() { return std::array<int, 3>{1, 2, 3}; });
+    ret_a = func(self_name, "av").runAsync();
+    ret_a.waitFinish();
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.isError());
+    EXPECT_EQ(ret_a.response().asVector<int>(), (std::vector<int>{1, 2, 3}));
+
     // 未設定関数の呼び出し
     EXPECT_FALSE(func(self_name, "b").runAsync().found());
     EXPECT_FALSE(func(self_name, "b").runAsync().rejection().empty());
@@ -285,20 +341,27 @@ TEST_F(FuncTest, funcAsyncRun) {
     auto main_id = std::this_thread::get_id();
 
     func(self_name, "a")
-        .setAsync([&](int a, double b, const std::string &c, bool d) {
+        .setAsync([&](int a, double b, const std::string &c, bool d,
+                      const std::array<double, 4> &e,
+                      const std::vector<double> &f) {
             if (a == 0) {
                 throw std::invalid_argument("a == 0");
             }
             EXPECT_EQ(a, 123);
             EXPECT_EQ(b, 123.45);
             EXPECT_EQ(c, "a");
+            EXPECT_EQ(e, (std::array<double, 4>{2, 3, 5, 7}));
+            EXPECT_EQ(f, (std::vector<double>{2, 3, 5, 7}));
             EXPECT_TRUE(d);
             ++called;
             // setAsyncなので別スレッド
             EXPECT_NE(std::this_thread::get_id(), main_id);
             return 123.45;
         });
-    auto ret_a = func(self_name, "a").runAsync(0, 123.45, "a", true);
+    auto ret_a =
+        func(self_name, "a")
+            .runAsync(0, 123.45, "a", true, std::vector<double>{2, 3, 5, 7},
+                      std::array<double, 4>{2, 3, 5, 7});
     ret_a.waitFinish();
     EXPECT_TRUE(ret_a.isError());
     EXPECT_TRUE(ret_a.response().empty());
@@ -317,7 +380,11 @@ TEST_F(FuncTest, funcAsyncRun) {
     });
     EXPECT_EQ(called, 2);
     called = 0;
-    ret_a = func(self_name, "a").runAsync(123, 123.45, "a", true).waitFinish();
+    ret_a =
+        func(self_name, "a")
+            .runAsync(123, 123.45, "a", true, std::vector<double>{2, 3, 5, 7},
+                      std::array<double, 4>{2, 3, 5, 7})
+            .waitFinish();
     EXPECT_EQ(called, 1);
     EXPECT_TRUE(ret_a.found());
     EXPECT_FALSE(ret_a.isError());
@@ -341,6 +408,26 @@ TEST_F(FuncTest, funcAsyncRun) {
     // 引数の間違い
     EXPECT_FALSE(func(self_name, "a").runAsync().rejection().empty());
     EXPECT_TRUE(func(self_name, "a").runAsync().found());
+
+    EXPECT_FALSE(func(self_name, "a")
+                     .runAsync(123, 123.45, "a", true,
+                               std::vector<double>{2, 3, 5, 7, 11})
+                     .rejection()
+                     .empty());
+    EXPECT_TRUE(func(self_name, "a")
+                    .runAsync(123, 123.45, "a", true,
+                              std::vector<double>{2, 3, 5, 7, 11})
+                    .found());
+
+    // 戻り値vector
+    func(self_name, "av").setAsync([&]() {
+        return std::array<int, 3>{1, 2, 3};
+    });
+    ret_a = func(self_name, "av").runAsync();
+    ret_a.waitFinish();
+    EXPECT_TRUE(ret_a.found());
+    EXPECT_FALSE(ret_a.isError());
+    EXPECT_EQ(ret_a.response().asVector<int>(), (std::vector<int>{1, 2, 3}));
 }
 TEST_F(FuncTest, funcHandleRun) {
     // 引数と戻り値

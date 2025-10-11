@@ -26,11 +26,14 @@ using ns_abi::MutableNumVector;
 
 // common/val_adaptor.h
 using ns_abi::ValType;
-using ns_abi::valTypeOf;
 using ns_abi::valTypeStr;
 using ns_abi::ValAdaptor;
 using ns_abi::ValAdapter;
+
+// common/val_adaptor_vec.h
+using ns_abi::ValAdaptorVector;
 using ns_abi::argToTuple;
+using ns_abi::valTypeOf;
 
 // arg.h
 using ns_abi::Arg;

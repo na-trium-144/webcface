@@ -3,8 +3,23 @@
 <!-- * ドキュメントやREADMEの修正等は記述しない -->
 
 ## main
+
+
+## [3.1.1] - 2025-10-10
+
+## [3.1.0] - 2025-10-10
+### Added
+* 各種FieldのlastNameW() (#539)
+* Logに他のデータ型と同様name(),child(),parent()などを追加 (#539)
+### Fixed
+* AppleClangではC++20 modulesを使えない (#540)
+### Changed
+* フィールド名の半角スラッシュを半角ピリオドと同等に扱う (#539)
+
+## [3.0.0] - 2025-09-29
 ### Added
 * default.nix (#513)
+* Windows arm64ビルドをリリースに追加 (#524)
 * benchmark (#515)
 * NumVectorクラス (#516)
 	* Value::getVec() の返す型をstd::vectorからNumVectorに変更
@@ -16,10 +31,21 @@
 * C++20 modules 対応 (#532)
 	* `include/webcface/modules/webcface{.cc,.ccm,.ixx}`
 	* webcfaceConfig.cmake 内で `webcface::webcface_modules` ターゲット(CMake用)、`webcface_INCLUDE_DIR` の定義(Meson用) を追加
-
+* ValAdaptorVectorクラス追加、Funcの引数と戻り値にvectorとarrayを使用可能にする (#527, #534)
 ### Fixed
 * Logメッセージをwstringで渡した際のメモリ管理のミスを修正 (#510)
 ### Changed
+* deprecatedなAPIの削除 (#534, #537)
+	* webcface::encoding
+	* 各種Field::appendListener(), time()
+	* Func::hidden(), run(), operator()()
+	* FuncListener::hidden()
+	* Image,ImageFrameでrows,colsを別々で受け取るコンストラクター
+	* Member::values(), texts(), robotModels(), funcs(), views(), images()
+	* constでない Client::members()
+	* AxisAngleからstd::pairへのキャスト演算子
+	* wcfFuncRun(), wcfFuncRunW()
+	* FuncPromise::started, result
 * windows-2019サポート終了のため、Windows用にリリースするバイナリをビルドする環境をwindows-2022に変更 (#524)
 * 依存ライブラリの更新 (#509)
 	* crowの更新でコードが変わっています (ver2.9以前が使用していたコミットのcrowではビルドできない)
@@ -31,6 +57,7 @@
 * Funcのtraitチェックのエラーメッセージを改善し、問題の引数がどれかわかるようにした (#526)
 * `webcface::level::LogLevelEnum` を C-style enum から enum class に変更し、 `webcface::LogLevel`, `webcface::level` に移動 (#532)
 	* `LogLine::level()` の戻り値型変更
+* trait系のヘッダーをcommonへ移動 (#527)
 
 ## [2.9.0] - 2025-02-09
 ### Added

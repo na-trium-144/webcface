@@ -1,4 +1,5 @@
 #pragma once
+#include <condition_variable>
 #include <unordered_map>
 #include <mutex>
 #include "webcface/func_result.h"
@@ -32,17 +33,12 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
     bool found = false;
     bool finished = false;
     bool is_error = false;
-    ValAdaptor response;
+    ValAdaptorVector response;
     ValAdaptor rejection;
-
-    std::promise<bool> started_p;
-    std::promise<ValAdaptor> result_p;
-    std::shared_future<bool> started_f;
-    std::shared_future<ValAdaptor> result_f;
 
     Field base;
     std::size_t caller_id;
-    const std::vector<ValAdaptor> args_;
+    const std::vector<ValAdaptorVector> args_;
     std::variant<int, std::vector<wcfMultiVal>, std::vector<wcfMultiValW>>
         c_args_;
 
@@ -58,11 +54,9 @@ struct PromiseData : public std::enable_shared_from_this<PromiseData> {
     /*!
      * startedとresultを空の状態で初期化
      */
-    explicit PromiseData(const Field &base, std::vector<ValAdaptor> &&args,
+    explicit PromiseData(const Field &base, std::vector<ValAdaptorVector> &&args,
                          std::size_t caller_id = 0)
-        : reach_event(), finish_event(), started_p(), result_p(),
-          started_f(started_p.get_future().share()),
-          result_f(result_p.get_future().share()), base(base),
+        : reach_event(), finish_event(), base(base),
           caller_id(caller_id), args_(std::move(args)) {}
 
     /*!
@@ -99,7 +93,7 @@ class FuncResultStore {
         std::lock_guard lock(mtx);
         std::size_t caller_id = next_caller_id++;
         auto state = std::make_shared<PromiseData>(
-            base, std::vector<ValAdaptor>{}, caller_id);
+            base, std::vector<ValAdaptorVector>{}, caller_id);
         promises.emplace(caller_id, state);
         return state;
     }

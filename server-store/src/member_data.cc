@@ -14,9 +14,6 @@
 WEBCFACE_NS_BEGIN
 namespace server {
 
-constexpr char field_separator = '.';
-constexpr std::string_view field_separator_sv = ".";
-
 MemberData::MemberData(ServerStorage *store, const wsConnPtr &con,
                        std::string_view remote_addr,
                        const spdlog::sink_ptr &sink,
@@ -322,6 +319,8 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::call: {
             auto &v = *static_cast<webcface::message::Call *>(obj.get());
             logger->debug("received {}", v);
+            // v.field.normalizeSeparator();
+            // Funcだけは正規化せず、クライアント側で処理
             v.caller_member_id = this->member_id;
             // そのままターゲットのクライアントに送る
             store->findConnectedAndDo(
@@ -360,6 +359,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::value: {
             auto &v = *static_cast<webcface::message::Value *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->value.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -387,6 +387,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::text: {
             auto &v = *static_cast<webcface::message::Text *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->text.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -414,6 +415,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::robot_model: {
             auto &v = *static_cast<webcface::message::RobotModel *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->robot_model.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -442,6 +444,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::view: {
             auto &v = *static_cast<webcface::message::View *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -520,6 +523,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::view_old: {
             auto &v = *static_cast<webcface::message::ViewOld *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->view.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -585,6 +589,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas3d: {
             auto &v = *static_cast<webcface::message::Canvas3D *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -666,6 +671,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas3d_old: {
             auto &v = *static_cast<webcface::message::Canvas3DOld *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->canvas3d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -736,6 +742,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas2d: {
             auto &v = *static_cast<webcface::message::Canvas2D *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->canvas2d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -819,6 +826,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::canvas2d_old: {
             auto &v = *static_cast<webcface::message::Canvas2DOld *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->canvas2d.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -889,6 +897,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::image: {
             auto &v = *static_cast<webcface::message::Image *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             if (!this->image.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
                 store->forEach([&](const auto &cd) {
@@ -924,7 +933,7 @@ void MemberData::onRecv(const std::string &message) {
             if (kind == MessageKind::log) {
                 auto &v = *static_cast<webcface::message::Log *>(obj.get());
                 logger->debug("received {}", v);
-                field = v.field;
+                field = v.field.normalizeSeparator();
                 log_data = v.log;
             } else {
                 auto &v =
@@ -998,6 +1007,7 @@ void MemberData::onRecv(const std::string &message) {
         case MessageKind::func_info: {
             auto &v = *static_cast<webcface::message::FuncInfo *>(obj.get());
             logger->debug("received {}", v);
+            v.field.normalizeSeparator();
             v.member_id = this->member_id;
             if (!this->func.count(v.field) &&
                 !v.field.startsWith(field_separator)) {
@@ -1014,6 +1024,7 @@ void MemberData::onRecv(const std::string &message) {
             auto &s = *static_cast<
                 webcface::message::Req<webcface::message::Value> *>(obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1045,6 +1056,7 @@ void MemberData::onRecv(const std::string &message) {
                 *static_cast<webcface::message::Req<webcface::message::Text> *>(
                     obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1076,6 +1088,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::RobotModel> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1107,6 +1120,7 @@ void MemberData::onRecv(const std::string &message) {
                 *static_cast<webcface::message::Req<webcface::message::View> *>(
                     obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1139,6 +1153,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::ViewOld> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1181,6 +1196,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::Canvas3D> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1213,6 +1229,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::Canvas3DOld> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1256,6 +1273,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::Canvas2D> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1289,6 +1307,7 @@ void MemberData::onRecv(const std::string &message) {
                 webcface::message::Req<webcface::message::Canvas2DOld> *>(
                 obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 if (!this->hasReq(s.member)) {
@@ -1333,6 +1352,7 @@ void MemberData::onRecv(const std::string &message) {
             auto &s = *static_cast<
                 webcface::message::Req<webcface::message::Image> *>(obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             {
                 std::lock_guard lock(this->image_m);
                 image_req_info[s.member][s.field] = s;
@@ -1354,6 +1374,7 @@ void MemberData::onRecv(const std::string &message) {
                 *static_cast<webcface::message::Req<webcface::message::Log> *>(
                     obj.get());
             logger->debug("received {}", s);
+            s.field.normalizeSeparator();
             // 指定した値を返す
             store->findAndDo(s.member, [&](const auto &cd) {
                 // if (!this->hasReq(s.member)) {

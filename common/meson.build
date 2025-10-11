@@ -3,8 +3,10 @@ webcface_common_src = [
   'src/fmt.cc',
   'src/num_vector.cc',
   'src/val_adaptor.cc',
+  'src/val_adaptor_vec.cc',
   'src/message.cc',
   'src/unix_path.cc',
+  'src/exception.cc',
 ]
 webcface_common_inc = include_directories('include')
 webcface_common_lib = static_library('webcface-common',

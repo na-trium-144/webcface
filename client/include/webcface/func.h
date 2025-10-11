@@ -1,10 +1,11 @@
 #pragma once
-#include "webcface/common/val_adaptor.h"
+#include "webcface/common/val_adaptor_vec.h"
 #include "func_result.h"
 #include "arg.h"
-#include "trait.h"
+#include "webcface/common/trait.h"
 #include "func_trait.h"
 #include "exception.h"
+#include <thread>
 
 WEBCFACE_NS_BEGIN
 namespace internal {
@@ -26,9 +27,11 @@ template <typename Arg, typename = void>
 struct IsConstructibleArg : std::false_type {};
 template <>
 struct IsConstructibleArg<ValAdaptor, void> : std::true_type {};
+template <>
+struct IsConstructibleArg<ValAdaptorVector, void> : std::true_type {};
 template <typename Arg>
-struct IsConstructibleArg<Arg,
-                          std::void_t<decltype(std::declval<ValAdaptor>().operator Arg())>>
+struct IsConstructibleArg<
+    Arg, std::void_t<decltype(std::declval<ValAdaptorVector>().operator Arg())>>
     : std::true_type {};
 
 template <typename... Args>
@@ -58,7 +61,7 @@ struct FuncReturnTypeCheckOkTrait {
 template <typename Ret>
 using FuncReturnTypeTrait = std::conditional_t<
     std::disjunction_v<std::is_void<Ret>,
-                       std::is_constructible<ValAdaptor, Ret>>,
+                       std::is_constructible<ValAdaptorVector, Ret>>,
     FuncReturnTypeCheckOkTrait,
     This_return_type_is_not_supported_by_WebCFace_Func<Ret>>;
 
@@ -114,13 +117,14 @@ class WEBCFACE_DLL Func : protected Field {
         : Func(Field{base, field}) {}
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Func child(StringInitializer field) const {
@@ -138,7 +142,7 @@ class WEBCFACE_DLL Func : protected Field {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Func operator[](StringInitializer field) const {
@@ -236,17 +240,18 @@ class WEBCFACE_DLL Func : protected Field {
             traits::FuncObjTrait<T>::argsInfo(),
             [func = std::move(func)](const CallHandle &handle) {
                 if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
-                    argToTuple(handle.args(), args_tuple);
                     tryRun(
                         [&] {
+                            typename traits::FuncObjTrait<T>::ArgsTuple
+                                args_tuple;
+                            argToTuple(handle.args(), args_tuple);
                             if constexpr (traits::FuncObjTrait<
                                               T>::return_void) {
                                 std::apply(func, args_tuple);
-                                return ValAdaptor();
+                                return ValAdaptorVector();
                             } else {
                                 auto ret = std::apply(func, args_tuple);
-                                return ret;
+                                return ValAdaptorVector(ret);
                             }
                         },
                         handle);
@@ -278,26 +283,23 @@ class WEBCFACE_DLL Func : protected Field {
             [func_p = std::make_shared<T>(std::move(func))](
                 const CallHandle &handle) {
                 if (traits::FuncObjTrait<T>::assertArgsNum(handle)) {
-                    typename traits::FuncObjTrait<T>::ArgsTuple args_tuple;
-                    argToTuple(handle.args(), args_tuple);
-                    std::thread(
-                        [func_p, handle](auto args_tuple) {
-                            tryRun(
-                                [&] {
-                                    if constexpr (traits::FuncObjTrait<
-                                                      T>::return_void) {
-                                        std::apply(*func_p, args_tuple);
-                                        return ValAdaptor();
-                                    } else {
-                                        auto ret =
-                                            std::apply(*func_p, args_tuple);
-                                        return ret;
-                                    }
-                                },
-                                handle);
-                        },
-                        std::move(args_tuple))
-                        .detach();
+                    std::thread([func_p, handle]() {
+                        tryRun(
+                            [&] {
+                                typename traits::FuncObjTrait<T>::ArgsTuple
+                                    args_tuple;
+                                argToTuple(handle.args(), args_tuple);
+                                if constexpr (traits::FuncObjTrait<
+                                                  T>::return_void) {
+                                    std::apply(*func_p, args_tuple);
+                                    return ValAdaptorVector();
+                                } else {
+                                    auto ret = std::apply(*func_p, args_tuple);
+                                    return ValAdaptorVector(ret);
+                                }
+                            },
+                            handle);
+                    }).detach();
                 }
             });
     }
@@ -452,64 +454,10 @@ class WEBCFACE_DLL Func : protected Field {
     }
 
     /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     * \deprecated
-     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
-     * hiddenの指定は無効 (この関数は効果がない)
-     *
-     */
-    [[deprecated("Func::hidden() does nothing since ver1.10")]]
-    const Func &hidden(bool) const {
-        return *this;
-    }
-
-    /*!
      * \brief 関数の設定を削除
      *
      */
     const Func &free() const;
-
-    /*!
-     * \brief 関数を実行する (同期)
-     *
-     * 例外が発生した場合 runtime_error, 関数が存在しない場合 FuncNotFound
-     * をthrowする
-     *
-     * \deprecated ver2.0〜 runAsync()を推奨。
-     * Promise::waitFinish() と response(), rejection() で同等のことができるが、
-     * 使い方によってはデッドロックを起こす可能性がある。
-     * 詳細は waitFinish() のドキュメントを参照
-     *
-     */
-    template <typename... Args>
-    [[deprecated("use runAsync")]]
-    ValAdaptor run(Args... args) const {
-        return run({ValAdaptor(args)...});
-    }
-    [[deprecated("use runAsync")]]
-    ValAdaptor run(std::vector<ValAdaptor> &&args_vec) const {
-        auto p = runAsync(std::move(args_vec));
-        p.waitFinish();
-        if (p.found()) {
-            if (p.isError()) {
-                throw Rejection(*this, std::string(p.rejection()));
-            } else {
-                return p.response();
-            }
-        } else {
-            throw FuncNotFound(*this);
-        }
-    }
-    /*!
-     * \brief run()と同じ
-     * \deprecated ver2.0〜
-     */
-    template <typename... Args>
-    [[deprecated("use runAsync")]]
-    ValAdaptor operator()(Args... args) const {
-        return run(args...);
-    }
 
     /*!
      * \brief 関数を実行する (非同期)
@@ -522,13 +470,22 @@ class WEBCFACE_DLL Func : protected Field {
      * * ver2.0～: runAsyncを呼んだ時点でclientがサーバーに接続していない場合、
      * 関数呼び出しメッセージは送信されず呼び出しは失敗する
      * (Promise::found() が false になる)
+     * * ver3.0〜: 引数をValAdaptorVector型に変更
+     *   * vectorやarrayを渡すとまとめて1つの引数として扱われるが、
+     * std::vector<ValAdaptor>
+     * 型1つを渡した場合には以前のバージョンとの互換性のため配列でない引数のリストとして扱われる
      *
      */
     template <typename... Args>
     Promise runAsync(Args... args) const {
-        return runAsync({ValAdaptor(args)...});
+        return runAsync(
+            std::vector<ValAdaptorVector>{ValAdaptorVector(args)...});
     }
-    Promise runAsync(std::vector<ValAdaptor> args_vec) const;
+    Promise runAsync(std::vector<ValAdaptorVector> args_vec) const;
+    Promise runAsync(std::vector<ValAdaptor> args_vec) const {
+        return runAsync(
+            std::vector<ValAdaptorVector>(args_vec.begin(), args_vec.end()));
+    }
 
     /*!
      * \brief 関数の情報が存在すればtrue
@@ -668,18 +625,6 @@ class WEBCFACE_DLL FuncListener : protected Func {
         return *this;
     }
 
-    /*!
-     * \brief 関数を関数リストで非表示にする
-     * (他clientのentryに表示されなくする)
-     * \deprecated
-     * ver1.10から、名前が半角ピリオドで始まるかどうかで判断されるように仕様変更したため、
-     * hiddenの指定は無効 (この関数は効果がない)
-     *
-     */
-    [[deprecated("FuncListener::hidden() does nothing since ver1.10")]]
-    FuncListener &hidden(bool) {
-        return *this;
-    }
     /*!
      * \brief 関数が呼び出されたかどうかを確認
      *

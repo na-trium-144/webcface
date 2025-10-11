@@ -125,24 +125,6 @@ class WEBCFACE_DLL ImageFrame {
 
     /*!
      * \brief 生画像データの配列からImageFrameを作成
-     *
-     * dataから rows * cols * channels バイトがコピーされる
-     *
-     * \param rows 画像の高さ
-     * \param cols 画像の幅
-     * \param data 画像データ
-     * \param color_mode データの構造を指定
-     * (デフォルトはOpenCVのBGR, uint8*3バイト)
-     * \deprecated ver2.0〜 rows, colsの順番がややこしいので sizeHW()
-     * を使ってサイズ指定
-     *
-     */
-    [[deprecated("Ambiguous image size")]] ImageFrame(
-        int rows, int cols, const void *data,
-        ImageColorMode color_mode = ImageColorMode::bgr)
-        : ImageFrame(sizeHW(rows, cols), data, color_mode) {}
-    /*!
-     * \brief 生画像データの配列からImageFrameを作成
      * \since ver2.0
      *
      * dataから width * height * channels バイトがコピーされる

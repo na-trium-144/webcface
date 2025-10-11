@@ -16,6 +16,7 @@
 #include "webcface/internal/component_internal.h"
 #include <chrono>
 #include <thread>
+#include <future>
 #include "dummy_server.h"
 
 using namespace webcface;
@@ -260,15 +261,12 @@ TEST_F(CClientTest, funcRun) {
         wcfValD(1.5),
         wcfValS("aaa"),
     };
-    wcfMultiVal *ret, *async_ret;
+    wcfMultiVal *async_ret;
     wcfPromise *async_res;
-    EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, -1, &ret),
-              WCF_INVALID_ARGUMENT);
     EXPECT_EQ(wcfFuncRunAsync(wcli_, "a", "b", args, -1, &async_res),
               WCF_INVALID_ARGUMENT);
     std::thread t([&]() {
         // 1
-        EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_NOT_FOUND);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncGetResult(async_res, &async_ret), WCF_NOT_RETURNED);
         EXPECT_EQ(wcfDestroy(async_ret), WCF_BAD_HANDLE);
@@ -276,12 +274,6 @@ TEST_F(CClientTest, funcRun) {
         EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_BAD_HANDLE);
         // 2
-        EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_OK);
-        EXPECT_EQ(ret->as_int, 123);
-        EXPECT_EQ(ret->as_double, 123.45);
-        EXPECT_EQ(ret->as_str, "123.45"s);
-        EXPECT_EQ(wcfDestroy(ret), WCF_OK);
-        EXPECT_EQ(wcfDestroy(ret), WCF_BAD_HANDLE);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_OK);
         EXPECT_EQ(async_ret->as_int, 123);
@@ -290,11 +282,6 @@ TEST_F(CClientTest, funcRun) {
         EXPECT_EQ(wcfDestroy(async_ret), WCF_OK);
         EXPECT_EQ(wcfDestroy(async_ret), WCF_BAD_HANDLE);
         // 3
-        EXPECT_EQ(wcfFuncRun(wcli_, "a", "b", args, 3, &ret), WCF_EXCEPTION);
-        EXPECT_EQ(ret->as_int, 0);
-        EXPECT_EQ(ret->as_double, 0);
-        EXPECT_EQ(ret->as_str, "error"s);
-        EXPECT_EQ(wcfDestroy(ret), WCF_OK);
         wcfFuncRunAsync(wcli_, "a", "b", args, 3, &async_res);
         EXPECT_EQ(wcfFuncWaitResult(async_res, &async_ret), WCF_EXCEPTION);
         EXPECT_EQ(async_ret->as_int, 0);
@@ -305,56 +292,50 @@ TEST_F(CClientTest, funcRun) {
 
     std::size_t caller_id = 0;
     // 1
-    for (int i = 0; i < 2; i++) {
-        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8StringView(), "b");
-            EXPECT_EQ(obj.args.size(), 3u);
-            EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
-            EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
-            EXPECT_EQ(static_cast<std::string_view>(obj.args.at(2)), "aaa");
-        });
-        dummy_s->recvClear();
-        dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
-        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
-        caller_id++;
-        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
-    }
+    dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, caller_id);
+        EXPECT_EQ(obj.target_member_id, 0u);
+        EXPECT_EQ(obj.field.u8StringView(), "b");
+        EXPECT_EQ(obj.args.size(), 3u);
+        EXPECT_EQ(static_cast<int>(obj.args.at(0)), 42);
+        EXPECT_EQ(static_cast<double>(obj.args.at(1)), 1.5);
+        EXPECT_EQ(static_cast<std::string_view>(obj.args.at(2)), "aaa");
+    });
+    dummy_s->recvClear();
+    dummy_s->send(message::CallResponse{{}, caller_id, 1, false});
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
+    caller_id++;
+    // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
 
     // 2
-    for (int i = 0; i < 2; i++) {
-        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8StringView(), "b");
-            EXPECT_EQ(obj.args.size(), 3u);
-        });
-        dummy_s->recvClear();
-        dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
-        dummy_s->send(
-            message::CallResult{{}, caller_id, 1, false, ValAdaptor("123.45")});
-        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
-        caller_id++;
-        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
-    }
+    dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, caller_id);
+        EXPECT_EQ(obj.target_member_id, 0u);
+        EXPECT_EQ(obj.field.u8StringView(), "b");
+        EXPECT_EQ(obj.args.size(), 3u);
+    });
+    dummy_s->recvClear();
+    dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
+    dummy_s->send(
+        message::CallResult{{}, caller_id, 1, false, ValAdaptor("123.45")});
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
+    caller_id++;
+    // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
 
     // 3
-    for (int i = 0; i < 2; i++) {
-        dummy_s->waitRecv<message::Call>([&](const auto &obj) {
-            EXPECT_EQ(obj.caller_id, caller_id);
-            EXPECT_EQ(obj.target_member_id, 0u);
-            EXPECT_EQ(obj.field.u8StringView(), "b");
-            EXPECT_EQ(obj.args.size(), 3u);
-        });
-        dummy_s->recvClear();
-        dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
-        dummy_s->send(
-            message::CallResult{{}, caller_id, 1, true, ValAdaptor("error")});
-        EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
-        caller_id++;
-        // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
-    }
+    dummy_s->waitRecv<message::Call>([&](const auto &obj) {
+        EXPECT_EQ(obj.caller_id, caller_id);
+        EXPECT_EQ(obj.target_member_id, 0u);
+        EXPECT_EQ(obj.field.u8StringView(), "b");
+        EXPECT_EQ(obj.args.size(), 3u);
+    });
+    dummy_s->recvClear();
+    dummy_s->send(message::CallResponse{{}, caller_id, 1, true});
+    dummy_s->send(
+        message::CallResult{{}, caller_id, 1, true, ValAdaptor("error")});
+    EXPECT_EQ(wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000), WCF_OK);
+    caller_id++;
+    // wcfLoopSyncFor(wcli_, WEBCFACE_TEST_TIMEOUT * 1000);
 
     t.join();
 }

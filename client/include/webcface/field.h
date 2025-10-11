@@ -28,9 +28,6 @@ class Canvas2D;
 class Canvas3D;
 class Log;
 
-constexpr char field_separator = '.';
-constexpr std::string_view field_separator_sv = ".";
-
 /*!
  * \brief メンバ名とデータ名を持つクラス
  *
@@ -110,7 +107,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
     /*!
      * \brief field名を返す
      *
-     * ver2.10〜 std::stringの参照から StringView に変更
+     * ver3.0〜 std::stringの参照から StringView に変更
      *
      */
     StringView name() const { return field_.decodeShare(); }
@@ -118,7 +115,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief field名を返す (wstring)
      * \since ver2.0
      *
-     * ver2.10〜 std::wstringの参照から WStringView に変更
+     * ver3.0〜 std::wstringの参照から WStringView に変更
      *
      */
     WStringView nameW() const { return field_.decodeShareW(); }
@@ -150,7 +147,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Field child(StringInitializer field) const {
@@ -169,7 +166,7 @@ struct WEBCFACE_DLL Field : public FieldBase {
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Field operator[](StringInitializer field) const {

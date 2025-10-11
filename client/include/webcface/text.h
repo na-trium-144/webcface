@@ -51,18 +51,6 @@ class WEBCFACE_DLL Variant : protected Field {
         return onChange(
             [callback = std::move(callback)](const auto &) { callback(); });
     }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]]
-    void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
-    }
 
   protected:
     /*!
@@ -86,7 +74,7 @@ class WEBCFACE_DLL Variant : protected Field {
      * \brief 値を取得する
      *
      * <del>参照は少なくとも次のClient::sync()までは有効</del>
-     * ver2.10〜 ValAdaptorをコピーで返すように変更
+     * ver3.0〜 ValAdaptorをコピーで返すように変更
      *
      */
     ValAdaptor get() const;
@@ -107,33 +95,33 @@ class WEBCFACE_DLL Variant : protected Field {
      *
      * <del>std::stringのconst参照を返す。参照は少なくとも次のClient::sync()までは有効</del>
      *
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    [[deprecated("(ver3.0〜) use asStringView() or asString() instead")]]
     std::string asStringRef() const {
         return asString();
     }
     /*!
      * \brief 文字列として返す (wstring)
      * \sa asStringRef()
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView() を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    [[deprecated("(ver3.0〜) use asWStringView() or asWString() instead")]]
     std::wstring asWStringRef() const {
         return asWString();
     }
     /*!
      * \brief null終端の文字列の参照として返す
-     * \since ver2.10
+     * \since ver3.0
      */
     StringView asStringView() const { return get().asStringView(); }
     /*!
      * \brief null終端の文字列の参照として返す (wstring)
-     * \since ver2.10
+     * \since ver3.0
      */
     WStringView asWStringView() const { return get().asWStringView(); }
     /*!
@@ -211,13 +199,14 @@ class WEBCFACE_DLL Text : protected Variant {
         : Text(Field{base, field}) {}
 
     using Field::lastName;
+    using Field::lastNameW;
     using Field::member;
     using Field::name;
     using Field::nameW;
     /*!
      * \brief 「(thisの名前).(追加の名前)」を新しい名前とするField
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     Text child(StringInitializer field) const {
@@ -235,10 +224,12 @@ class WEBCFACE_DLL Text : protected Variant {
      * child()と同じ
      * \since ver1.11
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
-    Text operator[](StringInitializer field) const { return child(std::move(field)); }
+    Text operator[](StringInitializer field) const {
+        return child(std::move(field));
+    }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
      * \since ver1.11
@@ -253,18 +244,13 @@ class WEBCFACE_DLL Text : protected Variant {
     Text operator[](const wchar_t *field) const { return child(field); }
     /*!
      * operator[](long, const char *)と解釈されるのを防ぐための定義
-     * \since ver2.10
+     * \since ver3.0
      */
-    template <std::size_t N>
-    Text operator[](const char (&static_str)[N]) {
-        return child(StringInitializer(static_str));
-    }
-    /*!
-     * operator[](long, const wchar_t *)と解釈されるのを防ぐための定義
-     * \since ver2.10
-     */
-    template <std::size_t N>
-    Text operator[](const wchar_t (&static_str)[N]) {
+    template <typename CharT, std::size_t N,
+              typename std::enable_if_t<std::is_same_v<CharT, char> ||
+                                            std::is_same_v<CharT, wchar_t>,
+                                        std::nullptr_t> = nullptr>
+    Text operator[](const CharT (&static_str)[N]) {
         return child(StringInitializer(static_str));
     }
     /*!
@@ -312,24 +298,12 @@ class WEBCFACE_DLL Text : protected Variant {
             [callback = std::move(callback)](const auto &) { callback(); });
         return *this;
     }
-    /*!
-     * \deprecated
-     * ver1.11まではEventTarget::appendListener()でコールバックを追加できたが、
-     * ver2.0からコールバックは1個のみになった。
-     * 互換性のため残しているがonChange()と同じ
-     *
-     */
-    template <typename T>
-    [[deprecated]]
-    void appendListener(T &&callback) const {
-        onChange(std::forward<T>(callback));
-    }
 
     /*!
      * \brief 文字列をセットする
      *
      * (ver2.0からstd::stringをstd::string_viewに変更)
-     * (ver2.0からstd::wstring対応、ver2.10からString型に変更)
+     * (ver2.0からstd::wstring対応、ver3.0からString型に変更)
      */
     const Text &set(StringInitializer v) const {
         this->Variant::set(ValAdaptor{std::move(v)});
@@ -339,7 +313,7 @@ class WEBCFACE_DLL Text : protected Variant {
     /*!
      * \brief 文字列をセットする
      *
-     * ver2.0〜 wstring対応, ver2.10〜 StringInitializer 型で置き換え
+     * ver2.0〜 wstring対応, ver3.0〜 StringInitializer 型で置き換え
      *
      */
     const Text &operator=(StringInitializer v) const {
@@ -362,7 +336,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * * <del>ver1.10〜 文字列以外の型も扱うためValAdaptor型に変更</del>
      * * <del>ver2.0〜 stringに戻した</del>
      * * <del>参照は少なくとも次のClient::sync()までは有効</del>
-     * * ver2.10〜 StringViewに変更
+     * * ver3.0〜 StringViewに変更
      *
      */
     std::optional<StringView> tryGet() const;
@@ -371,7 +345,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * \since ver2.0
      *
      * * <del>参照は少なくとも次のClient::sync()までは有効</del>
-     * * ver2.10〜 WStringViewに変更
+     * * ver3.0〜 WStringViewに変更
      *
      */
     std::optional<WStringView> tryGetW() const;
@@ -382,7 +356,7 @@ class WEBCFACE_DLL Text : protected Variant {
      * * <del>ver2.0〜 stringに戻した</del>
      * * <del>ver2.0〜 const参照に変更</del>
      * * <del>参照は少なくとも次のClient::sync()までは有効</del>
-     * * ver2.10〜 StringViewに変更
+     * * ver3.0〜 StringViewに変更
      *
      */
     StringView get() const;
@@ -391,19 +365,19 @@ class WEBCFACE_DLL Text : protected Variant {
      * \since ver2.0
      *
      * * <del>参照は少なくとも次のClient::sync()までは有効</del>
-     * * ver2.10〜 WStringViewに変更
+     * * ver3.0〜 WStringViewに変更
      *
      */
     WStringView getW() const;
 
     /*!
-     * \since ver2.10
+     * \since ver3.0
      *
      * 以前の const std::string& を置き換え
      */
     operator std::string_view() const { return get(); }
     /*!
-     * \since ver2.10
+     * \since ver3.0
      *
      * 以前の const std::wstring& を置き換え
      */
@@ -418,13 +392,6 @@ class WEBCFACE_DLL Text : protected Variant {
      *
      */
     bool exists() const;
-
-    /*!
-     * \brief syncの時刻を返す
-     * \deprecated 1.7でMember::syncTime()に変更
-     */
-    [[deprecated]]
-    std::chrono::system_clock::time_point time() const;
 
     /*!
      * \brief 値やリクエスト状態をクリア
@@ -512,7 +479,7 @@ class WEBCFACE_DLL InputRef {
      * * <del>ver1.11からconst参照</del>
      *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
      *   * <del>ver2.0〜: 参照は少なくとも次のClient::sync()までは有効</del>
-     * * ver2.10〜 ValAdaptorをコピーで返すように変更
+     * * ver3.0〜 ValAdaptorをコピーで返すように変更
      *
      */
     ValAdaptor get() const;
@@ -542,12 +509,12 @@ class WEBCFACE_DLL InputRef {
      *   * <del>参照は次に値を取得して別の値が返ったときまで有効</del>
      *   * ver2.0〜: 参照は少なくとも次のClient::sync()までは有効
      *
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asStringView() or asString() instead")]]
+    [[deprecated("(ver3.0〜) use asStringView() or asString() instead")]]
     std::string asStringRef() const {
         return asString();
     }
@@ -555,23 +522,23 @@ class WEBCFACE_DLL InputRef {
      * \brief 文字列として返す (wstring)
      * \since ver2.0
      * \sa asStringRef()
-     * \deprecated ver2.10〜
+     * \deprecated ver3.0〜
      * 内部の仕様変更によりconst参照ではなく文字列のコピーを返す。
      * コピーなしで文字列を参照するには asWStringView()
      * を使用すること。
      */
-    [[deprecated("(ver2.10〜) use asWStringView() or asWString() instead")]]
+    [[deprecated("(ver3.0〜) use asWStringView() or asWString() instead")]]
     std::wstring asWStringRef() const {
         return asWString();
     }
     /*!
      * \brief null終端の文字列として返す
-     * \since ver2.10
+     * \since ver3.0
      */
     StringView asStringView() const { return get().asStringView(); }
     /*!
      * \brief null終端の文字列として返す
-     * \since ver2.10
+     * \since ver3.0
      */
     WStringView asWStringView() const { return get().asWStringView(); }
     /*!
