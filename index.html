@@ -325,8 +325,8 @@ Linux (x86_64, arm64, armhf) / MacOS (x86_64, arm64)</h3>
 <div class="line">  -d DIR: Extract archive to DIR (default: /opt/webcface)</div>
 <div class="line">  -u: Extract webcface-desktop.app to $HOME/Applications, instead of the default /Applications (only for macOS)</div>
 <div class="line">  -y: Assume yes for all prompts</div>
-<div class="line">  VERSION: Version to install, without &#39;v&#39; prefix (default: 3.1.1)</div>
-<div class="line">           Available versions: 3.1.1 2.9.0-1 2.9.0 2.8.0 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4</div>
+<div class="line">  VERSION: Version to install, without &#39;v&#39; prefix (default: 3.1.1-1)</div>
+<div class="line">           Available versions: 3.1.1-1 3.1.1 2.9.0-1 2.9.0 2.8.0 2.7.0 2.5.2-1 2.5.2 2.5.1 2.5.0-2 2.5.0-1 2.5.0 2.4.2 2.4.1-2 2.4.1-1 2.4.1 2.4.0-1 2.4.0 2.3.0 2.2.1 2.2.0 2.1.0 2.0.5 2.0.4</div>
 </div><!-- fragment --><details >
 <summary >
 Details</summary>
@@ -344,7 +344,7 @@ Deb Package</h4>
 x86_64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_amd64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_amd64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.1/webcface-tools_3.0.1_amd64.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_amd64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
@@ -355,7 +355,7 @@ x86_64</summary>
 arm64</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_arm64.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_arm64.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.1/webcface-tools_3.0.1_arm64.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_arm64.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
@@ -366,7 +366,7 @@ arm64</summary>
 armhf</summary>
 <p></p>
 <div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface/releases/download/v3.1.1/webcface_3.1.1_armhf.deb</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.0/webcface-tools_3.0.0_armhf.deb</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-tools/releases/download/v3.0.1/webcface-tools_3.0.1_armhf.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-webui_1.15.0_all.deb</div>
 <div class="line">curl -fLO https://github.com/na-trium-144/webcface-webui/releases/download/v1.15.0/webcface-desktop_1.15.0_linux_armv7l.deb</div>
 <div class="line">sudo apt install ./webcface*.deb</div>
@@ -389,9 +389,9 @@ Unzip manually (Linux)</h4>
 <summary >
 x86_64</summary>
 <p></p>
-<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_amd64.zip</div>
-<div class="line">sudo unzip webcface_3.1.1_linux_amd64.zip -d /opt/webcface</div>
-<div class="line">rm webcface_3.1.1_linux_amd64.zip</div>
+<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1-1/webcface_3.1.1-1_linux_amd64.zip</div>
+<div class="line">sudo unzip webcface_3.1.1-1_linux_amd64.zip -d /opt/webcface</div>
+<div class="line">rm webcface_3.1.1-1_linux_amd64.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/x86_64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/</div>
@@ -400,9 +400,9 @@ x86_64</summary>
 <summary >
 arm64</summary>
 <p></p>
-<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_arm64.zip</div>
-<div class="line">sudo unzip webcface_3.1.1_linux_arm64.zip -d /opt/webcface</div>
-<div class="line">rm webcface_3.1.1_linux_arm64.zip</div>
+<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1-1/webcface_3.1.1-1_linux_arm64.zip</div>
+<div class="line">sudo unzip webcface_3.1.1-1_linux_arm64.zip -d /opt/webcface</div>
+<div class="line">rm webcface_3.1.1-1_linux_arm64.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/aarch64-linux-gnu/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/</div>
@@ -411,9 +411,9 @@ arm64</summary>
 <summary >
 armhf</summary>
 <p></p>
-<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_linux_armhf.zip</div>
-<div class="line">sudo unzip webcface_3.1.1_linux_armhf.zip -d /opt/webcface</div>
-<div class="line">rm webcface_3.1.1_linux_armhf.zip</div>
+<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1-1/webcface_3.1.1-1_linux_armhf.zip</div>
+<div class="line">sudo unzip webcface_3.1.1-1_linux_armhf.zip -d /opt/webcface</div>
+<div class="line">rm webcface_3.1.1-1_linux_armhf.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/arm-linux-gnueabihf/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.bashrc</div>
 <div class="line">sudo ln -sf /opt/webcface/lib/systemd/system/*.service /etc/systemd/system/</div>
@@ -434,12 +434,12 @@ macOS</h4>
 <li>webcfaceライブラリはinstall_nameが /opt/webcface/lib のパスになっているため、それ以外の場所に展開した場合は <code>export DYLD_LIBRARY_PATH="(webcfaceディレクトリのパス)/lib:$DYLD_LIBRARY_PATH"</code> も必要になるかもしれません。 </li>
 </ul>
 </blockquote>
-<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface_3.1.1_macos_universal.zip</div>
-<div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1/webcface-desktop_3.1.1_macos_app.zip</div>
-<div class="line">sudo unzip webcface_3.1.1_macos_universal.zip -d /opt/webcface</div>
-<div class="line">sudo unzip webcface-desktop_3.1.1_macos_app.zip -d /Applications</div>
-<div class="line">rm webcface_3.1.1_macos_universal.zip</div>
-<div class="line">rm webcface-desktop_3.1.1_macos_app.zip</div>
+<div class="fragment"><div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1-1/webcface_3.1.1-1_macos_universal.zip</div>
+<div class="line">curl -fLO https://github.com/na-trium-144/webcface-package/releases/download/v3.1.1-1/webcface-desktop_3.1.1-1_macos_app.zip</div>
+<div class="line">sudo unzip webcface_3.1.1-1_macos_universal.zip -d /opt/webcface</div>
+<div class="line">sudo unzip webcface-desktop_3.1.1-1_macos_app.zip -d /Applications</div>
+<div class="line">rm webcface_3.1.1-1_macos_universal.zip</div>
+<div class="line">rm webcface-desktop_3.1.1-1_macos_app.zip</div>
 <div class="line">echo &#39;export PATH=&quot;/opt/webcface/bin:$PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
 <div class="line">echo &#39;export PKG_CONFIG_PATH=&quot;/opt/webcface/lib/pkgconfig:$PKG_CONFIG_PATH&quot;&#39; &gt;&gt; ~/.zshrc</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md294"></a>
@@ -557,7 +557,7 @@ License</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Fri Oct 10 2025 13:36:22 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Mon Oct 13 2025 17:29:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
