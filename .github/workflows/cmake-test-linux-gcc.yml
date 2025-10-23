@@ -122,3 +122,22 @@ jobs:
         meson setup buildmc -Dcmake_prefix_path=${{github.workspace}}/build/install
         meson compile -Cbuildmc
 
+    - name: Install clang
+      if: matrix.os == 'ubuntu-22.04' && matrix.dep != 'static'
+      uses: KyleMayes/install-llvm-action@master
+      with:
+        version: "18"
+    - run: sudo apt-get install -y libtinfo5 || true
+      if: matrix.os == 'ubuntu-22.04' && matrix.dep != 'static'
+    - name: Test CMake with installed package using clang
+      if: matrix.os == 'ubuntu-22.04' && matrix.dep != 'static'
+      working-directory: ${{github.workspace}}/.github/test
+      env:
+        CC: ${{ env.LLVM_PATH }}/bin/clang
+        CXX: ${{ env.LLVM_PATH }}/bin/clang++
+      run: |
+        cmake -B buildc -DCMAKE_PREFIX_PATH=${{github.workspace}}/build/install -GNinja
+        cmake --build buildc
+
+
+
