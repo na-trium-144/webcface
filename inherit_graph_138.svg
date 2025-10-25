@@ -16,7 +16,7 @@
 <text text-anchor="start" x="8" y="-40" font-family="Helvetica,sans-Serif" font-size="10.00">SharedMutexProxy&lt; StrMap1</text>
 <text text-anchor="start" x="8" y="-29" font-family="Helvetica,sans-Serif" font-size="10.00">&lt; std::shared_ptr&lt; std</text>
 <text text-anchor="start" x="8" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">::function&lt; void(webcface</text>
-<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::Log)&gt; &gt; &gt; &gt;</text>
+<text text-anchor="middle" x="80.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">::Func)&gt; &gt; &gt; &gt;</text>
 </a>
 </g>
 </g>

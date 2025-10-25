@@ -1,5 +1,7 @@
 var common_2val__adaptor_8h =
 [
+    [ "EnableIfBool< T, U >", "structwebcface_1_1traits_1_1EnableIfBool.html", null ],
+    [ "EnableIfBool< bool, U >", "structwebcface_1_1traits_1_1EnableIfBool_3_01bool_00_01U_01_4.html", "structwebcface_1_1traits_1_1EnableIfBool_3_01bool_00_01U_01_4" ],
     [ "ValAdaptor", "classwebcface_1_1ValAdaptor.html", "classwebcface_1_1ValAdaptor" ],
     [ "ValAdapter", "common_2val__adaptor_8h.html#ac7008fb79f085e05e62d3f710002db6e", null ],
     [ "ValType", "common_2val__adaptor_8h.html#acd1dd9e2d5f885ad3f73197cfa6b0185", [

@@ -67,6 +67,8 @@ var hierarchy =
       [ "ClientData", "structwebcface_1_1internal_1_1ClientData.html", null ],
       [ "PromiseData", "structwebcface_1_1internal_1_1PromiseData.html", null ]
     ] ],
+    [ "EnableIfBool< T, U >", "structwebcface_1_1traits_1_1EnableIfBool.html", null ],
+    [ "EnableIfBool< bool, U >", "structwebcface_1_1traits_1_1EnableIfBool_3_01bool_00_01U_01_4.html", null ],
     [ "false_type", null, [
       [ "IsConstructibleArg< Arg, typename >", "structwebcface_1_1traits_1_1IsConstructibleArg.html", null ]
     ] ],

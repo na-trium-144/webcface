@@ -189,6 +189,8 @@ var annotated_dup =
         [ "ArraySizeTrait< T[N], Num >", "structwebcface_1_1traits_1_1ArraySizeTrait_3_01T_0fN_0e_00_01Num_01_4.html", null ],
         [ "ArraySizeTraitCheck", "structwebcface_1_1traits_1_1ArraySizeTraitCheck.html", null ],
         [ "ArraySizeTraitCheck< true >", "structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4.html", "structwebcface_1_1traits_1_1ArraySizeTraitCheck_3_01true_01_4" ],
+        [ "EnableIfBool", "structwebcface_1_1traits_1_1EnableIfBool.html", null ],
+        [ "EnableIfBool< bool, U >", "structwebcface_1_1traits_1_1EnableIfBool_3_01bool_00_01U_01_4.html", "structwebcface_1_1traits_1_1EnableIfBool_3_01bool_00_01U_01_4" ],
         [ "FuncArgTypesIterationFailureTrait", "structwebcface_1_1traits_1_1FuncArgTypesIterationFailureTrait.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationFailureTrait" ],
         [ "FuncArgTypesIterationTrait", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait.html", null ],
         [ "FuncArgTypesIterationTrait< FirstArg, OtherArgs... >", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4.html", "structwebcface_1_1traits_1_1FuncArgTypesIterationTrait_3_01FirstArg_00_01OtherArgs_8_8_8_01_4" ],

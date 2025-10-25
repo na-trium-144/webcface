@@ -164,12 +164,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1309a943f267585e07cdc676b284360b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a210e96f20dac17a7fff9a1c5b63fa2b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#a210e96f20dac17a7fff9a1c5b63fa2b2">operator=</a> (<a class="el" href="classwebcface_1_1StringInitializer.html">StringInitializer</a> str)</td></tr>
 <tr class="separator:a210e96f20dac17a7fff9a1c5b63fa2b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5277df3161b684ea6fcfc27a4587a11b"><td class="memTemplParams" colspan="2">template&lt;typename Bool , typename std::enable_if_t&lt; std::is_same_v&lt; Bool, bool &gt;, bool &gt;  = true&gt; </td></tr>
-<tr class="memitem:a5277df3161b684ea6fcfc27a4587a11b"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#a5277df3161b684ea6fcfc27a4587a11b">ValAdaptor</a> (Bool value)</td></tr>
-<tr class="separator:a5277df3161b684ea6fcfc27a4587a11b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af3ccf5ed165882fb31c217f075b67ed3"><td class="memTemplParams" colspan="2">template&lt;typename Bool &gt; </td></tr>
-<tr class="memitem:af3ccf5ed165882fb31c217f075b67ed3"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#af3ccf5ed165882fb31c217f075b67ed3">operator=</a> (Bool v) -&gt; std::enable_if_t&lt; std::is_same_v&lt; Bool, bool &gt;, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp; &gt;</td></tr>
-<tr class="separator:af3ccf5ed165882fb31c217f075b67ed3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a609a2c6c29416f264cfd9cb135b28b02"><td class="memTemplParams" colspan="2">template&lt;typename Bool &gt; </td></tr>
+<tr class="memitem:a609a2c6c29416f264cfd9cb135b28b02"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#a609a2c6c29416f264cfd9cb135b28b02">ValAdaptor</a> (Bool value, typename <a class="el" href="structwebcface_1_1traits_1_1EnableIfBool.html">traits::EnableIfBool</a>&lt; Bool &gt;::Type=<a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">traits::TraitOk</a>)</td></tr>
+<tr class="separator:a609a2c6c29416f264cfd9cb135b28b02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45c019998f4be418cbaeb793e1e1b414"><td class="memTemplParams" colspan="2">template&lt;typename Bool &gt; </td></tr>
+<tr class="memitem:a45c019998f4be418cbaeb793e1e1b414"><td class="memTemplItemLeft" align="right" valign="top">auto&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#a45c019998f4be418cbaeb793e1e1b414">operator=</a> (Bool v) -&gt; typename <a class="el" href="structwebcface_1_1traits_1_1EnableIfBool.html">traits::EnableIfBool</a>&lt; Bool, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp; &gt;::Type</td></tr>
+<tr class="separator:a45c019998f4be418cbaeb793e1e1b414"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aba2bfdaebe5882529f2408763b5cc215"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#aba2bfdaebe5882529f2408763b5cc215">ValAdaptor</a> (std::int64_t value)</td></tr>
 <tr class="separator:aba2bfdaebe5882529f2408763b5cc215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9bec6fc768326f43c22b65d32e5ea81"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classwebcface_1_1ValAdaptor.html#af9bec6fc768326f43c22b65d32e5ea81">operator=</a> (std::int64_t v)</td></tr>
@@ -346,13 +346,13 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a5277df3161b684ea6fcfc27a4587a11b" name="a5277df3161b684ea6fcfc27a4587a11b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5277df3161b684ea6fcfc27a4587a11b">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[4/8]</span></h2>
+<a id="a609a2c6c29416f264cfd9cb135b28b02" name="a609a2c6c29416f264cfd9cb135b28b02"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a609a2c6c29416f264cfd9cb135b28b02">&#9670;&#160;</a></span>ValAdaptor() <span class="overload">[4/8]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Bool , typename std::enable_if_t&lt; std::is_same_v&lt; Bool, bool &gt;, bool &gt; &gt; </div>
+template&lt;typename Bool &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -361,8 +361,18 @@ template&lt;typename Bool , typename std::enable_if_t&lt; std::is_same_v&lt; Boo
           <td class="memname"><a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> </td>
           <td>(</td>
           <td class="paramtype">Bool&#160;</td>
-          <td class="paramname"><em>value</em></td><td>)</td>
+          <td class="paramname"><em>value</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">typename <a class="el" href="structwebcface_1_1traits_1_1EnableIfBool.html">traits::EnableIfBool</a>&lt; Bool &gt;::Type&#160;</td>
+          <td class="paramname"> = <code><a class="el" href="namespacewebcface_1_1traits.html#aab4f6ba4b7976e90ab603580d3809bf1">traits::TraitOk</a></code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -371,7 +381,8 @@ template&lt;typename Bool , typename std::enable_if_t&lt; std::is_same_v&lt; Boo
   </tr>
 </table>
 </div><div class="memdoc">
-<p>ver3.0〜: const char* などのポインタがboolに変換されるのを防ぐためテンプレート化 </p>
+<p>ver3.0〜: const char* などのポインタがboolに変換されるのを防ぐためテンプレート化</p>
+<p>ver3.2〜: gcc/clangでのenable_ifのABI違い &amp; clang-17→18のテンプレート型に関するABI仕様変更の影響を避けるため、 std::enable_ifを使わない &amp; sfinaeをテンプレートパラメータではなく引数で行う </p>
 
 </div>
 </div>
@@ -1068,8 +1079,8 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 
 </div>
 </div>
-<a id="af3ccf5ed165882fb31c217f075b67ed3" name="af3ccf5ed165882fb31c217f075b67ed3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af3ccf5ed165882fb31c217f075b67ed3">&#9670;&#160;</a></span>operator=() <span class="overload">[1/7]</span></h2>
+<a id="a45c019998f4be418cbaeb793e1e1b414" name="a45c019998f4be418cbaeb793e1e1b414"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45c019998f4be418cbaeb793e1e1b414">&#9670;&#160;</a></span>operator=() <span class="overload">[1/7]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1081,12 +1092,13 @@ template&lt;typename Bool &gt; </div>
           <td>(</td>
           <td class="paramtype">Bool&#160;</td>
           <td class="paramname"><em>v</em></td><td>)</td>
-          <td> -&gt; std::enable_if_t&lt;std::is_same_v&lt;Bool, bool&gt;, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&gt;</td>
+          <td> -&gt; typename <a class="el" href="structwebcface_1_1traits_1_1EnableIfBool.html">traits::EnableIfBool</a>&lt;Bool, <a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a> &amp;&gt;::Type</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <p>ver3.0〜: const char* などのポインタがboolに変換されるのを防ぐためテンプレート化</p>
-<p>テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、 ここでは戻り値をSFINAEにしている </p>
+<p>テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、 ここでは戻り値をSFINAEにしている</p>
+<p>ver3.2〜: gcc/clangでのenable_ifのABI違い の影響を避けるため、 std::enable_ifを使わない </p>
 
 </div>
 </div>
@@ -1301,7 +1313,7 @@ template&lt;typename T , typename std::enable_if_t&lt; std::is_constructible_v&l
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespacewebcface.html">webcface</a></li><li class="navelem"><a class="el" href="classwebcface_1_1ValAdaptor.html">ValAdaptor</a></li>
-    <li class="footer">Generated on Mon Oct 13 2025 17:29:30 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Sat Oct 25 2025 18:38:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
