@@ -287,11 +287,14 @@ SharedString &SharedString::normalizeSeparator() {
     if (!data) {
         return *this;
     }
+    std::shared_ptr<internal::SharedStringData> original_data;
     std::lock_guard lock(data->m);
     if (data->u8sv.find(field_separator_alt) != std::string::npos ||
         data->sv.find(field_separator_alt) != std::string::npos ||
         data->wsv.find(field_separator_alt) != std::string::npos) {
-        data = std::make_shared<internal::SharedStringData>(*data);
+        // dataを新しい文字列に置き換える場合、lockを解除するまでの間もとのdataのuse_countを維持する
+        original_data = std::move(data);
+        data = std::make_shared<internal::SharedStringData>(*original_data);
         if (data->u8sv.find(field_separator_alt) != std::string::npos) {
             if (data->u8s.data() != data->u8sv.data()) {
                 data->u8s = data->u8sv;
