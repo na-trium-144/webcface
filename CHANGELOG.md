@@ -5,6 +5,8 @@
 ## main
 ### Fixed
 * MSVCでの範囲外参照assertionエラーと、SharedStringの未定義動作を修正 (#546)
+### Changed
+* gccとclang-18のABI互換性エラーを回避 (#545)
 
 ## [3.1.1] - 2025-10-10
 

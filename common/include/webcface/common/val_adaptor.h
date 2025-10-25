@@ -6,6 +6,7 @@
 #include <ostream>
 #include <variant>
 #include "encoding.h"
+#include "trait.h"
 #ifdef WEBCFACE_MESON
 #include "webcface-config.h"
 #else
@@ -67,6 +68,15 @@ inline std::ostream &operator<<(std::ostream &os, ValType a) {
     return os << valTypeStr(a);
 }
 
+namespace traits {
+template <typename T, typename U = TraitOkType>
+struct EnableIfBool {};
+template <typename U>
+struct EnableIfBool<bool, U> {
+    using Type = U;
+};
+} // namespace traits
+
 /*!
  * \brief 数値、文字列などの値を相互変換するクラス
  *
@@ -122,10 +132,15 @@ class WEBCFACE_DLL ValAdaptor {
      * ver3.0〜: const char*
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
      *
+     * ver3.2〜: gcc/clangでのenable_ifのABI違い &
+     * clang-17→18のテンプレート型に関するABI仕様変更の影響を避けるため、
+     * std::enable_ifを使わない &
+     * sfinaeをテンプレートパラメータではなく引数で行う
+     *
      */
-    template <typename Bool, typename std::enable_if_t<
-                                 std::is_same_v<Bool, bool>, bool> = true>
-    explicit ValAdaptor(Bool value);
+    template <typename Bool>
+    explicit ValAdaptor(Bool value, typename traits::EnableIfBool<Bool>::Type =
+                                        traits::TraitOk);
     /*!
      * ver3.0〜: const char*
      * などのポインタがboolに変換されるのを防ぐためテンプレート化
@@ -133,10 +148,13 @@ class WEBCFACE_DLL ValAdaptor {
      * テンプレート引数にenable_if_tを入れるとMSVCでコンパイルエラーになったので、
      * ここでは戻り値をSFINAEにしている
      *
+     * ver3.2〜: gcc/clangでのenable_ifのABI違い の影響を避けるため、
+     * std::enable_ifを使わない
+     *
      */
     template <typename Bool>
-    auto operator=(Bool v)
-        -> std::enable_if_t<std::is_same_v<Bool, bool>, ValAdaptor &>;
+    auto operator=(Bool v) ->
+        typename traits::EnableIfBool<Bool, ValAdaptor &>::Type;
 
     explicit ValAdaptor(std::int64_t value);
     ValAdaptor &operator=(std::int64_t v);
@@ -387,8 +405,10 @@ class WEBCFACE_DLL ValAdaptor {
     }
 };
 
-extern template ValAdaptor::ValAdaptor(bool value);
-extern template ValAdaptor &ValAdaptor::operator= <bool>(bool v);
+extern template ValAdaptor::ValAdaptor(
+    bool value, typename traits::EnableIfBool<bool>::Type);
+extern template auto ValAdaptor::operator= <bool>(bool v) ->
+    typename traits::EnableIfBool<bool, ValAdaptor &>::Type;
 
 
 template <typename T,
