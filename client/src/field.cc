@@ -21,12 +21,12 @@
 WEBCFACE_NS_BEGIN
 SharedString Field::lastName8() const {
     auto u8sv = this->field_.u8StringView();
-    for (auto it = u8sv.end() - 1; it >= u8sv.begin(); it--) {
-        if (*it == field_separator || *it == field_separator_alt) {
-            for (auto it2 = it - 1; it2 >= u8sv.begin(); it2--) {
-                if (*it2 != field_separator && *it2 != field_separator_alt) {
+    for (int i = static_cast<int>(u8sv.length()) - 1; i >= 0; i--) {
+        if (u8sv[i] == field_separator || u8sv[i] == field_separator_alt) {
+            for (int j = i - 1; j >= 0; j--) {
+                if (u8sv[j] != field_separator && u8sv[j] != field_separator_alt) {
                     return SharedString::fromU8String(
-                        std::string(u8sv.substr((it + 1) - u8sv.begin())));
+                        std::string(u8sv.substr(i + 1)));
                 }
             }
             // 文字列の最初からfield_separatorが続く場合
