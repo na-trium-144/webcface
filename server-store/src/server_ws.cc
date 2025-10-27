@@ -20,7 +20,7 @@ class CustomLogger : public crow::ILogHandler {
 
   public:
     CustomLogger(const LoggerCallback &callback) : callback(callback) {}
-    void log(const std::string &message, crow::LogLevel level) override {
+    void log(std::string message, crow::LogLevel level) override {
         callback(message.data(), message.size(), static_cast<int>(level));
     }
 };

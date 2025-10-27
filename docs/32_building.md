@@ -29,7 +29,7 @@ MinGWは MSYS2 の UCRT64 環境
 * webcfaceは外部ライブラリとして
 [Asio](https://github.com/chriskohlhoff/asio),
 [CLI11](https://github.com/CLIUtils/CLI11.git),
-[Crow](https://github.com/CrowCpp/Crow)(>=1.3.0),
+[Crow](https://github.com/CrowCpp/Crow),
 [curl](https://github.com/curl/curl),
 [fmt](https://github.com/fmtlib/fmt)(>=11),
 [libvips](https://github.com/libvips/libvips),
@@ -50,6 +50,8 @@ MinGWは MSYS2 の UCRT64 環境
 * spdlogは `SPDLOG_FMT_EXTERNAL` が有効になっている必要があります。
 またfmt>=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。
 * libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。
+* crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。
+    * 現在はこの機能はリリースされておらず、[PR#803](https://github.com/CrowCpp/Crow/pull/803) のコードが必要です。
 * OpenCVはインストールされていない場合でもソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。
 
 <details><summary>Ubuntu</summary>
