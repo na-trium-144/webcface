@@ -32,7 +32,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```
     [wrap-git]
     url = https://github.com/na-trium-144/webcface.git
-    revision = v3.1.1
+    revision = v3.2.0
     depth = 1
     [provide]
     dependency_names = webcface
@@ -64,7 +64,7 @@ MesonまたはCMakeを使用する場合は、subproject/subdirectoryとしてWe
     ```cmake
     FetchContent_Declare(webcface
       GIT_REPOSITORY https://github.com/na-trium-144/webcface.git
-      GIT_TAG        v3.1.1
+      GIT_TAG        v3.2.0
     )
     FetchContent_MakeAvailable(webcface)
     ```
