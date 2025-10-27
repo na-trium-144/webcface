@@ -497,29 +497,7 @@ endif
 
 if build_server
   cli11_dep = dependency('cli11', 'CLI11')
-
-  crow_dep = dependency('Crow')
-  if crow_dep.type_name() != 'internal'
-    crow_local_socket_support_test = cxx.compiles('''
-      #include <crow.h>
-      int main(){
-          crow::SimpleApp app;
-          CROW_ROUTE(app, "/")([](){
-              return "Hello world";
-          });
-          app.local_socket_path("/tmp/test.sock").multithreaded().run();
-      }
-      ''',
-      dependencies: [crow_dep],
-      name: 'crow_local_socket_support_test',
-    )
-    if not crow_local_socket_support_test
-      error('The installed Crow has no local socket support, so WebCFace cannot use it. ' + \
-        'Set "--force-fallback-for=Crow".',
-      )
-    endif
-  endif
-
+  crow_dep = dependency('Crow', version: '>=1.3.0')
   libvips_cpp_dep = dependency('vips-cpp')
 else
   libvips_cpp_dep = disabler()
