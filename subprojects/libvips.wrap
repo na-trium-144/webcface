@@ -1,6 +1,6 @@
 [wrap-git]
 url = https://github.com/na-trium-144/libvips.git
-revision = 2ab2dc930f071e7a9f50e7fd46d434c918ccd00d
+revision = 6dfec3a41401ca08ecd41ddb2f93e4be084c4bd0
 # revision = skip-dep-check
 depth = 1
 
