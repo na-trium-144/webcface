@@ -4,6 +4,10 @@
 
 ## main
 
+## [3.2.1] - 2025-12-02
+### Fixed
+* webcface_modulesを有効化する前にgeneratorの種類とバージョンをチェック (#549)
+
 ## [3.2.0] - 2025-10-27
 ### Fixed
 * MSVCでの範囲外参照assertionエラーと、SharedStringの未定義動作を修正 (#546)
