@@ -64,30 +64,47 @@ set_target_properties(webcface::wcf PROPERTIES
 )
 
 if(NOT CMAKE_VERSION VERSION_LESS 3.28)
-  if(
-    (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
-        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14) OR
-    (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND
-        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16 AND
-        NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR
-    (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
-        NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.34)
-  )
-    message(STATUS "webcface::webcface_modules target is available.")
-    add_library(webcface_modules STATIC EXCLUDE_FROM_ALL)
-    add_library(webcface::webcface_modules ALIAS webcface_modules)
-    target_compile_features(webcface_modules PUBLIC cxx_std_20)
-    target_include_directories(webcface_modules PUBLIC "${PACKAGE_PREFIX_DIR}/@includedir@")
-    target_link_libraries(webcface_modules PUBLIC webcface::webcface)
-    target_sources(webcface_modules
-      PUBLIC
-        FILE_SET "webcface_modules"
-        TYPE "CXX_MODULES"
-        BASE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules"
-        FILES "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules/webcface.ccm"
+  # Ninjaのバージョンを取得
+  if(CMAKE_GENERATOR MATCHES "Ninja")
+    execute_process(
+      COMMAND ${CMAKE_MAKE_PROGRAM} --version
+      OUTPUT_VARIABLE NINJA_VERSION_OUTPUT
+      OUTPUT_STRIP_TRAILING_WHITESPACE
     )
+    string(REGEX MATCH "[0-9]+\\.[0-9]+(\\.[0-9]+)?" NINJA_VERSION "${NINJA_VERSION_OUTPUT}")
+  endif()
+
+  if(
+    (CMAKE_GENERATOR MATCHES "Ninja" AND NOT NINJA_VERSION VERSION_LESS 1.11) OR
+    (CMAKE_GENERATOR MATCHES "Visual Studio")
+  )
+    if(
+      (CMAKE_CXX_COMPILER_ID STREQUAL "GNU" AND
+          NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14) OR
+      (CMAKE_CXX_COMPILER_ID MATCHES "Clang" AND
+          NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 16 AND
+          NOT CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang") OR
+      (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC" AND
+          NOT CMAKE_CXX_COMPILER_VERSION VERSION_LESS 14.34)
+    )
+      message(STATUS "webcface::webcface_modules target is available.")
+      add_library(webcface_modules STATIC EXCLUDE_FROM_ALL)
+      add_library(webcface::webcface_modules ALIAS webcface_modules)
+      target_compile_features(webcface_modules PUBLIC cxx_std_20)
+      target_include_directories(webcface_modules PUBLIC "${PACKAGE_PREFIX_DIR}/@includedir@")
+      target_link_libraries(webcface_modules PUBLIC webcface::webcface)
+      target_sources(webcface_modules
+        PUBLIC
+          FILE_SET "webcface_modules"
+          TYPE "CXX_MODULES"
+          BASE_DIRS "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules"
+          FILES "${PACKAGE_PREFIX_DIR}/@includedir@/webcface/modules/webcface.ccm"
+      )
+    else()
+      message(STATUS "webcface::webcface_modules target is not available, because this compiler is old or unsupported.")
+    endif()
   else()
-    message(STATUS "webcface::webcface_modules target is not available, because this compiler is old or unsupported.")
+    message(STATUS "webcface::webcface_modules target is not available, because this generator is old or unsupported.")
   endif()
 else()
   message(STATUS "webcface::webcface_modules target is not available, because this cmake is old.")
