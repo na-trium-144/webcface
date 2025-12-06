@@ -32,7 +32,7 @@ jobs:
         brew update
         brew install meson
         if [[ ${{matrix.dep}} = brew ]]; then brew tap na-trium-144/webcface; fi
-        if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv vips-lite curl na-trium-144/webcface/crow || true; fi
+        if [[ ${{matrix.dep}} = brew ]]; then brew install spdlog msgpack-cxx cli11 utf8cpp googletest opencv vips-lite curl crow || true; fi
     # - name: Install Nasm
     #   if: matrix.dep == 'framework'
     #   env:
