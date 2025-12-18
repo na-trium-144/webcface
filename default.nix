@@ -39,7 +39,7 @@ pkgs.stdenv.mkDerivation rec {
     })
     (builtins.fetchTarball {
       url = "https://github.com/na-trium-144/webcface-webui/releases/download/v${webui_version}/webcface-webui_${webui_version}.tar.gz";
-      sha256 = "sha256:0kvh3jszzp1jan3xxgxk81yyvqw8vgv10zrycq0ikyhmmzrsr2pq";
+      sha256 = "sha256:1k38dw8147ppxrsmmx65cm71rqwfksmjj3j7faw9s8726iiw8f3y";
       name = "webcface-webui";
     })
   ];
