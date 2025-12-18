@@ -133,8 +133,8 @@ jobs:
     strategy:
       matrix:
         arch: [x86_64, arm64]
-    runs-on: macos-13
-    name: Build on macos-13 ${{matrix.arch}}
+    runs-on: macos-14
+    name: Build on macos-14 ${{matrix.arch}}
     steps:
     - uses: actions/checkout@v4
 
@@ -152,7 +152,7 @@ jobs:
         -Dversion_suffix=
         -Ddownload_webui=disabled
         -Dpkgconfig.relocatable=true
-        $([[ ${{matrix.arch}} = arm64 ]] && echo --cross-file scripts/cross/macos_arm64)
+        $([[ ${{matrix.arch}} = x86_64 ]] && echo --cross-file scripts/cross/macos_x86_64)
         --unity=on
     - name: Compile
       run: meson compile -C build || meson compile -C build
@@ -168,7 +168,7 @@ jobs:
         path: ${{github.workspace}}/*.zip
 
   lipo-macos:
-    runs-on: macos-13
+    runs-on: macos-14
     name: Create universal binary
     needs: [build-macos]
     steps:
