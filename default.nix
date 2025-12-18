@@ -6,23 +6,6 @@
 let
   doCheckArg = doCheck;
 
-  crow = pkgs.crow.overrideAttrs (oldAttrs: {
-    src = pkgs.fetchFromGitHub {
-      owner = "na-trium-144";
-      repo = "crow";
-      rev = "efb9d8c2c6260cc74a04e7be75a167d7863479b5";
-      sha256 = "sha256-2foLrHG0PqamYp2/j3DbcaKdorS2p/SQALBZNYC42/M=";
-    };
-    postPatch = ''
-      echo "# dummy CPM.cmake to avoid SSL error" > cmake/CPM.cmake
-    '';
-    patches = [];
-    cmakeFlags = [
-      (pkgs.lib.cmakeBool "CROW_BUILD_EXAMPLES" false)
-      (pkgs.lib.cmakeBool "CROW_BUILD_TESTS" false)
-      (pkgs.lib.cmakeBool "CROW_GENERATE_SBOM" false)
-    ];
-  });
   curl = pkgs.curl.overrideAttrs (oldAttrs: {
     configureFlags = oldAttrs.configureFlags ++ [
       (pkgs.lib.enableFeature true "websockets")
@@ -61,7 +44,7 @@ pkgs.stdenv.mkDerivation rec {
     pkgs.gcc
     pkgs.asio
     pkgs.cli11
-    crow
+    pkgs.crow
     curl
     pkgs.fmt_11
     pkgs.gbenchmark
