@@ -1,5 +1,5 @@
 project('webcface', 'c', 'cpp',
-  version: '3.2.1',
+  version: '3.3.1',
   license: 'MIT',
   meson_version: '>=1.3.0',
   default_options: [
@@ -497,7 +497,8 @@ endif
 
 if build_server
   cli11_dep = dependency('cli11', 'CLI11')
-  crow_dep = dependency('Crow', version: '>=1.3.0')
+  crow_dep = dependency('Crow')
+  # crow_dep = dependency('Crow', version: '>=1.3.0')  NO. Unknown version, but need: ['>=1.3.0']
   libvips_cpp_dep = dependency('vips-cpp')
 else
   libvips_cpp_dep = disabler()
