@@ -10,12 +10,17 @@ let
     src = pkgs.fetchFromGitHub {
       owner = "na-trium-144";
       repo = "crow";
-      rev = "11bf7a0dfacc1df9f2fbfa5838828817ff58661b";
-      sha256 = "sha256-RylTWJoOLBCuOQWpuIO14ssUd6AstEV6AbwF/7OdIe0=";
+      rev = "efb9d8c2c6260cc74a04e7be75a167d7863479b5";
+      sha256 = "sha256-2foLrHG0PqamYp2/j3DbcaKdorS2p/SQALBZNYC42/M=";
     };
+    postPatch = ''
+      echo "# dummy CPM.cmake to avoid SSL error" > cmake/CPM.cmake
+    '';
+    patches = [];
     cmakeFlags = [
       (pkgs.lib.cmakeBool "CROW_BUILD_EXAMPLES" false)
       (pkgs.lib.cmakeBool "CROW_BUILD_TESTS" false)
+      (pkgs.lib.cmakeBool "CROW_GENERATE_SBOM" false)
     ];
   });
   curl = pkgs.curl.overrideAttrs (oldAttrs: {

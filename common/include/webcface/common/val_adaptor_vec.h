@@ -290,7 +290,9 @@ ValType valTypeOf() {
         return ValType::int_;
     } else if constexpr (std::is_floating_point_v<std::decay_t<T>>) {
         return ValType::float_;
-    } else if constexpr (std::is_constructible_v<StringInitializer, T>) {
+    } else if constexpr (std::is_constructible_v<T, StringView> ||
+                         std::is_constructible_v<T, WStringView> ||
+                         std::is_constructible_v<StringInitializer, T>) {
         return ValType::string_;
     } else {
         warningOnUnknownType<T>();
