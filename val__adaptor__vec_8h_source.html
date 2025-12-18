@@ -402,15 +402,17 @@ $(document).ready(function(){initNavTree('val__adaptor__vec_8h_source.html','');
 <div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        <span class="keywordflow">return</span> ValType::int_;</div>
 <div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_floating_point_v&lt;std::decay_t&lt;T&gt;&gt;) {</div>
 <div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span>        <span class="keywordflow">return</span> ValType::float_;</div>
-<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_constructible_v&lt;StringInitializer, T&gt;) {</div>
-<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <span class="keywordflow">return</span> ValType::string_;</div>
-<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>    } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        warningOnUnknownType&lt;T&gt;();</div>
-<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>        <span class="keywordflow">return</span> ValType::none_;</div>
-<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>    }</div>
-<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>}</div>
-<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span> </div>
-<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>    } <span class="keywordflow">else</span> <span class="keywordflow">if</span> <span class="keyword">constexpr</span> (std::is_constructible_v&lt;T, StringView&gt; ||</div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>                         std::is_constructible_v&lt;T, WStringView&gt; ||</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>                         std::is_constructible_v&lt;StringInitializer, T&gt;) {</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>        <span class="keywordflow">return</span> ValType::string_;</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span>    } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        warningOnUnknownType&lt;T&gt;();</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        <span class="keywordflow">return</span> ValType::none_;</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>    }</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>}</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span> </div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span><a class="code hl_define" href="webcface-config_8h.html#ab3f2570d5b8231ddbe0e57fc8ab629eb">WEBCFACE_NS_END</a></div>
 <div class="ttc" id="aclasswebcface_1_1StringInitializer_html"><div class="ttname"><a href="classwebcface_1_1StringInitializer.html">webcface::StringInitializer</a></div><div class="ttdoc">SharedString のpublicなコンストラクタインタフェース (入力専用)</div><div class="ttdef"><b>Definition</b> encoding.h:235</div></div>
 <div class="ttc" id="aclasswebcface_1_1TStringView_html"><div class="ttname"><a href="classwebcface_1_1TStringView.html">webcface::TStringView</a></div><div class="ttdoc">webcfaceで管理されている文字列を参照するstring_view</div><div class="ttdef"><b>Definition</b> encoding.h:71</div></div>
 <div class="ttc" id="aclasswebcface_1_1ValAdaptorVector_html"><div class="ttname"><a href="classwebcface_1_1ValAdaptorVector.html">webcface::ValAdaptorVector</a></div><div class="ttdoc">ValAdaptorのVector.</div><div class="ttdef"><b>Definition</b> val_adaptor_vec.h:17</div></div>
@@ -463,7 +465,7 @@ $(document).ready(function(){initNavTree('val__adaptor__vec_8h_source.html','');
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="dir_bdd9a5d540de89e9fe90efdfc6973a4f.html">common</a></li><li class="navelem"><a class="el" href="dir_11fbc4217d50ab21044e5ad6614aede5.html">include</a></li><li class="navelem"><a class="el" href="dir_691cd2f0393d009848f7dbc991939c45.html">webcface</a></li><li class="navelem"><a class="el" href="dir_c6f8b713f490183ef4573a582b3d24eb.html">common</a></li><li class="navelem"><a class="el" href="val__adaptor__vec_8h.html">val_adaptor_vec.h</a></li>
-    <li class="footer">Generated on Tue Dec 2 2025 07:38:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Dec 18 2025 08:21:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>

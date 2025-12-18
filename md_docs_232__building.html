@@ -175,7 +175,7 @@ Requirements</h2>
 <h2><a class="anchor" id="autotoc_md46"></a>
 Dependencies</h2>
 <ul>
-<li>webcfaceは外部ライブラリとして <a href="https://github.com/chriskohlhoff/asio">Asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">CLI11</a>, <a href="https://github.com/CrowCpp/Crow">Crow</a>, <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>(&gt;=11), <a href="https://github.com/libvips/libvips">libvips</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) <a href="https://opencv.org/">OpenCV</a>(exampleのみ), を使用します。</li>
+<li>webcfaceは外部ライブラリとして <a href="https://github.com/chriskohlhoff/asio">Asio</a>, <a href="https://github.com/CLIUtils/CLI11.git">CLI11</a>, <a href="https://github.com/CrowCpp/Crow">Crow</a>(&gt;=1.3.0), <a href="https://github.com/curl/curl">curl</a>, <a href="https://github.com/fmtlib/fmt">fmt</a>(&gt;=11), <a href="https://github.com/libvips/libvips">libvips</a>, <a href="https://github.com/msgpack/msgpack-c">msgpack-cxx</a>, <a href="https://github.com/gabime/spdlog">spdlog</a>, <a href="https://github.com/nemtrif/utfcpp">UTF8-CPP</a>, <a href="https://github.com/google/googletest">GoogleTest</a>(testのみ) <a href="https://opencv.org/">OpenCV</a>(exampleのみ), を使用します。</li>
 <li><del>デフォルトではインストールされたものは一切使わず、すべてソースをダウンロードしてビルドします。</del></li>
 <li><span class="since-c">2.6</span> システムにインストールされているものがあればデフォルトでそれを探して使用します。</li>
 <li>しかしインストールされていない場合は自動的に必要なソースをダウンロードしてビルドするので、WebCFaceを使うためにこれらのライブラリをすべてインストールする必要はありません。<ul>
@@ -188,10 +188,6 @@ Dependencies</h2>
 </li>
 <li>spdlogは <code>SPDLOG_FMT_EXTERNAL</code> が有効になっている必要があります。 またfmt&gt;=11を使用するため、それより古いfmtを使ってビルドされているspdlogは使えません。</li>
 <li>libcurlはwebsocket機能を有効にする必要があるため、インストールされているlibcurlが古いもしくはwebsocketが無効になっている場合ビルド前にエラーになります。</li>
-<li>crowはunix_socketの機能が実装されている必要があるため、インストールされているcrowでunix_socketが使えない場合ビルド前にエラーになります。<ul>
-<li>現在はこの機能はリリースされておらず、<a href="https://github.com/CrowCpp/Crow/pull/803">PR#803</a> のコードが必要です。</li>
-</ul>
-</li>
 <li>OpenCVはインストールされていない場合でもソースからビルドしません。OpenCVを使ったexampleをビルドしたい場合は別途インストールする必要がありますが、example以外では使用しないのでなくても問題ありません。</li>
 </ul>
 <details >
@@ -348,7 +344,7 @@ tools</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Tue Dec 2 2025 07:38:55 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
+    <li class="footer">Generated on Thu Dec 18 2025 08:21:13 for WebCFace by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.7 </li>
   </ul>
 </div>
 </body>
